@@ -91,7 +91,7 @@ public class PageGeneratorQueryResultForm extends QueryResultForm {
 		for (Map<String, Object> r: queryResult) {
 			String className = (String) r.get("fullClassName");
 			Class<?> cls = Class.forName(className);
-			Page p = (Page) cls.newInstance();
+			Page p = (Page) cls.getDeclaredConstructor().newInstance();
 			PageClassInfo pi = new PageClassInfo(p);
 			r.put("tableClassName", pi.getTableClass());
 		}

@@ -57,8 +57,8 @@ public class TableReport extends ExcelReport {
 		this.setRowsParPage(30);
 		this.addSheets(sheets);
 	}
-	
-	
+
+
 	/**
 	 * テンプレートファイルを作成します。
 	 * @param form フォーム。
@@ -78,14 +78,14 @@ public class TableReport extends ExcelReport {
 		return tmp;
 	}
 
-	
+
 	/**
 	 * 仕様書作成用の追加情報を設定する。
 	 * @param data データ。
 	 * @param dao データアクセスオブジェクト。
 	 * @return テーブル仕様データ。
 	 * @throws Exception 例外。
-	 * 
+	 *
 	 */
 	public Map<String, Object> getTableSpec(final Map<String, Object> data, final Dao dao) throws Exception {
 		Map<String, Object> ret = new HashMap<String, Object>();
@@ -95,7 +95,7 @@ public class TableReport extends ExcelReport {
 			String tableClassName = (String) data.get("tableClassName");
 			@SuppressWarnings("unchecked")
 			Class<? extends Table> c = (Class<? extends Table>) Class.forName(packageName + "." + tableClassName);
-			Table t = c.newInstance();
+			Table t = c.getDeclaredConstructor().newInstance();
 			ret.put("tableName", t.getTableName());
 			ret.put("tableComment", t.getComment());
 			ret.put("tableClassName", t.getClass().getName());
@@ -127,7 +127,7 @@ public class TableReport extends ExcelReport {
 	public void removeSheet(final int idx) {
 		this.getWorkbook().removeSheetAt(idx);
 	}
-	
+
 	/**
 	 * ヘッダーを設定します。
 	 * @param header ヘッダー文字列。
@@ -136,7 +136,7 @@ public class TableReport extends ExcelReport {
 	public void setSystemHeader(final String header) throws Exception {
 		Workbook wb = this.getWorkbook();
 		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-			Sheet sheet = wb.getSheetAt(i);	
+			Sheet sheet = wb.getSheetAt(i);
 			sheet.getHeader().setLeft(header);
 		}
 	}

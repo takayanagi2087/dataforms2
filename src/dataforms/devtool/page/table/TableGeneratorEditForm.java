@@ -140,7 +140,7 @@ public class TableGeneratorEditForm extends EditForm {
 		String fullClassName = packageName + "." + tableClassName;
 		ret.put("overwriteMode", OverwriteModeField.ERROR);
 		Class<?> cls = Class.forName(fullClassName);
-		Table tbl = (Table) cls.newInstance();
+		Table tbl = (Table) cls.getDeclaredConstructor().newInstance();
 		if (tbl.isAutoIncrementId()) {
 			ret.put(ID_AUTO_INCREMENT_ID, "1");
 		} else {
@@ -241,7 +241,7 @@ public class TableGeneratorEditForm extends EditForm {
 		} else if ("char".equals(classname)) {
 			ret = Double.valueOf(0x00);
 		} else {
-			ret = pcls.newInstance();
+			ret = pcls.getDeclaredConstructor().newInstance();
 		}
 		return ret;
 

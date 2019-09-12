@@ -1820,7 +1820,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		sb.append("alter table " + tbl.getTableName() + " add constraint " + StringUtil.camelToSnake(fk.getConstraintName()));
 		sb.append(" foreign key (");
 		sb.append(this.getFieldSeq(fk.getFieldIdList()));
-		Table reftable = fk.getReferenceTableClass().newInstance();
+		Table reftable = fk.getReferenceTableClass().getDeclaredConstructor().newInstance();
 		sb.append(") references ");
 		sb.append(reftable.getTableName());
 		sb.append(" (");

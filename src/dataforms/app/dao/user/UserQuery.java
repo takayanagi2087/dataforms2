@@ -89,7 +89,7 @@ public class UserQuery extends Query {
 		try {
 			Class<? extends Table> clazz = UserAdditionalInfoTableUtil.getUserAdditionalInfoTable();
 			if (clazz != null) {
-				atable = clazz.newInstance();
+				atable = clazz.getDeclaredConstructor().newInstance();
 				atable.setAlias("ai");
 				tl.add(atable);
 				for (Field<?> f: atable.getFieldList()) {

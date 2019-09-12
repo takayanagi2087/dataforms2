@@ -14,18 +14,18 @@ import dataforms.util.StringUtil;
  * ver 1.0xではHogeTable#getJoinConditionメソッドにテーブルの関係を記述していましたが、
  * 開発ツールでTableクラスを修正した場合、この定義を上書きしてしまうということがありました。
  * ver1.1xではその対策として、HogeTableRelationクラスを用意し、このクラスでテーブルの
- * 関係を定義するように修正しました。 
+ * 関係を定義するように修正しました。
  * </pre>
  */
 public class TableRelation {
-	
-	
+
+
 	/**
 	 * 外部キー制約クラス。
 	 *
 	 */
 	public static class ForeignKey {
-		
+
 		/**
 		 * Logger.
 		 */
@@ -51,7 +51,7 @@ public class TableRelation {
 		 * 参照フィールドIDリスト。
 		 */
 		private String[] referenceFieldIdList = null;
-		
+
 		/**
 		 * コンストラクタ。
 		 * @param constraintName 制約名。
@@ -102,7 +102,7 @@ public class TableRelation {
 			refFieldIdList[0] = refFieldId;
 			this.referenceFieldIdList = refFieldIdList;
 		}
-		
+
 		/**
 		 * コンストラクタ。
 		 * <pre>
@@ -122,7 +122,7 @@ public class TableRelation {
 			refFieldIdList[0] = fieldId;
 			this.referenceFieldIdList = refFieldIdList;
 		}
-		
+
 		/**
 		 * 制約名称を取得します。
 		 * @return 制約名称。
@@ -202,7 +202,7 @@ public class TableRelation {
 		public void setReferenceFieldIdList(final String[] referenceFieldIdList) {
 			this.referenceFieldIdList = referenceFieldIdList;
 		}
-		
+
 		/**
 		 * 外部キーのフィールドリストを取得します。
 		 * @param constname 外部キー制約名称。
@@ -219,7 +219,7 @@ public class TableRelation {
 			}
 			return list;
 		}
-		
+
 		/**
 		 * ソース上の外部キーとDB上の外部キーの違いを検出します。
 		 * @param dbfklist DB上の外部キー。
@@ -228,10 +228,10 @@ public class TableRelation {
 		 */
 		public boolean structureAccords(final List<Map<String, Object>> dbfklist) throws Exception {
 			String constname = StringUtil.camelToSnake(this.getConstraintName());
-			String tblname = this.getReferenceTableClass().newInstance().getTableName();
+			String tblname = this.getReferenceTableClass().getDeclaredConstructor().newInstance().getTableName();
 			String[] flist = this.getFieldIdList();
 			String[] rflist = this.getReferenceFieldIdList();
-			
+
 			List<Map<String, Object>> fldlist = this.getForeignKeyFieldList(constname, dbfklist);
 			logger.debug("fldlist.size()=" + fldlist.size());
 			if (flist.length != fldlist.size()) {
@@ -266,12 +266,12 @@ public class TableRelation {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * 関係を定義するテーブルのインスタンス。
 	 */
 	private Table table = null;
-	
+
 	/**
 	 * コンストラクタ。
 	 * @param table 関係を定義するテーブルのインスタンス。
@@ -299,8 +299,8 @@ public class TableRelation {
 	public List<ForeignKey> getForeignKeyList() {
 		return new ArrayList<ForeignKey>();
 	}
-	
-	
+
+
 	/**
 	 * テーブルの結合条件を取得します。
 	 * <pre>

@@ -89,7 +89,7 @@ public class Table  {
 		try {
 			Class<?> cls = Class.forName(classname);
 			if ((cls.getModifiers() & Modifier.PUBLIC) != 0 && (cls.getModifiers() & Modifier.ABSTRACT) == 0) {
-				Table tbl = (Table) cls.newInstance();
+				Table tbl = (Table) cls.getDeclaredConstructor().newInstance();
 				return tbl;
 			} else {
 				return null;
@@ -717,7 +717,7 @@ public class Table  {
 		List<Class<?>> list = finder.findClasses(pkgname, Index.class);
 		List<Index> ret = new ArrayList<Index>();
 		for (Class<?> c: list) {
-			Index index = (Index) c.newInstance();
+			Index index = (Index) c.getDeclaredConstructor().newInstance();
 			Table table = index.getTable();
 			if (this.getClass().getName().equals(table.getClass().getName())) {
 				ret.add(index);

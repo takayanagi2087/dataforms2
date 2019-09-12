@@ -122,7 +122,7 @@ public class MenuForm extends Form {
 			@SuppressWarnings("unchecked")
 			Class<? extends Page> clazz = (Class<? extends Page>) Class.forName(classname);
 			try {
-		    	Page page = clazz.newInstance();
+		    	Page page = clazz.getDeclaredConstructor().newInstance();
 		    	page.setRequest(this.getPage().getRequest());
 		    	if (page.isMenuItem()) {
 			    	if (page.isAuthenticated(new HashMap<String, Object>())) {

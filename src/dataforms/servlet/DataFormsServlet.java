@@ -517,7 +517,7 @@ public class DataFormsServlet extends HttpServlet {
 			try {
 				@SuppressWarnings("unchecked")
 				Class<? extends ServletInstanceBean> clazz = (Class<? extends ServletInstanceBean>) Class.forName(beanClass);
-				DataFormsServlet.servletInstanceBean = clazz.newInstance();
+				DataFormsServlet.servletInstanceBean = clazz.getDeclaredConstructor().newInstance();
 				DataFormsServlet.servletInstanceBean.init();
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
@@ -772,7 +772,7 @@ public class DataFormsServlet extends HttpServlet {
 	private Page newDataFormsInstance(final String classname) throws Exception {
 		@SuppressWarnings("unchecked")
 		Class<? extends Page> clazz = (Class<? extends Page>) Class.forName(classname);
-		Page dataforms = clazz.newInstance();
+		Page dataforms = clazz.getDeclaredConstructor().newInstance();
 		return dataforms;
 	}
 

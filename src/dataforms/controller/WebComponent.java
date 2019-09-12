@@ -244,7 +244,7 @@ public class WebComponent implements JDBCConnectableObject {
 			// MenuForm等はframeのパスにある。
 			WebComponent cmp = null;
 			try {
-				cmp = (WebComponent) cls.newInstance();
+				cmp = (WebComponent) cls.getDeclaredConstructor().newInstance();
 			} catch (Exception ex) {
 				log.error(ex.getMessage(), ex);
 				throw new ApplicationError(ex);
@@ -273,7 +273,7 @@ public class WebComponent implements JDBCConnectableObject {
 		return jsclass;
 	}
 
-	
+
 	/**
 	 * コンポーネント周辺に追加するタグを記録したHTMLファイル。
 	 */
@@ -304,7 +304,7 @@ public class WebComponent implements JDBCConnectableObject {
 		if (this.additionalHtml != null) {
 			log.debug("additionalHtml=" + this.additionalHtml);
 			String htmlpath = this.getAppropriatePath(this.additionalHtml, this.getPage().getRequest());
-			String htmltext = this.getWebResource(htmlpath); 
+			String htmltext = this.getWebResource(htmlpath);
 			if (htmltext != null) {
 				htmltext = this.getHtmlBody(htmltext);
 			}
@@ -326,7 +326,7 @@ public class WebComponent implements JDBCConnectableObject {
 	public Map<String, Object> getClassInfo() throws Exception {
 		return new HashMap<String, Object>();
 	}
-	
+
 	/**
 	 * 各オブジェクトのプロパティマップを作成します。。
 	 * <pre>
@@ -345,7 +345,7 @@ public class WebComponent implements JDBCConnectableObject {
 		String jspath = this.getScriptPath();
 		obj.put("jsPath", jspath);
 		obj.put("jsClass", this.getJsClass());
-		String additionalHtmlText = this.getAdditionalHtmlText(); 
+		String additionalHtmlText = this.getAdditionalHtmlText();
 		if (additionalHtmlText != null) {
 			obj.put("additionalHtmlText", additionalHtmlText);
 		}
@@ -619,7 +619,7 @@ public class WebComponent implements JDBCConnectableObject {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * 指定されたパスのWebリソースの更新日付を取得します。
 	 * @param path パス。
@@ -717,7 +717,7 @@ public class WebComponent implements JDBCConnectableObject {
     	return sb.toString();
     }
 
-	
+
 	/**
      * HTMLテキスト中のBodyの内容を取得します。
      * <pre>
@@ -750,7 +750,7 @@ public class WebComponent implements JDBCConnectableObject {
 		String text = new String(FileUtil.readInputStream(is), DataFormsServlet.getEncoding());
 		return text;
 	}
-	
+
 	/**
 	 * 言語に応じた適切なファイルパスを検索します。
 	 * <pre>
@@ -788,8 +788,8 @@ public class WebComponent implements JDBCConnectableObject {
     	}
    		return spath;
 	}
-	
-	
+
+
     /**
      * リクエストに応じた適切なファイルpathを取得します。
      * <pre>

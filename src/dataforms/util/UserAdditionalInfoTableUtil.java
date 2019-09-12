@@ -93,7 +93,7 @@ public class UserAdditionalInfoTableUtil {
 			Class<? extends Table> clazz = UserAdditionalInfoTableUtil.getUserAdditionalInfoTable();
 			if (clazz != null) {
 				flist = new FieldList();
-				Table table = clazz.newInstance();
+				Table table = clazz.getDeclaredConstructor().newInstance();
 				for (Field<?> f: table.getFieldList()) {
 					if (UserAdditionalInfoTableUtil.isExcludedField(f)) {
 						continue;
@@ -118,7 +118,7 @@ public class UserAdditionalInfoTableUtil {
 		Map<String, Object> ret = null;
 		Class<? extends Table> clazz = UserAdditionalInfoTableUtil.getUserAdditionalInfoTable();
 		if (clazz != null) {
-			Table table = clazz.newInstance();
+			Table table = clazz.getDeclaredConstructor().newInstance();
 			if (dao.tableExists(table.getTableName())) {
 				Query query = new Query();
 				query.setFieldList(table.getFieldList());
@@ -162,10 +162,10 @@ public class UserAdditionalInfoTableUtil {
 		if (clazz != null) {
 			Map<String, Object> ret = query(dao, data);
 			if (ret != null) {
-				Table table = clazz.newInstance();
+				Table table = clazz.getDeclaredConstructor().newInstance();
 				dao.executeUpdate(table, data);
 			} else {
-				Table table = clazz.newInstance();
+				Table table = clazz.getDeclaredConstructor().newInstance();
 				dao.executeInsert(table, data);
 			}
 		}
@@ -181,7 +181,7 @@ public class UserAdditionalInfoTableUtil {
 	public static void delete(final Dao dao, final Map<String, Object> data) throws Exception {
 		Class<? extends Table> clazz = UserAdditionalInfoTableUtil.getUserAdditionalInfoTable();
 		if (clazz != null) {
-			Table atable = clazz.newInstance();
+			Table atable = clazz.getDeclaredConstructor().newInstance();
 			dao.executeDelete(atable, data);
 		}
 	}

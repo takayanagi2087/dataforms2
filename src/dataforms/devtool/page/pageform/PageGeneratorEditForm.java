@@ -120,7 +120,7 @@ public class PageGeneratorEditForm extends EditForm {
 		String cls = (String) data.get("pageClassName");
 		String classname = pkg + "." + cls;
 		Class<?> clazz = Class.forName(classname);
-		Page p = (Page) clazz.newInstance();
+		Page p = (Page) clazz.getDeclaredConstructor().newInstance();
 		PageClassInfo pi = new PageClassInfo(p);
 		Class<? extends Table> tblcls = pi.getTableClass();
 		Class<? extends Dao> daocls = pi.getDaoClass();
@@ -256,7 +256,7 @@ public class PageGeneratorEditForm extends EditForm {
 		@SuppressWarnings("unchecked")
 		Class<? extends Table> tcls = (Class<? extends Table>) Class.forName(table);
 		String scn = tcls.getSimpleName();
-		Table tbl = tcls.newInstance();
+		Table tbl = tcls.getDeclaredConstructor().newInstance();
 		for (Field<?> f: tbl.getFieldList()) {
 			if (tbl.getPkFieldList().get(f.getId()) != null) {
 				continue;
@@ -311,7 +311,7 @@ public class PageGeneratorEditForm extends EditForm {
 		@SuppressWarnings("unchecked")
 		Class<? extends Table> tcls = (Class<? extends Table>) Class.forName(table);
 		String scn = tcls.getSimpleName();
-		Table tbl = tcls.newInstance();
+		Table tbl = tcls.getDeclaredConstructor().newInstance();
 		for (Field<?> f: tbl.getFieldList()) {
 			if (f.isHidden() || f instanceof DeleteFlagField) {
 				continue;
@@ -420,13 +420,13 @@ public class PageGeneratorEditForm extends EditForm {
 		String tableClassName = (String) data.get("tableClassName");
 		String daoClassName = (String) data.get("daoClassName");
 
-		String daoClassOverwriteMode = (String) data.get("daoClassOverwriteMode"); 
+		String daoClassOverwriteMode = (String) data.get("daoClassOverwriteMode");
 		String queryFormClassOverwriteMode = (String) data.get("queryFormClassOverwriteMode");
 		String queryResultFormClassOverwriteMode = (String) data.get("queryResultFormClassOverwriteMode");
 		String editFormClassOverwriteMode = (String) data.get("editFormClassOverwriteMode");
 		String pageClassOverwriteMode = (String) data.get("pageClassOverwriteMode");
 
-		
+
 		String queryFormClass = this.generateFormClass(data, "packageName", "queryFormClassName", "QueryForm.java.template", queryFormClassOverwriteMode);
 		String queryResultFormClass = this.generateFormClass(data, "packageName", "queryResultFormClassName", "QueryResultForm.java.template", queryResultFormClassOverwriteMode);
 		String editFormClass = this.generateFormClass(data, "packageName", "editFormClassName", "EditForm.java.template", editFormClassOverwriteMode);

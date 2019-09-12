@@ -21,12 +21,12 @@ import dataforms.validator.RequiredValidator;
  * 問い合わせフォームクラス。
  */
 public class QueryExecutorQueryForm extends QueryForm {
-	
+
 	/**
 	 * Log.
 	 */
 	private static Logger log = Logger.getLogger(QueryExecutorQueryForm.class);
-	
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -36,7 +36,7 @@ public class QueryExecutorQueryForm extends QueryForm {
 		this.addField(new QueryClassNameField("queryClassName")).setAutocomplete(true).setRelationDataAcquisition(true);
 		this.addField(new ClobField("sql")).addValidator(new RequiredValidator());
 	}
-	
+
 	@Override
 	public void init() throws Exception {
 		super.init();
@@ -45,7 +45,7 @@ public class QueryExecutorQueryForm extends QueryForm {
 			this.setFormData("sql", "select * from " + tableName);
 		}
 	}
-	
+
 	/**
 	 * 指定された問合せクラスのインスタンスを作成します。
 	 * @param param POSTされたパラメータ。
@@ -58,9 +58,9 @@ public class QueryExecutorQueryForm extends QueryForm {
 		log.debug("queryClass=" + packageName + "." + queryClassName);
 		@SuppressWarnings("unchecked")
 		Class<? extends Query> q = (Class<? extends Query>) Class.forName(packageName + "." + queryClassName);
-		return q.newInstance();
+		return q.getDeclaredConstructor().newInstance();
 	}
-	
+
 	/**
 	 * 指定された問合せクラスに対応したsqlを取得します。
 	 * @param param パラメータ。
@@ -75,7 +75,7 @@ public class QueryExecutorQueryForm extends QueryForm {
 		SqlGenerator gen = dao.getSqlGenerator();
 		String sql = gen.generateQuerySql(query);
 		Response resp = new JsonResponse(JsonResponse.SUCCESS, sql);
-		
+
 		this.methodStartLog(log, param);
 		return resp;
 	}

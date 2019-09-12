@@ -113,7 +113,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		log.debug("packageName=" + packageName + ",queryClassName=" + queryClassName);
 		@SuppressWarnings("unchecked")
 		Class<? extends Query> clazz = (Class<? extends Query>) Class.forName(packageName + "." + queryClassName);
-		Query q = clazz.newInstance();
+		Query q = clazz.getDeclaredConstructor().newInstance();
 		Map<String, Object> ret = new HashMap<String, Object>();
 		ret.put("javaSourcePath", DeveloperPage.getJavaSourcePath());
 		ret.put("packageName", packageName);
@@ -225,7 +225,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
 		@SuppressWarnings("unchecked")
 		Class<? extends Table> clazz = (Class<? extends Table>) Class.forName(tableClass);
-		Table table = clazz.newInstance();
+		Table table = clazz.getDeclaredConstructor().newInstance();
 		FieldList flist = table.getFieldList();
 		for (Field<?> f: flist) {
 			Map<String, Object> ent = new HashMap<String, Object>();
@@ -357,7 +357,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			String tcn = packageName + "." + className;
 			@SuppressWarnings("unchecked")
 			Class<? extends Table> tc = (Class<? extends Table>) Class.forName(tcn);
-			Table jt = tc.newInstance();
+			Table jt = tc.getDeclaredConstructor().newInstance();
 			jt.setAlias(alias);
 			ret.add(jt);
 		}
@@ -383,7 +383,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			aliasName = "m";
 		}
 		Class<? extends Table> clazz = (Class<? extends Table>) Class.forName(packageName + "." + mainTableClassName);
-		Table mainTable = clazz.newInstance();
+		Table mainTable = clazz.getDeclaredConstructor().newInstance();
 		mainTable.setAlias(aliasName);
 		list.add(mainTable);
 

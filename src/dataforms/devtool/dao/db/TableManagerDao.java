@@ -795,7 +795,7 @@ public class TableManagerDao extends Dao {
 /*			if (tcls.getConstructor() == null) {
 				continue;
 			}*/
-			Table table = tcls.newInstance();
+			Table table = tcls.getDeclaredConstructor().newInstance();
 			this.createForeignKey(table);
 		}
 	}
@@ -816,7 +816,7 @@ public class TableManagerDao extends Dao {
 /*			if (tcls.getConstructor() == null) {
 				continue;
 			}*/
-			Table table = tcls.newInstance();
+			Table table = tcls.getDeclaredConstructor().newInstance();
 			this.dropForeignKey(table);
 		}
 	}

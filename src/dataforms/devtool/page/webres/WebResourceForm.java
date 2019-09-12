@@ -41,7 +41,7 @@ import dataforms.validator.ValidationError;
 // TODO:validatorの生成の際attachメソッドの生成は不要。
 /**
  * Webリソース作成フォームクラス。
- * 
+ *
  */
 public class WebResourceForm extends Form {
 	/**
@@ -713,8 +713,8 @@ public class WebResourceForm extends Form {
 		 * カラム幅リスト。
 		 */
 		private List<Integer> columnWidthList = null;
-		
-		
+
+
 		/**
 		 * カラム幅リストを取得します。
 		 * @return カラム幅リスト。
@@ -1097,7 +1097,7 @@ public class WebResourceForm extends Form {
 	private String getDataformsHtml(final String className, final String sourcePath, final String outputFormHtml) throws Exception {
 		String src = this.getStringResourse("template/Page.html.template");
 		Class<?> pageClass = Class.forName(className);
-		DataForms page = (DataForms) pageClass.newInstance();
+		DataForms page = (DataForms) pageClass.getDeclaredConstructor().newInstance();
 		StringBuilder sb = new StringBuilder();
 		List<WebComponent> clist = page.getComponentList();
 		for (WebComponent c: clist) {
@@ -1154,7 +1154,7 @@ public class WebResourceForm extends Form {
 	 */
 	private void outputForms(final String className, final String sourcePath, final String forceOverwrite) throws Exception {
 		Class<?> pageClass = Class.forName(className);
-		DataForms page = (DataForms) pageClass.newInstance();
+		DataForms page = (DataForms) pageClass.getDeclaredConstructor().newInstance();
 		List<WebComponent> clist = page.getComponentList();
 		for (WebComponent c: clist) {
 			if (c instanceof Form) {
@@ -1246,7 +1246,7 @@ public class WebResourceForm extends Form {
 	 * @param data データ。
 	 * @return 出力されたファイル。
 	 * @throws Exception 例外。
-	 * 
+	 *
 	 */
 	private String generateJavascriptFile(final Map<String, Object> data) throws Exception {
 		String forceOverwrite = (String) data.get("forceOverwrite");

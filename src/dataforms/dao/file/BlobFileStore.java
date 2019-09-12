@@ -68,7 +68,7 @@ public class BlobFileStore extends FileStore {
 		File ret = File.createTempFile("upload", ".tmp", tempdir);
 		return ret;
 	}
-	
+
 	/**
 	 * 一時ファイルの残骸を削除する。
 	 */
@@ -151,7 +151,7 @@ public class BlobFileStore extends FileStore {
 		}
 		return file;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * <pre>
@@ -277,7 +277,7 @@ public class BlobFileStore extends FileStore {
 		}
 		return fobj;
 	}
-	
+
 	/**
 	 * ファイルストアからファイルの情報と内容を取得します(DB書き込み用)。
 	 * <pre>
@@ -326,7 +326,7 @@ public class BlobFileStore extends FileStore {
 		String tblclass = (String) param.get("table");
 		@SuppressWarnings("unchecked")
 		Class<? extends Table> cls = (Class<? extends Table>) Class.forName(tblclass);
-		Table table = cls.newInstance();
+		Table table = cls.getDeclaredConstructor().newInstance();
 		Map<String, Object> data = table.getPkFieldList().convertClientToServer(param);
 		FileObject fobj = null;
 		if (!StringUtil.isBlank(downloadingFile)) {
@@ -348,7 +348,7 @@ public class BlobFileStore extends FileStore {
 	public File getTempFile(final FileObject fobj) {
 		return fobj.getTempFile();
 	}
-	
+
 	@Override
 	public String getDownloadParameter(final FileField<?> field, final Map<String, Object> d) {
 		Map<String, Object> m = getDownloadInfoMap(field, d);
@@ -374,7 +374,7 @@ public class BlobFileStore extends FileStore {
 		}
 		return m;
 	}
-	
+
 	/**
 	 * シークサポートの有無を返します。
 	 * @return 常にfalseを返します。

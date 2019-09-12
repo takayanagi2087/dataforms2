@@ -211,7 +211,7 @@ public class WebResourceQueryResultForm extends QueryResultForm {
 
 		@SuppressWarnings("unchecked")
 		Class<? extends Page> cls = (Class<? extends Page>) Class.forName(packageName + "." + pageClassName);
-		Page p = cls.newInstance();
+		Page p = cls.getDeclaredConstructor().newInstance();
 		this.classNameSet = new HashSet<String>();
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		Map<String, Object> r = new HashMap<String, Object>();

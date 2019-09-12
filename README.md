@@ -51,13 +51,8 @@ Javaのクラスライブラリ、Javascriptのクラスライブラリ、開発
 ドキュメントで作成するSamplePageはログインしないと表示されないページですが、デモページではその制限を外しています。
 
 ## Requirement
-主に、Eclipse4.5/4.6 + Java8 + Tomcat8/9 + Apache Derby,PostgreSQLでテストしています。
+主に、Eclipse201906(4.12) + Java11 + Tomcat9 + Apache Derby,PostgreSQLでテストしています。
 Servlet 3.0に対応したアプリケーションサーバで動作するはずです。
-最近評価していませんが、以下のアプリケーションサーバで一度動作させています。
-
-* glassfish-4.1
-* wildfly-8.2.1.Final
-* Oracle WebLogic Server 12.1.3.0
 
 対応しているデータベースサーバは、以下の通りです。(バージョンは実績のあるバージョンを記載しています。)
 

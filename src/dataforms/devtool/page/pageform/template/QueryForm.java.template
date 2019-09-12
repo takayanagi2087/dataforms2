@@ -1,0 +1,19 @@
+package ${packageName};
+
+import dataforms.controller.QueryForm;
+import ${tableClassFullName};
+${fieldImportList}
+
+
+/**
+ * 問い合わせフォームクラス。
+ */
+public class ${queryFormClassName} extends QueryForm {
+	/**
+	 * コンストラクタ。
+	 */
+	public ${queryFormClassName}() {
+		${tableClassName} table = new ${tableClassName}();
+${queryFormFieldList}
+	}
+}

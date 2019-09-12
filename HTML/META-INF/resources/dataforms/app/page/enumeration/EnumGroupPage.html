@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="mainDiv">
+			<form id="queryForm">
+				<div class="formHeader">Query contition</div>
+				<table class="responsive">
+					<tbody>
+						<tr>
+							<th>Enumeration group code</th>
+							<td><input type="text" id="enumGroupCode" /></td>
+						</tr>
+					</tbody>
+				</table>
+				<input type="submit" id="queryButton" value="Query">
+				<input type="button" id="resetButton" value="reset">&nbsp;
+				<input type="button" id="newButton" value="New">&nbsp;
+				<input type="button" id="exportInitDataButton" value="Export as initialization data">
+			</form>
+			<form id="queryResultForm">
+				<div class="formHeader">Query result</div>
+				<input type="hidden" id="enumGroupCode" />
+				<table class="responsive">
+					<tbody>
+					</tbody>
+				</table>
+				<div class="hScrollDiv">
+					<table id="queryResult">
+						<thead>
+							<tr>
+								<th>
+									No.
+								</th>
+								<th>
+									Enumeration group code
+								</th>
+								<th>
+									Enumeration count
+								</th>
+								<th>
+									Operation
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<span id="queryResult[0].rowNo"></span>
+								</td>
+								<td>
+									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].enumGroupCode"></span></a>
+								</td>
+								<td>
+									<span id="queryResult[0].codeCount"></span>
+								</td>
+								<td>
+									<input type="button" id="queryResult[0].viewButton" value="View">
+									<input type="button" id="queryResult[0].deleteButton" value="Delete">								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</form>
+			<form id="editForm">
+				<div class="formHeader"><span id="editFormTitle"></span></div>
+				<input type="hidden" id="saveMode" />
+				<table class="responsive">
+					<tbody>
+						<tr>
+							<th>Enumeration group code</th>
+							<td><input type="text" id="enumGroupCode" /></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="hScrollDiv">
+					<table id="codeList" class="editableTable">
+						<thead>
+							<tr>
+								<th class="buttonColumn" nowrap>
+
+								</th>
+								<th class="buttonColumn" nowrap>
+
+								</th>
+								<th nowrap>
+									No.
+								</th>
+								<th>
+									Enumeration code
+								</th>
+								<th>
+									Enumeration name
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="buttonColumn">
+									<input type="button" id="codeList[0].addButton" value="+"/>
+								</td>
+								<td class="buttonColumn">
+									<input type="button" id="codeList[0].deleteButton" value="-"/>
+								</td>
+								<td style="text-align: right;">
+									<span id="codeList[0].no"></span>
+								</td>
+								<td>
+									<input type="hidden" id="codeList[0].enumGroupCode" />
+									<input type="hidden" id="codeList[0].sortOrder" />
+									<input type="hidden" id="codeList[0].createUserId" />
+									<input type="hidden" id="codeList[0].createTimestamp" />
+									<input type="hidden" id="codeList[0].updateUserId" />
+									<input type="hidden" id="codeList[0].updateTimestamp" />
+									<input type="text" id="codeList[0].enumTypeCode" />
+								</td>
+								<td>
+									<input type="text" id="codeList[0].enumTypeName" />
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th class="buttonColumn">
+									<input type="button" id="codeList.addButton" value="+"/>
+								</th>
+								<th colspan="4">
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<input type="button" id="confirmButton" value="Confirm"/>
+				<input type="button" id="saveButton" value="Save"/>
+				<input type="button" id="resetButton" value="Reset"/>
+				<input type="button" id="deleteButton" value="Delete"/>
+				<input type="button" id="backButton" value="Back"/>
+			</form>
+
+		</div>
+	</body>
+</html>

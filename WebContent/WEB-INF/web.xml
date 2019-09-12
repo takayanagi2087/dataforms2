@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>dataforms</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	<!--
+	JNDIデータソースのlookupにはjndi-prefixとdata-sourceを結合した文字列で行います。
+	WebLogicで実行する場合はjndi-prefixには空白文字を指定してください。
+	 -->
+	<!-- JNDIデータソースの前につける文字列 -->
+	<context-param>
+		<param-name>jndi-prefix</param-name>
+		<param-value>java:/comp/env/</param-value>
+	</context-param>
+	<!-- 使用するJNDIデータソースを指定する -->
+	<context-param>
+		<param-name>data-source</param-name>
+		<param-value>jdbc/dfdb</param-value>
+	</context-param>
+	<!--
+		メールセッション名。
+		メール送信機能を使わない場合は以下の設定をコメントアウトしてください。
+	 -->
+	<context-param>
+		<param-name>mail-session</param-name>
+		<param-value>mail/Session</param-value>
+	</context-param>
+	<!-- メール送信元アドレス。 -->
+	<context-param>
+		<param-name>mail-from</param-name>
+		<param-value>hoge@hogehoge.jp</param-value>
+	</context-param>
+
+	<!--
+	このライブラリは、サーバ側の処理でdataforms.jar中のWEBリソース(html,css,jsファイル)を
+	アクセスしています。dataforms.jarのMETA-INF/resources中のファイルはhttp経由で
+	取得しているため、このパラメータで指定したURLを使用してアクセスします。
+	以下のURLが指定されていない場合、リクエストされたURLをそのまま使用してアクセスします。
+	そのためSSLを使用した場合、サーバー側のWEBリソースアクセスもSSL経由になってしまい、
+	JavaのHTTPClientのセキュリティ設定を適切に行わないと、セキュリティーエラーになってしまいます。
+	またHTTPClientを適切に設定をしても、SSL経由のため効率は良くありません。
+	SSLを使用する場合はアプリケーションサーバのhttpポートを指定したURLを指定してください。
+	 -->
+	<context-param>
+		<param-name>web-resource-url</param-name>
+		<param-value>http://localhost:8080</param-value>
+	</context-param>
+	<!-- 使用する文字コードを指定します。-->
+	<!--  context-param>
+		<param-name>encoding</param-name>
+		<param-value>utf-8</param-value>
+	</context-param-->
+
+	<!-- debugログに出力するjsonを整形するかどうかを指定します。-->
+	<context-param>
+		<param-name>json-debug</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!-- 一時ファイルを置くパスを指定します。 -->
+	<!--  context-param>
+		<param-name>temp-dir</param-name>
+		<param-value>/tmp</param-value>
+	</context-param -->
+
+	<!-- 開発ツールでデータをエクスポート/インポートする際に使用するパスを指定します。 -->
+	<!--  context-param>
+		<param-name>export-import-dir</param-name>
+		<param-value>/tmp/data</param-value>
+	</context-param -->
+	<!-- jqueryなどの標準ライブラリなどを読み込むhtmlを指定します。 -->
+	<!-- context-param>
+		<param-name>css-and-scripts</param-name>
+		<param-value>/frame/jslib.html</param-value>
+	</context-param-->
+	<!-- エラーページのパスを指定します。 -->
+	<!--  context-param>
+		<param-name>error-page</param-name>
+		<param-value>/dataforms/app/errorpage/ErrorPage</param-value>
+	</context-param -->
+	<!--
+		 クライアントバリデーションの有無をしています。
+	 -->
+	<!-- context-param>
+		<param-name>client-validation</param-name>
+		<param-value>true</param-value>
+	</context-param-->
+	<!--
+		 クライアントログレベルを指定します。
+		 javascriptでのコンソール出力はconsoleではなくloggerを使用してください。
+		 loggerは基本的にconsoleをコピーしたものですが、以下の設定に応じて、
+		 log,info,warn,errorメソットが何もしないメソッドになります。
+	 -->
+	<context-param>
+		<param-name>client-log-level</param-name>
+		<param-value>debug</param-value>
+		<!-- param-value>debug</param-value -->
+		<!-- param-value>info</param-value -->
+		<!-- param-value>warn</param-value -->
+		<!-- param-value>error</param-value -->
+		<!-- param-value>none</param-value -->
+	</context-param>
+	<!-- アップロードデータを保存するフォルダを指定します。 -->
+	<!-- context-param>
+		<param-name>upload-data-folder</param-name>
+		<param-value>/uploadData</param-value>
+	</context-param-->
+	<!-- サポートする言語コードを指定します。
+		default以外の言語コードを","区切りで指定します。
+		EnumOptionNameTable等、言語ごとに名称を登録するテーブルで使用します。
+	-->
+	<!--  context-param>
+		<param-name>support-language</param-name>
+		<param-value>ja,xx,yy</param-value>
+	</context-param-->
+
+	<!-- ブラウザの言語設定を無視し、言語を固定する場合は以下の設定を有効にします。	-->
+	<!--context-param>
+		<param-name>fixed-language</param-name>
+		<param-value>en</param-value>
+	</context-param-->
+	<!--
+		CryptUtilで使用する暗号用デフォルトパスワードを指定します。
+		UserInfoTableのパスワードの暗号化で使用するので、 ユーザ登録後変更するとログインできなくなります。
+	-->
+	<!-- context-param>
+		<param-name>crypt-password</param-name>
+		<param-value>xxx_password_xxx</param-value>
+	</context-param-->
+	<!--
+		QueryStringを暗号化する場合使用するパスワードです。
+		BLOBデータ等のダウンロードパラメータの暗号化に使用しています。
+		運用時に変更しても問題ありません。
+	-->
+	<context-param>
+		<param-name>query-string-crypt-password</param-name>
+		<param-value>yyy_password_yyy</param-value>
+	</context-param>
+	<!--
+		CSRF対策を行う場合以下のパスワードを有効にしてください。
+		指定されたパスワードでセッションIDを暗号化し、CSRFトークンとしてブラウザに送信します。
+	-->
+	<context-param>
+		<param-name>csrf-sessionid-crypt-password</param-name>
+		<param-value>CSRFpassword</param-value>
+	</context-param>
+	<!--
+		ブラウザがクッキーを許可していることを確認する場合、trueを指定してください。
+	-->
+	<context-param>
+		<param-name>cookie-check</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<!-- クライアントに送信して使用するメッセージリソースの名称を指定します。 -->
+	<!-- context-param>
+		<param-name>client-messages</param-name>
+		<param-value>/frame/messages/ClientMessages</param-value>
+	</context-param-->
+	<!-- サーバ側で使用するメッセージリソースの名称を指定します。 -->
+	<!-- context-param>
+		<param-name>messages</param-name>
+		<param-value>/frame/messages/Messages</param-value>
+	</context-param-->
+	<!-- クライアントに送信して使用するメッセージリソースの名称を指定します。 -->
+	<!-- context-param>
+		<param-name>app-client-messages</param-name>
+		<param-value>/frame/messages/AppClientMessages</param-value>
+	</context-param-->
+	<!-- サーバ側で使用するメッセージリソースの名称を指定します。 -->
+	<!-- context-param>
+		<param-name>app-messages</param-name>
+		<param-value>/frame/messages/AppMessages</param-value>
+	</context-param-->
+	<!--
+		メッセージリソースのブラウザ送信設定
+		CLIENT_ONLY:(default)
+			client-message,app-client-messageとXXXPage.propertiesのみ送信します。
+			message, app-messageはJavascriptで使用不可となります。
+		ALL:
+			ページに関する全メッセージリソースをクライアントに送信します。
+			Javascriptで全てのメッセージを使えますが、メッセージを全て送信するので
+			初期転送のサイズが大きくなります。
+		SEND_AT_ANY_TIME:非推奨(@deprecated )
+			旧バージョンとの互換性を維持するためのモードです。
+			初期化時にclient-message,app-client-messageとXXXPage.propertiesのみ送信します。
+			message, app-messageは必要な時に送信されますが、その通信は同期通信を使用するため
+			将来的に使用できなくなる可能性があります。
+	-->
+	<context-param>
+		<param-name>client-message-transfer</param-name>
+		<param-value>CLIENT_ONLY</param-value>
+	</context-param>
+	<!-- フレームレイアウトのパスを指定します。 -->
+	<context-param>
+		<param-name>frame-path</param-name>
+		<param-value>/frame/default</param-value>
+	</context-param>
+
+	<!--
+		ページのオーバーライドを指定します。
+		既存ページを組み替える場合、新たにページクラスを作成し
+		既存ページクラスを置き換える設定を以下に記述します。
+		またdataforms.app.page.base.HiddenPageに置き換えれば
+		メニューにも表示されず、アクセスできないページになります。
+		つまり既存ページを隠すことができます。
+	 -->
+	<!-- パスワード変更ページを隠す場合は以下を有効にしてください。 -->
+	<!--
+	<context-param>
+		<param-name>page-override:dataforms.app.page.user.ChangePasswordPage</param-name>
+		<param-value>dataforms.app.page.base.HiddenPage</param-value>
+	</context-param>
+	 -->
+	<!-- ユーザ情報変更ページを隠す場合は以下を有効にしてください。 -->
+	<!--
+	<context-param>
+		<param-name>page-override:dataforms.app.page.user.UserSelfEditPage</param-name>
+		<param-value>dataforms.app.page.base.HiddenPage</param-value>
+	</context-param>
+	-->
+	<!-- ユーザ登録ページを隠す場合は以下を有効にしてください。 -->
+	<!--
+	<context-param>
+		<param-name>page-override:dataforms.app.page.user.UserRegistPage</param-name>
+		<param-value>dataforms.app.page.base.HiddenPage</param-value>
+	</context-param>
+	-->
+	<!-- ユーザ有効化ページを隠す場合は以下を有効にしてください。 -->
+	<!--
+	<context-param>
+		<param-name>page-override:dataforms.app.page.user.UserEnablePage</param-name>
+		<param-value>dataforms.app.page.base.HiddenPage</param-value>
+	</context-param>
+	 -->
+	<!--
+		ユーザ登録ページのパス。
+	 -->
+	<context-param>
+		<param-name>user-regist-page</param-name>
+		<param-value>/dataforms/app/page/user/UserRegistPage</param-value>
+	</context-param>
+	<!--
+		外部ユーザ登録ページ設定情報。
+	 -->
+	<!--  context-param>
+		<param-name>user-regist-page-config</param-name>
+		<param-value>
+			{
+				"loginIdIsMail": true, // MailをログインIDとする。
+				"mailCheck": true, // メールアドレスのチェックを行う。
+				"sendUserEnableMail": true // ユーザ有効化ページのURLをメールする。
+			}
+		</param-value>
+	</context-param -->
+	<!--
+		外部ユーザ有効化ページのパス。
+	 -->
+	<context-param>
+		<param-name>user-enable-page</param-name>
+		<param-value>/dataforms/app/page/user/UserEnablePage</param-value>
+	</context-param>
+	<!--
+		ユーザ登録時のメール送信確認フラグ。
+	 -->
+	<context-param>
+		<param-name>send-user-enable-mail</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<!--
+		パスワードリセットメール送信ページのパス。
+		この設定を有効にすると、ログイン画面のパスワードリセットリンクが表示されます。
+	 -->
+	<context-param>
+		<param-name>password-reset-mail-page</param-name>
+		<param-value>/dataforms/app/page/user/PasswordResetMailPage</param-value>
+	</context-param>
+	<!--
+		パスワードリセットページのパス。
+	 -->
+	<context-param>
+		<param-name>password-reset-page</param-name>
+		<param-value>/dataforms/app/page/user/PasswordResetPage</param-value>
+	</context-param>
+	<!--
+		開発ツールの無効フラグを設定します。
+		システムリリース時には無効にしたほうが安全です。
+	-->
+	<context-param>
+		<param-name>disable-developer-tools</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<!--
+		画面の解像度に応じたcssファイルを指定します。
+		この設定で以下のようなHTMLを生成します。
+
+		<link type="text/css" href="/dataforms/frame/default/FrameSP.css" rel="stylesheet" media="screen and (max-width: 767px)"/>
+		<link type="text/css" href="/dataforms/frame/default/FramePC.css" rel="stylesheet" media="screen and (min-width: 1025px)"/>
+		<link type="text/css" href="/dataforms/frame/default/FrameTB.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 1024px)"/>
+	-->
+	<context-param>
+		<param-name>css-media:FramePC.css</param-name>
+		<param-value>screen and (min-width: 1025px)</param-value>
+	</context-param>
+	<context-param>
+		<param-name>css-media:FrameTB.css</param-name>
+		<param-value>screen and (min-width: 768px) and (max-width: 1024px)</param-value>
+	</context-param>
+	<context-param>
+		<param-name>css-media:FrameSP.css</param-name>
+		<param-value>screen and (max-width: 767px)</param-value>
+	</context-param>
+	<!--
+		ブラウザの戻るボタンの動作を設定します。
+		disabledを指定した場合、戻るボタンが機能しなくなります。
+	 -->
+	<context-param>
+		<param-name>browser-back-button</param-name>
+		<param-value>enabled</param-value>
+		<!--
+		<param-value>enabled</param-value>
+		<param-value>disabled</param-value>
+		-->
+	</context-param>
+	<!--
+		自動ログインの有効/無効を設定します。
+	 -->
+	<context-param>
+		<param-name>auto-login</param-name>
+		<param-value>enabled</param-value>
+		<!--
+		<param-value>enabled</param-value>
+		<param-value>disabled</param-value>
+		-->
+	</context-param>
+	<!--
+		自動ログイン関連クッキーのSecure設定。
+		httpsを使用する場合trueに設定してください。
+	 -->
+	<context-param>
+		<param-name>secure-auto-login-cookie</param-name>
+		<param-value>false</param-value>
+		<!--
+		<param-value>true</param-value>
+		<param-value>false</param-value>
+		-->
+	</context-param>
+	<!--
+		トップページを指定します。
+		基本的にTopPage.dfを指定しておきます。
+		このページはシステムやユーザの状態に応じて、ログイン画面やサイトマップに遷移します。
+	 -->
+	<context-param>
+		<param-name>top-page</param-name>
+		<param-value>/dataforms/app/page/top/TopPage.df</param-value>
+	</context-param>
+	<!-- 開発ツールのjavaソース出力フォルダを指定します。 -->
+	<context-param>
+		<param-name>java-source-path</param-name>
+		<param-value>/eclipse/workspace/dataforms/src</param-value>
+	</context-param>
+	<!-- 開発ツールのhtml,javascript等のWEBリソース出力フォルダを指定します。 -->
+	<context-param>
+		<param-name>web-source-path</param-name>
+		<param-value>/eclipse/workspace/dataforms/WebContent</param-value>
+	</context-param>
+	<!--
+		データベース初期化時に作成するユーザのレベルを指定します。
+	 -->
+	<context-param>
+		<param-name>initialize-user-level</param-name>
+		<param-value>developer</param-value>
+		<!--
+		<param-value>developer</param-value>
+		<param-value>admin</param-value>
+		-->
+	</context-param>
+	<!--
+		データベースの作成時に、初期化するパッケージリストを指定します。
+		パッケージ名は,区切りで複数設定することができます。
+		データベースを作成するときに、このパッケージリストを参照し、このパッケージ中のテーブルクラスに対応するテーブルを作成します。
+		なおdataforms.appパッケージは必ず指定してください。
+	-->
+	<context-param>
+		<param-name>initialize-package-list</param-name>
+		<param-value>
+			dataforms.app
+			,dataforms.debug
+		</param-value>
+	</context-param>
+	<!--
+		DataFormsServlet#init,destoryで何らかの処理が必要な場合、ServletInstanceBeanから派生したクラスを作成し、そのクラスを設定してください。
+	 -->
+	 <!--
+	<context-param>
+		<param-name>servlet-instance-bean</param-name>
+		<param-value>
+			dataforms.servlet.ServletInstanceBean
+		</param-value>
+	</context-param>
+	-->
+	<!--
+		html5のvideo,audioタグ空の部分リクエストは大抵 "Range:bytes=0-"のように転送開始位置のみが指定されてきます。
+		Chromeはブラウザは適切なサイズに区切って転送しないと、シーク機能が利用できません。
+		しかしFirefoxの場合、先頭のブロックのみを再生したところで止まってしまうので、指定された位置から最後まで転送するように
+		しないとうまく動作しないようです。
+	 -->
+	<context-param>
+		<param-name>streaming-block-size</param-name>
+		<param-value>
+			[
+				{"uaPattern": ".*Firefox.*", "blockSize": -1},
+				{"uaPattern": ".+", "blockSize": 16777216}
+			]
+		</param-value>
+	</context-param>
+	<!--
+		FileFieldの中に保存されたファイルをダウンロードする際に出力するcontent-typeを設定します。
+	 -->
+	<context-param>
+		<param-name>content-type-list</param-name>
+		<param-value>
+			[
+				{"fnPattern": "(?i).*\\.txt$", "contentType": "text/plain"},
+				{"fnPattern": "(?i).*\\.html$", "contentType": "text/html"},
+				{"fnPattern": "(?i).*\\.htm$", "contentType": "text/html"},
+				{"fnPattern": "(?i).*\\.xhtml$", "contentType": "text/xhtml+xml"},
+				{"fnPattern": "(?i).*\\.rss$", "contentType": "application/rss+xml"},
+
+				{"fnPattern": "(?i).*\\.zip$", "contentType": "application/zip"},
+				{"fnPattern": "(?i).*\\.pdf$", "contentType": "application/pdf"},
+				{"fnPattern": "(?i).*\\.xlsx$", "contentType": "application/vnd.ms-excel"},
+
+				{"fnPattern": "(?i).*\\.png$", "contentType": "image/png"},
+				{"fnPattern": "(?i).*\\.jpg$", "contentType": "image/jpeg"},
+				{"fnPattern": "(?i).*\\.jpeg$", "contentType": "image/jpeg"},
+				{"fnPattern": "(?i).*\\.gif$", "contentType": "image/gif"},
+				{"fnPattern": "(?i).*\\.svg$", "contentType": "image/svg+xml"},
+
+				{"fnPattern": "(?i).*\\.swf$", "contentType": "application/x-shockwave-flash"},
+				{"fnPattern": "(?i).*\\.mpg$", "contentType": "video/mpeg"},
+				{"fnPattern": "(?i).*\\.mpeg$", "contentType": "video/mpeg"},
+				{"fnPattern": "(?i).*\\.mp4$", "contentType": "video/mp4"},
+				{"fnPattern": "(?i).*\\.mov$", "contentType": "video/quicktime"},
+				{"fnPattern": "(?i).*\\.qt$", "contentType": "video/quicktime"},
+				{"fnPattern": "(?i).*\\.mov$", "contentType": "video/x-msvideo"},
+
+				{"fnPattern": "(?i).*\\.mp3$", "contentType": "audio/mpeg"},
+				{"fnPattern": "(?i).*\\.wav$", "contentType": "audio/wav"},
+
+				{"fnPattern": ".+", "contentType": "application/octet-stream"}
+			]
+		</param-value>
+	</context-param>
+	<!-- バックアップファイル名 -->
+	<context-param>
+		<param-name>backup-file-name</param-name>
+		<param-value>backup</param-value>
+	</context-param>
+	<!-- apache-fopの設定ファイルのパス -->
+	<context-param>
+		<param-name>apache-fop-config</param-name>
+		<param-value>/WEB-INF/apachefop/fop.xconf</param-value>
+	</context-param>
+	<!--
+		メニューの開閉設定
+		trueを設定すると複数のメニューを開いた状態にすることができ、
+		falseを設定すると、開いたメニュー以外は自動的に閉じるようになります。
+	 -->
+	<context-param>
+		<param-name>multi-open-menu</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<!--
+		ユーザの追加情報を記録するテーブルクラス。
+		UserIdFieldクラスが主キーとなるテーブルクラスを指定します。
+		このクラスを指定するとUserEditForm.java,UserSelfEditForm.java,
+		UserRegistForm.javaに指定されたテーブルのフィールドが配置されます。
+		UserEditForm.html,UserSelfEditPage.html,UserRegistPage.htmlを
+		jarファイルからプロジェクトにエクスポートし、フィールドを追加
+		することにより追加情報を入力することが可能になります。
+	 -->
+	<!--
+	<context-param>
+		<param-name>user-additional-info-table</param-name>
+		<param-value>
+			dataforms.debug.dao.UserAdditionalInfoTable
+		</param-value>
+	</context-param>
+	-->
+	<!--
+		HTML5のキャッシュ・マニフェストファイルのパスを指定します。
+	 -->
+	<!--
+	<context-param>
+		<param-name>appcache-file</param-name>
+		<param-value>/frame/dataforms.appcache</param-value>
+	</context-param>
+	-->
+	<!-- セッションタイムアウト -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+</web-app>

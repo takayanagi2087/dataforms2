@@ -54,26 +54,14 @@ WebComponent.prototype.getParentDataForms = function() {
  * @returns {Object} QueryStringを展開したオブジェクト。
  */
 WebComponent.prototype.getQueryString = function() {
-	var vars = new Object;
-	var temp = window.location.search.substring(1).split('&');
-	for(var i = 0; i <temp.length; i++) {
-		var params = temp[i].split('=');
-		if (params[1] != null) {
-			var v = params[1].replace(/\+/g, "%20");
-			vars[params[0]] = decodeURIComponent(v);
-		} else {
-			var v = params[1];
-			vars[params[0]] = decodeURIComponent(v);
-		}
-	}
-	return vars;
+	return QueryStringUtil.parse(window.location.search);
 };
 
 /**
  * 同期サーバメソッドを取得します。
  * @param {String} method メソッド名。
  * @returns {SyncServerMethod} 同期サーバメソッド。
- * @deprecated 
+ * @deprecated
  */
 WebComponent.prototype.getSyncServerMethod = function(method) {
 //	return new SyncServerMethod(this.id + "." + method);

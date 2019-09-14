@@ -107,6 +107,8 @@ AllTypeEditForm.prototype.getValueTest = function() {
 	logger.log("NumberUtil.delComma('123,456,789')=" + NumberUtil.delComma("123,456,789"));
 	logger.log("NumberUtil.parse(123,456,789)=" + NumberUtil.parse("123,456,789"));
 
+	logger.log("this.getQueryString()=" + JSON.stringify(this.getQueryString()));
+	logger.log("QueryStringUtil.parse()=" + JSON.stringify(QueryStringUtil.parse(window.location.search)));
 	this.find("#attachFileTable thead tr").find("th").each(function() {
 		logger.dir(this);
 	});

@@ -103,6 +103,9 @@ AllTypeEditForm.prototype.getValueTest = function() {
 	let fmt = new SimpleDateFormat("yyyy/MM/dd");
 	logger.log("format=" + fmt.format(new Date()));
 	logger.log("parse=" + fmt.parse("2019/09/04"));
+	logger.log("NumberUtil.addComma(123456789)=" + NumberUtil.addComma(123456789));
+	logger.log("NumberUtil.delComma('123,456,789')=" + NumberUtil.delComma("123,456,789"));
+	logger.log("NumberUtil.parse(123,456,789)=" + NumberUtil.parse("123,456,789"));
 
 	this.find("#attachFileTable thead tr").find("th").each(function() {
 		logger.dir(this);

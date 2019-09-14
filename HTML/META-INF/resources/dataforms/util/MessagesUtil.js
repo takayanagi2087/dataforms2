@@ -17,7 +17,7 @@ class MessagesUtil {
 	 * @returns メッセージマップ。
 	 */
 	static get messageMap() {
-		return window._messageMap;
+		return window._df_messageMap;
 	}
 
 	/**
@@ -25,7 +25,7 @@ class MessagesUtil {
 	 * @param {Object} map メッセージマップ。
 	 */
 	static set messageMap(map) {
-		window._messageMap = map;
+		window._df_messageMap = map;
 	}
 
 	/**

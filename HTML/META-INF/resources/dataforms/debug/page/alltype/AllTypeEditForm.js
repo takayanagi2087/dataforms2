@@ -98,6 +98,11 @@ AllTypeEditForm.prototype.getValueTest = function() {
 
 //	alert(text);
 	logger.log(text);*/
+	logger.log("StringUtil.fullToHalf=" + StringUtil.fullToHalf("アイウエオａｂｃｄｅｆ１２３４５６"));
+	logger.log("StringUtil.halfToFull=" + StringUtil.halfToFull(StringUtil.fullToHalf("アイウエオａｂｃｄｅｆ１２３４５６")));
+	let fmt = new SimpleDateFormat("yyyy/MM/dd");
+	logger.log("format=" + fmt.format(new Date()));
+	logger.log("parse=" + fmt.parse("2019/09/04"));
 
 	this.find("#attachFileTable thead tr").find("th").each(function() {
 		logger.dir(this);

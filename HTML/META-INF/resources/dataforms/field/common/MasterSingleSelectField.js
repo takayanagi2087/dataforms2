@@ -7,13 +7,13 @@
  *
  * @extends SingleSelectField
  */
-MasterSingleSelectField = createSubclass("MasterSingleSelectField", {}, "SingleSelectField");
-
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-MasterSingleSelectField.prototype.attach = function() {
-	SingleSelectField.prototype.attach.call(this);
-};
+//MasterSingleSelectField = createSubclass("MasterSingleSelectField", {}, "SingleSelectField");
+class MasterSingleSelectField extends SingleSelectField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}
 

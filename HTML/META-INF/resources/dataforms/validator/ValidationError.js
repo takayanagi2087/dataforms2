@@ -5,10 +5,16 @@
 /**
  * @class ValidationError.
  * バリデーションエラー情報クラス.
- * @param {String} fid フィールドID.
- * @param {String} msg メッセージ.
  */
-function ValidationError(fid, msg) {
-	this.fieldId = fid;
-	this.message = msg;
-};
+class ValidationError {
+	/**
+	 * コンストラクタ。
+	 * @param {String} fid フィールドID.
+	 * @param {String} msg メッセージ.
+	 */
+	constructor(fid, msg) {
+		this.fieldId = fid;
+		this.message = msg;
+	}
+}
+

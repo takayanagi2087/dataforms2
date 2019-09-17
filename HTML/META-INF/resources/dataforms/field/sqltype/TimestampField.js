@@ -10,18 +10,20 @@
  * </pre>
  * @extends DateTimeField
  */
-TimestampField = createSubclass("TimestampField", {}, "DateTimeField");
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-TimestampField.prototype.attach = function() {
-	DateTimeField.prototype.attach.call(this);
-	var comp = this.get();
-	if (!comp.prop("readonly")) {
-		var displayFormat = MessagesUtil.getMessage("format.timestampfield");
-		var editFormat = MessagesUtil.getMessage("editformat.timestampfield");
-		this.setFormat(displayFormat, editFormat);
+//TimestampField = createSubclass("TimestampField", {}, "DateTimeField");
+class TimestampField extends DateTimeField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+		var comp = this.get();
+		if (!comp.prop("readonly")) {
+			var displayFormat = MessagesUtil.getMessage("format.timestampfield");
+			var editFormat = MessagesUtil.getMessage("editformat.timestampfield");
+			this.setFormat(displayFormat, editFormat);
+		}
+		this.backupStyle();
 	}
-	this.backupStyle();
-};
+}
+

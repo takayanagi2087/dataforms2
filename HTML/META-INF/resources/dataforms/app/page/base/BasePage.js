@@ -10,4 +10,13 @@
  * </pre>
  * @extends Page
  */
-BasePage = createSubclass("BasePage", {}, "Page");
+//BasePage = createSubclass("BasePage", {}, "Page");
+
+class BasePage extends Page {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}

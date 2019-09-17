@@ -7,13 +7,13 @@
  *
  * @extends MultiSelectField
  */
-MasterMultiSelectField = createSubclass("MasterMultiSelectField", {}, "MultiSelectField");
-
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-MasterMultiSelectField.prototype.attach = function() {
-	MultiSelectField.prototype.attach.call(this);
-};
+//MasterMultiSelectField = createSubclass("MasterMultiSelectField", {}, "MultiSelectField");
+class MasterMultiSelectField extends MultiSelectField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		this.attach();
+	}
+}
 

@@ -7,13 +7,14 @@
  *
  * @extends SingleSelectField
  */
-SmallintSingleSelectField = createSubclass("SmallintSingleSelectField", {}, "SingleSelectField");
+// SmallintSingleSelectField = createSubclass("SmallintSingleSelectField", {}, "SingleSelectField");
+class SmallintSingleSelectField extends SingleSelectField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}
 
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-SmallintSingleSelectField.prototype.attach = function() {
-	SingleSelectField.prototype.attach.call(this);
-};
 

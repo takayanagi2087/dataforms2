@@ -7,5 +7,7 @@
  * ファイルアップロードフィールドクラス。
  * @extends ImageField
  */
-FolderStoreImageField = createSubclass("FolderStoreImageField", {}, "ImageField");
+// FolderStoreImageField = createSubclass("FolderStoreImageField", {}, "ImageField");
+class FolderStoreImageField extends ImageField {
 
+}

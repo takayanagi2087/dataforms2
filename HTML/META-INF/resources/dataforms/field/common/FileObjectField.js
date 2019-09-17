@@ -7,5 +7,7 @@
  * ファイルアップロードフィールドクラス。
  * @extends FileField
  */
-FileObjectField = createSubclass("FileObjectField", {}, "FileField");
+//FileObjectField = createSubclass("FileObjectField", {}, "FileField");
+class FileObjectField extends FileField {
 
+}

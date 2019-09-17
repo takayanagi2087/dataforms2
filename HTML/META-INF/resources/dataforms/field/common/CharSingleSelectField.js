@@ -7,13 +7,14 @@
  *
  * @extends SingleSelectField
  */
-CharSingleSelectField = createSubclass("CharSingleSelectField", {}, "SingleSelectField");
+//CharSingleSelectField = createSubclass("CharSingleSelectField", {}, "SingleSelectField");
+class CharSingleSelectField extends SingleSelectField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach.call();
+	}
+}
 
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-CharSingleSelectField.prototype.attach = function() {
-	SingleSelectField.prototype.attach.call(this);
-};
 

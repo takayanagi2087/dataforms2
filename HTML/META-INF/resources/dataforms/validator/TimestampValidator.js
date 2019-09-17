@@ -9,6 +9,14 @@
  * </pre>
  * @extends DateTimeValidator
  */
-TimestampValidator = createSubclass("TimestampValidator", {dateFormatKey: "format.timestampfield"}, "DateTimeValidator");
+// TimestampValidator = createSubclass("TimestampValidator", {dateFormatKey: "format.timestampfield"}, "DateTimeValidator");
 
+class TimestampValidator extends DateTimeValidator {
+	/**
+	 * コンストラクタ。
+	 */
+	constructor() {
+		this.dateFormatKey = "format.timestampfield";
+	}
+}
 

@@ -7,14 +7,16 @@
 /**
  * メニューフォーム.
  */
+//createSubclass("SiteMapForm", {}, "MenuForm");
+class SiteMapForm extends MenuForm {
+	/**
+	 * ページの各エレメントとの対応付け.
+	 */
+	attach() {
+		super.attach();
+		this.menu = this.newInstance(this.menu);
+		this.menu.init();
+		this.menu.attach();
+	}
+}
 
-createSubclass("SiteMapForm", {}, "MenuForm");
-/**
- * ページの各エレメントとの対応付け.
- */
-SiteMapForm.prototype.attach = function() {
-	Form.prototype.attach.call(this);
-	this.menu = this.newInstance(this.menu);
-	this.menu.init();
-	this.menu.attach();
-};

@@ -7,29 +7,31 @@
  *
  * @extends RequiredValidator
  */
-DisplayedRequiredValidator = createSubclass("DisplayedRequiredValidator", {}, "RequiredValidator");
-
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-DisplayedRequiredValidator.prototype.attach = function() {
-	RequiredValidator.prototype.attach.call(this);
-};
-
-
-/**
- * バリデーションを行ないます。
- * @param {String} v 値。
- * @returns {Boolean} バリデーション結果。
- */
-DisplayedRequiredValidator.prototype.validate = function(v) {
-	var f = this.getParentForm();
-	var vflg = f.find("#" + this.selectorEscape(this.fieldId)).is(":visible");
-	logger.log("vflg=" + vflg);
-	if (vflg) {
-		return (this.isBlank(v) == false);
-	} else {
-		return true;
+//DisplayedRequiredValidator = createSubclass("DisplayedRequiredValidator", {}, "RequiredValidator");
+class DisplayedRequiredValidator extends RequiredValidator {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach(this);
 	}
-};
+
+	/**
+	 * バリデーションを行ないます。
+	 * @param {String} v 値。
+	 * @returns {Boolean} バリデーション結果。
+	 */
+	validate = function(v) {
+		var f = this.getParentForm();
+		var vflg = f.find("#" + this.selectorEscape(this.fieldId)).is(":visible");
+		logger.log("vflg=" + vflg);
+		if (vflg) {
+			return (this.isBlank(v) == false);
+		} else {
+			return true;
+		}
+	}
+}
+
+
+

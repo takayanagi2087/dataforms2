@@ -7,13 +7,13 @@
  *
  * @extends SingleSelectField
  */
-IntegerSingleSelectField = createSubclass("IntegerSingleSelectField", {}, "SingleSelectField");
-
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-IntegerSingleSelectField.prototype.attach = function() {
-	SingleSelectField.prototype.attach.call(this);
-};
+//IntegerSingleSelectField = createSubclass("IntegerSingleSelectField", {}, "SingleSelectField");
+class IntegerSingleSelectField extends SingleSelectField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}
 

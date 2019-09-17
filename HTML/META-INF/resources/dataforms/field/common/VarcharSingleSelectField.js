@@ -7,13 +7,13 @@
  *
  * @extends SingleSelectField
  */
-VarcharSingleSelectField = createSubclass("VarcharSingleSelectField", {}, "SingleSelectField");
-
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-VarcharSingleSelectField.prototype.attach = function() {
-	SingleSelectField.prototype.attach.call(this);
-};
+//VarcharSingleSelectField = createSubclass("VarcharSingleSelectField", {}, "SingleSelectField");
+class VarcharSingleSelectField extends SingleSelectField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}
 

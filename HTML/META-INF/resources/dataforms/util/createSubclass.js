@@ -40,6 +40,7 @@ function createSubclass(subClassName, properties, superClass) {
 
 	script += subClassName + ".prototype = Object.create(" + superClass + ".prototype);\n";
 	script += subClassName + ".prototype.constructor = " + subClassName + ";\n";
+	console.log("script=" + script);
 	return eval(script);
 };
 

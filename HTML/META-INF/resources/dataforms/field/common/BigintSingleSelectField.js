@@ -7,13 +7,14 @@
  *
  * @extends SingleSelectField
  */
-BigintSingleSelectField = createSubclass("BigintSingleSelectField", {}, "SingleSelectField");
+//BigintSingleSelectField = createSubclass("BigintSingleSelectField", {}, "SingleSelectField");
+class BigintSingleSelectField extends SingleSelectField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}
 
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-BigintSingleSelectField.prototype.attach = function() {
-	SingleSelectField.prototype.attach.call(this);
-};
 

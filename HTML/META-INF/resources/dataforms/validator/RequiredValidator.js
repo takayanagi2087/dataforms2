@@ -9,15 +9,15 @@
  * </pre>
  * @extends FieldValidator
  */
-RequiredValidator = createSubclass("RequiredValidator", {}, "FieldValidator");
-
-/**
- * バリデーションを行ないます。
- * @param {String} v 値。
- * @returns {Boolean} バリデーション結果。
- */
-RequiredValidator.prototype.validate = function(v) {
-	return (this.isBlank(v) == false);
-};
-
+//RequiredValidator = createSubclass("RequiredValidator", {}, "FieldValidator");
+class RequiredValidator extends FieldValidator {
+	/**
+	 * バリデーションを行ないます。
+	 * @param {String} v 値。
+	 * @returns {Boolean} バリデーション結果。
+	 */
+	validate(v) {
+		return (this.isBlank(v) == false);
+	};
+}
 

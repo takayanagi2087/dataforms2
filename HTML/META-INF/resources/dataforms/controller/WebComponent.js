@@ -22,7 +22,6 @@ class WebComponent {
 	 */
 	constructor() {
 		this.id = null;
-		this.classMap = {};
 		this.componentMap = {};
 		this.parent = null;
 	}
@@ -113,40 +112,13 @@ class WebComponent {
 
 	/**
 	 * サーバから送信されたクラス情報から、そのクラスのインスタンスを作成します。
-	 * <pre>
-	 * scriptタグで読み込まれていない場合は、jspathで指定したスクリプトを読み込み
-	 * クラスのインスタンスを作成します。
-	 * </pre>
 	 * @param {Object} clszz クラス情報。
 	 * @returns {WebComponent} 作成されたインスタンス。
 	 */
 	newInstance(clazz) {
 		var classname = clazz.jsClass;
-		var jspath = clazz.jsPath;
-		var obj = null;
-		if (this.classMap[classname] != null) {
-			eval("var obj = new " + classname + "(this);");
-		} else {
-			if (classname in window) {
-				eval("var obj = new " + classname + "(this);");
-			} else {
-				// この処理は転送されていないJavascriptクラスを読み込むための処理です。
-				// 基本的にgetHtmlで<script></script>タグに展開されるので、現在は呼ばれないはずです。
-				logger.log("jspath=" + jspath);
-				var getJs = new SyncServerMethod("getJs");
-				var scriptstr = getJs.execute("parts=" + escape(jspath));
-				if (scriptstr.result != null) {
-					eval(scriptstr.result);
-					// 生成したクラスをグローバルにする.
-					//eval("window." + classname + "=" + classname + ";");
-				}
-				eval("var obj = new " + classname + "(this);");
-				this.classMap[classname] = {};
-			}
-		}
-		for (var key in clazz) {
-			obj[key] = clazz[key];
-		}
+		var obj = eval("new " + classname + "()");
+		Object.assign(obj, clazz);
 		obj.parent = this;
 		this.componentMap[obj.id] = obj;
 		return obj;

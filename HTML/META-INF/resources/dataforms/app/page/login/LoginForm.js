@@ -44,7 +44,7 @@ class LoginForm extends Form {
 	 * </pre>
 	 */
 	attach() {
-		Form.prototype.attach.call(this);
+		super.attach();
 		var form = this;
 		this.find('#loginButton').click(function() {
 			form.login();

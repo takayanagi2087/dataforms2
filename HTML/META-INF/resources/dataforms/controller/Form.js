@@ -22,6 +22,7 @@ class Form extends WebComponent {
 	 * コンストラクタ。
 	 */
 	constructor() {
+		super();
 		this.clientValidation = true;
 		this.fields = [];
 		this.htmlTables = []
@@ -122,7 +123,7 @@ class Form extends WebComponent {
 	 * フォームを初期化します。
 	 */
 	init() {
-		this.init();
+		super.init();
 		this.initField(this.fieldList);
 		this.initHtmlTable(this.htmlTableList);
 	}
@@ -150,7 +151,7 @@ class Form extends WebComponent {
 			var obj = $("#" + this.selectorEscape(this.id));
 			this.parentDivId = obj.parents("div[id]:first").attr("id");
 		}
-		this.attach();
+		super.attach();
 		var thisForm = this;
 		this.find("#newButton").prop("disabled" , false);
 		this.find("#newButton").click(function() {

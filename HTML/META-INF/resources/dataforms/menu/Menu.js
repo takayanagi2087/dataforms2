@@ -35,65 +35,68 @@
  * </pre>
  * @extends WebComponent
  */
-Menu = createSubclass("Menu", {}, "WebComponent");
-
-
-/**
- * メニューのレイアウト情報を取得します。
- */
-Menu.prototype.getMenuLayout = function() {
-	this.menuLayout = this.get().html();
-}
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-Menu.prototype.attach = function() {
-	WebComponent.prototype.attach.call(this);
-	this.getMenuLayout();
-	this.update();
-}
-
-/**
- * メニューの表示内容を更新します。
- */
-Menu.prototype.update = function() {
-	var mglist = this.menuGroupList;
-	var menuHtml = this.getMenuHtml(mglist);
-	var menu = this.get();
-	menu.html(menuHtml);
-}
-
-/**
- * メニューの内容を展開したHTML作成します。
- * @param {Array} mglist メニューグループリスト.
- * @returns {String} HTML.
- */
-Menu.prototype.getMenuHtml = function(mglist) {
-    logger.dir(mglist);
-    var ret = "";
-	var pat = new RegExp(this.id + "\\[0\\]", "g");
-	var patl = new RegExp("pageList\\[0\\]", "g");
-	for (var i = 0; i < mglist.length; i++) {
-		var mg = this.menuLayout.replace(pat, this.id + "[" + i + "]")
-		var q = $("<div>" + mg + "</div>");
-		var menu = $(q.find("[id$='\\.pageList']").get()[0]).html();
-		var plist = q.find("[id$='\\.pageList']");
-		plist.empty();
-		for (var j = 0; j < mglist[i].pageList.length; j++) {
-			plist.append(menu.replace(patl, "pageList[" + j +"]"));
-		}
-		q.find("#" + this.id + "\\[" + i + "\\]\\.name").html(mglist[i].name);
-		q.find("#" + this.id + "\\[" + i + "\\]\\.name").attr("data-menu-group-id", mglist[i].id);
-		for (var j = 0; j < mglist[i].pageList.length; j++) {
-            plist.find("[id$='\\.pageList\\[" + j + "\\]\\.url']").attr("href", mglist[i].pageList[j].url);
-            if (mglist[i].pageList[j].menuTarget != null) {
-                plist.find("[id$='\\.pageList\\[" + j + "\\]\\.url']").attr("target", mglist[i].pageList[j].menuTarget);
-            }
-			plist.find("[id$='\\.pageList\\[" + j + "\\]\\.name']").html(mglist[i].pageList[j].menuName);
-			plist.find("[id$='\\.pageList\\[" + j + "\\]\\.description']").html(mglist[i].pageList[j].description);
-		}
-		ret += q.html();
+// Menu = createSubclass("Menu", {}, "WebComponent");
+class Menu extends WebComponent {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+		this.getMenuLayout();
+		this.update();
 	}
-	return ret;
+
+	/**
+	 * メニューのレイアウト情報を取得します。
+	 */
+	getMenuLayout() {
+		this.menuLayout = this.get().html();
+	}
+
+	/**
+	 * メニューの表示内容を更新します。
+	 */
+	update() {
+		var mglist = this.menuGroupList;
+		var menuHtml = this.getMenuHtml(mglist);
+		var menu = this.get();
+		menu.html(menuHtml);
+	}
+
+	/**
+	 * メニューの内容を展開したHTML作成します。
+	 * @param {Array} mglist メニューグループリスト.
+	 * @returns {String} HTML.
+	 */
+	getMenuHtml(mglist) {
+	    logger.dir(mglist);
+	    var ret = "";
+		var pat = new RegExp(this.id + "\\[0\\]", "g");
+		var patl = new RegExp("pageList\\[0\\]", "g");
+		for (var i = 0; i < mglist.length; i++) {
+			var mg = this.menuLayout.replace(pat, this.id + "[" + i + "]")
+			var q = $("<div>" + mg + "</div>");
+			var menu = $(q.find("[id$='\\.pageList']").get()[0]).html();
+			var plist = q.find("[id$='\\.pageList']");
+			plist.empty();
+			for (var j = 0; j < mglist[i].pageList.length; j++) {
+				plist.append(menu.replace(patl, "pageList[" + j +"]"));
+			}
+			q.find("#" + this.id + "\\[" + i + "\\]\\.name").html(mglist[i].name);
+			q.find("#" + this.id + "\\[" + i + "\\]\\.name").attr("data-menu-group-id", mglist[i].id);
+			for (var j = 0; j < mglist[i].pageList.length; j++) {
+	            plist.find("[id$='\\.pageList\\[" + j + "\\]\\.url']").attr("href", mglist[i].pageList[j].url);
+	            if (mglist[i].pageList[j].menuTarget != null) {
+	                plist.find("[id$='\\.pageList\\[" + j + "\\]\\.url']").attr("target", mglist[i].pageList[j].menuTarget);
+	            }
+				plist.find("[id$='\\.pageList\\[" + j + "\\]\\.name']").html(mglist[i].pageList[j].menuName);
+				plist.find("[id$='\\.pageList\\[" + j + "\\]\\.description']").html(mglist[i].pageList[j].description);
+			}
+			ret += q.html();
+		}
+		return ret;
+	}
+
 }
+
+

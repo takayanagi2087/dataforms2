@@ -693,7 +693,8 @@ class HtmlTable extends WebComponent {
 		if (!(fobj instanceof Field)) {
 			field = this.getColumnField(fobj);
 		}
-		var f = $.extend(true, {}, field);
+		var f = new field.constructor();
+		Object.assign(f, field);
 		f.id = this.id + "[" + idx + "]." + field.id;
 		f.initValidator(f.validatorList);
 		return f;

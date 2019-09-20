@@ -10,7 +10,6 @@
  * </pre>
  * @extends Menu
  */
-// SideMenu = createSubclass("SideMenu", {}, "Menu");
 class SideMenu extends Menu {
 	/**
 	 * HTMLエレメントとの対応付けを行います。

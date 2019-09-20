@@ -9,7 +9,6 @@
  * </pre>
  * @extends FieldValidator
  */
-//RegexpValidator = createSubclass("RegexpValidator", {}, "FieldValidator");
 class RegexpValidator extends FieldValidator {
 	/**
 	 * バリデーションを行ないます。

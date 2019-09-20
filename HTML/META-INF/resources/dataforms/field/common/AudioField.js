@@ -7,7 +7,6 @@
  * 音声ファイルアップロードフィールドクラス。
  * @extends StreamingField
  */
-//AudioField = createSubclass("AudioField", {}, "StreamingField");
 class AudioField extends StreamingField {
 	/**
 	 * HTMLエレメントとの対応付けを行います。

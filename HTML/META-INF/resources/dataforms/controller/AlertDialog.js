@@ -7,7 +7,6 @@
  *
  * @extends Dialog
  */
-// AlertDialog = createSubclass("AlertDialog", {title:null, message:null, okFunc: null}, "Dialog");
 class AlertDialog extends Dialog {
 	/**
 	 * コンストラクタ。

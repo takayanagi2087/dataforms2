@@ -10,7 +10,6 @@
  * </pre>
  * @extends TextField
  */
-// ClobField = createSubclass("ClobField", {}, "TextField");
 class ClobField extends TextField {
 
 }

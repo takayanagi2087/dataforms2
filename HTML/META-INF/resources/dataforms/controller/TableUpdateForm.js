@@ -14,7 +14,6 @@
  *
  *
  */
-// TableUpdateForm = createSubclass("TableUpdateForm", {}, "Form");
 class TableUpdateForm extends Form {
 	/**
 	 * HTMLエレメントとの対応付けを行います。

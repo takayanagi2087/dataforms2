@@ -9,10 +9,6 @@
  * </pre>
  * @extends FieldValidator
  */
-
-//DateTimeValidator = createSubclass("DateTimeValidator", {dateFormatKey: null}, "FieldValidator");
-
-
 class DateTimeValidator extends FieldValidator {
 	/**
 	 * バリデーションを行ないます。

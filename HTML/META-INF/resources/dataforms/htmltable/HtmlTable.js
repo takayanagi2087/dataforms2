@@ -41,7 +41,6 @@
  * @prop fields {Array} fieldListのクラス情報を元に作成した、Fieldクラスのインスタンスです。
  *
  */
-// HtmlTable = createSubclass("HtmlTable", {fields:[]}, "WebComponent");
 class HtmlTable extends WebComponent {
 	/**
 	 * コンストラクタ。

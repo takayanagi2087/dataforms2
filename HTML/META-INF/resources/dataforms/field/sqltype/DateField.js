@@ -9,7 +9,6 @@
  * </pre>
  * @extends DateTimeField
  */
-// DateField = createSubclass("DateField", {}, "DateTimeField");
 class DateField extends DateTimeField {
 	/**
 	 * HTMLエレメントとの対応付けを行います。

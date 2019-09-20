@@ -9,7 +9,6 @@
  * </pre>
  * @extends SelectField
  */
-//MultiSelectField = createSubclass("MultiSelectField", {}, "SelectField");
 class MultiSelectField extends SelectField {
 	/**
 	 * 対応するコンポーネントに値を設定します。

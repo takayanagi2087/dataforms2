@@ -9,7 +9,6 @@
  * </pre>
  * @extends WebComponent
  */
-// FieldValidator = createSubclass("FieldValidator", {}, "WebComponent");
 class FieldValidator extends WebComponent {
 	/**
 	 * 初期化を行います。

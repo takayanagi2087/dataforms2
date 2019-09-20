@@ -9,7 +9,6 @@
  * </pre>
  * @extends SelectField
  */
-//SingleSelectField = createSubclass("SingleSelectField", {}, "SelectField");
 class SingleSelectField extends SelectField {
 	/**
 	 * INPUTまたはSELECTタグへ値を設定します。

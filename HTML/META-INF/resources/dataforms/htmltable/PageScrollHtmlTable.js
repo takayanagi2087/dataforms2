@@ -10,7 +10,6 @@
  * </pre>
  * @extends HtmlTable
  */
-// PageScrollHtmlTable = createSubclass("PageScrollHtmlTable", {}, "HtmlTable");
 class PageScrollHtmlTable extends HtmlTable {
 	/**
 	 * エレメントとの対応付け.

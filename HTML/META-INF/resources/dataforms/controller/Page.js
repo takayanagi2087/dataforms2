@@ -23,7 +23,6 @@
  *  }
  * </pre>
  */
-//Page = createSubclass("Page", {id: "mainDiv"}, "DataForms");
 class Page extends DataForms {
 
 	/**

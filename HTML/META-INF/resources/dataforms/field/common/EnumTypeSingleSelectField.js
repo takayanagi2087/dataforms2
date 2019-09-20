@@ -10,7 +10,6 @@
  * </pre>
  * @extends SingleSelectField
  */
-//EnumTypeSingleSelectField = createSubclass("EnumTypeSingleSelectField", {}, "SingleSelectField");
 class EnumTypeSingleSelectField extends SingleSelectField {
 
 }

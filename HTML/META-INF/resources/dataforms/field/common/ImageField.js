@@ -7,7 +7,6 @@
  * 画像ファイルアップロードフィールドクラス。
  * @extends FileField
  */
-//ImageField = createSubclass("ImageField", {}, "FileField");
 class ImageField extends FileField {
 	/**
 	 * HTMLエレメントとの対応付けを行います。

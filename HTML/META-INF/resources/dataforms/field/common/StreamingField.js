@@ -7,7 +7,6 @@
  * ストリーミングファイルアップロードフィールドクラス。
  * @extends FileField
  */
-// StreamingField = createSubclass("StreamingField", {}, "FileField");
 class StreamingField extends FileField {
 	/**
 	 * HTMLエレメントとの対応付けを行います。

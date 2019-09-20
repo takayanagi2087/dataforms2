@@ -10,7 +10,6 @@
  * </pre>
  * @extends HtmlTable
  */
-// EditableHtmlTable = createSubclass("EditableHtmlTable", {}, "HtmlTable");
 class EditableHtmlTable extends HtmlTable {
 	/**
 	 * 各エレメントとの対応付け.

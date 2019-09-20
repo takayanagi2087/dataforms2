@@ -9,7 +9,6 @@
  * </pre>
  * @extends TextField
  */
-// CharField = createSubclass("CharField", {}, "TextField");
 class CharField extends TextField {
 
 }

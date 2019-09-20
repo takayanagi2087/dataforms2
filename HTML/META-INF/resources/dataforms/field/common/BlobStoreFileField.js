@@ -7,7 +7,6 @@
  * ファイルアップロードフィールドクラス。
  * @extends FileObjectField
  */
-// BlobStoreFileField = createSubclass("BlobStoreFileField", {}, "FileObjectField");
 class BlobStoreFileField extends FileObjectField {
 
 }

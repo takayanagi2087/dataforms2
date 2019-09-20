@@ -10,9 +10,7 @@
  * </pre>
  * @extends WebComponent
  */
-//Field = createSubclass("Field", {}, "WebComponent");
 class Field extends WebComponent {
-
 	/**
 	 * HTMLエレメントとの対応付けを行います。
 	 * <pre>

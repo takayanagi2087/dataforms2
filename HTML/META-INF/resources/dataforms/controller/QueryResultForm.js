@@ -11,7 +11,6 @@
  * </pre>
  * @extends Form
  */
-//QueryResultForm = createSubclass("QueryResultForm", {}, "Form");
 class QueryResultForm extends Form {
 	/**
 	 * HTMLエレメントへの対応付けを行います。

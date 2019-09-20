@@ -7,7 +7,6 @@
  *
  * @extends SingleSelectField
  */
-// SmallintSingleSelectField = createSubclass("SmallintSingleSelectField", {}, "SingleSelectField");
 class SmallintSingleSelectField extends SingleSelectField {
 	/**
 	 * HTMLエレメントとの対応付けを行います。

@@ -9,8 +9,6 @@
  * DBのNumeric型用のチェックで、精度と小数点以下桁数もチェックします。
  * @extends FieldValidator
  */
-
-//NumericValidator = createSubclass("NumericValidator", {}, "FieldValidator");
 class NumericValidator extends FieldValidator {
 	/**
 	 * バリデーションを行ないます。

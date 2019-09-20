@@ -18,7 +18,6 @@
  *
  *
  */
-//EditForm = createSubclass("EditForm", {mode:"edit", saveMode: "new", multiRecord: false}, "TableUpdateForm");
 class EditForm extends TableUpdateForm {
 	/**
 	 * コンストラクタ。

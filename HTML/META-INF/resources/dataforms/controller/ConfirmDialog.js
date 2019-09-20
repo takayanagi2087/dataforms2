@@ -7,7 +7,6 @@
  *
  * @extends Dialog
  */
-// ConfirmDialog = createSubclass("ConfirmDialog", {title:null, message:null, okFunc: null, cancelFunc:null}, "Dialog");
 class ConfirmDialog extends Dialog {
 	/**
 	 * コンストラクタ。

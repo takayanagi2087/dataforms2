@@ -17,7 +17,6 @@
  * @prop {Object} keyMap QueryFormで編集対象を限定した場合、その指定内容を保存します。
  *
  */
-// MultiRecordEditForm = createSubclass("MultiRecordEditForm", {mode:"edit", multiRecord: true, keyMap:{}}, "TableUpdateForm");
 class MultiRecordEditForm extends TableUpdateForm {
 	/**
 	 * コンストラクタ。

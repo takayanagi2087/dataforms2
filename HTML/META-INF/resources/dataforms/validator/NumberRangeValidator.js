@@ -9,7 +9,6 @@
  * </pre>
  * @extends FieldValidator
  */
-// NumberRangeValidator = createSubclass("NumberRangeValidator", {}, "FieldValidator");
 class NumberRangeValidator extends FieldValidator {
 	/**
 	 * バリデーションを行ないます。

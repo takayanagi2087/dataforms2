@@ -9,7 +9,6 @@
  * </pre>
  * @extends CharField
  */
-// FlagField = createSubclass("FlagField", {}, "CharField");
 class FlagField extends CharField {
 	/**
 	 * HTMLの要素との対応付けを行います。

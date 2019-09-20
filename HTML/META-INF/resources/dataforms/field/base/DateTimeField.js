@@ -11,8 +11,6 @@
  * </pre>
  * @extends Field
  */
-//DateTimeField = createSubclass("DateTimeField", {}, "Field");
-
 class DateTimeField extends Field {
 	/**
 	 * 日付の表示フォーマットを指定します。

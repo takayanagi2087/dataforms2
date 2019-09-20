@@ -9,7 +9,6 @@
  * </pre>
  * @extends NumberField
  */
-//NumericField = createSubclass("NumericField", {}, "NumberField");
 class NumericField extends NumberField {
 
 }

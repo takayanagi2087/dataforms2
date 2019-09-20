@@ -13,7 +13,6 @@
  * </pre>
  * @extends DataForms
  */
-// Dialog = createSubclass("Dialog", {width: "auto", height: "auto", resizable : true}, "DataForms");
 class Dialog extends DataForms {
 	/**
 	 * コンストラクタ。

@@ -10,7 +10,6 @@
  * </pre>
  * @extends TextField
  */
-// VarcharField = createSubclass("VarcharField", {}, "TextField");
 class VarcharField extends TextField {
 
 }

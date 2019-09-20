@@ -10,7 +10,6 @@
  * </pre>
  * @extends Field
  */
-// FileField = createSubclass("FileField", {}, "Field");
 class FileField extends Field {
 	/**
 	 * HTMLエレメントとの対応付けを行います。

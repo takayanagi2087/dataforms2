@@ -6,7 +6,6 @@
  * フラグフィールドクラス。
  * @extends CharField
  */
-//ZipCodeField = createSubclass("ZipCodeField", {}, "CharField");
 class ZipCodeField extends CharField {
 	/**
 	 * HTMLの要素との対応付けを行います。

@@ -9,7 +9,6 @@
  * </pre>
  * @extends TextField
  */
-// LoginIdField = createSubclass("LoginIdField", {}, "VarcharField");
 class LoginIdField extends VarcharField {
 
 }

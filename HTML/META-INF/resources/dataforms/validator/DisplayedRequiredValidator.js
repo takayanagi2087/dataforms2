@@ -7,7 +7,6 @@
  *
  * @extends RequiredValidator
  */
-//DisplayedRequiredValidator = createSubclass("DisplayedRequiredValidator", {}, "RequiredValidator");
 class DisplayedRequiredValidator extends RequiredValidator {
 	/**
 	 * HTMLエレメントとの対応付けを行います。

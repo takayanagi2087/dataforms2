@@ -10,7 +10,6 @@
  * </pre>
  * @extends Field
  */
-//TextField = createSubclass("TextField", {}, "Field");
 class TextField extends Field {
 	/**
 	 * 値を設定します。

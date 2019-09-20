@@ -10,7 +10,6 @@
  * </pre>
  * @extends Field
  */
-// SelectField = createSubclass("SelectField", {}, "Field");
 class SelectField extends Field {
 	/**
 	 * HTMLの要素との対応付けを行ないます。

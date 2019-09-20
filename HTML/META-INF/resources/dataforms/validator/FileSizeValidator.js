@@ -7,7 +7,6 @@
  * 最大長バリデータクラス。
  * @extends FieldValidator
  */
-// FileSizeValidator = createSubclass("FileSizeValidator", {}, "FieldValidator");
 class FileSizeValidator extends FieldValidator {
 	/**
 	 * バリデーションを行ないます。

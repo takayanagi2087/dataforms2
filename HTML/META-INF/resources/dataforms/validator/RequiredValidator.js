@@ -9,7 +9,6 @@
  * </pre>
  * @extends FieldValidator
  */
-//RequiredValidator = createSubclass("RequiredValidator", {}, "FieldValidator");
 class RequiredValidator extends FieldValidator {
 	/**
 	 * バリデーションを行ないます。
@@ -18,6 +17,6 @@ class RequiredValidator extends FieldValidator {
 	 */
 	validate(v) {
 		return (this.isBlank(v) == false);
-	};
+	}
 }
 

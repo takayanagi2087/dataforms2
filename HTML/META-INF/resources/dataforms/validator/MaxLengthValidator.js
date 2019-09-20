@@ -7,8 +7,6 @@
  * 最大長バリデータクラス。
  * @extends FieldValidator
  */
-// MaxLengthValidator = createSubclass("MaxLengthValidator", {}, "FieldValidator");
-
 class MaxLengthValidator extends FieldValidator {
 
 	/**

@@ -35,7 +35,6 @@
  * </pre>
  * @extends WebComponent
  */
-// Menu = createSubclass("Menu", {}, "WebComponent");
 class Menu extends WebComponent {
 	/**
 	 * HTMLエレメントとの対応付けを行います。

@@ -9,7 +9,6 @@
  * </pre>
  * @extends DateTimeValidator
  */
-// TimeValidator = createSubclass("TimeValidator", {dateFormatKey: "format.timefield"}, "DateTimeValidator");
 class TimeValidator extends DateTimeValidator {
 	/**
 	 * コンストラクタ。

@@ -7,7 +7,6 @@
  * BLOB保存画像ファイルアップロードフィールドクラス。
  * @extends FileObjectField
  */
-//BlobStoreImageField = createSubclass("BlobStoreImageField", {}, "ImageField");
 class BlobStoreImageField extends ImageField {
 
 }

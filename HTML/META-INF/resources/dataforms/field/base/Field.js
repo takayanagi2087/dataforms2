@@ -426,7 +426,7 @@ class Field extends WebComponent {
 	 * SELECTをロックします。
 	 * @param {Boolean} lk ロックする場合true。
 	 */
-	ockSelect(lk) {
+	lockSelect(lk) {
 		var comp = this.get();
 		var v = this.find("option:selected").text();
 		var span = this.addSpan(comp);

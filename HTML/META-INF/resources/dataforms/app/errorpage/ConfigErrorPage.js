@@ -10,12 +10,12 @@
  * </pre>
  * @extends Page
  */
-ConfigErrorPage = createSubclass("ConfigErrorPage", {}, "Page");
+class ConfigErrorPage extends Page {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}
 
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-ConfigErrorPage.prototype.attach = function() {
-	Page.prototype.attach.call(this);
-};

@@ -1,9 +1,17 @@
 /**
- * ユーザ情報フォーム.
+ * @fileOverview {@link LoginInfoForm}クラスを記述したファイルです。
  */
 
-//createSubclass("LoginInfoForm", {}, "Form");
 
+/**
+ * @class LoginInfoForm
+ *
+ * ユーザ情報フォーム。
+ * <pre>
+ * ログインしているユーザの情報を表示するフォームです。
+ * </pre>
+ * @extends Form
+ */
 class LoginInfoForm extends Form {
 	/**
 	 * ログイン状態の更新.

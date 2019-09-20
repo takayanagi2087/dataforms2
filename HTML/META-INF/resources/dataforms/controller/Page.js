@@ -28,35 +28,35 @@ class Page extends DataForms {
 	/**
 	 * Microsoft EDGE。
 	 */
-	 get BROWSER_EDGE() {
+	static get BROWSER_EDGE() {
 		 return "edge";
 	 }
 
 	/**
 	 *  Microsoft Internet Explorer。
 	 */
-	get BROWSER_IE() {
+	static get BROWSER_IE() {
 		return "ie";
 	}
 
 	/**
 	 * Google chrome。
 	 */
-	get BROWSER_CHOROME() {
+	static get BROWSER_CHOROME() {
 		return "chrome";
 	}
 
 	/**
 	 * Safari。
 	 */
-	get BROWSER_SAFARI() {
+	static get BROWSER_SAFARI() {
 		return "safari";
 	}
 
 	/**
 	 * Firefox。
 	 */
-	get BROWSER_FIREFOX() {
+	static get BROWSER_FIREFOX() {
 		return "firefox"
 	}
 
@@ -64,7 +64,7 @@ class Page extends DataForms {
 	/**
 	 * Opera。
 	 */
-	get BROWSER_OPERA() {
+	static get BROWSER_OPERA() {
 		return "opera";
 	}
 
@@ -72,7 +72,7 @@ class Page extends DataForms {
 	/**
 	 * 其の他ブラウザ。
 	 */
-	get BROWSER_OTHER() {
+	static get BROWSER_OTHER() {
 		return "other";
 	}
 

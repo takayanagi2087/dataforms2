@@ -46,6 +46,7 @@ class HtmlTable extends WebComponent {
 	 * コンストラクタ。
 	 */
 	constructor() {
+		super();
 		this.fields = [];
 	}
 

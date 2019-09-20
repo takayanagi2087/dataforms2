@@ -12,6 +12,13 @@
  */
 class Field extends WebComponent {
 	/**
+	 * コンストラクタ。
+	 */
+	constructor() {
+		super();
+	}
+
+	/**
 	 * HTMLエレメントとの対応付けを行います。
 	 * <pre>
 	 * 関連データ取得がtrueの場合、blurイベントに関連データ取得処理を登録します。

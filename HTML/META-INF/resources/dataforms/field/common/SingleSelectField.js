@@ -11,6 +11,13 @@
  */
 class SingleSelectField extends SelectField {
 	/**
+	 * コンストラクタ。
+	 */
+	constructor() {
+		super();
+	}
+	
+	/**
 	 * INPUTまたはSELECTタグへ値を設定します。
 	 * @param {jQuery} comp 値を設定するコンポーネント。
 	 * @param {String} value 値。

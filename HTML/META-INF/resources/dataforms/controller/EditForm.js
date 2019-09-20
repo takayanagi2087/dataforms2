@@ -23,6 +23,7 @@ class EditForm extends TableUpdateForm {
 	 * コンストラクタ。
 	 */
 	constructor() {
+		super();
 		this.mode = "edit";
 		this.saveMode =  "new";
 		this.multiRecord = false;

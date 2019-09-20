@@ -10,8 +10,6 @@
  * </pre>
  * @extends Form
  */
-//LoginForm = createSubclass("LoginForm", {}, "Form");
-
 class LoginForm extends Form {
 	/**
 	 * ログイン処理を行います。

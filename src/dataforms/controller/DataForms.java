@@ -49,7 +49,7 @@ public class DataForms extends WebComponent {
     public static final String ID_EDIT_FORM = "editForm";
 
 
-    
+
 
 	/**
 	 * 認証済みかどうかを返します。
@@ -144,6 +144,7 @@ public class DataForms extends WebComponent {
      * @return javascriptファイルの内容。
      * @throws Exception 例外。
      */
+	/*
     @WebMethod(useDB = false)
 	public JsonResponse getJs(final Map<String, Object> params) throws Exception {
 		this.methodStartLog(log, params);
@@ -153,7 +154,7 @@ public class DataForms extends WebComponent {
 		this.methodFinishLog(log, ret);
 		return ret;
 	}
-
+	*/
 
 
 	/**

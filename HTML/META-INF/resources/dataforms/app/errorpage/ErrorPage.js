@@ -11,19 +11,19 @@
  * </pre>
  * @extends BasePage
  */
-ErrorPage = createSubclass("ErrorPage", {}, "BasePage");
+class ErrorPage extends BasePage {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+		var title = MessagesUtil.getMessage("errorpage.title");
+		var backButton = MessagesUtil.getMessage("errorpage.backbutton");
+		var message = this.errorMessage;
+		this.find('title').html(title);
+		this.find('h1').html(title);
+		this.find('#errorMessages').html(message);
+		this.find('#backButton').val(backButton);
+	}
+}
 
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-ErrorPage.prototype.attach = function() {
-	Page.prototype.attach.call(this);
-	var title = MessagesUtil.getMessage("errorpage.title");
-	var backButton = MessagesUtil.getMessage("errorpage.backbutton");
-	var message = this.errorMessage;
-	this.find('title').html(title);
-	this.find('h1').html(title);
-	this.find('#errorMessages').html(message);
-	this.find('#backButton').val(backButton);
-};

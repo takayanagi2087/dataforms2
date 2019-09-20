@@ -10,5 +10,7 @@
  * @extends TextField
  */
 class CharField extends TextField {
-
+	constructor() {
+		super();
+	}
 }

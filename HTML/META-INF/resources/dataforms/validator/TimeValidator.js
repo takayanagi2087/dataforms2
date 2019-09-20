@@ -14,6 +14,7 @@ class TimeValidator extends DateTimeValidator {
 	 * コンストラクタ。
 	 */
 	constructor() {
+		super();
 		this.dateFormatKey = "format.timefield";
 	}
 }

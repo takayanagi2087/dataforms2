@@ -12,6 +12,7 @@ class TimestampValidator extends DateTimeValidator {
 	 * コンストラクタ。
 	 */
 	constructor() {
+		super();
 		this.dateFormatKey = "format.timestampfield";
 	}
 }

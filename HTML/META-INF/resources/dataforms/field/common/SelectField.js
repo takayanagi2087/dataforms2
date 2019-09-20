@@ -12,6 +12,13 @@
  */
 class SelectField extends Field {
 	/**
+	 * コンストラクタ。
+	 */
+	constructor() {
+		super();
+	}
+
+	/**
 	 * HTMLの要素との対応付けを行ないます。
 	 * <pre>
 	 * setOptionListを呼び出し、選択肢を設定します。

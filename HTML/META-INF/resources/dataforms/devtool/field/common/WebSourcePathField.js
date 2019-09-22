@@ -7,14 +7,15 @@
  *
  * @extends VarcharField
  */
-WebSourcePathField = createSubclass("WebSourcePathField", {}, "VarcharField");
+class WebSourcePathField extends VarcharField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+		this.get().attr("placeholder", MessagesUtil.getMessage("message.setwebsourcepath"))
+	}
+}
 
 
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-WebSourcePathField.prototype.attach = function() {
-	VarcharField.prototype.attach.call(this);
-	this.get().attr("placeholder", MessagesUtil.getMessage("message.setwebsourcepath"))
-};
 

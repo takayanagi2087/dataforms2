@@ -10,5 +10,7 @@
  * </pre>
  * @extends BasePage
  */
-DeveloperPage = createSubclass("DeveloperPage", {}, "BasePage");
+class DeveloperPage extends BasePage {
+
+}
 

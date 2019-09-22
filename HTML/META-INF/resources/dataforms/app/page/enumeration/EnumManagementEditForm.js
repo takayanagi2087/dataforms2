@@ -7,13 +7,13 @@
  *
  * @extends EditForm
  */
-EnumManagementEditForm = createSubclass("EnumManagementEditForm", {}, "EditForm");
+class EnumManagementEditForm extends EditForm {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}
 
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-EnumManagementEditForm.prototype.attach = function() {
-	EditForm.prototype.attach.call(this);
-};
 

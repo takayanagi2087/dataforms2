@@ -7,13 +7,13 @@
  *
  * @extends VarcharField
  */
-SimpleClassNameField = createSubclass("SimpleClassNameField", {}, "VarcharField");
+class SimpleClassNameField extends VarcharField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}
 
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-SimpleClassNameField.prototype.attach = function() {
-	VarcharField.prototype.attach.call(this);
-};
 

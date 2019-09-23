@@ -127,7 +127,9 @@ class HtmlTable extends WebComponent {
 			var tbl = this;
 			for (var i = 0; i <  tbl.fields.length; i++) {
 				if (tbl.fields[i].id == colid) {
-					var tblfield = $.extend(true, {}, tbl.fields[i]);
+//					var tblfield = $.extend(true, {}, tbl.fields[i]);
+					var tblfield = new tbl.fields[i].constructor();
+					Object.assign(tblfield, tbl.fields[i]);
 					tblfield.id = id;
 					return tblfield;
 				}

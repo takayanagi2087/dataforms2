@@ -7,14 +7,14 @@
  *
  * @extends VarcharField
  */
-JavaSourcePathField = createSubclass("JavaSourcePathField", {}, "VarcharField");
+class JavaSourcePathField extends VarcharField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+		this.get().attr("placeholder", MessagesUtil.getMessage("message.setjavasourcepath"))
+	}
+}
 
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-JavaSourcePathField.prototype.attach = function() {
-	VarcharField.prototype.attach.call(this);
-	this.get().attr("placeholder", MessagesUtil.getMessage("message.setjavasourcepath"))
-};
 

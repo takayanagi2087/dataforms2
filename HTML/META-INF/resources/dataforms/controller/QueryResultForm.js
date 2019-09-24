@@ -146,7 +146,7 @@ class QueryResultForm extends Form {
 		logger.log("param=" + param);
 		this.setDisabledPkField(false);
 
-		var method = this.getAsyncServerMethod("changePage");
+		var method = this.getServerMethod("changePage");
 		method.execute(param, function(result) {
 			queryResultForm.parent.resetErrorStatus();
 			if (result.status == ServerMethod.SUCCESS) {
@@ -203,7 +203,7 @@ class QueryResultForm extends Form {
 		var queryResultForm = this;
 		currentPage.confirm(systemName, msg, function() {
 			logger.log("selectedQueryString=" + queryResultForm.selectedQueryString);
-			var method = queryResultForm.getAsyncServerMethod("delete");
+			var method = queryResultForm.getServerMethod("delete");
 			method.execute(queryResultForm.selectedQueryString, function(result) {
 				queryResultForm.parent.resetErrorStatus();
 				if (result.status == ServerMethod.SUCCESS) {

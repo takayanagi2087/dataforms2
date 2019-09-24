@@ -37,7 +37,7 @@ class UserAttributeValueField extends EnumOptionSingleSelectField {
 	 */
 	setUserAttributeType(type, v) {
 		var thisField = this;
-		var m = this.getAsyncServerMethod("getTypeOption");
+		var m = this.getServerMethod("getTypeOption");
 		var opt = m.execute("type=" + type, function(opt) {
 			if (opt.status == ServerMethod.SUCCESS) {
 				thisField.setOptionList(opt.result);

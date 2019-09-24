@@ -18,7 +18,7 @@ class LoginInfoForm extends Form {
 	 */
 	update() {
 		var thisForm = this;
-		var method = this.getAsyncServerMethod("getUserInfo");
+		var method = this.getServerMethod("getUserInfo");
 		method.execute("", function (ret) {
 			if (ret.status == ServerMethod.SUCCESS) {
 				if (ret.result.loginId != null) {
@@ -38,7 +38,7 @@ class LoginInfoForm extends Form {
 	 */
 	logout() {
 		var thisForm = this;
-		var method = this.getAsyncServerMethod("logout");
+		var method = this.getServerMethod("logout");
 		method.execute("", function(ret) {
 			currentPage.toTopPage();
 		});

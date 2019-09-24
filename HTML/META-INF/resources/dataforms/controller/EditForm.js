@@ -134,7 +134,7 @@ class EditForm extends TableUpdateForm {
 			form.find("#dfMethod").remove();
 			var data = qs;
 			logger.log("qs=" + data);
-			var method = new AsyncServerMethod("editForm.getDataByQueryFormCondition");
+			var method = new ServerMethod("editForm.getDataByQueryFormCondition");
 			method.execute(data, function(result) {
 				form.parent.resetErrorStatus();
 				if (result.status == ServerMethod.SUCCESS) {

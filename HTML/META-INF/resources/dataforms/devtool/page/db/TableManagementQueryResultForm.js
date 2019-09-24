@@ -173,7 +173,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 				this.find("#" + this.selectorEscape(id)).click(function() {
 					var clsname = $(this).html();
 					var qs="className=" + clsname;
-					var method = thisForm.getAsyncServerMethod("getTableInfo");
+					var method = thisForm.getServerMethod("getTableInfo");
 					method.execute(qs, function(sqllist) {
 						if (sqllist.status == ServerMethod.SUCCESS) {
 							thisForm.showTableInfo(sqllist.result);

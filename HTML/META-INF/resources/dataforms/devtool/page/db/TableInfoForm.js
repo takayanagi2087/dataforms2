@@ -66,7 +66,7 @@ class TableInfoForm extends Form {
 		currentPage.confirm(systemName, MessagesUtil.getMessage("message.initTableConfirm"), function() {
 			var clsname = thisForm.find("#className").html();
 			var p = "className=" + clsname;
-			var method = thisForm.getAsyncServerMethod("initTable");
+			var method = thisForm.getServerMethod("initTable");
 			method.execute(p, function(result) {
 				if (result.status == ServerMethod.SUCCESS) {
 					thisForm.setFormData(result.result);
@@ -86,7 +86,7 @@ class TableInfoForm extends Form {
 		currentPage.confirm(systemName, MessagesUtil.getMessage("message.dropTableConfirm"), function() {
 			var clsname = thisForm.find("#className").html();
 			var p = "className=" + clsname;
-			var method = thisForm.getAsyncServerMethod("dropTable");
+			var method = thisForm.getServerMethod("dropTable");
 			method.execute(p, function(result) {
 				if (result.status == ServerMethod.SUCCESS) {
 					thisForm.setFormData(result.result);
@@ -105,7 +105,7 @@ class TableInfoForm extends Form {
 		currentPage.confirm(systemName, MessagesUtil.getMessage("message.updateTableConfirm"), function() {
 			var clsname = thisForm.find("#className").html();
 			var p = "className=" + clsname;
-			var method = thisForm.getAsyncServerMethod("updateTable");
+			var method = thisForm.getServerMethod("updateTable");
 			method.execute(p, function(result) {
 				if (result.status == ServerMethod.SUCCESS) {
 					thisForm.setFormData(result.result);

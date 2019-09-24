@@ -186,7 +186,7 @@ class Form extends WebComponent {
 	 */
 	submit(method, func) {
 		var f = this.get();
-		var m = new AsyncServerMethod(this.getUniqId() + "." + method);
+		var m = new ServerMethod(this.getUniqId() + "." + method);
 		m.submit(f, function(data) {
 			func(data);
 		});
@@ -205,7 +205,7 @@ class Form extends WebComponent {
 	 */
 	submitWithoutFile(method, func) {
 		var form = this;
-		var m = new AsyncServerMethod(this.getUniqId() + "." + method);
+		var m = new ServerMethod(this.getUniqId() + "." + method);
 		m.submitWithoutFile(form.get(), func);
 	}
 
@@ -220,7 +220,7 @@ class Form extends WebComponent {
 	 */
 	submitWithFile(method, func) {
 		var form = this;
-		var m = new AsyncServerMethod(this.getUniqId() + "." + method);
+		var m = new ServerMethod(this.getUniqId() + "." + method);
 		m.submitWithFile(form.get(), func);
 	}
 
@@ -238,7 +238,7 @@ class Form extends WebComponent {
 	submitForDownload(method, func) {
 		var form = this;
 		document.cookie = "downloaded=0";
-		var m = new AsyncServerMethod(this.getUniqId() + "." + method);
+		var m = new ServerMethod(this.getUniqId() + "." + method);
 		if (func == null) {
 			m.submitWithFile(form.get(), function(ret) {
 				var systemName = MessagesUtil.getMessage("message.systemname");

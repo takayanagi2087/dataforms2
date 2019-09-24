@@ -180,7 +180,7 @@ class Field extends WebComponent {
 	 */
 	getRelationData() {
 		var thisField = this;
-		var m = this.getAsyncServerMethod("getRelationData");
+		var m = this.getServerMethod("getRelationData");
 		var form = this.getParentForm();
 		var param = this.getAjaxParameter();
 		m.execute(param, function(ret) {
@@ -503,7 +503,7 @@ class Field extends WebComponent {
 	 * @param {res} リスト設定メソッド.
 	 */
 	getSource(res) {
-		var method = this.getAsyncServerMethod("getAutocompleteSource");
+		var method = this.getServerMethod("getAutocompleteSource");
 		var param = this.getAjaxParameter();
 		method.execute(param, function(ret) {
 			if (ret.status == ServerMethod.SUCCESS) {

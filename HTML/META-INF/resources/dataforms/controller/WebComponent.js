@@ -60,24 +60,13 @@ class WebComponent {
 		return QueryStringUtil.parse(window.location.search);
 	}
 
-
 	/**
-	 * 同期サーバメソッドを取得します。
-	 * @param {String} method メソッド名。
-	 * @returns {SyncServerMethod} 同期サーバメソッド。
-	 * @deprecated
-	 */
-	getSyncServerMethod(method) {
-		return new SyncServerMethod(this.getUniqId() + "." + method);
-	};
-
-	/**
-	 * 非同期サーバメソッドを取得すします。
+	 * サーバメソッドを取得すします。
 	 * @param {String} method メソッド名。
 	 * @returns {SyncServerMethod} 同期サーバメソッド。
 	 */
-	getAsyncServerMethod(method) {
-		return new AsyncServerMethod(this.getUniqId() + "." + method);
+	getServerMethod(method) {
+		return new ServerMethod(this.getUniqId() + "." + method);
 	}
 
 	/**

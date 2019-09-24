@@ -357,7 +357,7 @@ class Page extends DataForms {
 		$.datepicker.setDefaults($.datepicker.regional[this.getLanguage()]);
 		var thisPage = this;
 		// ページの初期化.
-		var method = new AsyncServerMethod("getPageInfo");
+		var method = new ServerMethod("getPageInfo");
 		method.execute("", function(result) {
 			for (var key in result.result) {
 				thisPage[key] = result.result[key];

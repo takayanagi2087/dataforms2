@@ -106,7 +106,7 @@ class TableGeneratorEditForm extends EditForm {
 	 */
 	importTable() {
 		var thisForm = this;
-		var m = this.getAsyncServerMethod("importTable");
+		var m = this.getServerMethod("importTable");
 		var importTable = this.find("#importTable").val();
 		var func = this.find("#functionSelect").val();
 		m.execute("importTable=" + importTable + "&functionSelect=" + func, function(r) {
@@ -221,7 +221,7 @@ class TableGeneratorEditForm extends EditForm {
 		if (p.length > 0 && c.length > 0) {
 			var classname = p + "." + c;
 			logger.log("classname=" + classname);
-			var method = this.getAsyncServerMethod("getFieldClassInfo");
+			var method = this.getServerMethod("getFieldClassInfo");
 			method.execute("classname=" + classname, function(ret) {
 				if (ret.status == ServerMethod.SUCCESS) {
 					var dfflg = tbl.getSameRowField(element, "isDataformsField");
@@ -282,7 +282,7 @@ class TableGeneratorEditForm extends EditForm {
 		if (p.length > 0 && c.length > 0) {
 			var classname = p + "." + c;
 			logger.log("super classname=" + classname);
-			var method = this.getAsyncServerMethod("getSuperFieldClassInfo");
+			var method = this.getServerMethod("getSuperFieldClassInfo");
 			method.execute("superclassname=" + classname, function(ret) {
 				if (ret.status == ServerMethod.SUCCESS) {
 					var len = tbl.getSameRowField(element, "fieldLength");

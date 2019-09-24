@@ -14,7 +14,7 @@ class MenuForm extends Form {
 	 */
 	update() {
 		var thisForm = this;
-		var method = this.getAsyncServerMethod("getMenu");
+		var method = this.getServerMethod("getMenu");
 		method.execute("", function(ret) {
 			if (ret.status == ServerMethod.SUCCESS) {
 				thisForm.menu.menuGroupList = ret.result.menuGroupList;

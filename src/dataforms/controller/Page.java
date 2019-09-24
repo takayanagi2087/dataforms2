@@ -231,7 +231,7 @@ public class Page extends DataForms {
 	private synchronized List<String> getBasicJsCache() throws Exception {
 		if (basicJsCache == null) {
 			basicJsCache = Collections.synchronizedList(new ArrayList<String>());
-			basicJsCache.add("/dataforms/util/createSubclass.js");
+//			basicJsCache.add("/dataforms/util/createSubclass.js");
 			basicJsCache.add("/dataforms/util/MessagesUtil.js");
 			basicJsCache.add("/dataforms/util/QueryStringUtil.js");
 			basicJsCache.add("/dataforms/util/StringUtil.js");

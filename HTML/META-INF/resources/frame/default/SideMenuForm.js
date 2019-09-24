@@ -1,9 +1,6 @@
 /**
  * メニューフォーム.
  */
-
-//createSubclass("SideMenuForm", {}, "MenuForm");
-
 class SideMenuForm extends MenuForm {
 	/**
 	 * ページの各エレメントとの対応付け.

@@ -1,8 +1,6 @@
 /**
  * メニューフォーム.
  */
-//createSubclass("MenuForm", {}, "Form");
-
 class MenuForm extends Form {
 	/**
 	 *

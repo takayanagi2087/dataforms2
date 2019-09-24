@@ -7,13 +7,12 @@
  *
  * @extends EditableHtmlTable
  */
-JoinHtmlTable = createSubclass("JoinHtmlTable", {}, "EditableHtmlTable");
-
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-JoinHtmlTable.prototype.attach = function() {
-	EditableHtmlTable.prototype.attach.call(this);
-};
+class JoinHtmlTable extends EditableHtmlTable {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}
 

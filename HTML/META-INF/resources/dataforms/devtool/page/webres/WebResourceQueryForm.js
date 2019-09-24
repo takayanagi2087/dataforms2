@@ -10,25 +10,24 @@
  * </pre>
  * @extends QueryForm
  */
-WebResourceQueryForm = createSubclass("WebResourceQueryForm", {}, "QueryForm");
-
-/**
- * HTMLエレメントフォームとの対応付けを行います。
- *
- */
-WebResourceQueryForm.prototype.attach = function() {
-	QueryForm.prototype.attach.call(this);
-	var thisForm = this;
-	this.find("#checkAllTypeButton").click(function() {
-		thisForm.find("[name='webComponentTypeList']").each(function() {
-			$(this).prop("checked", true);
+class WebResourceQueryForm extends QueryForm {
+	/**
+	 * HTMLエレメントフォームとの対応付けを行います。
+	 *
+	 */
+	attach() {
+		super.attach();
+		var thisForm = this;
+		this.find("#checkAllTypeButton").click(function() {
+			thisForm.find("[name='webComponentTypeList']").each(function() {
+				$(this).prop("checked", true);
+			});
 		});
-	});
-	this.find("#uncheckAllTypeButton").click(function() {
-		thisForm.find("[name='webComponentTypeList']").each(function() {
-			$(this).prop("checked", false);
+		this.find("#uncheckAllTypeButton").click(function() {
+			thisForm.find("[name='webComponentTypeList']").each(function() {
+				$(this).prop("checked", false);
+			});
 		});
-	});
-
-};
+	}
+}
 

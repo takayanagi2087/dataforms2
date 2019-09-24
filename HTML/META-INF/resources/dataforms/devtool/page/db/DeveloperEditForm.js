@@ -7,33 +7,35 @@
  *
  * @extends EditForm
  */
-DeveloperEditForm = createSubclass("DeveloperEditForm", {}, "EditForm");
-
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-DeveloperEditForm.prototype.attach = function() {
-	EditForm.prototype.attach.call(this);
-	if (this.userInfoDataExists) {
-		this.find("#flagDiv").show();
-	} else {
-		this.find("#flagDiv").hide();
-	}
-	var thisForm = this;
-	this.find("#userImportFlag").click(function() {
-		if ($(this).prop("checked")) {
-			thisForm.find("#userInfoTable").hide();
+class DeveloperEditForm extends EditForm {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+		if (this.userInfoDataExists) {
+			this.find("#flagDiv").show();
 		} else {
-			thisForm.find("#userInfoTable").show();
+			this.find("#flagDiv").hide();
 		}
-	});
-};
-
-DeveloperEditForm.prototype.validate = function() {
-	if (this.find("#userImportFlag").prop("checked")) {
-		return true;
-	} else {
-		return Form.prototype.validate.call(this);
+		var thisForm = this;
+		this.find("#userImportFlag").click(function() {
+			if ($(this).prop("checked")) {
+				thisForm.find("#userInfoTable").hide();
+			} else {
+				thisForm.find("#userInfoTable").show();
+			}
+		});
 	}
-};
+
+
+	validate() {
+		if (this.find("#userImportFlag").prop("checked")) {
+			return true;
+		} else {
+			return super.validate();
+		}
+	}
+}
+
+

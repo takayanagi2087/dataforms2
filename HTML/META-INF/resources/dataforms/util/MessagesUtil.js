@@ -50,16 +50,6 @@ class MessagesUtil {
 	 */
 	static getMessage() {
 		var msg = MessagesUtil.messageMap[arguments[0]];
-/*		if (msg == null) {
-			if (currentPage.clientMessageTransfer == "SEND_AT_ANY_TIME") {
-				// 存在しないメッセージはajaxで取得しますが、
-				// 同期通信なので、非推奨です。
-				var method = new SyncServerMethod("getServerMessage");
-				var r = method.execute("key=" + arguments[0]);
-				this.messageMap[arguments[0]] = r.result;
-				msg = r.result;
-			}
-		}*/
 		if (msg != null) {
 			for (var i = 1; i < arguments.length; i++) {
 				var rex = RegExp('\\{' + (i - 1) +  '\\}');

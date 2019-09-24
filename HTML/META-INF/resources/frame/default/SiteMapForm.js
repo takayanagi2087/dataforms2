@@ -7,7 +7,6 @@
 /**
  * メニューフォーム.
  */
-//createSubclass("SiteMapForm", {}, "MenuForm");
 class SiteMapForm extends MenuForm {
 	/**
 	 * ページの各エレメントとの対応付け.

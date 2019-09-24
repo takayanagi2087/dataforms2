@@ -7,22 +7,23 @@
  *
  * @extends SimpleClassNameField
  */
-QueryClassNameField = createSubclass("QueryClassNameField", {}, "SimpleClassNameField");
+class QueryClassNameField extends SimpleClassNameField {
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
 
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-QueryClassNameField.prototype.attach = function() {
-	SimpleClassNameField.prototype.attach.call(this);
-};
-
-QueryClassNameField.prototype.onUpdateRelationField = function() {
-	SimpleClassNameField.prototype.onUpdateRelationField.call(this);
-	if (this.get().val().length != 0) {
-		var form = this.getParentForm();
-		if (typeof form.getSql == "function") {
-			form.getSql();
+	onUpdateRelationField() {
+		super.onUpdateRelationField();
+		if (this.get().val().length != 0) {
+			var form = this.getParentForm();
+			if (typeof form.getSql == "function") {
+				form.getSql();
+			}
 		}
 	}
-};
+}
+
+

@@ -22,6 +22,7 @@ class MultiRecordEditForm extends TableUpdateForm {
 	 * コンストラクタ。
 	 */
 	constructor() {
+		super();
 		this.mode = "edit";
 		this.multiRecord = true;
 		this.keyMap = {};

@@ -56,7 +56,7 @@ class WebComponent {
 	 * QueryStringを取得します。
 	 * @returns {Object} QueryStringを展開したオブジェクト。
 	 */
-	getQueryString = function() {
+	getQueryString() {
 		return QueryStringUtil.parse(window.location.search);
 	}
 

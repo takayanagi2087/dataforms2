@@ -12,16 +12,49 @@
  * @param {String} m メソッド名。
  */
 class ServerMethod {
+
+	/**
+	 * パラメータタイプurlencoded。
+	 */
+	static get PARAM_TYPE_URLENCODED() {
+		return "application/x-www-form-urlencoded";
+	}
+
+	/**
+	 * パラメータタイプJSON。
+	 */
+	static get PARAM_TYPE_JSON() {
+		return "application/json; charset=utf-8";
+	}
+
+	/**
+	 * パラメータタイプFormDataオブジェクト。
+	 */
+	static get PARAM_TYPE_FORM_DATA() {
+		return "formData";
+	}
+
 	/**
 	 * コンストラクタ。
-	 * @param {String} m メソッド名。
 	 *
+	 * @param {String} m メソッド名。
+	 * @param {String} ptype パラメータタイプ。
+	 * <pre>
+	 * 	ServerMethod.PARAM_TYPE_URLENCODED	... URLエンコード形式("p1=v1&p2=v2"形式)(デフォルト)。
+	 * 	ServerMethod.PARAM_TYPE_JSON		... JSON形式。
+	 * 	ServerMethod.PARAM_TYPE_FORM_DATA	... FormData形式。
+	 * </pre>
 	 */
-	constructor(m) {
+	constructor(m, ptype) {
 		if (m != null) {
 		    this.serverUrl = location.pathname;
 		    this.method = m;
 		    this.errorMessagesArea = "errorMessages";
+		}
+		if (ptype == null) {
+			this.paramType = ServerMethod.PARAM_TYPE_URLENCODED;
+		} else {
+			this.paramType = ptype;
 		}
 	}
 
@@ -63,7 +96,7 @@ class ServerMethod {
 	 * @param {Object} data 返却されたオブジェクト.
 	 * @param {Object} type 返却されたオブジェクトタイプ.
 	 */
-	onCatchApplicationException(data, type) {
+	onCatchApplicationException(data) {
 		if (data.result.key == "error.auth") {
 			window.location.href = currentPage.contextPath + currentPage.errorPage + "?msg=" + data.result.message;
 		} else {
@@ -76,60 +109,68 @@ class ServerMethod {
 	* <pre>
 	* jQuery.ajaxのerror オプションに指定するメソッドです。
 	* </pre>
-	* @param {Object} XMLHttpRequest XMLHttpRequestオブジェクト。
-	* @param {String} textStatus エラー内容。
-	* @param {Object} errorThrown 補足的な例外オブジェクト。
 	*/
-	onAjaxError(XMLHttpRequest, textStatus, errorThrown) {
+	onAjaxError() {
 		alert(MessagesUtil.getMessage("error.ajax"));
 	}
 
 	/**
 	* サーバー上のメソッドを呼び出します。
 	* @param {String} method メソッド名。
-	* @param {String} param パラメータ。
+	* @param {Object} param パラメータ。
 	* @param {Function} success 成功時の応答処理。
-	* @param {Boolean} as 非同期フラグ。
 	*/
-	callMethod(method, param, success, as) {
+	callMethod(method, param, success) {
+		let as = true;
 		if (window.currentPage != null) {
 			window.currentPage.lock();
 		}
-	    if (param == null) {
-	        param = "";
-	    }
-	    param = "dfMethod=" + method + "&" + param;
-	    if (currentPage.csrfToken != null) {
-	    	param = "csrfToken=" + currentPage.csrfToken + "&" + param;
-	    }
-	    var me = this;
-	    var errorfunc = this.onAjaxError;
-	    $.ajax({ url: this.serverUrl
-		  , data: param
-		  , async: as
-		  , dataType: "json"
-		  , type: "POST"
-		  , contentType: "application/x-www-form-urlencoded"
-		  , success: function (data, type) {
-//			  logger.info("type=" + type);
+		if (param == null) {
+			param = "";
+		}
+		param = "dfMethod=" + method + "&" + param;
+		if (currentPage.csrfToken != null) {
+			param = "csrfToken=" + currentPage.csrfToken + "&" + param;
+		}
+		var errorfunc = this.onAjaxError;
+		var p = {method: "POST", mode: "cors",	cache: "no-cache", credentials: "same-origin", redirect: "follow", body: param,
+		};
+		p.headers = {};
+		if (this.paramType != ServerMethod.PARAM_TYPE_FORM_DATA) {
+			// FormData形式以外のパラメータの場合はConetnt-Typeを設定する。
+			p.headers["Content-Type"] = this.paramType;
+		}
+		logger.debug("queryString=" + window.location.search);
+		if (window.location.search != null && window.location.search.length > 1) {
+			// QueryStringが指定された場合、それを送信する。
+			p.headers["queryString"] = window.location.search.substring(1)
+		}
+		fetch(this.serverUrl, p).then((r) => {
+			if (r.ok) {
+				// return r.text();
+				return r.json();
+			} else {
+				let msg = "HTTP_" + r.status + " " + r.statusText;
+				return Promise.reject(new Error(msg));
+			}
+		//}).then((text) => {
+		//	return eval("(" + text + ")");
+		}).then((data) => {
+			if (window.currentPage != null) {
+				window.currentPage.unlock();
+			}
+			if (data.status == ServerMethod.SUCCESS || data.status == ServerMethod.INVALID) {
+				success.call(this, data);
+			} else {
+				this.onCatchApplicationException(data);
+			}
+		}).catch((err) => {
+			  logger.error(err.message);
 			  if (window.currentPage != null) {
 				  window.currentPage.unlock();
 			  }
-			  // TODO:SUCCESS, INVALID以外の値を返した場合の処理に対応できたほうが良い。
-			  if (data.status == ServerMethod.SUCCESS || data.status == ServerMethod.INVALID) {
-				  success.call(me, data, type);
-			  } else if (data.status == ServerMethod.APPLICATION_EXCEPTION) {
-				  me.onCatchApplicationException(data, type);
-			  }
-		  }
-		  , error: function (XMLHttpRequest, textStatus, errorThrown) {
-			  logger.error(textStatus);
-			  if (window.currentPage != null) {
-				  window.currentPage.unlock();
-			  }
-		      errorfunc.call(me, XMLHttpRequest, textStatus, errorThrown);
-		  }
-	    });
+		      errorfunc.call(this);
+		});
 	}
 
 	/**
@@ -151,7 +192,7 @@ class ServerMethod {
 	 *
 	 */
 	execute(param, success) {
-	    this.callMethod(this.method, param, success, true);
+	    this.callMethod(this.method, param, success);
 	}
 
 	/**
@@ -307,7 +348,7 @@ class ServerMethod {
 			data += $(this).attr("name") + "=" + encodeURIComponent($(this).val());
 		});
 		logger.log("data=" + data);
-		this.callMethod(this.method, data, func, true);
+		this.callMethod(this.method, data, func);
 	}
 
 	/**

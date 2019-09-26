@@ -39,22 +39,12 @@ class ServerMethod {
 	 *
 	 * @param {String} m メソッド名。
 	 * @param {String} ptype パラメータタイプ。
-	 * <pre>
-	 * 	ServerMethod.PARAM_TYPE_URLENCODED	... URLエンコード形式("p1=v1&p2=v2"形式)(デフォルト)。
-	 * 	ServerMethod.PARAM_TYPE_JSON		... JSON形式。
-	 * 	ServerMethod.PARAM_TYPE_FORM_DATA	... FormData形式。
-	 * </pre>
 	 */
-	constructor(m, ptype) {
+	constructor(m) {
 		if (m != null) {
 		    this.serverUrl = location.pathname;
 		    this.method = m;
 		    this.errorMessagesArea = "errorMessages";
-		}
-		if (ptype == null) {
-			this.paramType = ServerMethod.PARAM_TYPE_URLENCODED;
-		} else {
-			this.paramType = ptype;
 		}
 	}
 
@@ -115,6 +105,34 @@ class ServerMethod {
 	}
 
 	/**
+	 * 常にやり取りするパラメータを追加します。
+	 * @param {String} method メソッド。
+	 * @param {Object} param パラメータ。
+	 * @returns パラメータタイプ。
+	 */
+	setParameter(method, param) {
+		let ret = ServerMethod.PARAM_TYPE_URLENCODED;
+		if (param instanceof FormData) {
+			logger.log("param is FormData");
+			param.append("dfMethod", method);
+			if (currentPage.csrfToken != null) {
+				param.append("csrfToken", currentPage.csrfToken);
+			}
+			ret = ServerMethod.PARAM_TYPE_FORM_DATA
+		} else {
+			logger.log("param is String");
+			param = "dfMethod=" + method + "&" + param;
+			if (currentPage.csrfToken != null) {
+				param = "csrfToken=" + currentPage.csrfToken + "&" + param;
+			}
+			ret = ServerMethod.PARAM_TYPE_URLENCODED;
+		}
+		this.parameter = param;
+		return ret;
+	}
+
+
+	/**
 	* サーバー上のメソッドを呼び出します。
 	* @param {String} method メソッド名。
 	* @param {Object} param パラメータ。
@@ -128,19 +146,14 @@ class ServerMethod {
 		if (param == null) {
 			param = "";
 		}
-		param = "dfMethod=" + method + "&" + param;
-		if (currentPage.csrfToken != null) {
-			param = "csrfToken=" + currentPage.csrfToken + "&" + param;
-		}
+		let ptype = this.setParameter(method, param);
 		var errorfunc = this.onAjaxError;
-		var p = {method: "POST", mode: "cors",	cache: "no-cache", credentials: "same-origin", redirect: "follow", body: param,
-		};
+		var p = {method: "POST", mode: "cors",	cache: "no-cache", credentials: "same-origin", redirect: "follow", body: this.parameter};
 		p.headers = {};
-		if (this.paramType != ServerMethod.PARAM_TYPE_FORM_DATA) {
+		if (ptype != ServerMethod.PARAM_TYPE_FORM_DATA) {
 			// FormData形式以外のパラメータの場合はConetnt-Typeを設定する。
-			p.headers["Content-Type"] = this.paramType;
+			p.headers["Content-Type"] = ptype;
 		}
-		logger.debug("queryString=" + window.location.search);
 		if (window.location.search != null && window.location.search.length > 1) {
 			// QueryStringが指定された場合、それを送信する。
 			p.headers["queryString"] = window.location.search.substring(1)
@@ -206,93 +219,9 @@ class ServerMethod {
 		return fileFields.length > 0;
 	}
 
-	/**
-	 * 指定したフォームにHIDDEN項目を追加します。
-	 * @param {jQuery} form フォーム。
-	 * @param {String} field フィールドID。
-	 * @param {String} val 値。
-	 */
-	setHiddenField(form, field, val) {
-		var hid = form.find('#' + field);
-		if (hid.length == 0) {
-			form.append("<input type='hidden' id='" + field + "' name='" + field + "' value='" + val + "'>");
-			hid = form.find('#' + field);
-		}
-		hid.val(val);
-	}
-
 
 	/**
-	 * ファイルアップロードフィールドが存在する場合のPOSTリクエストを実行します。
-	 * <pre>
-	 * ファイルが正常に送信できるようにフォームの属性を自動的に設定し、POSTを実行します。
-	 * サーバーからの応答は見えないインラインフレーム展開し、処理します。
-	 * </pre>
-	 * @param {jQuery} form フォーム。
-	 * @param {String} method ポスト先のMethod。
-	 * @param {Function} success 成功時の応答処理 function(data)。
-	 * 応答処理メソッドには以下の形式のObjectを渡します。
-	 * <pre>
-	 * {
-	 *   status:サーバの処理結果(ServerMethod.SUCCESS or ServerMethod.INVALID).
-	 *   result:サーバが応答したオブジェクト。
-	 * }
-	 * </pre>
-	 */
-	uploadForm(form, method, success) {
-		var me = this;
-		// 受け取り用iframeが存在したら削除する.
-		var uiframe = $('#uploadIFrame').remove();
-		// 結果を受け取るIFRAMEを非表示で作成する.
-		$('body').append("<iframe style='display:none' id='uploadIFrame' name='uploadIFrame'></iframe>");
-		uiframe = $('#uploadIFrame');
-		// iframeがロードされた場合のイベント処理を登録する.
-		uiframe.on('load', function() {
-			var contents = $(uiframe).contents().get(0);
-			var data = $(contents).find('body').text();
-			try {
-				data = window.eval('(' + data + ')');
-				// TODO:SUCCESS, INVALID以外の値を返した場合の処理に対応できたほうが良い。
-				if (data.status == ServerMethod.SUCCESS || data.status == ServerMethod.INVALID) {
-					success.call(me, data);
-				} else if (data.status == ServerMethod.APPLICATION_EXCEPTION) {
-					me.onCatchApplicationException(data);
-					if (window.currentPage !== undefined) {
-						window.currentPage.unlock();
-					}
-				}
-			} catch (e) {
-				logger.error(e.message);
-				if (window.currentPage !== undefined) {
-					window.currentPage.unlock();
-				}
-				me.onAjaxError();
-			}
-			uiframe.html("");
-		});
-		form.attr("enctype", "multipart/form-data"); // enctypeをファイルアップロード可能なmultipart/form-dataに設定
-		form.attr("method", "POST");
-		form.attr("action", this.servletUrl);
-		form.attr("target", "uploadIFrame"); // POSTの結果の受け取り先を見えないiframeに設定する.
-		this.setHiddenField(form, "dfMethod", method);
-		if (currentPage.csrfToken != null) {
-			this.setHiddenField(form, "csrfToken", currentPage.csrfToken);
-		}
-		if (window.location.search != null && window.location.search.length > 1) {
-			this.setHiddenField(form, "dfQueryString", window.location.search.substring(1));
-		}
-		form.submit();
-		form.find("#dfMethod").remove();
-		if (currentPage.csrfToken != null) {
-			form.find("#csrfToken").remove();
-		}
-		if (window.location.search != null && window.location.search.length > 1) {
-			this.find("#dfQueryString").remove();
-		}
-	}
-
-	/**
-	 * 指定したformを指定したメソッドに対してPostします。
+	 * 指定したformをメソッドに対してPostします。
 	 * <pre>
 	 * 指定されたformの内容をサーバーメソッドに対してpostします。
 	 * サーバーメソッドの応答内容は、通常json形式です。
@@ -379,7 +308,12 @@ class ServerMethod {
 			}
 			func(data);
 		};
-		this.uploadForm(form, this.method, rfunc);
+		this.paramType = ServerMethod.PARAM_TYPE_FORM_DATA;
+		let formData = new FormData(form.get(0));
+		logger.log("formData=");
+		logger.dir(formData);
+		this.callMethod(this.method, formData, rfunc);
+		// this.uploadForm(form, this.method, rfunc);
 	}
 }
 

@@ -80,20 +80,18 @@ class ServerMethod {
 	 * @param {String} m メソッド名。
 	 */
 	constructor(m) {
-		if (m != null) {
-			this.serverUrl = location.pathname;
-			this.method = m;
-			this.errorMessagesArea = "errorMessages";
-			this.contentType = null;
-			this.init = {
-				method: "POST"
-				, mode: "cors"
-				, cache: "no-cache"
-				, credentials: "same-origin"
-				, redirect: "follow"
-				, headers: {}
-			};
-		}
+		this.serverUrl = location.pathname;
+		this.method = m;
+		this.errorMessagesArea = "errorMessages";
+		this.contentType = null;
+		this.init = {
+			method: "POST"
+			, mode: "cors"
+			, cache: "no-cache"
+			, credentials: "same-origin"
+			, redirect: "follow"
+			, headers: {}
+		};
 	}
 
 	/**
@@ -128,12 +126,12 @@ class ServerMethod {
 	}
 
 	/**
-	 * 常にやり取りするパラメータを追加します。
+	 * 送信するパラメータを設定します。
 	 * @param {String} method メソッド。
 	 * @param {Object} param パラメータ。
 	 * @returns パラメータタイプ。
 	 */
-	setParameter(method, param) {
+	setInitBody(method, param) {
 		let ret = ServerMethod.PARAM_TYPE_URLENCODED;
 		if (param instanceof FormData) {
 			logger.log("param is FormData");
@@ -143,8 +141,12 @@ class ServerMethod {
 			}
 			ret = ServerMethod.PARAM_TYPE_FORM_DATA;
 		} else if (param instanceof Object) {
+			param.dfMethod = method;
+			if (currentPage.csrfToken != null) {
+				param.csrfToken = currentPage.csrfToken;
+			}
 			param = JSON.stringify(param);
-			logger.log("param is Object json=" + pram);
+			logger.log("param is Object json=" + param);
 			ret = ServerMethod.PARAM_TYPE_JSON;
 		} else {
 			logger.log("param is String param=[" + param + "]");
@@ -178,7 +180,7 @@ class ServerMethod {
 		if (param == null) {
 			param = "";
 		}
-		let ptype = this.setParameter(method, param);
+		let ptype = this.setInitBody(method, param);
 		var errorfunc = this.onCatchError;
 		if (ptype != ServerMethod.PARAM_TYPE_FORM_DATA) {
 			// FormData形式以外のパラメータの場合はConetnt-Typeを設定する。
@@ -356,7 +358,6 @@ class ServerMethod {
 		this.paramType = ServerMethod.PARAM_TYPE_FORM_DATA;
 		let formData = new FormData(form.get(0));
 		this.callMethod(this.method, formData, func);
-		// this.uploadForm(form, this.method, rfunc);
 	}
 }
 

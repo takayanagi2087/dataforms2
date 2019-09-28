@@ -118,6 +118,17 @@ class AllTypeEditForm extends EditForm {
 		this.find("#attachFileTable thead tr").find("th").each(function() {
 			logger.dir(this);
 		});
+
+		var param = {
+			p1: "aaa"
+			, p2: "bbb"
+		};
+		var m = this.getServerMethod("testJsonPost");
+		m.execute(param, function(r) {
+			if (r.status == ServerMethod.SUCCESS) {
+				alert(r.result);
+			}
+		});
 	}
 
 }

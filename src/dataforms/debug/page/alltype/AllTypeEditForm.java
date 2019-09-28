@@ -248,4 +248,9 @@ public class AllTypeEditForm extends EditForm {
 		return ret;
 	}
 
+	@WebMethod
+	public Response testJsonPost(final Map<String, Object> p) throws Exception {
+		logger.debug("param=" + JSON.encode(p, true));
+		return new JsonResponse(JsonResponse.SUCCESS, "ok");
+	}
 }

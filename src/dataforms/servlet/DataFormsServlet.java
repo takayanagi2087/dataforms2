@@ -2,6 +2,7 @@ package dataforms.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
@@ -1012,11 +1013,21 @@ public class DataFormsServlet extends HttpServlet {
 	 * @return パラメータマップ。
 	 * @throws Exception 例外。
 	 */
+	@SuppressWarnings("unchecked")
 	protected Map<String, Object> getParameterMap(final HttpServletRequest req) throws Exception {
 		if (ServletFileUpload.isMultipartContent(req)) {
 			return this.getParameterMapForMultipart(req);
 		} else {
-			return this.getParameterMapForUrlencoded(req);
+			String contentType = req.getHeader("Content-Type");
+			if (contentType != null && contentType.indexOf("application/json") >= 0) {
+				Map<String, Object> ret = new HashMap<String, Object>();
+				try (InputStream is = req.getInputStream()) {
+					ret = JSON.decode(is, HashMap.class);
+				}
+				return ret;
+			} else {
+				return this.getParameterMapForUrlencoded(req);
+			}
 		}
 	}
 

@@ -237,33 +237,36 @@ class Form extends WebComponent {
 	 */
 	submitForDownload(method, func) {
 		var form = this;
-		document.cookie = "downloaded=0";
 		var m = new ServerMethod(this.getUniqId() + "." + method);
-		if (func == null) {
-			m.submitWithFile(form.get(), function(ret) {
-				var systemName = MessagesUtil.getMessage("message.systemname");
-				currentPage.alert(systemName, ret.result);
-			});
-		} else {
-			m.submitWithFile(form.get(), func);
-		}
-//		logger.log("isLocked=" + window.currentPage.isLocked());
-		var tm = setInterval(function() {
-			logger.log("isLocked=" + window.currentPage.isLocked());
-			if (!window.currentPage.isLocked()) {
-				logger.log("stop timer.");
-				clearInterval(tm);
-			} else {
-				var dl = form.getCookie("downloaded");
-				logger.log("dl=" + dl);
-				if ("1" == dl) {
-					window.currentPage.unlock();
-					logger.log("stop timer by downloaded cookie");
-					clearInterval(tm);
-					document.cookie = "downloaded=0";
+		var rfunc = function(data) {
+			if (data instanceof Blob) {
+				// blobが来た場合。
+				let contentDisposition = m.headers.get("Content-Disposition");
+				let filename = "download";
+				if (contentDisposition != null && contentDisposition.length > 0) {
+					filename = contentDisposition.replace("attachment; filename=", "");
 				}
+				logger.log("download blob=" + contentDisposition);
+				const url = (window.URL || window.webkitURL).createObjectURL(data);
+				// ダウンロード.
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = filename;
+				document.body.appendChild(a);
+				a.click();
+				document.body.removeChild(a);
+			} else {
+				// ダウンロードを期待したがJSONが来た場合。
+				if (func == null) {
+					func = function(ret) {
+						var systemName = MessagesUtil.getMessage("message.systemname");
+						currentPage.alert(systemName, ret.result);
+					}
+				}
+				func.call(form, data);
 			}
-		}, 500);
+		}
+		m.submitWithFile(form.get(), rfunc);
 	}
 
 	/**

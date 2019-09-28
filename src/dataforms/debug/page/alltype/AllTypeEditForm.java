@@ -161,6 +161,7 @@ public class AllTypeEditForm extends EditForm {
 	@WebMethod
 	public Response print(final Map<String, Object> param) throws Exception {
 		this.methodStartLog(logger, param);
+		logger.debug("queryString=" + JSON.encode(this.getPage().getQueryString(), true));
 		Map<String, Object> data = this.convertToServerData(param);
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get("attachFileTable");

@@ -52,12 +52,7 @@ public class JsonResponse extends Response {
 	public JsonResponse(final int status, final Object result) {
 		this.setStatus(status);
 		this.setResult(result);
-//		this.setContentType("application/json; charset=" + DataFormsServlet.getEncoding());
-		/*
-		 * content-typeがapplication/jsonだとiframeで受けた場合、IEはダウンロードの動作になってしまうので
-		 * text/plainを設定しておく。
-		 */
-		this.setContentType("text/plain; charset=" + DataFormsServlet.getEncoding());
+		this.setContentType("application/json; charset=" + DataFormsServlet.getEncoding());
 	}
 
 	/**

@@ -6,10 +6,24 @@
 /**
  * @class ServerMethod
  *
- * サーバメソッド基本クラス。
+ * サーバメソッドクラス。
+ *
+ * @prop {String} serverUrl location.pathnameの値。
+ * @prop {String} method メソッド名。
+ * @prop {String} errorMessagesArea エラーメッセージ領域のID。
+ * @prop {Object} init fetchのinitパラメータ。
  * <pre>
+ * 初期設定は以下の様になっています。
+ * {
+ * 	method: "POST"
+ * 	, mode: "cors"
+ * 	, cache: "no-cache"
+ * 	, credentials: "same-origin"
+ * 	, redirect: "follow"
+ * 	, headers: {}
+ * }
  * </pre>
- * @param {String} m メソッド名。
+ * @prop {String} contentType 応答のcontent-type。
  */
 class ServerMethod {
 
@@ -31,21 +45,7 @@ class ServerMethod {
 	 * パラメータタイプFormDataオブジェクト。
 	 */
 	static get PARAM_TYPE_FORM_DATA() {
-		return "formData";
-	}
-
-	/**
-	 * コンストラクタ。
-	 *
-	 * @param {String} m メソッド名。
-	 * @param {String} ptype パラメータタイプ。
-	 */
-	constructor(m) {
-		if (m != null) {
-		    this.serverUrl = location.pathname;
-		    this.method = m;
-		    this.errorMessagesArea = "errorMessages";
-		}
+		return "formData"; // content-typeは指定しない。
 	}
 
 	/**
@@ -75,6 +75,28 @@ class ServerMethod {
 	}
 
 	/**
+	 * コンストラクタ。
+	 *
+	 * @param {String} m メソッド名。
+	 */
+	constructor(m) {
+		if (m != null) {
+			this.serverUrl = location.pathname;
+			this.method = m;
+			this.errorMessagesArea = "errorMessages";
+			this.contentType = null;
+			this.init = {
+				method: "POST"
+				, mode: "cors"
+				, cache: "no-cache"
+				, credentials: "same-origin"
+				, redirect: "follow"
+				, headers: {}
+			};
+		}
+	}
+
+	/**
 	 * アプリケーション例外発生時の処理です。
 	 * <pre>
 	 * dataは以下の形式のオブジェクトです。
@@ -87,6 +109,7 @@ class ServerMethod {
 	 * @param {Object} type 返却されたオブジェクトタイプ.
 	 */
 	onCatchApplicationException(data) {
+		logger.log("onCatchApplicationException data=" + JSON.stringify(data));
 		if (data.result.key == "error.auth") {
 			window.location.href = currentPage.contextPath + currentPage.errorPage + "?msg=" + data.result.message;
 		} else {
@@ -100,7 +123,7 @@ class ServerMethod {
 	* jQuery.ajaxのerror オプションに指定するメソッドです。
 	* </pre>
 	*/
-	onAjaxError() {
+	onCatchError() {
 		alert(MessagesUtil.getMessage("error.ajax"));
 	}
 
@@ -118,16 +141,20 @@ class ServerMethod {
 			if (currentPage.csrfToken != null) {
 				param.append("csrfToken", currentPage.csrfToken);
 			}
-			ret = ServerMethod.PARAM_TYPE_FORM_DATA
+			ret = ServerMethod.PARAM_TYPE_FORM_DATA;
+		} else if (param instanceof Object) {
+			param = JSON.stringify(param);
+			logger.log("param is Object json=" + pram);
+			ret = ServerMethod.PARAM_TYPE_JSON;
 		} else {
-			logger.log("param is String");
+			logger.log("param is String param=[" + param + "]");
 			param = "dfMethod=" + method + "&" + param;
 			if (currentPage.csrfToken != null) {
 				param = "csrfToken=" + currentPage.csrfToken + "&" + param;
 			}
 			ret = ServerMethod.PARAM_TYPE_URLENCODED;
 		}
-		this.parameter = param;
+		this.init.body = param;
 		return ret;
 	}
 
@@ -136,6 +163,11 @@ class ServerMethod {
 	* サーバー上のメソッドを呼び出します。
 	* @param {String} method メソッド名。
 	* @param {Object} param パラメータ。
+	* <pre>
+	*  FormData型のオブジェクトはそのまま送信。
+	*  Stringの場合はURLENCODED(p1=v1&p2=v2)形式。
+	*  上記以外のObjectの場合はJSON形式に変換して送信。
+	* </pre>
 	* @param {Function} success 成功時の応答処理。
 	*/
 	callMethod(method, param, success) {
@@ -147,21 +179,32 @@ class ServerMethod {
 			param = "";
 		}
 		let ptype = this.setParameter(method, param);
-		var errorfunc = this.onAjaxError;
-		var p = {method: "POST", mode: "cors",	cache: "no-cache", credentials: "same-origin", redirect: "follow", body: this.parameter};
-		p.headers = {};
+		var errorfunc = this.onCatchError;
 		if (ptype != ServerMethod.PARAM_TYPE_FORM_DATA) {
 			// FormData形式以外のパラメータの場合はConetnt-Typeを設定する。
-			p.headers["Content-Type"] = ptype;
+			this.init.headers["Content-Type"] = ptype;
 		}
 		if (window.location.search != null && window.location.search.length > 1) {
 			// QueryStringが指定された場合、それを送信する。
-			p.headers["queryString"] = window.location.search.substring(1)
+			this.init.headers["queryString"] = window.location.search.substring(1)
 		}
-		fetch(this.serverUrl, p).then((r) => {
+		fetch(this.serverUrl, this.init).then((r) => {
+			logger.log("r.contentType=" + r.headers.get("Content-Type"));
+			this.contentType = r.headers.get("Content-Type");
+			this.headers = r.headers;
 			if (r.ok) {
-				// return r.text();
-				return r.json();
+				if (this.contentType != null) {
+					if (this.contentType.indexOf("application/json") >= 0) {
+						logger.log("received json");
+						return r.json();
+					} else if (this.contentType.indexOf("text") >= 0) {
+						logger.log("received text");
+						return r.text();
+					} else {
+						logger.log("received blob");
+						return r.blob();
+					}
+				}
 			} else {
 				let msg = "HTTP_" + r.status + " " + r.statusText;
 				return Promise.reject(new Error(msg));
@@ -169,13 +212,20 @@ class ServerMethod {
 		//}).then((text) => {
 		//	return eval("(" + text + ")");
 		}).then((data) => {
+			logger.dir(data);
 			if (window.currentPage != null) {
 				window.currentPage.unlock();
 			}
-			if (data.status == ServerMethod.SUCCESS || data.status == ServerMethod.INVALID) {
-				success.call(this, data);
+			if (this.contentType.indexOf("application/json") >= 0) {
+				// JSONが帰ってきた場合はstatusを判定する。
+				if (data.status == ServerMethod.SUCCESS || data.status == ServerMethod.INVALID) {
+					success.call(this, data);
+				} else {
+					this.onCatchApplicationException(data);
+				}
 			} else {
-				this.onCatchApplicationException(data);
+				// json以外の場合はそのままメソットに渡す。
+				success.call(this, data);
 			}
 		}).catch((err) => {
 			  logger.error(err.message);
@@ -193,6 +243,11 @@ class ServerMethod {
 	 * </pre>
 	 *
 	 * @param {String} param パラメータ(QueryString形式)。
+	 * <pre>
+	 *  FormData型のオブジェクトはそのまま送信。
+	 *  Stringの場合はURLENCODED(p1=v1&p2=v2)形式。
+	 *  上記以外のObjectの場合はJSON形式に変換して送信。
+	 * </pre>
 	 * @param {Function} success 成功時の応答処理 function(data)。
 	 * 応答処理メソッドには以下の形式のObjectを渡します。
 	 * <pre>
@@ -201,7 +256,6 @@ class ServerMethod {
 	 *   result:サーバが応答したオブジェクト。
 	 * }
 	 * </pre>
-	 *
 	 *
 	 */
 	execute(param, success) {
@@ -254,7 +308,7 @@ class ServerMethod {
 	 * <pre>
 	 * 指定されたformの内容をサーバーメソッドに対してpostします。
 	 * サーバーメソッドの応答内容は、通常json形式です。
-	 * フォームの内容をform.serialize()メソッドで$.ajax()メソッドに渡します。
+	 * フォームの内容をform.serialize()メソッドで取得しfetch APIに渡します。
 	 * </pre>
 	 * @param {jQuery} form FROM。
 	 * @param {Function} func 応答処理 function(data)。
@@ -299,20 +353,9 @@ class ServerMethod {
 	 * </pre>
 	 */
 	submitWithFile(form, func) {
-		if (window.currentPage !== undefined) {
-			window.currentPage.lock();
-		}
-		var rfunc = function(data) {
-			if (window.currentPage !== undefined) {
-				window.currentPage.unlock();
-			}
-			func(data);
-		};
 		this.paramType = ServerMethod.PARAM_TYPE_FORM_DATA;
 		let formData = new FormData(form.get(0));
-		logger.log("formData=");
-		logger.dir(formData);
-		this.callMethod(this.method, formData, rfunc);
+		this.callMethod(this.method, formData, func);
 		// this.uploadForm(form, this.method, rfunc);
 	}
 }

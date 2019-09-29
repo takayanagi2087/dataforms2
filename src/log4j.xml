@@ -25,20 +25,31 @@
 		</layout>
 	</appender>
 
-	<!--  	<category name="dataforms">
-		<priority value="debug" />
-	</category>
-	-->
-	
+	<appender name="REQUEST" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="log/httprequest.log" />
+		<param name="Append" value="true" />
+		<param name="Encoding" value="utf-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %5p %c{1} - %m%n" />
+		</layout>
+	</appender>
+
 	<category name="org.apache">
 		<priority value="info" />
 	</category>
-	
+
 	<category name="FOP">
 		<priority value="info" />
 	</category>
-	
-	
+
+	<!-- http requestのログのみ別に出力する -->
+	<category name="HttpRequest">
+		<priority value="debug" />
+		<appender-ref ref="REQUEST" />
+	</category>
+
+
 	<!-- ********************** root定義 ***************************** -->
 	<root>
 		<priority value="debug" />

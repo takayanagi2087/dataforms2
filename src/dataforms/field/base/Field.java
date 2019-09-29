@@ -11,11 +11,11 @@ import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.ApplicationError;
-import dataforms.controller.JsonResponse;
 import dataforms.controller.WebComponent;
 import dataforms.dao.Dao;
 import dataforms.dao.Query;
 import dataforms.dao.Table;
+import dataforms.response.JsonResponse;
 import dataforms.util.StringUtil;
 import dataforms.validator.FieldValidator;
 import dataforms.validator.RequiredValidator;

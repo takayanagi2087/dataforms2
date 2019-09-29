@@ -1,5 +1,4 @@
-package dataforms.controller;
-
+package dataforms.response;
 
 /**
  * ファイル応答情報クラス。

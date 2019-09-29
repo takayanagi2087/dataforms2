@@ -5,9 +5,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.controller.JsonResponse;
 import dataforms.controller.QueryForm;
-import dataforms.controller.Response;
 import dataforms.dao.Dao;
 import dataforms.dao.Query;
 import dataforms.dao.sqlgen.SqlGenerator;
@@ -15,6 +13,8 @@ import dataforms.devtool.field.common.FunctionSelectField;
 import dataforms.devtool.field.common.PackageNameField;
 import dataforms.devtool.field.common.QueryClassNameField;
 import dataforms.field.sqltype.ClobField;
+import dataforms.response.JsonResponse;
+import dataforms.response.Response;
 import dataforms.validator.RequiredValidator;
 
 /**

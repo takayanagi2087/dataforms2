@@ -9,10 +9,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.controller.BinaryResponse;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
-import dataforms.controller.Response;
 import dataforms.dao.Dao;
 import dataforms.devtool.dao.db.TableManagerDao;
 import dataforms.devtool.field.common.ClassNameField;
@@ -25,6 +23,8 @@ import dataforms.field.common.PresenceField;
 import dataforms.field.common.RowNoField;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.htmltable.HtmlTable;
+import dataforms.response.BinaryResponse;
+import dataforms.response.Response;
 import dataforms.util.ClassNameUtil;
 import dataforms.util.MessagesUtil;
 

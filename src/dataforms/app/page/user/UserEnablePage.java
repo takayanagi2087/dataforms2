@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import dataforms.annotation.WebMethod;
 import dataforms.app.dao.user.UserInfoTable;
 import dataforms.app.page.base.BasePage;
-import dataforms.controller.Response;
+import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.CryptUtil;
 import dataforms.util.NumberUtil;

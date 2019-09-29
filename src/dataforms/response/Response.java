@@ -1,4 +1,4 @@
-package dataforms.controller;
+package dataforms.response;
 
 import javax.servlet.http.HttpServletResponse;
 

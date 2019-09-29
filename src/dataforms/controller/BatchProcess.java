@@ -5,6 +5,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
+import dataforms.response.Response;
+import dataforms.response.TextResponse;
 
 /**
  * バッチ処理。

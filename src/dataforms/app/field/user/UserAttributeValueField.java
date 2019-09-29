@@ -8,8 +8,8 @@ import dataforms.annotation.WebMethod;
 import dataforms.app.dao.enumeration.EnumDao;
 import dataforms.app.page.user.UserEditForm;
 import dataforms.controller.Form;
-import dataforms.controller.JsonResponse;
 import dataforms.field.common.EnumOptionSingleSelectField;
+import dataforms.response.JsonResponse;
 import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
 

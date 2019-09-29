@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import dataforms.annotation.WebMethod;
 import dataforms.app.page.base.BasePage;
 import dataforms.controller.ApplicationException;
-import dataforms.controller.Response;
+import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.CryptUtil;
 import net.arnx.jsonic.JSON;

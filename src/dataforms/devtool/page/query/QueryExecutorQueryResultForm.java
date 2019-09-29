@@ -6,13 +6,13 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.controller.JsonResponse;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.dao.Dao;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
+import dataforms.response.JsonResponse;
 import dataforms.util.StringUtil;
 import net.arnx.jsonic.JSON;
 

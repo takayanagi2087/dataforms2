@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.EditForm;
-import dataforms.controller.JsonResponse;
 import dataforms.dao.Dao;
 import dataforms.dao.Query;
 import dataforms.dao.Table;
@@ -27,6 +26,7 @@ import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FlagField;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.response.JsonResponse;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;
 import dataforms.util.MessagesUtil;

@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.controller.JsonResponse;
 import dataforms.controller.QueryResultForm;
 import dataforms.devtool.field.common.WebSourcePathField;
 import dataforms.devtool.page.base.DeveloperPage;
@@ -23,6 +22,7 @@ import dataforms.field.common.PresenceField;
 import dataforms.field.common.RowNoField;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.htmltable.HtmlTable;
+import dataforms.response.JsonResponse;
 import dataforms.util.ClassFinder;
 import dataforms.util.FileUtil;
 import dataforms.util.StringUtil;

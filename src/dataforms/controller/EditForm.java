@@ -7,6 +7,7 @@ import dataforms.annotation.WebMethod;
 import dataforms.dao.Table;
 import dataforms.field.base.Field;
 import dataforms.field.base.TextField;
+import dataforms.response.JsonResponse;
 import dataforms.util.StringUtil;
 import dataforms.validator.ValidationError;
 

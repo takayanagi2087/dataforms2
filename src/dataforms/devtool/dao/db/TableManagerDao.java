@@ -24,7 +24,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import dataforms.app.dao.func.FuncInfoTable;
-import dataforms.controller.BinaryResponse;
 import dataforms.controller.Page;
 import dataforms.dao.Dao;
 import dataforms.dao.Index;
@@ -42,6 +41,7 @@ import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
+import dataforms.response.BinaryResponse;
 import dataforms.util.ClassFinder;
 import dataforms.util.FileUtil;
 import dataforms.util.NumberUtil;

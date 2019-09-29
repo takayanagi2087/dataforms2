@@ -7,6 +7,7 @@ import java.util.Map;
 import dataforms.annotation.WebMethod;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
+import dataforms.response.JsonResponse;
 import dataforms.util.MessagesUtil;
 import dataforms.validator.ValidationError;
 

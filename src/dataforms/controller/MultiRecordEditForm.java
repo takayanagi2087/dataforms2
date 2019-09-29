@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import dataforms.annotation.WebMethod;
+import dataforms.response.JsonResponse;
 import dataforms.validator.ValidationError;
 
 /**

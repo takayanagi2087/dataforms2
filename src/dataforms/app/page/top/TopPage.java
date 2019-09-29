@@ -4,9 +4,9 @@ import java.util.Map;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.page.base.BasePage;
-import dataforms.controller.RedirectResponse;
-import dataforms.controller.Response;
 import dataforms.devtool.dao.db.TableManagerDao;
+import dataforms.response.RedirectResponse;
+import dataforms.response.Response;
 
 /**
  * トップページクラス。

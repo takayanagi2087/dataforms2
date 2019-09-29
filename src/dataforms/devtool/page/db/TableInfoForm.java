@@ -4,11 +4,11 @@ import java.util.Map;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.Form;
-import dataforms.controller.JsonResponse;
 import dataforms.devtool.dao.db.TableManagerDao;
 import dataforms.field.common.PresenceField;
 import dataforms.field.sqltype.IntegerField;
 import dataforms.field.sqltype.VarcharField;
+import dataforms.response.JsonResponse;
 import dataforms.servlet.DataFormsServlet;
 
 /**

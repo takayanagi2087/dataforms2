@@ -5,11 +5,11 @@ import java.util.Map;
 import dataforms.annotation.WebMethod;
 import dataforms.app.dao.enumeration.EnumOptionTable;
 import dataforms.app.dao.enumeration.EnumTypeNameTable;
-import dataforms.controller.JsonResponse;
 import dataforms.controller.QueryForm;
 import dataforms.devtool.dao.db.TableManagerDao;
 import dataforms.devtool.page.base.DeveloperPage;
 import dataforms.field.base.Field.MatchType;
+import dataforms.response.JsonResponse;
 import dataforms.util.MessagesUtil;
 import dataforms.validator.RequiredValidator;
 

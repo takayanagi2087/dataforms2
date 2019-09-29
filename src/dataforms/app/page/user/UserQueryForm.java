@@ -12,13 +12,13 @@ import dataforms.app.field.user.LoginIdField;
 import dataforms.app.field.user.UserAttributeTypeField;
 import dataforms.app.field.user.UserAttributeValueField;
 import dataforms.app.field.user.UserNameField;
-import dataforms.controller.JsonResponse;
 import dataforms.controller.QueryForm;
 import dataforms.devtool.dao.db.TableManagerDao;
 import dataforms.devtool.page.base.DeveloperPage;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.response.JsonResponse;
 import dataforms.util.MessagesUtil;
 import net.arnx.jsonic.JSON;
 

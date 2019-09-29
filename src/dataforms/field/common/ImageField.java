@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.Map;
 
 import dataforms.annotation.WebMethod;
-import dataforms.controller.ImageResponse;
 import dataforms.dao.file.FileObject;
 import dataforms.dao.file.FileStore;
 import dataforms.dao.file.ImageData;
+import dataforms.response.ImageResponse;
 
 /**
  * 画像フィールドクラス。

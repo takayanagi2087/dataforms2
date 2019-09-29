@@ -3,9 +3,9 @@ package dataforms.app.errorpage;
 import java.util.Map;
 
 import dataforms.annotation.WebMethod;
-import dataforms.controller.JsonResponse;
 import dataforms.controller.Page;
-import dataforms.controller.Response;
+import dataforms.response.JsonResponse;
+import dataforms.response.Response;
 
 /**
  * 設定エラーページクラス。

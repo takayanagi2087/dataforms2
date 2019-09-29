@@ -12,11 +12,11 @@ import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.Form;
-import dataforms.controller.JsonResponse;
-import dataforms.controller.Response;
 import dataforms.devtool.dao.db.TableManagerDao;
 import dataforms.field.common.FlagField;
 import dataforms.field.common.FolderStoreFileField;
+import dataforms.response.JsonResponse;
+import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;
 import dataforms.util.MessagesUtil;

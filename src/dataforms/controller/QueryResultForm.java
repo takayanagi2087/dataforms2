@@ -11,6 +11,7 @@ import dataforms.field.base.FieldList;
 import dataforms.field.sqltype.BigintField;
 import dataforms.field.sqltype.IntegerField;
 import dataforms.field.sqltype.VarcharField;
+import dataforms.response.JsonResponse;
 
 /**
  * 問い合わせ結果フォームクラス。

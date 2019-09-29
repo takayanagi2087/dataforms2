@@ -5,10 +5,10 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.controller.Response;
 import dataforms.dao.Dao;
 import dataforms.dao.Table;
 import dataforms.devtool.page.base.DeveloperPage;
+import dataforms.response.Response;
 
 
 /**

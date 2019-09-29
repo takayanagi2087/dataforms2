@@ -1,4 +1,4 @@
-package dataforms.controller;
+package dataforms.response;
 
 import dataforms.dao.file.ImageData;
 

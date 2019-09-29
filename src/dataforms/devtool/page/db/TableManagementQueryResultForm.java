@@ -7,7 +7,6 @@ import java.util.Map;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.ApplicationException;
-import dataforms.controller.JsonResponse;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.devtool.dao.db.TableManagerDao;
@@ -20,6 +19,7 @@ import dataforms.field.common.RowNoField;
 import dataforms.field.sqltype.IntegerField;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.htmltable.HtmlTable;
+import dataforms.response.JsonResponse;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.StringUtil;
 

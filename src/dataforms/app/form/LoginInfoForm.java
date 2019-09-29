@@ -8,7 +8,7 @@ import dataforms.annotation.WebMethod;
 import dataforms.app.field.user.LoginIdField;
 import dataforms.app.field.user.UserNameField;
 import dataforms.controller.Form;
-import dataforms.controller.JsonResponse;
+import dataforms.response.JsonResponse;
 import dataforms.util.AutoLoginCookie;
 
 /**

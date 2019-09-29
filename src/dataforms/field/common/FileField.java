@@ -34,7 +34,7 @@ import dataforms.util.StringUtil;
  * @param <TYPE> サーバで処理するJavaのデータ型。
  */
 public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
-	
+
 	/**
 	 * ダウンロードファイル一時ファイルを記録するセッションキー。
 	 */
@@ -57,13 +57,13 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	protected void onBind() {
 		super.onBind();
 	}
-	
+
 	@Override
 	public void init() throws Exception {
 		super.init();
 		this.setAdditionalHtml(this.getPage().getPageFramePath() + "/FileField.html");
 	}
-	
+
 	/**
 	 * ファイルストアを作成します。
 	 * @return ファイルストア。
@@ -176,8 +176,8 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	 * BLOB用ダウンロードパラメータを取得します。
 	 * @param m データマップ。
 	 * @return ダウンロードパラメータ。
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public String getBlobDownloadParameter(final Map<String, Object> m) {
 		FileStore store = this.newFileStore();
@@ -207,7 +207,6 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	 */
 	@WebMethod(useDB = false)
 	public JsonResponse deleteTempFile(final Map<String, Object> p) throws Exception {
-		this.methodStartLog(log, p);
 		String key = (String) p.get("key");
 		log.debug("key=" + key);
 		if (key != null) {
@@ -220,10 +219,9 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 			}
 		}
 		JsonResponse resp = new JsonResponse(JsonResponse.SUCCESS, "");
-		this.methodFinishLog(log, resp);
 		return resp;
 	}
-	
+
 	/**
 	 * ファイルをダウンロードします。
 	 * @param p パラメータ。
@@ -232,7 +230,6 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	 */
 	@WebMethod(useDB = true)
 	public BinaryResponse download(final Map<String, Object> p) throws Exception {
-		this.methodStartLog(log, p);
 		HttpServletRequest req = this.getPage().getRequest();
 		Map<String, Object> param = p;
 		String key = (String) p.get("key");
@@ -253,7 +250,7 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 			}
 			log.debug("param=" + param);
 		}
-		
+
 		FileStore store = this.newFileStore(param);
 		FileObject fobj = store.readFileObject(param);
 		BinaryResponse resp = new BinaryResponse(fobj);
@@ -268,7 +265,6 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 				}
 			}
 		}
-		this.methodFinishLog(log, resp);
 		return resp;
 	}
 
@@ -305,7 +301,7 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 		ret.setTempFile(tf);
 		return ret;
 	}
-	
+
 	@Override
 	public int calcDefaultColumnWidth() {
 		return 300;

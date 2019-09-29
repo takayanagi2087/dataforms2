@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import dataforms.annotation.WebMethod;
 import dataforms.app.dao.enumeration.EnumDao;
 import dataforms.app.page.user.UserEditForm;
@@ -25,10 +23,6 @@ public class UserAttributeValueField extends EnumOptionSingleSelectField {
 	 * フィールドコメント。
 	 */
     private static final String COMMENT = "ユーザ属性値";
-	/**
-     * Logger.
-     */
-    private static Logger log = Logger.getLogger(UserAttributeValueField.class.getName());
 
 	/**
 	 * コンストラクタ。
@@ -66,7 +60,6 @@ public class UserAttributeValueField extends EnumOptionSingleSelectField {
 	 */
 	@WebMethod
 	public JsonResponse getTypeOption(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(log, param);
 		EnumDao dao = new EnumDao(this);
 		String type = (String) param.get("type");
 		String lang = this.getPage().getCurrentLanguage();
@@ -78,7 +71,6 @@ public class UserAttributeValueField extends EnumOptionSingleSelectField {
 		}
 		this.setOptionList(list, true);
 		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, this.getOptionList());
-		this.methodFinishLog(log, result);
 		return result;
 	}
 }

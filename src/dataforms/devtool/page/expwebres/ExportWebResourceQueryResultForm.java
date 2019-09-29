@@ -119,7 +119,6 @@ public class ExportWebResourceQueryResultForm extends QueryResultForm {
 	 */
 	@WebMethod
 	public JsonResponse exportWebResource(final Map<String, Object> params) throws Exception {
-		this.methodStartLog(log,  params);
 		Map<String, Object> data = this.convertToServerData(params);
 		String webSourcePath = (String) data.get("webSourcePath");
 		@SuppressWarnings("unchecked")
@@ -129,7 +128,6 @@ public class ExportWebResourceQueryResultForm extends QueryResultForm {
 			this.exportResourceFile(webSourcePath, r);
 		}
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, "エクスポートしました。");
-		this.methodFinishLog(log, ret);
 		return ret;
 	}
 

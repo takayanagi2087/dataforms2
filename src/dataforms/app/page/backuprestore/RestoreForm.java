@@ -79,7 +79,6 @@ public class RestoreForm extends Form {
 	 */
 	@WebMethod
 	public Response restore(final Map<String, Object> p) throws Exception {
-		this.methodStartLog(log, p);
 		Response resp = null;
 		List<ValidationError> list = this.validate(p);
 		if (list.size() == 0) {
@@ -105,7 +104,6 @@ public class RestoreForm extends Form {
 		} else {
 			resp = new JsonResponse(JsonResponse.INVALID, list);
 		}
-		this.methodFinishLog(log, resp);
 		return resp;
 	}
 

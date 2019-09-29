@@ -99,7 +99,6 @@ public class BackupForm extends Form {
 	 */
 	@WebMethod
 	public Response backup(final Map<String, Object> p) throws Exception {
-		this.methodStartLog(log, p);
 		Response resp = null;
 		List<ValidationError> el = this.validate(p);
 		if (el.size() == 0) {
@@ -138,7 +137,6 @@ public class BackupForm extends Form {
 		} else {
 			resp = new JsonResponse(JsonResponse.INVALID, el);
 		}
-		this.methodFinishLog(log, resp);
 		return resp;
 	}
 }

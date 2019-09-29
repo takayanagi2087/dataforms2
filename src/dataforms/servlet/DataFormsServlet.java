@@ -31,6 +31,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
+import dataforms.app.dao.user.UserInfoTable;
 import dataforms.app.errorpage.ConfigErrorPage;
 import dataforms.app.errorpage.ErrorPage;
 import dataforms.app.form.LoginInfoForm;
@@ -88,7 +89,7 @@ public class DataFormsServlet extends HttpServlet {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(DataFormsServlet.class.getName());
+	private static Logger logger = Logger.getLogger(DataFormsServlet.class.getName());
 
 	/**
 	 * jndi-prefix.
@@ -241,7 +242,7 @@ public class DataFormsServlet extends HttpServlet {
 		String classname = name;
 		if (pageOverrideMap.containsKey(name)) {
 			classname = pageOverrideMap.get(name);
-			log.info("page-override=" + name + "->" + classname);
+			logger.info("page-override=" + name + "->" + classname);
 		}
 		return classname;
 	}
@@ -271,7 +272,7 @@ public class DataFormsServlet extends HttpServlet {
 			if (key.trim().indexOf("css-media:") == 0) {
 				String cssfile = key.trim().replaceAll("css-media:", "");
 				String media = this.getServletContext().getInitParameter(key);
-				log.debug("css=" + cssfile + ",media=" + media);
+				logger.debug("css=" + cssfile + ",media=" + media);
 				Page.addPreloadCss(cssfile, media);
 			}
 		}
@@ -301,21 +302,21 @@ public class DataFormsServlet extends HttpServlet {
 			DataFormsServlet.jndiPrefix = "java:/comp/env/";
 		}
 		DataFormsServlet.dataSourceName = this.getServletContext().getInitParameter("data-source");
-		log.info("init:dataSourceName=" + DataFormsServlet.dataSourceName);
+		logger.info("init:dataSourceName=" + DataFormsServlet.dataSourceName);
 		String webresurl= this.getServletContext().getInitParameter("web-resource-url");
 		if (!StringUtil.isBlank(webresurl)) {
 			DataFormsServlet.webResourceUrl = webresurl;
 		}
-		log.info("init:webResourceUrl=" + DataFormsServlet.webResourceUrl);
+		logger.info("init:webResourceUrl=" + DataFormsServlet.webResourceUrl);
 		DataFormsServlet.encoding = this.getServletContext().getInitParameter("encoding");
 		if (DataFormsServlet.encoding == null) {
 			DataFormsServlet.encoding = "utf-8";
 		}
-		log.info("init:encoding=" + DataFormsServlet.encoding);
+		logger.info("init:encoding=" + DataFormsServlet.encoding);
 		DataFormsServlet.jsonDebug = Boolean
 				.parseBoolean(this.getServletContext().getInitParameter("json-debug") == null ? "false"
 						: this.getServletContext().getInitParameter("json-debug"));
-		log.info("init:jsonDebug=" + DataFormsServlet.jsonDebug);
+		logger.info("init:jsonDebug=" + DataFormsServlet.jsonDebug);
 		DataFormsServlet.tempDir = this.getServletContext().getInitParameter("temp-dir");
 		if (DataFormsServlet.tempDir == null) {
 			DataFormsServlet.tempDir = "/tmp";
@@ -325,49 +326,49 @@ public class DataFormsServlet extends HttpServlet {
 		if (!tmp.exists()) {
 			tmp.mkdirs();
 		}
-		log.info("init:tempDir=" + DataFormsServlet.tempDir);
+		logger.info("init:tempDir=" + DataFormsServlet.tempDir);
 		DataFormsServlet.exportImportDir = this.getServletContext().getInitParameter("export-import-dir");
 		if (DataFormsServlet.exportImportDir == null) {
 			DataFormsServlet.exportImportDir = "/tmp/data";
 		}
-		log.info("init:exportImportDir=" + DataFormsServlet.exportImportDir);
+		logger.info("init:exportImportDir=" + DataFormsServlet.exportImportDir);
 		DataFormsServlet.cssAndScript = this.getServletContext().getInitParameter("css-and-scripts");
 		if (DataFormsServlet.cssAndScript == null) {
 			DataFormsServlet.cssAndScript = "/frame/jslib.html";
 		}
-		log.info("init:cssAndScript=" + DataFormsServlet.cssAndScript);
+		logger.info("init:cssAndScript=" + DataFormsServlet.cssAndScript);
 		DataFormsServlet.errorPage = this.getServletContext().getInitParameter("error-page");
 		if (DataFormsServlet.errorPage == null) {
 			DataFormsServlet.errorPage = "/dataforms/app/errorpage/ErrorPage." + this.getPageExt();
 		} else {
 			DataFormsServlet.errorPage += ("." + this.getPageExt());
 		}
-		log.info("init:errorPage=" + DataFormsServlet.errorPage);
+		logger.info("init:errorPage=" + DataFormsServlet.errorPage);
 		DataFormsServlet.clientValidation = Boolean
 				.parseBoolean(this.getServletContext().getInitParameter("client-validation") == null ? "true"
 						: this.getServletContext().getInitParameter("client-validation"));
-		log.info("init:clientValidation=" + DataFormsServlet.clientValidation);
+		logger.info("init:clientValidation=" + DataFormsServlet.clientValidation);
 		DataFormsServlet.clientLogLevel = this.getServletContext().getInitParameter("client-log-level");
 		if (DataFormsServlet.clientLogLevel == null) {
 			DataFormsServlet.clientLogLevel = "info";
 		}
-		log.info("init:clientLogLevel=" + DataFormsServlet.clientLogLevel);
+		logger.info("init:clientLogLevel=" + DataFormsServlet.clientLogLevel);
 		DataFormsServlet.uploadDataFolder = this.getServletContext().getInitParameter("upload-data-folder");
 		if (DataFormsServlet.uploadDataFolder == null) {
 			DataFormsServlet.uploadDataFolder = "/uploadData";
 		}
-		log.info("init:uploadDataFolder=" + DataFormsServlet.uploadDataFolder);
+		logger.info("init:uploadDataFolder=" + DataFormsServlet.uploadDataFolder);
 		DataFormsServlet.supportLanguage = this.getServletContext().getInitParameter("support-language");
 		if (DataFormsServlet.supportLanguage == null) {
 			DataFormsServlet.supportLanguage = "ja";
 		}
-		log.info("init:supportLanguage=" + DataFormsServlet.supportLanguage);
+		logger.info("init:supportLanguage=" + DataFormsServlet.supportLanguage);
 		DataFormsServlet.fixedLanguage = this.getServletContext().getInitParameter("fixed-language");
-		log.info("init:fixedLanguage=" + DataFormsServlet.fixedLanguage);
+		logger.info("init:fixedLanguage=" + DataFormsServlet.fixedLanguage);
 		DataFormsServlet.disableDeveloperTools = Boolean
 				.parseBoolean(this.getServletContext().getInitParameter("disable-developer-tools") == null ? "true"
 						: this.getServletContext().getInitParameter("disable-developer-tools"));
-		log.info("init:disableDeveloperTools=" + DataFormsServlet.disableDeveloperTools);
+		logger.info("init:disableDeveloperTools=" + DataFormsServlet.disableDeveloperTools);
 		CryptUtil.setCryptPassword(this.getServletContext().getInitParameter("crypt-password") == null ? "d@d@f0ms"
 				: this.getServletContext().getInitParameter("crypt-password"));
 		DataFormsServlet.setQueryStringCryptPassword(this.getServletContext().getInitParameter("query-string-crypt-password") == null ? "d@d@f0ms"
@@ -380,7 +381,7 @@ public class DataFormsServlet extends HttpServlet {
 		);
 		Page.setFramePath(this.getServletContext().getInitParameter("frame-path") == null ? "/frame/default"
 				: this.getServletContext().getInitParameter("frame-path"));
-		log.info("init:framePath=" + Page.getFramePath());
+		logger.info("init:framePath=" + Page.getFramePath());
 		Page.setAppcacheFile(this.getServletContext().getInitParameter("appcache-file"));
 		this.getMessageProperties();
 		String topPage = this.getServletContext().getInitParameter("top-page");
@@ -402,7 +403,7 @@ public class DataFormsServlet extends HttpServlet {
 		DeveloperPage.setJavaSourcePath(this.getServletContext().getInitParameter("java-source-path"));
 		DeveloperPage.setWebSourcePath(this.getServletContext().getInitParameter("web-source-path"));
 		String streamingBlockSize = this.getServletContext().getInitParameter("streaming-block-size");
-		log.debug("streamingBlockSize=" + streamingBlockSize);
+		logger.debug("streamingBlockSize=" + streamingBlockSize);
 		if (!StringUtil.isBlank(streamingBlockSize)) {
 			@SuppressWarnings("unchecked")
 			List<LinkedHashMap<String, Object>> bslist = (List<LinkedHashMap<String, Object>>) JSON.decode(streamingBlockSize, ArrayList.class);
@@ -410,7 +411,7 @@ public class DataFormsServlet extends HttpServlet {
 		}
 
 		String contentTypeList = this.getServletContext().getInitParameter("content-type-list");
-		log.debug("contentTypeList=" + contentTypeList);
+		logger.debug("contentTypeList=" + contentTypeList);
 		if (!StringUtil.isBlank(contentTypeList)) {
 			@SuppressWarnings("unchecked")
 			List<LinkedHashMap<String, String>> ctlist = (List<LinkedHashMap<String, String>>) JSON.decode(contentTypeList, ArrayList.class);
@@ -422,7 +423,7 @@ public class DataFormsServlet extends HttpServlet {
 		}
 		BackupForm.setBackupFileName(backupFileName);
 		String apacheFopConfig = this.getServletContext().getInitParameter("apache-fop-config");
-		log.debug("apacheFopConfig=" + contentTypeList);
+		logger.debug("apacheFopConfig=" + contentTypeList);
 		if (apacheFopConfig != null) {
 			DataFormsServlet.setApacheFopConfig(apacheFopConfig);
 		}
@@ -457,11 +458,11 @@ public class DataFormsServlet extends HttpServlet {
 		String conf = this.getServletContext().getInitParameter("user-regist-page-config");
 		if (conf == null) {
 			conf = "{\"loginIdIsMail\": true, \"mailCheck\": true, \"sendUserEnableMail\": true}";
-			log.debug("user-regist-page-config is missing. use default. " + conf);
+			logger.debug("user-regist-page-config is missing. use default. " + conf);
 		}
 		Map<String, Object> m = JSON.decode(conf);
-		log.debug("m.class=" + m.getClass().getName());
-		log.debug("conf=" + m.toString());
+		logger.debug("m.class=" + m.getClass().getName());
+		logger.debug("conf=" + m.toString());
 		UserRegistForm.setConfig(m);
 		// メール関連設定。
 		String mailSession = this.getServletContext().getInitParameter("mail-session");
@@ -492,10 +493,10 @@ public class DataFormsServlet extends HttpServlet {
 		if (appMessages == null) {
 			appMessages = "/frame/messages/AppMessages";
 		}
-		log.info("init:clientMessages=" + clientMessages);
-		log.info("init:appClientMessages=" + appClientMessages);
-		log.info("init:messages=" + messages);
-		log.info("init:appMessages=" + appMessages);
+		logger.info("init:clientMessages=" + clientMessages);
+		logger.info("init:appClientMessages=" + appClientMessages);
+		logger.info("init:messages=" + messages);
+		logger.info("init:appMessages=" + appMessages);
 		MessagesUtil.setClientMessagesName(clientMessages);
 		MessagesUtil.setAppClientMessagesName(appClientMessages);
 		MessagesUtil.setMessagesName(messages);
@@ -513,7 +514,7 @@ public class DataFormsServlet extends HttpServlet {
 	 */
 	private void setupServletInstanceBean() {
 		String beanClass = this.getServletContext().getInitParameter("servlet-instance-bean");
-		log.info("beanClass = " + beanClass);
+		logger.info("beanClass = " + beanClass);
 		if (beanClass != null) {
 			try {
 				@SuppressWarnings("unchecked")
@@ -521,12 +522,10 @@ public class DataFormsServlet extends HttpServlet {
 				DataFormsServlet.servletInstanceBean = clazz.getDeclaredConstructor().newInstance();
 				DataFormsServlet.servletInstanceBean.init();
 			} catch (Exception e) {
-				log.error(e.getMessage(), e);
+				logger.error(e.getMessage(), e);
 			}
 		}
 	}
-
-
 
 
 	/**
@@ -541,18 +540,18 @@ public class DataFormsServlet extends HttpServlet {
 				if (DataFormsServlet.dataSourceName != null) {
 					Context initContext = new InitialContext();
 					String dspath = DataFormsServlet.jndiPrefix + DataFormsServlet.dataSourceName;
-					log.info("lookup data source=" + dspath);
+					logger.info("lookup data source=" + dspath);
 					this.dataSource = (DataSource) initContext.lookup(dspath);
 				}
 			} catch (NameNotFoundException e) {
 				// アプリケーションサーバにデータソースの設定が無い場合。
-				log.error(e.getMessage(), e);
+				logger.error(e.getMessage(), e);
 				DataFormsServlet.configStatus = "error.notfounddatasource";
 			} catch (Exception e) {
 				// DBサーバが動作していない場合のエラーであるため、運用時トラブルで発生する可能性がある。
 				// そのため設定エラーとしない。
 				//DataFormsServlet.dbStatus = "error.cannotconnectdatasource";
-				log.error(e.getMessage(), e);
+				logger.error(e.getMessage(), e);
 			}
 		}
 	}
@@ -580,7 +579,7 @@ public class DataFormsServlet extends HttpServlet {
 					String differenceVal = (String) m.get("differenceVal");
 					if ("1".equals(differenceVal)) {
 						String className = (String) m.get("className");
-						log.info("update table structure=" + className);
+						logger.info("update table structure=" + className);
 						dao.dropAllForeignKeys();
 						dao.updateTable(className);
 						dao.createAllForeignKeys();
@@ -591,7 +590,7 @@ public class DataFormsServlet extends HttpServlet {
 				conn.close();
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		}
 	}
 
@@ -789,9 +788,9 @@ public class DataFormsServlet extends HttpServlet {
 		if (DataFormsServlet.configStatus == null) {
 			String uri = req.getRequestURI();
 			String context = req.getContextPath();
-			log.info("context=" + context + ", uri=" + uri);
+			logger.info("context=" + context + ", uri=" + uri);
 			String classname = DataFormsServlet.convertPageClassName(this.getTargetClassName(context, uri));
-			log.info("classname=" + classname);
+			logger.info("classname=" + classname);
 			Page page = this.newDataFormsInstance(classname);
 			page.setPage(page);
 			page.setRequest(req);
@@ -806,6 +805,7 @@ public class DataFormsServlet extends HttpServlet {
 		}
 	}
 
+
 	/**
 	 * メソッドを呼び出します。
 	 * <pre>
@@ -817,10 +817,10 @@ public class DataFormsServlet extends HttpServlet {
 	 * @return 実行結果。
 	 * @throws Exception 例外。
 	 */
-	private Object callMethod(final WebComponent comp, final Map<String, Object> param, final Method m) throws Exception {
-		Object ret = null;
+	private Response callMethod(final WebComponent comp, final Map<String, Object> param, final Method m) throws Exception {
+		Response ret = null;
 		try {
-			ret = m.invoke(comp, param);
+			ret =(Response) m.invoke(comp, param);
 		} catch (InvocationTargetException e) {
 			Throwable th = e.getCause();
 			if (th != null) {
@@ -863,7 +863,7 @@ public class DataFormsServlet extends HttpServlet {
 				}
 			}
 		}
-		log.debug("queryString=" + JSON.encode(ret, true));
+		logger.debug("queryString=" + JSON.encode(ret, true));
 		return ret;
 
 	}
@@ -878,14 +878,55 @@ public class DataFormsServlet extends HttpServlet {
 	private Map<String, Object> getQueryString(final HttpServletRequest req, final Map<String, Object> param) throws Exception {
 		// ajax呼び出しの場合はヘッダにqueryStringが設定されてくる。
 		String queryString = req.getHeader("queryString");
-		log.debug("header queryString=" + queryString);
+		logger.debug("header queryString=" + queryString);
 		if (queryString == null) {
 			// formのsubmitの場合はPOSTされた情報にqueryStringを入れておく。
 			queryString = (String) param.get("dfQueryString");
 		}
-		log.debug("other queryString=" + queryString);
+		logger.debug("other queryString=" + queryString);
 		return this.parseQueryString(queryString);
 	}
+
+	/**
+	 * Logger.
+	 */
+	private static Logger accessLogger = Logger.getLogger("httpRequest");
+
+
+	/**
+	 * メソッドの開始ログを出力します。
+	 * @param userInfo ユーザ情報。
+	 * @param comp Webコンポーネント。
+	 * @param param パラメータ。
+	 * @param m メソッド。
+	 */
+	private void methodStartLog(final Map<String, Object> userInfo, final WebComponent comp, final Map<String, Object> param, final Method m) {
+		String userId = "";
+		if (userInfo != null) {
+			UserInfoTable.Entity e = new UserInfoTable.Entity(userInfo);
+			userId = e.getLoginId() + "(" + e.getUserId() + ")";
+		}
+		accessLogger.info(userId + ":" + comp.getClass().getName() + "#" + m.getName() + " start.");
+		accessLogger.debug(userId + ":" + param);
+	}
+
+	/**
+	 * メソッドの終了ログを出力します。
+	 * @param userInfo ユーザ情報。
+	 * @param comp Webコンポーネント。
+	 * @param resp 応答情報。
+	 * @param m メソッド。
+	 */
+	private void methodFinishLog(final Map<String, Object> userInfo, final WebComponent comp, final Response resp, final Method m) {
+		String userId = "";
+		if (userInfo != null) {
+			UserInfoTable.Entity e = new UserInfoTable.Entity(userInfo);
+			userId = e.getLoginId() + "(" + e.getUserId() + ")";
+		}
+		accessLogger.info(userId + ":" + comp.getClass().getName() + "#" + m.getName() +  " finish.");
+		accessLogger.debug(userId + ":" + resp.toString());
+	}
+
 
 	/**
 	 * servletの処理を実装します。
@@ -909,15 +950,15 @@ public class DataFormsServlet extends HttpServlet {
 					if (method == null) {
 						method = GET_HTML_METHOD_NAME;
 						String queryString = req.getQueryString();
-						log.debug("getHtml queryString=" + queryString);
+						logger.debug("getHtml queryString=" + queryString);
 						page.setQueryString(this.parseQueryString(queryString));
 					} else {
 						page.setQueryString(this.getQueryString(req, param));
 					}
-					log.info("method=" + method);
+					logger.info("method=" + method);
 					Map<String, Object> userinfo = page.getUserInfo();
 					if (userinfo != null) {
-						log.info("access user=" + userinfo.get("loginId") + "(" + userinfo.get("userId") + ")");
+						logger.info("access user=" + userinfo.get("loginId") + "(" + userinfo.get("userId") + ")");
 					}
 //					String[] split = method.split("\\.");
 					int lidx = method.lastIndexOf(".");
@@ -949,7 +990,7 @@ public class DataFormsServlet extends HttpServlet {
 
 					WebMethod wma = m.getAnnotation(WebMethod.class);
 					if (wma == null) {
-						log.error(MessagesUtil.getMessage(page, "error.notwebmethod", method));
+						logger.error(MessagesUtil.getMessage(page, "error.notwebmethod", method));
 						throw new Exception();
 					}
 					Connection conn = null;
@@ -967,7 +1008,9 @@ public class DataFormsServlet extends HttpServlet {
 						page.setRequest(req);
 						page.setResponse(resp);
 						param.remove("dfMethod");
-						Response r = (Response) callMethod(obj, param, m);
+						this.methodStartLog(userinfo, obj, param, m);
+						Response r = this.callMethod(obj, param, m);
+						this.methodFinishLog(userinfo, obj, r, m);
 						r.send(resp);
 						if (conn != null) {
 							conn.commit();
@@ -976,7 +1019,7 @@ public class DataFormsServlet extends HttpServlet {
 						if (conn != null) {
 							conn.rollback();
 						}
-						log.error(e.getMessage(), e);
+						logger.error(e.getMessage(), e);
 						throw e;
 					} finally {
 						if (conn != null) {
@@ -988,7 +1031,7 @@ public class DataFormsServlet extends HttpServlet {
 				}
 			} catch (ApplicationException e) {
 				// TODO:JsonResponseを戻り値にしないと、csrfエラーメッセージが表示されな問題を対策する必要がある。
-				log.error(e.getMessageKey() + ":" + e.getMessage(), e);
+				logger.error(e.getMessageKey() + ":" + e.getMessage(), e);
 				if (isJsonResponse) {
 					Map<String, Object> einfo = new HashMap<String, Object>();
 					einfo.put("key", e.getMessageKey());
@@ -1000,7 +1043,7 @@ public class DataFormsServlet extends HttpServlet {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			resp.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);
 		}
 
@@ -1139,12 +1182,12 @@ public class DataFormsServlet extends HttpServlet {
 		}
 //		String url = context + errorPage + "?msg=" + java.net.URLEncoder.encode(message, DataFormsServlet.encoding);
 		String url = context + errorPage;
-		log.info("errorPage=" + url);
+		logger.info("errorPage=" + url);
 		try {
 			req.getSession().setAttribute(ErrorPage.ID_ERROR_MESSAGE, message);
 			resp.sendRedirect(url);
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		}
 	}
 
@@ -1158,12 +1201,12 @@ public class DataFormsServlet extends HttpServlet {
 
 	@Override
 	public void destroy() {
-		log.debug("DataFormsServlet destroy");
+		logger.debug("DataFormsServlet destroy");
 		if (DataFormsServlet.servletInstanceBean != null) {
 			try {
 				DataFormsServlet.servletInstanceBean.destroy();
 			} catch (Exception e) {
-				log.error(e.getMessage(), e);
+				logger.error(e.getMessage(), e);
 			}
 		}
 		super.destroy();

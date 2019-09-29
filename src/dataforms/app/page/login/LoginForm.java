@@ -73,7 +73,6 @@ public class LoginForm extends Form {
 		Map<String, Object> nopass = new HashMap<String, Object>();
 		nopass.putAll(params);
 		nopass.remove("password");
-		this.methodStartLog(logger, nopass);
 		JsonResponse ret = null;
 		List<ValidationError> elist = this.validate(params);
 		if (elist.size() > 0) {
@@ -88,7 +87,6 @@ public class LoginForm extends Form {
 			AutoLoginCookie.setAutoLoginCookie(this.getPage(), params);
 			ret = new JsonResponse(JsonResponse.SUCCESS, "");
 		}
-		this.methodFinishLog(logger, ret);
 		return ret;
 	}
 

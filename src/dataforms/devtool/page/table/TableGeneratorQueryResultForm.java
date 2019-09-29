@@ -62,7 +62,6 @@ public class TableGeneratorQueryResultForm extends QueryResultForm {
 
 	@Override
 	protected Map<String, Object> queryPage(final Map<String, Object> data, final FieldList flist) throws Exception {
-    	this.methodStartLog(log, data);
     	TableManagerDao dao = new TableManagerDao(this);
     	List<Map<String, Object>> queryResult = dao.queryTableClass(data);
     	List<String> clslist = new ArrayList<String>();
@@ -78,10 +77,9 @@ public class TableGeneratorQueryResultForm extends QueryResultForm {
     	Map<String, Object> result = new HashMap<String, Object>();
     	result.put("checkedClass", clslist);
     	result.put("queryResult", queryResult);
-    	this.methodFinishLog(log, result);
 		return result;
 	}
-	
+
 	/**
 	 * テーブル定義書を作成します。
 	 * @param param パラメータ。
@@ -90,10 +88,9 @@ public class TableGeneratorQueryResultForm extends QueryResultForm {
 	 */
 	@WebMethod
 	public Response print(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(log, param);
 		Map<String, Object> data = this.convertToServerData(param);
 		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(Page.ID_QUERY_RESULT); 
+		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(Page.ID_QUERY_RESULT);
 		Response ret = null;
 		File template = TableReport.makeTemplate(this);
 		List<Map<String, Object>> tlist = new ArrayList<Map<String, Object>>();
@@ -120,7 +117,6 @@ public class TableGeneratorQueryResultForm extends QueryResultForm {
 			template.delete();
 		}
 //		ret = new JsonResponse(JsonResponse.INVALID, "テスト");
-		this.methodFinishLog(log, ret);
 		return ret;
 	}
 }

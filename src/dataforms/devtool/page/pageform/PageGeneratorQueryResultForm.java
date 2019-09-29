@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.devtool.field.common.ClassNameField;
@@ -28,7 +26,7 @@ public class PageGeneratorQueryResultForm extends QueryResultForm {
 	/**
 	 * Log.
 	 */
-	private Logger log = Logger.getLogger(PageGeneratorQueryResultForm.class);
+//	private Logger log = Logger.getLogger(PageGeneratorQueryResultForm.class);
 
 	/**
 	 * コンストラクタ。
@@ -86,7 +84,6 @@ public class PageGeneratorQueryResultForm extends QueryResultForm {
 
 	@Override
 	protected Map<String, Object> queryPage(final Map<String, Object> data, final FieldList flist) throws Exception {
-		this.methodStartLog(log, data);
 		List<Map<String, Object>> queryResult = this.queryPageClass(data);
 		for (Map<String, Object> r: queryResult) {
 			String className = (String) r.get("fullClassName");
@@ -97,7 +94,6 @@ public class PageGeneratorQueryResultForm extends QueryResultForm {
 		}
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("queryResult", queryResult);
-		this.methodFinishLog(log, result);
 		return result;
 	}
 

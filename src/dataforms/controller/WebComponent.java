@@ -376,7 +376,7 @@ public class WebComponent implements JDBCConnectableObject {
      * @param logger Logger。
      * @param params 要求情報。
      */
-    protected final void methodStartLog(final Logger logger, final Map<String, Object> params) {
+/*    protected final void methodStartLog(final Logger logger, final Map<String, Object> params) {
         Throwable th = new Throwable();
         StackTraceElement[] el = th.getStackTrace();
         String methodname = "";
@@ -385,13 +385,13 @@ public class WebComponent implements JDBCConnectableObject {
         }
         logger.info(methodname + " start param=" + params);
     }
-
+*/
     /**
      * メソッドの終了ログを出力します。
      * @param logger Logger。
      * @param result 結果情報。
      */
-    protected final void methodFinishLog(final Logger logger, final Object result) {
+/*    protected final void methodFinishLog(final Logger logger, final Object result) {
         Throwable th = new Throwable();
         StackTraceElement[] el = th.getStackTrace();
         String methodname = "";
@@ -400,7 +400,7 @@ public class WebComponent implements JDBCConnectableObject {
         }
         logger.info(methodname + " finish result=" + result.toString());
     }
-
+*/
 
     /**
      * ページを設定します。

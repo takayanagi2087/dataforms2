@@ -3,8 +3,6 @@ package dataforms.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import dataforms.annotation.WebMethod;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.HtmlTable;
@@ -24,7 +22,7 @@ public abstract class QueryForm extends Form {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(QueryForm.class.getName());
+//    private static Logger log = Logger.getLogger(QueryForm.class.getName());
 
 
     /**
@@ -54,7 +52,6 @@ public abstract class QueryForm extends Form {
 	 */
     @WebMethod
 	public JsonResponse query(final Map<String, Object> p) throws Exception {
-    	this.methodStartLog(log, p);
     	List<ValidationError> err = this.validate(p);
     	JsonResponse result = null;
     	if (err.size() > 0) {
@@ -62,7 +59,6 @@ public abstract class QueryForm extends Form {
     	} else {
         	result = new JsonResponse(JsonResponse.SUCCESS, "");
     	}
-    	this.methodFinishLog(log, result);
     	return result;
     }
 
@@ -123,7 +119,6 @@ public abstract class QueryForm extends Form {
      */
     @WebMethod
     public Response exportData(final Map<String, Object> p) throws Exception {
-    	this.methodStartLog(log, p);
     	List<ValidationError> err = this.validate(p);
     	Response result = null;
     	if (err.size() > 0) {
@@ -138,7 +133,6 @@ public abstract class QueryForm extends Form {
     		byte[] exceldata = exdata.getExportData(list, flist);
     		result = new BinaryResponse(exceldata, exdata.getContentType(), exdata.getFileName());
     	}
-    	this.methodFinishLog(log, result);
     	return result;
     }
 

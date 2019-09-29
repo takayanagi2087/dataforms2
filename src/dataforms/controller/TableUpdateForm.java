@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import dataforms.annotation.WebMethod;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
@@ -14,24 +12,24 @@ import dataforms.validator.ValidationError;
 
 /**
  * データベーステーブル更新フォーム。
- * 
+ *
  * <pre>
  * データベーステーブルを更新するためのフォームのベースクラスです。
  * </pre>
  */
 public abstract class TableUpdateForm extends Form {
-	
+
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(TableUpdateForm.class);
+//	private static Logger logger = Logger.getLogger(TableUpdateForm.class);
 
 	/**
 	 * PKフィールドリスト。
 	 */
 	private List<String> pkFieldIdList = null;
-	
-	
+
+
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
@@ -39,7 +37,7 @@ public abstract class TableUpdateForm extends Form {
 	public TableUpdateForm(final String id) {
 		super(id);
 	}
-	
+
 	/**
 	 * 主キーフィールドリストを取得します。
 	 * @return 主キーフィールドリスト。
@@ -68,7 +66,7 @@ public abstract class TableUpdateForm extends Form {
 	public void setPkFieldIdList(final List<String> list) {
 		this.pkFieldIdList = list;
 	}
-	
+
 	@Override
 	public Map<String, Object> getProperties() throws Exception {
 		Map<String, Object> ret = super.getProperties();
@@ -77,7 +75,7 @@ public abstract class TableUpdateForm extends Form {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * 保存時のメッセージキーを取得します。
 	 * <pre>
@@ -108,13 +106,11 @@ public abstract class TableUpdateForm extends Form {
 	 */
 	@WebMethod
 	public JsonResponse getData(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(logger, param);
 		Map<String, Object> data = this.convertToServerData(param);
 		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, this.convertToClientData(this.queryData(data)));
-		this.methodFinishLog(logger, result);
 		return result;
 	}
-	
+
 	/**
 	 * 編集フォームの確認処理を行います。
 	 * <pre>
@@ -126,7 +122,6 @@ public abstract class TableUpdateForm extends Form {
 	 */
 	@WebMethod
 	public JsonResponse confirm(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(logger, param);
 		List<ValidationError> err = this.validate(param);
 		JsonResponse result = null;
 		if (err.size() > 0) {
@@ -134,7 +129,6 @@ public abstract class TableUpdateForm extends Form {
 		} else {
 			result = new JsonResponse(JsonResponse.SUCCESS, "");
 		}
-		this.methodFinishLog(logger, result);
 		return result;
 	}
 

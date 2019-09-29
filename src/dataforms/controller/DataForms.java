@@ -93,7 +93,6 @@ public class DataForms extends WebComponent {
      */
     @WebMethod(useDB = false)
 	public JsonResponse getHead(final Map<String, Object> params) throws Exception {
-		this.methodStartLog(log, params);
 		String parts = (String) params.get("parts");
 		String blockParts = parts;
     	String htmlpath = this.getAppropriatePath(blockParts, this.getPage().getRequest());
@@ -102,7 +101,6 @@ public class DataForms extends WebComponent {
         	htmltext = this.getHtmlHead(htmltext);
     	}
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, htmltext);
-		this.methodFinishLog(log, ret);
 		return ret;
 	}
 
@@ -117,7 +115,6 @@ public class DataForms extends WebComponent {
      */
 	@WebMethod(useDB = false)
 	public JsonResponse getParts(final Map<String, Object> params) throws Exception {
-		this.methodStartLog(log, params);
 		String parts = (String) params.get("parts");
 		String blockParts = parts;
 		String htmlpath = this.getAppropriatePath(blockParts, this.getPage().getRequest());
@@ -127,7 +124,6 @@ public class DataForms extends WebComponent {
 			htmltext = this.getHtmlBody(htmltext);
 		}
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, htmltext);
-		this.methodFinishLog(log, ret);
 		return ret;
 	}
 

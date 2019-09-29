@@ -725,10 +725,8 @@ public class Page extends DataForms {
 	 */
     @WebMethod(useDB = false)
 	public JsonResponse getClientMessages(final Map<String, Object> params) throws Exception {
-		this.methodStartLog(log, params);
 		Map<String, String> map = getMessageMap();
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, map);
-		this.methodFinishLog(log, ret);
 		return ret;
 	}
 
@@ -787,11 +785,9 @@ public class Page extends DataForms {
 	 */
     @WebMethod(useDB = false)
 	public JsonResponse getServerMessage(final Map<String, Object> params) throws Exception {
-		this.methodStartLog(log, params);
 		String key = (String) params.get("key");
 		String msg = MessagesUtil.getMessage(this, key);
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, msg);
-		this.methodFinishLog(log, ret);
 		return ret;
 	}
 
@@ -969,10 +965,8 @@ public class Page extends DataForms {
 	 */
     @WebMethod(useDB = true)
 	public JsonResponse getPageInfo(final Map<String, Object> params) throws Exception {
-		this.methodStartLog(log, params);
 		this.init();
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, this.getProperties());
-		this.methodFinishLog(log, ret);
 		return ret;
 	}
 

@@ -69,14 +69,11 @@ public class QueryExecutorQueryForm extends QueryForm {
 	 */
 	@WebMethod
 	public Response getSql(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(log, param);
 		Query query = this.newQuery(param);
 		Dao dao = new Dao(this);
 		SqlGenerator gen = dao.getSqlGenerator();
 		String sql = gen.generateQuerySql(query);
 		Response resp = new JsonResponse(JsonResponse.SUCCESS, sql);
-
-		this.methodStartLog(log, param);
 		return resp;
 	}
 }

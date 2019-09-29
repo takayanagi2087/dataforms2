@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import dataforms.annotation.WebMethod;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
@@ -22,7 +20,7 @@ public abstract class QueryResultForm extends Form {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(QueryResultForm.class.getName());
+//	private static Logger log = Logger.getLogger(QueryResultForm.class.getName());
 
 	/**
 	 * 主キーフィールドリスト。
@@ -101,7 +99,6 @@ public abstract class QueryResultForm extends Form {
 	 */
 	@WebMethod
 	public JsonResponse changePage(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(log, param);
 		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, "");
 		Map<String, Object> data = new HashMap<String, Object>();
 		QueryForm qf = (QueryForm) this.getParent().getComponent("queryForm");
@@ -126,7 +123,6 @@ public abstract class QueryResultForm extends Form {
 		}
 		Map<String, Object> cr = this.convertToClientData(r);
 		result = new JsonResponse(JsonResponse.SUCCESS, cr);
-		this.methodFinishLog(log, result);
 		return result;
 	}
 
@@ -154,11 +150,9 @@ public abstract class QueryResultForm extends Form {
 	 */
 	@WebMethod
 	public JsonResponse delete(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(log, param);
 		Map<String, Object> data = this.convertToServerData(param);
 		this.deleteData(data);
 		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, "");
-		this.methodFinishLog(log, result);
 		return result;
 	}
 

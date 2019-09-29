@@ -3,8 +3,6 @@ package dataforms.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import dataforms.annotation.WebMethod;
 import dataforms.dao.Table;
 import dataforms.field.base.Field;
@@ -24,7 +22,7 @@ public abstract class EditForm extends TableUpdateForm {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(EditForm.class.getName());
+//	private static Logger logger = Logger.getLogger(EditForm.class.getName());
 
 
 	/**
@@ -65,10 +63,8 @@ public abstract class EditForm extends TableUpdateForm {
 	 */
 	@WebMethod
 	public JsonResponse getNewData(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(logger, param);
 		Map<String, Object> data = this.queryNewData(this.convertToServerData(param));
 		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, this.convertToClientData(data));
-		this.methodFinishLog(logger, result);
 		return result;
 	}
 
@@ -119,10 +115,8 @@ public abstract class EditForm extends TableUpdateForm {
 	 */
 	@WebMethod
 	public JsonResponse getDataByQueryFormCondition(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(logger, param);
 		Map<String, Object> data = this.convertToServerData(param);
 		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, this.convertToClientData(this.queryDataByQueryFormCondition(data)));
-		this.methodFinishLog(logger, result);
 		return result;
 	}
 
@@ -134,11 +128,9 @@ public abstract class EditForm extends TableUpdateForm {
 	 */
 	@WebMethod
 	public JsonResponse getReferData(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(logger, param);
 		Map<String, Object> data = this.convertToServerData(param);
 		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS,
 				this.convertToClientData(this.queryReferData(data)));
-		this.methodFinishLog(logger, result);
 		return result;
 	}
 
@@ -213,7 +205,6 @@ public abstract class EditForm extends TableUpdateForm {
 	@WebMethod
 	@Override
 	public JsonResponse save(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(logger, param);
 		List<ValidationError> err = this.validate(param);
 		JsonResponse result = null;
 		if (err.size() > 0) {
@@ -228,7 +219,6 @@ public abstract class EditForm extends TableUpdateForm {
 			}
 			result = new JsonResponse(JsonResponse.SUCCESS, this.getSavedMessage(data));
 		}
-		this.methodFinishLog(logger, result);
 		return result;
 	}
 
@@ -255,11 +245,9 @@ public abstract class EditForm extends TableUpdateForm {
 	 */
 	@WebMethod
 	public JsonResponse delete(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(logger, param);
 		Map<String, Object> data = this.convertToServerData(param);
 		this.deleteData(data);
 		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, this.getDeletedMessage(data));
-		this.methodFinishLog(logger, result);
 		return result;
 	}
 

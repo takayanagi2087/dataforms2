@@ -2,8 +2,6 @@ package dataforms.devtool.page.db;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import dataforms.annotation.WebMethod;
 import dataforms.controller.Form;
 import dataforms.controller.JsonResponse;
@@ -21,7 +19,7 @@ public class TableInfoForm extends Form {
 	/**
 	 * Log.
 	 */
-	private static Logger logger = Logger.getLogger(TableInfoForm.class.getName());
+//	private static Logger logger = Logger.getLogger(TableInfoForm.class.getName());
 	/**
 	 * コンストラクタ。
 	 */
@@ -46,7 +44,6 @@ public class TableInfoForm extends Form {
 	 */
 	@WebMethod
 	public JsonResponse initTable(final Map<String, Object> p) throws Exception {
-		this.methodStartLog(logger, p);
 		Map<String, Object> arg = this.convertToServerData(p);
 		String className = (String) arg.get("className");
 		TableManagerDao dao = new TableManagerDao(this);
@@ -56,7 +53,6 @@ public class TableInfoForm extends Form {
 		dao.createAllForeignKeys();
 		dao.executeAfterRebuildSql();
 		JsonResponse r = new JsonResponse(JsonResponse.SUCCESS, dao.getTableInfo(className));
-		this.methodFinishLog(logger, r);
 		return r;
 	}
 
@@ -68,13 +64,11 @@ public class TableInfoForm extends Form {
 	 */
 	@WebMethod
 	public JsonResponse dropTable(final Map<String, Object> p) throws Exception {
-		this.methodStartLog(logger, p);
 		Map<String, Object> arg = this.convertToServerData(p);
 		String className = (String) arg.get("className");
 		TableManagerDao dao = new TableManagerDao(this);
 		dao.dropTable(className);
 		JsonResponse r = new JsonResponse(JsonResponse.SUCCESS, dao.getTableInfo(className));
-		this.methodFinishLog(logger, r);
 		return r;
 	}
 
@@ -86,7 +80,6 @@ public class TableInfoForm extends Form {
 	 */
 	@WebMethod
 	public JsonResponse updateTable(final Map<String, Object> p) throws Exception {
-		this.methodStartLog(logger, p);
 		Map<String, Object> arg = this.convertToServerData(p);
 		String className = (String) arg.get("className");
 		TableManagerDao dao = new TableManagerDao(this);
@@ -96,7 +89,6 @@ public class TableInfoForm extends Form {
 		dao.createAllForeignKeys();
 		dao.executeAfterRebuildSql();
 		JsonResponse r = new JsonResponse(JsonResponse.SUCCESS, dao.getTableInfo(className));
-		this.methodFinishLog(logger, r);
 		return r;
 	}
 
@@ -108,7 +100,6 @@ public class TableInfoForm extends Form {
 	 */
 	@WebMethod
 	public JsonResponse exportData(final Map<String, Object> p) throws Exception {
-		this.methodStartLog(logger, p);
 		Map<String, Object> arg = this.convertToServerData(p);
 		String className = (String) arg.get("className");
 		TableManagerDao dao = new TableManagerDao(this);
@@ -116,7 +107,6 @@ public class TableInfoForm extends Form {
 		Map<String, Object> m = dao.getTableInfo(className);
 		m.put("exportDataPath", filename);
 		JsonResponse r = new JsonResponse(JsonResponse.SUCCESS, m);
-		this.methodFinishLog(logger, r);
 		return r;
 	}
 

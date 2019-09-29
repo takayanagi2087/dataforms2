@@ -118,13 +118,11 @@ public class LoginInfoForm extends Form {
 	 */
     @WebMethod
 	public JsonResponse logout(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(log, param);
 		Map<String, Object> userInfo = this.getPage().getUserInfo();
 		log.info("logout success=" + userInfo.get("loginId") + "(" + userInfo.get("userId") + ")");
 		this.getPage().getRequest().getSession().setAttribute("userInfo", null);
 		AutoLoginCookie.clearAutoLoginCookie(this.getPage());
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, "");
-		this.methodFinishLog(log, ret);
 		return ret;
     }
 

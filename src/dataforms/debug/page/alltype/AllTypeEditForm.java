@@ -160,7 +160,6 @@ public class AllTypeEditForm extends EditForm {
 	 */
 	@WebMethod
 	public Response print(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(logger, param);
 		logger.debug("queryString=" + JSON.encode(this.getPage().getQueryString(), true));
 		Map<String, Object> data = this.convertToServerData(param);
 		@SuppressWarnings("unchecked")
@@ -177,7 +176,6 @@ public class AllTypeEditForm extends EditForm {
 		byte[] excel = rep.print(data);
 		BinaryResponse ret = new BinaryResponse(excel);
 		ret.setFileName("test001.xlsx");
-		this.methodFinishLog(logger, ret);
 		return ret;
 	}
 
@@ -189,7 +187,6 @@ public class AllTypeEditForm extends EditForm {
 	 */
 	@WebMethod
 	public Response printPdf(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(logger, param);
 		Map<String, Object> data = this.convertToServerData(param);
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get("attachFileTable");
@@ -208,7 +205,6 @@ public class AllTypeEditForm extends EditForm {
 		BinaryResponse ret = new BinaryResponse(pdf);
 		ret.setFileName("test001.pdf");
 		ret.setContentType("application/pdf");
-		this.methodFinishLog(logger, ret);
 		return ret;
 	}
 
@@ -220,7 +216,6 @@ public class AllTypeEditForm extends EditForm {
 	 */
 	@WebMethod
 	public Response printOut(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(logger, param);
 		Map<String, Object> data = this.convertToServerData(param);
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get("attachFileTable");
@@ -244,7 +239,6 @@ public class AllTypeEditForm extends EditForm {
 //		pj.setPrintService(PrintDevices.getPrintService("EPSON PX-M5041F"));
 		rep.print(data, pj);
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, "");
-		this.methodFinishLog(logger, ret);
 		return ret;
 	}
 

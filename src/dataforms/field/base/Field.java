@@ -884,11 +884,9 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	 */
     @WebMethod
 	public JsonResponse getRelationData(final Map<String, Object> param) throws Exception {
-    	this.methodStartLog(log, param);
 		String id = (String) param.get(ID_CURRENT_FIELD_ID);
 		String rowid = this.getHtmlTableRowId(id);
     	JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, this.addRowInfo(rowid, this.queryRelationData(param)));
-    	this.methodFinishLog(log, param);
     	return ret;
     }
 
@@ -911,10 +909,8 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	 */
     @WebMethod
 	public JsonResponse getAutocompleteSource(final Map<String, Object> param) throws Exception {
-    	this.methodStartLog(log, param);
     	List<Map<String, Object>> list = this.queryAutocompleteSourceList(param);
     	JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, list);
-    	this.methodFinishLog(log, result);
     	return result;
     }
 

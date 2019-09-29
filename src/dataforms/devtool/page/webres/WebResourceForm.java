@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import dataforms.annotation.WebMethod;
 import dataforms.app.form.LoginInfoForm;
 import dataforms.app.form.SideMenuForm;
@@ -47,7 +45,7 @@ public class WebResourceForm extends Form {
 	/**
 	 * Log.
 	 */
-	private static Logger logger = Logger.getLogger(WebResourceForm.class.getName());
+	// private static Logger logger = Logger.getLogger(WebResourceForm.class.getName());
 	/**
 	 * コンストラクタ。
 	 */
@@ -91,11 +89,9 @@ public class WebResourceForm extends Form {
 		}
 		if (errlist.size() == 0) {
 			JsonResponse r = new JsonResponse(JsonResponse.SUCCESS, message);
-			this.methodFinishLog(logger, r);
 			return r;
 		} else {
 			JsonResponse r = new JsonResponse(JsonResponse.INVALID, errlist);
-			this.methodFinishLog(logger, r);
 			return r;
 		}
 	}
@@ -1220,7 +1216,6 @@ public class WebResourceForm extends Form {
 	 */
 	@WebMethod
 	public JsonResponse generateJavascript(final Map<String, Object> p) throws Exception {
-		this.methodStartLog(logger, p);
 		Map<String, Object> data = this.convertToServerData(p);
 		String message = "";
 		List<ValidationError> errlist = new ArrayList<ValidationError>();
@@ -1232,11 +1227,9 @@ public class WebResourceForm extends Form {
 		}
 		if (errlist.size() == 0) {
 			JsonResponse r = new JsonResponse(JsonResponse.SUCCESS, message);
-			this.methodFinishLog(logger, r);
 			return r;
 		} else {
 			JsonResponse r = new JsonResponse(JsonResponse.INVALID, errlist);
-			this.methodFinishLog(logger, r);
 			return r;
 		}
 	}

@@ -290,7 +290,6 @@ public class QueryGeneratorEditForm extends EditForm {
 	 */
 	@WebMethod
 	public JsonResponse getFieldList(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(log, param);
 		JsonResponse ret = null;
 		param.put("forceOverwrite", "1");
 		Map<String, Object> p = new HashMap<String, Object>();
@@ -304,7 +303,6 @@ public class QueryGeneratorEditForm extends EditForm {
 		} else {
 			ret = new JsonResponse(JsonResponse.INVALID, vlist);
 		}
-		this.methodFinishLog(log, ret);
 		return ret;
 	}
 
@@ -424,7 +422,6 @@ public class QueryGeneratorEditForm extends EditForm {
 	 */
 	@WebMethod
 	public JsonResponse getJoinCondition(final Map<String, Object> param) throws Exception {
-		this.methodStartLog(log, param);
 		JsonResponse ret = null;
 		param.put("forceOverwrite", "1");
 		Map<String, Object> p = new HashMap<String, Object>();
@@ -438,7 +435,6 @@ public class QueryGeneratorEditForm extends EditForm {
 		} else {
 			ret = new JsonResponse(JsonResponse.SUCCESS, new HashMap<String, Object>());
 		}
-		this.methodFinishLog(log, ret);
 		return ret;
 
 	}

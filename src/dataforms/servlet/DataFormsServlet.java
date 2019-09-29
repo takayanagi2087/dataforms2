@@ -888,9 +888,9 @@ public class DataFormsServlet extends HttpServlet {
 	}
 
 	/**
-	 * Logger.
+	 * httpRequest Logger.
 	 */
-	private static Logger accessLogger = Logger.getLogger("httpRequest");
+	private static Logger accessLogger = Logger.getLogger("HttpRequest");
 
 
 	/**
@@ -906,8 +906,12 @@ public class DataFormsServlet extends HttpServlet {
 			UserInfoTable.Entity e = new UserInfoTable.Entity(userInfo);
 			userId = e.getLoginId() + "(" + e.getUserId() + ")";
 		}
+		// TODO:passwordになるキーワードを外す機能を考える。
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.putAll(param);
+		map.remove("password");
 		accessLogger.info(userId + ":" + comp.getClass().getName() + "#" + m.getName() + " start.");
-		accessLogger.debug(userId + ":" + param);
+		accessLogger.debug(userId + ":" + map);
 	}
 
 	/**

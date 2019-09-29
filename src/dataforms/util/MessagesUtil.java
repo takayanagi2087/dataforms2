@@ -6,8 +6,8 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import dataforms.controller.ApplicationError;
 import dataforms.controller.Page;
+import dataforms.exception.ApplicationError;
 
 
 /**

@@ -3,7 +3,7 @@ package dataforms.dao;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.controller.ApplicationException;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.RowNoField;
 

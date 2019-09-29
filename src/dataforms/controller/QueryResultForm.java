@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import dataforms.annotation.WebMethod;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.sqltype.BigintField;

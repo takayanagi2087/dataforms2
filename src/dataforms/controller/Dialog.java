@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import dataforms.exception.ApplicationError;
+
 /**
  * ダイアログクラス。
  * <pre>

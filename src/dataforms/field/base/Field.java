@@ -10,11 +10,11 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.controller.ApplicationError;
 import dataforms.controller.WebComponent;
 import dataforms.dao.Dao;
 import dataforms.dao.Query;
 import dataforms.dao.Table;
+import dataforms.exception.ApplicationError;
 import dataforms.response.JsonResponse;
 import dataforms.util.StringUtil;
 import dataforms.validator.FieldValidator;

@@ -26,7 +26,6 @@ import java.util.Set;
 //import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
 
-import dataforms.controller.ApplicationException;
 import dataforms.controller.Page;
 import dataforms.controller.WebComponent;
 import dataforms.dao.file.BlobFileStore;
@@ -34,6 +33,7 @@ import dataforms.dao.file.FileObject;
 import dataforms.dao.sqldatatype.SqlVarchar;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.dao.sqlgen.SqlParser;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.BlobStoreFileField;

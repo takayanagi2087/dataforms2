@@ -1,5 +1,6 @@
-package dataforms.controller;
+package dataforms.exception;
 
+import dataforms.controller.Page;
 import dataforms.util.MessagesUtil;
 
 /**

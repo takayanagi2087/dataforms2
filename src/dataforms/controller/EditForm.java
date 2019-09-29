@@ -5,6 +5,7 @@ import java.util.Map;
 
 import dataforms.annotation.WebMethod;
 import dataforms.dao.Table;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.TextField;
 import dataforms.response.JsonResponse;

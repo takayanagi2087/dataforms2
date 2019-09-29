@@ -4,8 +4,8 @@ import java.util.Map;
 
 import dataforms.app.dao.user.UserDao;
 import dataforms.app.dao.user.UserInfoTable;
-import dataforms.controller.ApplicationException;
 import dataforms.controller.EditForm;
+import dataforms.exception.ApplicationException;
 import dataforms.util.MessagesUtil;
 
 /**

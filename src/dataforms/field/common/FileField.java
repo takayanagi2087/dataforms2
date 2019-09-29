@@ -10,7 +10,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.controller.ApplicationError;
 import dataforms.dao.file.BlobFileStore;
 import dataforms.dao.file.FileObject;
 import dataforms.dao.file.FileStore;
@@ -19,6 +18,7 @@ import dataforms.dao.file.WebResource;
 import dataforms.dao.file.WebResourceFileStore;
 import dataforms.dao.sqldatatype.SqlBlob;
 import dataforms.dao.sqldatatype.SqlVarchar;
+import dataforms.exception.ApplicationError;
 import dataforms.field.base.Field;
 import dataforms.response.BinaryResponse;
 import dataforms.response.JsonResponse;

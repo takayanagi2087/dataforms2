@@ -2,10 +2,10 @@ package dataforms.field.common;
 
 import org.apache.log4j.Logger;
 
-import dataforms.controller.ApplicationError;
 import dataforms.dao.file.ImageData;
 import dataforms.dao.file.WebResource;
 import dataforms.dao.file.WebResourceFileStore;
+import dataforms.exception.ApplicationError;
 
 /**
  * HTTPでアクセス可能な画像フィールドクラス。

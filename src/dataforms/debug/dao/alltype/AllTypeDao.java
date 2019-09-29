@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import dataforms.controller.ApplicationException;
 import dataforms.dao.Dao;
 import dataforms.dao.Index;
 import dataforms.dao.JDBCConnectableObject;
@@ -14,6 +13,7 @@ import dataforms.dao.SubQuery;
 import dataforms.dao.Table;
 import dataforms.dao.TableList;
 import dataforms.dao.sqlgen.SqlGenerator;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.sqlfunc.AliasField;

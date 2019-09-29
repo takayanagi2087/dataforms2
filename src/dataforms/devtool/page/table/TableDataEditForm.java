@@ -3,11 +3,11 @@ package dataforms.devtool.page.table;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.controller.ApplicationException;
 import dataforms.controller.EditForm;
 import dataforms.controller.QueryForm;
 import dataforms.dao.Table;
 import dataforms.dao.TableDao;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 
 /**

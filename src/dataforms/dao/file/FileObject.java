@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import dataforms.controller.ApplicationError;
+import dataforms.exception.ApplicationError;
 import dataforms.util.FileUtil;
 
 /**

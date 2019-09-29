@@ -6,8 +6,8 @@ import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Logger;
 
-import dataforms.controller.ApplicationError;
 import dataforms.dao.sqldatatype.SqlTime;
+import dataforms.exception.ApplicationError;
 import dataforms.field.base.DateTimeField;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import dataforms.controller.ApplicationException;
 import dataforms.controller.EditForm;
 import dataforms.controller.Page;
 import dataforms.controller.QueryForm;
@@ -28,6 +27,7 @@ import dataforms.devtool.field.pagegen.QueryFormClassNameField;
 import dataforms.devtool.field.pagegen.QueryResultFormClassNameField;
 import dataforms.devtool.page.base.DeveloperPage;
 import dataforms.devtool.validator.ClassNameValidator;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.Field.MatchType;
 import dataforms.field.common.CreateTimestampField;

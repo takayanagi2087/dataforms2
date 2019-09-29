@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import dataforms.app.form.LoginInfoForm;
 import dataforms.app.form.MenuForm;
 import dataforms.dao.JDBCConnectableObject;
+import dataforms.exception.ApplicationError;
 import dataforms.htmltable.HtmlTable;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;

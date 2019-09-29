@@ -3,8 +3,8 @@ package dataforms.devtool.page.base;
 import java.util.Map;
 
 import dataforms.app.page.base.BasePage;
-import dataforms.controller.ApplicationException;
 import dataforms.controller.Page;
+import dataforms.exception.ApplicationException;
 import dataforms.servlet.DataFormsServlet;
 
 /**

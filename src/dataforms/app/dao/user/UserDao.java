@@ -8,11 +8,11 @@ import org.apache.log4j.Logger;
 
 import dataforms.app.dao.enumeration.EnumGroupDao;
 import dataforms.app.dao.enumeration.EnumGroupTable;
-import dataforms.controller.ApplicationException;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.Query;
 import dataforms.dao.sqlgen.SqlGenerator;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.FieldList;
 import dataforms.util.CryptUtil;
 import dataforms.util.UserAdditionalInfoTableUtil;

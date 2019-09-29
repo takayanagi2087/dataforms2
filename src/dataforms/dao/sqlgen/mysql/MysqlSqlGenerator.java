@@ -5,12 +5,12 @@ import java.sql.Connection;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
-import dataforms.controller.ApplicationError;
 import dataforms.dao.Index;
 import dataforms.dao.QueryPager;
 import dataforms.dao.Table;
 import dataforms.dao.sqldatatype.SqlTimestamp;
 import dataforms.dao.sqlgen.SqlGenerator;
+import dataforms.exception.ApplicationError;
 import dataforms.field.base.Field;
 
 /**

@@ -12,9 +12,9 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import dataforms.controller.ApplicationError;
 import dataforms.dao.TableRelation.ForeignKey;
 import dataforms.dao.sqlgen.SqlGenerator;
+import dataforms.exception.ApplicationError;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.CreateTimestampField;

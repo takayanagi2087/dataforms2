@@ -52,4 +52,8 @@ public class TextResponse extends Response {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + ":" + this.getResult();
+	}
 }

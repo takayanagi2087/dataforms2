@@ -24,7 +24,7 @@ import dataforms.util.HttpRangeInfo;
  *
  */
 public class BinaryResponse extends FileResponse {
-	
+
 	/**
 	 * Logger.
 	 */
@@ -43,12 +43,12 @@ public class BinaryResponse extends FileResponse {
 	/**
 	 * HTTP要求情報。
 	 */
-	private HttpServletRequest request = null;		
-	
-	
+	private HttpServletRequest request = null;
+
+
 	/**
 	 * HTTP要求情報を取得します。
-	 * @return HTTPの要求情報。 
+	 * @return HTTPの要求情報。
 	 */
 	public HttpServletRequest getRequest() {
 		return request;
@@ -152,8 +152,8 @@ public class BinaryResponse extends FileResponse {
 		this.inputStream = new FileInputStream(path);
 	}
 
-	
-	
+
+
 	/**
 	 * 一時ファイルを取得します。
 	 * @return 一時ファイル。
@@ -224,7 +224,7 @@ public class BinaryResponse extends FileResponse {
 			log.debug("sendSize=" + sendSize);
 		}
 	}
-	
+
 	/**
 	 * ファイルへの保存。
 	 * @param path 保存先。
@@ -253,6 +253,11 @@ public class BinaryResponse extends FileResponse {
 		if (this.getTempFile() != null) {
 			this.getTempFile().delete();
 		}
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + ":" + this.getFileName();
 	}
 
 }

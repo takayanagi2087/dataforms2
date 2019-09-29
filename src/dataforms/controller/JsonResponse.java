@@ -4,8 +4,6 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
 import dataforms.servlet.DataFormsServlet;
 import net.arnx.jsonic.JSON;
 
@@ -17,7 +15,7 @@ public class JsonResponse extends Response {
 	/**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(JsonResponse.class.getName());
+   // private static Logger logger = Logger.getLogger(JsonResponse.class.getName());
 
 	/**
 	 * 処理が正常終了したことを示します。
@@ -68,10 +66,7 @@ public class JsonResponse extends Response {
 		PrintWriter out = resp.getWriter();
 		try {
 			if (obj != null) {
-				String json = JSON.encode(obj, DataFormsServlet.isJsonDebug());
-				if (log.isDebugEnabled()) {
-					log.debug("json=" + json);
-				}
+				String json = JSON.encode(obj);
 				out.print(json);
 			}
 		} finally {
@@ -96,5 +91,9 @@ public class JsonResponse extends Response {
 		this.status = status;
 	}
 
-
+	@Override
+	public String toString() {
+		String ret = super.toString() + ": " + JSON.encode(this, DataFormsServlet.isJsonDebug());
+		return ret;
+	}
 }

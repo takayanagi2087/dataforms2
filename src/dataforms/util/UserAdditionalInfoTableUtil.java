@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import dataforms.app.field.user.UserIdField;
+import dataforms.app.user.field.UserIdField;
 import dataforms.controller.Page;
 import dataforms.dao.Dao;
 import dataforms.dao.Query;

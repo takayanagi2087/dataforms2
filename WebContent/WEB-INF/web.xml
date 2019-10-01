@@ -356,7 +356,7 @@
 	 -->
 	<context-param>
 		<param-name>top-page</param-name>
-		<param-value>/dataforms/app/page/top/TopPage.df</param-value>
+		<param-value>/dataforms/app/top/page/TopPage.df</param-value>
 	</context-param>
 	<!-- 開発ツールのjavaソース出力フォルダを指定します。 -->
 	<context-param>

@@ -1,6 +1,6 @@
 package dataforms.devtool.page.version;
 
-import dataforms.app.page.base.BasePage;
+import dataforms.app.base.page.BasePage;
 
 /**
  * バージョン情報ページクラスです。

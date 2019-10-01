@@ -1,6 +1,6 @@
 package dataforms.devtool.page.table;
 
-import dataforms.app.page.base.BasePage;
+import dataforms.app.base.page.BasePage;
 import dataforms.dao.Dao;
 import dataforms.dao.Table;
 import dataforms.dao.TableDao;

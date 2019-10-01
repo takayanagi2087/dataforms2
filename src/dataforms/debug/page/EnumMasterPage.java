@@ -1,7 +1,7 @@
 package dataforms.debug.page;
 
-import dataforms.app.page.base.AdminPage;
-import dataforms.app.page.enumeration.EnumMasterEditForm;
+import dataforms.app.base.page.AdminPage;
+import dataforms.app.enumeration.page.EnumMasterEditForm;
 
 /**
  * 列挙型マスタフォームデバッグページ。

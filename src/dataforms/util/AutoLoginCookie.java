@@ -8,8 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import dataforms.app.dao.user.UserDao;
-import dataforms.app.dao.user.UserInfoTable;
+import dataforms.app.user.dao.UserDao;
+import dataforms.app.user.dao.UserInfoTable;
 import dataforms.controller.Page;
 import dataforms.devtool.dao.db.TableManagerDao;
 import dataforms.servlet.DataFormsServlet;

@@ -2,7 +2,7 @@ package dataforms.debug.dao;
 
 import java.util.Map;
 
-import dataforms.app.field.user.UserIdField;
+import dataforms.app.user.field.UserIdField;
 import dataforms.dao.Table;
 import dataforms.debug.field.AddressField;
 import dataforms.field.common.ZipCodeField;

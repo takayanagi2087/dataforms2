@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import dataforms.annotation.WebMethod;
 import dataforms.app.dao.func.FuncInfoDao;
 import dataforms.app.dao.func.FuncInfoTable;
-import dataforms.app.field.func.FuncNameField;
+import dataforms.app.func.field.FuncNameField;
 import dataforms.controller.EditForm;
 import dataforms.controller.Page;
 import dataforms.devtool.dao.db.TableManagerDao;

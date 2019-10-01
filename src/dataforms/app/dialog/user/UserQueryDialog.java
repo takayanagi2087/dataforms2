@@ -1,7 +1,7 @@
 package dataforms.app.dialog.user;
 
-import dataforms.app.page.user.UserQueryForm;
-import dataforms.app.page.user.UserQueryResultForm;
+import dataforms.app.user.page.UserQueryForm;
+import dataforms.app.user.page.UserQueryResultForm;
 import dataforms.controller.Dialog;
 
 /**

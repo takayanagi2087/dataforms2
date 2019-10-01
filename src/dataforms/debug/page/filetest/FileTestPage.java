@@ -1,6 +1,6 @@
 package dataforms.debug.page.filetest;
 
-import dataforms.app.page.base.AdminPage;
+import dataforms.app.base.page.AdminPage;
 import dataforms.dialog.image.ImageDialog;
 
 /**

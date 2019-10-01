@@ -1,6 +1,6 @@
 package dataforms.debug.page;
 
-import dataforms.app.page.base.BasePage;
+import dataforms.app.base.page.BasePage;
 
 /**
  * Googleを表示するページ。

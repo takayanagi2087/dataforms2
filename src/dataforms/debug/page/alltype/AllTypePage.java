@@ -1,6 +1,6 @@
 package dataforms.debug.page.alltype;
 
-import dataforms.app.page.base.AdminPage;
+import dataforms.app.base.page.AdminPage;
 
 
 /**

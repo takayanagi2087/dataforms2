@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.app.dao.user.UserAttributeTable;
+import dataforms.app.user.dao.UserAttributeTable;
 import dataforms.field.base.Field;
 import dataforms.htmltable.HtmlTable;
 import dataforms.menu.Menu;
@@ -112,7 +112,7 @@ public class Page extends DataForms {
     /**
      * トップページ。
      */
-    private static String topPage = "/dataforms/app/page/top/TopPage.df";
+    private static String topPage = "/dataforms/app/top/page/TopPage.df";
 
 
     /**

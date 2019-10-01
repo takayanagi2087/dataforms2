@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.app.dao.menu.MenuDao;
+import dataforms.app.menu.dao.MenuDao;
 import dataforms.controller.Form;
 import dataforms.controller.Page;
 import dataforms.menu.Menu;

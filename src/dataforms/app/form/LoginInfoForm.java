@@ -5,8 +5,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.app.field.user.LoginIdField;
-import dataforms.app.field.user.UserNameField;
+import dataforms.app.user.field.LoginIdField;
+import dataforms.app.user.field.UserNameField;
 import dataforms.controller.Form;
 import dataforms.response.JsonResponse;
 import dataforms.util.AutoLoginCookie;

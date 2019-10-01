@@ -2,8 +2,8 @@ package dataforms.app.dao.func;
 
 import java.util.Map;
 
-import dataforms.app.field.func.FuncIdField;
-import dataforms.app.field.func.FuncPathField;
+import dataforms.app.func.field.FuncIdField;
+import dataforms.app.func.field.FuncPathField;
 import dataforms.dao.Table;
 import dataforms.field.common.DeleteFlagField;
 import dataforms.field.common.SortOrderField;

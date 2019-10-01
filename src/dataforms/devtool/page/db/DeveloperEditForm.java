@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import dataforms.app.dao.user.UserDao;
-import dataforms.app.dao.user.UserInfoTable;
-import dataforms.app.field.user.PasswordField;
+import dataforms.app.user.dao.UserDao;
+import dataforms.app.user.dao.UserInfoTable;
+import dataforms.app.user.field.PasswordField;
 import dataforms.controller.EditForm;
 import dataforms.controller.Page;
 import dataforms.devtool.dao.db.TableManagerDao;

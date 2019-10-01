@@ -2,7 +2,7 @@ package dataforms.app.errorpage;
 
 import java.util.Map;
 
-import dataforms.app.page.base.BasePage;
+import dataforms.app.base.page.BasePage;
 
 /**
  * エラー表示ページクラス。

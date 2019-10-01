@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.app.field.user.LoginIdField;
-import dataforms.app.field.user.UserNameField;
+import dataforms.app.user.field.LoginIdField;
+import dataforms.app.user.field.UserNameField;
 import dataforms.dao.Table;
 import dataforms.field.common.BlobStoreFileField;
 import dataforms.field.common.CharSingleSelectField;

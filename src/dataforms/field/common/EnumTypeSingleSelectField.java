@@ -1,7 +1,7 @@
 package dataforms.field.common;
 
-import dataforms.app.dao.enumeration.EnumDao;
-import dataforms.app.field.enumeration.EnumTypeCodeField;
+import dataforms.app.enumeration.dao.EnumDao;
+import dataforms.app.enumeration.field.EnumTypeCodeField;
 import dataforms.dao.sqldatatype.SqlVarchar;
 
 /**

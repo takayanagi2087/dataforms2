@@ -1,4 +1,4 @@
-package dataforms.devtool.page.expwebres;
+package dataforms.devtool.expwebres.page;
 
 import dataforms.controller.QueryForm;
 import dataforms.field.common.FlagField;

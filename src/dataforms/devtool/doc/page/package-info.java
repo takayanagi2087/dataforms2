@@ -1,4 +1,4 @@
 /**
  * ドキュメントフレームページパッケージ。
  */
-package dataforms.devtool.page.doc;
+package dataforms.devtool.doc.page;

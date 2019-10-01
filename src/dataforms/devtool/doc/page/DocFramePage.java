@@ -1,4 +1,4 @@
-package dataforms.devtool.page.doc;
+package dataforms.devtool.doc.page;
 
 import dataforms.app.base.page.BasePage;
 

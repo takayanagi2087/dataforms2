@@ -1,4 +1,4 @@
-package dataforms.devtool.page.expwebres;
+package dataforms.devtool.expwebres.page;
 
 import dataforms.devtool.page.base.DeveloperPage;
 

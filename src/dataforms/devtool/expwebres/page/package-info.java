@@ -1,4 +1,4 @@
 /**
  * Webリソースエクスポートパッケージ。
  */
-package dataforms.devtool.page.expwebres;
+package dataforms.devtool.expwebres.page;

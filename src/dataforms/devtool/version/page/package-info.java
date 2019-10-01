@@ -1,4 +1,4 @@
 /**
  * バージョン情報ページパッケージ。
  */
-package dataforms.devtool.page.version;
+package dataforms.devtool.version.page;

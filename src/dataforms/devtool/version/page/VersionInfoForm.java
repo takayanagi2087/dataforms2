@@ -1,4 +1,4 @@
-package dataforms.devtool.page.version;
+package dataforms.devtool.version.page;
 
 import dataforms.controller.Form;
 import dataforms.controller.Page;

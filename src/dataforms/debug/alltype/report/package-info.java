@@ -1,4 +1,4 @@
 /**
  * 全項目タイプテストレポートパッケージ。
  */
-package dataforms.debug.report;
+package dataforms.debug.alltype.report;

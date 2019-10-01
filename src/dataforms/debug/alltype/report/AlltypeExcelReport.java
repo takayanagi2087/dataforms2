@@ -1,24 +1,24 @@
-package dataforms.debug.report;
+package dataforms.debug.alltype.report;
 
 import dataforms.debug.alltype.dao.AllTypeAttachFileTable;
 import dataforms.debug.alltype.dao.AllTypeTable;
 import dataforms.field.common.WebResourceImageField;
 import dataforms.field.sqltype.IntegerField;
+import dataforms.report.ExcelReport;
 import dataforms.report.ReportTable;
-import dataforms.report.XslFoReport;
 
 
 /**
- * XSL-FOレポート出力テスト。
+ * Excelレポート出力テスト。
  *
  */
-public class AlltypeXslFoReport extends XslFoReport {
+public class AlltypeExcelReport extends ExcelReport {
 	/**
 	 * コンストラクタ。
 	 * @param path テンプレートパス。
 	 */
-	public AlltypeXslFoReport(final String path) {
-		super(path);
+	public AlltypeExcelReport(final String path) {
+		this.setTemplatePath(path);
 
 		this.addTableFields(new AllTypeTable());
 		this.addField(new WebResourceImageField("webImage", "/frame/default/image/menu.png"));
@@ -30,8 +30,26 @@ public class AlltypeXslFoReport extends XslFoReport {
 		ReportTable htmltable = new ReportTable("attachFileTable", aft.getFieldList());
 		this.addReportTable(htmltable);
 
-		this.setRowsParPage(9);
+		this.setRowsParPage(10);
 		this.setMainTableId(htmltable.getId());
-		// this.addBreakField(htmltable.getFieldList().get("fileComment"));
+		this.addBreakField(htmltable.getFieldList().get("fileComment"));
 	}
+
+/*	@Override
+	protected Workbook getTamplate() throws Exception {
+		Workbook ret = super.getTamplate();
+		ret.setForceFormulaRecalculation(true);
+		return ret;
+	}*/
+
+	
+	@Override
+	public byte[] getReport() throws Exception {
+//		Workbook wb = this.getWorkbook();
+//		XSSFSheet sh = (XSSFSheet) wb.getSheetAt(0);
+//		this.lockSheet(sh, "password");
+		return super.getReport();
+	}
+
+
 }

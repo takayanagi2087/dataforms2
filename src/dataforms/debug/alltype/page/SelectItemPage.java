@@ -1,10 +1,10 @@
-package dataforms.debug.page;
+package dataforms.debug.alltype.page;
 
 import dataforms.app.base.page.BasePage;
 import dataforms.dao.Dao;
 import dataforms.dao.Table;
-import dataforms.debug.dao.SingleSelectTable;
-import dataforms.debug.dao.SingleSelectDao;
+import dataforms.debug.alltype.dao.SingleSelectDao;
+import dataforms.debug.alltype.dao.SingleSelectTable;
 
 
 /**

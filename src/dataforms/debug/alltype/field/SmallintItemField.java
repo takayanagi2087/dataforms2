@@ -1,27 +1,27 @@
-package dataforms.debug.field;
+package dataforms.debug.alltype.field;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.field.common.BigintSingleSelectField;
 import dataforms.field.common.SelectField;
+import dataforms.field.common.SmallintSingleSelectField;
 
 
 /**
- * BigintItemFieldフィールドクラス。
+ * SmallintItemFieldフィールドクラス。
  *
  */
-public class BigintItemField extends BigintSingleSelectField {
+public class SmallintItemField extends SmallintSingleSelectField {
 
 	/**
 	 * フィールドコメント。
 	 */
-	private static final String COMMENT = "Bigintフィールド";
+	private static final String COMMENT = "Smallintフィールド";
 	/**
 	 * コンストラクタ。
 	 */
-	public BigintItemField() {
+	public SmallintItemField() {
 		super(null);
 		this.setComment(COMMENT);
 	}
@@ -29,7 +29,7 @@ public class BigintItemField extends BigintSingleSelectField {
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public BigintItemField(final String id) {
+	public SmallintItemField(final String id) {
 		super(id);
 		this.setComment(COMMENT);
 	}
@@ -37,6 +37,7 @@ public class BigintItemField extends BigintSingleSelectField {
 	@Override
 	protected void onBind() {
 		super.onBind();
+
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class BigintItemField extends BigintSingleSelectField {
 	 * 名前リスト。
 	 */
 	private static String[] optionName = {
-		"Bigint0", "Bigint1", "Bigint2", "Bigint3", "Bigint4"
+		"Smallint0", "Smallint1", "Smallint2", "Smallint3", "Smallint4"
 	};
 
 

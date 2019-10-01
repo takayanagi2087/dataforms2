@@ -1,27 +1,27 @@
-package dataforms.debug.field;
+package dataforms.debug.alltype.field;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.field.common.IntegerSingleSelectField;
+import dataforms.field.common.BigintSingleSelectField;
 import dataforms.field.common.SelectField;
 
 
 /**
- * IntegerIetmFieldフィールドクラス。
+ * BigintItemFieldフィールドクラス。
  *
  */
-public class IntegerIetmField extends IntegerSingleSelectField {
+public class BigintItemField extends BigintSingleSelectField {
 
 	/**
 	 * フィールドコメント。
 	 */
-	private static final String COMMENT = "Integerフィールド";
+	private static final String COMMENT = "Bigintフィールド";
 	/**
 	 * コンストラクタ。
 	 */
-	public IntegerIetmField() {
+	public BigintItemField() {
 		super(null);
 		this.setComment(COMMENT);
 	}
@@ -29,7 +29,7 @@ public class IntegerIetmField extends IntegerSingleSelectField {
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public IntegerIetmField(final String id) {
+	public BigintItemField(final String id) {
 		super(id);
 		this.setComment(COMMENT);
 	}
@@ -37,9 +37,7 @@ public class IntegerIetmField extends IntegerSingleSelectField {
 	@Override
 	protected void onBind() {
 		super.onBind();
-
 	}
-
 
 	@Override
 	public void init() throws Exception {
@@ -58,7 +56,7 @@ public class IntegerIetmField extends IntegerSingleSelectField {
 	 * 名前リスト。
 	 */
 	private static String[] optionName = {
-		"Integer0", "Integer1", "Integer2", "Integer3", "Integer4"
+		"Bigint0", "Bigint1", "Bigint2", "Bigint3", "Bigint4"
 	};
 
 

@@ -1,4 +1,4 @@
-package dataforms.debug.field;
+package dataforms.debug.alltype.field;
 
 import dataforms.field.common.RecordIdField;
 

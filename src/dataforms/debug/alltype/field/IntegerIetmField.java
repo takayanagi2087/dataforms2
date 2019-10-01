@@ -1,50 +1,45 @@
-package dataforms.debug.field;
+package dataforms.debug.alltype.field;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import dataforms.field.common.IntegerSingleSelectField;
 import dataforms.field.common.SelectField;
-import dataforms.field.common.VarcharSingleSelectField;
-import dataforms.validator.MaxLengthValidator;
 
 
 /**
- * VarcharItemFieldフィールドクラス。
+ * IntegerIetmFieldフィールドクラス。
  *
  */
-public class VarcharItemField extends VarcharSingleSelectField {
-	/**
-	 * フィールド長。
-	 */
-	private static final int LENGTH = 64;
+public class IntegerIetmField extends IntegerSingleSelectField {
 
 	/**
 	 * フィールドコメント。
 	 */
-	private static final String COMMENT = "Varcharフィールド";
+	private static final String COMMENT = "Integerフィールド";
 	/**
 	 * コンストラクタ。
 	 */
-	public VarcharItemField() {
-		super(null, LENGTH);
+	public IntegerIetmField() {
+		super(null);
 		this.setComment(COMMENT);
 	}
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public VarcharItemField(final String id) {
-		super(id, LENGTH);
+	public IntegerIetmField(final String id) {
+		super(id);
 		this.setComment(COMMENT);
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
-		this.addValidator(new MaxLengthValidator(this.getLength()));
 
 	}
+
 
 	@Override
 	public void init() throws Exception {
@@ -53,10 +48,17 @@ public class VarcharItemField extends VarcharSingleSelectField {
 	}
 
 	/**
+	 * 値リスト。
+	 */
+	private static Integer[] optionValue = {
+		0, 1, 2, 3, 4
+	};
+
+	/**
 	 * 名前リスト。
 	 */
 	private static String[] optionName = {
-		"Varchar0", "Varchar1", "Varchar2", "Varchar3", "Varchar4"
+		"Integer0", "Integer1", "Integer2", "Integer3", "Integer4"
 	};
 
 
@@ -66,13 +68,12 @@ public class VarcharItemField extends VarcharSingleSelectField {
 	 */
 	private List<Map<String, Object>> queryOptionList() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		for (int i = 0; i < optionName.length; i++) {
+		for (int i = 0; i < optionValue.length; i++) {
 			SelectField.OptionEntity e = new SelectField.OptionEntity();
-			e.setValue(optionName[i]);
-			e.setName(optionName[i]);
+			e.setValue(optionValue[i].toString());
+			e.setName(optionName[i].toString());
 			list.add(e.getMap());
 		}
 		return list;
 	}
-
 }

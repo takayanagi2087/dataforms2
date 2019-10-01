@@ -1,4 +1,4 @@
-package dataforms.debug.page;
+package dataforms.debug.alltype.page;
 
 import java.util.List;
 import java.util.Map;
@@ -6,11 +6,11 @@ import java.util.Map;
 import dataforms.controller.EditForm;
 import dataforms.controller.QueryForm;
 import dataforms.dao.Table;
+import dataforms.debug.alltype.dao.SingleSelectDao;
+import dataforms.debug.alltype.dao.SingleSelectTable;
 import dataforms.field.base.Field;
 import dataforms.field.common.FileField;
-import dataforms.debug.dao.SingleSelectTable;
 import dataforms.exception.ApplicationException;
-import dataforms.debug.dao.SingleSelectDao;
 
 /**
  * 編集フォームクラス。

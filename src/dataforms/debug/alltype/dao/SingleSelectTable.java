@@ -1,14 +1,14 @@
-package dataforms.debug.dao;
+package dataforms.debug.alltype.dao;
 
 import java.util.Map;
 
 import dataforms.dao.Table;
-import dataforms.debug.field.BigintItemField;
-import dataforms.debug.field.CharItemField;
-import dataforms.debug.field.IntegerIetmField;
-import dataforms.debug.field.SingleSelectIdField;
-import dataforms.debug.field.SmallintItemField;
-import dataforms.debug.field.VarcharItemField;
+import dataforms.debug.alltype.field.BigintItemField;
+import dataforms.debug.alltype.field.CharItemField;
+import dataforms.debug.alltype.field.IntegerIetmField;
+import dataforms.debug.alltype.field.SingleSelectIdField;
+import dataforms.debug.alltype.field.SmallintItemField;
+import dataforms.debug.alltype.field.VarcharItemField;
 
 
 /**

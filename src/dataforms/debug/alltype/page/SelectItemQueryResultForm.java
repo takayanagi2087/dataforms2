@@ -1,12 +1,12 @@
-package dataforms.debug.page;
+package dataforms.debug.alltype.page;
 
 import java.util.List;
 import java.util.Map;
 
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
-import dataforms.debug.dao.SingleSelectDao;
-import dataforms.debug.dao.SingleSelectTable;
+import dataforms.debug.alltype.dao.SingleSelectDao;
+import dataforms.debug.alltype.dao.SingleSelectTable;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
 

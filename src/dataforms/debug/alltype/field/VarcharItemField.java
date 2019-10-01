@@ -1,42 +1,48 @@
-package dataforms.debug.field;
+package dataforms.debug.alltype.field;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import dataforms.field.common.SelectField;
-import dataforms.field.common.SmallintSingleSelectField;
+import dataforms.field.common.VarcharSingleSelectField;
+import dataforms.validator.MaxLengthValidator;
 
 
 /**
- * SmallintItemFieldフィールドクラス。
+ * VarcharItemFieldフィールドクラス。
  *
  */
-public class SmallintItemField extends SmallintSingleSelectField {
+public class VarcharItemField extends VarcharSingleSelectField {
+	/**
+	 * フィールド長。
+	 */
+	private static final int LENGTH = 64;
 
 	/**
 	 * フィールドコメント。
 	 */
-	private static final String COMMENT = "Smallintフィールド";
+	private static final String COMMENT = "Varcharフィールド";
 	/**
 	 * コンストラクタ。
 	 */
-	public SmallintItemField() {
-		super(null);
+	public VarcharItemField() {
+		super(null, LENGTH);
 		this.setComment(COMMENT);
 	}
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public SmallintItemField(final String id) {
-		super(id);
+	public VarcharItemField(final String id) {
+		super(id, LENGTH);
 		this.setComment(COMMENT);
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
+		this.addValidator(new MaxLengthValidator(this.getLength()));
 
 	}
 
@@ -47,17 +53,10 @@ public class SmallintItemField extends SmallintSingleSelectField {
 	}
 
 	/**
-	 * 値リスト。
-	 */
-	private static Integer[] optionValue = {
-		0, 1, 2, 3, 4
-	};
-
-	/**
 	 * 名前リスト。
 	 */
 	private static String[] optionName = {
-		"Smallint0", "Smallint1", "Smallint2", "Smallint3", "Smallint4"
+		"Varchar0", "Varchar1", "Varchar2", "Varchar3", "Varchar4"
 	};
 
 
@@ -67,12 +66,13 @@ public class SmallintItemField extends SmallintSingleSelectField {
 	 */
 	private List<Map<String, Object>> queryOptionList() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		for (int i = 0; i < optionValue.length; i++) {
+		for (int i = 0; i < optionName.length; i++) {
 			SelectField.OptionEntity e = new SelectField.OptionEntity();
-			e.setValue(optionValue[i].toString());
-			e.setName(optionName[i].toString());
+			e.setValue(optionName[i]);
+			e.setName(optionName[i]);
 			list.add(e.getMap());
 		}
 		return list;
 	}
+
 }

@@ -1,7 +1,7 @@
-package dataforms.debug.page;
+package dataforms.debug.alltype.page;
 
 import dataforms.controller.QueryForm;
-import dataforms.debug.dao.SingleSelectTable;
+import dataforms.debug.alltype.dao.SingleSelectTable;
 import dataforms.field.base.Field.MatchType;
 
 

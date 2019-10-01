@@ -1,4 +1,4 @@
 /**
  *　デバック用テストプログラムフィールドパッケージ。
  */
-package dataforms.debug.field;
+package dataforms.debug.user.field;

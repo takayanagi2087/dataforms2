@@ -7,7 +7,7 @@ import dataforms.debug.special.field.CommentField;
 import dataforms.debug.special.field.Key1Field;
 import dataforms.debug.special.field.Key2Field;
 import dataforms.debug.special.field.SmallMasterIdField;
-import dataforms.debug.field.AttachFileField;
+import dataforms.debug.user.field.AttachFileField;
 
 
 /**

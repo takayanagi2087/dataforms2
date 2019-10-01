@@ -1,10 +1,10 @@
-package dataforms.debug.dao;
+package dataforms.debug.user.dao;
 
 import java.util.Map;
 
 import dataforms.app.user.field.UserIdField;
 import dataforms.dao.Table;
-import dataforms.debug.field.AddressField;
+import dataforms.debug.user.field.AddressField;
 import dataforms.field.common.ZipCodeField;
 
 

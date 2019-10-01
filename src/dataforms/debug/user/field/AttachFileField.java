@@ -1,4 +1,4 @@
-package dataforms.debug.field;
+package dataforms.debug.user.field;
 
 import dataforms.field.common.BlobStoreFileField;
 

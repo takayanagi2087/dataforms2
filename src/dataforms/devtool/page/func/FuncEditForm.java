@@ -14,7 +14,7 @@ import dataforms.app.func.field.FuncNameField;
 import dataforms.controller.EditForm;
 import dataforms.controller.Page;
 import dataforms.devtool.dao.db.TableManagerDao;
-import dataforms.devtool.field.common.WebSourcePathField;
+import dataforms.devtool.field.WebSourcePathField;
 import dataforms.devtool.page.base.DeveloperPage;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;

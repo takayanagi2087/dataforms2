@@ -8,9 +8,9 @@ import java.util.Map;
 
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
-import dataforms.devtool.field.common.ClassNameField;
-import dataforms.devtool.field.common.PackageNameField;
-import dataforms.devtool.field.common.PageClassNameField;
+import dataforms.devtool.field.ClassNameField;
+import dataforms.devtool.field.PackageNameField;
+import dataforms.devtool.field.PageClassNameField;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.RowNoField;
 import dataforms.htmltable.HtmlTable;

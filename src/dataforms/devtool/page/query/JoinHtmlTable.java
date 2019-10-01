@@ -1,9 +1,9 @@
 package dataforms.devtool.page.query;
 
-import dataforms.devtool.field.common.AliasNameField;
-import dataforms.devtool.field.common.FunctionSelectField;
-import dataforms.devtool.field.common.PackageNameField;
-import dataforms.devtool.field.common.TableFullClassNameField;
+import dataforms.devtool.field.AliasNameField;
+import dataforms.devtool.field.FunctionSelectField;
+import dataforms.devtool.field.PackageNameField;
+import dataforms.devtool.field.TableFullClassNameField;
 import dataforms.field.base.FieldList;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.htmltable.EditableHtmlTable;

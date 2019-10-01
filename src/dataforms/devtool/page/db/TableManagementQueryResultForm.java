@@ -9,7 +9,7 @@ import dataforms.annotation.WebMethod;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.devtool.dao.db.TableManagerDao;
-import dataforms.devtool.field.common.ClassNameField;
+import dataforms.devtool.field.ClassNameField;
 import dataforms.devtool.page.base.DeveloperPage;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.FieldList;

@@ -1,7 +1,7 @@
 package dataforms.devtool.page.db;
 
 import dataforms.controller.Form;
-import dataforms.devtool.field.common.PathNameField;
+import dataforms.devtool.field.PathNameField;
 import dataforms.servlet.DataFormsServlet;
 
 /**

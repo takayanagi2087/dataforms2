@@ -6,12 +6,12 @@ import java.util.Map;
 
 import dataforms.app.enumeration.dao.EnumDao;
 import dataforms.controller.QueryForm;
-import dataforms.devtool.field.common.ClassNameField;
-import dataforms.devtool.field.common.FunctionSelectField;
-import dataforms.devtool.field.common.PackageNameField;
-import dataforms.devtool.field.common.PageClassNameField;
-import dataforms.devtool.field.common.WebComponentTypeListField;
-import dataforms.devtool.field.common.WebSourcePathField;
+import dataforms.devtool.field.ClassNameField;
+import dataforms.devtool.field.FunctionSelectField;
+import dataforms.devtool.field.PackageNameField;
+import dataforms.devtool.field.PageClassNameField;
+import dataforms.devtool.field.WebComponentTypeListField;
+import dataforms.devtool.field.WebSourcePathField;
 import dataforms.devtool.page.base.DeveloperPage;
 import dataforms.field.common.FlagField;
 import dataforms.validator.RequiredValidator;

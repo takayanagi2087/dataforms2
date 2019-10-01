@@ -1,9 +1,9 @@
 package dataforms.devtool.page.query;
 
-import dataforms.devtool.field.common.FieldFullClassNameField;
-import dataforms.devtool.field.common.FieldIdField;
-import dataforms.devtool.field.common.TableClassNameField;
-import dataforms.devtool.field.common.TableFullClassNameField;
+import dataforms.devtool.field.FieldFullClassNameField;
+import dataforms.devtool.field.FieldIdField;
+import dataforms.devtool.field.TableClassNameField;
+import dataforms.devtool.field.TableFullClassNameField;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FlagField;
 import dataforms.field.sqltype.VarcharField;

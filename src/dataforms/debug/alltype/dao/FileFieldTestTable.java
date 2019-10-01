@@ -1,10 +1,10 @@
-package dataforms.debug.filetest.dao;
+package dataforms.debug.alltype.dao;
 
 import java.util.Map;
 
 import dataforms.dao.Table;
 import dataforms.dao.sqlgen.mysql.MysqlSqlGenerator;
-import dataforms.debug.filetest.field.FileCommentField;
+import dataforms.debug.alltype.field.FileCommentField;
 import dataforms.field.common.BlobStoreAudioField;
 import dataforms.field.common.BlobStoreFileField;
 import dataforms.field.common.BlobStoreImageField;

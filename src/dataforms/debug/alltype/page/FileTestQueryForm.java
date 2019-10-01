@@ -1,7 +1,7 @@
-package dataforms.debug.filetest.page;
+package dataforms.debug.alltype.page;
 
 import dataforms.controller.QueryForm;
-import dataforms.debug.filetest.field.FileCommentField;
+import dataforms.debug.alltype.field.FileCommentField;
 import dataforms.field.base.Field.MatchType;
 
 /**

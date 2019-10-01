@@ -1,4 +1,4 @@
-package dataforms.debug.filetest.dao;
+package dataforms.debug.alltype.dao;
 
 import dataforms.dao.Table;
 import dataforms.dao.TableRelation;

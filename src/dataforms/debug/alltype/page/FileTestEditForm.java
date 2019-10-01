@@ -1,12 +1,12 @@
-package dataforms.debug.filetest.page;
+package dataforms.debug.alltype.page;
 
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import dataforms.controller.EditForm;
-import dataforms.debug.filetest.dao.FileFieldTestDao;
-import dataforms.debug.filetest.dao.FileFieldTestTable;
+import dataforms.debug.alltype.dao.FileFieldTestDao;
+import dataforms.debug.alltype.dao.FileFieldTestTable;
 import dataforms.field.common.WebResourceImageField;
 import dataforms.util.StringUtil;
 import net.arnx.jsonic.JSON;

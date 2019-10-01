@@ -1,6 +1,6 @@
-package dataforms.debug.filetest.field;
+package dataforms.debug.alltype.field;
 
-import dataforms.debug.filetest.page.FileTestEditForm;
+import dataforms.debug.alltype.page.FileTestEditForm;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.validator.RequiredValidator;
 

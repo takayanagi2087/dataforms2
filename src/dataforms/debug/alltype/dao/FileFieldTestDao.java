@@ -1,4 +1,4 @@
-package dataforms.debug.filetest.dao;
+package dataforms.debug.alltype.dao;
 
 import java.util.Map;
 

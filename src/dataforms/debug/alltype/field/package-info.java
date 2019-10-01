@@ -1,4 +1,4 @@
 /**
  * ファイルフィールドテストフィールドパッケージ。
  */
-package dataforms.debug.filetest.field;
+package dataforms.debug.alltype.field;

@@ -1,4 +1,4 @@
-package dataforms.debug.filetest.page;
+package dataforms.debug.alltype.page;
 
 import dataforms.app.base.page.AdminPage;
 import dataforms.dialog.image.ImageDialog;

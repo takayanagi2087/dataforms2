@@ -1,4 +1,4 @@
 /**
  * ユーザ問い合わせダイアログパッケージ。
  */
-package dataforms.app.dialog.user;
+package dataforms.app.user.dialog;

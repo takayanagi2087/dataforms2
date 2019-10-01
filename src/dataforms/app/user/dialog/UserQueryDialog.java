@@ -1,4 +1,4 @@
-package dataforms.app.dialog.user;
+package dataforms.app.user.dialog;
 
 import dataforms.app.user.page.UserQueryForm;
 import dataforms.app.user.page.UserQueryResultForm;

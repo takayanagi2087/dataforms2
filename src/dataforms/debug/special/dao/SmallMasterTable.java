@@ -1,12 +1,12 @@
-package dataforms.debug.dao;
+package dataforms.debug.special.dao;
 
 import java.util.Map;
 import dataforms.dao.Table;
-import dataforms.debug.field.SmallMasterIdField;
-import dataforms.debug.field.Key1Field;
-import dataforms.debug.field.Key2Field;
 import dataforms.field.common.SortOrderField;
-import dataforms.debug.field.CommentField;
+import dataforms.debug.special.field.CommentField;
+import dataforms.debug.special.field.Key1Field;
+import dataforms.debug.special.field.Key2Field;
+import dataforms.debug.special.field.SmallMasterIdField;
 import dataforms.debug.field.AttachFileField;
 
 

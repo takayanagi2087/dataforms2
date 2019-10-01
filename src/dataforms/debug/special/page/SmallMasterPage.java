@@ -1,10 +1,10 @@
-package dataforms.debug.page;
+package dataforms.debug.special.page;
 
 import dataforms.app.base.page.AdminPage;
 import dataforms.dao.Dao;
 import dataforms.dao.Table;
-import dataforms.debug.dao.SmallMasterDao;
-import dataforms.debug.dao.SmallMasterTable;
+import dataforms.debug.special.dao.SmallMasterDao;
+import dataforms.debug.special.dao.SmallMasterTable;
 
 
 /**

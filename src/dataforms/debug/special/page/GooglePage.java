@@ -1,4 +1,4 @@
-package dataforms.debug.page;
+package dataforms.debug.special.page;
 
 import dataforms.app.base.page.BasePage;
 

@@ -1,8 +1,8 @@
-package dataforms.debug.page;
+package dataforms.debug.special.page;
 
 import dataforms.controller.QueryForm;
-import dataforms.debug.field.Key1Field;
-import dataforms.debug.field.Key2Field;
+import dataforms.debug.special.field.Key1Field;
+import dataforms.debug.special.field.Key2Field;
 import dataforms.validator.RequiredValidator;
 
 /**

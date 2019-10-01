@@ -1,4 +1,4 @@
-package dataforms.debug.field;
+package dataforms.debug.special.field;
 
 import dataforms.field.sqltype.VarcharField;
 import dataforms.validator.MaxLengthValidator;

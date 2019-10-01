@@ -1,27 +1,27 @@
-package dataforms.debug.field;
+package dataforms.debug.special.field;
 
 import dataforms.field.sqltype.VarcharField;
 import dataforms.validator.MaxLengthValidator;
 
 
 /**
- * Key2Fieldフィールドクラス。
+ * CommentFieldフィールドクラス。
  *
  */
-public class Key2Field extends VarcharField {
+public class CommentField extends VarcharField {
 	/**
 	 * フィールド長。
 	 */
-	private static final int LENGTH = 8;
+	private static final int LENGTH = 128;
 
 	/**
 	 * フィールドコメント。
 	 */
-	private static final String COMMENT = "キー2";
+	private static final String COMMENT = "コメント";
 	/**
 	 * コンストラクタ。
 	 */
-	public Key2Field() {
+	public CommentField() {
 		super(null, LENGTH);
 		this.setComment(COMMENT);
 	}
@@ -29,7 +29,7 @@ public class Key2Field extends VarcharField {
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public Key2Field(final String id) {
+	public CommentField(final String id) {
 		super(id, LENGTH);
 		this.setComment(COMMENT);
 	}

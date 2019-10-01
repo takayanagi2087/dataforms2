@@ -1,4 +1,4 @@
-package dataforms.debug.page;
+package dataforms.debug.special.page;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 import dataforms.controller.MultiRecordEditForm;
 import dataforms.controller.Page;
 import dataforms.controller.QueryForm;
-import dataforms.debug.dao.SmallMasterDao;
-import dataforms.debug.dao.SmallMasterTable;
+import dataforms.debug.special.dao.SmallMasterDao;
+import dataforms.debug.special.dao.SmallMasterTable;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;

@@ -1,4 +1,4 @@
-package dataforms.devtool.page.func;
+package dataforms.devtool.func.page;
 
 import dataforms.devtool.page.base.DeveloperPage;
 

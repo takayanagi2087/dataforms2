@@ -1,4 +1,4 @@
-package dataforms.devtool.page.func;
+package dataforms.devtool.func.page;
 
 import java.io.File;
 import java.util.HashMap;

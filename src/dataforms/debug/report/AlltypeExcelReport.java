@@ -1,7 +1,7 @@
 package dataforms.debug.report;
 
-import dataforms.debug.dao.alltype.AllTypeAttachFileTable;
-import dataforms.debug.dao.alltype.AllTypeTable;
+import dataforms.debug.alltype.dao.AllTypeAttachFileTable;
+import dataforms.debug.alltype.dao.AllTypeTable;
 import dataforms.field.common.WebResourceImageField;
 import dataforms.field.sqltype.IntegerField;
 import dataforms.report.ExcelReport;

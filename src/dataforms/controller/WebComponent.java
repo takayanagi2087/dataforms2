@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-import dataforms.app.form.LoginInfoForm;
-import dataforms.app.form.MenuForm;
+import dataforms.app.login.page.LoginInfoForm;
+import dataforms.app.menu.page.MenuForm;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.exception.ApplicationError;
 import dataforms.htmltable.HtmlTable;

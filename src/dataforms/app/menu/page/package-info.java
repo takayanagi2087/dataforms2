@@ -1,4 +1,4 @@
 /**
  * アプリケーション基本機能フォームパッケージ。
  */
-package dataforms.app.form;
+package dataforms.app.menu.page;

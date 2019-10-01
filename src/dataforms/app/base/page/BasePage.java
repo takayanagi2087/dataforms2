@@ -2,8 +2,8 @@ package dataforms.app.base.page;
 
 import java.util.Map;
 
-import dataforms.app.form.LoginInfoForm;
-import dataforms.app.form.SideMenuForm;
+import dataforms.app.login.page.LoginInfoForm;
+import dataforms.app.menu.page.SideMenuForm;
 import dataforms.controller.Page;
 
 

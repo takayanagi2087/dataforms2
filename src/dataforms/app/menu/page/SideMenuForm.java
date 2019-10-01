@@ -1,23 +1,25 @@
-package dataforms.app.sitemap.page;
+package dataforms.app.menu.page;
 
-import dataforms.app.form.MenuForm;
 import dataforms.menu.Menu;
+import dataforms.menu.SideMenu;
 
 /**
  * サイドメニューフォームクラス。
  *
  */
-public class SiteMapForm extends MenuForm {
+public class SideMenuForm extends MenuForm {
 	/**
 	 * コンストラクタ。
 	 */
-	public SiteMapForm() {
+	public SideMenuForm() {
 		super(null);
 	}
 
 	@Override
 	protected Menu newMenuComponent() {
-		Menu menu = new Menu();
+		SideMenu menu = new SideMenu();
 		return menu;
 	}
+
+
 }

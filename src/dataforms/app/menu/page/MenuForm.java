@@ -1,4 +1,4 @@
-package dataforms.app.form;
+package dataforms.app.menu.page;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;

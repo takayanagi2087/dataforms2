@@ -1,4 +1,4 @@
-package dataforms.app.sitemap.page;
+package dataforms.app.menu.page;
 
 import dataforms.app.base.page.BasePage;
 

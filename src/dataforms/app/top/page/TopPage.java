@@ -48,7 +48,7 @@ public class TopPage extends BasePage {
 			if (this.getUserInfo() == null) {
 				return new RedirectResponse(context + "/dataforms/app/login/page/LoginPage." + this.getPageExt());
 			} else {
-				return new RedirectResponse(context + "/dataforms/app/sitemap/page/SiteMapPage." + this.getPageExt());
+				return new RedirectResponse(context + "/dataforms/app/menu/page/SiteMapPage." + this.getPageExt());
 			}
 		} else {
 			return new RedirectResponse(context + "/dataforms/devtool/page/db/InitializeDatabasePage." + this.getPageExt());

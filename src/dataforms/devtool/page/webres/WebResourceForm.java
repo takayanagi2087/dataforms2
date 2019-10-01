@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import dataforms.annotation.WebMethod;
-import dataforms.app.form.LoginInfoForm;
-import dataforms.app.form.SideMenuForm;
+import dataforms.app.login.page.LoginInfoForm;
+import dataforms.app.menu.page.SideMenuForm;
 import dataforms.controller.DataForms;
 import dataforms.controller.Form;
 import dataforms.controller.WebComponent;

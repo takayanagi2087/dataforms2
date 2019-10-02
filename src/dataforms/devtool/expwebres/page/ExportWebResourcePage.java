@@ -1,6 +1,6 @@
 package dataforms.devtool.expwebres.page;
 
-import dataforms.devtool.page.base.DeveloperPage;
+import dataforms.devtool.base.page.DeveloperPage;
 
 /**
  * webリソースエクスポートページクラス。

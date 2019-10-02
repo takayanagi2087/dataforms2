@@ -8,14 +8,14 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.app.dao.func.FuncInfoDao;
-import dataforms.app.dao.func.FuncInfoTable;
+import dataforms.app.func.dao.FuncInfoDao;
+import dataforms.app.func.dao.FuncInfoTable;
 import dataforms.app.func.field.FuncNameField;
 import dataforms.controller.EditForm;
 import dataforms.controller.Page;
-import dataforms.devtool.dao.db.TableManagerDao;
+import dataforms.devtool.base.page.DeveloperPage;
+import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.devtool.field.WebSourcePathField;
-import dataforms.devtool.page.base.DeveloperPage;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.response.JsonResponse;

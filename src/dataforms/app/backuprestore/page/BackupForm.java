@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import dataforms.annotation.WebMethod;
 import dataforms.app.func.field.FunctionMultiSelectField;
 import dataforms.controller.Form;
-import dataforms.devtool.dao.db.TableManagerDao;
+import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.response.BinaryResponse;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;

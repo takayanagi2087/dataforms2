@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.app.dao.func.FuncInfoQuery;
-import dataforms.app.dao.func.FuncInfoTable;
+import dataforms.app.func.dao.FuncInfoQuery;
+import dataforms.app.func.dao.FuncInfoTable;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
 

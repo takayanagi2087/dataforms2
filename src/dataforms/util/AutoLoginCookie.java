@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import dataforms.app.user.dao.UserDao;
 import dataforms.app.user.dao.UserInfoTable;
 import dataforms.controller.Page;
-import dataforms.devtool.dao.db.TableManagerDao;
+import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.servlet.DataFormsServlet;
 import net.arnx.jsonic.JSON;
 

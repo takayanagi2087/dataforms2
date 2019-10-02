@@ -13,8 +13,8 @@ import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.QueryResultForm;
+import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.WebSourcePathField;
-import dataforms.devtool.page.base.DeveloperPage;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FlagField;
 import dataforms.field.common.MultiSelectField;

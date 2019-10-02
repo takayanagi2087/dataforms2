@@ -12,7 +12,7 @@ import dataforms.annotation.WebMethod;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.dao.Dao;
-import dataforms.devtool.dao.db.TableManagerDao;
+import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.devtool.field.ClassNameField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.RecordCountField;

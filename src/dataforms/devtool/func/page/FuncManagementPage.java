@@ -1,6 +1,6 @@
 package dataforms.devtool.func.page;
 
-import dataforms.devtool.page.base.DeveloperPage;
+import dataforms.devtool.base.page.DeveloperPage;
 
 /**
  * 機能管理ページクラス。

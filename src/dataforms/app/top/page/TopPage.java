@@ -4,7 +4,7 @@ import java.util.Map;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.base.page.BasePage;
-import dataforms.devtool.dao.db.TableManagerDao;
+import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.response.RedirectResponse;
 import dataforms.response.Response;
 
@@ -51,7 +51,7 @@ public class TopPage extends BasePage {
 				return new RedirectResponse(context + "/dataforms/app/menu/page/SiteMapPage." + this.getPageExt());
 			}
 		} else {
-			return new RedirectResponse(context + "/dataforms/devtool/page/db/InitializeDatabasePage." + this.getPageExt());
+			return new RedirectResponse(context + "/dataforms/devtool/db/page/InitializeDatabasePage." + this.getPageExt());
 		}
 	}
 }

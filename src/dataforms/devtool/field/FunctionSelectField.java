@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.app.dao.func.FuncInfoDao;
+import dataforms.app.func.dao.FuncInfoDao;
 import dataforms.field.base.Field;
 import dataforms.field.common.SingleSelectField;
 

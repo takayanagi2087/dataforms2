@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.Form;
-import dataforms.devtool.dao.db.TableManagerDao;
+import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.field.common.FlagField;
 import dataforms.field.common.FolderStoreFileField;
 import dataforms.response.JsonResponse;

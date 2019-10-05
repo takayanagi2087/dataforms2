@@ -212,7 +212,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	showQueryForm(lnk) {
 		var table = lnk.text();
 		logger.log("tableName=" + table);
-		var url = "../query/QueryExecutorPage.df?t=" + table;
+		var url = currentPage.contextPath + "/dataforms/devtool/query/page/QueryExecutorPage.df?t=" + table;
 		window.open(url, "_blank")
 	}
 

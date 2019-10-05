@@ -361,12 +361,12 @@
 	<!-- 開発ツールのjavaソース出力フォルダを指定します。 -->
 	<context-param>
 		<param-name>java-source-path</param-name>
-		<param-value>/eclipse/workspace/dataforms/src</param-value>
+		<param-value>/eclipse/workspaceDataforms2/dataforms2/src</param-value>
 	</context-param>
 	<!-- 開発ツールのhtml,javascript等のWEBリソース出力フォルダを指定します。 -->
 	<context-param>
 		<param-name>web-source-path</param-name>
-		<param-value>/eclipse/workspace/dataforms/WebContent</param-value>
+		<param-value>/eclipse/workspaceDataforms2/dataforms2/WebContent</param-value>
 	</context-param>
 	<!--
 		データベース初期化時に作成するユーザのレベルを指定します。

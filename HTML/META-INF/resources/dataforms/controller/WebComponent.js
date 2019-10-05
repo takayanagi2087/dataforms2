@@ -171,7 +171,6 @@ class WebComponent {
 			var tbl = this.componentMap[tblid];
 			for (var i = 0; i <  tbl.fields.length; i++) {
 				if (tbl.fields[i].id == colid) {
-//					var tblfield = $.extend(true, {}, tbl.fields[i]);
 					var tblfield = new tbl.fields[i].constructor();
 					Object.assign(tblfield, tbl.fields[i]);
 					tblfield.id = id;

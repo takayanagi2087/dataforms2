@@ -105,7 +105,8 @@ class Form extends WebComponent {
 			var table = this.getComponent(tblid);
 			var field = table.getComponent(colid);
 			if (field != null) {
-				var f = $.extend(true, {}, field);
+				var f = new field.constructor();
+				Object.assign(f, field);
 				f.id = fid;
 				f.setValue(value);
 			}

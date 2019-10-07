@@ -118,10 +118,10 @@
 		default以外の言語コードを","区切りで指定します。
 		EnumOptionNameTable等、言語ごとに名称を登録するテーブルで使用します。
 	-->
-	<!--  context-param>
+	<context-param>
 		<param-name>support-language</param-name>
-		<param-value>ja,xx,yy</param-value>
-	</context-param-->
+		<param-value>ja,de</param-value>
+	</context-param>
 
 	<!-- ブラウザの言語設定を無視し、言語を固定する場合は以下の設定を有効にします。	-->
 	<!--context-param>

@@ -127,6 +127,18 @@ class Form extends WebComponent {
 		this.initHtmlTable(this.htmlTableList);
 	}
 
+	/**
+	 * フォーム中のHTMLを動的に編集します。
+	 * <pre>
+	 * このメソットはsuper.attach()の直前に呼ばれるため、
+	 * このメソッドをオーバーライドして、HTMLを動的に変更する
+	 * 処理を記述することができます。
+	 * Formクラスのこのメソッドは何も行いません。
+	 * </pre>
+	 */
+	remodelHtml() {
+
+	}
 
 	/**
 	 * HTMLエレメントへの対応付けを行います。
@@ -150,6 +162,7 @@ class Form extends WebComponent {
 			var obj = $("#" + this.selectorEscape(this.id));
 			this.parentDivId = obj.parents("div[id]:first").attr("id");
 		}
+		this.remodelHtml();
 		super.attach();
 		var thisForm = this;
 		this.find("#newButton").prop("disabled" , false);

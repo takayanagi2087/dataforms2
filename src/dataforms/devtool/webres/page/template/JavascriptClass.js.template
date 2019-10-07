@@ -7,13 +7,19 @@
  *
  * @extends ${superClassName}
  */
-${className} = createSubclass("${className}", {}, "${superClassName}");
+class ${className} extends ${superClassName} {
+	/**
+	 * コンストラクタ。
+	 */
+	constructor() {
+		super();
+	}
 
-
-/**
- * HTMLエレメントとの対応付けを行います。
- */
-${className}.prototype.attach = function() {
-	${superClassName}.prototype.attach.call(this);
-};
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+	}
+}
 

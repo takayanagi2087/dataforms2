@@ -447,6 +447,22 @@ public class DataFormsServlet extends HttpServlet {
 
 
 	/**
+	 * サポートする言語リストを取得します。
+	 * @return サポートする言語リスト。
+	 */
+	public static List<String> getSupportLanguageList() {
+		String langs = DataFormsServlet.getSupportLanguage();
+		String[] langArray = langs.split(",");
+		List<String> ret = new ArrayList<String>();
+		for (String lang: langArray) {
+			ret.add(lang.trim());
+		}
+		return ret;
+	}
+
+
+
+	/**
 	 * ユーザ登録関連設定を取得します。
 	 */
 	public void getUserRegistConf() {

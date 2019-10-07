@@ -230,11 +230,14 @@ class ServerMethod {
 				success.call(this, data);
 			}
 		}).catch((err) => {
-			  logger.error(err.message);
-			  if (window.currentPage != null) {
-				  window.currentPage.unlock();
-			  }
-		      errorfunc.call(this);
+			if (err.stack) {
+				logger.error(err.stack);
+			}
+			logger.error(err.message, err);
+			if (window.currentPage != null) {
+				window.currentPage.unlock();
+			}
+			errorfunc.call(this);
 		});
 	}
 

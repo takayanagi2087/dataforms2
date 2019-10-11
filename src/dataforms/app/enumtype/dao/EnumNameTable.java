@@ -1,11 +1,10 @@
 package dataforms.app.enumtype.dao;
 
 import java.util.Map;
-
-import dataforms.app.enumtype.field.EnumIdField;
-import dataforms.app.enumtype.field.EnumNameField;
 import dataforms.dao.Table;
+import dataforms.app.enumtype.field.EnumIdField;
 import dataforms.field.common.LangCodeField;
+import dataforms.app.enumtype.field.EnumNameField;
 
 
 /**
@@ -74,15 +73,15 @@ public class EnumNameTable extends Table {
 		 * 言語コードを取得します。
 		 * @return 言語コード。
 		 */
-		public String getLangCode() {
-			return (String) this.getMap().get(Entity.ID_LANG_CODE);
+		public java.lang.String getLangCode() {
+			return (java.lang.String) this.getMap().get(Entity.ID_LANG_CODE);
 		}
 
 		/**
 		 * 言語コードを設定します。
 		 * @param langCode 言語コード。
 		 */
-		public void setLangCode(final String langCode) {
+		public void setLangCode(final java.lang.String langCode) {
 			this.getMap().put(Entity.ID_LANG_CODE, langCode);
 		}
 

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.dao.sqldatatype.SqlVarchar;
 import dataforms.servlet.DataFormsServlet;
 
 
@@ -14,7 +13,7 @@ import dataforms.servlet.DataFormsServlet;
  * 言語コードフィールドクラス。
  *
  */
-public class LangCodeField extends SingleSelectField<String> implements SqlVarchar {
+public class LangCodeField extends VarcharSingleSelectField {
 	/**
 	 * フィールドコメント。
 	 */

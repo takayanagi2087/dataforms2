@@ -38,6 +38,7 @@ class EnumEditForm extends EditForm {
 			let td = tdhtml.replace(/enumName/g, fid);
 			tdName.after(td);
 		}
+		this.find("#optionTable th.footer").attr("colspan", "" + (5 + this.langList.length));
 	}
 
 	/**

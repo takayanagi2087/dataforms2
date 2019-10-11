@@ -7,14 +7,14 @@ package dataforms.app.enumtype.dao;
 public class EnumOptionQuery extends EnumTableQuery {
 	/**
 	 * コンストラクタ。
-	 * @param enumTypeId 列挙型ID。
+	 * @param enumId 列挙型ID。
 	 */
-	public EnumOptionQuery(final Long enumTypeId) {
+	public EnumOptionQuery(final Long enumId) {
 		super();
 		// 親IDがnullのものを検索。
 		this.setCondition("m.parent_id=:parent_id");
 		EnumTable.Entity p = new EnumTable.Entity();
-		p.setEnumId(enumTypeId);
+		p.setParentId(enumId);
 		this.setQueryFormData(p.getMap());
 	}
 

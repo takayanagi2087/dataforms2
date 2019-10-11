@@ -21,6 +21,11 @@ public class LangCodeField extends SingleSelectField<String> implements SqlVarch
 	private static final String COMMENT = "言語コード";
 
 	/**
+	 * デフォルト言語コード。
+	 */
+	public static final String DEFAULT = "default";
+
+	/**
 	 * コンストラクタ。
 	 */
 	public LangCodeField() {

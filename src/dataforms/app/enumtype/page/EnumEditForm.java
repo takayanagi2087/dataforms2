@@ -21,6 +21,11 @@ import dataforms.servlet.DataFormsServlet;
  */
 public class EnumEditForm extends EditForm {
 	/**
+	 * 選択肢テーブルのID。
+	 */
+	public static final String ID_OPTION_TABLE = "optionTable";
+
+	/**
 	 * コンストラクタ。
 	 */
 	public EnumEditForm() {
@@ -33,7 +38,7 @@ public class EnumEditForm extends EditForm {
 			flist.addField(new EnumNameField(lang + "EnumName"));
 		}
 		this.addFieldList(flist);
-		EditableHtmlTable optionTable = new EditableHtmlTable("optionTable", flist);
+		EditableHtmlTable optionTable = new EditableHtmlTable(ID_OPTION_TABLE, flist);
 		this.addHtmlTable(optionTable);
 	}
 

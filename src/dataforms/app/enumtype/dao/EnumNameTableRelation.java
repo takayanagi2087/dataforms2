@@ -25,7 +25,7 @@ public class EnumNameTableRelation extends TableRelation {
 	 */
 	static {
 		foreignKeyList = new ArrayList<ForeignKey>();
-		foreignKeyList.add(new ForeignKey("fkEnumNameTable01", EnumNameTable.Entity.ID_ENUM_ID, EnumNameTable.class));
+		// foreignKeyList.add(new ForeignKey("fkEnumNameTable01", EnumNameTable.Entity.ID_ENUM_ID, EnumNameTable.class));
 	}
 
 	@Override
@@ -46,6 +46,9 @@ public class EnumNameTableRelation extends TableRelation {
 	 */
 	@Override
 	public String getJoinCondition(final Table joinTable, final String alias) {
+		if (joinTable instanceof EnumTable) {
+			return this.getTable().getLinkFieldCondition(EnumNameTable.Entity.ID_ENUM_ID, joinTable, alias);
+		}
 		return super.getJoinCondition(joinTable, alias);
 	}
 }

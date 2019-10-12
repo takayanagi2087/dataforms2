@@ -1,12 +1,16 @@
 package dataforms.dao.sqlgen.pgsql;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
 import dataforms.dao.QueryPager;
 import dataforms.dao.Table;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.field.base.Field;
+import dataforms.servlet.DataFormsServlet;
 import dataforms.util.StringUtil;
 
 /**
@@ -18,7 +22,7 @@ public class PgsqlSqlGenerator extends SqlGenerator {
     /**
      * Logger.
      */
-//    private static Logger log = Logger.getLogger(PgsqlSqlGenerator.class.getName());
+    private static Logger logger = Logger.getLogger(PgsqlSqlGenerator.class.getName());
 
 	/**
 	 * データベースシステムの名称。
@@ -231,5 +235,30 @@ public class PgsqlSqlGenerator extends SqlGenerator {
 	@Override
 	public String generateDropIndexSql(String indexName, String tableName) {
 		return "drop index if exists " + indexName;
+	}
+
+	@Override
+	public String getConstraintViolationException(SQLException ex) {
+		logger.debug("message=" + ex.getMessage());
+		logger.debug("errorCode=" + ex.getErrorCode());
+		logger.debug("getSQLState=" + ex.getSQLState());
+		if ("23505".equals(ex.getSQLState())) {
+			String pat = "重複キーが一意性制約\"(.+?)\"に違反しています";
+			if (DataFormsServlet.getDuplicateErrorMessage() != null) {
+				pat = DataFormsServlet.getDuplicateErrorMessage();
+			}
+			logger.debug("DuplicateErrorMessage=" + pat);
+			// ERROR: 重複キーが一意性制約"enum_index"に違反しています
+			return this.getConstraintName(pat, ex.getMessage());
+		} else if ("23503".equals(ex.getSQLState())) {
+			// ERROR: テーブル"enum"の更新または削除は、テーブル"enum"の外部キー制約"fk_enum_table01"に違反します
+			String pat = "外部キー制約\"(.+?)\"に違反します";
+			if (DataFormsServlet.getForeignKeyErrorMessage() != null) {
+				pat = DataFormsServlet.getForeignKeyErrorMessage();
+			}
+			logger.debug("ForeignKeyErrorMessage=" + pat);
+			return this.getConstraintName(pat, ex.getMessage());
+		}
+		return null;
 	}
 }

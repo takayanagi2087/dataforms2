@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import dataforms.dao.TableRelation.ForeignKey;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.exception.ApplicationError;
 import dataforms.field.base.Field;

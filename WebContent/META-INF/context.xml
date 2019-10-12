@@ -4,41 +4,70 @@
 	<Resource name="mail/Session" auth="Container" type="javax.mail.Session"
 		mail.smtp.host="localhost" mail.smtp.port="5525" />
 
+	<!--
 	<Resource auth="Container"
 		driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
 		name="jdbc/dfdb" type="javax.sql.DataSource"
 		url="jdbc:derby:/javadb/dfdbC;create=true"
 		username="" password="" />
+	-->
 
-<!--
-	<Resource auth="Container"
-		driverClassName="org.postgresql.Driver"
-		name="jdbc/dfdb" type="javax.sql.DataSource"
-		url="jdbc:postgresql://192.168.56.101:5432/tfc"
-		username="postgres" password="" />
--->
+	<Resource name="jdbc/dfdb" auth="Container" type="javax.sql.DataSource"
+		username="dfuser" password="password" driverClassName="org.mariadb.jdbc.Driver"
+		url="jdbc:mysql://192.168.56.102/dfdb?generateSimpleParameterMetadata=true&amp;useInformationSchema=true&amp;useOldAliasMetadataBehavior=true&amp;characterEncoding=utf8" />
+	<Environment name="duplicateErrorMessage" value="for key '(.+?)'$" type="java.lang.String" override="false"/>
+	<Environment name="foreignKeyErrorMessage" value="CONSTRAINT `(.+?)` FOREIGN KEY" type="java.lang.String" override="false"/>
 
+	<!-- for Apache derby embedded driver -->
 	<!--
 	<Resource auth="Container"
 		driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
 		name="jdbc/dfdb" type="javax.sql.DataSource"
 		url="jdbc:derby:/javadb/dfdbB;create=true"
 		username="" password="" />
+	-->
+	<!-- for Apache derby client driver -->
+	<!--
 	<Resource auth="Container" driverClassName="org.apache.derby.jdbc.ClientDriver"
 		maxActive="8" maxIdle="4" name="jdbc/dfdb" type="javax.sql.DataSource"
 		url="jdbc:derby://localhost:1527/javadb/blank;create=true" username="APP"
 		password="password" />
+	-->
+
+	<!-- for PostgreSQL -->
+	<!--
 	<Resource name="jdbc/dfdb" type="javax.sql.DataSource"
 		auth="Container" driverClassName="org.postgresql.Driver"
 		url="jdbc:postgresql://192.168.56.102:5432/dfdb" username="postgres"
 		password="" />
+	<Environment name="duplicateErrorMessage" value="一意性制約&quot;(.+?)&quot;に違反" type="java.lang.String" override="false"/>
+	<Environment name="foreignKeyErrorMessage" value="外部キー制約&quot;(.+?)&quot;に違反" type="java.lang.String" override="false"/>
+	-->
+
+	<!-- for MariaDB -->
+	<!--
+	<Resource name="jdbc/dfdb" auth="Container" type="javax.sql.DataSource"
+		username="dfuser" password="password" driverClassName="org.mariadb.jdbc.Driver"
+		url="jdbc:mysql://192.168.56.102/dfdb?generateSimpleParameterMetadata=true&amp;useInformationSchema=true&amp;useOldAliasMetadataBehavior=true&amp;characterEncoding=utf8" />
+	<Environment name="duplicateErrorMessage" value="for key '(.+?)'$" type="java.lang.String" override="false"/>
+	<Environment name="foreignKeyErrorMessage" value="CONSTRAINT `(.+?)` FOREIGN KEY" type="java.lang.String" override="false"/>
+	-->
+
+	<!-- for MySQL -->
+	<!--
 	<Resource name="jdbc/dfdb" auth="Container" type="javax.sql.DataSource"
 		username="dfuser" password="password" driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://192.168.56.102/dfdb?generateSimpleParameterMetadata=true&amp;useInformationSchema=true&amp;useOldAliasMetadataBehavior=true&amp;characterEncoding=utf8" />
+	<Environment name="duplicateErrorMessage" value="for key '(.+?)'$" type="java.lang.String" override="false"/>
+	<Environment name="foreignKeyErrorMessage" value="CONSTRAINT `(.+?)` FOREIGN KEY" type="java.lang.String" override="false"/>
+	-->
+
+	<!-- for ORACLE -->
+	<!--
 	<Resource name="jdbc/dfdb" auth="Container"
 		type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
 		url="jdbc:oracle:thin:@192.168.56.102:1521:xe"
-		username="dfuser" />
+		username="dfuser" password="password"/>
 	-->
 
 </Context>

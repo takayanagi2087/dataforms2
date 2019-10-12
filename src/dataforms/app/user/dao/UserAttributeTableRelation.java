@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dataforms.app.enumeration.dao.EnumOptionTable;
+import dataforms.dao.ForeignKey;
 import dataforms.dao.Table;
 import dataforms.dao.TableRelation;
 
@@ -12,7 +13,7 @@ import dataforms.dao.TableRelation;
  *
  */
 public class UserAttributeTableRelation extends TableRelation {
-	
+
 	/**
 	 * コンストラクタ。
 	 * @param table 対象テーブル。
@@ -25,7 +26,7 @@ public class UserAttributeTableRelation extends TableRelation {
 	 * 外部キーリスト。
 	 */
 	private static List<ForeignKey> foreignKeyList = null;
-	
+
 	/**
 	 * 外部キーリストの作成。
 	 */
@@ -46,12 +47,12 @@ public class UserAttributeTableRelation extends TableRelation {
 			UserAttributeTableRelation.foreignKeyList.add(fk);
 		}*/
 	}
-	
+
 	@Override
 	public List<ForeignKey> getForeignKeyList() {
 		return UserAttributeTableRelation.foreignKeyList;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * <pre>

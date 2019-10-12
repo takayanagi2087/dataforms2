@@ -1,6 +1,11 @@
 package dataforms.dao.sqlgen.derby;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
+import org.apache.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
 import dataforms.dao.QueryPager;
@@ -12,6 +17,11 @@ import dataforms.dao.sqlgen.SqlGenerator;
  */
 @SqlGeneratorImpl(databaseProductName = DerbySqlGenerator.DATABASE_PRODUCT_NAME)
 public class DerbySqlGenerator extends SqlGenerator {
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(DerbySqlGenerator.class);
+
 	/**
 	 * データベースシステムの名称。
 	 */
@@ -132,5 +142,18 @@ public class DerbySqlGenerator extends SqlGenerator {
 	@Override
 	public String getRebildSqlFolder() {
 		return "/WEB-INF/dbRebuild/derby";
+	}
+
+	@Override
+	public String getConstraintViolationException(SQLException ex) {
+		if (ex instanceof SQLIntegrityConstraintViolationException) {
+			if ("org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException".equals(ex.getClass().getName())) {
+				DerbySQLIntegrityConstraintViolationException dex = (DerbySQLIntegrityConstraintViolationException) ex;
+				logger.debug("dex.getTableName()=" + dex.getTableName());
+				logger.debug("dex.getConstraintName()=" + dex.getConstraintName());
+				return dex.getConstraintName();
+			}
+		}
+		return null;
 	}
 }

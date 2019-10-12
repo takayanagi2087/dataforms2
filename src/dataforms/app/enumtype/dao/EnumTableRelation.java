@@ -3,6 +3,7 @@ package dataforms.app.enumtype.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import dataforms.dao.ForeignKey;
 import dataforms.dao.Table;
 import dataforms.dao.TableRelation;
 
@@ -25,7 +26,7 @@ public class EnumTableRelation extends TableRelation {
 	 */
 	static {
 		foreignKeyList = new ArrayList<ForeignKey>();
-		// foreignKeyList.add(new ForeignKey("fkEnumTable01", EnumTable.Entity.ID_HOGE_ID, HogeTable.class));
+		foreignKeyList.add(new ForeignKey("fkEnumTable01", EnumTable.Entity.ID_PARENT_ID, EnumTable.class, EnumTable.Entity.ID_ENUM_ID));
 	}
 
 	@Override

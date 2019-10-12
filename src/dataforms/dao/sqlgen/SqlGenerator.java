@@ -2,16 +2,20 @@ package dataforms.dao.sqlgen;
 
 import java.lang.reflect.Constructor;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
 import dataforms.controller.Page;
+import dataforms.dao.ForeignKey;
 import dataforms.dao.Index;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.Query;
@@ -19,7 +23,6 @@ import dataforms.dao.QueryPager;
 import dataforms.dao.SubQuery;
 import dataforms.dao.Table;
 import dataforms.dao.TableList;
-import dataforms.dao.TableRelation.ForeignKey;
 import dataforms.dao.sqldatatype.SqlBigint;
 import dataforms.dao.sqldatatype.SqlBlob;
 import dataforms.dao.sqldatatype.SqlChar;
@@ -62,8 +65,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
     /**
      * Logger。
      */
-    private static Logger log = Logger.getLogger(SqlGenerator.class.getName());
-
+    private static Logger logger = Logger.getLogger(SqlGenerator.class.getName());
 
     /**
      * JDBC接続情報。
@@ -171,10 +173,10 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	public static SqlGenerator getInstance(final Connection conn) throws Exception {
 		//SqlGenerator ret = null;
 		if (SqlGenerator.sqlGeneratorClass == null) {
-			log.info("databaseName=" + conn.getMetaData().getDatabaseProductName()
+			logger.info("databaseName=" + conn.getMetaData().getDatabaseProductName()
 					+ "," + conn.getMetaData().getDatabaseProductVersion()
 					);
-			log.info("driver=" + conn.getMetaData().getDriverName() +
+			logger.info("driver=" + conn.getMetaData().getDriverName() +
 					"," + conn.getMetaData().getDriverVersion() +
 					"," + conn.getMetaData().getDriverMajorVersion() +
 					"," + conn.getMetaData().getDriverMinorVersion()
@@ -202,12 +204,13 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @throws Exception 例外。
 	 */
 	private static Class<?> getSqlGeneratorClass(final String name) throws Exception {
+		String n = name;
 		Class<?> ret = null;
 		ClassFinder finder = new ClassFinder();
 		List<Class<?>> classlist = finder.findClasses("dataforms.dao.sqlgen", SqlGenerator.class);
 		for (Class<?> cls: classlist) {
 			SqlGeneratorImpl sga = cls.getAnnotation(SqlGeneratorImpl.class);
-			if (sga.databaseProductName().equals(name)) {
+			if (sga.databaseProductName().equals(n)) {
 				ret = cls;
 				break;
 			}
@@ -834,7 +837,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 				continue;
 			}
 			String cond = t.getJoinCondition(table, table.getAlias());
-			log.debug("class=" + t.getClass().getName() + "," + table.getClass().getName() + ",cond=" + cond);
+			logger.debug("class=" + t.getClass().getName() + "," + table.getClass().getName() + ",cond=" + cond);
 			if (!StringUtil.isBlank(cond)) {
 				if (this.isLinkedToMainTable(list, t)) {
 					ret = cond;
@@ -875,7 +878,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 					}
 				}
 			} else {
-				log.debug("getJoinConditionOtherThamMainTable");
+				logger.debug("getJoinConditionOtherThamMainTable");
 				TableList tlist = new TableList();
 				tlist.add(query.getMainTable());
 				if (query.getJoinTableList() != null) {
@@ -1898,5 +1901,33 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	public String getAfterRebildSql() throws Exception {
 		return Page.getServlet().getServletContext().getRealPath(this.getRebildSqlFolder() + "/after.sql");
 	}
+
+	/**
+	 * 制約違反かどうかを判定し、制約違反の場合その制約名を返します。
+	 * <pre>
+	 * SQL例外が制約違反かどうかを判定し、制約違反だった場合その制約名を返します。
+	 * </pre>
+	 * @param ex 例外。
+	 * @return 制約名。
+	 */
+	public abstract String getConstraintViolationException(final SQLException ex);
+
+
+	/**
+	 * 制約違反のエラーメッセージから制約名称を取得します。
+	 * @param pat エラーメッセージパターン。
+	 * @param message エラーメッセージ。
+	 * @return 制約名称。
+	 */
+	protected String getConstraintName(final String pat, final String message) {
+		logger.debug("ConstraintViolationMessagePattern=" + pat);
+		Pattern p = Pattern.compile(pat);
+		Matcher m = p.matcher(message);
+		if (m.find()) {
+			return m.group(1);
+		}
+		return null;
+	}
+
 
 }

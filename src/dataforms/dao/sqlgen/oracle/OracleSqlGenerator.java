@@ -1,6 +1,7 @@
 package dataforms.dao.sqlgen.oracle;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import dataforms.annotation.SqlGeneratorImpl;
 import dataforms.dao.Query;
@@ -252,4 +253,9 @@ public class OracleSqlGenerator extends SqlGenerator {
 		return "/WEB-INF/dbRebuild/oracle";
 	}
 
+	@Override
+	public String getConstraintViolationException(SQLException ex) {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
 }

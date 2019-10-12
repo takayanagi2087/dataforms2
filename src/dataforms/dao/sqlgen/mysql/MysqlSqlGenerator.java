@@ -1,6 +1,8 @@
 package dataforms.dao.sqlgen.mysql;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import org.apache.log4j.Logger;
 
@@ -12,6 +14,7 @@ import dataforms.dao.sqldatatype.SqlTimestamp;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.exception.ApplicationError;
 import dataforms.field.base.Field;
+import dataforms.servlet.DataFormsServlet;
 
 /**
  * MySQL用SQL Generator.
@@ -22,7 +25,7 @@ public class MysqlSqlGenerator extends SqlGenerator {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(MysqlSqlGenerator.class.getName());
+    private static Logger logger = Logger.getLogger(MysqlSqlGenerator.class.getName());
 
 	/**
 	 * データベースシステムの名称。
@@ -131,7 +134,7 @@ public class MysqlSqlGenerator extends SqlGenerator {
 			Connection conn = this.getConnection();
 			ret = conn.getCatalog();
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new ApplicationError(e);
 		}
 		return ret;
@@ -261,4 +264,32 @@ public class MysqlSqlGenerator extends SqlGenerator {
 		return "/WEB-INF/dbRebuild/mysql";
 	}
 
+
+	@Override
+	public String getConstraintViolationException(SQLException ex) {
+		if (ex instanceof SQLIntegrityConstraintViolationException) {
+			SQLIntegrityConstraintViolationException cex = (SQLIntegrityConstraintViolationException) ex;
+			logger.debug("message=" + cex.getMessage());
+			logger.debug("errorCode=" + cex.getErrorCode());
+			if (cex.getErrorCode() == 1062) {
+				// cex.getErrorCode() == 1062 一意制約違反
+				// Duplicate entry 'e01' for key 'enum_index'
+				String pat = "for key '(.+?)'$";
+				if (DataFormsServlet.getDuplicateErrorMessage() != null) {
+					pat = DataFormsServlet.getDuplicateErrorMessage();
+				}
+				return this.getConstraintName(pat, ex.getMessage());
+			} else if (cex.getErrorCode() == 1451) {
+				// cex.getErrorCode() == 1451 外部キーのエラー
+				// Cannot delete or update a parent row: a foreign key constraint fails (`dfdb`.`enum`, CONSTRAINT `fk_enum_table01` FOREIGN KEY (`parent_id`) REFERENCES `enum` (`enum_id`))
+				String pat = "CONSTRAINT `(.+?)` FOREIGN KEY";
+				if (DataFormsServlet.getForeignKeyErrorMessage() != null) {
+					pat = DataFormsServlet.getForeignKeyErrorMessage();
+				}
+				return this.getConstraintName(pat, ex.getMessage());
+			}
+
+		}
+		return null;
+	}
 }

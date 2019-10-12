@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ import dataforms.dao.sqldatatype.SqlVarchar;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.dao.sqlgen.SqlParser;
 import dataforms.exception.ApplicationException;
+import dataforms.exception.ConstraintViolationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.BlobStoreFileField;
@@ -638,15 +638,30 @@ public class Dao implements JDBCConnectableObject {
 			} finally {
 				p.removeBlobTempFile(data);
 			}
-		} catch (SQLIntegrityConstraintViolationException th) {
-			logger.debug(th.getLocalizedMessage(), th);
-			throw new ApplicationException(getPage(), "error.integrityconstraintviolation");
 		} catch (SQLException e) {
-			this.checkPsqlException(e);
+			ConstraintViolationException cne = this.getConstraintViolationException(e);
+			if (cne != null) {
+				throw cne;
+			}
+			throw e;
 		} finally {
 			st.close();
 		}
 		return ret;
+	}
+
+	/**
+	 * 制約違反に対応した例外を取得します。
+	 * @param e 例外。
+	 * @return 制約違反の場合、ConstraintViolationExceptionのインスタンス。
+	 */
+	protected ConstraintViolationException getConstraintViolationException(final SQLException e) {
+		SqlGenerator gen = this.getSqlGenerator();
+		String cn = gen.getConstraintViolationException(e);
+		if (cn != null) {
+			return new ConstraintViolationException(this.getPage(), cn);
+		}
+		return null;
 	}
 
 	/**
@@ -655,16 +670,25 @@ public class Dao implements JDBCConnectableObject {
 	 * @throws ApplicationException アプリケーション例外。
 	 * @throws Exception 例外。
 	 */
-	protected void checkPsqlException(final SQLException e) throws ApplicationException, Exception {
+/*	protected void checkPsqlException(final SQLException e) throws ApplicationException, Exception {
 		if ("org.postgresql.util.PSQLException".equals(e.getClass().getName())) {
+			logger.debug("exclass=" + e.getClass().getName());
 			SQLException sqlex = (SQLException) e;
+			org.postgresql.util.PSQLException pex = (org.postgresql.util.PSQLException) e;
+			logger.debug("th.getErrorCode()=" + pex.getErrorCode());
+			logger.debug("th.getMessage()=" + pex.getMessage());
+			logger.debug("th.getServerErrorMessage()=" + pex.getServerErrorMessage());
+			logger.debug("th.getLocalizedMessage()=" + pex.getLocalizedMessage());
+			logger.debug("th.getSQLState()=" + pex.getSQLState());
+			// 23505 一意制約違反
+			// 23503 外部キー違反
 			logger.debug("code=" + sqlex.getErrorCode() + ",msg=" +e.getLocalizedMessage(), e);
 			throw new ApplicationException(getPage(), "error.integrityconstraintviolation");
 		} else {
 			throw e;
 		}
 	}
-
+*/
 	/**
 	 * 更新系SQLを実行します。
 	 * <pre>
@@ -691,11 +715,12 @@ public class Dao implements JDBCConnectableObject {
 					p.removeBlobTempFile(m);
 				}
 			}
-		} catch (SQLIntegrityConstraintViolationException th) {
-			logger.debug(th.getLocalizedMessage(), th);
-			throw new ApplicationException(getPage(), "error.integrityconstraintviolation");
 		} catch (SQLException e) {
-			this.checkPsqlException(e);
+			ConstraintViolationException cne = this.getConstraintViolationException(e);
+			if (cne != null) {
+				throw cne;
+			}
+			throw e;
 		} finally {
 			st.close();
 		}

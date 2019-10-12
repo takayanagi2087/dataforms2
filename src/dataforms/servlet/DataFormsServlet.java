@@ -545,6 +545,32 @@ public class DataFormsServlet extends HttpServlet {
 
 
 	/**
+	 * 一意制約違反のエラーメッセージ。
+	 */
+	private static String duplicateErrorMessage = null;
+
+	/**
+	 * 外部キー違反のエラーメッセージ。
+	 */
+	private static String foreignKeyErrorMessage = null;
+
+	/**
+	 * 一意制約違反のエラーメッセージを取得します。
+	 * @return 一意制約違反のエラーメッセージ。
+	 */
+	public static String getDuplicateErrorMessage() {
+		return duplicateErrorMessage;
+	}
+
+	/**
+	 * 外部キー違反のエラーメッセージを取得します。
+	 * @return 外部キー違反のエラーメッセージ。
+	 */
+	public static String getForeignKeyErrorMessage() {
+		return foreignKeyErrorMessage;
+	}
+
+	/**
 	 * DBの接続チェックを行ないます。
 	 */
 	private void checkDbConnection() {
@@ -558,6 +584,20 @@ public class DataFormsServlet extends HttpServlet {
 					String dspath = DataFormsServlet.jndiPrefix + DataFormsServlet.dataSourceName;
 					logger.info("lookup data source=" + dspath);
 					this.dataSource = (DataSource) initContext.lookup(dspath);
+
+					try {
+						DataFormsServlet.duplicateErrorMessage = (String) initContext.lookup(DataFormsServlet.jndiPrefix + "duplicateErrorMessage");
+					} catch (Exception ex) {
+						logger.debug(ex.getMessage());
+					}
+					try {
+						DataFormsServlet.foreignKeyErrorMessage = (String) initContext.lookup(DataFormsServlet.jndiPrefix + "foreignKeyErrorMessage");
+					} catch (Exception ex) {
+						logger.debug(ex.getMessage());
+					}
+
+					logger.debug("DataFormsServlet.duplicateErrorMessage=" + DataFormsServlet.duplicateErrorMessage);
+					logger.debug("DataFormsServlet.foreignKeyErrorMessage=" + DataFormsServlet.foreignKeyErrorMessage);
 				}
 			} catch (NameNotFoundException e) {
 				// アプリケーションサーバにデータソースの設定が無い場合。
@@ -571,9 +611,6 @@ public class DataFormsServlet extends HttpServlet {
 			}
 		}
 	}
-
-
-
 
 	/**
 	 * データベースの構造チェック。

@@ -3,6 +3,7 @@ package dataforms.app.enumtype.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import dataforms.dao.ForeignKey;
 import dataforms.dao.Table;
 import dataforms.dao.TableRelation;
 

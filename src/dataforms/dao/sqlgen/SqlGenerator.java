@@ -1924,7 +1924,11 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		Pattern p = Pattern.compile(pat);
 		Matcher m = p.matcher(message);
 		if (m.find()) {
-			return m.group(1);
+			String ret = m.group(1);
+			if (ret != null) {
+				String name = ret.toLowerCase().replaceAll("_unique$", "_index");
+				return name;
+			}
 		}
 		return null;
 	}

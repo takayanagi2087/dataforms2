@@ -2,6 +2,9 @@ package dataforms.dao.sqlgen.oracle;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import org.apache.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
 import dataforms.dao.Query;
@@ -17,6 +20,7 @@ import dataforms.dao.sqldatatype.SqlVarchar;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.dao.sqlgen.SqlParser;
 import dataforms.field.base.Field;
+import dataforms.servlet.DataFormsServlet;
 import dataforms.util.StringUtil;
 
 /**
@@ -25,6 +29,11 @@ import dataforms.util.StringUtil;
  */
 @SqlGeneratorImpl(databaseProductName = OracleSqlGenerator.DATABASE_PRODUCT_NAME)
 public class OracleSqlGenerator extends SqlGenerator {
+
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = Logger.getLogger(OracleSqlGenerator.class);
 
 	/**
 	 * データベースシステムの名称。
@@ -254,8 +263,26 @@ public class OracleSqlGenerator extends SqlGenerator {
 	}
 
 	@Override
-	public String getConstraintViolationException(SQLException ex) {
-		// TODO 自動生成されたメソッド・スタブ
+	public String getConstraintViolationException(final SQLException ex) {
+		if (ex instanceof SQLIntegrityConstraintViolationException) {
+			SQLIntegrityConstraintViolationException e = (SQLIntegrityConstraintViolationException) ex;
+			logger.debug("massage=" + e.getMessage());
+			logger.debug("errorCode=" + e.getErrorCode());
+			logger.debug("SQLState=" + e.getSQLState());
+			if (e.getErrorCode() == 1) {
+				String pat = "unique constraint \\(.+?\\.(.+?)\\) violated";
+				if (DataFormsServlet.getDuplicateErrorMessage() != null) {
+					pat = DataFormsServlet.getDuplicateErrorMessage();
+				}
+				return this.getConstraintName(pat, ex.getMessage());
+			} else if (e.getErrorCode() == 2292) {
+				String pat = "constraint \\(.+?\\.(.+?)\\) violated " ;
+				if (DataFormsServlet.getForeignKeyErrorMessage() != null) {
+					pat = DataFormsServlet.getForeignKeyErrorMessage();
+				}
+				return this.getConstraintName(pat, ex.getMessage());
+			}
+		}
 		return null;
 	}
 }

@@ -50,4 +50,13 @@ public class ApplicationException extends Exception {
 		return messageKey;
 	}
 
+
+	/**
+	 * メッセージキーを設定します。
+	 * @param messageKey メッセージキー。
+	 */
+	public void setMessageKey(final String messageKey) {
+		this.messageKey = messageKey;
+	}
+
 }

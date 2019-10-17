@@ -1,6 +1,9 @@
 package dataforms.exception;
 
 import dataforms.controller.Page;
+import dataforms.dao.Constraint;
+import dataforms.servlet.DataFormsServlet;
+import dataforms.util.StringUtil;
 
 /**
  * 制約違反例外クラス。
@@ -22,8 +25,26 @@ public class ConstraintViolationException extends ApplicationException {
 	 * @param constraintName 制約名。
 	 */
 	public ConstraintViolationException(final Page page, final String constraintName) {
-		super(page, "error.constraintviolation", constraintName);
-		this.constraintName = constraintName;
+		super(page, ConstraintViolationException.getMessageKey(constraintName), constraintName);
+		this.constraintName = StringUtil.snakeToCamel(constraintName);
+	}
+
+
+	/**
+	 * メッセージキーを取得します。
+	 * @param constraintName 制約名称。
+	 * @return メッセージキー。
+	 */
+	static String getMessageKey(final String constraintName) {
+		String cname = StringUtil.snakeToCamel(constraintName);
+		Constraint cons = DataFormsServlet.getConstraintMap().get(cname);
+		if (cons != null) {
+			String key = cons.getViolationMessageKey();
+			if (key != null) {
+				return key;
+			}
+		}
+		return "error.constraintviolation";
 	}
 
 	/**

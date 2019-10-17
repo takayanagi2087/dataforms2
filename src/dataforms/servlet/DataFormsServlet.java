@@ -41,7 +41,14 @@ import dataforms.app.user.page.PasswordResetMailForm;
 import dataforms.app.user.page.UserRegistForm;
 import dataforms.controller.Page;
 import dataforms.controller.WebComponent;
+import dataforms.dao.Constraint;
+import dataforms.dao.ForeignKey;
+import dataforms.dao.Index;
 import dataforms.dao.JDBCConnectableObject;
+import dataforms.dao.SubQuery;
+import dataforms.dao.Table;
+import dataforms.dao.TableRelation;
+import dataforms.dao.UniqueKey;
 import dataforms.dao.file.BlobFileStore;
 import dataforms.dao.file.FileObject;
 import dataforms.devtool.base.page.DeveloperPage;
@@ -52,6 +59,7 @@ import dataforms.menu.SideMenu;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
 import dataforms.util.AutoLoginCookie;
+import dataforms.util.ClassFinder;
 import dataforms.util.CryptUtil;
 import dataforms.util.HttpRangeInfo;
 import dataforms.util.MessagesUtil;
@@ -443,6 +451,8 @@ public class DataFormsServlet extends HttpServlet {
 		this.checkDbConnection();
 		// DBの存在チェック。
 		this.checkDBStructure();
+		// 制約マップを作成します。
+		this.makeConstraintMap();
 	}
 
 
@@ -614,6 +624,10 @@ public class DataFormsServlet extends HttpServlet {
 
 	/**
 	 * データベースの構造チェック。
+	 * <pre>
+	 * dataforms.app以下のパッケージのテーブル構造の違いがあった場合、
+	 * 最新の構造に変更します。
+	 * </pre>
 	 *
 	 */
 	private void checkDBStructure() {
@@ -644,6 +658,79 @@ public class DataFormsServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * 初期化するパッケージリストを取得します。
+	 * @return 初期化するパッケージリスト。
+	 */
+	public List<String> getInitializePackageList() {
+		List<String> ret = new ArrayList<String>();
+		String plist = Page.getServlet().getServletContext().getInitParameter("initialize-package-list");
+		String[] a = plist.split(",");
+		for (String pkg: a) {
+			ret.add(pkg.trim());
+		}
+		return ret;
+	}
+
+
+
+	/**
+	 * 	制約マップ。
+	 */
+	private static Map<String, Constraint> constraintMap = null;
+
+	/**
+	 * 制約マップを取得します。
+	 * @return 制約マップ。
+	 */
+	public static Map<String, Constraint> getConstraintMap() {
+		return constraintMap;
+	}
+
+
+	/**
+	 * 制約マップを作成します。
+	 */
+	private void makeConstraintMap() {
+		List<String> list = this.getInitializePackageList();
+		logger.debug("makeConstraintMap list=" + list);
+		DataFormsServlet.constraintMap = new HashMap<String, Constraint>();
+		try {
+			for (String pkg: list) {
+				// テーブルから外部キー制約を取り出す。
+				ClassFinder f = new ClassFinder();
+				List<Class<?>> tblist = f.findClasses(pkg, Table.class);
+				for (Class<?> cls: tblist) {
+					logger.debug("table class=" + cls.getName());
+					if (cls.isAnonymousClass()) {
+						continue;
+					}
+					if (SubQuery.class.isAssignableFrom(cls)) {
+						continue;
+					}
+					Table tbl = (Table) cls.getDeclaredConstructor().newInstance();
+					TableRelation rel = tbl.getTableRelation();
+					for (ForeignKey fk: rel.getForeignKeyList()) {
+						DataFormsServlet.constraintMap.put(fk.getConstraintName(), fk);
+						logger.debug("ForeignKey:" + fk.getConstraintName());
+					}
+				}
+				// インデックスから一意制約を取り出す。
+				List<Class<?>> idxlist = f.findClasses(pkg, Index.class);
+				for (Class<?> cls: idxlist) {
+					Index tbl = (Index) cls.getDeclaredConstructor().newInstance();
+					UniqueKey uk = tbl.getUniqueKey();
+					if (uk != null) {
+						DataFormsServlet.constraintMap.put(uk.getConstraintName(), uk);
+						logger.debug("UniqueKey:" + uk.getConstraintName());
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug(e.getMessage(), e);
 		}
 	}
 

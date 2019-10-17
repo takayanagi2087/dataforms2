@@ -16,27 +16,31 @@ import dataforms.util.StringUtil;
  *
  */
 public class Index {
-	
+
 	/**
 	 * Logger。
 	 */
 	private Logger logger = Logger.getLogger(Index.class);
-	
+
 	/**
 	 * テーブルクラス。
 	 */
 	private Table table = null;
-	
+
 	/**
 	 * ユニークフラグ。
 	 */
 	private boolean unique  = false;
-	
+
 	/**
 	 * フィールドリスト。
 	 */
 	private FieldList fieldList = null;
 
+	/**
+	 * 制約違反メッセージキー。
+	 */
+	private String violationMessageKey = Constraint.DEFAULT_MESSAGE_KEY;
 
 	/**
 	 * コンストラクタ。
@@ -47,7 +51,36 @@ public class Index {
 		this.fieldList = null;
 	}
 
+	/**
+	 * 制約違反メッセージキーを取得します。
+	 * @return 制約違反メッセージキー。
+	 */
+	public String getViolationMessageKey() {
+		return violationMessageKey;
+	}
 
+
+	/**
+	 * 制約違反メッセージキーを設定します。
+	 * @param violationMessageKey 制約違反メッセージキー。
+	 */
+	public void setViolationMessageKey(final String violationMessageKey) {
+		this.violationMessageKey = violationMessageKey;
+	}
+
+	/**
+	 * 一意制約のインスタンスを取得します。
+	 * @return 一意制約のインスタンス。
+	 */
+	public UniqueKey getUniqueKey() {
+		if (this.isUnique()) {
+			String str = this.getClass().getSimpleName();
+			String name = str.substring(0, 1).toLowerCase() + str.substring(1);
+			return new UniqueKey(name, this.getViolationMessageKey());
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * 対象テーブル取得します。
@@ -90,10 +123,10 @@ public class Index {
 	public FieldList getFieldList() {
 		return fieldList;
 	}
-	
+
 	/**
 	 * フィールドリストを設定します。
-	 * @param fieldList フィールドリスト。 
+	 * @param fieldList フィールドリスト。
 	 */
 	public void setFieldList(final FieldList fieldList) {
 		this.fieldList = fieldList;
@@ -107,7 +140,7 @@ public class Index {
 		String clsname = this.getClass().getSimpleName();
 		return StringUtil.camelToSnake(clsname);
 	}
-	
+
 	/**
 	 * NonUniqueフラグを取得します。
 	 * @param iflist インデックスフィールドリスト。
@@ -128,8 +161,8 @@ public class Index {
 			return b.booleanValue();
 		}
 	}
-	
-	
+
+
 	/**
 	 * インデックスの構造差があるかチェックします。
 	 * @param iflist インデックスフィールドリスト。
@@ -160,4 +193,7 @@ public class Index {
 		}
 		return true;
 	}
+
+
+
 }

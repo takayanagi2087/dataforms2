@@ -12,17 +12,13 @@ import dataforms.util.StringUtil;
  * 外部キー制約クラス。
  *
  */
-public class ForeignKey {
+public class ForeignKey extends Constraint {
 
 	/**
 	 * Logger.
 	 */
 	private static Logger logger = Logger.getLogger(ForeignKey.class);
 
-	/**
-	 * 制約名。
-	 */
-	private String constraintName = null;
 	/**
 	 * 参照元テーブルのインスタンス。
 	 */
@@ -40,6 +36,24 @@ public class ForeignKey {
 	 */
 	private String[] referenceFieldIdList = null;
 
+
+	/**
+	 * コンストラクタ。
+	 * @param constraintName 制約名。
+	 * @param fieldIdList フィールドIDのリスト。
+	 * @param refTableClass 参照テーブルクラス。
+	 * @param refFieldIdList 参照フィールドIDリスト。
+	 * @param msgkey メッセージキー。
+	 */
+	public ForeignKey(final String constraintName, final String [] fieldIdList, final Class<? extends Table> refTableClass, final String[]  refFieldIdList, final String msgkey) {
+		super(constraintName, msgkey);
+		this.fieldIdList = fieldIdList;
+		this.referenceTableClass = refTableClass;
+		this.referenceFieldIdList = refFieldIdList;
+	}
+
+
+
 	/**
 	 * コンストラクタ。
 	 * @param constraintName 制約名。
@@ -48,10 +62,7 @@ public class ForeignKey {
 	 * @param refFieldIdList 参照フィールドIDリスト。
 	 */
 	public ForeignKey(final String constraintName, final String [] fieldIdList, final Class<? extends Table> refTableClass, final String[]  refFieldIdList) {
-		this.constraintName = constraintName;
-		this.fieldIdList = fieldIdList;
-		this.referenceTableClass = refTableClass;
-		this.referenceFieldIdList = refFieldIdList;
+		this(constraintName, fieldIdList, refTableClass, refFieldIdList, Constraint.DEFAULT_MESSAGE_KEY);
 	}
 
 	/**
@@ -64,10 +75,29 @@ public class ForeignKey {
 	 * @param refTableClass 参照テーブルクラス。
 	 */
 	public ForeignKey(final String constraintName, final String [] fieldIdList, final Class<? extends Table> refTableClass) {
-		this.constraintName = constraintName;
+		this(constraintName, fieldIdList, refTableClass, fieldIdList);
+	}
+
+	/**
+	 * コンストラクタ。
+	 * <pre>
+	 * フィールド数が1件の場合。
+	 * </pre>
+	 * @param constraintName 制約名。
+	 * @param fieldId フィールドID。
+	 * @param refTableClass 参照先テーブルクラス。
+	 * @param refFieldId 参照フィールドID。
+	 * @param msgkey メッセージキー。
+	 */
+	public ForeignKey(final String constraintName, final String fieldId, final Class<? extends Table> refTableClass, final String refFieldId, final String msgkey) {
+		super(constraintName, msgkey);
+		String [] fieldIdList = new String[1];
+		fieldIdList[0] = fieldId;
 		this.fieldIdList = fieldIdList;
 		this.referenceTableClass = refTableClass;
-		this.referenceFieldIdList = fieldIdList;
+		String [] refFieldIdList = new String[1];
+		refFieldIdList[0] = refFieldId;
+		this.referenceFieldIdList = refFieldIdList;
 	}
 
 	/**
@@ -81,14 +111,7 @@ public class ForeignKey {
 	 * @param refFieldId 参照フィールドID。
 	 */
 	public ForeignKey(final String constraintName, final String fieldId, final Class<? extends Table> refTableClass, final String refFieldId) {
-		this.constraintName = constraintName;
-		String [] fieldIdList = new String[1];
-		fieldIdList[0] = fieldId;
-		this.fieldIdList = fieldIdList;
-		this.referenceTableClass = refTableClass;
-		String [] refFieldIdList = new String[1];
-		refFieldIdList[0] = refFieldId;
-		this.referenceFieldIdList = refFieldIdList;
+		this(constraintName, fieldId, refTableClass, refFieldId, Constraint.DEFAULT_MESSAGE_KEY);
 	}
 
 	/**
@@ -101,30 +124,7 @@ public class ForeignKey {
 	 * @param refTableClass 参照先テーブルクラス。
 	 */
 	public ForeignKey(final String constraintName, final String fieldId, final Class<? extends Table> refTableClass) {
-		this.constraintName = constraintName;
-		String [] fieldIdList = new String[1];
-		fieldIdList[0] = fieldId;
-		this.fieldIdList = fieldIdList;
-		this.referenceTableClass = refTableClass;
-		String [] refFieldIdList = new String[1];
-		refFieldIdList[0] = fieldId;
-		this.referenceFieldIdList = refFieldIdList;
-	}
-
-	/**
-	 * 制約名称を取得します。
-	 * @return 制約名称。
-	 */
-	public String getConstraintName() {
-		return constraintName;
-	}
-
-	/**
-	 * 制約名称を設定します。
-	 * @param constraintName 制約名称。
-	 */
-	public void setConstraintName(final String constraintName) {
-		this.constraintName = constraintName;
+		this(constraintName, fieldId, refTableClass, fieldId);
 	}
 
 	/**

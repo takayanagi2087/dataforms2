@@ -26,7 +26,8 @@ public class EnumTableRelation extends TableRelation {
 	 */
 	static {
 		foreignKeyList = new ArrayList<ForeignKey>();
-		foreignKeyList.add(new ForeignKey("fkEnumTable01", EnumTable.Entity.ID_PARENT_ID, EnumTable.class, EnumTable.Entity.ID_ENUM_ID));
+		foreignKeyList.add(new ForeignKey("fkEnumTable01", EnumTable.Entity.ID_PARENT_ID, 
+				EnumTable.class, EnumTable.Entity.ID_ENUM_ID, "error.enumtypedelete"));
 	}
 
 	@Override

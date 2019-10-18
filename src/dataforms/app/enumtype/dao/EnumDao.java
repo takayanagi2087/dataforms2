@@ -261,8 +261,8 @@ public class EnumDao extends Dao {
 		p.setParentId(e.getEnumId());
 		FieldList flist = new FieldList();
 		flist.addField(table.getParentIdField());
+		this.executeDelete(table, flist, p.getMap(), true); // オプションの削除
 		int ret = this.executeDelete(table, data); // レコードの物理削除
-		this.executeDelete(table, flist, p.getMap(), true);
 		return ret;
 	}
 }

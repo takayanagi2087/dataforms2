@@ -15,6 +15,7 @@ import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.servlet.DataFormsServlet;
+import dataforms.validator.RequiredValidator;
 
 /**
  * 編集フォームクラス。
@@ -31,11 +32,12 @@ public class EnumEditForm extends EditForm {
 	public EnumEditForm() {
 		List<String> langList = DataFormsServlet.getSupportLanguageList();
 		EnumTable table = new EnumTable();
+		table.getEnumCodeField().addValidator(new RequiredValidator());
 		FieldList flist = new FieldList();
 		flist.addAll(table.getFieldList());
-		flist.addField(new EnumNameField());
+		flist.addField(new EnumNameField()).addValidator(new RequiredValidator());
 		for (String lang: langList) {
-			flist.addField(new EnumNameField(lang + "EnumName"));
+			flist.addField(new EnumNameField(lang + "EnumName")).addValidator(new RequiredValidator());
 		}
 		this.addFieldList(flist);
 		EditableHtmlTable optionTable = new EditableHtmlTable(ID_OPTION_TABLE, flist);

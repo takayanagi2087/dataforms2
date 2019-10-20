@@ -1,4 +1,4 @@
-package dataforms.app.enumeration.dao;
+package dataforms.app.enumtype.dao;
 
 import java.util.Map;
 

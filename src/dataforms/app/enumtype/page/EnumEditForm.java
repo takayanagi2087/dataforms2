@@ -37,7 +37,7 @@ public class EnumEditForm extends EditForm {
 		flist.addAll(table.getFieldList());
 		flist.addField(new EnumNameField()).addValidator(new RequiredValidator());
 		for (String lang: langList) {
-			flist.addField(new EnumNameField(lang + "EnumName")).addValidator(new RequiredValidator());
+			flist.addField(new EnumNameField(lang + "EnumName"));
 		}
 		this.addFieldList(flist);
 		EditableHtmlTable optionTable = new EditableHtmlTable(ID_OPTION_TABLE, flist);

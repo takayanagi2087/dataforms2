@@ -20,7 +20,7 @@ public class EnumTypeCodeField extends VarcharField {
 	 * Logger.
 	 */
 	private static Logger log = Logger.getLogger(EnumTypeCodeField.class);
-	
+
 	/**
 	 * フィールド長。
 	 */
@@ -47,12 +47,12 @@ public class EnumTypeCodeField extends VarcharField {
 		super(id, LENGTH);
 		this.setComment(COMMENT);
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();
 	}
-	
+
 	@Override
 	protected List<Map<String, Object>> queryAutocompleteSourceList(final Map<String, Object> data) throws Exception {
 		String id = (String) data.get("currentFieldId");
@@ -66,7 +66,7 @@ public class EnumTypeCodeField extends VarcharField {
 		}
 		return this.convertToAutocompleteList(this.getHtmlTableRowId(id), list, "enumTypeCode", "listLabel", "enumTypeName");
 	}
-	
+
 
 	@Override
 	protected Map<String, Object> queryRelationData(final Map<String, Object> data) throws Exception {

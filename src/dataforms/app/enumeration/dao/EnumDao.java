@@ -6,6 +6,7 @@ import java.util.Map;
 
 import dataforms.app.enumeration.field.EnumTypeCodeField;
 import dataforms.app.enumeration.field.EnumTypeNameField;
+import dataforms.app.enumtype.dao.EnumGroupTable;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.Query;

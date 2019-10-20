@@ -6,11 +6,11 @@ import dataforms.dao.Query;
  * 列挙型名称の問合せ。
  *
  */
-public class EnumNameQuery extends Query {
+public class EnumNameTableQuery extends Query {
 	/**
 	 * コンストラクタ。
 	 */
-	public EnumNameQuery() {
+	public EnumNameTableQuery() {
 		EnumNameTable table = new EnumNameTable();
 		this.setFieldList(table.getFieldList());
 		this.setMainTable(table);
@@ -20,7 +20,7 @@ public class EnumNameQuery extends Query {
 	 * コンストラクタ。
 	 * @param enumId 列挙型ID。
 	 */
-	public EnumNameQuery(final Long enumId) {
+	public EnumNameTableQuery(final Long enumId) {
 		this();
 		this.setCondition("m.enum_id=:enum_id");
 		EnumNameTable.Entity p = new EnumNameTable.Entity();

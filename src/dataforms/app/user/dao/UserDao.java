@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import dataforms.app.enumeration.dao.EnumGroupDao;
-import dataforms.app.enumeration.dao.EnumGroupTable;
+import dataforms.app.enumtype.dao.EnumGroupDao;
+import dataforms.app.enumtype.dao.EnumGroupTable;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.Query;

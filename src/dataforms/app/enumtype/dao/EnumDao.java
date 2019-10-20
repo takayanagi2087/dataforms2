@@ -3,14 +3,18 @@ package dataforms.app.enumtype.dao;
 import java.util.List;
 import java.util.Map;
 
+import dataforms.app.enumeration.dao.EnumTypeNameTable;
+import dataforms.app.enumtype.field.EnumCodeField;
 import dataforms.app.enumtype.page.EnumEditForm;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.exception.ApplicationException;
+import dataforms.field.base.Field.MatchType;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.LangCodeField;
 import dataforms.field.common.RowNoField;
 import dataforms.servlet.DataFormsServlet;
+import dataforms.util.StringUtil;
 
 /**
  * Daoクラス。
@@ -82,7 +86,7 @@ public class EnumDao extends Dao {
 	private void queryName(final Map<String, Object> data) throws Exception {
 		EnumTable.Entity e = new EnumTable.Entity(data);
 		Long enumId = e.getEnumId();
-		List<Map<String, Object>> list = this.executeQuery(new EnumNameQuery(enumId));
+		List<Map<String, Object>> list = this.executeQuery(new EnumNameTableQuery(enumId));
 		for (Map<String, Object> m: list) {
 			EnumNameTable.Entity ne = new EnumNameTable.Entity(m);
 			String lang = ne.getLangCode();
@@ -165,10 +169,13 @@ public class EnumDao extends Dao {
 			EnumNameTable.Entity ne = new EnumNameTable.Entity();
 			ne.setEnumId(enumId);
 			ne.setLangCode(lang);
-			ne.setEnumName((String) data.get(lang + "EnumName"));
-			ne.setCreateUserId(e.getCreateUserId());
-			ne.setUpdateUserId(e.getUpdateUserId());
-			this.executeInsert(table, ne.getMap());
+			String name = (String) (String) data.get(lang + "EnumName");
+			if (!StringUtil.isBlank(name)) {
+				ne.setEnumName(name);
+				ne.setCreateUserId(e.getCreateUserId());
+				ne.setUpdateUserId(e.getUpdateUserId());
+				this.executeInsert(table, ne.getMap());
+			}
 		}
 	}
 
@@ -265,4 +272,51 @@ public class EnumDao extends Dao {
 		int ret = this.executeDelete(table, data); // レコードの物理削除
 		return ret;
 	}
+
+
+	/**
+	 * 指定された列挙型グループの列挙型一覧を取得します。
+	 * @param enumGroupCode 列挙型グルーブコード。
+	 * @param langCode 言語コード。
+	 * @return 列挙型の一覧。
+	 * @throws Exception 例外。
+	 */
+	/*
+	public List<Map<String, Object>> getTypeList(final String enumGroupCode, final String langCode) throws Exception {
+		Map<String, Object> data = new HashMap<String, Object>();
+		EnumGroupTable.Entity e = new EnumGroupTable.Entity(data);
+		EnumTypeNameTable.Entity ne = new EnumTypeNameTable.Entity(data);
+		e.setEnumGroupCode(enumGroupCode);
+		ne.setLangCode("default");
+		EnumGroupQuery mq = new EnumGroupQuery(data);
+		List<Map<String, Object>> deflist = this.executeQuery(mq);
+		ne.setLangCode(langCode);
+		List<Map<String, Object>> langlist = this.executeQuery(mq);
+		deflist = this.updateList(deflist, langlist);
+		return deflist;
+	}*/
+
+
+
+
+	/**
+	 * EnumTypeCodeのオートコンプリート用の問合せを実行します。
+	 * @param text 入力テキスト。
+	 * @param langCode 言語コード。
+	 * @return オートコンプリート用のリスト。
+	 * @throws Exception 例外。
+	 */
+	public List<Map<String, Object>> queryEnumTypeAutocomplateList(final String text, final String langCode) throws Exception {
+		EnumQuery query = new EnumQuery();
+		FieldList flist = new FieldList();
+		flist.addField(new EnumCodeField()).setMatchType(MatchType.PART);
+		query.setCondition("e.parent_id is null");
+		query.setQueryFormFieldList(flist);
+		EnumTypeNameTable.Entity e = new EnumTypeNameTable.Entity();
+		e.setEnumTypeCode(text);
+		e.setLangCode(langCode);
+		query.setQueryFormData(e.getMap());
+		return this.executeQuery(query);
+	}
+
 }

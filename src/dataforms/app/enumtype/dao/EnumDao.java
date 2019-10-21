@@ -1,5 +1,6 @@
 package dataforms.app.enumtype.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +9,17 @@ import dataforms.app.enumtype.field.EnumCodeField;
 import dataforms.app.enumtype.page.EnumEditForm;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
+import dataforms.dao.Query;
+import dataforms.dao.SubQuery;
+import dataforms.dao.Table;
+import dataforms.dao.TableList;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field.MatchType;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.LangCodeField;
 import dataforms.field.common.RowNoField;
+import dataforms.field.common.SelectField;
+import dataforms.field.sqlfunc.AliasField;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.StringUtil;
 
@@ -50,7 +57,7 @@ public class EnumDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public Map<String, Object> queryPage(final Map<String, Object> data, final FieldList flist) throws Exception {
-		EnumTypeQuery query = new EnumTypeQuery();
+		EnumTableQuery query = new EnumTableQuery((Long) null);
 		query.setQueryFormFieldList(flist);
 		query.setQueryFormData(data);
 		String sortOrder = (String) data.get("sortOrder");
@@ -77,7 +84,6 @@ public class EnumDao extends Dao {
 		return this.executeQuery(query);
 	}
 
-
 	/**
 	 * 名前を取得します。
 	 * @param data データ。
@@ -98,7 +104,6 @@ public class EnumDao extends Dao {
 		}
 	}
 
-
 	/**
 	 * PKでレコードを限定し、データを取得します。
 	 * @param data 条件データ PKの情報をすべて含むマップ。
@@ -112,7 +117,7 @@ public class EnumDao extends Dao {
 		Map<String, Object> ret = this.executeRecordQuery(query);
 		this.queryName(ret);
 		EnumTable.Entity p = new EnumTable.Entity(ret);
-		List<Map<String, Object>> optionList = this.executeQuery(new EnumOptionQuery(p.getEnumId()));
+		List<Map<String, Object>> optionList = this.executeQuery(new EnumTableQuery(p.getEnumId()));
 		for (Map<String, Object> m: optionList) {
 			this.queryName(m);
 		}
@@ -131,8 +136,6 @@ public class EnumDao extends Dao {
 		p.setEnumId(enumId);
 		this.executeUpdate(sql, p.getMap());
 	}
-
-
 
 	/**
 	 * 列挙型名称テーブルを削除します。
@@ -273,6 +276,60 @@ public class EnumDao extends Dao {
 		return ret;
 	}
 
+	/**
+	 * 列挙型オプションの問い合わせクラスです。
+	 *
+	 */
+	private static class EnumGroupQuery extends Query {
+		/**
+		 * コンストラクタ。
+		 * @param data パラメータ。
+		 */
+		public EnumGroupQuery(final Map<String, Object> data) {
+			EnumNameTable mntbl = new EnumNameTable();
+			SubQuery ttbl = new SubQuery(new EnumTableQuery(null));
+			ttbl.setAlias("t");
+			EnumGroupTable mtbl = new EnumGroupTable() {
+				@Override
+				public String getJoinCondition(final Table joinTable, final String alias) {
+					if ("t".equals(alias)) {
+						return this.getLinkFieldCondition(EnumTable.Entity.ID_ENUM_CODE, joinTable, alias);
+					}
+					return super.getJoinCondition(joinTable, alias);
+				}
+			};
+			// 取得フィールドの設定.
+			this.setFieldList(new FieldList(
+				new AliasField("value", mtbl.getEnumTypeCodeField())
+				, new AliasField("name", mntbl.getEnumNameField())
+			));
+			this.setMainTable(mtbl);
+			this.setJoinTableList(new TableList(ttbl, mntbl));
+			this.setQueryFormFieldList(new FieldList(mtbl.getEnumGroupCodeField(), mntbl.getLangCodeField()));
+			this.setQueryFormData(data);
+			this.setOrderByFieldList(new FieldList(mtbl.getSortOrderField()));
+		}
+	}
+
+	/**
+	 * デフォルト言語リストをブラウザ言語リストで更新する。
+	 * @param deflist デフォルト言語リスト。
+	 * @param list ブラウザ言語リスト。
+	 * @return 更新されたリスト。
+	 */
+	private List<Map<String, Object>> updateList(final List<Map<String, Object>> deflist, final List<Map<String, Object>> list) {
+		for (Map<String, Object> m: list) {
+			SelectField.OptionEntity e = new SelectField.OptionEntity(m);
+			for (Map<String, Object> dm: deflist) {
+				SelectField.OptionEntity de = new SelectField.OptionEntity(dm);
+				if (de.getValue().equals(e.getValue())) {
+					de.setName(e.getName());
+					break;
+				}
+			}
+		}
+		return deflist;
+	}
 
 	/**
 	 * 指定された列挙型グループの列挙型一覧を取得します。
@@ -281,11 +338,10 @@ public class EnumDao extends Dao {
 	 * @return 列挙型の一覧。
 	 * @throws Exception 例外。
 	 */
-	/*
 	public List<Map<String, Object>> getTypeList(final String enumGroupCode, final String langCode) throws Exception {
 		Map<String, Object> data = new HashMap<String, Object>();
 		EnumGroupTable.Entity e = new EnumGroupTable.Entity(data);
-		EnumTypeNameTable.Entity ne = new EnumTypeNameTable.Entity(data);
+		EnumNameTable.Entity ne = new EnumNameTable.Entity(data);
 		e.setEnumGroupCode(enumGroupCode);
 		ne.setLangCode("default");
 		EnumGroupQuery mq = new EnumGroupQuery(data);
@@ -294,10 +350,44 @@ public class EnumDao extends Dao {
 		List<Map<String, Object>> langlist = this.executeQuery(mq);
 		deflist = this.updateList(deflist, langlist);
 		return deflist;
-	}*/
+	}
 
+	/**
+	 * オプションリストを取得します。
+	 * @param enumTypeCode 列挙型コード。
+	 * @param langCode 言語コード。
+	 * @return オプションリスト。
+	 * @throws Exception 例外。
+	 */
+	public List<Map<String, Object>> getOptionList(final String enumTypeCode, final String langCode) throws Exception {
+		List<Map<String, Object>> deflist = this.executeQuery(new EnumOptionQuery(enumTypeCode, "default"));
+		List<Map<String, Object>> langlist = this.executeQuery(new EnumOptionQuery(enumTypeCode, langCode));
+		deflist = this.updateList(deflist, langlist);
+		return deflist;
+	}
 
-
+	/**
+	 * オプション名称を取得します。
+	 * @param enumTypeCode 列挙型コード。
+	 * @param enumOptionCode 列挙型オプションコード。
+	 * @param langCode 言語コード。
+	 * @return オプション名称。
+	 * @throws Exception 例外。
+	 */
+	public String getOptionName(final String enumTypeCode, final String enumOptionCode, final String langCode) throws Exception {
+		if (StringUtil.isBlank(enumOptionCode)) {
+			return null;
+		}
+		EnumOptionQuery query = new EnumOptionQuery(enumTypeCode, enumOptionCode, langCode);
+		Map<String, Object> rec = this.executeRecordQuery(query);
+		if (rec != null) {
+			EnumNameTable.Entity e = new EnumNameTable.Entity(rec);
+			String optname = e.getEnumName();
+			return optname;
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * EnumTypeCodeのオートコンプリート用の問合せを実行します。
@@ -319,4 +409,25 @@ public class EnumDao extends Dao {
 		return this.executeQuery(query);
 	}
 
+	/**
+	 * 列挙型の情報を取得します。
+	 *
+	 * @param enumTypeCode 列挙型コード。
+	 * @param langCode 言語コード。
+	 * @return ヒットしたデータマップ。
+	 * @throws Exception 例外。
+	 */
+	public Map<String, Object> queryEnumType(final String enumTypeCode, final String langCode) throws Exception {
+		EnumTypeQuery query = new EnumTypeQuery(enumTypeCode, langCode);
+		query.setQueryFormFieldList(new FieldList(query.getFieldList().get(EnumTypeNameTable.Entity.ID_ENUM_TYPE_CODE)));
+		Map<String, Object> ret = this.executeRecordQuery(query);
+		if (ret == null) {
+			EnumTable.Entity e = new EnumTable.Entity();
+			e.setEnumCode(enumTypeCode);
+			EnumNameTable.Entity ne = new EnumNameTable.Entity();
+			ne.setEnumName("");
+			ret = e.getMap();
+		}
+		return ret;
+	}
 }

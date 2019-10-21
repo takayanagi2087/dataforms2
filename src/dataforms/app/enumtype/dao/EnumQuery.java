@@ -10,7 +10,7 @@ import dataforms.field.base.FieldList;
  * EnumTable,EnumNameTableを結合した問合せです。
  * </pre>
  */
-public class EnumQuery extends Query{
+public class EnumQuery extends Query {
 	/**
 	 * コンストラクタ。
 	 */
@@ -24,7 +24,7 @@ public class EnumQuery extends Query{
 		flist.addField(ntable.getLangCodeField());
 		flist.addField(ntable.getEnumNameField());
 		this.setFieldList(flist);
-		this.setMainTable(ntable);
-		this.setJoinTableList(new TableList(table));
+		this.setMainTable(table);
+		this.setJoinTableList(new TableList(ntable));
 	}
 }

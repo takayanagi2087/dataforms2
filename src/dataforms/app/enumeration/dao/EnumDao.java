@@ -106,7 +106,7 @@ public class EnumDao extends Dao {
 		}
 		return deflist;
 	}
-	
+
 	/**
 	 * 指定された列挙型グループの列挙型一覧を取得します。
 	 * @param enumGroupCode 列挙型グルーブコード。
@@ -193,7 +193,7 @@ public class EnumDao extends Dao {
 		e.setEnumTypeCode(enumTypeCode);
 		e.setEnumOptionCode(enumOptionCode);
 		e.setLangCode(langCode);
-		
+
 		OptionQuery query = new OptionQuery(data);
 		Map<String, Object> rec = this.executeRecordQuery(query);
 		if (rec != null) {
@@ -203,7 +203,7 @@ public class EnumDao extends Dao {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 列挙型コードの一覧を取得する問合せです。
 	 *
@@ -219,10 +219,10 @@ public class EnumDao extends Dao {
 			this.setMainTable(table);
 		}
 	}
-	
+
 	/**
 	 * 列挙型コードと名称の表を取得する問合せです。
-	 * 
+	 *
 	 * <pre>
 	 * ブラウザの言語コードをlangCodeというパラメータに指定することによって、
 	 * 言語に応じた名称を取得します。
@@ -260,7 +260,7 @@ public class EnumDao extends Dao {
 			this.setLeftJoinTableList(new TableList(dt, ct));
 		}
 	}
-	
+
 	/**
 	 * EnumTypeCodeのオートコンプリート用の問合せを実行します。
 	 * @param text 入力テキスト。
@@ -279,10 +279,10 @@ public class EnumDao extends Dao {
 		query.setQueryFormData(e.getMap());
 		return this.executeQuery(query);
 	}
-	
+
 	/**
 	 * 列挙型の情報を取得します。
-	 * 
+	 *
 	 * @param enumTypeCode 列挙型コード。
 	 * @param langCode 言語コード。
 	 * @return ヒットしたデータマップ。
@@ -303,6 +303,6 @@ public class EnumDao extends Dao {
 			ret = re.getMap();
 		}
 		return ret;
-		
+
 	}
 }

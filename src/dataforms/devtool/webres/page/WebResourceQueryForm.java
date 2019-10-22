@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.app.enumeration.dao.EnumDao;
+import dataforms.app.enumtype.dao.EnumDao;
 import dataforms.controller.QueryForm;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.ClassNameField;

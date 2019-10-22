@@ -1,6 +1,6 @@
 package dataforms.app.user.field;
 
-import dataforms.app.enumeration.dao.EnumDao;
+import dataforms.app.enumtype.dao.EnumDao;
 import dataforms.app.user.page.UserEditForm;
 import dataforms.controller.Form;
 import dataforms.field.common.EnumTypeSingleSelectField;

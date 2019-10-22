@@ -1,5 +1,6 @@
 package dataforms.app.enumtype.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -287,13 +288,21 @@ public class EnumDao extends Dao {
 		 */
 		public EnumGroupQuery(final Map<String, Object> data) {
 			EnumNameTable mntbl = new EnumNameTable();
-			SubQuery ttbl = new SubQuery(new EnumTableQuery(null));
+			SubQuery ttbl = new SubQuery(new EnumTableQuery(null)) {
+				@Override
+				public String getJoinCondition(final Table joinTable, final String alias) {
+					if (joinTable instanceof EnumNameTable) {
+						return this.getLinkFieldCondition(EnumTable.Entity.ID_ENUM_ID, joinTable, alias);
+					}
+					return super.getJoinCondition(joinTable, alias);
+				}
+			};
 			ttbl.setAlias("t");
 			EnumGroupTable mtbl = new EnumGroupTable() {
 				@Override
 				public String getJoinCondition(final Table joinTable, final String alias) {
 					if ("t".equals(alias)) {
-						return this.getLinkFieldCondition(EnumTable.Entity.ID_ENUM_CODE, joinTable, alias);
+						return this.getLinkFieldCondition(EnumGroupTable.Entity.ID_ENUM_TYPE_CODE, joinTable, alias, EnumTable.Entity.ID_ENUM_CODE);
 					}
 					return super.getJoinCondition(joinTable, alias);
 				}
@@ -353,6 +362,22 @@ public class EnumDao extends Dao {
 	}
 
 	/**
+	 * SelectFieldの選択肢に変換します。
+	 * @param optlist 選択肢リスト。
+	 * @return 変換されたリスト。
+	 */
+	public List<Map<String, Object>>  convertSelectOption(final List<Map<String, Object>> optlist) {
+		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+		for (Map<String, Object> m: optlist) {
+			SelectField.OptionEntity opt = new SelectField.OptionEntity();
+			opt.setValue((String) m.get(EnumTable.Entity.ID_ENUM_CODE));
+			opt.setName((String) m.get(EnumNameTable.Entity.ID_ENUM_NAME));
+			ret.add(opt.getMap());
+		}
+		return ret;
+	}
+
+	/**
 	 * オプションリストを取得します。
 	 * @param enumTypeCode 列挙型コード。
 	 * @param langCode 言語コード。
@@ -360,8 +385,8 @@ public class EnumDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public List<Map<String, Object>> getOptionList(final String enumTypeCode, final String langCode) throws Exception {
-		List<Map<String, Object>> deflist = this.executeQuery(new EnumOptionQuery(enumTypeCode, "default"));
-		List<Map<String, Object>> langlist = this.executeQuery(new EnumOptionQuery(enumTypeCode, langCode));
+		List<Map<String, Object>> deflist = this.convertSelectOption(this.executeQuery(new EnumOptionQuery(enumTypeCode, "default")));
+		List<Map<String, Object>> langlist = this.convertSelectOption(this.executeQuery(new EnumOptionQuery(enumTypeCode, langCode)));
 		deflist = this.updateList(deflist, langlist);
 		return deflist;
 	}

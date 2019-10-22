@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import dataforms.annotation.WebMethod;
-import dataforms.app.enumeration.dao.EnumDao;
+import dataforms.app.enumtype.dao.EnumDao;
 import dataforms.app.user.page.UserEditForm;
 import dataforms.controller.Form;
 import dataforms.field.common.EnumOptionSingleSelectField;

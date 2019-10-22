@@ -1,7 +1,7 @@
 package dataforms.field.common;
 
-import dataforms.app.enumeration.dao.EnumDao;
-import dataforms.app.enumeration.field.EnumTypeCodeField;
+import dataforms.app.enumtype.dao.EnumDao;
+import dataforms.app.enumtype.field.EnumCodeField;
 import dataforms.dao.sqldatatype.SqlVarchar;
 
 /**
@@ -23,7 +23,7 @@ public class EnumTypeSingleSelectField extends SingleSelectField<String> impleme
 	 * @param enumGroupCode 列挙型グループコード。
 	 */
 	public EnumTypeSingleSelectField(final String id, final String enumGroupCode) {
-		super(id, EnumTypeCodeField.LENGTH);
+		super(id, EnumCodeField.LENGTH);
 		this.enumGroupCode = enumGroupCode;
 	}
 
@@ -37,7 +37,6 @@ public class EnumTypeSingleSelectField extends SingleSelectField<String> impleme
 	public void init() throws Exception {
 		super.init();
 		EnumDao dao = new EnumDao(this);
-//		String lang = this.getPage().getRequest().getLocale().getLanguage();
 		String lang = this.getPage().getCurrentLanguage();
 		this.setOptionList(dao.getTypeList(this.enumGroupCode, lang));
 	}

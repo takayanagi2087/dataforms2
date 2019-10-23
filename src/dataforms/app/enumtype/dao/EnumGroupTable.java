@@ -2,8 +2,8 @@ package dataforms.app.enumtype.dao;
 
 import java.util.Map;
 
-import dataforms.app.enumeration.field.EnumGroupCodeField;
-import dataforms.app.enumeration.field.EnumTypeCodeField;
+import dataforms.app.enumtype.field.EnumGroupCodeField;
+import dataforms.app.enumtype.field.EnumTypeCodeField;
 import dataforms.dao.Table;
 import dataforms.dao.TableRelation;
 import dataforms.field.common.DeleteFlagField;
@@ -36,7 +36,7 @@ public class EnumGroupTable extends Table {
 	public EnumGroupCodeField getEnumGroupCodeField() {
 		return (EnumGroupCodeField) this.getField(Entity.ID_ENUM_GROUP_CODE);
 	}
-	
+
 	/**
 	 * 列挙型コードを取得します。
 	 * @return 列挙型コード。
@@ -44,7 +44,7 @@ public class EnumGroupTable extends Table {
 	public EnumTypeCodeField getEnumTypeCodeField() {
 		return (EnumTypeCodeField) this.getField(Entity.ID_ENUM_TYPE_CODE);
 	}
-	
+
 	/**
 	 * ソート順を取得します。
 	 * @return ソート順。
@@ -52,14 +52,14 @@ public class EnumGroupTable extends Table {
 	public SortOrderField getSortOrderField() {
 		return (SortOrderField) this.getField(Entity.ID_SORT_ORDER);
 	}
-	
-	
+
+
 	@Override
 	public String getJoinCondition(final Table joinTable, final String alias) {
 		TableRelation r = new EnumGroupTableRelation(this);
 		return r.getJoinCondition(joinTable, alias);
 	}
-	
+
 	/**
 	 * Entity操作クラスです。
 	 */
@@ -70,12 +70,12 @@ public class EnumGroupTable extends Table {
 		public static final String ID_ENUM_TYPE_CODE = "enumTypeCode";
 		/** ソート順のフィールドID。 */
 		public static final String ID_SORT_ORDER = "sortOrder";
-		
+
 		/**
 		 * コンストラクタ。
 		 */
 		public Entity() {
-			
+
 		}
 
 		/**
@@ -85,7 +85,7 @@ public class EnumGroupTable extends Table {
 		public Entity(final Map<String, Object> map) {
 			super(map);
 		}
-		
+
 		/**
 		 * 列挙型グループコードを取得します。
 		 * @return 列挙型グループコード。
@@ -93,7 +93,7 @@ public class EnumGroupTable extends Table {
 		public String getEnumGroupCode() {
 			return (String) this.getMap().get(ID_ENUM_GROUP_CODE);
 		}
-		
+
 		/**
 		 * 列挙型グループコードを設定します。
 		 * @param enumGroupCode 列挙型グループコード。
@@ -101,8 +101,8 @@ public class EnumGroupTable extends Table {
 		public void setEnumGroupCode(final String enumGroupCode) {
 			this.getMap().put(ID_ENUM_GROUP_CODE, enumGroupCode);
 		}
-		
-		
+
+
 		/**
 		 * 列挙型コードを取得します。
 		 * @return 列挙型コード。
@@ -110,7 +110,7 @@ public class EnumGroupTable extends Table {
 		public String getEnumTypeCode() {
 			return (String) this.getMap().get(ID_ENUM_TYPE_CODE);
 		}
-		
+
 		/**
 		 * 列挙型コードを設定します。
 		 * @param enumTypeCode 列挙型コード。
@@ -118,7 +118,7 @@ public class EnumGroupTable extends Table {
 		public void setEnumTypeCode(final String enumTypeCode) {
 			this.getMap().put(ID_ENUM_TYPE_CODE, enumTypeCode);
 		}
-		
+
 		/**
 		 * ソート順を取得します。
 		 * @return ソート順。
@@ -134,7 +134,7 @@ public class EnumGroupTable extends Table {
 		public void setSortOrder(final Short sortOrder) {
 			this.getMap().put(ID_SORT_ORDER, sortOrder);
 		}
-		
+
 
 	}
 }

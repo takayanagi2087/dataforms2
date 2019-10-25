@@ -6,6 +6,7 @@ import dataforms.app.enumtype.field.EnumIdField;
 import dataforms.app.enumtype.field.ParentIdField;
 import dataforms.field.common.SortOrderField;
 import dataforms.app.enumtype.field.EnumCodeField;
+import dataforms.app.enumtype.field.EnumGroupCodeField;
 import dataforms.app.enumtype.field.MemoField;
 
 
@@ -24,6 +25,7 @@ public class EnumTable extends Table {
 		this.addField(new ParentIdField()); //親IDフィールド
 		this.addField(new SortOrderField()); //ソート順
 		this.addField(new EnumCodeField()); //列挙型コード
+		this.addField(new EnumGroupCodeField()); //列挙型グループコード.
 		this.addField(new MemoField()); //メモ
 		this.addUpdateInfoFields();
 	}
@@ -46,6 +48,8 @@ public class EnumTable extends Table {
 		public static final String ID_SORT_ORDER = "sortOrder";
 		/** 列挙型コードのフィールドID。 */
 		public static final String ID_ENUM_CODE = "enumCode";
+		/** 列挙型グループコード.のフィールドID。 */
+		public static final String ID_ENUM_GROUP_CODE = "enumGroupCode";
 		/** メモのフィールドID。 */
 		public static final String ID_MEMO = "memo";
 
@@ -127,6 +131,22 @@ public class EnumTable extends Table {
 		}
 
 		/**
+		 * 列挙型グループコード.を取得します。
+		 * @return 列挙型グループコード.。
+		 */
+		public java.lang.String getEnumGroupCode() {
+			return (java.lang.String) this.getMap().get(Entity.ID_ENUM_GROUP_CODE);
+		}
+
+		/**
+		 * 列挙型グループコード.を設定します。
+		 * @param enumGroupCode 列挙型グループコード.。
+		 */
+		public void setEnumGroupCode(final java.lang.String enumGroupCode) {
+			this.getMap().put(Entity.ID_ENUM_GROUP_CODE, enumGroupCode);
+		}
+
+		/**
 		 * メモを取得します。
 		 * @return メモ。
 		 */
@@ -174,6 +194,14 @@ public class EnumTable extends Table {
 	 */
 	public EnumCodeField getEnumCodeField() {
 		return (EnumCodeField) this.getField(Entity.ID_ENUM_CODE);
+	}
+
+	/**
+	 * 列挙型グループコード.フィールドを取得します。
+	 * @return 列挙型グループコード.フィールド。
+	 */
+	public EnumGroupCodeField getEnumGroupCodeField() {
+		return (EnumGroupCodeField) this.getField(Entity.ID_ENUM_GROUP_CODE);
 	}
 
 	/**

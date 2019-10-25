@@ -6,9 +6,10 @@
 		"updateUserId": "0",
 		"sortOrder": null,
 		"memo": "ユーザの権限レベル",
+		"enumGroupCode": "userAttribute",
 		"parentId": null,
-		"updateTimestamp": "20191018174243104",
-		"createTimestamp": "20191018174218538"
+		"updateTimestamp": "20191025142641714",
+		"createTimestamp": "20191025135149731"
 	},
 	{
 		"enumId": "416",
@@ -17,9 +18,10 @@
 		"updateUserId": "0",
 		"sortOrder": "0",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "415",
-		"updateTimestamp": "20191018174243115",
-		"createTimestamp": "20191018174218572"
+		"updateTimestamp": "20191025142641718",
+		"createTimestamp": "20191025135149736"
 	},
 	{
 		"enumId": "417",
@@ -28,9 +30,10 @@
 		"updateUserId": "0",
 		"sortOrder": "1",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "415",
-		"updateTimestamp": "20191018174243116",
-		"createTimestamp": "20191018174218573"
+		"updateTimestamp": "20191025142641719",
+		"createTimestamp": "20191025135149742"
 	},
 	{
 		"enumId": "418",
@@ -39,9 +42,10 @@
 		"updateUserId": "0",
 		"sortOrder": "2",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "415",
-		"updateTimestamp": "20191018174243117",
-		"createTimestamp": "20191018174218574"
+		"updateTimestamp": "20191025142641719",
+		"createTimestamp": "20191025135149748"
 	},
 	{
 		"enumId": "419",
@@ -50,9 +54,10 @@
 		"updateUserId": "0",
 		"sortOrder": "3",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "415",
-		"updateTimestamp": "20191018174243118",
-		"createTimestamp": "20191018174218575"
+		"updateTimestamp": "20191025142641720",
+		"createTimestamp": "20191025135149751"
 	},
 	{
 		"enumId": "420",
@@ -61,9 +66,10 @@
 		"updateUserId": "0",
 		"sortOrder": null,
 		"memo": "組織の部署のサンプルです",
+		"enumGroupCode": "userAttribute",
 		"parentId": null,
-		"updateTimestamp": "20191018174444768",
-		"createTimestamp": "20191018174444768"
+		"updateTimestamp": "20191025142646688",
+		"createTimestamp": "20191025135149754"
 	},
 	{
 		"enumId": "421",
@@ -72,9 +78,10 @@
 		"updateUserId": "0",
 		"sortOrder": "0",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "420",
-		"updateTimestamp": "20191018174444772",
-		"createTimestamp": "20191018174444772"
+		"updateTimestamp": "20191025142646691",
+		"createTimestamp": "20191025135149757"
 	},
 	{
 		"enumId": "422",
@@ -83,9 +90,10 @@
 		"updateUserId": "0",
 		"sortOrder": "1",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "420",
-		"updateTimestamp": "20191018174444773",
-		"createTimestamp": "20191018174444773"
+		"updateTimestamp": "20191025142646692",
+		"createTimestamp": "20191025135149760"
 	},
 	{
 		"enumId": "423",
@@ -94,9 +102,10 @@
 		"updateUserId": "0",
 		"sortOrder": "2",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "420",
-		"updateTimestamp": "20191018174444775",
-		"createTimestamp": "20191018174444775"
+		"updateTimestamp": "20191025142646692",
+		"createTimestamp": "20191025135149764"
 	},
 	{
 		"enumId": "424",
@@ -105,9 +114,10 @@
 		"updateUserId": "0",
 		"sortOrder": null,
 		"memo": "組織の役職のサンプルです",
+		"enumGroupCode": "userAttribute",
 		"parentId": null,
-		"updateTimestamp": "20191018174905389",
-		"createTimestamp": "20191018174905389"
+		"updateTimestamp": "20191025142652296",
+		"createTimestamp": "20191025135149767"
 	},
 	{
 		"enumId": "425",
@@ -116,9 +126,10 @@
 		"updateUserId": "0",
 		"sortOrder": "0",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "424",
-		"updateTimestamp": "20191018174905392",
-		"createTimestamp": "20191018174905392"
+		"updateTimestamp": "20191025142652299",
+		"createTimestamp": "20191025135149770"
 	},
 	{
 		"enumId": "426",
@@ -127,9 +138,10 @@
 		"updateUserId": "0",
 		"sortOrder": "1",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "424",
-		"updateTimestamp": "20191018174905393",
-		"createTimestamp": "20191018174905393"
+		"updateTimestamp": "20191025142652300",
+		"createTimestamp": "20191025135149774"
 	},
 	{
 		"enumId": "427",
@@ -138,9 +150,10 @@
 		"updateUserId": "0",
 		"sortOrder": "2",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "424",
-		"updateTimestamp": "20191018174905394",
-		"createTimestamp": "20191018174905394"
+		"updateTimestamp": "20191025142652300",
+		"createTimestamp": "20191025135149777"
 	},
 	{
 		"enumId": "428",
@@ -149,9 +162,10 @@
 		"updateUserId": "0",
 		"sortOrder": "3",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "424",
-		"updateTimestamp": "20191018174905397",
-		"createTimestamp": "20191018174905397"
+		"updateTimestamp": "20191025142652301",
+		"createTimestamp": "20191025135149783"
 	},
 	{
 		"enumId": "429",
@@ -160,9 +174,10 @@
 		"updateUserId": "0",
 		"sortOrder": "4",
 		"memo": "",
+		"enumGroupCode": "userAttribute",
 		"parentId": "424",
-		"updateTimestamp": "20191018174905398",
-		"createTimestamp": "20191018174905398"
+		"updateTimestamp": "20191025142652301",
+		"createTimestamp": "20191025135149790"
 	},
 	{
 		"enumId": "430",
@@ -171,9 +186,10 @@
 		"updateUserId": "0",
 		"sortOrder": null,
 		"memo": "Webコンポーネントの種類を指定します。",
+		"enumGroupCode": null,
 		"parentId": null,
-		"updateTimestamp": "20191018175229942",
-		"createTimestamp": "20191018175229942"
+		"updateTimestamp": "20191025135149795",
+		"createTimestamp": "20191025135149795"
 	},
 	{
 		"enumId": "431",
@@ -182,9 +198,10 @@
 		"updateUserId": "0",
 		"sortOrder": "0",
 		"memo": "",
+		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191018175229946",
-		"createTimestamp": "20191018175229946"
+		"updateTimestamp": "20191025135149800",
+		"createTimestamp": "20191025135149800"
 	},
 	{
 		"enumId": "432",
@@ -193,9 +210,10 @@
 		"updateUserId": "0",
 		"sortOrder": "1",
 		"memo": "",
+		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191018175229947",
-		"createTimestamp": "20191018175229947"
+		"updateTimestamp": "20191025135149804",
+		"createTimestamp": "20191025135149804"
 	},
 	{
 		"enumId": "433",
@@ -204,9 +222,10 @@
 		"updateUserId": "0",
 		"sortOrder": "2",
 		"memo": "",
+		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191018175229948",
-		"createTimestamp": "20191018175229948"
+		"updateTimestamp": "20191025135149807",
+		"createTimestamp": "20191025135149807"
 	},
 	{
 		"enumId": "434",
@@ -215,9 +234,10 @@
 		"updateUserId": "0",
 		"sortOrder": "3",
 		"memo": "",
+		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191018175229949",
-		"createTimestamp": "20191018175229949"
+		"updateTimestamp": "20191025135149810",
+		"createTimestamp": "20191025135149810"
 	},
 	{
 		"enumId": "435",
@@ -226,9 +246,10 @@
 		"updateUserId": "0",
 		"sortOrder": "4",
 		"memo": "",
+		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191018175229949",
-		"createTimestamp": "20191018175229949"
+		"updateTimestamp": "20191025135149815",
+		"createTimestamp": "20191025135149815"
 	},
 	{
 		"enumId": "436",
@@ -237,9 +258,10 @@
 		"updateUserId": "0",
 		"sortOrder": "5",
 		"memo": "",
+		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191018175229950",
-		"createTimestamp": "20191018175229950"
+		"updateTimestamp": "20191025135149821",
+		"createTimestamp": "20191025135149821"
 	},
 	{
 		"enumId": "437",
@@ -248,9 +270,10 @@
 		"updateUserId": "0",
 		"sortOrder": null,
 		"memo": "ソース生成ツールの上書きモード",
+		"enumGroupCode": null,
 		"parentId": null,
-		"updateTimestamp": "20191018175430815",
-		"createTimestamp": "20191018175430815"
+		"updateTimestamp": "20191025135149825",
+		"createTimestamp": "20191025135149825"
 	},
 	{
 		"enumId": "438",
@@ -259,9 +282,10 @@
 		"updateUserId": "0",
 		"sortOrder": "0",
 		"memo": "",
+		"enumGroupCode": null,
 		"parentId": "437",
-		"updateTimestamp": "20191018175430818",
-		"createTimestamp": "20191018175430818"
+		"updateTimestamp": "20191025135149828",
+		"createTimestamp": "20191025135149828"
 	},
 	{
 		"enumId": "439",
@@ -270,9 +294,10 @@
 		"updateUserId": "0",
 		"sortOrder": "1",
 		"memo": "",
+		"enumGroupCode": null,
 		"parentId": "437",
-		"updateTimestamp": "20191018175430819",
-		"createTimestamp": "20191018175430819"
+		"updateTimestamp": "20191025135149831",
+		"createTimestamp": "20191025135149831"
 	},
 	{
 		"enumId": "440",
@@ -281,8 +306,9 @@
 		"updateUserId": "0",
 		"sortOrder": "2",
 		"memo": "",
+		"enumGroupCode": null,
 		"parentId": "437",
-		"updateTimestamp": "20191018175430820",
-		"createTimestamp": "20191018175430820"
+		"updateTimestamp": "20191025135149834",
+		"createTimestamp": "20191025135149834"
 	}
 ]

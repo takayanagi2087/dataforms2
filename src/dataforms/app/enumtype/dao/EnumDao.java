@@ -206,6 +206,7 @@ public class EnumDao extends Dao {
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(EnumEditForm.ID_OPTION_TABLE);
 		for (Map<String, Object> m: list) {
 			m.put(EnumTable.Entity.ID_PARENT_ID, e.getEnumId());
+			m.put(EnumTable.Entity.ID_ENUM_GROUP_CODE, e.getEnumGroupCode());
 		}
 		this.deleteEnumOptionName(e.getEnumId());
 		EnumTable.Entity p = new EnumTable.Entity();

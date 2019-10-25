@@ -16,6 +16,7 @@ public class EnumQueryForm extends QueryForm {
 	public EnumQueryForm() {
 		EnumTable table = new EnumTable();
 		this.addField(table.getEnumCodeField()).setMatchType(MatchType.PART);
+		this.addField(table.getEnumGroupCodeField()).setMatchType(MatchType.PART);
 		this.addField(table.getMemoField()).setMatchType(MatchType.PART);
 	}
 }

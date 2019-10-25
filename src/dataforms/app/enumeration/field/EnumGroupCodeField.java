@@ -12,7 +12,7 @@ public class EnumGroupCodeField extends VarcharField {
 	/**
 	 * フィールド長。
 	 */
-	private static final int LENGTH = 16;
+	private static final int LENGTH = 64;
 
 	/**
 	 * フィールドコメント。

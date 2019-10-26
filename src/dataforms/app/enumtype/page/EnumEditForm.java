@@ -6,6 +6,7 @@ import java.util.Map;
 import dataforms.app.enumtype.dao.EnumDao;
 import dataforms.app.enumtype.dao.EnumTable;
 import dataforms.app.enumtype.field.EnumNameField;
+import dataforms.controller.DataForms;
 import dataforms.controller.EditForm;
 import dataforms.controller.QueryForm;
 import dataforms.dao.Table;
@@ -26,10 +27,20 @@ public class EnumEditForm extends EditForm {
 	 */
 	public static final String ID_OPTION_TABLE = "optionTable";
 
+
 	/**
 	 * コンストラクタ。
 	 */
 	public EnumEditForm() {
+		this(DataForms.ID_EDIT_FORM);
+	}
+
+	/**
+	 * コンストラクタ。
+	 * @param id フォームID。
+	 */
+	public EnumEditForm(final String id) {
+		super(id);
 		List<String> langList = DataFormsServlet.getSupportLanguageList();
 		EnumTable table = new EnumTable();
 		table.getEnumCodeField().addValidator(new RequiredValidator());

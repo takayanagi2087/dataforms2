@@ -419,6 +419,17 @@ public class EnumDao extends Dao {
 		return this.executeQuery(query);
 	}
 
+	/**
+	 * 列挙型コードに対応した列挙型IDを取得します。
+	 * @param enumCode 列挙型コード。
+	 * @return  列挙型ID。
+	 * @throws Exception 例外。
+	 */
+	public Long queryEnumId(final String enumCode) throws Exception {
+		Map<String, Object> m = this.executeRecordQuery(new EnumTableQuery(enumCode));
+		EnumTable.Entity e = new EnumTable.Entity(m);
+		return e.getEnumId();
+	}
 
 	// TODO:要テスト
 	/**

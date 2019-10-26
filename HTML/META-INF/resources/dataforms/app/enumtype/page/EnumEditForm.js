@@ -21,6 +21,7 @@ class EnumEditForm extends EditForm {
 	remodelHtml() {
 		let typeName = this.find("tr.typeName");
 		let hhtml = typeName.prop("outerHTML");
+		logger.log("hhtml=" + hhtml);
 		let ohName = this.find("#optionTable thead th.optionName");
 		let ohhtml = ohName.prop("outerHTML");
 		let tdName = this.find("#optionTable tbody td.optionName");

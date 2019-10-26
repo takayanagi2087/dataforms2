@@ -42,5 +42,17 @@ public class EnumTableQuery extends Query {
 		}
 
 	}
+
+	/**
+	 * コンストラクタ。
+	 * @param enumCode 列挙型コード。
+	 */
+	public EnumTableQuery(final String enumCode) {
+		this();
+		this.setCondition("m.enum_code=:enum_code");
+		EnumTable.Entity p = new EnumTable.Entity();
+		p.setEnumCode(enumCode);
+		this.setQueryFormData(p.getMap());
+	}
 }
 

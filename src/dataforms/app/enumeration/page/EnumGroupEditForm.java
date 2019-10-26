@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import dataforms.app.enumeration.dao.EnumGroupDao;
+import dataforms.app.enumeration.dao.EnumGroupTable;
 import dataforms.app.enumeration.dao.EnumTypeNameTable;
 import dataforms.app.enumeration.field.EnumGroupCodeField;
 import dataforms.app.enumeration.field.EnumTypeNameField;
-import dataforms.app.enumtype.dao.EnumGroupDao;
-import dataforms.app.enumtype.dao.EnumGroupTable;
 import dataforms.controller.EditForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;

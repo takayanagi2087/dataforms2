@@ -1,8 +1,8 @@
 package dataforms.app.enumeration.page;
 
 import dataforms.app.base.page.AdminPage;
-import dataforms.app.enumtype.dao.EnumGroupDao;
-import dataforms.app.enumtype.dao.EnumGroupTable;
+import dataforms.app.enumeration.dao.EnumGroupDao;
+import dataforms.app.enumeration.dao.EnumGroupTable;
 import dataforms.dao.Dao;
 import dataforms.dao.Table;
 

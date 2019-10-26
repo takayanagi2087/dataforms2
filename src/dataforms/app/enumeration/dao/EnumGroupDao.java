@@ -1,10 +1,9 @@
-package dataforms.app.enumtype.dao;
+package dataforms.app.enumeration.dao;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.app.enumeration.dao.EnumTypeNameTable;
 import dataforms.app.enumeration.field.EnumTypeNameField;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;

@@ -3,7 +3,7 @@ package dataforms.app.enumeration.page;
 import java.util.Map;
 
 import dataforms.annotation.WebMethod;
-import dataforms.app.enumtype.dao.EnumGroupTable;
+import dataforms.app.enumeration.dao.EnumGroupTable;
 import dataforms.controller.QueryForm;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.db.dao.TableManagerDao;

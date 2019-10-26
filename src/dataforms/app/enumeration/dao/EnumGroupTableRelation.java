@@ -1,6 +1,5 @@
-package dataforms.app.enumtype.dao;
+package dataforms.app.enumeration.dao;
 
-import dataforms.app.enumeration.dao.EnumTypeNameTable;
 import dataforms.dao.SubQuery;
 import dataforms.dao.Table;
 import dataforms.dao.TableRelation;

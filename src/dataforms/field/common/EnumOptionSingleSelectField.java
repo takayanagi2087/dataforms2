@@ -1,7 +1,7 @@
 package dataforms.field.common;
 
-import dataforms.app.enumeration.field.EnumOptionCodeField;
 import dataforms.app.enumtype.dao.EnumDao;
+import dataforms.app.enumtype.field.EnumCodeField;
 import dataforms.dao.sqldatatype.SqlVarchar;
 
 /**
@@ -23,7 +23,7 @@ public class EnumOptionSingleSelectField extends SingleSelectField<String> imple
 	 * @param enumTypeCode 列挙型コード。
 	 */
 	public EnumOptionSingleSelectField(final String id, final String enumTypeCode) {
-		super(id, EnumOptionCodeField.LENGTH);
+		super(id, EnumCodeField.LENGTH);
 		this.enumTypeCode = enumTypeCode;
 	}
 

@@ -5,14 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.app.enumeration.dao.EnumTypeNameTable;
 import dataforms.app.enumtype.field.EnumCodeField;
 import dataforms.app.enumtype.page.EnumEditForm;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.Query;
-import dataforms.dao.SubQuery;
-import dataforms.dao.Table;
 import dataforms.dao.TableList;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field.MatchType;
@@ -289,35 +286,20 @@ public class EnumDao extends Dao {
 		 */
 		public EnumGroupQuery(final Map<String, Object> data) {
 			EnumNameTable mntbl = new EnumNameTable();
-			SubQuery ttbl = new SubQuery(new EnumTableQuery(null)) {
-				@Override
-				public String getJoinCondition(final Table joinTable, final String alias) {
-					if (joinTable instanceof EnumNameTable) {
-						return this.getLinkFieldCondition(EnumTable.Entity.ID_ENUM_ID, joinTable, alias);
-					}
-					return super.getJoinCondition(joinTable, alias);
-				}
-			};
+			EnumTable ttbl = new EnumTable();
+			ttbl.getEnumGroupCodeField().setMatchType(MatchType.PART);
 			ttbl.setAlias("t");
-			EnumGroupTable mtbl = new EnumGroupTable() {
-				@Override
-				public String getJoinCondition(final Table joinTable, final String alias) {
-					if ("t".equals(alias)) {
-						return this.getLinkFieldCondition(EnumGroupTable.Entity.ID_ENUM_TYPE_CODE, joinTable, alias, EnumTable.Entity.ID_ENUM_CODE);
-					}
-					return super.getJoinCondition(joinTable, alias);
-				}
-			};
 			// 取得フィールドの設定.
 			this.setFieldList(new FieldList(
-				new AliasField("value", mtbl.getEnumTypeCodeField())
+				new AliasField("value", ttbl.getField(EnumTable.Entity.ID_ENUM_CODE))
 				, new AliasField("name", mntbl.getEnumNameField())
 			));
-			this.setMainTable(mtbl);
-			this.setJoinTableList(new TableList(ttbl, mntbl));
-			this.setQueryFormFieldList(new FieldList(mtbl.getEnumGroupCodeField(), mntbl.getLangCodeField()));
+			this.setMainTable(ttbl);
+			this.setJoinTableList(new TableList(mntbl));
+			this.setCondition("t.parent_id is null");
+			this.setQueryFormFieldList(new FieldList(ttbl.getEnumGroupCodeField(), mntbl.getLangCodeField()));
 			this.setQueryFormData(data);
-			this.setOrderByFieldList(new FieldList(mtbl.getSortOrderField()));
+			this.setOrderByFieldList(new FieldList(ttbl.getEnumGroupCodeField()));
 		}
 	}
 
@@ -415,6 +397,7 @@ public class EnumDao extends Dao {
 		}
 	}
 
+	// TODO:要テスト
 	/**
 	 * EnumTypeCodeのオートコンプリート用の問合せを実行します。
 	 * @param text 入力テキスト。
@@ -428,13 +411,16 @@ public class EnumDao extends Dao {
 		flist.addField(new EnumCodeField()).setMatchType(MatchType.PART);
 		query.setCondition("e.parent_id is null");
 		query.setQueryFormFieldList(flist);
-		EnumTypeNameTable.Entity e = new EnumTypeNameTable.Entity();
-		e.setEnumTypeCode(text);
-		e.setLangCode(langCode);
+		EnumTable.Entity e = new EnumTable.Entity();
+		e.setEnumCode(text);
+		EnumNameTable.Entity ne = new EnumNameTable.Entity(e.getMap());
+		ne.setLangCode(langCode);
 		query.setQueryFormData(e.getMap());
 		return this.executeQuery(query);
 	}
 
+
+	// TODO:要テスト
 	/**
 	 * 列挙型の情報を取得します。
 	 *
@@ -445,7 +431,7 @@ public class EnumDao extends Dao {
 	 */
 	public Map<String, Object> queryEnumType(final String enumTypeCode, final String langCode) throws Exception {
 		EnumTypeQuery query = new EnumTypeQuery(enumTypeCode, langCode);
-		query.setQueryFormFieldList(new FieldList(query.getFieldList().get(EnumTypeNameTable.Entity.ID_ENUM_TYPE_CODE)));
+		query.setQueryFormFieldList(new FieldList(query.getFieldList().get(EnumTable.Entity.ID_ENUM_CODE)));
 		Map<String, Object> ret = this.executeRecordQuery(query);
 		if (ret == null) {
 			EnumTable.Entity e = new EnumTable.Entity();

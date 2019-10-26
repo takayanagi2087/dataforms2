@@ -2,8 +2,8 @@ package dataforms.app.enumtype.dao;
 
 import java.util.Map;
 
+import dataforms.app.enumeration.field.EnumTypeCodeField;
 import dataforms.app.enumtype.field.EnumGroupCodeField;
-import dataforms.app.enumtype.field.EnumTypeCodeField;
 import dataforms.dao.Table;
 import dataforms.dao.TableRelation;
 import dataforms.field.common.DeleteFlagField;

@@ -30,7 +30,6 @@ public class UserInfoTableRelation extends TableRelation {
 	public String getJoinCondition(final Table joinTable, final String alias) {
 		if (joinTable instanceof UserAttributeTable
 		 || joinTable instanceof UserAttributeSubQuery
-		 || joinTable instanceof dataforms.app.user.dao.UserAttributeSubQuery
 		 || "ua".equals(alias)
 		 || "ai".equals(alias)) {
 			return (

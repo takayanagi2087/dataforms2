@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.app.enumeration.dao.EnumGroupTable;
 import dataforms.app.enumtype.field.EnumCodeField;
 import dataforms.app.enumtype.page.EnumEditForm;
 import dataforms.dao.Dao;
@@ -333,7 +332,7 @@ public class EnumDao extends Dao {
 	 */
 	public List<Map<String, Object>> getTypeList(final String enumGroupCode, final String langCode) throws Exception {
 		Map<String, Object> data = new HashMap<String, Object>();
-		EnumGroupTable.Entity e = new EnumGroupTable.Entity(data);
+		EnumTable.Entity e = new EnumTable.Entity(data);
 		EnumNameTable.Entity ne = new EnumNameTable.Entity(data);
 		e.setEnumGroupCode(enumGroupCode);
 		ne.setLangCode("default");

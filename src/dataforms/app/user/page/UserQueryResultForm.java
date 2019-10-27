@@ -2,7 +2,7 @@ package dataforms.app.user.page;
 
 import java.util.Map;
 
-import dataforms.app.enumeration.field.EnumOptionNameField;
+import dataforms.app.enumtype.field.EnumNameField;
 import dataforms.app.user.dao.UserDao;
 import dataforms.app.user.dao.UserInfoTable;
 import dataforms.controller.Page;
@@ -47,7 +47,7 @@ public class UserQueryResultForm extends QueryResultForm {
 			}
 		}
 		for (int i = 0; i < 10; i++) {
-			flist.addField(new EnumOptionNameField("attribute" + i)).setSortable(true);
+			flist.addField(new EnumNameField("attribute" + i)).setSortable(true);
 		}
 		this.queryResult = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, flist);
 		this.addHtmlTable(this.queryResult);

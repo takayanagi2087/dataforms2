@@ -15,7 +15,7 @@ public class EnumIndex extends Index {
 		EnumTable table = new EnumTable();
 		this.setUnique(true);
 		this.setTable(table);
-		this.setFieldList(new FieldList(table.getEnumCodeField()));
+		this.setFieldList(new FieldList(table.getParentIdField(), table.getEnumCodeField()));
 		this.setViolationMessageKey("error.duplicateenumcode");
 	}
 }

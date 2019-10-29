@@ -5,7 +5,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import dataforms.app.enumeration.dao.EnumOptionNameTable;
+import dataforms.app.enumtype.dao.EnumNameTable;
+import dataforms.app.enumtype.dao.EnumOptionQuery;
 import dataforms.dao.Query;
 import dataforms.dao.SubQuery;
 import dataforms.dao.Table;
@@ -40,10 +41,10 @@ public class UserQuery extends Query {
 		 */
 		public UserAttributeTypeQuery(final String type, final String langCode) {
 			UserAttributeTable tbl = new UserAttributeTable();
-			EnumOptionNameTable ntbl = new EnumOptionNameTable();
+			SubQuery ntbl = new SubQuery(new EnumOptionQuery(type, langCode));
 			ntbl.setAlias("nm");
 			FieldList fl = tbl.getFieldList();
-			fl.add(new AliasField("attributeName", ntbl.getField("enumOptionName")));
+			fl.add(new AliasField("attributeName", ntbl.getField(EnumNameTable.Entity.ID_ENUM_NAME)));
 			this.setFieldList(tbl.getFieldList());
 			this.setMainTable(tbl);
 			this.setJoinTableList(new TableList(ntbl));
@@ -52,7 +53,6 @@ public class UserQuery extends Query {
 	}
 
 
-	// TODO:クラス名が重複しているので、クラス名の変更を検討。
 	/**
 	 * ユーザ属性副問合せ。
 	 */
@@ -64,6 +64,30 @@ public class UserQuery extends Query {
 		 */
 		public UserAttributeSubQuery(final String type, final String langCode) {
 			super(new UserAttributeTypeQuery(type, langCode));
+		}
+	}
+
+	/**
+	 * ユーザの追加情報テーブルの情報をフィールドリスト、テーブルリストに追加します。
+	 * @param fl フィールドリスト。
+	 * @param tl テーブルリスト。
+	 */
+	private void addAdditionalInfoTable(final FieldList fl, final TableList tl) {
+		try {
+			Class<? extends Table> clazz = UserAdditionalInfoTableUtil.getUserAdditionalInfoTable();
+			if (clazz != null) {
+				Table atable = clazz.getDeclaredConstructor().newInstance();
+				atable.setAlias("ai");
+				tl.add(atable);
+				for (Field<?> f: atable.getFieldList()) {
+					if (UserAdditionalInfoTableUtil.isExcludedField(f)) {
+						continue;
+					}
+					fl.addField(f);
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 		}
 	}
 
@@ -83,25 +107,9 @@ public class UserQuery extends Query {
 		// 該当するユーザ属性のサブクエリ
 		SubQuery ua = new SubQuery(new UserAttributeQuery(data));
 		ua.setAlias("ua");
-		// 追加情報テーブルが存在する場合、問合せに組み込む
-		Table atable = null;
 		TableList tl = new TableList();
-		try {
-			Class<? extends Table> clazz = UserAdditionalInfoTableUtil.getUserAdditionalInfoTable();
-			if (clazz != null) {
-				atable = clazz.getDeclaredConstructor().newInstance();
-				atable.setAlias("ai");
-				tl.add(atable);
-				for (Field<?> f: atable.getFieldList()) {
-					if (UserAdditionalInfoTableUtil.isExcludedField(f)) {
-						continue;
-					}
-					fl.addField(f);
-				}
-			}
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
+		// 追加情報テーブルが存在する場合、問合せに組み込む
+		this.addAdditionalInfoTable(fl, tl);
 		// ユーザレベルの名称を取得するサブクエリ
 		int idx = 0;
 		for (String at: atlist) {
@@ -119,5 +127,6 @@ public class UserQuery extends Query {
 		this.setQueryFormFieldList(flist);
 		this.setQueryFormData(data);
 	}
+
 }
 

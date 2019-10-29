@@ -6,14 +6,14 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import dataforms.app.enumeration.dao.EnumGroupDao;
-import dataforms.app.enumeration.dao.EnumGroupTable;
+import dataforms.app.enumtype.dao.EnumDao;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.Query;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.FieldList;
+import dataforms.field.common.SelectField;
 import dataforms.util.CryptUtil;
 import dataforms.util.UserAdditionalInfoTableUtil;
 
@@ -46,7 +46,7 @@ public class UserDao extends Dao {
 	 */
 	public List<String> queryUserAttributeList() throws Exception {
 		List<String> ret = new ArrayList<String>();
-		EnumGroupDao dao = new EnumGroupDao(this);
+/*		EnumGroupDao dao = new EnumGroupDao(this);
 		EnumGroupTable.Entity p = new EnumGroupTable.Entity();
 		p.setEnumGroupCode("userAttribute");
 		EnumGroupTable table = new EnumGroupTable();
@@ -54,7 +54,14 @@ public class UserDao extends Dao {
 		for (Map<String, Object> m: list) {
 			EnumGroupTable.Entity e = new EnumGroupTable.Entity(m);
 			ret.add(e.getEnumTypeCode());
+		}*/
+		EnumDao dao = new EnumDao(this);
+		List<Map<String, Object>> list = dao.getTypeList("userAttribute", "default");
+		for (Map<String, Object> m: list) {
+			SelectField.OptionEntity e = new SelectField.OptionEntity(m);
+			ret.add(e.getValue());
 		}
+
 		return ret;
 	}
 

@@ -4,11 +4,13 @@ import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
+import dataforms.app.enumtype.dao.EnumDao;
 import dataforms.controller.EditForm;
 import dataforms.dao.file.ImageData;
 import dataforms.debug.alltype.dao.AllTypeAttachFileTable;
@@ -66,8 +68,6 @@ public class AllTypeEditForm extends EditForm {
 
 		logger.debug("userInfo=" + JSON.encode(this.getPage().getUserInfo()));
 
-//		EnumDao dao = new EnumDao(this);
-//		log.debug("optionName=" + dao.getOptionName("userLevel", "admin", Locale.JAPAN.getLanguage()));
 	}
 
 
@@ -242,9 +242,19 @@ public class AllTypeEditForm extends EditForm {
 		return ret;
 	}
 
+	/**
+	 * 各種メソッドのテストメソッド。
+	 * @param p パラメータ。
+	 * @return "ok"というメッセージ。
+	 * @throws Exception 例外。
+	 */
 	@WebMethod
 	public Response testJsonPost(final Map<String, Object> p) throws Exception {
 		logger.debug("param=" + JSON.encode(p, true));
+
+		EnumDao dao = new EnumDao(this);
+		logger.debug("optionName=" + dao.getOptionName("userLevel", "admin", Locale.JAPAN.getLanguage()));
+
 		return new JsonResponse(JsonResponse.SUCCESS, "ok");
 	}
 }

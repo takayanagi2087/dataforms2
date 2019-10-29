@@ -6,10 +6,10 @@
 		"updateUserId": "0",
 		"sortOrder": null,
 		"memo": "ユーザの権限レベル",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_001",
 		"parentId": null,
-		"updateTimestamp": "20191025142641714",
-		"createTimestamp": "20191025135149731"
+		"updateTimestamp": "20191027225007212",
+		"createTimestamp": "20191025143757363"
 	},
 	{
 		"enumId": "416",
@@ -18,10 +18,10 @@
 		"updateUserId": "0",
 		"sortOrder": "0",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_001",
 		"parentId": "415",
-		"updateTimestamp": "20191025142641718",
-		"createTimestamp": "20191025135149736"
+		"updateTimestamp": "20191027225007226",
+		"createTimestamp": "20191025143757368"
 	},
 	{
 		"enumId": "417",
@@ -30,10 +30,10 @@
 		"updateUserId": "0",
 		"sortOrder": "1",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_001",
 		"parentId": "415",
-		"updateTimestamp": "20191025142641719",
-		"createTimestamp": "20191025135149742"
+		"updateTimestamp": "20191027225007227",
+		"createTimestamp": "20191025143757373"
 	},
 	{
 		"enumId": "418",
@@ -42,10 +42,10 @@
 		"updateUserId": "0",
 		"sortOrder": "2",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_001",
 		"parentId": "415",
-		"updateTimestamp": "20191025142641719",
-		"createTimestamp": "20191025135149748"
+		"updateTimestamp": "20191027225007228",
+		"createTimestamp": "20191025143757378"
 	},
 	{
 		"enumId": "419",
@@ -54,10 +54,10 @@
 		"updateUserId": "0",
 		"sortOrder": "3",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_001",
 		"parentId": "415",
-		"updateTimestamp": "20191025142641720",
-		"createTimestamp": "20191025135149751"
+		"updateTimestamp": "20191027225007229",
+		"createTimestamp": "20191025143757381"
 	},
 	{
 		"enumId": "420",
@@ -66,46 +66,46 @@
 		"updateUserId": "0",
 		"sortOrder": null,
 		"memo": "組織の部署のサンプルです",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_002",
 		"parentId": null,
-		"updateTimestamp": "20191025142646688",
-		"createTimestamp": "20191025135149754"
+		"updateTimestamp": "20191029161441674",
+		"createTimestamp": "20191025143757385"
 	},
 	{
 		"enumId": "421",
 		"createUserId": "0",
 		"enumCode": "generalAffairs",
 		"updateUserId": "0",
-		"sortOrder": "0",
+		"sortOrder": "1",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_002",
 		"parentId": "420",
-		"updateTimestamp": "20191025142646691",
-		"createTimestamp": "20191025135149757"
+		"updateTimestamp": "20191029161441711",
+		"createTimestamp": "20191025143757391"
 	},
 	{
 		"enumId": "422",
 		"createUserId": "0",
 		"enumCode": "sales",
 		"updateUserId": "0",
-		"sortOrder": "1",
+		"sortOrder": "2",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_002",
 		"parentId": "420",
-		"updateTimestamp": "20191025142646692",
-		"createTimestamp": "20191025135149760"
+		"updateTimestamp": "20191029161441712",
+		"createTimestamp": "20191025143757395"
 	},
 	{
 		"enumId": "423",
 		"createUserId": "0",
 		"enumCode": "develop",
 		"updateUserId": "0",
-		"sortOrder": "2",
+		"sortOrder": "0",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_002",
 		"parentId": "420",
-		"updateTimestamp": "20191025142646692",
-		"createTimestamp": "20191025135149764"
+		"updateTimestamp": "20191029161441710",
+		"createTimestamp": "20191025143757402"
 	},
 	{
 		"enumId": "424",
@@ -114,70 +114,70 @@
 		"updateUserId": "0",
 		"sortOrder": null,
 		"memo": "組織の役職のサンプルです",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_003",
 		"parentId": null,
-		"updateTimestamp": "20191025142652296",
-		"createTimestamp": "20191025135149767"
+		"updateTimestamp": "20191029161454942",
+		"createTimestamp": "20191025143757409"
 	},
 	{
 		"enumId": "425",
 		"createUserId": "0",
 		"enumCode": "staff",
 		"updateUserId": "0",
-		"sortOrder": "0",
+		"sortOrder": "4",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_003",
 		"parentId": "424",
-		"updateTimestamp": "20191025142652299",
-		"createTimestamp": "20191025135149770"
+		"updateTimestamp": "20191029161454957",
+		"createTimestamp": "20191025143757415"
 	},
 	{
 		"enumId": "426",
 		"createUserId": "0",
 		"enumCode": "chief",
 		"updateUserId": "0",
-		"sortOrder": "1",
+		"sortOrder": "0",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_003",
 		"parentId": "424",
-		"updateTimestamp": "20191025142652300",
-		"createTimestamp": "20191025135149774"
+		"updateTimestamp": "20191029161454952",
+		"createTimestamp": "20191025143757420"
 	},
 	{
 		"enumId": "427",
 		"createUserId": "0",
 		"enumCode": "manager",
 		"updateUserId": "0",
-		"sortOrder": "2",
+		"sortOrder": "3",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_003",
 		"parentId": "424",
-		"updateTimestamp": "20191025142652300",
-		"createTimestamp": "20191025135149777"
+		"updateTimestamp": "20191029161454956",
+		"createTimestamp": "20191025143757423"
 	},
 	{
 		"enumId": "428",
 		"createUserId": "0",
 		"enumCode": "generalManager",
 		"updateUserId": "0",
-		"sortOrder": "3",
+		"sortOrder": "2",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_003",
 		"parentId": "424",
-		"updateTimestamp": "20191025142652301",
-		"createTimestamp": "20191025135149783"
+		"updateTimestamp": "20191029161454955",
+		"createTimestamp": "20191025143757427"
 	},
 	{
 		"enumId": "429",
 		"createUserId": "0",
 		"enumCode": "exectiveManager",
 		"updateUserId": "0",
-		"sortOrder": "4",
+		"sortOrder": "1",
 		"memo": "",
-		"enumGroupCode": "userAttribute",
+		"enumGroupCode": "userAttribute_003",
 		"parentId": "424",
-		"updateTimestamp": "20191025142652301",
-		"createTimestamp": "20191025135149790"
+		"updateTimestamp": "20191029161454953",
+		"createTimestamp": "20191025143757431"
 	},
 	{
 		"enumId": "430",
@@ -188,8 +188,8 @@
 		"memo": "Webコンポーネントの種類を指定します。",
 		"enumGroupCode": null,
 		"parentId": null,
-		"updateTimestamp": "20191025135149795",
-		"createTimestamp": "20191025135149795"
+		"updateTimestamp": "20191025143757433",
+		"createTimestamp": "20191025143757433"
 	},
 	{
 		"enumId": "431",
@@ -200,8 +200,8 @@
 		"memo": "",
 		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191025135149800",
-		"createTimestamp": "20191025135149800"
+		"updateTimestamp": "20191025143757438",
+		"createTimestamp": "20191025143757438"
 	},
 	{
 		"enumId": "432",
@@ -212,8 +212,8 @@
 		"memo": "",
 		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191025135149804",
-		"createTimestamp": "20191025135149804"
+		"updateTimestamp": "20191025143757441",
+		"createTimestamp": "20191025143757441"
 	},
 	{
 		"enumId": "433",
@@ -224,8 +224,8 @@
 		"memo": "",
 		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191025135149807",
-		"createTimestamp": "20191025135149807"
+		"updateTimestamp": "20191025143757444",
+		"createTimestamp": "20191025143757444"
 	},
 	{
 		"enumId": "434",
@@ -236,8 +236,8 @@
 		"memo": "",
 		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191025135149810",
-		"createTimestamp": "20191025135149810"
+		"updateTimestamp": "20191025143757448",
+		"createTimestamp": "20191025143757448"
 	},
 	{
 		"enumId": "435",
@@ -248,8 +248,8 @@
 		"memo": "",
 		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191025135149815",
-		"createTimestamp": "20191025135149815"
+		"updateTimestamp": "20191025143757452",
+		"createTimestamp": "20191025143757452"
 	},
 	{
 		"enumId": "436",
@@ -260,8 +260,8 @@
 		"memo": "",
 		"enumGroupCode": null,
 		"parentId": "430",
-		"updateTimestamp": "20191025135149821",
-		"createTimestamp": "20191025135149821"
+		"updateTimestamp": "20191025143757456",
+		"createTimestamp": "20191025143757456"
 	},
 	{
 		"enumId": "437",
@@ -272,8 +272,8 @@
 		"memo": "ソース生成ツールの上書きモード",
 		"enumGroupCode": null,
 		"parentId": null,
-		"updateTimestamp": "20191025135149825",
-		"createTimestamp": "20191025135149825"
+		"updateTimestamp": "20191025143757460",
+		"createTimestamp": "20191025143757460"
 	},
 	{
 		"enumId": "438",
@@ -284,8 +284,8 @@
 		"memo": "",
 		"enumGroupCode": null,
 		"parentId": "437",
-		"updateTimestamp": "20191025135149828",
-		"createTimestamp": "20191025135149828"
+		"updateTimestamp": "20191025143757464",
+		"createTimestamp": "20191025143757464"
 	},
 	{
 		"enumId": "439",
@@ -296,8 +296,8 @@
 		"memo": "",
 		"enumGroupCode": null,
 		"parentId": "437",
-		"updateTimestamp": "20191025135149831",
-		"createTimestamp": "20191025135149831"
+		"updateTimestamp": "20191025143757467",
+		"createTimestamp": "20191025143757467"
 	},
 	{
 		"enumId": "440",
@@ -308,7 +308,7 @@
 		"memo": "",
 		"enumGroupCode": null,
 		"parentId": "437",
-		"updateTimestamp": "20191025135149834",
-		"createTimestamp": "20191025135149834"
+		"updateTimestamp": "20191025143757471",
+		"createTimestamp": "20191025143757471"
 	}
 ]

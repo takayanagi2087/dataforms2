@@ -1,7 +1,6 @@
 package dataforms.app.enumtype.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -301,6 +300,29 @@ public class EnumDao extends Dao {
 			this.setQueryFormData(data);
 			this.setOrderByFieldList(new FieldList(ttbl.getEnumGroupCodeField()));
 		}
+
+		/**
+		 * パラメータマップを作成します。
+		 * @param enumGroupCode 列挙型グループコード。
+		 * @param langCode 言語コード。
+		 * @return パラメータマップ。
+		 */
+		private static Map<String, Object> getParamaterMap(final String enumGroupCode, final String langCode) {
+			EnumTable.Entity e = new EnumTable.Entity();
+			EnumNameTable.Entity ne = new EnumNameTable.Entity(e.getMap());
+			e.setEnumGroupCode(enumGroupCode);
+			ne.setLangCode(langCode);
+			return e.getMap();
+		}
+
+		/**
+		 * コンストラクタ。
+		 * @param enumGroupCode 列挙型グループコード。
+		 * @param langCode 言語コード。
+		 */
+		public EnumGroupQuery(final String enumGroupCode, final String langCode) {
+			this(EnumGroupQuery.getParamaterMap(enumGroupCode, langCode));
+		}
 	}
 
 	/**
@@ -331,15 +353,8 @@ public class EnumDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public List<Map<String, Object>> getTypeList(final String enumGroupCode, final String langCode) throws Exception {
-		Map<String, Object> data = new HashMap<String, Object>();
-		EnumTable.Entity e = new EnumTable.Entity(data);
-		EnumNameTable.Entity ne = new EnumNameTable.Entity(data);
-		e.setEnumGroupCode(enumGroupCode);
-		ne.setLangCode("default");
-		EnumGroupQuery mq = new EnumGroupQuery(data);
-		List<Map<String, Object>> deflist = this.executeQuery(mq);
-		ne.setLangCode(langCode);
-		List<Map<String, Object>> langlist = this.executeQuery(mq);
+		List<Map<String, Object>> deflist = this.executeQuery(new EnumGroupQuery(enumGroupCode, "default"));
+		List<Map<String, Object>> langlist = this.executeQuery(new EnumGroupQuery(enumGroupCode, langCode));
 		deflist = this.updateList(deflist, langlist);
 		return deflist;
 	}

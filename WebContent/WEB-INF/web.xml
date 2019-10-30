@@ -484,14 +484,12 @@
 		jarファイルからプロジェクトにエクスポートし、フィールドを追加
 		することにより追加情報を入力することが可能になります。
 	 -->
-	<!--
 	<context-param>
 		<param-name>user-additional-info-table</param-name>
 		<param-value>
 			dataforms.debug.user.dao.UserAdditionalInfoTable
 		</param-value>
 	</context-param>
-	-->
 	<!--
 		HTML5のキャッシュ・マニフェストファイルのパスを指定します。
 	 -->

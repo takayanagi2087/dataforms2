@@ -1,0 +1,4 @@
+/**
+ * レスポンスパッケージ。
+ */
+package dataforms.response;

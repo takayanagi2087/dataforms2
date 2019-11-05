@@ -3,6 +3,7 @@ package dataforms.dao.sqlgen.oracle;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Logger;
 
@@ -284,5 +285,21 @@ public class OracleSqlGenerator extends SqlGenerator {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	protected String getLiteral(Object value) {
+		if (value instanceof java.sql.Time) {
+			SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss.SSS");
+			return "to_timestamp(\'" + fmt.format((java.util.Date) value) + "\','hh24:mi:ss.ff3')";
+		} else if (value instanceof java.sql.Timestamp) {
+			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			return "to_timestamp(\'" + fmt.format((java.util.Date) value) + "\','yyyy-mm-dd hh24:mi:ss.ff3')";
+		} else if (value instanceof java.util.Date) {
+			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+			return "to_date(\'" + fmt.format((java.util.Date) value) + "\','yyyy-mm-dd')";
+		} else {
+			return super.getLiteral(value);
+		}
 	}
 }

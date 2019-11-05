@@ -1,6 +1,7 @@
 package dataforms.debug.alltype.dao;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -80,8 +81,9 @@ public class AllTypeTable extends Table {
 		nf.setCommaFormat(true);
 		this.addField(nf).setNotNull(false).setComment("数値フィールド").setDefaultValue(BigDecimal.valueOf(0));
 		this.addField(new DateField("dateField")).setComment("日付フィールド").setDefaultValue(new Date());
-		this.addField(new TimeField("timeField")).setComment("時刻フィールド");
-		this.addField(new TimestampField("timestampField")).setComment("日付時刻フィールド");
+		java.util.Date now = new java.util.Date();
+		this.addField(new TimeField("timeField")).setComment("時刻フィールド").setDefaultValue(new java.sql.Time(now.getTime()));
+		this.addField(new TimestampField("timestampField")).setComment("日付時刻フィールド").setDefaultValue(new Timestamp(now.getTime()));
 		ZipCodeField zipCode = new ZipCodeField();
 		zipCode.setAddressFieldId("address");
 		zipCode.setAddressFieldId2("address2");
@@ -124,15 +126,15 @@ public class AllTypeTable extends Table {
 		this.addField(new FolderStoreFileField("uploadFileData")).setComment("添付ファイル");
 
 		this.addField(new ClobField("clobField")).setComment("CLOB");
-		
+
 		this.addField(new LoginIdField());
 		this.addField(new UserNameField());
-		
+
 		this.addField(new DeleteFlagField());
 		this.addUpdateInfoFields();
 	}
 
-	
+
 	/**
 	 * {@inheritDoc}
 	 * <pre>

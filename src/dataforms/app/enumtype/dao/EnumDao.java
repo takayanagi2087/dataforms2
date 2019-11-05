@@ -1,8 +1,10 @@
 package dataforms.app.enumtype.dao;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import dataforms.app.enumtype.field.EnumCodeField;
 import dataforms.app.enumtype.page.EnumEditForm;
@@ -215,6 +217,24 @@ public class EnumDao extends Dao {
 	}
 
 	/**
+	 * 列挙型コードの多重登録チェック。
+	 * @throws Exception 例外。
+	 */
+	private void validateEnumTypeCode() throws Exception {
+		Set<String> set = new HashSet<String>();
+		List<Map<String, Object>> list = this.executeQuery(new EnumTypeQuery());
+		for (Map<String, Object> m: list) {
+			EnumTable.Entity e = new EnumTable.Entity(m);
+			if (set.contains(e.getEnumCode())) {
+				throw new ApplicationException(this.getPage(), "error.duplicateenumcode");
+			}
+			set.add(e.getEnumCode());
+		}
+
+	}
+
+
+	/**
 	 * データを追加します。
 	 * @param data データ。
 	 * @return 追加件数。
@@ -227,6 +247,7 @@ public class EnumDao extends Dao {
 			this.saveEnumName(data);
 			this.updateOptionList(table, data);
 		}
+		this.validateEnumTypeCode();
 		return ret;
 	}
 
@@ -251,6 +272,7 @@ public class EnumDao extends Dao {
 			this.saveEnumName(data);
 			this.updateOptionList(table, data);
 		}
+		this.validateEnumTypeCode();
 		return cnt;
 	}
 

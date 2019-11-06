@@ -6,6 +6,7 @@ import dataforms.app.enumtype.dao.EnumDao;
 import dataforms.app.enumtype.dao.EnumTable;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
+import dataforms.field.base.Field.SortOrder;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
 
@@ -21,6 +22,7 @@ public class EnumQueryResultForm extends QueryResultForm {
 		EnumTable table = new EnumTable();
 		this.addPkFieldList(table.getPkFieldList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, EnumDao.getQueryResultFieldList());
+		htmltable.getFieldList().get(EnumTable.Entity.ID_ENUM_GROUP_CODE).setSortable(true, SortOrder.ASC);
 		htmltable.getFieldList().get(EnumTable.Entity.ID_ENUM_CODE).setSortable(true);
 		htmltable.getFieldList().get(EnumTable.Entity.ID_MEMO).setSortable(true);
 

@@ -68,9 +68,8 @@ public class Table  {
 
 	/**
 	 * シーケンスの初期値。
-	 * TODO:MySQLのAuto_incrementは0を設定できないので、1開始の方が良いかも。
 	 */
-	private Long sequenceStartValue = Long.valueOf(0);
+	private Long sequenceStartValue = Long.valueOf(1);
 	/**
 	 * コンストラクタ。
 	 */

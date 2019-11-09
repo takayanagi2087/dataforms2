@@ -34,8 +34,6 @@ import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
-// TODO:バリデーションに問題がありQueryを生成できない不具合が存在する。
-
 /**
  * 問合せJavaクラス作成編集フォーム。
  *

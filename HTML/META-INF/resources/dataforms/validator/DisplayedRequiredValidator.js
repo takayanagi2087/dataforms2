@@ -20,7 +20,7 @@ class DisplayedRequiredValidator extends RequiredValidator {
 	 * @param {String} v 値。
 	 * @returns {Boolean} バリデーション結果。
 	 */
-	validate = function(v) {
+	validate(v) {
 		var f = this.getParentForm();
 		var vflg = f.find("#" + this.selectorEscape(this.fieldId)).is(":visible");
 		logger.log("vflg=" + vflg);

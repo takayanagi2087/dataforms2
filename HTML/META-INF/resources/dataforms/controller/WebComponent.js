@@ -332,7 +332,7 @@ class WebComponent {
 	 * ブラウザの言語コードを取得します。
 	 * @returns {String} ブラウザの言語コード。
 	 */
-	getLanguage = function() {
+	getLanguage() {
 		return window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage;
 	}
 }

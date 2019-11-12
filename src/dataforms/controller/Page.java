@@ -421,7 +421,7 @@ public class Page extends DataForms {
 			String jspath = this.getAppropriatePath(js, this.getRequest());
 			if (jspath != null) {
 				String t = this.getLastUpdate(jspath);
-				sb.append("\t\t<script type=\"text/javascript\" src=\"" + context + jspath + "?t=" + t + "\" charset=\"utf-8\"></script>\n");
+				sb.append("\t\t<script src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
 			}
 		}
 		List<String> appScripts = this.getAppScript();
@@ -430,7 +430,7 @@ public class Page extends DataForms {
 			String jspath = this.getAppropriatePath(js, this.getRequest());
 			if (jspath != null) {
 				String t = this.getLastUpdate(jspath);
-				sb.append("\t\t<script type=\"text/javascript\" src=\"" + context + jspath + "?t=" + t + "\" charset=\"utf-8\"></script>\n");
+				sb.append("\t\t<script src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
 			}
 		}
 		return sb.toString();
@@ -483,7 +483,7 @@ public class Page extends DataForms {
      * フォーム初期化メソッド0。
      */
     private static final  String INIT_SCRIPT0 =
-    	"\t\t<script type=\"text/javascript\">\n" +
+    	"\t\t<script>\n" +
 		"\t\t<!--\n" +
 		"\t\t$(function() {\n";
 
@@ -573,15 +573,15 @@ public class Page extends DataForms {
 
 		String s = sb.toString();
 //		log.info("scriptPath=" + scriptPath);
-		Pattern pat = Pattern.compile("<head.*>");
+		Pattern pat = Pattern.compile("</head>");
 		Matcher m = pat.matcher(html);
 		StringBuilder htmlbuffer = new StringBuilder();
 		if (m.find()) {
 			int start = m.start();
 			int end = m.end();
 			htmlbuffer.append(html.substring(0, start));
-			htmlbuffer.append(m.group());
 			htmlbuffer.append(s);
+			htmlbuffer.append("\t" + m.group());
 			htmlbuffer.append(html.substring(end));
 		}
 		return htmlbuffer.toString();

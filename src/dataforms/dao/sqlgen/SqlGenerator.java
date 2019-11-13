@@ -19,6 +19,7 @@ import dataforms.dao.ForeignKey;
 import dataforms.dao.Index;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.Query;
+import dataforms.dao.Query.JoinInfo;
 import dataforms.dao.QueryPager;
 import dataforms.dao.SubQuery;
 import dataforms.dao.Table;
@@ -849,66 +850,6 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	}
 
 	/**
-	 * JOINの構文を作成します。
-	 * @param sb 構文を追加する文字列バッファ。
-	 * @param query 問い合わせ。
-	 * @param mtable 結合元テーブル。
-	 * @param type JOINのタイプ。
-	 * @param list 結合テーブルリスト。
-	 * @param alist 別名リスト。
-	 */
-	private void generateJoinSql(final StringBuilder sb, final Query query, final Table mtable, final String type, final TableList list, final List<String> alist) {
-		int idx = 0;
-		for (Table table: list) {
-			this.generateSubQuerySql(table);
-			sb.append(" ");
-			sb.append(type);
-			sb.append(" ");
-			sb.append(table.getTableName());
-			sb.append(this.getAsAliasSql());
-			sb.append(alist.get(idx));
-			sb.append(" on ");
-			String c = mtable.getJoinCondition(table, alist.get(idx));
-			if (c != null) {
-				sb.append(c);
-				if (query.isEffectivenessOfDeleteFlag()) {
-					if (table.hasDeleteFlag()) {
-						String delColumn = table.getDeleteFlagField().getDbColumnName();
-						sb.append(" and " + table.getAlias() + "." + delColumn + "='0' ");
-					}
-				}
-			} else {
-				logger.debug("getJoinConditionOtherThamMainTable");
-				TableList tlist = new TableList();
-				tlist.add(query.getMainTable());
-				if (query.getJoinTableList() != null) {
-					tlist.addAll(query.getJoinTableList());
-				}
-				if (query.getLeftJoinTableList() != null) {
-					tlist.addAll(query.getLeftJoinTableList());
-				}
-				if (query.getRightJoinTableList() != null) {
-					tlist.addAll(query.getRightJoinTableList());
-				}
-				c = this.getJoinConditionOtherThamMainTable(tlist, table);
-				if (c != null) {
-					sb.append(c);
-					if (query.isEffectivenessOfDeleteFlag()) {
-						if (table.hasDeleteFlag()) {
-							String delColumn = table.getDeleteFlagField().getDbColumnName();
-							sb.append(" and " + table.getAlias() + "." + delColumn + "='0' ");
-						}
-					}
-				} else {
-					throw new Error(mtable.getTableName() + "と" + table.getTableName() + "の結合条件が定義されていません。");
-				}
-			}
-			sb.append("\n");
-			idx++;
-		}
-	}
-
-	/**
 	 * フィールド、テーブル別名マップを作成します。
 	 * @param map フィールド、テーブル別名マップ。
 	 * @param table テーブル。
@@ -945,6 +886,61 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	}
 
 	/**
+	 * JOINの構文を作成します。
+	 * @param sb 文字列バッファ。
+	 * @param query 問合せ。
+	 */
+	private void generateJoinSql(final StringBuilder sb, final Query query) {
+		Table mtable = query.getMainTable();
+		List<JoinInfo> list = query.getJoinInfoList();
+		for (JoinInfo joinInfo: list) {
+			Table table = joinInfo.getJoinTable();
+			this.generateSubQuerySql(table);
+			sb.append(" ");
+			sb.append(joinInfo.getJoinType());
+			sb.append(" ");
+			sb.append(table.getTableName());
+			sb.append(this.getAsAliasSql());
+			sb.append(table.getAlias());
+			sb.append(" on ");
+			String c = mtable.getJoinCondition(table, table.getAlias());
+			if (c != null) {
+				sb.append(c);
+				if (query.isEffectivenessOfDeleteFlag()) {
+					if (table.hasDeleteFlag()) {
+						String delColumn = table.getDeleteFlagField().getDbColumnName();
+						sb.append(" and " + table.getAlias() + "." + delColumn + "='0' ");
+					}
+				}
+			} else {
+				logger.debug("getJoinConditionOtherThamMainTable");
+				TableList tlist = new TableList();
+				tlist.add(query.getMainTable());
+				if (list != null) {
+					for (JoinInfo ji: list) {
+						tlist.add(ji.getJoinTable());
+					}
+				}
+				c = this.getJoinConditionOtherThamMainTable(tlist, table);
+				if (c != null) {
+					sb.append(c);
+					if (query.isEffectivenessOfDeleteFlag()) {
+						if (table.hasDeleteFlag()) {
+							String delColumn = table.getDeleteFlagField().getDbColumnName();
+							sb.append(" and " + table.getAlias() + "." + delColumn + "='0' ");
+						}
+					}
+				} else {
+					throw new Error(mtable.getTableName() + "と" + table.getTableName() + "の結合条件が定義されていません。");
+				}
+			}
+			sb.append("\n");
+		}
+	}
+
+
+
+	/**
 	 * テーブル結合のSQLを取得します。
 	 * @param query 結合テーブル。
 	 * @return 結合テーブルのSQL。
@@ -960,59 +956,25 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		}
 		sb.append(this.getAsAliasSql() + " " + mtable.getAlias() + "\n");
 		this.addFieldAliasMap(fieldAliasMap, mtable, mtable.getAlias());
-		TableList list = query.getJoinTableList();
+		List<JoinInfo> list = query.getJoinInfoList();
 		if (list != null) {
-			List<String> alist = new ArrayList<String>();
+			// Aliasの自動設定
 			for (int i = 0; i < list.size(); i++) {
-				Table t = list.get(i);
+				JoinInfo ji = list.get(i);
+				Table t = ji.getJoinTable();
 				String alias = t.getAlias();
 				if (alias == null) {
-					alias = "i" + i;
+					alias = "j" + i;
 					t.setAlias(alias);
 				}
-				alist.add(alias);
-				this.addFieldAliasMap(fieldAliasMap, list.get(i), alias);
+				this.addFieldAliasMap(fieldAliasMap, ji.getJoinTable(), alias);
 			}
-			query.setJoinAliasList(alist);
-			generateJoinSql(sb, query, mtable, "inner join", list, alist);
-		}
-		TableList llist = query.getLeftJoinTableList();
-		if (llist != null) {
-			List<String> alist = new ArrayList<String>();
-			for (int i = 0; i < llist.size(); i++) {
-				//String alias = "l" + i;
-				Table t = llist.get(i);
-				String alias = t.getAlias();
-				if (alias == null) {
-					alias = "l" + i;
-					t.setAlias(alias);
-				}
-				alist.add(alias);
-				this.addFieldAliasMap(fieldAliasMap, llist.get(i), alias);
-			}
-			query.setLeftJoinAliasList(alist);
-			generateJoinSql(sb, query, mtable, "left join", llist, alist);
-		}
-		TableList rlist = query.getRightJoinTableList();
-		if (rlist != null) {
-			List<String> alist = new ArrayList<String>();
-			for (int i = 0; i < rlist.size(); i++) {
-//				String alias = "r" + i;
-				Table t = rlist.get(i);
-				String alias = t.getAlias();
-				if (alias == null) {
-					alias = "r" + i;
-					t.setAlias(alias);
-				}
-				alist.add(alias);
-				this.addFieldAliasMap(fieldAliasMap, rlist.get(i), alias);
-			}
-			query.setRightJoinAliasList(alist);
-			generateJoinSql(sb, query, mtable, "right join", rlist, alist);
+			this.generateJoinSql(sb, query);
 		}
 		query.setFieldTableAliasMap(fieldAliasMap);
 		return sb.toString();
 	}
+
 
 	/**
 	 * Like文のEscape指定文字列を取得します。
@@ -1252,6 +1214,8 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @return SQL。
 	 */
 	public String generateQuerySql(final Query query, final boolean orderBy) {
+//		String joinTable = this.generateJoinTableSql(query);
+		query.buildJoinInfoList();
 		String joinTable = this.generateJoinTableSql(query);
 		FieldList flist = query.getFieldList();
 		StringBuilder collist = new StringBuilder();

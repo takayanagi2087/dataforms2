@@ -1,5 +1,6 @@
 package dataforms.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,12 @@ public class Query {
 	 */
 	private List<String> rightJoinAliasList = null;
 
+
+	/**
+	 * 結合情報リスト。
+	 */
+	private List<JoinInfo> joinInfoList = null;
+
 	/**
 	 * フィールドとテーブル別名とのマップ。
 	 */
@@ -146,6 +153,7 @@ public class Query {
 	 * 内部結合するテーブルリストを取得します。
 	 * @return 内部結合するテーブルリスト。
 	 */
+	@Deprecated
 	public TableList getJoinTableList() {
 		return joinTableList;
 	}
@@ -154,6 +162,7 @@ public class Query {
 	 * 内部結合するテーブルリストを設定します。
 	 * @param joinTableList 内部結合するテーブリスト。
 	 */
+	@Deprecated
 	public void setJoinTableList(final TableList joinTableList) {
 		this.joinTableList = joinTableList;
 	}
@@ -162,6 +171,7 @@ public class Query {
 	 * 左外部結合するテーブルリストを取得します。
 	 * @return 左外部結合するテーブルリスト。
 	 */
+	@Deprecated
 	public TableList getLeftJoinTableList() {
 		return leftJoinTableList;
 	}
@@ -170,6 +180,7 @@ public class Query {
 	 * 左外部結合するテーブルリストを設定します。
 	 * @param leftJoinTableList 左外部結合するテーブルリスト。
 	 */
+	@Deprecated
 	public void setLeftJoinTableList(final TableList leftJoinTableList) {
 		this.leftJoinTableList = leftJoinTableList;
 	}
@@ -178,6 +189,7 @@ public class Query {
 	 * 右外部結合するテーブルリストを取得します。
 	 * @return 右外部結合するテーブルリスト。
 	 */
+	@Deprecated
 	public TableList getRightJoinTableList() {
 		return rightJoinTableList;
 	}
@@ -186,8 +198,88 @@ public class Query {
 	 * 右外部結合するテーブルリストを設定します。
 	 * @param rightJoinTableList 右外部結合するテーブルリスト。
 	 */
+	@Deprecated
 	public void setRightJoinTableList(final TableList rightJoinTableList) {
 		this.rightJoinTableList = rightJoinTableList;
+	}
+
+
+	/**
+	 * テーブル結合情報。
+	 *
+	 */
+	public static class JoinInfo {
+		/**
+		 * 内部結合。
+		 */
+		public static final String INNER_JOIN = " inner join ";
+		/**
+		 * 左結合。
+		 */
+		public static final String LEFT_JOIN = " left join ";
+		/**
+		 * 右結合。
+		 */
+		public static final String RIGHT_JOIN = " right join ";
+
+		/**
+		 * 結合タイプ。
+		 */
+		private String joinType = null;
+		/**
+		 * 結合するテーブル。
+		 */
+		private Table joinTable = null;
+		/**
+		 * 結合条件関数インターフェース。
+		 */
+		private JoinConditionInterface joinCondition = null;
+		/**
+		 * コンストラクタ。
+		 * @param joinType 結合タイプ。
+		 * @param joinTable 結合するテーブル。
+		 * @param joinCondition 結合条件関数インターフェース。
+		 */
+		public JoinInfo(final String joinType, final Table joinTable, final JoinConditionInterface joinCondition) {
+			this.joinType = joinType;
+			this.joinTable = joinTable;
+			this.joinCondition = joinCondition;
+		}
+		/**
+		 * 結合タイプを取得します。
+		 * @return 結合タイプ。
+		 */
+		public String getJoinType() {
+			return joinType;
+		}
+
+		/**
+		 * 結合テーブルを取得します。
+		 * @return 結合タイプ。
+		 */
+		public Table getJoinTable() {
+			return joinTable;
+		}
+
+		/**
+		 * 結合条件関数インターフェースを取得します。
+		 * @return 結合条件関数インターフェース。
+		 */
+		public JoinConditionInterface getJoinCondition() {
+			return joinCondition;
+		}
+	}
+
+
+	/**
+	 * 結合情報リストを追加します。
+	 * @param joinInfo 結合情報リスト。
+	 */
+	protected void addJoinInfo(final JoinInfo joinInfo) {
+		if (this.joinInfoList == null) {
+			this.joinInfoList = new ArrayList<JoinInfo>();
+		}
+		this.joinInfoList.add(joinInfo);
 	}
 
 	/**
@@ -198,6 +290,118 @@ public class Query {
 		return queryFormFieldList;
 	}
 
+	/**
+	 * 内部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addInnerJoin(final Table table, final JoinConditionInterface joinCondition) {
+		this.addJoinInfo(new JoinInfo(JoinInfo.INNER_JOIN, table, joinCondition));
+	}
+
+	/**
+	 * 内部結合を追加します。
+	 * @param table 結合するテーブル。
+	 */
+	public void addInnerJoin(final Table table) {
+		this.addJoinInfo(new JoinInfo(JoinInfo.INNER_JOIN, table, null));
+	}
+
+	/**
+	 * 内部結合を追加します。
+	 * @param query 結合する問合せ。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addInnerJoin(final Query query, final JoinConditionInterface joinCondition) {
+		this.addJoinInfo(new JoinInfo(JoinInfo.INNER_JOIN, new SubQuery(query), joinCondition));
+	}
+
+
+	/**
+	 * 左外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addLeftJoin(final Table table, final JoinConditionInterface joinCondition) {
+		this.addJoinInfo(new JoinInfo(JoinInfo.LEFT_JOIN, table, joinCondition));
+	}
+
+	/**
+	 * 左外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 */
+	public void addLeftJoin(final Table table) {
+		this.addJoinInfo(new JoinInfo(JoinInfo.LEFT_JOIN, table, null));
+	}
+
+	/**
+	 * 左外部結合を追加します。
+	 * @param query 結合する問合せ。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addLeftJoin(final Query query, final JoinConditionInterface joinCondition) {
+		this.addJoinInfo(new JoinInfo(JoinInfo.LEFT_JOIN, new SubQuery(query), joinCondition));
+	}
+
+	/**
+	 * 右外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addRightJoin(final Table table, final JoinConditionInterface joinCondition) {
+		this.addJoinInfo(new JoinInfo(JoinInfo.RIGHT_JOIN, table, joinCondition));
+	}
+
+	/**
+	 * 右外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 */
+	public void addRightJoin(final Table table) {
+		this.addJoinInfo(new JoinInfo(JoinInfo.RIGHT_JOIN, table, null));
+	}
+
+	/**
+	 * 右外部結合を追加します。
+	 * @param query 結合する問合せ。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addRightJoin(final Query query, final JoinConditionInterface joinCondition) {
+		this.addJoinInfo(new JoinInfo(JoinInfo.RIGHT_JOIN, new SubQuery(query), joinCondition));
+	}
+
+
+	/**
+	 * 旧形式のjoinTableListをjoinInfoListに展開する。
+	 * @param type 結合タイプ。
+	 * @param tlist テーブルリスト。
+	 */
+	private void addJoinTableList(final String type, final TableList tlist) {
+		if (tlist != null) {
+			for (Table t: tlist) {
+				this.addJoinInfo(new JoinInfo(type, t, null));
+			}
+		}
+	}
+
+	/**
+	 * setXXXJoinTableListで設定した、結合情報をjoinInfoListに転記する。
+	 */
+	public void buildJoinInfoList() {
+		this.addJoinTableList(JoinInfo.INNER_JOIN, this.joinTableList);
+		this.addJoinTableList(JoinInfo.LEFT_JOIN, this.leftJoinTableList);
+		this.addJoinTableList(JoinInfo.RIGHT_JOIN, this.rightJoinTableList);
+		this.joinTableList = null;
+		this.leftJoinTableList = null;
+		this.rightJoinTableList = null;
+	}
+
+	/**
+	 * 結合情報リストを取得します。
+	 * @return 結合情報リスト。
+	 */
+	public List<JoinInfo> getJoinInfoList() {
+		return joinInfoList;
+	}
 
 	/**
 	 * 問い合わせフォームのフィールドリストを設定します。
@@ -278,52 +482,52 @@ public class Query {
 	 * 内部結合するテーブルの別名リストを取得します。
 	 * @return 内部結合するテーブルの別名リスト。
 	 */
-	public List<String> getJoinAliasList() {
+/*	public List<String> getJoinAliasList() {
 		return joinAliasList;
 	}
-
+*/
 	/**
 	 * 内部結合するテーブルの別名リストを設定します。
 	 * @param joinAliasList 内部結合するテーブルの別名リスト。
 	 */
-	public void setJoinAliasList(final List<String> joinAliasList) {
+/*	public void setJoinAliasList(final List<String> joinAliasList) {
 		this.joinAliasList = joinAliasList;
 	}
-
+*/
 	/**
 	 * 左外部結合するテーブルの別名リストを取得します。
 	 * @return 左外部結合するテーブルの別名リスト。
 	 */
-	public List<String> getLeftJoinAliasList() {
+/*	public List<String> getLeftJoinAliasList() {
 		return leftJoinAliasList;
 	}
-
+*/
 
 	/**
 	 * 左外部結合するテーブルの別名リストを設定します。
 	 * @param leftJoinAliasList 左外部結合するテーブルの別名リスト。
 	 */
-	public void setLeftJoinAliasList(final List<String> leftJoinAliasList) {
+/*	public void setLeftJoinAliasList(final List<String> leftJoinAliasList) {
 		this.leftJoinAliasList = leftJoinAliasList;
 	}
-
+*/
 	/**
 	 * 右外部結合するテーブルの別名リストを取得します。
 	 * @return 右外部結合するテーブルの別名リスト。
 	 */
-	public List<String> getRightJoinAliasList() {
+/*	public List<String> getRightJoinAliasList() {
 		return rightJoinAliasList;
 	}
-
+*/
 
 	/**
 	 * 右外部結合するテーブルの別名リストを設定します。
 	 * @param rightJoinAliasList 右外部結合するテーブルの別名リスト。
 	 */
-	public void setRightJoinAliasList(final List<String> rightJoinAliasList) {
+/*	public void setRightJoinAliasList(final List<String> rightJoinAliasList) {
 		this.rightJoinAliasList = rightJoinAliasList;
 	}
-
+*/
 	/**
 	 * フィールドとテーブル別名とのマップを設定します。
 	 * @param fieldTableAliasMap フィールドとテーブル別名とのマップ。

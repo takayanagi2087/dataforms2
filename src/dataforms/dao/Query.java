@@ -75,20 +75,6 @@ public class Query {
 	private FieldList orderByFieldList = null;
 
 	/**
-	 * 内部結合するテーブルの別名リスト。
-	 */
-	private List<String> joinAliasList = null;
-	/**
-	 * 左外部結合するテーブルの別名リスト。
-	 */
-	private List<String> leftJoinAliasList = null;
-	/**
-	 * 右外部結合するテーブルの別名リスト。
-	 */
-	private List<String> rightJoinAliasList = null;
-
-
-	/**
 	 * 結合情報リスト。
 	 */
 	private List<JoinInfo> joinInfoList = null;
@@ -293,10 +279,32 @@ public class Query {
 	/**
 	 * 内部結合を追加します。
 	 * @param table 結合するテーブル。
+	 * @param alias 別名。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addInnerJoin(final Table table, final String alias, final JoinConditionInterface joinCondition) {
+		if (alias != null) {
+			table.setAlias(alias);
+		}
+		this.addJoinInfo(new JoinInfo(JoinInfo.INNER_JOIN, table, joinCondition));
+	}
+
+	/**
+	 * 内部結合を追加します。
+	 * @param table 結合するテーブル。
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
 	public void addInnerJoin(final Table table, final JoinConditionInterface joinCondition) {
-		this.addJoinInfo(new JoinInfo(JoinInfo.INNER_JOIN, table, joinCondition));
+		this.addInnerJoin(table, null, joinCondition);
+	}
+
+	/**
+	 * 内部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param alias 別名。
+	 */
+	public void addInnerJoin(final Table table, final String alias) {
+		this.addInnerJoin(table, alias, null);
 	}
 
 	/**
@@ -304,18 +312,21 @@ public class Query {
 	 * @param table 結合するテーブル。
 	 */
 	public void addInnerJoin(final Table table) {
-		this.addJoinInfo(new JoinInfo(JoinInfo.INNER_JOIN, table, null));
+		this.addInnerJoin(table, null, null);
 	}
 
 	/**
-	 * 内部結合を追加します。
-	 * @param query 結合する問合せ。
+	 * 左外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param alias 別名。
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
-	public void addInnerJoin(final Query query, final JoinConditionInterface joinCondition) {
-		this.addJoinInfo(new JoinInfo(JoinInfo.INNER_JOIN, new SubQuery(query), joinCondition));
+	public void addLeftJoin(final Table table, final String alias, final JoinConditionInterface joinCondition) {
+		if (alias != null) {
+			table.setAlias(alias);
+		}
+		this.addJoinInfo(new JoinInfo(JoinInfo.LEFT_JOIN, table, joinCondition));
 	}
-
 
 	/**
 	 * 左外部結合を追加します。
@@ -323,7 +334,16 @@ public class Query {
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
 	public void addLeftJoin(final Table table, final JoinConditionInterface joinCondition) {
-		this.addJoinInfo(new JoinInfo(JoinInfo.LEFT_JOIN, table, joinCondition));
+		this.addLeftJoin(table, null, joinCondition);
+	}
+
+	/**
+	 * 左外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param alias 別名。
+	 */
+	public void addLeftJoin(final Table table, final String alias) {
+		this.addLeftJoin(table, alias, null);
 	}
 
 	/**
@@ -331,17 +351,23 @@ public class Query {
 	 * @param table 結合するテーブル。
 	 */
 	public void addLeftJoin(final Table table) {
-		this.addJoinInfo(new JoinInfo(JoinInfo.LEFT_JOIN, table, null));
+		this.addLeftJoin(table, null, null);
 	}
 
+
 	/**
-	 * 左外部結合を追加します。
-	 * @param query 結合する問合せ。
+	 * 右外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param alias 別名。
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
-	public void addLeftJoin(final Query query, final JoinConditionInterface joinCondition) {
-		this.addJoinInfo(new JoinInfo(JoinInfo.LEFT_JOIN, new SubQuery(query), joinCondition));
+	public void addRightJoin(final Table table, final String alias, final JoinConditionInterface joinCondition) {
+		if (alias != null) {
+			table.setAlias(alias);
+		}
+		this.addJoinInfo(new JoinInfo(JoinInfo.RIGHT_JOIN, table, joinCondition));
 	}
+
 
 	/**
 	 * 右外部結合を追加します。
@@ -349,26 +375,26 @@ public class Query {
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
 	public void addRightJoin(final Table table, final JoinConditionInterface joinCondition) {
-		this.addJoinInfo(new JoinInfo(JoinInfo.RIGHT_JOIN, table, joinCondition));
+		this.addRightJoin(table, null, joinCondition);
 	}
+
+	/**
+	 * 右外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param alias 別名。
+	 */
+	public void addRightJoin(final Table table, final String alias) {
+		this.addRightJoin(table, alias, null);
+	}
+
 
 	/**
 	 * 右外部結合を追加します。
 	 * @param table 結合するテーブル。
 	 */
 	public void addRightJoin(final Table table) {
-		this.addJoinInfo(new JoinInfo(JoinInfo.RIGHT_JOIN, table, null));
+		this.addRightJoin(table, null, null);
 	}
-
-	/**
-	 * 右外部結合を追加します。
-	 * @param query 結合する問合せ。
-	 * @param joinCondition 結合条件関数インターフェース。
-	 */
-	public void addRightJoin(final Query query, final JoinConditionInterface joinCondition) {
-		this.addJoinInfo(new JoinInfo(JoinInfo.RIGHT_JOIN, new SubQuery(query), joinCondition));
-	}
-
 
 	/**
 	 * 旧形式のjoinTableListをjoinInfoListに展開する。
@@ -477,57 +503,6 @@ public class Query {
 		this.condition = condition;
 	}
 
-
-	/**
-	 * 内部結合するテーブルの別名リストを取得します。
-	 * @return 内部結合するテーブルの別名リスト。
-	 */
-/*	public List<String> getJoinAliasList() {
-		return joinAliasList;
-	}
-*/
-	/**
-	 * 内部結合するテーブルの別名リストを設定します。
-	 * @param joinAliasList 内部結合するテーブルの別名リスト。
-	 */
-/*	public void setJoinAliasList(final List<String> joinAliasList) {
-		this.joinAliasList = joinAliasList;
-	}
-*/
-	/**
-	 * 左外部結合するテーブルの別名リストを取得します。
-	 * @return 左外部結合するテーブルの別名リスト。
-	 */
-/*	public List<String> getLeftJoinAliasList() {
-		return leftJoinAliasList;
-	}
-*/
-
-	/**
-	 * 左外部結合するテーブルの別名リストを設定します。
-	 * @param leftJoinAliasList 左外部結合するテーブルの別名リスト。
-	 */
-/*	public void setLeftJoinAliasList(final List<String> leftJoinAliasList) {
-		this.leftJoinAliasList = leftJoinAliasList;
-	}
-*/
-	/**
-	 * 右外部結合するテーブルの別名リストを取得します。
-	 * @return 右外部結合するテーブルの別名リスト。
-	 */
-/*	public List<String> getRightJoinAliasList() {
-		return rightJoinAliasList;
-	}
-*/
-
-	/**
-	 * 右外部結合するテーブルの別名リストを設定します。
-	 * @param rightJoinAliasList 右外部結合するテーブルの別名リスト。
-	 */
-/*	public void setRightJoinAliasList(final List<String> rightJoinAliasList) {
-		this.rightJoinAliasList = rightJoinAliasList;
-	}
-*/
 	/**
 	 * フィールドとテーブル別名とのマップを設定します。
 	 * @param fieldTableAliasMap フィールドとテーブル別名とのマップ。

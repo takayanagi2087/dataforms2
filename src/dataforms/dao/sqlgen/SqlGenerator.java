@@ -18,12 +18,12 @@ import dataforms.controller.Page;
 import dataforms.dao.ForeignKey;
 import dataforms.dao.Index;
 import dataforms.dao.JDBCConnectableObject;
+import dataforms.dao.JoinConditionInterface;
 import dataforms.dao.Query;
 import dataforms.dao.Query.JoinInfo;
 import dataforms.dao.QueryPager;
 import dataforms.dao.SubQuery;
 import dataforms.dao.Table;
-import dataforms.dao.TableList;
 import dataforms.dao.sqldatatype.SqlBigint;
 import dataforms.dao.sqldatatype.SqlBlob;
 import dataforms.dao.sqldatatype.SqlChar;
@@ -798,52 +798,27 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	public abstract String generateSysTimestampSql();
 
 
-	/**
-	 * 対象テーブルが主テーブルまでリンクがたどれるかを確認する。
-	 * @param t 全テーブルリスト。
-	 * @param list 結合するテーブル。
-	 * @return 主テーブルまでリンクが設定されている場合true。
-	 */
-	private boolean isLinkedToMainTable(final TableList list, final Table t) {
-		boolean ret = false;
-		if (!StringUtil.isBlank(list.get(0).getJoinCondition(t, t.getAlias()))) {
-			return true;
-		} else {
-			for (int i = 1; i < list.size(); i++) {
-				Table tbl = list.get(i);
-				if (tbl.getClass().getName().equals(t.getClass().getName()) && tbl.getAlias().equals(t.getAlias())) {
-					continue;
-				}
-				if (StringUtil.isBlank(list.get(i).getJoinCondition(t, t.getAlias()))) {
-					if (this.isLinkedToMainTable(list, list.get(i))) {
-						return true;
-					}
-				}
-			}
-		}
-		return ret;
-	}
 
 	/**
 	 * 主テーブル以外の結合条件を検索します。
 	 * @param list 全テーブルリスト。
-	 * @param table 結合するテーブル。
+	 * @param joinInfo 結合情報。
 	 * @return 結合条件。
 	 */
-	public String getJoinConditionOtherThamMainTable(final TableList list, final Table table) {
+	public String getJoinConditionOtherThamMainTable(final List<JoinInfo> list, final JoinInfo joinInfo) {
 		String ret = null;
+		Table table = joinInfo.getJoinTable();
 		for (int i = 1; i < list.size(); i++) {
-			Table t = list.get(i);
+			JoinInfo jinfo = list.get(i);
+			Table t = jinfo.getJoinTable();
 			if (table.getClass().getName().equals(t.getClass().getName()) && table.getAlias().equals(t.getAlias())) {
 				continue;
 			}
-			String cond = t.getJoinCondition(table, table.getAlias());
-			logger.debug("class=" + t.getClass().getName() + "," + table.getClass().getName() + ",cond=" + cond);
+			String cond = this.getJoinCondition(t, joinInfo);
+//			logger.debug("class=" + t.getClass().getName() + ":" + t.getAlias() + "," + table.getClass().getName() + ":" + table.getAlias() + ",cond=" + cond);
 			if (!StringUtil.isBlank(cond)) {
-				if (this.isLinkedToMainTable(list, t)) {
-					ret = cond;
-					break;
-				}
+				ret = cond;
+				break;
 			}
 		}
 		return ret;
@@ -886,6 +861,21 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	}
 
 	/**
+	 * テーブル間の結合条件を取得します。
+	 * @param table 結合元テーブル。
+	 * @param joinInfo 結合先テーブル情報。
+	 * @return 結合条件。
+	 */
+	private String getJoinCondition(final Table table, final JoinInfo joinInfo) {
+		JoinConditionInterface jci = joinInfo.getJoinCondition();
+		if (jci != null) {
+			return jci.getJoinCondition(table, joinInfo.getJoinTable());
+		} else {
+			return table.getJoinCondition(joinInfo.getJoinTable(), joinInfo.getJoinTable().getAlias());
+		}
+	}
+
+	/**
 	 * JOINの構文を作成します。
 	 * @param sb 文字列バッファ。
 	 * @param query 問合せ。
@@ -903,7 +893,8 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 			sb.append(this.getAsAliasSql());
 			sb.append(table.getAlias());
 			sb.append(" on ");
-			String c = mtable.getJoinCondition(table, table.getAlias());
+//			String c = mtable.getJoinCondition(table, table.getAlias());
+			String c = this.getJoinCondition(mtable, joinInfo);
 			if (c != null) {
 				sb.append(c);
 				if (query.isEffectivenessOfDeleteFlag()) {
@@ -914,14 +905,15 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 				}
 			} else {
 				logger.debug("getJoinConditionOtherThamMainTable");
-				TableList tlist = new TableList();
-				tlist.add(query.getMainTable());
+//				TableList tlist = new TableList();
+				List<JoinInfo> tlist = new ArrayList<JoinInfo>();
+				tlist.add(new JoinInfo(null, query.getMainTable(), null));
 				if (list != null) {
 					for (JoinInfo ji: list) {
-						tlist.add(ji.getJoinTable());
+						tlist.add(ji);
 					}
 				}
-				c = this.getJoinConditionOtherThamMainTable(tlist, table);
+				c = this.getJoinConditionOtherThamMainTable(tlist, joinInfo);
 				if (c != null) {
 					sb.append(c);
 					if (query.isEffectivenessOfDeleteFlag()) {

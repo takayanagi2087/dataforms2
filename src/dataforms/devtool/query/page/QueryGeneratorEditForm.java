@@ -322,7 +322,8 @@ public class QueryGeneratorEditForm extends EditForm {
 			if (StringUtil.isBlank(joinCondition)) {
 				Dao dao = new Dao(this);
 				SqlGenerator gen = dao.getSqlGenerator();
-				joinCondition = gen.getJoinConditionOtherThamMainTable(tlist, t);
+				// TODO:この処理は後で見直す。
+				joinCondition = ""; //gen.getJoinConditionOtherThamMainTable(tlist, t);
 				if (StringUtil.isBlank(joinCondition)) {
 					joinCondition = MessagesUtil.getMessage(this.getPage(), "message.joinconditionnotfound");
 				}

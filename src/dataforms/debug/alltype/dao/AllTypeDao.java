@@ -8,10 +8,9 @@ import org.apache.log4j.Logger;
 import dataforms.dao.Dao;
 import dataforms.dao.Index;
 import dataforms.dao.JDBCConnectableObject;
+import dataforms.dao.JoinConditionInterface;
 import dataforms.dao.Query;
 import dataforms.dao.SubQuery;
-import dataforms.dao.Table;
-import dataforms.dao.TableList;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
@@ -385,11 +384,7 @@ public class AllTypeDao extends Dao {
 		 * コンストラクタ。
 		 */
 		public TestQuery() {
-			SubQuery aliasSq = new SubQuery(new AliasQuery()) {
-				public String getJoinCondition(final Table joinTable, final String alias) {
-					return this.getLinkFieldCondition("recordIdField", joinTable, alias, "recordIdField");
-				}
-			};
+			SubQuery aliasSq = new SubQuery(new AliasQuery());
 			aliasSq.setAlias("msub");
 			SubQuery sumSq = new SubQuery(new SumQuery());
 			SubQuery countSq = new SubQuery(new CountQuery());
@@ -405,7 +400,27 @@ public class AllTypeDao extends Dao {
 			flist.marge(sqlSq.getFieldList());
 			this.setFieldList(flist);
 			this.setMainTable(aliasSq);
-			this.setLeftJoinTableList(new TableList(sumSq, countSq, minMaxSq, sqlSq));
+//			this.setLeftJoinTableList(new TableList(sumSq, countSq, minMaxSq, sqlSq));
+			JoinConditionInterface jci = (table, joinTable) -> {
+				// 無条件に結合条件を返すと、mainTableとの結合になる。
+				return table.getLinkFieldCondition("recordIdField", joinTable, joinTable.getAlias(), "recordIdField");
+			};
+			this.addLeftJoin(sumSq, "sumsq", jci);
+			this.addLeftJoin(countSq, "countsq", jci);
+			this.addRightJoin(minMaxSq, "minmaxsq", (table, joinTable) -> {
+				// mainTable以外との結合をしたい場合、以下の様に特定のテーブルのときのみ結合条件式を返す。
+				if ("countsq".equals(table.getAlias())) {
+					return table.getLinkFieldCondition("recordIdField", joinTable, joinTable.getAlias(), "recordIdField");
+				}
+				return null;
+			});
+			this.addInnerJoin(sqlSq, "sqlslsq", (table, joinTable) -> {
+				// mainTable以外との結合をしたい場合、以下の様に特定のテーブルのときのみ結合条件式を返す。
+				if ("minmaxsq".equals(table.getAlias())) {
+					return table.getLinkFieldCondition("recordIdField", joinTable, joinTable.getAlias(), "recordIdField");
+				}
+				return null;
+			});
 		}
 	}
 

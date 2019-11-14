@@ -11,7 +11,6 @@ import dataforms.app.enumtype.page.EnumEditForm;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.Query;
-import dataforms.dao.TableList;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field.MatchType;
 import dataforms.field.base.FieldList;
@@ -316,7 +315,8 @@ public class EnumDao extends Dao {
 				, new AliasField("name", mntbl.getEnumNameField())
 			));
 			this.setMainTable(ttbl);
-			this.setJoinTableList(new TableList(mntbl));
+//			this.setJoinTableList(new TableList(mntbl));
+			this.addInnerJoin(mntbl);
 			this.setCondition("t.parent_id is null");
 			this.setQueryFormFieldList(new FieldList(ttbl.getEnumGroupCodeField(), mntbl.getLangCodeField()));
 			this.setQueryFormData(data);

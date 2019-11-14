@@ -47,7 +47,8 @@ public class UserQuery extends Query {
 			fl.add(new AliasField("attributeName", ntbl.getField(EnumNameTable.Entity.ID_ENUM_NAME)));
 			this.setFieldList(tbl.getFieldList());
 			this.setMainTable(tbl);
-			this.setJoinTableList(new TableList(ntbl));
+//			this.setJoinTableList(new TableList(ntbl));
+			this.addInnerJoin(ntbl);
 			this.setCondition("m.user_attribute_type='" + type + "' and nm.lang_code='" + langCode + "' ");
 		}
 	}
@@ -122,8 +123,12 @@ public class UserQuery extends Query {
 		this.setFieldList(fl);
 		this.setMainTable(mtbl);
 
-		this.setJoinTableList(new TableList(ua));
-		this.setLeftJoinTableList(tl);
+//		this.setJoinTableList(new TableList(ua));
+//		this.setLeftJoinTableList(tl);
+		this.addInnerJoin(ua);
+		for (Table t: tl) {
+			this.addLeftJoin(t);
+		}
 		this.setQueryFormFieldList(flist);
 		this.setQueryFormData(data);
 	}

@@ -1,7 +1,6 @@
 package dataforms.app.enumtype.dao;
 
 import dataforms.dao.Query;
-import dataforms.dao.TableList;
 import dataforms.field.base.FieldList;
 
 /**
@@ -25,6 +24,7 @@ public class EnumQuery extends Query {
 		flist.addField(ntable.getEnumNameField());
 		this.setFieldList(flist);
 		this.setMainTable(table);
-		this.setJoinTableList(new TableList(ntable));
+//		this.setJoinTableList(new TableList(ntable));
+		this.addInnerJoin(ntable);
 	}
 }

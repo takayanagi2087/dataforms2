@@ -200,7 +200,7 @@ class EditableHtmlTable extends HtmlTable {
 			{
 				var c = $(trlist.get(i)).find("[id^='" + thisTable.id + "\\[']");
 				c.each(function() {
-					var id = $(this).attr("id");
+					var id = $(this).attr(thisTable.getIdAttribute());
 					var newid = id.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]")
 					$(this).attr("id", newid);
 					var name = $(this).attr("name");

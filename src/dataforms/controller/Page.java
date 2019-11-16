@@ -45,7 +45,7 @@ public class Page extends DataForms {
 	/**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(Page.class.getName());
+    private static Logger logger = Logger.getLogger(Page.class.getName());
 
 	/**
 	 * dataforms.jarのバージョン。
@@ -513,7 +513,7 @@ public class Page extends DataForms {
 //			token = java.net.URLEncoder.encode(key, DataFormsServlet.getEncoding());
 			token = key; //java.net.URLEncoder.encode(key, DataFormsServlet.getEncoding());
 		}
-		log.debug("csrfToken=" + token);
+		logger.debug("csrfToken=" + token);
 		return token;
 
     }
@@ -661,11 +661,12 @@ public class Page extends DataForms {
 		//String htmlpath = this.getWebResourcePath(this.getHtmlPageClass()) + ".html";
 		String htmlpath = this.getHtmlPath();
 		htmlpath = this.getAppropriatePath(htmlpath, req);
-		log.info("sendHtml=" + htmlpath);
+		logger.info("sendHtml=" + htmlpath);
 		String htmltext = this.getWebResource(htmlpath);
 		htmltext = this.addAppcacheFile(htmltext, context);
 		htmltext = htmltext.replaceAll("\\</[Bb][Oo][Dd][Yy]\\>", "\t<noscript><br/><div class='noscriptDiv'><b>" + MessagesUtil.getMessage(this.getPage(), "message.noscript") + "</b></div></noscript>\n\t</body>");
-		return htmltext;
+//		logger.debug("id変換後 html=" + this.convertIdArrtibute(htmltext));
+		return this.convertIdAttribute(htmltext);
 	}
 
 	/**
@@ -702,8 +703,8 @@ public class Page extends DataForms {
 		HttpServletRequest req = this.getRequest();
 		String uri = req.getRequestURI();
 		String context = req.getContextPath();
-		log.info("context=" + context + ", uri=" + uri);
-		log.info("path=" + req.getServletPath());
+		logger.info("context=" + context + ", uri=" + uri);
+		logger.info("path=" + req.getServletPath());
 
 		String htmltext = this.getHtmlText(req, context);
 
@@ -848,7 +849,7 @@ public class Page extends DataForms {
 			if (htmltext != null) {
 				String frameHead = this.getHtmlHead(htmltext);
 				map.put("frameHead", frameHead);
-				String frameBody = this.getHtmlBody(htmltext);
+				String frameBody = this.convertIdAttribute(this.getHtmlBody(htmltext));
 				map.put("frameBody", frameBody);
 			}
 		}
@@ -1140,13 +1141,13 @@ public class Page extends DataForms {
 		for (int i = 0; i < dirs.length - 1; i++) {
 			path += ("/" + dirs[i]);
 			String funcprop = this.getAppropriateLangPath(path + "/Function.properties", this.getRequest());
-			log.debug("funcprop=" + funcprop);
+			logger.debug("funcprop=" + funcprop);
 			if (funcprop != null) {
 				String str = this.getWebResource(funcprop);
 				SequentialProperties p = new SequentialProperties();
 				p.loadText(str);
 				String v = p.getProperty(clsname);
-				log.debug("v=" + v);
+				logger.debug("v=" + v);
 				if (v != null) {
 					String [] t = v.split("\\|");
 					ret = t[0];

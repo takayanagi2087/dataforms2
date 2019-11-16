@@ -915,7 +915,7 @@ class HtmlTable extends WebComponent {
 	 */
 	getSameRowField(f, tid) {
 		if (f instanceof jQuery) {
-			var id = f.attr("id");
+			var id = f.attr(this.getIdAttribute());
 			var rid = id.replace(/\]\..+$/, "]." + tid);
 			return this.find("#" + this.selectorEscape(rid));
 		} else {
@@ -930,7 +930,7 @@ class HtmlTable extends WebComponent {
 	 * @returns {Integer} 行インデックス。
 	 */
 	getRowIndex(el) {
-		var id = el.attr("id");
+		var id = el.attr(this.getIdAttribute());
 		var sp = id.split(/[\[\]]/);
 		return parseInt(sp[1]);
 	}

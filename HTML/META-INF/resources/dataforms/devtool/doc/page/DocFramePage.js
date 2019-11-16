@@ -24,7 +24,7 @@ class DocFramePage extends BasePage {
 			this.find("#docFrame").attr("src", src);
 		}
 		this.find("a").click(function() {
-			var id = $(this).attr("id");
+			var id = $(this).attr(this.getIdAttribute());
 			var src = "../../../../doc/" + id;
 			thisPage.find("#docFrame").attr("src", src);
 
@@ -42,10 +42,10 @@ class DocFramePage extends BasePage {
 	 * Windowサイズ変更の際のiframeのサイズを調整します。
 	 */
 	onResize() {
-		var h = $(window).height() - $("#headerDiv").height() - $("#footerDiv").height();
-		logger.log("h=" + h + "," + $(window).height() + "," + $("#headerDiv").height() + "," + $("#footerDiv").height());
-		$("#mainDiv").css("height", (h - 32) + "px");
-		$("#docFrame").css("height", (h - 64) + "px");
+		var h = $(window).height() - $(this.convertSelector("#headerDiv")).height() - $(this.convertSelector("#footerDiv")).height();
+		logger.log("h=" + h + "," + $(window).height() + "," + $(this.convertSelector("#headerDiv")).height() + "," + $(this.convertSelector("#footerDiv")).height());
+		$(this.convertSelector("#mainDiv")).css("height", (h - 32) + "px");
+		$(this.convertSelector("#docFrame")).css("height", (h - 64) + "px");
 	}
 
 	/**
@@ -145,10 +145,10 @@ class DocFramePage extends BasePage {
 			var url = docFrame.attr("src");
 			var img = $(this).attr("src");
 			var title = $(this).next("figcaption").text();
-			$("#imageViewer").attr("src", url + "/" + img);
+			$(this.convertSelector("#imageViewer")).attr("src", url + "/" + img);
 			var image = new Image();
 			image.src = url + "/" + img;
-			$("#imageDialog").dialog({
+			$(this.convertSelector("#imageDialog")).dialog({
 				modal: true
 				,width: image.width + 34
 				,height: image.height + 64

@@ -42,7 +42,7 @@ class ZipCodeField extends CharField {
 		if (address != null) {
 			var address2 = thisField.addressFieldId2;
 			var address3 = thisField.addressFieldId3;
-			var sp = comp.attr("id").split(".");
+			var sp = comp.attr(this.getIdAttribute()).split(".");
 			if (sp.length == 2) {
 				address = sp[0] + "." + thisField.addressFieldId;
 				if (address2 != null) {

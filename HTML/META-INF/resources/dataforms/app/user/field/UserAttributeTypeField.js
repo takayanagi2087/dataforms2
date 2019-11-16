@@ -20,7 +20,7 @@ class UserAttributeTypeField extends EnumTypeSingleSelectField {
 		super.attach();
 		var thisField = this;
 		this.get().change(function() {
-			thisField.setUserAttributeValueOption($(this).attr("id"), $(this).val());
+			thisField.setUserAttributeValueOption($(this).attr(thisField.getIdAttribute()), $(this).val());
 		});
 	}
 

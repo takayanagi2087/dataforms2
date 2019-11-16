@@ -41,7 +41,7 @@ public class WebComponent implements JDBCConnectableObject {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(WebComponent.class.getName());
+    private static Logger logger = Logger.getLogger(WebComponent.class.getName());
 
 
 	/**
@@ -247,7 +247,7 @@ public class WebComponent implements JDBCConnectableObject {
 			try {
 				cmp = (WebComponent) cls.getDeclaredConstructor().newInstance();
 			} catch (Exception ex) {
-				log.error(ex.getMessage(), ex);
+				logger.error(ex.getMessage(), ex);
 				throw new ApplicationError(ex);
 			}
 			return "/" + cmp.getWebResourcePath(cls) + ".js";
@@ -303,7 +303,7 @@ public class WebComponent implements JDBCConnectableObject {
 	 */
 	private String getAdditionalHtmlText() throws Exception {
 		if (this.additionalHtml != null) {
-			log.debug("additionalHtml=" + this.additionalHtml);
+			logger.debug("additionalHtml=" + this.additionalHtml);
 			String htmlpath = this.getAppropriatePath(this.additionalHtml, this.getPage().getRequest());
 			String htmltext = this.getWebResource(htmlpath);
 			if (htmltext != null) {
@@ -315,18 +315,6 @@ public class WebComponent implements JDBCConnectableObject {
 		}
 	}
 
-	/**
-	 * 各オブジェクトのプロパティマップを作成します。
-	 * <pre>
-	 * 互換性維持のため残しておきます。
-	 * </pre>
-	 * @return クライアントに渡すプロパティ情報。
-	 * @throws Exception 例外。
-	 * @deprecated getPropertiesに置き換え。
-	 */
-	public Map<String, Object> getClassInfo() throws Exception {
-		return new HashMap<String, Object>();
-	}
 
 	/**
 	 * 各オブジェクトのプロパティマップを作成します。。
@@ -348,11 +336,10 @@ public class WebComponent implements JDBCConnectableObject {
 		obj.put("jsClass", this.getJsClass());
 		String additionalHtmlText = this.getAdditionalHtmlText();
 		if (additionalHtmlText != null) {
-			obj.put("additionalHtmlText", additionalHtmlText);
+//			logger.debug("id変換後 html=" + this.convertIdArrtibute(additionalHtmlText));
+			obj.put("additionalHtmlText", this.convertIdAttribute(additionalHtmlText));
 		}
-		// 互換性維持のための処理
-		Map<String, Object> oldmap = this.getClassInfo();
-		obj.putAll(oldmap);
+		obj.put("useDataIdAttribute", WebComponent.useDataIdAttribute);
 		return obj;
 	}
 
@@ -579,7 +566,7 @@ public class WebComponent implements JDBCConnectableObject {
 	public byte[] getBinaryWebResource(final String path) throws Exception {
 		byte[] ret = null;
 		URL url = new URL(getWebResourceUrl(path));
-		log.debug("webResourceUrl=" + url.toString());
+		logger.debug("webResourceUrl=" + url.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.connect();
 		try {
@@ -602,7 +589,7 @@ public class WebComponent implements JDBCConnectableObject {
 	private String readWebResource(final String path) throws Exception {
 		URL url = new URL(getWebResourceUrl(path));
 		String ret = "";
-		log.debug("webResourceUrl=" + url.toString());
+		logger.debug("webResourceUrl=" + url.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.connect();
 		try {
@@ -639,7 +626,7 @@ public class WebComponent implements JDBCConnectableObject {
 	public byte[] readBinaryWebResource(final String path) throws Exception {
 		URL url = new URL(getWebResourceUrl(path));
 		byte[] ret = null;
-		log.debug("webResourceUrl=" + url.toString());
+		logger.debug("webResourceUrl=" + url.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.connect();
 		try {
@@ -669,8 +656,8 @@ public class WebComponent implements JDBCConnectableObject {
 		} else {
 			url = DataFormsServlet.getWebResourceUrl() + req.getContextPath() + path;
 		}
-		log.debug("getWebResourceUrl:path=" + path);
-		log.debug("getWebResourceUrl:url=" + url);
+		logger.debug("getWebResourceUrl:path=" + path);
+		logger.debug("getWebResourceUrl:url=" + url);
 		return url;
 	}
 
@@ -822,5 +809,47 @@ public class WebComponent implements JDBCConnectableObject {
 	    return ret;
 	}
 
+	/**
+	 * data-idアトリビュート使用フラグ。
+	 * <pre>
+	 * 全てのidアトリビュートをdata-idに変換して使用する場合true。
+	 * </pre>
+	 */
+	private static Boolean useDataIdAttribute = true;
 
+
+	/**
+	 * data-idアトリビュート使用フラグを取得します。
+	 * @return data-idアトリビュート使用フラグ。
+	 */
+	public static Boolean getUseDataIdAttribute() {
+		return useDataIdAttribute;
+	}
+
+
+	/**
+	 * data-idアトリビュート使用フラグを設定します。
+	 * @param useDataIdAttribute data-idアトリビュート使用フラグ。
+	 */
+	public static void setUseDataIdAttribute(final Boolean useDataIdAttribute) {
+		WebComponent.useDataIdAttribute = useDataIdAttribute;
+	}
+
+
+	/**
+	 * htmlのidアトリビュートをdata-idに変更する。
+	 * <pre>
+	 * web.xmlのuse-data-id-attributeがtrueの場合、idアトリビュートをdata-idに変換します。
+	 * </pre>
+	 *
+	 * @param htmltext htmlのテキスト。
+	 * @return idアトリビュートを変換したhtml。
+	 */
+	public String convertIdAttribute(final String htmltext) {
+		if (WebComponent.useDataIdAttribute) {
+			return htmltext.replaceAll("(<.+?)(\\s+)(id)(\\s*?=)(.*?>)", "$1$2data-id$4$5");
+		} else {
+			return htmltext;
+		}
+	}
 }

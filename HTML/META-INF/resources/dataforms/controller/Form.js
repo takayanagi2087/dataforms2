@@ -154,13 +154,13 @@ class Form extends WebComponent {
 			if (obj.length !=0) {
 				this.get().html(fhtml);
 			} else {
-				obj = $("#" + this.selectorEscape(this.id));
+				obj = $(this.convertSelector("#" + this.selectorEscape(this.id)));
 				obj.html(fhtml);
-				this.parentDivId = obj.parents("div[id]:first").attr("id");
+				this.parentDivId = obj.parents("div[" + this.getIdAttribute() +"]:first").attr(this.getIdAttribute());
 			}
 		} else {
-			var obj = $("#" + this.selectorEscape(this.id));
-			this.parentDivId = obj.parents("div[id]:first").attr("id");
+			var obj = $(this.convertSelector("#" + this.selectorEscape(this.id)));
+			this.parentDivId = obj.parents("div[" + this.getIdAttribute() +"]:first").attr(this.getIdAttribute());
 		}
 		this.remodelHtml();
 		super.attach();

@@ -28,12 +28,12 @@ input,select,textarea {
 
 /* ヘッダ周りのスタイル */
 /* ヘッダ部の高さ指定 */
-#headerDiv td {
+.headerDiv td {
 	height: 36px;
 }
 
 /* メニューボタン指定 */
-#showMenuButton {
+.showMenuButton {
 	display: none;
 }
 
@@ -43,37 +43,37 @@ input,select,textarea {
 }
 
 /* システム名ブロックサイズ指定 */
-#headerDiv td.systemName {
+.headerDiv td.systemName {
 	white-space: nowrap;
 	width: 220px;
 }
 
-#headerDiv #systemName {
+.headerDiv #systemName {
 	display: inline-block;
 }
 
 
 /* ページ名ブロック */
-#headerDiv #pageName {
+.headerDiv .pageName {
 }
 
 
 /* ユーザ情報 */
-#headerDiv #loginInfo {
+.headerDiv .oginInfo {
 	width: 220px;
 }
 
 
 
-#bodyTable #leftbarTd {
+.bodyTable .leftbarTd {
 	width: 220px;
 	max-width: 220px;
 }
 
 
 /* 左サイドバー(常に表示されているメニュー) */
-#menuDiv,
-#leftbarDiv {
+.menuDiv,
+.leftbarDiv {
 	display:block;
 	width: 220px;
 	max-width: 220px;
@@ -83,12 +83,12 @@ input,select,textarea {
 	border:0px;
 }
 
-#bodyTable #mainTd {
+.bodyTable .mainTd {
 /*	width: calc(100% - 220px);*/
 }
 
 /* メインDIV */
-body #mainDiv {
+body .mainDiv {
 	width: 100%;
 	padding: 4px;
 }
@@ -155,16 +155,16 @@ select {
 }
 
 
-#mainDiv table.responsive th,
-#mainDiv table.responsive td {
+.mainDiv table.responsive th,
+.mainDiv table.responsive td {
 	height: 22px;
 }
 
 
 /* ボタンサイズを指定 */
-#mainDiv input[type='button'],
-#mainDiv input[type='submit'],
-#mainDiv button {
+.mainDiv input[type='button'],
+.mainDiv input[type='submit'],
+.mainDiv button {
 	height: 22px;
 	line-height: 16px;
 }

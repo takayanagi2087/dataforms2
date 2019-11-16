@@ -173,10 +173,10 @@ class Page extends DataForms {
 			div = $(this);
 		});
 		var fparent = frameMainDiv.parent();
-		logger.log("id=" + fparent.attr("id"));
-		if (fparent.attr("id") != "rootDiv") {
+		logger.log(this.getIdAttribute() + "=" + fparent.attr(this.getIdAttribute()));
+		if (fparent.attr(this.getIdAttribute()) != "rootDiv") {
 			logger.log("parent.length=" + fparent.length);
-			logger.log("id=" + fparent.attr("id"));
+			logger.log("id=" + fparent.attr(this.getIdAttribute()));
 			fparent.empty();
 			p.children().wrapAll(fparent);
 			this.wrapFrame(frame, fparent, mainDiv.parent());
@@ -191,8 +191,9 @@ class Page extends DataForms {
 	 * </pre>
 	 */
 	layout() {
-		var frame = $("<div id=\"rootDiv\">" + this.frameBody + "</div>");
-		this.wrapFrame(frame, frame.find("#mainDiv"), $("#mainDiv"));
+		logger.log("this.frameBody=" + this.frameBody);
+		var frame = $("<div " + this.getIdAttribute() + "=\"rootDiv\">" + this.frameBody + "</div>");
+		this.wrapFrame(frame, frame.find(this.convertSelector("#mainDiv")), $(this.convertSelector("#mainDiv")));
 		var head = $("<div>" + this.frameHead + "</div>");
 		// ライブラリと競合するタグを削除
 		head.find("meta[charset='UTF-8']").remove();
@@ -346,13 +347,6 @@ class Page extends DataForms {
 		super.init();
 		this.configureLogger();
 		logger.debug("queryString=" + window.location.search);
-		if (window.location.search != null && window.location.search.length > 1) {
-			$.ajaxSetup({
-				headers: {
-					queryString: window.location.search.substring(1)
-				}
-			});
-		}
 		logger.info("language=" + this.getLanguage());
 		$.datepicker.setDefaults($.datepicker.regional[this.getLanguage()]);
 		var thisPage = this;
@@ -375,8 +369,7 @@ class Page extends DataForms {
 			// ダイアログの初期化
 			thisPage.initDialog(thisPage.dialogMap);
 			// バージョン情報などを表示。
-			$("#dataformsVersion").html(thisPage.dataformsVersion);
-//			$("#dataformsVendor").html(this.dataformsVendor);
+			$(thisPage.convertSelector("#dataformsVersion")).html(thisPage.dataformsVersion);
 			// クッキーチェック
 			if (thisPage.cookieCheck) {
 				thisPage.setCookie("cookiecheck", "true");
@@ -389,6 +382,7 @@ class Page extends DataForms {
 			}
 			//
 			thisPage.attach();
+			$(thisPage.convertSelector("#mainDiv")).addClass("mainDiv");
 		});
 	}
 
@@ -398,19 +392,19 @@ class Page extends DataForms {
 	attach() {
 		var thisPage = this;
 		super.attach();
-		$("#showMenuButton").click(function() {
-			var menu = $("#menuDiv");
+		$(this.convertSelector("#showMenuButton")).click(function() {
+			var menu = $(thisPage.convertSelector("#menuDiv"));
 			if (menu.length == 0) {
 				// leftbarDivの対応は互換性維持のため
-				$("#leftbarDiv").toggle("blind");
+				$(thisPage.convertSelector("#leftbarDiv")).toggle("blind");
 			} else {
 				menu.toggle("blind");
 			}
 			return false;
 		});
 		$("body").click(function() {
-			if ($("#showMenuButton").is(":visible")) {
-				var menu = $("#menuDiv");
+			if ($(thisPage.convertSelector("#showMenuButton")).is(":visible")) {
+				var menu = $(thisPage.convertSelector("#menuDiv"));
 				if (menu.is(":visible")) {
 					menu.toggle("blind");
 				}
@@ -427,9 +421,9 @@ class Page extends DataForms {
 	 */
 	onResize() {
 		logger.log("onResize");
-		$("#menuDiv").css("display", "");
+		$(this.convertSelector("#menuDiv")).css("display", "");
 		// leftbarDivの対応は互換性維持のため
-		$("#leftbarDiv").css("display", "");
+		$(this.convertSelector("#leftbarDiv")).css("display", "");
 	}
 
 
@@ -448,7 +442,7 @@ class Page extends DataForms {
 	 * </pre>
 	 */
 	lock() {
-		$("#lockLayer").css({
+		$(this.convertSelector("#lockLayer")).css({
 			display: 'block',
 			width: $(document).width(),
 			height: $(document).height()
@@ -468,8 +462,8 @@ class Page extends DataForms {
 	 * </pre>
 	 */
 	unlock() {
-		 $("#lockLayer").css({display: 'none'});
-		  $(window).off("resize.lockLayer");
+		 $(this.convertSelector("#lockLayer")).css({display: 'none'});
+		 $(window).off("resize.lockLayer");
 	}
 
 
@@ -478,7 +472,7 @@ class Page extends DataForms {
 	 * @return ロックされている場合true。
 	 */
 	isLocked() {
-		return $("#lockLayer").is(":visible");
+		return $(this.convertSelector("#lockLayer")).is(":visible");
 	}
 
 	/**

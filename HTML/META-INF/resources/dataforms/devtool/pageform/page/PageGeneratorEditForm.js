@@ -40,7 +40,7 @@ class PageGeneratorEditForm extends EditForm {
 		this.find("#errorSkipButton").click(function() {
 			logger.log("errorSkipButton");
 			thisForm.find(".errorField").each(function() {
-				var id = $(this).attr("id");
+				var id = $(this).attr(this.getIdAttribute());
 				if (id.indexOf("ClassName") > 0) {
 					var owmId = id.replace("ClassName", "ClassOverwriteMode");
 					thisForm.find("#" + owmId).val("skip");
@@ -50,7 +50,7 @@ class PageGeneratorEditForm extends EditForm {
 		this.find("#errorForceButton").click(function() {
 			logger.log("errorSkipButton");
 			thisForm.find(".errorField").each(function() {
-				var id = $(this).attr("id");
+				var id = $(this).attr(this.getIdAttribute());
 				if (id.indexOf("ClassName") > 0) {
 					var owmId = id.replace("ClassName", "ClassOverwriteMode");
 					thisForm.find("#" + owmId).val("force");
@@ -89,15 +89,15 @@ class PageGeneratorEditForm extends EditForm {
 	setUpdateTable() {
 		var v = this.find("[name='updateTable']:checked").val();
 		if (v == "0") {
-			$("#tablePackageName").prop("disabled", true);
-			$("#tableClassName").prop("disabled", true);
-			$("#daoClassName").prop("disabled", true);
-			$("#daoClassOverwriteMode").prop("disabled", true);
+			$(this.convertSelector("#tablePackageName")).prop("disabled", true);
+			$(this.convertSelector("#tableClassName")).prop("disabled", true);
+			$(this.convertSelector("#daoClassName")).prop("disabled", true);
+			$(this.convertSelector("#daoClassOverwriteMode")).prop("disabled", true);
 		} else {
-			$("#tablePackageName").prop("disabled", false);
-			$("#tableClassName").prop("disabled", false);
-			$("#daoClassName").prop("disabled", false);
-			$("#daoClassOverwriteMode").prop("disabled", false);
+			$(this.convertSelector("#tablePackageName")).prop("disabled", false);
+			$(this.convertSelector("#tableClassName")).prop("disabled", false);
+			$(this.convertSelector("#daoClassName")).prop("disabled", false);
+			$(this.convertSelector("#daoClassOverwriteMode")).prop("disabled", false);
 		}
 	}
 
@@ -151,7 +151,7 @@ class PageGeneratorEditForm extends EditForm {
 	onCalc(element) {
 		this.setFormClassName();
 		if (element != null) {
-			if (element.attr("id") == "functionSelect") {
+			if (element.attr(this.getIdAttribute()) == "functionSelect") {
 				var funcname = element.val();
 				var packageName = funcname.replace(/\//g, ".").substr(1) + ".dao";
 				this.find("#tablePackageName").val(packageName);

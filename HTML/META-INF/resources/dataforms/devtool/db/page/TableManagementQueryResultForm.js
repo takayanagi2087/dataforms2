@@ -301,7 +301,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 */
 	import(path) {
 		var thisForm = this;
-		$("#datapath").val(path);
+		$(this.convertSelector("#datapath")).val(path);
 		thisForm.submit("importTable", function(result) {
 			if (result.status == ServerMethod.SUCCESS) {
 				thisForm.updateTableInfoList(result);

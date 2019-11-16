@@ -70,6 +70,38 @@ class WebComponent {
 	}
 
 	/**
+	 * idアトリビュートを返します。
+	 * @return {String} idアトリビュート。
+	 */
+	getIdAttribute() {
+		if (this.useDataIdAttribute) {
+			return "data-id";
+		} else {
+			return "id";
+		}
+	}
+
+	/**
+	 * jQueryのselectorを適切に変換します。
+	 * <pre>
+	 * useDataIdAttribueがtrueの場合、idに関するセレクタをdata-idに変換する。
+	 * </pre>
+	 * @param {String} q セレクター。
+	 * @returns 変換されたセレクター。
+	 */
+	convertSelector(q) {
+		if (this.useDataIdAttribute) {
+			var r = q.replace(/#([0-9A-Za-z\-_:.\\[\]]+)/g, "[data-id='$1']");
+			r = r.replace(/\[id([\$\~\!\*]?)=['"](.*)['"]\]/g, "[data-id$1='$2']");
+			logger.log(q + "->" + r);
+			return r;
+		} else {
+			logger.log(q);
+			return q;
+		}
+	}
+
+	/**
 	 * jQueryオブジェクトの検索を行います。
 	 * <pre>
 	 * jQueryセレクタを指定して、セレクタに合致する子を検索します。
@@ -78,7 +110,7 @@ class WebComponent {
 	 * @returns {jQuery} jQueryオブジェクト。
 	 */
 	find(q) {
-		return this.get().find(q);
+		return this.get().find(this.convertSelector(q));
 	}
 
 	/**
@@ -91,10 +123,10 @@ class WebComponent {
 	get() {
 		var ret = null;
 		if (this.parent == null) {
-			ret = $('#' + this.selectorEscape(this.id));
+			ret = $(this.convertSelector('#' + this.selectorEscape(this.id)));
 		} else {
 			var sel = this.getUniqSelector();
-			ret = $(sel);
+			ret = $(this.convertSelector(sel));
 		}
 		return ret;
 	}

@@ -36,7 +36,7 @@ class FileField extends Field {
 			ck.attr("checked", false);
 			fnlink.html(fnlink.attr("data-value"));
 			fnhidden.val(fnlink.attr("data-value"));
-			thisComp.id = $(this).attr("id");
+			thisComp.id = $(this).attr(this.getIdAttribute());
 			thisComp.showDelCheckbox();
 		});
 		if (this.readonly) {

@@ -33,14 +33,14 @@ class TableGeneratorEditForm extends EditForm {
 		this.find("#errorSkipButton").click(function() {
 			logger.log("errorSkipButton");
 			thisForm.find("[id$='\\.fieldClassName'].errorField").each(function() {
-				logger.log("error field=" + $(this).attr("id"));
+				logger.log("error field=" + $(this).attr(this.getIdAttribute()));
 				tbl.getSameRowField($(this), "overwriteMode").val("skip");
 			});
 		});
 		this.find("#errorForceButton").click(function() {
 			logger.log("errorSkipButton");
 			thisForm.find("[id$='\\.fieldClassName'].errorField").each(function() {
-				logger.log("error field=" + $(this).attr("id"));
+				logger.log("error field=" + $(this).attr(this.getIdAttribute()));
 				tbl.getSameRowField($(this), "overwriteMode").val("force");
 			});
 		});
@@ -200,8 +200,8 @@ class TableGeneratorEditForm extends EditForm {
 	 */
 	onCalc(element) {
 		if (element != null) {
-			logger.log("element.id=" + element.attr("id"));
-			var id = element.attr("id");
+			logger.log("element.id=" + element.attr(this.getIdAttribute()));
+			var id = element.attr(this.getIdAttribute());
 			if (id.indexOf("packageName") >= 0 || id.indexOf("fieldClassName") >= 0) {
 				this.onCalcClass(element);
 			} else if (id.indexOf("superPackageName") > 0 || id.indexOf("superSimpleClassName") >= 0) {
@@ -234,16 +234,16 @@ class TableGeneratorEditForm extends EditForm {
 					if (ret.result.isDataformsField == "1") {
 						if (ret.result.fieldLength != null && ret.result.fieldLength.length > 0) {
 							len.val(ret.result.fieldLength);
-							tbl.getComponent(len.attr("id")).lock(false);
+							tbl.getComponent(len.attr(this.getIdAttribute())).lock(false);
 						} else {
 							len.val("");
-							tbl.getComponent(len.attr("id")).lock(true);
+							tbl.getComponent(len.attr(this.getIdAttribute())).lock(true);
 						}
 						bpkg.val(ret.result.superClassPackage);
 						bcls.val(ret.result.superClassSimpleName);
 						cmnt.val(ret.result.fieldComment);
-						tbl.getComponent(bpkg.attr("id")).lock(true);
-						tbl.getComponent(bcls.attr("id")).lock(true);
+						tbl.getComponent(bpkg.attr(this.getIdAttribute())).lock(true);
+						tbl.getComponent(bcls.attr(this.getIdAttribute())).lock(true);
 						owm.hide();
 					} else {
 						if (ret.result.fieldLength != null && ret.result.fieldLength.length > 0) {
@@ -262,8 +262,8 @@ class TableGeneratorEditForm extends EditForm {
 								cmnt.val(ret.result.fieldComment);
 							}
 						}
-						tbl.getComponent(bpkg.attr("id")).lock(false);
-						tbl.getComponent(bcls.attr("id")).lock(false);
+						tbl.getComponent(bpkg.attr(this.getIdAttribute())).lock(false);
+						tbl.getComponent(bcls.attr(this.getIdAttribute())).lock(false);
 						owm.show();
 					}
 				}

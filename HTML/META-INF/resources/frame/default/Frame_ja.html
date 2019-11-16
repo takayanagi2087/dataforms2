@@ -17,47 +17,48 @@
 	</head>
 	<body>
 		<!-- ヘッダ -->
-		<div id="headerDiv">
+		<div id="headerDiv" class="headerDiv">
 			<table>
 				<tbody>
 					<tr>
 						<td class="systemName">
-							<div id="showMenuButton"></div>
-							<div id="systemName">システム名称</div>
+							<div id="showMenuButton" class="showMenuButton"></div>
+							<div id="systemName" class="systemName">システム名称</div>
 						</td>
-						<td id="pageName">ページ名称</td>
-						<td id="loginInfo">
+						<td id="pageName" class="pageName">ページ名称</td>
+						<td id="loginInfo" class="loginInfo">
 							<form id="loginInfoForm"></form>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<table id="bodyTable">
+		<table id="bodyTable" class="bodyTable">
 			<tbody>
 				<tr>
-					<td id="leftbarTd">
-						<!-- 右サイドバー -->
-						<div id="menuDiv">
+					<td id="leftbarTd" class="leftbarTd">
+						<!-- 左サイドバー -->
+						<div id="menuDiv" class="menuDiv">
 							<div style="width:100%;text-align:center;">メニュー</div>
 							<form id="sideMenuForm"></form>
 						</div>
 					</td>
-					<td id="mainTd">
+					<td id="mainTd" class="mainTd">
 						<!-- メイン領域 -->
-						<div id="mainDiv">
+						<div id="mainDiv" class="mainDiv">
 							メイン領域
 						</div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<div id="footerDiv">
-			<div id="dataformsInfo">
+		<div id="footerDiv" class="footerDiv">
+			<div id="dataformsInfo" class="dataformsInfo">
 				dataforms.jar ver. <span id="dataformsVersion"></span>
 			</div>
 		</div>
-		<div id="lockLayer" style="display:none;">
+		<div id="lockLayer" class="lockLayer" style="display:none;">
 		</div>
 	</body>
 </html>
+

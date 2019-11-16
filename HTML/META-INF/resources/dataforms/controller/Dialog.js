@@ -35,7 +35,7 @@ class Dialog extends DataForms {
 		var dlgdiv = $('body').find('#' + this.selectorEscape(this.id));
 		if (dlgdiv.length == 0) {
 			var htmlstr = this.additionalHtmlText;
-			dlgdiv = $('body').append("<div id='" + this.id + "' style='display:none;'>" + htmlstr + "</div>");
+			dlgdiv = $('body').append("<div " + this.getIdAttribute() + "='" + this.id + "' class='" + this.id + "' style='display:none;'>" + htmlstr + "</div>");
 		}
 		// ダイアログ中のFormの初期化.
 		this.initForm(this.formMap);

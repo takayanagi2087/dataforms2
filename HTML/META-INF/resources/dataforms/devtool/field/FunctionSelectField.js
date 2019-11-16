@@ -32,7 +32,7 @@ class FunctionSelectField extends SingleSelectField {
 			if (this.packageOption.length > 0) {
 				packageName +=  "." + this.packageOption;
 			}
-			var id = jq.attr("id");
+			var id = jq.attr(this.getIdAttribute());
 			logger.log("functionSelectField id=" + id)
 			if (this.isHtmlTableElementId(id)) {
 				var a = id.split(".");

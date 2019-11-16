@@ -53,9 +53,9 @@ class LoginForm extends Form {
 			return false;
 		});
 		if (this.passwordResetMailPage != null) {
-			$("#passwordResetLink").attr("href", currentPage.contextPath + this.passwordResetMailPage);
+			$(this.convertSelector("#passwordResetLink")).attr("href", currentPage.contextPath + this.passwordResetMailPage);
 		} else {
-			$("#passwordResetLink").hide();
+			$(this.convertSelector("#passwordResetLink")).hide();
 		}
 		if (this.autoLogin) {
 			this.find("#keepLogin").show();

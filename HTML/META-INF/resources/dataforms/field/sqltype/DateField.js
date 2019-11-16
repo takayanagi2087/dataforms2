@@ -53,7 +53,7 @@ class DateField extends DateTimeField {
 		var type = comp.prop("type");
 		var thisField = this;
 		if (tag == "INPUT" && type == "text") {
-			$("#" + this.selectorEscape(this.id)).datepicker({
+			$(this.convertSelector("#" + this.selectorEscape(this.id))).datepicker({
 				dateFormat: datepickerFormat
 				,autoSize: true
 				,showOn: "button"

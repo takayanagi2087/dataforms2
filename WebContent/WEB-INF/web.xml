@@ -499,6 +499,37 @@
 		<param-value>/frame/dataforms.appcache</param-value>
 	</context-param>
 	-->
+	<!--
+		同じテーブルに対応したqueryFormとeditFormを1つのページに展開した場合、
+		同一ページ中に同じidのタグが複数存在することになります。
+		dataforms ver 1.xxのWebComponentのfindメソットは各コンポーネントの階層
+		を限定するセレクタを自動生成し、idが競合しても問題なく各HTML要素を取得
+		できるようにしていました。
+		しかしこの状態はエラーにはならないもののHTMLの規約違反状態でした。
+		そこでver 2.xxではidアトリビュートを全てdata-idに変換して処理する
+		オプションを用意しました。このオプションをtrueに設定すると、
+		htmlタグにidアトリビュートが設定されていた場合、すべてdata-idに
+		書き換えて送信します。
+
+		さらに、互換性を維持するために、WebComponentのfindメソッドに指定する、
+		jQueryセレクターは自動的に以下の様に書き換えられます。
+		#hoge -> [data-id='hoge']
+		[id='hoge'] -> [data-id='hoge']
+		[id$='hoge'] -> [data-id$='hoge']
+		[id^='hoge'] -> [data-id^='hoge']
+		[id!='hoge'] -> [data-id!='hoge']
+		[id*='hoge'] -> [data-id*='hoge']
+
+		このオプションを指定すると、idアトリビュートは存在しないページとなる
+		ため、jQueryを直接使用する場合は注意してください。
+
+	 -->
+	<context-param>
+		<param-name>use-data-id-attribute</param-name>
+		<param-value>
+			true
+		</param-value>
+	</context-param>
 	<!-- セッションタイムアウト -->
 	<session-config>
 		<session-timeout>30</session-timeout>

@@ -13,9 +13,9 @@ html,body {
 }
 
 table { font-weight:normal; border : 0px;}
-table caption { 
+table caption {
 	font-weight: bold;
-	text-align: left; 
+	text-align: left;
 }
 tr {
 	height: 26px;
@@ -47,23 +47,23 @@ h2 {font-size: 120%;}
 }
 
 /*
- * ヘッダ領域(開始) 
+ * ヘッダ領域(開始)
  */
-#headerDiv {
+.headerDiv {
 	width: 98%;
 	clear: both;
 }
 
-#headerDiv table {
+.headerDiv table {
 	table-layout: fixed;
 	width: 100%;
 }
 
-#headerDiv table td {
+.headerDiv table td {
 	padding: 6px;
 }
 /* システム名ブロック */
-#headerDiv .systemName {
+.headerDiv .systemName {
 	font-size: 140%;
  	text-align: left;
 	background-color: lavender;
@@ -71,43 +71,43 @@ h2 {font-size: 120%;}
 }
 
 /* ページ名ブロック */
-#headerDiv #pageName {
+.headerDiv .pageName {
 	font-size: 120%;
 	background-color: beige;
  	text-align: left;
 }
 
 /* ユーザ情報 */
-#headerDiv #loginInfo {
+.headerDiv .loginInfo {
 	height: 100%;
 	background-color: beige;
  	text-align: right;
 }
 
 /*
- * ボディ領域(開始) 
+ * ボディ領域(開始)
  */
-body > #mainDiv {
+body > .mainDiv {
 }
 
-#bodyTable {
+.bodyTable {
 	table-layout: fixed;
 	width: 98%;
 }
 
-#bodyTable td {
+.bodyTable td {
 	vertical-align: top;
 }
 /*
- * ボディ領域(終了) 
+ * ボディ領域(終了)
  */
 
 
 
 /*
- * フッター領域 
+ * フッター領域
  */
-#footerDiv {
+.footerDiv {
 	clear: both;
 	background-color: lavender;
 	width: 98%;
@@ -116,7 +116,7 @@ body > #mainDiv {
 
 
 /*
- * エラーメッセージ領域(開始) 
+ * エラーメッセージ領域(開始)
  */
 .errorMessages {color: red;}
 /* エラーが発生したフィールドのスタイル */
@@ -126,7 +126,7 @@ tr.warnTr td {background-color:khaki;}
 
 tr.errorTr td {background-color:mistyrose;}
 /*
- * エラーメッセージ領域(終了) 
+ * エラーメッセージ領域(終了)
  */
 
 
@@ -179,7 +179,7 @@ ul.accordion ul li:last-child{
 
 
 /* 各フォームのスタイル */
-#mainDiv form {
+.mainDiv form {
 	margin:5px;
 	padding:10px;
 	background: #fff;
@@ -201,7 +201,7 @@ ul.accordion ul li:last-child{
 
 
 /*
- * カラムソートヘッダ関連(開始) 
+ * カラムソートヘッダ関連(開始)
  */
 .sortableMark {
 }
@@ -209,7 +209,7 @@ ul.accordion ul li:last-child{
 .sortableLabel {
 }
 /*
- * カラムソートヘッダ関連(終了) 
+ * カラムソートヘッダ関連(終了)
  */
 
 /* javascript無効エラーメッセージの位置指定 */
@@ -227,7 +227,7 @@ ul.accordion ul li:last-child{
 }
 
 /* dataforms.jarのバージョン情報のスタイル */
-#dataformsInfo {
+.dataformsInfo {
 	float: right;
 	height: 100%;
 	vertical-align: bottom;
@@ -235,8 +235,8 @@ ul.accordion ul li:last-child{
 }
 
 /* currentPage.alert(),currentPage.confirm()のスタイル */
-#alertDialog .buttonDiv,
-#confirmDialog .buttonDiv {
+.alertDialog .buttonDiv,
+.confirmDialog .buttonDiv {
 	width: 100%;
 	text-align: center;
 }
@@ -246,7 +246,7 @@ ul.accordion ul li:last-child{
 }
 
 /* ページロックDIVのスタイル */
-#lockLayer {
+.lockLayer {
 	background: url(./image/loading.gif) center no-repeat;
 	background-color: black;
 	position: absolute;
@@ -258,7 +258,7 @@ ul.accordion ul li:last-child{
 }
 
 /*
- * カラム固定テーブル用のスタイル(開始) 
+ * カラム固定テーブル用のスタイル(開始)
  *
  */
 table.columnFixedTable {
@@ -333,7 +333,7 @@ table.columnFixedTable .fixedColumn {
  * カラム固定テーブル用のスタイル(終了)
  *
  */
- 
+
  /*
   * jQuery-uiのdatepiker関連の設定(開始)。
   */
@@ -348,12 +348,12 @@ table.columnFixedTable .fixedColumn {
 	padding-bottom: 2px;
 	padding-left: 6px;
 	padding-right: 6px;
-} 
+}
 
 .ui-datepicker { z-index: 100 !important; }
 
 
-#menuDiv {
+.menuDiv {
 	z-index: 100;
 }
 
@@ -375,7 +375,7 @@ table.columnFixedTable .fixedColumn {
  /*
   * jQuery-uiのdatepiker関連の設定(終了)。
   */
- 
+
  .rowno {
  	width: 48px;
  }

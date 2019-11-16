@@ -21,7 +21,7 @@ class PageScrollHtmlTable extends HtmlTable {
 		thisTable.get().before(this.additionalHtmlText);
 		thisTable.parent.find(":input").each(function() {
 			if ($(this).attr("name") == null) {
-				$(this).attr("name", $(this).attr("id"));
+				$(this).attr("name", $(this).attr(thisTable.getIdAttribute()));
 			}
 		});
 		this.sortOrder = this.getSortOrder();

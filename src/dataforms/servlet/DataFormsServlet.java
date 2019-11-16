@@ -443,6 +443,13 @@ public class DataFormsServlet extends HttpServlet {
 		);
 		SideMenu.setMultiOpenMenu(multiOpenMenu);
 
+		Boolean useDataIdArrtibute = Boolean.parseBoolean(
+				this.getServletContext().getInitParameter("use-data-id-attribute") == null
+				? "true"
+				: this.getServletContext().getInitParameter("use-data-id-attribute")
+		);
+		WebComponent.setUseDataIdAttribute(useDataIdArrtibute);
+
 		this.getUserRegistConf();
 		this.setupServletInstanceBean();
 		super.init();

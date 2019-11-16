@@ -35,18 +35,18 @@ class Field extends WebComponent {
 		// nameが指定されていない場合nameにidを設定.
 		var comp = this.parent.find('#' + this.selectorEscape(this.id));
 		if (comp.attr("name") == null) {
-			comp.attr("name", comp.attr("id"));
+			comp.attr("name", comp.attr(this.getIdAttribute()));
 		}
 		this.backupStyle();
 		if (this.relationDataAcquisition) {
 			if (this.relationDataEvent == "BLUR") {
 				comp.blur(function() {
-					thisField.id = $(this).attr("id")
+					thisField.id = $(this).attr(thisField.getIdAttribute())
 					thisField.getRelationData();
 				});
 			} else {
 				comp.change(function() {
-					thisField.id = $(this).attr("id")
+					thisField.id = $(this).attr(thisField.getIdAttribute())
 					thisField.getRelationData();
 				});
 			}

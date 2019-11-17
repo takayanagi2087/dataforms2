@@ -191,7 +191,7 @@ class Page extends DataForms {
 	 * </pre>
 	 */
 	layout() {
-		logger.log("this.frameBody=" + this.frameBody);
+		// logger.log("this.frameBody=" + this.frameBody);
 		var frame = $("<div " + this.getIdAttribute() + "=\"rootDiv\">" + this.frameBody + "</div>");
 		this.wrapFrame(frame, frame.find(this.convertSelector("#mainDiv")), $(this.convertSelector("#mainDiv")));
 		var head = $("<div>" + this.frameHead + "</div>");

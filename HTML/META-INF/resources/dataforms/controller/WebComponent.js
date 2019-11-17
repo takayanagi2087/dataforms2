@@ -92,7 +92,7 @@ class WebComponent {
 	convertSelector(q) {
 		if (this.useDataIdAttribute) {
 			var r = q.replace(/#([0-9A-Za-z\-_:.\\[\]]+)/g, "[data-id='$1']");
-			r = r.replace(/\[id([\$\~\!\*]?)=['"](.*)['"]\]/g, "[data-id$1='$2']");
+			r = r.replace(/\[id([\$\~\!\*\^]?)=['"](.*)['"]\]/g, "[data-id$1='$2']");
 			logger.log(q + "->" + r);
 			return r;
 		} else {

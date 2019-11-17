@@ -166,7 +166,7 @@ class HtmlTable extends WebComponent {
 			var tdlist = tbodyTr.children();
 			var idx = -1;
 			for (var i = 0; i < tdlist.length; i++) {
-				var comp = $(tdlist[i]).find("[id$='" + field.id + "']");
+				var comp = $(tdlist[i]).find(this.convertSelector("[id$='" + field.id + "']"));
 				if (comp.length > 0) {
 					idx = i;
 					break;
@@ -295,7 +295,6 @@ class HtmlTable extends WebComponent {
 		tr.children().each(function() {
 			if (idx < cols) {
 				$(this).addClass("fixedColumn");
-				/*$(this).css("top", "0px");*/
 				$(this).css("left", pos + "px");
 				var colspan = $(this).prop("colspan");
 				logger.log("colspan=" + colspan);

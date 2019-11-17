@@ -32,7 +32,7 @@ class Dialog extends DataForms {
 	 */
 	init() {
 		super.init();
-		var dlgdiv = $('body').find('#' + this.selectorEscape(this.id));
+		var dlgdiv = $('body').find(this.convertSelector('#' + this.selectorEscape(this.id)));
 		if (dlgdiv.length == 0) {
 			var htmlstr = this.additionalHtmlText;
 			dlgdiv = $('body').append("<div " + this.getIdAttribute() + "='" + this.id + "' class='" + this.id + "' style='display:none;'>" + htmlstr + "</div>");
@@ -64,7 +64,7 @@ class Dialog extends DataForms {
 	 */
 	show(modal, p) {
 		this.toQueryMode();
-		var dlgdiv = $('body').find('#' + this.selectorEscape(this.id));
+		var dlgdiv = $('body').find(this.convertSelector('#' + this.selectorEscape(this.id)));
 		var m = {
 			modal: modal
 			,title: this.title
@@ -102,7 +102,7 @@ class Dialog extends DataForms {
 	 */
 	close() {
 		this.resetErrorStatus();
-		var dlgdiv = $('body').find('#' + this.selectorEscape(this.id));
+		var dlgdiv = $('body').find(this.convertSelector('#' + this.selectorEscape(this.id)));
 		dlgdiv.dialog('close');
 	}
 

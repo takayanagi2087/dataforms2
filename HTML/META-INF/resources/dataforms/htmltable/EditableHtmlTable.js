@@ -18,7 +18,7 @@ class EditableHtmlTable extends HtmlTable {
 		var thisTable = this;
 		super.attach();
 		if (!this.readonly) {
-			this.find("tfoot").find("[id$='\\.addButton']").click(function() {
+			this.find("tfoot").find(this.convertSelector("[id$='\\.addButton']")).click(function() {
 				thisTable.addRow(null);
 				return false;
 			});
@@ -198,11 +198,11 @@ class EditableHtmlTable extends HtmlTable {
 		var trlist = thisTable.find("tbody>tr,tfoot>tr");
 		for (var i = 0; i < trlist.length; i++) {
 			{
-				var c = $(trlist.get(i)).find("[id^='" + thisTable.id + "\\[']");
+				var c = $(trlist.get(i)).find(this.convertSelector("[id^='" + thisTable.id + "\\[']"));
 				c.each(function() {
 					var id = $(this).attr(thisTable.getIdAttribute());
 					var newid = id.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]")
-					$(this).attr("id", newid);
+					$(this).attr(thisTable.getIdAttribute(), newid);
 					var name = $(this).attr("name");
 					if (name != null) {
 						var newname = name.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]")
@@ -211,7 +211,7 @@ class EditableHtmlTable extends HtmlTable {
 				});
 			}
 			{
-				var c = $(trlist.get(i)).find("[for^='" + thisTable.id + "\\[']");
+				var c = $(trlist.get(i)).find(this.convertSelector("[for^='" + thisTable.id + "\\[']"));
 				c.each(function() {
 					var id = $(this).attr("for");
 					var newid = id.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]")
@@ -341,8 +341,8 @@ class EditableHtmlTable extends HtmlTable {
 	 */
 	setTableData(list) {
 		var thisTable = this;
-		HtmlTable.prototype.setTableData.call(this, list);
-		var lastAddButton = this.find("tfoot").find("[id$='\\.addButton']");
+		super.setTableData(list);
+		var lastAddButton = this.find("tfoot").find(this.convertSelector("[id$='\\.addButton']"));
 		if (lastAddButton.length == 0) {
 			var lidx = this.addTr();
 			this.find("#" + this.selectorEscape(this.id + "[" + lidx + "].addButton")).click(function() {
@@ -370,10 +370,12 @@ class EditableHtmlTable extends HtmlTable {
 	 */
 	setRequiredMark() {
 		for (var i = 0; i < this.fields.length; i++) {
-			var el = $(this.trLine).find("#" + this.selectorEscape(this.id + "[0]." + this.fields[i].id));
+			var el = $(this.trLine).find(this.convertSelector("#" + this.selectorEscape(this.id + "[0]." + this.fields[i].id)));
 			if (this.fields[i].isRequired(el)) {
 				var lel = this.getLabelElement(this.fields[i]);
-				lel.addClass("requiredFieldLabel");
+				if (lel != null) {
+					lel.addClass("requiredFieldLabel");
+				}
 			}
 
 		}

@@ -178,6 +178,8 @@ select {
 	width: 34px;
 }
 
+.editableTable [data-id$='addButton'],
+.editableTable [data-id$='deleteButton'],
 .editableTable [id$='addButton'],
 .editableTable [id$='deleteButton'] {
 	width: 32px;

@@ -39,8 +39,8 @@ input,select,textarea {
 	background: url(./image/menu.png) left top no-repeat;
 }
 
-,headerDiv table {
-	height: 120px;
+.headerDiv table {
+	height: 140px;
 }
 
 .headerDiv table tbody tr {
@@ -60,20 +60,20 @@ input,select,textarea {
 	white-space: nowrap;
 }
 
-.headerDiv #systemName {
+.headerDiv div.systemName {
 	position:relative;
 	top: -8px;
 	display: inline-block;
 }
 
 /* ページ名ブロック */
-.headerDiv #pageName {
+.headerDiv .pageName {
 	display: block;
 }
 
 
 /* ユーザ情報 */
-.headerDiv #loginInfo {
+.headerDiv .loginInfo {
 	font-size:10pt;
 	display: block;
 	width: 100%;
@@ -176,14 +176,14 @@ select {
 
 
 /* 検索結果フォームのページ制御関連のスタイル */
-#queryResultForm #linesPerPage,
-#queryResultForm #pageNo {
+.queryResultForm #linesPerPage,
+.queryResultForm #pageNo {
 	width: 64px;
 }
 
-#queryResultForm #topPageButton,
-#queryResultForm #prevPageButton,
-#queryResultForm #nextPageButton,
-#queryResultForm #bottomPageButton {
+.queryResultForm #topPageButton,
+.queryResultForm #prevPageButton,
+.queryResultForm #nextPageButton,
+.queryResultForm #bottomPageButton {
 	width: 48px;
 }

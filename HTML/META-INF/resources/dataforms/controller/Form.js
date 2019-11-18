@@ -164,6 +164,7 @@ class Form extends WebComponent {
 		}
 		this.remodelHtml();
 		super.attach();
+		this.get().addClass(this.id);
 		var thisForm = this;
 		this.find("#newButton").prop("disabled" , false);
 		this.find("#newButton").click(function() {

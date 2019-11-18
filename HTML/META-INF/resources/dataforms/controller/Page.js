@@ -211,13 +211,13 @@ class Page extends DataForms {
 		$("head").append(head.html());
 		var systemName = MessagesUtil.getMessage("message.systemname");
 		if (systemName != null) {
-			$('#systemName').html(systemName);
+			$(this.convertSelector('#systemName')).html(systemName);
 		}
 		if (this.pageTitle == null) {
-			$('#pageName').html($('title').html());
+			$(this.convertSelector('#pageName')).html($('title').html());
 		} else {
 			$('title').html(this.pageTitle);
-			$('#pageName').html(this.pageTitle);
+			$(this.convertSelector('#pageName')).html(this.pageTitle);
 		}
 		initFrame();
 	}

@@ -176,14 +176,14 @@ select {
 
 
 /* 検索結果フォームのページ制御関連のスタイル */
-.queryResultForm #linesPerPage,
-.queryResultForm #pageNo {
+.queryResultForm .linesPerPage,
+.queryResultForm .pageNo {
 	width: 64px;
 }
 
-.queryResultForm #topPageButton,
-.queryResultForm #prevPageButton,
-.queryResultForm #nextPageButton,
-.queryResultForm #bottomPageButton {
+.queryResultForm .topPageButton,
+.queryResultForm .prevPageButton,
+.queryResultForm .nextPageButton,
+.queryResultForm .bottomPageButton {
 	width: 48px;
 }

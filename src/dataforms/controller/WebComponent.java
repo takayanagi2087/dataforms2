@@ -329,6 +329,9 @@ public class WebComponent implements JDBCConnectableObject {
 		if (this.id != null) {
 			obj.put("id", this.id);
 		}
+		if (this.uniqueId != null) {
+			obj.put("uniqueId", this.uniqueId);
+		}
 		obj.put("className", this.getClass().getSimpleName());
 		obj.put("path", this.getViewPath());
 		String jspath = this.getScriptPath();
@@ -339,7 +342,7 @@ public class WebComponent implements JDBCConnectableObject {
 //			logger.debug("id変換後 html=" + this.convertIdArrtibute(additionalHtmlText));
 			obj.put("additionalHtmlText", this.convertIdAttribute(additionalHtmlText));
 		}
-		obj.put("useDataIdAttribute", WebComponent.useDataIdAttribute);
+		obj.put("useUniqueId", WebComponent.useUniqueId);
 		return obj;
 	}
 
@@ -358,37 +361,6 @@ public class WebComponent implements JDBCConnectableObject {
 	public static DataFormsServlet getServlet() {
 		return WebComponent.servlet.get();
 	}
-
-	/**
-     * メソッドの開始ログを出力します。
-     * @param logger Logger。
-     * @param params 要求情報。
-     */
-/*    protected final void methodStartLog(final Logger logger, final Map<String, Object> params) {
-        Throwable th = new Throwable();
-        StackTraceElement[] el = th.getStackTrace();
-        String methodname = "";
-        if (el.length > 1) {
-            methodname = this.getClass().getName() + "." + el[1].getMethodName();
-        }
-        logger.info(methodname + " start param=" + params);
-    }
-*/
-    /**
-     * メソッドの終了ログを出力します。
-     * @param logger Logger。
-     * @param result 結果情報。
-     */
-/*    protected final void methodFinishLog(final Logger logger, final Object result) {
-        Throwable th = new Throwable();
-        StackTraceElement[] el = th.getStackTrace();
-        String methodname = "";
-        if (el.length > 1) {
-            methodname = this.getClass().getName() + "." + el[1].getMethodName();
-        }
-        logger.info(methodname + " finish result=" + result.toString());
-    }
-*/
 
     /**
      * ページを設定します。
@@ -810,29 +782,29 @@ public class WebComponent implements JDBCConnectableObject {
 	}
 
 	/**
-	 * data-idアトリビュート使用フラグ。
+	 * ユニークidア使用フラグ。
 	 * <pre>
-	 * 全てのidアトリビュートをdata-idに変換して使用する場合true。
+	 * 全てのidアトリビュートをdata-idに変換し、idにはユニークなidを設定する場合true。
 	 * </pre>
 	 */
-	private static Boolean useDataIdAttribute = true;
+	private static Boolean useUniqueId = true;
 
 
 	/**
-	 * data-idアトリビュート使用フラグを取得します。
-	 * @return data-idアトリビュート使用フラグ。
+	 * ユニークidア使用フラグを取得します。
+	 * @return ユニークidア使用フラグ。
 	 */
-	public static Boolean getUseDataIdAttribute() {
-		return useDataIdAttribute;
+	public static Boolean getUseUniqueId() {
+		return useUniqueId;
 	}
 
 
 	/**
-	 * data-idアトリビュート使用フラグを設定します。
-	 * @param useDataIdAttribute data-idアトリビュート使用フラグ。
+	 * ユニークidア使用フラグを設定します。
+	 * @param useUniqueId ユニークidア使用フラグ使用フラグ。
 	 */
-	public static void setUseDataIdAttribute(final Boolean useDataIdAttribute) {
-		WebComponent.useDataIdAttribute = useDataIdAttribute;
+	public static void setUseUniqueId(final Boolean useUniqueId) {
+		WebComponent.useUniqueId = useUniqueId;
 	}
 
 
@@ -846,10 +818,48 @@ public class WebComponent implements JDBCConnectableObject {
 	 * @return idアトリビュートを変換したhtml。
 	 */
 	public String convertIdAttribute(final String htmltext) {
-		if (WebComponent.useDataIdAttribute) {
+		if (WebComponent.useUniqueId) {
 			return htmltext.replaceAll("(<.+?)(\\s+)(id)(\\s*?=)(.*?>)", "$1$2data-id$4$5");
 		} else {
 			return htmltext;
+		}
+	}
+
+	/**
+	 * ページ中でユニークなID。
+	 */
+	private String uniqueId = null;
+
+	/**
+	 * ページ中でユニークなIDを取得します。
+	 * @return ページ中でユニークなID。
+	 */
+	public String getUniqueId() {
+		return uniqueId;
+	}
+
+
+	/**
+	 * ページ中でユニークなIDを設定します。
+	 * @param uniqueId ページ中でユニークなID。
+	 */
+	public void setUniqueId(final String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
+
+	/**
+	 * ページにユニークなIDを初期設定します。
+	 * @param parentUniqueId 親となるユニークID。
+	 */
+	public void initUniqueId(final String parentUniqueId) {
+		String pid = parentUniqueId;
+		this.setUniqueId(pid);
+		List<WebComponent> list = this.getComponentList();
+		if (list != null) {
+			for (WebComponent c: list) {
+				String uid = pid + "_" + c.getId();
+				c.initUniqueId(uid);
+			}
 		}
 	}
 }

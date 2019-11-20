@@ -34,7 +34,6 @@ public  class Form extends WebComponent {
 	 * <pre>
 	 * フィールドのバリデーション順を保持するため、リストも用意しておく。
 	 * </pre>
-	 * TODO:WebComponentのcomponentListに統合することを検討。
 	 */
 	private FieldList fieldList = new FieldList();
 

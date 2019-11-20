@@ -958,6 +958,7 @@ public class Page extends DataForms {
 	public void init() throws Exception {
 		this.initDataformsVersion();
 		super.init();
+		this.initUniqueId("mainDiv");
 	}
 
 

@@ -506,10 +506,12 @@
 		を限定するセレクタを自動生成し、idが競合しても問題なく各HTML要素を取得
 		できるようにしていました。
 		しかしこの状態はエラーにはならないもののHTMLの規約違反状態でした。
-		そこでver 2.xxではidアトリビュートを全てdata-idに変換して処理する
+		そこでver 2.xxではhtmlのidアトリビュートを全てdata-idに設定し、
+		idアトリビュートにはページにユニークなIDを生成するようにする
 		オプションを用意しました。このオプションをtrueに設定すると、
 		htmlタグにidアトリビュートが設定されていた場合、すべてdata-idに
-		書き換えて送信します。
+		に変更します。その後javascriptでページにユニークなIDを生成して
+		idアトリビュートにセットします。
 
 		さらに、互換性を維持するために、WebComponentのfindメソッドに指定する、
 		jQueryセレクターは自動的に以下の様に書き換えられます。
@@ -520,12 +522,12 @@
 		[id!='hoge'] -> [data-id!='hoge']
 		[id*='hoge'] -> [data-id*='hoge']
 
-		このオプションを指定すると、idアトリビュートは存在しないページとなる
-		ため、jQueryを直接使用する場合は注意してください。
+		このオプションを指定すると、idアトリビュートの値は書き換えられるため、
+		jQueryを直接使用する場合は注意してください。
 
 	 -->
 	<context-param>
-		<param-name>use-data-id-attribute</param-name>
+		<param-name>use-unique-id</param-name>
 		<param-value>
 			true
 		</param-value>

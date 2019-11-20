@@ -74,7 +74,7 @@ class WebComponent {
 	 * @return {String} idアトリビュート。
 	 */
 	getIdAttribute() {
-		if (this.useDataIdAttribute) {
+		if (this.useUniqueId) {
 			return "data-id";
 		} else {
 			return "id";
@@ -90,7 +90,7 @@ class WebComponent {
 	 * @returns 変換されたセレクター。
 	 */
 	convertSelector(q) {
-		if (this.useDataIdAttribute) {
+		if (this.useUniqueId) {
 			var r = q.replace(/#([0-9A-Za-z\-_:.\\[\]]+)/g, "[data-id='$1']");
 			r = r.replace(/\[id([\$\~\!\*\^]?)=['"](.*)['"]\]/g, "[data-id$1='$2']");
 			logger.log(q + "->" + r);

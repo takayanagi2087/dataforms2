@@ -343,6 +343,7 @@ public class WebComponent implements JDBCConnectableObject {
 			obj.put("additionalHtmlText", this.convertIdAttribute(additionalHtmlText));
 		}
 		obj.put("useUniqueId", WebComponent.useUniqueId);
+		obj.put("uniqueId", this.getUniqueId());
 		return obj;
 	}
 
@@ -857,8 +858,13 @@ public class WebComponent implements JDBCConnectableObject {
 		List<WebComponent> list = this.getComponentList();
 		if (list != null) {
 			for (WebComponent c: list) {
-				String uid = pid + "_" + c.getId();
-				c.initUniqueId(uid);
+				if (this instanceof HtmlTable) {
+					String uid = pid + "[0]." + c.getId();
+					c.initUniqueId(uid);
+				} else {
+					String uid = pid + "." + c.getId();
+					c.initUniqueId(uid);
+				}
 			}
 		}
 	}

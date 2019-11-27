@@ -255,6 +255,13 @@ class WebComponent {
 	 * </pre>
 	 */
 	attach() {
+		if (this.useUniqueId) {
+			if (this.uniqueId.indexOf("[0]") >= 0) {
+				let arg = this.id.match(/\[\d\]/);
+				this.uniqueId = this.uniqueId.replace(/\[0\]/, arg);
+			}
+			this.get().attr("id", this.uniqueId);
+		}
 		for (var id in this.componentMap) {
 			this.componentMap[id].attach();
 		}

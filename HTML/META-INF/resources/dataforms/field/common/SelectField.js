@@ -104,9 +104,15 @@ class SelectField extends Field {
 					var opthtml = "";
 					for (var i = 0; i < this.optionList.length; i++) {
 						var opt = this.optionList[i];
-						opthtml +=
-							"<input type='radio' id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
-								+ "<label for='" + this.id + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
+						if (this.useUniqueId) {
+							opthtml +=
+								"<input type='radio' id='" + this.uniqueId + "[" + i + "]' data-id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
+									+ "<label for='" + this.uniqueId + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
+						} else {
+							opthtml +=
+								"<input type='radio' id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
+									+ "<label for='" + this.id + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
+						}
 					}
 					pl.html(opthtml);
 				} else if (el.attr("type").toLowerCase() == "checkbox" ) {
@@ -115,9 +121,15 @@ class SelectField extends Field {
 					var opthtml = "";
 					for (var i = 0; i < this.optionList.length; i++) {
 						var opt = this.optionList[i];
-						opthtml +=
-							"<input type='checkbox' id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
-								+ "<label for='" + this.id + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
+						if (this.useUniqueId) {
+							opthtml +=
+								"<input type='checkbox' id='" + this.uniqueId  + "[" + i + "]' data-id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
+									+ "<label for='" + this.uniqueId + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
+						} else {
+							opthtml +=
+								"<input type='checkbox' id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
+									+ "<label for='" + this.id + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
+						}
 					}
 					pl.html(opthtml);
 				}

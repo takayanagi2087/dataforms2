@@ -313,7 +313,11 @@ class Field extends WebComponent {
 		var spanid = this.id + "_span";
 		var span = this.parent.find("#" + this.selectorEscape(spanid));
 		if (span.length == 0) {
-			comp.after("<span id='" + spanid + "' class='selectSpan'></span>");
+			if (this.useUniqueId) {
+				comp.after("<span data-id='" + spanid + "' class='selectSpan'></span>");
+			} else {
+				comp.after("<span id='" + spanid + "' class='selectSpan'></span>");
+			}
 			span = this.parent.find("#" + this.selectorEscape(spanid));
 		}
 		return span;

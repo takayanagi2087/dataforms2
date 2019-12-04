@@ -342,7 +342,6 @@ public class WebComponent implements JDBCConnectableObject {
 //			logger.debug("id変換後 html=" + this.convertIdArrtibute(additionalHtmlText));
 			obj.put("additionalHtmlText", this.convertIdAttribute(additionalHtmlText));
 		}
-		obj.put("useUniqueId", WebComponent.useUniqueId);
 		obj.put("uniqueId", this.getUniqueId());
 		return obj;
 	}

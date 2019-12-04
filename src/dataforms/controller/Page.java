@@ -883,6 +883,7 @@ public class Page extends DataForms {
 			}
 		}
 		map.put("userInfo", userInfo);
+		map.put("useUniqueId", WebComponent.getUseUniqueId());
 		return map;
 	}
 

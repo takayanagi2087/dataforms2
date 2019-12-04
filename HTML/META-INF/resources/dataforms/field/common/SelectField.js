@@ -104,7 +104,7 @@ class SelectField extends Field {
 					var opthtml = "";
 					for (var i = 0; i < this.optionList.length; i++) {
 						var opt = this.optionList[i];
-						if (this.useUniqueId) {
+						if (currentPage.useUniqueId) {
 							opthtml +=
 								"<input type='radio' id='" + this.uniqueId + "[" + i + "]' data-id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
 									+ "<label for='" + this.uniqueId + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
@@ -121,7 +121,7 @@ class SelectField extends Field {
 					var opthtml = "";
 					for (var i = 0; i < this.optionList.length; i++) {
 						var opt = this.optionList[i];
-						if (this.useUniqueId) {
+						if (currentPage.useUniqueId) {
 							opthtml +=
 								"<input type='checkbox' id='" + this.uniqueId  + "[" + i + "]' data-id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
 									+ "<label for='" + this.uniqueId + "[" + i + "]'>" + opt.name + "</label>&nbsp;";

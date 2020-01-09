@@ -6,15 +6,15 @@
               as the first entry and export the buildfile again. -->
 <!DOCTYPE project>
 <project basedir="." default="build" name="dataforms">
-	<!-- javadoc, jsdocとdataforms.jarを作成します。-->
+	<!-- javadoc, jsdocとdataforms2.jarを作成します。-->
 	<property environment="env"/>
-	<property name="PLEIADES_HOME" value="C:/eclipse/pleiades-2019-06"/>
+	<property name="PLEIADES_HOME" value="C:/eclipse/pleiades-2019-12"/>
 	<property name="ECLIPSE_HOME" value="../../eclipse/"/>
 	<property name="TOMCAT_HOME" value="${PLEIADES_HOME}/tomcat/9"/>
 	<property name="debuglevel" value="source,lines,vars"/>
 	<property name="target" value="11"/>
 	<property name="source" value="11"/>
-	<property name="jar.name" value="dataforms.jar"/>
+	<property name="jar.name" value="dataforms2.jar"/>
 	<!--property name="jar.command" value="D:\eclipse\pleiades-e4.7.1\java\8\bin\jar.exe"/-->
 	<property name="jar.command" value="${PLEIADES_HOME}/java/11/bin/jar.exe" />
 	<property name="jsdoc.command" value="C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd"/>
@@ -178,7 +178,7 @@
 		<echo message="Javadoc作成"/>
 		<delete dir="${javadoc.dir}" />
 		<mkdir dir="${javadoc.dir}" />
-		<javadoc packagenames="dataforms.*" sourcepath="src" destdir="${javadoc.dir}" encoding="UTF-8" charset="UTF-8">
+		<javadoc packagenames="dataforms.*" sourcepath="src" destdir="${javadoc.dir}" encoding="UTF-8" charset="UTF-8" additionalparam="-J-Dfile.encoding=UTF-8" >
 			<classpath refid="dataforms.classpath"/>
 		</javadoc>
 	</target>

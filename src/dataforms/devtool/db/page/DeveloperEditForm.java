@@ -16,6 +16,7 @@ import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.field.common.FlagField;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
+import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
 /**
@@ -37,10 +38,12 @@ public class DeveloperEditForm extends EditForm {
 	public DeveloperEditForm() {
 		this.addField(new FlagField("userImportFlag"));
 		UserInfoTable table = new UserInfoTable();
+		table.getLoginIdField().addValidator(new RequiredValidator());
+		table.getPasswordField().addValidator(new RequiredValidator());
 		this.addTableFields(table);
 		table.getLoginIdField().setAutocomplete(false).setRelationDataAcquisition(false);
-		table.getUserNameField().setAutocomplete(false).setRelationDataAcquisition(false);
-		this.insertFieldAfter(new PasswordField("passwordCheck"), "password");
+		table.getUserNameField().setAutocomplete(false).setRelationDataAcquisition(false).addValidator(new RequiredValidator());
+		this.insertFieldAfter(new PasswordField("passwordCheck"), "password").addValidator(new RequiredValidator());
 	}
 
 	/**

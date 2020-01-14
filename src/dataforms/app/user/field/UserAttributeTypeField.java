@@ -1,10 +1,7 @@
 package dataforms.app.user.field;
 
 import dataforms.app.enumtype.dao.EnumDao;
-import dataforms.app.user.page.UserEditForm;
-import dataforms.controller.Form;
 import dataforms.field.common.EnumTypeSingleSelectField;
-import dataforms.validator.RequiredValidator;
 
 /**
  * ユーザ属性フィールドクラス。
@@ -29,13 +26,14 @@ public class UserAttributeTypeField extends EnumTypeSingleSelectField {
 		this.setComment("ユーザ属性");
 	}
 
+	/*
 	@Override
 	protected void onBind() {
 		Form form = this.getParentForm();
 		if (form instanceof UserEditForm) {
 			this.addValidator(new RequiredValidator());
 		}
-	}
+	}*/
 
 	@Override
 	public void init() throws Exception {

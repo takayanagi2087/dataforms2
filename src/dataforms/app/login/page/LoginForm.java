@@ -17,6 +17,7 @@ import dataforms.field.common.FlagField;
 import dataforms.response.JsonResponse;
 import dataforms.util.AutoLoginCookie;
 import dataforms.util.StringUtil;
+import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
 /**
@@ -40,9 +41,9 @@ public class LoginForm extends Form {
 	 */
 	public LoginForm() {
 		super("loginForm");
-		this.addField(new LoginIdField());
+		this.addField(new LoginIdField()).addValidator(new RequiredValidator());
 		PasswordField pw = new PasswordField();
-		this.addField(pw);
+		this.addField(pw).addValidator(new RequiredValidator());
 		this.addField(new FlagField(AutoLoginCookie.ID_KEEP_LOGIN));
 	}
 

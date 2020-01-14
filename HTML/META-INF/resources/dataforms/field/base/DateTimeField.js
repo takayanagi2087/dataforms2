@@ -38,6 +38,25 @@ class DateTimeField extends Field {
 		});
 	};
 
-
+	/**
+	 * 値を取得します。
+	 * @returns {Date} 値(日付形式)。
+	 */
+	getValue() {
+		var displayFormat = MessagesUtil.getMessage("format.timestampfield");
+		var editFormat = MessagesUtil.getMessage("editformat.timestampfield");
+		var v = super.getValue();
+		if (v != null && v.length > 0) {
+			var dfmt = new SimpleDateFormat(displayFormat);
+			var ret = dfmt.parse(v);
+			if (ret == null) {
+				var efmt = new SimpleDateFormat(editFormat);
+				ret = efmt.parse(v);
+			}
+			return ret;
+		} else {
+			return null;
+		}
+	}
 }
 

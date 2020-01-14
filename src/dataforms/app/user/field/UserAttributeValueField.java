@@ -6,12 +6,9 @@ import java.util.Map;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.enumtype.dao.EnumDao;
-import dataforms.app.user.page.UserEditForm;
-import dataforms.controller.Form;
 import dataforms.field.common.EnumOptionSingleSelectField;
 import dataforms.response.JsonResponse;
 import dataforms.util.StringUtil;
-import dataforms.validator.RequiredValidator;
 
 /**
  * ユーザ属性値フィールドクラス。
@@ -42,14 +39,14 @@ public class UserAttributeValueField extends EnumOptionSingleSelectField {
 		this.setComment(COMMENT);
 	}
 
-
+/*
 	@Override
 	protected void onBind() {
 		Form form = this.getParentForm();
 		if (form instanceof UserEditForm) {
 			this.addValidator(new RequiredValidator());
 		}
-	}
+	}*/
 
 
 	/**

@@ -37,7 +37,7 @@ public class UserQueryForm extends QueryForm {
 	 */
 	public UserQueryForm() {
 		this.addField(new LoginIdField()).setMatchType(Field.MatchType.BEGIN);
-		this.addField(new UserNameField());
+		this.addField(new UserNameField()).setMatchType(Field.MatchType.PART);
 		EditableHtmlTable at = new EditableHtmlTable("attTable",
 			new FieldList(
 				new UserAttributeTypeField(),

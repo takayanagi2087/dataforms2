@@ -12,6 +12,7 @@ import dataforms.controller.EditForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.util.UserAdditionalInfoTableUtil;
+import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
 /**
@@ -41,8 +42,14 @@ public class UserEditForm extends EditForm {
 	 */
 	public UserEditForm(final boolean isAdmin) {
 		this.admin = isAdmin;
-		this.addTableFields(new UserInfoTable());
-		this.insertFieldAfter(new PasswordField("passwordCheck"), "password");
+		UserInfoTable table = new UserInfoTable();
+		table.getLoginIdField().addValidator(new RequiredValidator());
+		table.getPasswordField().addValidator(new RequiredValidator());
+		table.getUserNameField().addValidator(new RequiredValidator());
+		table.getMailAddressField().addValidator(new RequiredValidator());
+		this.addTableFields(table);
+		PasswordField pwck = new PasswordField("passwordCheck");
+		this.insertFieldAfter(pwck, "password").addValidator(new RequiredValidator());
 		// ユーザ追加情報テーブルのフィールドを追加します。
 		FieldList flist = UserAdditionalInfoTableUtil.getFieldList();
 		if (flist != null) {
@@ -50,6 +57,8 @@ public class UserEditForm extends EditForm {
 		}
 		// ユーザ属性テーブルの追加。
 		UserAttributeTable atbl = new UserAttributeTable();
+		atbl.getUserAttributeTypeField().addValidator(new RequiredValidator());
+		atbl.getUserAttributeValueField().addValidator(new RequiredValidator());
 		EditableHtmlTable at = new EditableHtmlTable("attTable", atbl.getFieldList());
 		this.addHtmlTable(at);
 		// 初期データ設定.

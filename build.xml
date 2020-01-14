@@ -156,7 +156,7 @@
 		-->
 		<!--  直接java8のjarコマンドを使うとうまく動作するjarができる。-->
 		<exec executable="${jar.command}" dir=".">
-			<arg value="cvmf"/>
+			<arg value="cmf"/>
 			<arg value="dataforms.mf"/>
 			<arg value="${jar.name}"/>
 			<arg value="-C"/>
@@ -165,7 +165,7 @@
 		</exec>
 		<!-- javaソースを追加 -->
 		<exec executable="${jar.command}" dir=".">
-			<arg value="uvf"/>
+			<arg value="uf"/>
 			<arg value="${jar.name}"/>
 			<arg value="-C"/>
 			<arg value="src"/>

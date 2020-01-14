@@ -1,7 +1,6 @@
 package dataforms.app.user.field;
 
 import dataforms.field.sqltype.VarcharField;
-import dataforms.validator.RequiredValidator;
 
 /**
  * パスワードフィールドクラス。
@@ -32,8 +31,9 @@ public class PasswordField extends VarcharField {
 		this.setComment(COMMENT);
 	}
 
+	/*
 	@Override
 	protected void onBind() {
 		this.addValidator(new RequiredValidator());
-	}
+	}*/
 }

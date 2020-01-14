@@ -4,18 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.app.login.page.LoginForm;
 import dataforms.app.user.dao.UserDao;
-import dataforms.app.user.page.UserEditForm;
-import dataforms.app.user.page.UserQueryForm;
-import dataforms.app.user.page.UserSelfEditForm;
-import dataforms.controller.EditForm;
-import dataforms.controller.Form;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.validator.RegexpValidator;
-import dataforms.validator.RequiredValidator;
 
 /**
  * ログインIDフィールドクラス。
@@ -51,7 +44,7 @@ public class LoginIdField extends VarcharField {
 	@Override
 	protected void onBind() {
 		super.onBind();
-		Form form = this.getParentForm();
+/*		Form form = this.getParentForm();
 		if (form instanceof UserQueryForm) {
 			this.setMatchType(MatchType.BEGIN);
 		} else 	if (form instanceof UserEditForm
@@ -64,7 +57,7 @@ public class LoginIdField extends VarcharField {
 			this.setRelationDataAcquisition(true);
 			this.setAutocomplete(true);
 		}
-
+*/
 //		this.addValidator(new RegexpValidator("^[0-9A-Za-z_\\.\\-_]+$"));
 		this.addValidator(new RegexpValidator("^[\\x20-\\x7F]+$"));
 	}

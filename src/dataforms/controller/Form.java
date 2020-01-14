@@ -89,20 +89,24 @@ public  class Form extends WebComponent {
 	 * 指定されたIDの後にフィールドを挿入します。
 	 * @param field フィールド。
 	 * @param id 指定ID。
+	 * @return 追加したフィールド。
 	 */
-	protected final void insertFieldAfter(final Field<?> field, final String id) {
+	protected final Field<?> insertFieldAfter(final Field<?> field, final String id) {
 		this.fieldList.insertAfter(field, id);
 		this.addComponent(field);
+		return field;
 	}
 
 	/**
 	 * 指定されたIDの前にフィールドを挿入します。
 	 * @param field フィールド。
 	 * @param id 指定ID。
+	 * @return 追加したフィールド。
 	 */
-	protected final void insertFieldBefore(final Field<?> field, final String id) {
+	protected final Field<?> insertFieldBefore(final Field<?> field, final String id) {
 		this.fieldList.insertBefore(field, id);
 		this.addComponent(field);
+		return field;
 	}
 
 	/**

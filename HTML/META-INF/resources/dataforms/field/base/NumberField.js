@@ -118,11 +118,16 @@ class NumberField extends Field {
 
 	/**
 	 * 値を取得します。
-	 * @return {String} 値。
+	 * @return {Number} 値。
 	 */
 	getValue() {
 		var ret = super.getValue();
-		return this.delComma(ret);
+		var r = parseFloat(this.delComma(ret));
+		if (isNaN(r)) {
+			return null;
+		} else {
+			return r;
+		}
 	}
 
 	/**

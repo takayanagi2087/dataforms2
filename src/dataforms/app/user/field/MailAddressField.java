@@ -1,10 +1,7 @@
 package dataforms.app.user.field;
 
-import dataforms.app.user.page.UserEditForm;
-import dataforms.controller.Form;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.validator.MailAddressValidator;
-import dataforms.validator.RequiredValidator;
 
 /**
  * メールアドレスフィールドクラス。
@@ -39,10 +36,10 @@ public class MailAddressField extends VarcharField {
 
 	@Override
 	protected void onBind() {
-		Form form = this.getParentForm();
+		this.addValidator(new MailAddressValidator());
+/*		Form form = this.getParentForm();
 		if (form instanceof UserEditForm) {
 			this.addValidator(new RequiredValidator());
-		}
-		this.addValidator(new MailAddressValidator());
+		}*/
 	}
 }

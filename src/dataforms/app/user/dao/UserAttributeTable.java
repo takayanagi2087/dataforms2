@@ -28,7 +28,7 @@ public class UserAttributeTable extends Table {
 		UserAttributeTableRelation r = new UserAttributeTableRelation(this);
 		return r.getJoinCondition(joinTable, alias);
 	}
-	
+
 	/**
 	 * Entity操作クラスです。
 	 */
@@ -53,7 +53,7 @@ public class UserAttributeTable extends Table {
 		public Entity(final Map<String, Object> map) {
 			super(map);
 		}
-		
+
 		/**
 		 * ユーザIDを取得します。
 		 * @return ユーザID。
@@ -61,7 +61,7 @@ public class UserAttributeTable extends Table {
 		public Long getUserId() {
 			return (Long) this.getMap().get(ID_USER_ID);
 		}
-		
+
 		/**
 		 * ユーザIDを設定します。
 		 * @param userId ユーザID。
@@ -69,7 +69,7 @@ public class UserAttributeTable extends Table {
 		public void setUserId(final Long userId) {
 			this.getMap().put(ID_USER_ID, userId);
 		}
-		
+
 		/**
 		 * ユーザ属性タイプを取得します。
 		 * @return ユーザ属性タイプ。
@@ -77,7 +77,7 @@ public class UserAttributeTable extends Table {
 		public String getUserAttributeType() {
 			return (String) this.getMap().get(ID_USER_ATTRIBUTE_TYPE);
 		}
-		
+
 		/**
 		 * ユーザ属性タイプを設定します。
 		 * @param userAttributeType ユーザ属性タイプ。
@@ -86,7 +86,7 @@ public class UserAttributeTable extends Table {
 			this.getMap().put(ID_USER_ATTRIBUTE_TYPE, userAttributeType);
 		}
 
-		
+
 		/**
 		 * ユーザ属性値を取得します。
 		 * @return ユーザ属性値。
@@ -94,7 +94,7 @@ public class UserAttributeTable extends Table {
 		public String getUserAttributeValue() {
 			return (String) this.getMap().get(ID_USER_ATTRIBUTE_VALUE);
 		}
-		
+
 		/**
 		 * ユーザ属性値を設定します。
 		 * @param userAttributeValue ユーザ属性値。
@@ -103,7 +103,7 @@ public class UserAttributeTable extends Table {
 			this.getMap().put(ID_USER_ATTRIBUTE_VALUE, userAttributeValue);
 		}
 	}
-	
+
 	/**
 	 * ユーザIDフィールドを作成します。
 	 * @return  ユーザIDフィールド。
@@ -111,7 +111,7 @@ public class UserAttributeTable extends Table {
 	public UserIdField getUserIdField() {
 		return (UserIdField) this.getField(Entity.ID_USER_ID);
 	}
-	
+
 	/**
 	 * ユーザ属性タイプフィールドを取得します。
 	 * @return ユーザ属性タイプフィールド。
@@ -119,13 +119,13 @@ public class UserAttributeTable extends Table {
 	public UserAttributeTypeField getUserAttributeTypeField() {
 		return (UserAttributeTypeField) this.getField(Entity.ID_USER_ATTRIBUTE_TYPE);
 	}
-	
+
 	/**
 	 * ユーザ属性値フィールドを取得します。
 	 * @return ユーザ属性値フィールド。
 	 */
-	public UserAttributeTypeField getUserAttributeTypeValue() {
-		return (UserAttributeTypeField) this.getField(Entity.ID_USER_ATTRIBUTE_VALUE);
+	public UserAttributeValueField getUserAttributeValueField() {
+		return (UserAttributeValueField) this.getField(Entity.ID_USER_ATTRIBUTE_VALUE);
 	}
 
 }

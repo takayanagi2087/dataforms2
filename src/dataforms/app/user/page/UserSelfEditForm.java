@@ -36,8 +36,8 @@ public class UserSelfEditForm extends EditForm {
 	 */
 	public UserSelfEditForm() {
 		//this.addField(new UserIdField());
-		this.addField(new LoginIdField());
-		this.addField(new UserNameField());
+		this.addField(new LoginIdField()).addValidator(new RequiredValidator());
+		this.addField(new UserNameField()).addValidator(new RequiredValidator());
 		this.addField(new MailAddressField()).addValidator(new RequiredValidator());
 		// ユーザ追加情報テーブルのフィールドを追加します。
 		FieldList flist = UserAdditionalInfoTableUtil.getFieldList();

@@ -5,15 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import dataforms.app.user.dao.UserDao;
-import dataforms.app.user.page.UserEditForm;
-import dataforms.app.user.page.UserQueryForm;
-import dataforms.app.user.page.UserSelfEditForm;
-import dataforms.controller.Form;
-import dataforms.controller.QueryResultForm;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.sqltype.VarcharField;
-import dataforms.validator.RequiredValidator;
 
 /**
  * ユーザ名フィールドクラス。
@@ -73,7 +67,7 @@ public class UserNameField extends VarcharField {
 	}
 
 
-	@Override
+/*	@Override
 	protected void onBind() {
 		Form form = this.getParentForm();
 		if (form instanceof UserQueryForm) {
@@ -88,7 +82,7 @@ public class UserNameField extends VarcharField {
 				this.setAutocomplete(true);
 			}
 		}
-	}
+	}*/
 
 	@Override
 	protected List<Map<String, Object>> queryAutocompleteSourceList(final Map<String, Object> data) throws Exception {

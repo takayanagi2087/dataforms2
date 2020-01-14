@@ -12,6 +12,7 @@ import dataforms.controller.EditForm;
 import dataforms.exception.ApplicationException;
 import dataforms.util.MessagesUtil;
 import dataforms.util.NumberUtil;
+import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
 /**
@@ -29,12 +30,12 @@ public class ChangePasswordForm extends EditForm {
 	 */
 	public ChangePasswordForm(final boolean reset) {
 		this.resetMode = reset;
-		this.addField(new LoginIdField()).removeRequiredValidator();
+		this.addField(new LoginIdField());
 		if (!this.resetMode) {
-			this.addField(new PasswordField("oldPassword"));
+			this.addField(new PasswordField("oldPassword")).addValidator(new RequiredValidator());
 		}
-		this.addField(new PasswordField());
-		this.addField(new PasswordField("passwordCheck"));
+		this.addField(new PasswordField()).addValidator(new RequiredValidator());
+		this.addField(new PasswordField("passwordCheck")).addValidator(new RequiredValidator());
 	}
 
 	@Override

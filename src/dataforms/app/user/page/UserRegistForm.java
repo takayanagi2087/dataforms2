@@ -69,8 +69,8 @@ public class UserRegistForm extends EditForm {
 		} /*else {
 			this.addField(new MailAddressField("mailAddressCheck")).addValidator(new RequiredValidator());
 		}*/
-		this.addField(table.getPasswordField());
-		this.addField(new PasswordField("passwordCheck"));
+		this.addField(table.getPasswordField()).addValidator(new RequiredValidator());
+		this.addField(new PasswordField("passwordCheck")).addValidator(new RequiredValidator());
 
 		// ユーザ追加情報テーブルのフィールドを追加します。
 		FieldList flist = UserAdditionalInfoTableUtil.getFieldList();

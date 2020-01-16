@@ -115,6 +115,45 @@ class AllTypeEditForm extends EditForm {
 
 		logger.log("this.getQueryString()=" + JSON.stringify(this.getQueryString()));
 		logger.log("QueryStringUtil.parse()=" + JSON.stringify(QueryStringUtil.parse(window.location.search)));
+
+		var vshort = this.getComponent("smallintField").getValue();
+		logger.log("vshort=");logger.dir(vshort);
+		this.getComponent("smallintField").setValue(vshort * 10);
+
+		var vint = this.getComponent("integerField").getValue();
+		logger.log("vint=");logger.dir(vint);
+		this.getComponent("integerField").setValue(vint * 10);
+
+		var vlong = this.getComponent("bigintField").getValue();
+		logger.log("vlong=");logger.dir(vlong);
+		this.getComponent("bigintField").setValue(vlong * 10);
+
+		var vdouble = this.getComponent("doubleField").getValue();
+		logger.log("vdouble=");logger.dir(vdouble);
+		this.getComponent("doubleField").setValue(vdouble * 10);
+
+		var vnumeric = this.getComponent("numericField").getValue();
+		logger.log("vnumeric=");logger.dir(vnumeric);
+		this.getComponent("numericField").setValue(vnumeric * 10);
+
+
+		var vnumeric = this.getComponent("numericField").getValue();
+		logger.log("vnumeric=");logger.dir(vnumeric);
+		this.getComponent("numericField").setValue(vnumeric * 10);
+
+		var vdate = this.getComponent("dateField").getValue();
+		logger.log("vdate=");logger.dir(vdate);
+		this.getComponent("dateField").setValue(vdate);
+
+
+		var vtime = this.getComponent("timeField").getValue();
+		logger.log("vtime=");logger.dir(vtime);
+		this.getComponent("timeField").setValue(vtime);
+
+		var vtimestamp = this.getComponent("timestampField").getValue();
+		logger.log("vtimestamp=");logger.dir(vtimestamp);
+		this.getComponent("timestampField").setValue(vtimestamp);
+
 		this.find("#attachFileTable thead tr").find("th").each(function() {
 			logger.dir(this);
 		});

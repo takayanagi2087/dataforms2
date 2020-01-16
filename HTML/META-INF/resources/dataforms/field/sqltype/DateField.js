@@ -11,6 +11,15 @@
  */
 class DateField extends DateTimeField {
 	/**
+	 * コンストラクタ。
+	 */
+	constructor() {
+		super();
+		this.displayFormat = MessagesUtil.getMessage("format.datefield");
+		this.editFormat = MessagesUtil.getMessage("editformat.datefield");
+	}
+
+	/**
 	 * HTMLエレメントとの対応付けを行います。
 	 * <pre>
 	 * 各種フォーマットの設定と、Datapickerの設定を行います。
@@ -19,14 +28,12 @@ class DateField extends DateTimeField {
 	attach() {
 		super.attach();
 		var thisField = this;
-		var displayFormat = MessagesUtil.getMessage("format.datefield");
-		var editFormat = MessagesUtil.getMessage("editformat.datefield");
 		var comp = this.get();
 		if (!comp.prop("readonly")) {
 			if (this.datepickerEnabled) {
 				this.setDatepicker();
 			}
-			this.setFormat(displayFormat, editFormat);
+			this.setFormat(this.displayFormat, this.editFormat);
 		}
 		this.backupStyle();
 	}

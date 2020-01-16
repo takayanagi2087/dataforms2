@@ -13,6 +13,14 @@
  */
 class DateTimeField extends Field {
 	/**
+	 * コンストラクタ。
+	 */
+	constructor() {
+		super();
+		this.displayFormat = null;
+		this.editFormat = null;
+	}
+	/**
 	 * 日付の表示フォーマットを指定します。
 	 * @param {String} displayFormat 表示時のフォーマット。
 	 * @param {String} editFormat 編集時のフォーマット。
@@ -39,18 +47,30 @@ class DateTimeField extends Field {
 	};
 
 	/**
+	 * 値を設定します。
+	 * @param {String} date 値。
+	 */
+	setValue(date) {
+		if (date instanceof Date) {
+			var fmt = new SimpleDateFormat(this.displayFormat);
+			super.setValue(fmt.format(date));
+		} else {
+			super.setValue(date);
+		}
+	}
+
+	/**
 	 * 値を取得します。
 	 * @returns {Date} 値(日付形式)。
 	 */
 	getValue() {
-		var displayFormat = MessagesUtil.getMessage("format.timestampfield");
-		var editFormat = MessagesUtil.getMessage("editformat.timestampfield");
 		var v = super.getValue();
 		if (v != null && v.length > 0) {
-			var dfmt = new SimpleDateFormat(displayFormat);
+			logger.log("getValue()=" + v);
+			var dfmt = new SimpleDateFormat(this.displayFormat);
 			var ret = dfmt.parse(v);
 			if (ret == null) {
-				var efmt = new SimpleDateFormat(editFormat);
+				var efmt = new SimpleDateFormat(this.editFormat);
 				ret = efmt.parse(v);
 			}
 			return ret;

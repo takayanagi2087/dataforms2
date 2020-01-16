@@ -12,15 +12,21 @@
  */
 class TimestampField extends DateTimeField {
 	/**
+	 * コンストラクタ。
+	 */
+	constructor() {
+		super();
+		this.displayFormat = MessagesUtil.getMessage("format.timestampfield");
+		this.editFormat = MessagesUtil.getMessage("editformat.timestampfield");
+	}
+	/**
 	 * HTMLエレメントとの対応付けを行います。
 	 */
 	attach() {
 		super.attach();
 		var comp = this.get();
 		if (!comp.prop("readonly")) {
-			var displayFormat = MessagesUtil.getMessage("format.timestampfield");
-			var editFormat = MessagesUtil.getMessage("editformat.timestampfield");
-			this.setFormat(displayFormat, editFormat);
+			this.setFormat(this.displayFormat, this.editFormat);
 		}
 		this.backupStyle();
 	}

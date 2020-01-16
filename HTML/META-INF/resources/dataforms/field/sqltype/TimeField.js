@@ -12,15 +12,22 @@
  */
 class TimeField extends DateTimeField {
 	/**
+	 * コンストラクタ。
+	 */
+	constructor() {
+		super();
+		this.displayFormat = MessagesUtil.getMessage("format.timefield");
+		this.editFormat = MessagesUtil.getMessage("editformat.timefield");
+	}
+
+	/**
 	 * HTMLエレメントとの対応付けを行います。
 	 */
 	attach() {
 		super.attach();
 		var comp = this.get();
 		if (!comp.prop("readonly")) {
-			var displayFormat = MessagesUtil.getMessage("format.timefield");
-			var editFormat = MessagesUtil.getMessage("editformat.timefield");
-			this.setFormat(displayFormat, editFormat);
+			this.setFormat(this.displayFormat, this.editFormat);
 		}
 		this.backupStyle();
 	};

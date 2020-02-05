@@ -21,17 +21,17 @@ import net.arnx.jsonic.JSON;
  * 問い合わせ結果フォームクラス。
  */
 public class QueryExecutorQueryResultForm extends QueryResultForm {
-	
+
 	/**
 	 * Logger.
 	 */
 	private static Logger log = Logger.getLogger(QueryExecutorQueryResultForm.class);
-	
+
 	/**
 	 * HTMLテーブル。
 	 */
 	private PageScrollHtmlTable htmlTable = null;
-	
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -65,7 +65,7 @@ public class QueryExecutorQueryResultForm extends QueryResultForm {
 		}
 		return sb.toString();
 	}
-	
+
 	@Override
 	protected Map<String, Object> queryPage(final Map<String, Object> data, final FieldList queryFormFieldList) throws Exception {
 		String sql = (String) data.get("sql");
@@ -116,9 +116,19 @@ public class QueryExecutorQueryResultForm extends QueryResultForm {
 		StringBuilder sb = new StringBuilder();
 		for (Field<?> f: this.htmlTable.getFieldList()) {
 			sb.append("<td>");
-			sb.append("<span id=\"queryResult[0].");
-			sb.append(f.getId());
-			sb.append("\"></span>");
+			if (Page.getUseUniqueId()) {
+				sb.append("<span data-id=\"queryResult[0].");
+				sb.append(f.getId());
+				sb.append("\" ");
+				sb.append(" id=\"mainDiv.queryResultForm.queryResult[0].");
+				sb.append(f.getId());
+				sb.append("\" ");
+				sb.append("\"></span>");
+			} else {
+				sb.append("<span id=\"queryResult[0].");
+				sb.append(f.getId());
+				sb.append("\"></span>");
+			}
 			sb.append("</td>");
 		}
 		return sb.toString();
@@ -142,7 +152,7 @@ public class QueryExecutorQueryResultForm extends QueryResultForm {
 			return ret;
 		}
 	}
-	
+
 	@Override
 	protected void deleteData(final Map<String, Object> data) throws Exception {
 	}

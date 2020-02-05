@@ -172,12 +172,6 @@ ul.accordion ul li:last-child{
  * アコーディオンメニュー用スタイル(終了).
  */
 
-/* 編集可能テーブル用スタイル */
-.editableTable {
-	table-layout: fixed;
-}
-
-
 /* 各フォームのスタイル */
 .mainDiv form {
 	margin:5px;
@@ -200,30 +194,12 @@ ul.accordion ul li:last-child{
 }
 
 
-/*
- * カラムソートヘッダ関連(開始)
- */
-.sortableMark {
-}
-
-.sortableLabel {
-}
-/*
- * カラムソートヘッダ関連(終了)
- */
 
 /* javascript無効エラーメッセージの位置指定 */
 .noscriptDiv {
 	position:fixed;
 	top:0px;
 	left:0px;
-}
-
-/* 横スクロール用DIV */
-.hScrollDiv {
-	display: block;
-	width: 100%;
-	overflow-x:auto;
 }
 
 /* dataforms.jarのバージョン情報のスタイル */
@@ -257,82 +233,6 @@ ul.accordion ul li:last-child{
 	z-index: 10000;
 }
 
-/*
- * カラム固定テーブル用のスタイル(開始)
- *
- */
-table.columnFixedTable {
-	display: block;
-	position: relative;
-	overflow: scroll;
-	width: 100%;
-	border-collapse: collapse;
-	font-size: 0;
-}
-
-table.columnFixedTable thead,
-table.columnFixedTable tbody,
-table.columnFixedTable tfoot {
-	display: block;
-/*	width: -webkit-max-content;
-	width: -moz-max-content;
-	width: max-content;*/
-}
-
-table.columnFixedTable tr {
-	height: 26px;
-	line-height: 26px;
-}
-
-table.columnFixedTable th,
-table.columnFixedTable td {
-	display: inline-block;
-	padding: 1px;
-	font-size: 1.0rem;
-	height: 26px;
-	border-color: #ffffff;
-	border-width: 2px;
-	border-style: solid;
-}
-
-table.columnFixedTable tr td:not(:first-child),
-table.columnFixedTable tr th:not(:first-child) {
-	border-left-style: none;
-}
-
-table.columnFixedTable thead tr:not(:first-child) th,
-table.columnFixedTable tr td {
-	border-top-style: none;
-}
-
-/* --- ボーダー色を背景色以外にする場合以下の設定をコメントアウトしてください。 */
-table.columnFixedTable tr th,
-table.columnFixedTable tr td {
-	border-left-style: none;
-	border-top-style: none;
-}
-/* --- */
-
-table.columnFixedTable tfoot th {
-	border-color: #e0e0ff;
-}
-
-table.columnFixedTable thead {
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0px;
-	z-index: 2;
-}
-
-table.columnFixedTable .fixedColumn {
-	position: -webkit-sticky;
-	position: sticky;
-}
-
-/*
- * カラム固定テーブル用のスタイル(終了)
- *
- */
 
  /*
   * jQuery-uiのdatepiker関連の設定(開始)。
@@ -376,6 +276,3 @@ table.columnFixedTable .fixedColumn {
   * jQuery-uiのdatepiker関連の設定(終了)。
   */
 
- .rowno {
- 	width: 48px;
- }

@@ -390,6 +390,7 @@ public class Page extends DataForms {
 	 */
 	public String getPreloadTags() throws Exception {
 		this.addPreloadCss(this.getPageFramePath() + "/Frame.css");
+		this.addPreloadCss(this.getPageFramePath() + "/HtmlTable.css");
 		this.addPreloadCss(this.getPageFramePath() + "/AppFrame.css");
 		String context = this.getRequest().getContextPath();
 		StringBuilder sb = new StringBuilder();

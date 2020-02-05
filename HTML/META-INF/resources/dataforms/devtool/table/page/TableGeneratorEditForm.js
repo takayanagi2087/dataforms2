@@ -31,16 +31,12 @@ class TableGeneratorEditForm extends EditForm {
 			});
 		});
 		this.find("#errorSkipButton").click(function() {
-			logger.log("errorSkipButton");
 			thisForm.find("[id$='\\.fieldClassName'].errorField").each(function() {
-				logger.log("error field=" + $(this).attr(this.getIdAttribute()));
 				tbl.getSameRowField($(this), "overwriteMode").val("skip");
 			});
 		});
 		this.find("#errorForceButton").click(function() {
-			logger.log("errorSkipButton");
 			thisForm.find("[id$='\\.fieldClassName'].errorField").each(function() {
-				logger.log("error field=" + $(this).attr(this.getIdAttribute()));
 				tbl.getSameRowField($(this), "overwriteMode").val("force");
 			});
 		});

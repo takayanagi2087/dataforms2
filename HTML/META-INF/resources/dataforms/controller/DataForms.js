@@ -74,7 +74,7 @@ class DataForms extends WebComponent {
 		// エラーメッセージ領域が無い場合自動的に追加する.
 		if (this.find("#errorMessages").length == 0) {
 			var f = this.find("form:first");
-			f.before('<div class="errorMessages" id="errorMessages"><!--エラーメッセージ領域--></div>');
+			f.before('<div class="errorMessages" ' + this.getIdAttribute() + '="errorMessages"><!--エラーメッセージ領域--></div>');
 		}
 		if (ef.length == 0) {
 			// 編集フォームがない場合

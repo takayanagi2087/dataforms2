@@ -301,29 +301,9 @@ class EditableHtmlTable extends HtmlTable {
 	 * <pre>
 	 * 行番号(no),ソート順(sortOrder)の振り直しを行います。
 	 * </pre>
-	 * @deprecated resetRowNoを使用してください。
-	 */
-	resetLineNo() {
-		var trlist = this.find("[id$=\\.no]");
-		for (var i = 0; i < trlist.length; i++) {
-			var lineNoId = this.id + "[" + i + "].no";
-			this.find("#" + this.selectorEscape(lineNoId)).text(i + 1);
-			var sortOrderId = this.id + "[" + i + "].sortOrder";
-			this.find("#" + this.selectorEscape(sortOrderId)).val(i);
-
-		}
-		this.resetBackgroundColor();
-	}
-
-
-	/**
-	 * 行番号等を設定し直します。
-	 * <pre>
-	 * 行番号(no),ソート順(sortOrder)の振り直しを行います。
-	 * </pre>
 	 */
 	resetRowNo() {
-		var trlist = this.find("[id$=\\.no]");
+		var trlist = this.find("[" + this.getIdAttribute() + "$=\\.no]");
 		for (var i = 0; i < trlist.length; i++) {
 			var lineNoId = this.id + "[" + i + "].no";
 			this.find("#" + this.selectorEscape(lineNoId)).text(i + 1);

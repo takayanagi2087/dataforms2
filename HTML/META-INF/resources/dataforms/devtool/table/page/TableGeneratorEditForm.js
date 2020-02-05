@@ -215,6 +215,7 @@ class TableGeneratorEditForm extends EditForm {
 	 * @param {jQuery} element イベントが発生した要素。
 	 */
 	onCalcClass(element) {
+		var thisForm = this;
 		var tbl = this.getComponent("fieldList");
 		var p = tbl.getSameRowField(element, "packageName").val();
 		var c = tbl.getSameRowField(element, "fieldClassName").val();
@@ -262,8 +263,8 @@ class TableGeneratorEditForm extends EditForm {
 								cmnt.val(ret.result.fieldComment);
 							}
 						}
-						tbl.getComponent(bpkg.attr(this.getIdAttribute())).lock(false);
-						tbl.getComponent(bcls.attr(this.getIdAttribute())).lock(false);
+						tbl.getComponent(bpkg.attr(thisForm.getIdAttribute())).lock(false);
+						tbl.getComponent(bcls.attr(thisForm.getIdAttribute())).lock(false);
 						owm.show();
 					}
 				}

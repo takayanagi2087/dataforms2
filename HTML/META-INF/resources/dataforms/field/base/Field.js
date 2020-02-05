@@ -531,7 +531,7 @@ class Field extends WebComponent {
 		var thisField = this;
 		this.get().autocomplete({
 			search:function(event, ui) {
-				thisField.id = event.target.id;
+				thisField.id = $(this).attr(thisField.getIdAttribute());
 			},
 			source:function(req, res) {
 				var list = thisField.getSource(res);

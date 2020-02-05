@@ -15,6 +15,9 @@ class TableClassNameField extends SimpleClassNameField {
 		super.attach();
 	}
 
+	/**
+	 * テーブルクラス名の更新時の処理。
+	 */
 	onUpdateRelationField() {
 		super.onUpdateRelationField();
 		if (this.get().val().length != 0) {

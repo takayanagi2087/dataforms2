@@ -268,7 +268,7 @@ class Field extends WebComponent {
 	 * @returns {ValidationError} 検証結果。問題が発生しなければnullを返します。
 	 */
 	validate() {
-		var val = this.getValue();
+		var val = this.get().val();
 		this.value = val;
 		if (this.validators != null) {
 			for (var i = 0; i < this.validators.length; i++) {

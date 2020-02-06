@@ -27,6 +27,11 @@ import dataforms.util.StringUtil;
  */
 public class EnumDao extends Dao {
 	/**
+	 * Logger.
+	 */
+//	private static Logger logger = Logger.getLogger(EnumDao.class);
+
+	/**
 	 * コンストラクタ。
 	 * @param obj JDBC接続可能オブジェクト。
 	 * @throws Exception 例外。
@@ -216,14 +221,31 @@ public class EnumDao extends Dao {
 	}
 
 	/**
+	 * 列挙型コードリストの問合せ。
+	 *
+	 */
+	private static class EnumTypeCodeQuery extends Query {
+		/**
+		 * コンストラクタ。
+		 */
+		public EnumTypeCodeQuery() {
+			EnumTable table = new EnumTable();
+			this.setFieldList(table.getFieldList());
+			this.setMainTable(table);
+			this.setCondition("m.parent_id is null");
+		}
+	}
+
+	/**
 	 * 列挙型コードの多重登録チェック。
 	 * @throws Exception 例外。
 	 */
 	private void validateEnumTypeCode() throws Exception {
 		Set<String> set = new HashSet<String>();
-		List<Map<String, Object>> list = this.executeQuery(new EnumTypeQuery());
+		List<Map<String, Object>> list = this.executeQuery(new EnumTypeCodeQuery());
 		for (Map<String, Object> m: list) {
 			EnumTable.Entity e = new EnumTable.Entity(m);
+//			logger.debug("EnumTypeCode=" + e.getEnumCode());
 			if (set.contains(e.getEnumCode())) {
 				throw new ApplicationException(this.getPage(), "error.duplicateenumcode");
 			}

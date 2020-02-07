@@ -1,14 +1,14 @@
 package dataforms.debug.alltype.dao;
 
 import java.util.Map;
-
 import dataforms.dao.Table;
-import dataforms.debug.alltype.field.BigintItemField;
-import dataforms.debug.alltype.field.CharItemField;
-import dataforms.debug.alltype.field.IntegerIetmField;
 import dataforms.debug.alltype.field.SingleSelectIdField;
-import dataforms.debug.alltype.field.SmallintItemField;
+import dataforms.debug.alltype.field.CharItemField;
 import dataforms.debug.alltype.field.VarcharItemField;
+import dataforms.debug.alltype.field.SmallintItemField;
+import dataforms.debug.alltype.field.IntegerIetmField;
+import dataforms.debug.alltype.field.BigintItemField;
+import dataforms.field.common.PresenceField;
 
 
 /**
@@ -28,7 +28,8 @@ public class SingleSelectTable extends Table {
 		this.addField(new SmallintItemField()); //Smallintフィールド
 		this.addField(new IntegerIetmField()); //Integerフィールド
 		this.addField(new BigintItemField()); //Bigintフィールド
-//		this.addUpdateInfoFields();
+		this.addField(new PresenceField("presenceItem")); //有無フィールド
+
 	}
 
 	@Override
@@ -53,6 +54,8 @@ public class SingleSelectTable extends Table {
 		public static final String ID_INTEGER_IETM = "integerIetm";
 		/** BigintフィールドのフィールドID。 */
 		public static final String ID_BIGINT_ITEM = "bigintItem";
+		/** 有無フィールドのフィールドID。 */
+		public static final String ID_PRESENCE_ITEM = "presenceItem";
 
 		/**
 		 * コンストラクタ。
@@ -163,6 +166,22 @@ public class SingleSelectTable extends Table {
 			this.getMap().put(Entity.ID_BIGINT_ITEM, bigintItem);
 		}
 
+		/**
+		 * 有無フィールドを取得します。
+		 * @return 有無フィールド。
+		 */
+		public java.lang.Object getPresenceItem() {
+			return (java.lang.Object) this.getMap().get(Entity.ID_PRESENCE_ITEM);
+		}
+
+		/**
+		 * 有無フィールドを設定します。
+		 * @param presenceItem 有無フィールド。
+		 */
+		public void setPresenceItem(final java.lang.Object presenceItem) {
+			this.getMap().put(Entity.ID_PRESENCE_ITEM, presenceItem);
+		}
+
 
 	}
 	/**
@@ -211,6 +230,14 @@ public class SingleSelectTable extends Table {
 	 */
 	public BigintItemField getBigintItemField() {
 		return (BigintItemField) this.getField(Entity.ID_BIGINT_ITEM);
+	}
+
+	/**
+	 * 有無フィールドフィールドを取得します。
+	 * @return 有無フィールドフィールド。
+	 */
+	public PresenceField getPresenceItemField() {
+		return (PresenceField) this.getField(Entity.ID_PRESENCE_ITEM);
 	}
 
 

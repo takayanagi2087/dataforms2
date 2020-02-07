@@ -3,6 +3,8 @@ package dataforms.debug.alltype.page;
 import dataforms.controller.QueryForm;
 import dataforms.debug.alltype.dao.SingleSelectTable;
 import dataforms.field.base.Field.MatchType;
+import dataforms.field.common.PropertiesMultiSelectField;
+import dataforms.field.common.PropertiesSingleSelectField;
 
 
 
@@ -20,6 +22,8 @@ public class SelectItemQueryForm extends QueryForm {
 		this.addField(table.getSmallintItemField()).setMatchType(MatchType.FULL);
 		this.addField(table.getIntegerIetmField()).setMatchType(MatchType.FULL);
 		this.addField(table.getBigintItemField()).setMatchType(MatchType.FULL);
-
+		this.addField(table.getPresenceItemField()).setMatchType(MatchType.FULL);
+		this.addField(new PropertiesSingleSelectField("psel", "presence", 1));
+		this.addField(new PropertiesMultiSelectField("pmsel", "presence", 1));
 	}
 }

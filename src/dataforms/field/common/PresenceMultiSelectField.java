@@ -6,12 +6,12 @@ import dataforms.dao.sqldatatype.SqlVarchar;
 /**
  * 有無フィールドクラス。
  */
-public class PresenceField extends PropertiesSingleSelectField implements SqlVarchar {
+public class PresenceMultiSelectField extends PropertiesMultiSelectField implements SqlVarchar {
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public PresenceField(final String id) {
+	public PresenceMultiSelectField(final String id) {
 		super(id, "presence", 1);
 	}
 }

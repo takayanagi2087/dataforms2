@@ -1,13 +1,17 @@
 package dataforms.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import dataforms.controller.Page;
 import dataforms.exception.ApplicationError;
+import dataforms.field.common.SelectField;
 
 
 /**
@@ -18,7 +22,7 @@ public final class MessagesUtil {
     /**
      * Log.
      */
-	private static Logger log = Logger.getLogger(MessagesUtil.class.getName());
+	private static Logger logger = Logger.getLogger(MessagesUtil.class.getName());
 
 	/**
 	 * クライアント用メッセージプロパティ。
@@ -39,7 +43,7 @@ public final class MessagesUtil {
 	 * メッセージプロパティ(アプリケーション独自)。
 	 */
 	private static String appMessagesName = null;
-	
+
 	/**
 	 * クライアントメッセージ送信モード。
 	 *
@@ -48,7 +52,7 @@ public final class MessagesUtil {
 		/**
 		 * ページに関する全メッセージリソースをクライアントに送信します。
 		 */
-		ALL, 
+		ALL,
 		/**
 		 * client-message,app-client-messageとXXXPage.propertiesのみ送信します。
 	 	 * message, app-messageはJavascriptで使用不可となります。
@@ -63,14 +67,14 @@ public final class MessagesUtil {
 		@Deprecated
 		SEND_AT_ANY_TIME
 	}
-	
+
 
 	/**
 	 * クライアントメッセージモード。
 	 */
 	private static ClientMessageTransfer clientMessageTransfer = null;
-	
-	
+
+
 	/**
 	 * クライアントメッセージモードを取得します。
 	 * @return クライアントメッセージモード。
@@ -115,8 +119,8 @@ public final class MessagesUtil {
 		MessagesUtil.messagesName = messagesName;
 	}
 
-	
-	
+
+
     /**
      * クライアント用のメッセージリソース(アプリケーション独自)を設定します。
      * @param appClientMessagesName クライアント用のメッセージリソース(アプリケーション独自)。
@@ -153,7 +157,7 @@ public final class MessagesUtil {
 			String proptext = page.getWebResource(proppath);
 			prop.loadText(proptext);
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new ApplicationError(e);
 		}
 		return prop;
@@ -161,7 +165,7 @@ public final class MessagesUtil {
 
 	/**
 	 * 指定されたプロパティファイルからメッセージを取得ます。
-	 * 
+	 *
 	 * @param page ページ。
 	 * @param messageKey メッセージキー。
 	 * @param prop プロパティファイルのパス。
@@ -175,7 +179,7 @@ public final class MessagesUtil {
 		}
 		return msg;
 	}
-	
+
     /**
      * メッセージを取得します。
      * <pre>
@@ -219,7 +223,7 @@ public final class MessagesUtil {
 
 	/**
 	 * メッセージを取得します。
-	 * 
+	 *
 	 * <pre>
 	 * {@code
 	 * 指定されたキーのメッセージを読み込みます。
@@ -228,7 +232,7 @@ public final class MessagesUtil {
 	 * 上記に無い場合、"<page-path>.properties"に指定されたファイルからメッセージを取得します。
 	 * }
 	 * </pre>
-	 * 
+	 *
 	 * @param page
 	 *            ページ情報。言語の判定などに使用します。
 	 * @param messageKey
@@ -236,7 +240,7 @@ public final class MessagesUtil {
 	 * @return メッセージ。
 	 */
 	public static String getMessage(final Page page, final String messageKey) {
-		
+
 		String clsname = page.getClass().getName();
 		String pageprop = "/" + clsname.replaceAll("\\.", "/");
 		Map<String, String> pageMap = MessagesUtil.getMessageMap(page, pageprop);
@@ -267,7 +271,7 @@ public final class MessagesUtil {
 
 	/**
 	 * クライアント用のメッセージマップを取得します。
-	 * 
+	 *
 	 * <pre>
 	 * サーブレットの初期化パラメータ、"client-messages"に指定されたファイルから
 	 * メッセージマップを取得します。
@@ -312,4 +316,27 @@ public final class MessagesUtil {
 		return ret;
 	}
 
+	/**
+	 * PropertiesXXXSelectFieldの選択肢を取得します。
+	 * @param page ページ。
+	 * @param pkey propertiesのキー。
+	 * @return 選択肢リスト。
+	 * @throws Exception 例外。
+	 */
+	public static List<Map<String, Object>> getSelectFieldOption(final Page page, final String pkey) throws Exception {
+		List<Map<String, Object>> options = new ArrayList<Map<String, Object>>();
+		Map<String, String> map = MessagesUtil.getClientMessageMap(page);
+		Set<String> keyset = map.keySet();
+		for (String k: keyset) {
+			if (k.indexOf(pkey) == 0) {
+				String value = k.replaceAll(pkey + ".", "");
+				String name = map.get(k);
+				SelectField.OptionEntity e = new SelectField.OptionEntity();
+				e.setValue(value);
+				e.setName(name);
+				options.add(e.getMap());
+			}
+		}
+		return options;
+	}
 }

@@ -46,6 +46,7 @@ input,select,textarea {
 .headerDiv td.systemName {
 	white-space: nowrap;
 	width: 220px;
+	overflow: hidden;
 }
 
 .headerDiv div.systemName {
@@ -59,8 +60,8 @@ input,select,textarea {
 
 
 /* ユーザ情報 */
-.headerDiv .loginInfo {
-	width: 220px;
+.headerDiv td.loginInfo {
+	width: 320px;
 }
 
 

@@ -31,13 +31,6 @@ input,select,textarea {
 .headerDiv td {
 }
 
-/* メニューボタン指定 */
-.showMenuButton {
-	display: inline-block;
-	width: 32px;
-	height: 32px;
-	background: url(./image/menu.png) left top no-repeat;
-}
 
 .headerDiv table {
 	height: 140px;
@@ -55,15 +48,26 @@ input,select,textarea {
 	margin: 1px;
 }
 
-/* システム名ブロックサイズ指定 */
+/* システム名ブロック */
 .headerDiv td.systemName {
-	white-space: nowrap;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
 }
 
+/* メニューボタン指定 */
+.headerDiv .showMenuButton {
+	width: 44px;
+	height: 44px;
+	background: url(./image/menu.png) left top no-repeat;
+	background-size: contain;
+}
+
+/* システム名ブロックサイズ指定 */
 .headerDiv div.systemName {
-	position:relative;
-	top: -8px;
-	display: inline-block;
+	height: 44px;
+	white-space: nowrap;
+	line-height: normal;
 }
 
 /* ページ名ブロック */
@@ -88,7 +92,7 @@ input,select,textarea {
 .leftbarDiv {
 	display: none;
 	position: absolute;
-	top: 122px;
+	top: 68px;
 	left: 10px;
 	width: 220px;
 	background-color: rgba(192,192,192,1.0);

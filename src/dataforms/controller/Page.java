@@ -391,7 +391,7 @@ public class Page extends DataForms {
 	public String getPreloadTags() throws Exception {
 		this.addPreloadCss(this.getPageFramePath() + "/Frame.css");
 		this.addPreloadCss(this.getPageFramePath() + "/HtmlTable.css");
-		this.addPreloadCss(this.getPageFramePath() + "/AppFrame.css");
+		//this.addPreloadCss(this.getPageFramePath() + "/AppFrame.css");
 		String context = this.getRequest().getContextPath();
 		StringBuilder sb = new StringBuilder();
 		for (String css : this.preloadCssList) {
@@ -402,19 +402,22 @@ public class Page extends DataForms {
 			}
 		}
 		for (String[] css : Page.preloadMediaCssList) {
-			{
-				String csspath = this.getAppropriatePath(this.getPageFramePath() + "/" + css[0], this.getRequest());
-				if (csspath != null) {
-					String t = this.getLastUpdate(csspath);
-					sb.append("\t\t<link type=\"text/css\" href=\"" + context + csspath + "?t=" + t + "\" rel=\"stylesheet\" media=\"" + css[1] + "\"/>\n");
-				}
+			String csspath = this.getAppropriatePath(this.getPageFramePath() + "/" + css[0], this.getRequest());
+			if (csspath != null) {
+				String t = this.getLastUpdate(csspath);
+				sb.append("\t\t<link type=\"text/css\" href=\"" + context + csspath + "?t=" + t + "\" rel=\"stylesheet\" media=\"" + css[1] + "\"/>\n");
 			}
-			{
-				String csspath = this.getAppropriatePath(this.getPageFramePath() + "/App" + css[0], this.getRequest());
-				if (csspath != null) {
-					String t = this.getLastUpdate(csspath);
-					sb.append("\t\t<link type=\"text/css\" href=\"" + context + csspath + "?t=" + t + "\" rel=\"stylesheet\" media=\"" + css[1] + "\"/>\n");
-				}
+		}
+		{
+			String csspath = this.getAppropriatePath(this.getPageFramePath() + "/AppFrame.css", this.getRequest());
+			String t = this.getLastUpdate(csspath);
+			sb.append("\t\t<link type=\"text/css\" href=\"" + context + this.getPageFramePath() + "/AppFrame.css" + "?t=" + t + "\" rel=\"stylesheet\" />\n");
+		}
+		for (String[] css : Page.preloadMediaCssList) {
+			String csspath = this.getAppropriatePath(this.getPageFramePath() + "/App" + css[0], this.getRequest());
+			if (csspath != null) {
+				String t = this.getLastUpdate(csspath);
+				sb.append("\t\t<link type=\"text/css\" href=\"" + context + csspath + "?t=" + t + "\" rel=\"stylesheet\" media=\"" + css[1] + "\"/>\n");
 			}
 		}
 		List<String> basicScripts = this.getBasicJsCache();

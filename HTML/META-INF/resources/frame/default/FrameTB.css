@@ -28,29 +28,27 @@ input,select,textarea {
 
 
 /* ヘッダ周りのスタイル */
-/* ヘッダ部の高さ指定 */
-.headerDiv td {
-	height: 36px;
+
+/* システム名ブロック */
+.headerDiv td.systemName {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
 }
 
 /* メニューボタン指定 */
-.showMenuButton {
-	display: inline-block;
+.headerDiv .showMenuButton {
 	width: 32px;
 	height: 32px;
+	min-width: 32px;
 	background: url(./image/menu.png) left top no-repeat;
-}
-
-/* システム名ブロックサイズ指定 */
-.headerDiv td.systemName {
-	white-space: nowrap;
-	width: 220px;
+	background-size: contain;
 }
 
 .headerDiv div.systemName {
-	position:relative;
-	top: -8px;
-	display: inline-block;
+	white-space: nowrap;
+	line-height: normal;
+	overflow: hidden;
 }
 
 /* ページ名ブロック */
@@ -59,8 +57,8 @@ input,select,textarea {
 
 
 /* ユーザ情報 */
-.headerDiv #loginInfo {
-	width: 220px;
+.headerDiv td.loginInfo {
+	width: 320px;
 }
 
 #bodyTable #leftbarTd {
@@ -68,12 +66,12 @@ input,select,textarea {
 }
 
 
-/* 左サイドバー(携帯の場合はプルダウンメニュー) */
+/* 左サイドバー(タブレットの場合はプルダウンメニュー) */
 .menuDiv,
 .leftbarDiv {
 	display:none;
 	position:absolute;
-	top:50px;
+	top:64px;
 	left:10px;
 	width: 220px;
 	background-color: rgba(192,192,192,1.0);

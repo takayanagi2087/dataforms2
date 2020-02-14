@@ -59,7 +59,7 @@ input,select,textarea {
 .headerDiv .showMenuButton {
 	width: 44px;
 	height: 44px;
-	background: url(./image/menu.png) left top no-repeat;
+	background: url(./image/menu.svg) left top no-repeat;
 	background-size: contain;
 }
 

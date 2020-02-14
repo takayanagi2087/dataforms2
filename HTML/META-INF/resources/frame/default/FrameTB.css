@@ -41,7 +41,7 @@ input,select,textarea {
 	width: 32px;
 	height: 32px;
 	min-width: 32px;
-	background: url(./image/menu.png) left top no-repeat;
+	background: url(./image/menu.svg) left top no-repeat;
 	background-size: contain;
 }
 

@@ -24,7 +24,7 @@ class DocFramePage extends BasePage {
 			this.find("#docFrame").attr("src", src);
 		}
 		this.find("a").click(function() {
-			var id = $(this).attr(this.getIdAttribute());
+			var id = $(this).attr(thisPage.getIdAttribute());
 			var src = "../../../../doc/" + id;
 			thisPage.find("#docFrame").attr("src", src);
 
@@ -42,10 +42,12 @@ class DocFramePage extends BasePage {
 	 * Windowサイズ変更の際のiframeのサイズを調整します。
 	 */
 	onResize() {
-		var h = $(window).height() - $(this.convertSelector("#headerDiv")).height() - $(this.convertSelector("#footerDiv")).height();
-		logger.log("h=" + h + "," + $(window).height() + "," + $(this.convertSelector("#headerDiv")).height() + "," + $(this.convertSelector("#footerDiv")).height());
-		$(this.convertSelector("#mainDiv")).css("height", (h - 32) + "px");
-		$(this.convertSelector("#docFrame")).css("height", (h - 64) + "px");
+		this.adjustDocFrameHeight();
+	}
+
+	adjustDocFrameHeight() {
+		var docFrame = this.find("#docFrame");
+		docFrame.height(docFrame.contents().find("body").height() + 72);
 	}
 
 	/**
@@ -62,6 +64,7 @@ class DocFramePage extends BasePage {
 			this.setTableNo(docFrame);
 			this.setFileNo(docFrame);
 		}
+		this.adjustDocFrameHeight();
 	}
 
 	/**

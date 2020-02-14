@@ -1,0 +1,42 @@
+@charset "UTF-8";
+/*
+ * アコーディオンメニュー用スタイル(開始).
+ */
+li{
+	list-style: none;
+	text-align: left;
+}
+
+ul.accordion{
+	width:210px;
+	overflow: hidden;
+	padding:2px 2px 2px 2px;
+}
+
+ul.accordion ul{
+	display: none;
+	text-align: left;
+	padding:2px 2px 2px 2px;
+}
+
+
+ul.accordion li p{
+	background: #c0c0e0;
+	padding:2px 2px 2px 2px;
+	margin:1px 1px 1px 1px;
+	border-bottom: 1px solid #0f0f0f;
+	cursor: pointer;/*カーソルを通常の物に*/
+}
+
+ul.accordion ul li{
+	background: #f0f0f0;
+	padding:1px 1px 1px 10px;
+	border-bottom: 1px dashed #fff;
+}
+
+ul.accordion ul li:last-child{
+	border:none;
+}
+/*
+ * アコーディオンメニュー用スタイル(終了).
+ */

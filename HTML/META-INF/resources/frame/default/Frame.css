@@ -12,40 +12,6 @@ html,body {
 	margin: 4px;
 }
 
-table { font-weight:normal; border : 0px;}
-table caption {
-	font-weight: bold;
-	text-align: left;
-}
-tr {
-	height: 26px;
-	line-height: 26px;
-	border : 0px;
-}
-
-th {background-color: #E0E0FF; text-align:center; font-weight:normal; border : 0px;}
-td {border:0px;}
-h1 {font-size: 120%;}
-h2 {font-size: 120%;}
-
-
-/* テーブル奇数行のスタイル */
-.oddTr {
-	background-color:#ffffff
-}
-
-/* テーブルの偶数行のスタイル*/
-.evenTr {
-	background-color:rgb(232,242,254)
-}
-
-/* 必須入力フィールドのスタイル */
-.requiredFieldLabel:after {
-	content: " (*)";
-	display: inline;
-	color: red;
-}
-
 /*
  * ヘッダ領域(開始)
  */
@@ -62,6 +28,7 @@ h2 {font-size: 120%;}
 .headerDiv table td {
 	padding: 6px;
 }
+
 /* システム名ブロック */
 .headerDiv .systemName {
 	font-size: 140%;
@@ -102,7 +69,13 @@ body > .mainDiv {
  * ボディ領域(終了)
  */
 
+h1 {
+	font-size: 120%;
+}
 
+h2 {
+	font-size: 120%;
+}
 
 /*
  * フッター領域
@@ -114,6 +87,18 @@ body > .mainDiv {
 	height: 30px;
 }
 
+/* ページロックDIVのスタイル */
+.lockLayer {
+	background: url(./image/loading.gif) center no-repeat;
+	background-color: black;
+	position: absolute;
+	display: block;
+	left: 0;
+	top: 0;
+	opacity: 0.0;
+	z-index: 10000;
+}
+
 
 /*
  * エラーメッセージ領域(開始)
@@ -121,56 +106,15 @@ body > .mainDiv {
 .errorMessages {color: red;}
 /* エラーが発生したフィールドのスタイル */
 .errorField {background-color:mistyrose;}
-
+/* 警告行 */
 tr.warnTr td {background-color:khaki;}
-
+/* エラー行 */
 tr.errorTr td {background-color:mistyrose;}
+
 /*
  * エラーメッセージ領域(終了)
  */
 
-
-/*
- * アコーディオンメニュー用スタイル(開始).
- */
-li{
-	list-style: none;
-	text-align: left;
-}
-
-ul.accordion{
-	width:210px;
-	overflow: hidden;
-	padding:2px 2px 2px 2px;
-}
-
-ul.accordion ul{
-	display: none;
-	text-align: left;
-	padding:2px 2px 2px 2px;
-}
-
-
-ul.accordion li p{
-	background: #c0c0e0;
-	padding:2px 2px 2px 2px;
-	margin:1px 1px 1px 1px;
-	border-bottom: 1px solid #0f0f0f;
-	cursor: pointer;/*カーソルを通常の物に*/
-}
-
-ul.accordion ul li{
-	background: #f0f0f0;
-	padding:1px 1px 1px 10px;
-	border-bottom: 1px dashed #fff;
-}
-
-ul.accordion ul li:last-child{
-	border:none;
-}
-/*
- * アコーディオンメニュー用スタイル(終了).
- */
 
 /* 各フォームのスタイル */
 .mainDiv form {
@@ -192,7 +136,6 @@ ul.accordion ul li:last-child{
 	border-left: 10px solid #a9a9a9;
 	border-bottom: 1px dashed #a9a9a9;
 }
-
 
 
 /* javascript無効エラーメッセージの位置指定 */
@@ -221,19 +164,6 @@ ul.accordion ul li:last-child{
 /* テキストボックスロック時のスタイル */
 .lockedTextbox {
 }
-
-/* ページロックDIVのスタイル */
-.lockLayer {
-	background: url(./image/loading.gif) center no-repeat;
-	background-color: black;
-	position: absolute;
-	display: block;
-	left: 0;
-	top: 0;
-	opacity: 0.0;
-	z-index: 10000;
-}
-
 
  /*
   * jQuery-uiのdatepiker関連の設定(開始)。
@@ -276,4 +206,12 @@ ul.accordion ul li:last-child{
  /*
   * jQuery-uiのdatepiker関連の設定(終了)。
   */
+
+
+/* 必須入力フィールドのスタイル */
+.requiredFieldLabel:after {
+	content: " (*)";
+	display: inline;
+	color: red;
+}
 

@@ -45,6 +45,9 @@ class DocFramePage extends BasePage {
 		this.adjustDocFrameHeight();
 	}
 
+	/**
+	 * ドキュメント表示用のiframeの高さを調整します。
+	 */
 	adjustDocFrameHeight() {
 		var docFrame = this.find("#docFrame");
 		docFrame.height(docFrame.contents().find("body").height() + 72);

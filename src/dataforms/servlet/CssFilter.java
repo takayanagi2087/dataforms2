@@ -144,7 +144,7 @@ public class CssFilter implements Filter {
 		if (CssFilter.varMap != null) {
 			String ret = css;
 			for (String key: CssFilter.varMap.keySet()) {
-				String p = "var\\s*\\(\\s*" + key + "\\s*\\)";
+				String p = "var\\s*\\(\\s*?" + key + "\\s*?\\)";
 				String v = CssFilter.varMap.get(key);
 				ret = ret.replaceAll(p, v);
 			}

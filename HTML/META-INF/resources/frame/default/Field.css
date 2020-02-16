@@ -51,52 +51,8 @@
 }
 
 
-/* PC */
-@media screen and (min-width: var(--pc-screen-min)) {
-	input,select,textarea {
-		font-size:10pt;
-	}
-
-	/* 入力フィールドの高さ */
-	input[type="text"], input[type="email"], input[type="search"], input[type="password"] {
-		height: 20px;
-		width: calc(100% - 4px);
-	}
-
-	input[type="file"] {
-		height: 24px;
-		width: calc(100% - 4px);
-	}
-
-	textarea {
-		width: calc(100% - 4px);
-		height: calc(100% - 4px);
-	}
-
-	select {
-		height: 26px;
-		width: 100%;
-	}
-	/* フィールド値を表示するspanに適したスタイル */
-	.fieldSpan {
-		display:table-cell;
-		height: 20px;
-		vertical-align: middle;
-	}
-
-	/* ボタンサイズを指定 */
-	.mainDiv input[type='button'],
-	.mainDiv input[type='submit'],
-	.mainDiv button {
-		height: 22px;
-		line-height: 16px;
-	}
-
-
-}
-
-/* タブレット */
-@media screen and (min-width: var(--tb-screen-min)) and (max-width: var(--tb-screen-max)) {
+/* PC,タブレット */
+@media screen and (min-width: var(--tb-screen-min)) {
 	input,select,textarea {
 		font-size:10pt;
 	}

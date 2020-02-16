@@ -21,48 +21,8 @@
 	border-bottom: 1px dashed #a9a9a9;
 }
 
- /* PC */
-@media screen and (min-width: var(--pc-screen-min)) {
-	.mainDiv table.responsive th,
-	.mainDiv table.responsive td {
-		height: 22px;
-	}
-
-	/* レスポンシブテーブルの制御設定 */
-	table.responsive {
-		width: 100%;
-	}
-
-	/* <th></th><td></td>のみのテーブル */
-	table.thtd th {
-		width: 30%;
-	}
-
-	table.thtd td {
-		width: 70%;
-	}
-
-	/* <th></th><td></td>の2回繰り返しテーブル */
-	table.thtdthtd th {
-		width: 20%;
-	}
-
-	table.thtdthtd td {
-		width: 30%;
-	}
-
-	/* <th></th><td></td>の3回繰り返しテーブル */
-	table.thtdthtdthtd th {
-		width: 10%;
-	}
-
-	table.thtdthtdthtd td {
-		width: 15%;
-	}
-}
-
-/* タブレット */
-@media screen and (min-width: var(--tb-screen-min)) and (max-width: var(--tb-screen-max)) {
+/* PC,タブレット */
+@media screen and (min-width: var(--tb-screen-min)) {
 	.mainDiv table.responsive th,
 	.mainDiv table.responsive td {
 		height: 22px;

@@ -126,54 +126,26 @@ table.columnFixedTable .fixedColumn {
 	position: sticky;
 }
 
-/* PC */
-@media screen and (min-width: var(--pc-screen-min)) {
-	/* 編集可能テーブル(追加削除ボタンカラムのスタイル) */
-	.editableTable .buttonColumn {
-		width: 34px;
-	}
-
-	.editableTable [data-id$='addButton'],
-	.editableTable [data-id$='deleteButton'],
-	.editableTable [id$='addButton'],
-	.editableTable [id$='deleteButton'] {
-		width: 32px;
-	}
-
-	/* 検索結果フォームのページ制御関連のスタイル */
-	.queryResultForm .linesPerPage,
-	.queryResultForm .pageNo {
-		width: 64px;
-	}
-
-	.queryResultForm .topPageButton,
-	.queryResultForm .prevPageButton,
-	.queryResultForm .nextPageButton,
-	.queryResultForm .bottomPageButton {
-		width: 32px;
-	}
+/* 編集可能テーブル(追加削除ボタンカラムのスタイル) */
+.editableTable .buttonColumn {
+	width: 34px;
 }
 
-/* タブレット */
-@media screen and (min-width: var(--tb-screen-min)) and (max-width: var(--tb-screen-max)) {
-	/* 編集可能テーブル(追加削除ボタンカラムのスタイル) */
-	.editableTable .buttonColumn {
-		width: 34px;
-	}
+.editableTable [data-id$='addButton'],
+.editableTable [data-id$='deleteButton'],
+.editableTable [id$='addButton'],
+.editableTable [id$='deleteButton'] {
+	width: 32px;
+}
 
-	.editableTable [data-id$='addButton'],
-	.editableTable [data-id$='deleteButton'],
-	.editableTable [id$='addButton'],
-	.editableTable [id$='deleteButton'] {
-		width: 32px;
-	}
+/* 検索結果フォームのページ制御関連のスタイル */
+.queryResultForm .linesPerPage,
+.queryResultForm .pageNo {
+	width: 64px;
+}
 
-	/* 検索結果フォームのページ制御関連のスタイル */
-	.queryResultForm .linesPerPage,
-	.queryResultForm .pageNo {
-		width: 64px;
-	}
-
+/* PC,タブレット */
+@media screen and (min-width: var(--tb-screen-min)) {
 	.queryResultForm .topPageButton,
 	.queryResultForm .prevPageButton,
 	.queryResultForm .nextPageButton,
@@ -184,23 +156,14 @@ table.columnFixedTable .fixedColumn {
 
 /* スマートフォン */
 @media screen and (max-width: var(--sp-screen-max)) {
-	/* 編集可能テーブル(追加削除ボタンカラムのスタイル) */
-	.editableTable .buttonColumn {
-		width: 34px;
+	table.columnFixedTable tr {
+		height: 36px;
+		line-height: 36px;
 	}
 
-	.editableTable [data-id$='addButton'],
-	.editableTable [data-id$='deleteButton'],
-	.editableTable [id$='addButton'],
-	.editableTable [id$='deleteButton'] {
-		width: 32px;
-	}
-
-
-	/* 検索結果フォームのページ制御関連のスタイル */
-	.queryResultForm .linesPerPage,
-	.queryResultForm .pageNo {
-		width: 64px;
+	table.columnFixedTable th,
+	table.columnFixedTable td {
+		height: 36px;
 	}
 
 	.queryResultForm .topPageButton,

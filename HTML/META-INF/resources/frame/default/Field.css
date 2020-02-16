@@ -1,0 +1,179 @@
+@charset "UTF-8";
+
+/* テキストボックスロック時のスタイル */
+.lockedTextbox {
+}
+
+ /*
+  * jQuery-uiのdatepiker関連の設定(開始)。
+  */
+.ui-datepicker-trigger {
+	line-height: normal;
+	margin: 0px;
+	width: 25px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #808080;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+.ui-datepicker { z-index: 100 !important; }
+
+
+ /* Datepickerの設定されたフィールド */
+.hasDatepicker {
+	width: calc(100% - 32px) !important;
+}
+
+/* 範囲フィールドのクラス */
+.rangeField {
+	width: calc((100% - 32px) / 2) !important;
+}
+
+/* 日付範囲フィールドのクラス */
+.dateRangeField {
+	width: calc((100% - 32px) / 2 - 32px) !important;
+}
+
+/*
+ * jQuery-uiのdatepiker関連の設定(終了)。
+ */
+
+
+/* 必須入力フィールドのスタイル */
+.requiredFieldLabel:after {
+	content: " (*)";
+	display: inline;
+	color: red;
+}
+
+
+/* PC */
+@media screen and (min-width: var(--pc-screen-min)) {
+	input,select,textarea {
+		font-size:10pt;
+	}
+
+	/* 入力フィールドの高さ */
+	input[type="text"], input[type="email"], input[type="search"], input[type="password"] {
+		height: 20px;
+		width: calc(100% - 4px);
+	}
+
+	input[type="file"] {
+		height: 24px;
+		width: calc(100% - 4px);
+	}
+
+	textarea {
+		width: calc(100% - 4px);
+		height: calc(100% - 4px);
+	}
+
+	select {
+		height: 26px;
+		width: 100%;
+	}
+	/* フィールド値を表示するspanに適したスタイル */
+	.fieldSpan {
+		display:table-cell;
+		height: 20px;
+		vertical-align: middle;
+	}
+
+	/* ボタンサイズを指定 */
+	.mainDiv input[type='button'],
+	.mainDiv input[type='submit'],
+	.mainDiv button {
+		height: 22px;
+		line-height: 16px;
+	}
+
+
+}
+
+/* タブレット */
+@media screen and (min-width: var(--tb-screen-min)) and (max-width: var(--tb-screen-max)) {
+	input,select,textarea {
+		font-size:10pt;
+	}
+
+	/* 入力フィールドの高さ */
+	input[type="text"], input[type="email"], input[type="search"], input[type="password"] {
+		height: 20px;
+		width: calc(100% - 4px);
+	}
+
+	input[type="file"] {
+		height: 24px;
+		width: calc(100% - 4px);
+	}
+	textarea {
+		width: calc(100% - 4px);
+		height: calc(100% - 4px);
+	}
+
+	select {
+		height: 26px;
+		width: 100%;
+	}
+
+	/* フィールド値を表示するspanに適したスタイル */
+	.fieldSpan {
+		display:table-cell;
+		height: 20px;
+		vertical-align: middle;
+	}
+
+	/* ボタンサイズを指定 */
+	.mainDiv input[type='button'],
+	.mainDiv input[type='submit'],
+	.mainDiv button {
+		height: 22px;
+		line-height: 16px;
+	}
+
+}
+
+/* スマートフォン */
+@media screen and (max-width: var(--sp-screen-max)) {
+	input,select,textarea {
+		font-size:11pt;
+	}
+
+	/* 入力フィールドの高さ */
+	input[type="text"], input[type="email"], input[type="search"], input[type="password"], input[type="file"] {
+		height: 32px;
+		width: calc(100% - 4px);
+	}
+
+	textarea {
+		width: calc(100% - 4px);
+		height: calc(100% - 4px);
+	}
+
+	select {
+		height: 38px;
+		width: 100%;
+	}
+
+
+	/* フィールド値を表示するspanに適したスタイル */
+	.fieldSpan {
+		display:table-cell;
+		height: 20px;
+		vertical-align: middle;
+	}
+
+	/* ボタンサイズを指定 */
+	.mainDiv input[type='button'],
+	.mainDiv input[type='submit'],
+	.mainDiv button {
+		height: 32px;
+	}
+
+}
+

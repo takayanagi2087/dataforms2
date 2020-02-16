@@ -40,3 +40,64 @@ ul.accordion ul li:last-child{
 /*
  * アコーディオンメニュー用スタイル(終了).
  */
+
+.menuDiv {
+	z-index: 100;
+}
+
+
+ /* PC */
+@media screen and (min-width: var(--pc-screen-min)) {
+	.bodyTable .leftbarTd {
+		width: 220px;
+		max-width: 220px;
+	}
+
+	/* 左サイドバー(常に表示されているメニュー) */
+	.menuDiv,
+	.leftbarDiv {
+		display:block;
+		width: 220px;
+		max-width: 220px;
+		clear: both;
+		padding: 6px;
+		margin: 0px;
+		border:0px;
+	}
+}
+
+/* タブレット */
+@media screen and (min-width: var(--tb-screen-min)) and (max-width: var(--tb-screen-max)) {
+	.bodyTable .leftbarTd {
+		width: 0px;
+	}
+	/* 左サイドバー(タブレットの場合はプルダウンメニュー) */
+	.menuDiv,
+	.leftbarDiv {
+		display:none;
+		position:absolute;
+		top:64px;
+		left:10px;
+		width: 220px;
+		background-color: rgba(192,192,192,1.0);
+	}
+}
+
+/* スマートフォン */
+@media screen and (max-width: var(--sp-screen-max)) {
+	.bodyTable .leftbarTd {
+		width: 0px;
+	}
+	/* 左サイドバー(携帯の場合はプルダウンメニュー) */
+	.menuDiv,
+	.leftbarDiv {
+		display: none;
+		position: absolute;
+		top: 68px;
+		left: 10px;
+		width: 220px;
+		background-color: rgba(192,192,192,1.0);
+	}
+}
+
+

@@ -297,26 +297,6 @@
 		<param-value>false</param-value>
 	</context-param>
 	<!--
-		画面の解像度に応じたcssファイルを指定します。
-		この設定で以下のようなHTMLを生成します。
-
-		<link type="text/css" href="/dataforms/frame/default/FrameSP.css" rel="stylesheet" media="screen and (max-width: 767px)"/>
-		<link type="text/css" href="/dataforms/frame/default/FramePC.css" rel="stylesheet" media="screen and (min-width: 1025px)"/>
-		<link type="text/css" href="/dataforms/frame/default/FrameTB.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 1024px)"/>
-	-->
-	<context-param>
-		<param-name>css-media:FramePC.css</param-name>
-		<param-value>screen and (min-width: 1025px)</param-value>
-	</context-param>
-	<context-param>
-		<param-name>css-media:FrameTB.css</param-name>
-		<param-value>screen and (min-width: 768px) and (max-width: 1024px)</param-value>
-	</context-param>
-	<context-param>
-		<param-name>css-media:FrameSP.css</param-name>
-		<param-value>screen and (max-width: 767px)</param-value>
-	</context-param>
-	<!--
 		ブラウザの戻るボタンの動作を設定します。
 		disabledを指定した場合、戻るボタンが機能しなくなります。
 	 -->

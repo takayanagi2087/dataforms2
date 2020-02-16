@@ -634,9 +634,9 @@ public class WebComponent implements JDBCConnectableObject {
 	}
 
     /**
-     * HTMLテキスト中のBodyの内容を取得します。
+     * HTMLテキスト中のHeadの内容を取得します。
      * <pre>
-     * BODY TAGが無い場合html全体を返します。
+     * HEAD TAGが無い場合html全体を返します。
      * </pre>
      * @param htmltext HTMLのテキスト。
      * @return Bodyの中のテキスト。

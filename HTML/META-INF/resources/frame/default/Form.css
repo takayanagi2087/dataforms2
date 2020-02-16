@@ -1,0 +1,134 @@
+@charset "UTF-8";
+
+/* 各フォームのスタイル */
+.mainDiv form {
+	margin:5px;
+	padding:10px;
+	background: #fff;
+	border: 1px #ccc solid;
+	box-shadow: 0 2px 3px 0 #ddd;
+	-moz-box-shadow: 0 2px 3px 0 #ddd;
+	-webkit-box-shadow: 0 2px 3px 0 #ddd;
+}
+
+/* 各フォームヘッダのスタイル */
+.formHeader {
+	font-size: 120%;
+	margin-top: 1px;
+	margin-bottom: 5px;
+	padding: 5px;
+	border-left: 10px solid #a9a9a9;
+	border-bottom: 1px dashed #a9a9a9;
+}
+
+ /* PC */
+@media screen and (min-width: var(--pc-screen-min)) {
+	.mainDiv table.responsive th,
+	.mainDiv table.responsive td {
+		height: 22px;
+	}
+
+	/* レスポンシブテーブルの制御設定 */
+	table.responsive {
+		width: 100%;
+	}
+
+	/* <th></th><td></td>のみのテーブル */
+	table.thtd th {
+		width: 30%;
+	}
+
+	table.thtd td {
+		width: 70%;
+	}
+
+	/* <th></th><td></td>の2回繰り返しテーブル */
+	table.thtdthtd th {
+		width: 20%;
+	}
+
+	table.thtdthtd td {
+		width: 30%;
+	}
+
+	/* <th></th><td></td>の3回繰り返しテーブル */
+	table.thtdthtdthtd th {
+		width: 10%;
+	}
+
+	table.thtdthtdthtd td {
+		width: 15%;
+	}
+}
+
+/* タブレット */
+@media screen and (min-width: var(--tb-screen-min)) and (max-width: var(--tb-screen-max)) {
+	.mainDiv table.responsive th,
+	.mainDiv table.responsive td {
+		height: 22px;
+	}
+
+	/* レスポンシブテーブルの制御設定 */
+	table.responsive {
+		width: 100%;
+	}
+
+
+	/* レスポンシブテーブルの制御設定 */
+	table.responsive {
+		width: 100%;
+	}
+
+	/* <th></th><td></td>のみのテーブル */
+	table.thtd th {
+		width: 30%;
+	}
+
+	table.thtd td {
+		width: 70%;
+	}
+
+	/* <th></th><td></td>の2回繰り返しテーブル */
+	table.thtdthtd th {
+		width: 20%;
+	}
+
+	table.thtdthtd td {
+		width: 30%;
+	}
+
+	/* <th></th><td></td>の3回繰り返しテーブル */
+	table.thtdthtdthtd th {
+		width: 10%;
+	}
+
+	table.thtdthtdthtd td {
+		width: 15%;
+	}
+}
+
+/* スマートフォン */
+@media screen and (max-width: var(--sp-screen-max)) {
+	.mainDiv table.responsive th,
+	.mainDiv table.responsive td {
+		height: 40px;
+	}
+
+	/* レスポンシブテーブルの制御設定 */
+	table.responsive {
+		width: 100%;
+	}
+
+	table.responsive tbody tr th,
+	table.responsive tbody tr td
+	{
+		display: inline-block;
+		vertical-align: middle;
+		width: 100%;
+		margin: 1px;
+	}
+
+	table.responsive tbody tr th {
+		padding-top: 12px;
+	}
+}

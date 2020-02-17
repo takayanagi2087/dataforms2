@@ -46,7 +46,7 @@ ul.accordion ul li:last-child{
 }
 
 
- /* PC */
+ /* PC  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (min-width: var(--pc-screen-min)) {
 	.bodyTable .leftbarTd {
 		width: 220px;
@@ -66,7 +66,7 @@ ul.accordion ul li:last-child{
 	}
 }
 
-/* タブレット */
+/* タブレット  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (min-width: var(--tb-screen-min)) and (max-width: var(--tb-screen-max)) {
 	.bodyTable .leftbarTd {
 		width: 0px;
@@ -83,7 +83,7 @@ ul.accordion ul li:last-child{
 	}
 }
 
-/* スマートフォン */
+/* スマートフォン  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (max-width: var(--sp-screen-max)) {
 	.bodyTable .leftbarTd {
 		width: 0px;

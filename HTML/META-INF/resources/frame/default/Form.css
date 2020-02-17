@@ -21,7 +21,7 @@
 	border-bottom: 1px dashed #a9a9a9;
 }
 
-/* PC,タブレット */
+/* PC,タブレット  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (min-width: var(--tb-screen-min)) {
 	.mainDiv table.responsive th,
 	.mainDiv table.responsive td {
@@ -67,7 +67,7 @@
 	}
 }
 
-/* スマートフォン */
+/* スマートフォン  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (max-width: var(--sp-screen-max)) {
 	.mainDiv table.responsive th,
 	.mainDiv table.responsive td {

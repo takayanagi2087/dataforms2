@@ -92,7 +92,7 @@ h2 {
  	text-align: right;
 }
 
-/* PC */
+/* PC  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (min-width: var(--pc-screen-min)) {
 	/* 基本フォントサイズ */
 	html,body {
@@ -137,7 +137,7 @@ h2 {
 	}
 }
 
-/* タブレット */
+/* タブレット  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (min-width: var(--tb-screen-min)) and (max-width: var(--tb-screen-max)) {
 	/* 基本フォントサイズ */
 	html,body {
@@ -181,7 +181,7 @@ h2 {
 	}
 }
 
-/* スマートフォン */
+/* スマートフォン  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (max-width: var(--sp-screen-max)) {
 	/* 基本フォントサイズ */
 	html,body {

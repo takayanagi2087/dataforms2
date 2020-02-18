@@ -10,14 +10,8 @@ table caption {
 	font-weight: bold;
 	text-align: left;
 }
-tr {
-	height: 26px;
-	line-height: 26px;
-	border : 0px;
-}
 
 th {background-color: #E0E0FF; text-align:center; font-weight:normal; border : 0px;}
-td {border:0px;}
 
 /* テーブル奇数行のスタイル */
 .oddTr {

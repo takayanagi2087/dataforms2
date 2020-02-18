@@ -164,6 +164,7 @@ h2 {
 		white-space: nowrap;
 		line-height: normal;
 		overflow: hidden;
+		padding: 3px;
 	}
 
 	/* ページ名ブロック */

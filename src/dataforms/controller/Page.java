@@ -657,6 +657,13 @@ public class Page extends DataForms {
 		logger.info("sendHtml=" + htmlpath);
 		String htmltext = this.getWebResource(htmlpath);
 		htmltext = this.addAppcacheFile(htmltext, context);
+		// langアトリビュートの属性
+		Pattern p = Pattern.compile("\\<html.*?lang\\=.*?\\>");
+		Matcher m = p.matcher(htmltext);
+		if (!m.find()) {
+			htmltext = htmltext.replaceAll("<html" , "<html lang=\"" + req.getLocale().getLanguage() + "\" ");
+		}
+		htmltext = htmltext.replaceAll("\\<[Tt][Ii][Tt][Ll][Ee]>.*\\</[Tt][Ii][Tt][Ll][Ee]\\>", "<title>" + this.getPageTitle() + "</title>");
 		htmltext = htmltext.replaceAll("\\</[Bb][Oo][Dd][Yy]\\>", "\t<noscript><br/><div class='noscriptDiv'><b>" + MessagesUtil.getMessage(this.getPage(), "message.noscript") + "</b></div></noscript>\n\t</body>");
 //		logger.debug("id変換後 html=" + this.convertIdArrtibute(htmltext));
 		return this.convertIdAttribute(htmltext);

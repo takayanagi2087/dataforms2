@@ -7,8 +7,6 @@
 	background: #fff;
 	border: 1px #ccc solid;
 	box-shadow: 0 2px 3px 0 #ddd;
-	-moz-box-shadow: 0 2px 3px 0 #ddd;
-	-webkit-box-shadow: 0 2px 3px 0 #ddd;
 }
 
 /* 各フォームヘッダのスタイル */

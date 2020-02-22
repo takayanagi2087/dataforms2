@@ -2,27 +2,33 @@
 /*
  * アコーディオンメニュー用スタイル(開始).
  */
+ul.accordion {
+	margin: 0px;
+	width:calc(100% - 16px);
+	overflow: hidden;
+	padding:0px;
+	margin: 8px;
+}
+
+
 li{
 	list-style: none;
 	text-align: left;
 }
 
-ul.accordion{
-	width:210px;
-	overflow: hidden;
-	padding:2px 2px 2px 2px;
-}
 
 ul.accordion ul{
 	display: none;
 	text-align: left;
-	padding:2px 2px 2px 2px;
+	padding:0px;
 }
 
 
 ul.accordion li p{
 	background: #c0c0e0;
-	padding:2px 2px 2px 2px;
+	padding-left:6px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 	margin:1px 1px 1px 1px;
 	border-bottom: 1px solid #0f0f0f;
 	cursor: pointer;/*カーソルを通常の物に*/
@@ -49,18 +55,16 @@ ul.accordion ul li:last-child{
  /* PC  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (min-width: var(--pc-screen-min)) {
 	.bodyTable .leftbarTd {
-		width: 220px;
-		max-width: 220px;
+		width: var(--menu-width);
+		max-width: var(--menu-width);
 	}
 
 	/* 左サイドバー(常に表示されているメニュー) */
-	.menuDiv,
-	.leftbarDiv {
+	.menuDiv {
 		display:block;
-		width: 220px;
-		max-width: 220px;
+		width: var(--menu-width);
+		max-width: var(--menu-width);
 		clear: both;
-		padding: 6px;
 		margin: 0px;
 		border:0px;
 	}
@@ -72,13 +76,12 @@ ul.accordion ul li:last-child{
 		width: 0px;
 	}
 	/* 左サイドバー(タブレットの場合はプルダウンメニュー) */
-	.menuDiv,
-	.leftbarDiv {
-		display:none;
-		position:absolute;
-		top:64px;
-		left:10px;
-		width: 220px;
+	.menuDiv {
+		display: none;
+		position: absolute;
+    	top:  50px;
+    	left: 10px;
+		width: var(--menu-width);
 		background-color: rgba(192,192,192,1.0);
 	}
 }
@@ -89,13 +92,12 @@ ul.accordion ul li:last-child{
 		width: 0px;
 	}
 	/* 左サイドバー(携帯の場合はプルダウンメニュー) */
-	.menuDiv,
-	.leftbarDiv {
+	.menuDiv {
 		display: none;
 		position: absolute;
-		top: 68px;
-		left: 10px;
-		width: 220px;
+		top: 56px;
+		left: 12px;
+		width: var(--menu-width);
 		background-color: rgba(192,192,192,1.0);
 	}
 }

@@ -5,12 +5,58 @@
  * 各デバイス共通のスタイルシートです。
  * Fontの指定や配色などを指定します。
  */
-html,body {
+html body {
 	font-weight: normal;
-	width: calc(100% - 8px);
+	width: var(--body-width);
+	min-width: var(--body-min-width);
+}
+
+
+h1 {
+	font-size: 120%;
+	font-weight: bold;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-left: 4px;
+}
+
+h2 {
+	font-size: 120%;
+}
+
+
+/*
+ * ヘッダ領域(開始)
+ */
+.headerDiv {
+	width: 100%;
+}
+
+.headerDiv table {
+	table-layout: fixed;
+	width: 100%;
+}
+
+/* システム名ブロック */
+.headerDiv .systemName {
+	font-size: 140%;
+	text-align: left;
+	background-color: lavender;
+	vertical-align: middle;
+	padding-left: 4px;
+}
+
+/* ページ名ブロック */
+.headerDiv .pageName {
+	background-color: beige;
+ 	text-align: left;
+}
+
+/* ユーザ情報 */
+.headerDiv .loginInfo {
 	height: 100%;
-	min-width: 320px;
-	margin: 4px;
+	background-color: beige;
+ 	text-align: right;
 }
 
 /*
@@ -31,71 +77,22 @@ body > .mainDiv {
  * ボディ領域(終了)
  */
 
-h1 {
-	font-size: 100%;
-	font-weight: bold;
-	margin-top: 0px;
-	margin-bottom: 0px;
-}
-
-h2 {
-	font-size: 120%;
-}
 
 /*
  * フッター領域
  */
 .footerDiv {
-	clear: both;
-	background-color: lavender;
-	width: 100%;
-	height: 30px;
+	background-color: var(--footer-background-color);
+	width: var(--footer-width);
+	height: var(--footer-height);
 }
 
 
-/*
- * ヘッダ領域(開始)
- */
-.headerDiv {
-	width: 100%;
-	clear: both;
-}
-
-.headerDiv table {
-	table-layout: fixed;
-	width: 100%;
-}
-
-.headerDiv table td {
-	padding: 6px;
-}
-
-/* システム名ブロック */
-.headerDiv .systemName {
-	font-size: 140%;
- 	text-align: left;
-	background-color: lavender;
- 	vertical-align: middle;
-}
-
-/* ページ名ブロック */
-.headerDiv .pageName {
-	font-size: 120%;
-	background-color: beige;
- 	text-align: left;
-}
-
-/* ユーザ情報 */
-.headerDiv .loginInfo {
-	height: 100%;
-	background-color: beige;
- 	text-align: right;
-}
 
 /* PC  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (min-width: var(--pc-screen-min)) {
 	/* 基本フォントサイズ */
-	html,body {
+	html body {
 		font-size:10pt;
 	}
 
@@ -112,7 +109,7 @@ h2 {
 	/* システム名ブロックサイズ指定 */
 	.headerDiv td.systemName {
 		white-space: nowrap;
-		width: 220px;
+		width: var(--menu-width);
 		overflow: hidden;
 	}
 
@@ -132,15 +129,15 @@ h2 {
 	}
 
 	.bodyTable .leftbarTd {
-		width: 220px;
-		max-width: 220px;
+		width: var(--menu-width);
+		max-width: var(--menu-width);
 	}
 }
 
 /* タブレット  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (min-width: var(--tb-screen-min)) and (max-width: var(--tb-screen-max)) {
 	/* 基本フォントサイズ */
-	html,body {
+	html body {
 		font-size:10pt;
 	}
 
@@ -164,7 +161,7 @@ h2 {
 		white-space: nowrap;
 		line-height: normal;
 		overflow: hidden;
-		padding: 3px;
+		padding-left: 4px;
 	}
 
 	/* ページ名ブロック */
@@ -185,7 +182,7 @@ h2 {
 /* スマートフォン  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (max-width: var(--sp-screen-max)) {
 	/* 基本フォントサイズ */
-	html,body {
+	html body {
 		font-size:11pt;
 	}
 
@@ -232,6 +229,7 @@ h2 {
 		height: 44px;
 		white-space: nowrap;
 		line-height: normal;
+		padding-left: 4px;
 	}
 
 	/* ページ名ブロック */

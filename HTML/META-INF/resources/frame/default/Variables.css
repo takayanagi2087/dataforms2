@@ -13,9 +13,22 @@
  */
 
 :root {
-	--pc-screen-min: 1025px;
-	--tb-screen-max: 1024px;
-	--tb-screen-min: 769px;
-	--sp-screen-max: 768px;
+	/* デバイス毎の画面サイズ */
+	--pc-screen-min: 1025px;	/* これ以上をPCと判定 */
+	--tb-screen-max: 1024px;	/* これ以下をタブレットと判定 */
+	--tb-screen-min: 769px;		/* これ以上をタブレットと判定 */
+	--sp-screen-max: 768px;		/* これ以下をスマートフォンと判定 */
+
+	/* 各種サイズ */
+	--body-width: calc(100% - 16px);	/* bodyの幅 */
+	--body-min-width: 320px;			/* bodyの最小幅 */
+
+	/* メニュー関連設定 */
+	--menu-width: 220px;	/* メニューの幅 */
+
+	/* フッター関連設定 */
+	--footer-width: 100%;	/* フッターの幅 */
+	--footer-height: 30px;	/* フッターの高さ */
+	--footer-background-color: lavender; /* フッターの背景色 */
 }
 

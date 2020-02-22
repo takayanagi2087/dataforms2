@@ -395,8 +395,7 @@ class Page extends DataForms {
 		$(this.convertSelector("#showMenuButton")).click(function() {
 			var menu = $(thisPage.convertSelector("#menuDiv"));
 			if (menu.length == 0) {
-				// leftbarDivの対応は互換性維持のため
-				$(thisPage.convertSelector("#leftbarDiv")).toggle("blind");
+				;
 			} else {
 				menu.toggle("blind");
 			}
@@ -422,8 +421,6 @@ class Page extends DataForms {
 	onResize() {
 		logger.log("onResize");
 		$(this.convertSelector("#menuDiv")).css("display", "");
-		// leftbarDivの対応は互換性維持のため
-		$(this.convertSelector("#leftbarDiv")).css("display", "");
 	}
 
 

@@ -11,7 +11,9 @@ html body {
 	min-width: var(--body-min-width);
 }
 
-
+/**
+ * ページ名
+ */
 h1 {
 	font-size: 120%;
 	font-weight: bold;
@@ -20,6 +22,9 @@ h1 {
 	padding-left: 4px;
 }
 
+/**
+ *
+ */
 h2 {
 	font-size: 120%;
 }
@@ -43,7 +48,6 @@ h2 {
 	text-align: left;
 	background-color: lavender;
 	vertical-align: middle;
-	padding-left: 4px;
 }
 
 /* ページ名ブロック */
@@ -111,6 +115,7 @@ body > .mainDiv {
 		white-space: nowrap;
 		width: var(--menu-width);
 		overflow: hidden;
+		padding-left: 4px;
 	}
 
 	.headerDiv div.systemName {

@@ -85,11 +85,12 @@
 	}
 
 	/* ボタンサイズを指定 */
-	.mainDiv input[type='button'],
-	.mainDiv input[type='submit'],
-	.mainDiv button {
-		height: 22px;
+	input[type='button'],
+	input[type='submit'],
+	button {
+		height: 24px;
 		line-height: 16px;
+		margin: 0px 4px;
 	}
 
 }
@@ -125,10 +126,11 @@
 	}
 
 	/* ボタンサイズを指定 */
-	.mainDiv input[type='button'],
-	.mainDiv input[type='submit'],
-	.mainDiv button {
+	input[type='button'],
+	input[type='submit'],
+	button {
 		height: 32px;
+		margin: 0px 4px;
 	}
 
 }

@@ -26,7 +26,7 @@ public class WebResourceQueryForm extends QueryForm {
 	public WebResourceQueryForm() {
 		this.addField(new WebSourcePathField()).setReadonly(true);
 		FunctionSelectField funcsel = new FunctionSelectField();
-		funcsel.setPackageOption("page");
+//		funcsel.setPackageOption("page");
 		this.addField(funcsel);
 		this.addField(new PackageNameField()).addValidator(new RequiredValidator());
 		this.addField(new PageClassNameField()).addValidator(new RequiredValidator()).setAutocomplete(true);

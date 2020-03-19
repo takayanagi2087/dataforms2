@@ -32,7 +32,7 @@ import dataforms.util.StringUtil;
  * 今のところVariables.cssに定義した変数を展開したcssを作成する機能しかありません。
  * この機能は標準cssではできない以下の記述に対応する為に作りました。
  *
- * @@media screen and (max-width: var(--sp-screen-max))
+ * &#x40;media screen and (max-width: var(--sp-screen-max))
  *
  * そのうちcssの記述性を上げる機能を追加するかもしれません。
  *

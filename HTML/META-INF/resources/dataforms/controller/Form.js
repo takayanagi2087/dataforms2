@@ -93,6 +93,7 @@ class Form extends WebComponent {
 		}
 		this.onCalc(null);
 	}
+
 	/**
 	 * フォームのフィールドに対して、値を設定します。
 	 * @param {String} fid フィールドID。
@@ -116,6 +117,32 @@ class Form extends WebComponent {
 				field.setValue(value);
 			}
 		}
+	}
+
+	/**
+	 * フィールドの値を取得します。
+	 * @param {String} fid フィールドID。
+	 */
+	getFieldValue(fid) {
+		var ret = null;
+		if (this.isHtmlTableElementId(fid)) {
+			var tblid = this.getHtmlTableId(fid);
+			var colid = this.getHtmlTableColumnId(fid);
+			var table = this.getComponent(tblid);
+			var field = table.getComponent(colid);
+			if (field != null) {
+				var f = new field.constructor();
+				Object.assign(f, field);
+				f.id = fid;
+				ret = f.getValue();
+			}
+		} else {
+			var field = this.getComponent(fid);
+			if (field != null) {
+				ret = field.getValue();
+			}
+		}
+		return ret;
 	}
 
 	/**

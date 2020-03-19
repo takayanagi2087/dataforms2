@@ -39,7 +39,7 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 					var selid = "queryResult[" + i + "].sel";
 					if (this.find("#" + this.selectorEscape(selid)).prop("checked")) {
 						var efid = "queryResult[" + i + "].existFlag";
-						if (this.find("#" + this.selectorEscape(efid)).val() == "1") {
+						if (this.getFieldValue(efid) == "1") {
 							ret.push(new ValidationError("queryResult[" + i + "].fileName",
 								MessagesUtil.getMessage("error.alreadyexported", result[i].fileName)));
 						}
@@ -58,7 +58,7 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 		for (var i = 0; i < result.length; i++) {
 			var selid = "queryResult[" + i + "].sel";
 			var efid = "queryResult[" + i + "].existFlag";
-			if (this.find("#" + this.selectorEscape(efid)).val() != "1") {
+			if (this.getFieldValue(efid) != "1") {
 				this.find("#" + this.selectorEscape(selid)).prop("checked", true);
 			}
 		}

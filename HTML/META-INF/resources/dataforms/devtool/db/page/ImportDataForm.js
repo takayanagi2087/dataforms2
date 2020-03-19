@@ -20,7 +20,7 @@ class ImportDataForm extends Form {
 		var thisForm = this;
 		this.find("#importButton").click(function() {
 			var rform = currentPage.getComponent("queryResultForm");
-			var path = thisForm.find("#pathName").val();
+			var path = thisForm.getFieldValue("pathName");
 			rform.import(path);
 			thisForm.parent.close();
 		});

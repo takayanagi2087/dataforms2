@@ -31,7 +31,7 @@ class UserRegistForm extends EditForm {
 	 * メールアドレスをloginIdへコピーします。
 	 */
 	copyToLoginId(txt) {
-		this.find("#loginId").val(txt.val());
+		this.setFieldValue("loginId", txt.val());
 	}
 }
 

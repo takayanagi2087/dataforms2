@@ -201,7 +201,7 @@ class PageGeneratorEditForm extends EditForm {
 	 * @param type フォームの種類。
 	 */
 	setFormClassNameField(name, type) {
-		var pageclass = this.find("#pageClassName").val();
+		var pageclass = this.getFieldValue("pageClassName");
 		var n = pageclass.replace(/Page$/, "");
 		var f = this.find("#" + name);
 		if (f.val() == "") {
@@ -216,7 +216,7 @@ class PageGeneratorEditForm extends EditForm {
 	 *
 	 */
 	setFormClassName() {
-		var pageclass = this.find("#pageClassName").val();
+		var pageclass = this.getFieldValue("pageClassName");
 		if (pageclass.length > 0) {
 			this.setFormClassNameField("queryFormClassName", "QueryForm");
 			this.setFormClassNameField("queryResultFormClassName", "QueryResultForm");

@@ -454,6 +454,12 @@ public class Dao implements JDBCConnectableObject {
 							if (ts != null) {
 								m.put(StringUtil.snakeToCamel(name), ts);
 							}
+						} else if (meta.getColumnType(i) == Types.REAL
+								|| meta.getColumnType(i) == Types.DOUBLE) {
+							Double d = rset.getDouble(i);
+							if (d != null) {
+								m.put(StringUtil.snakeToCamel(name), d);
+							}
 						} else {
 							Object obj = rset.getObject(i);
 							m.put(StringUtil.snakeToCamel(name), obj);

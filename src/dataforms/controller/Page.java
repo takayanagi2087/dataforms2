@@ -395,7 +395,7 @@ public class Page extends DataForms {
 		this.addPreloadCss(this.getPageFramePath() + "/Form.cssx");
 		this.addPreloadCss(this.getPageFramePath() + "/Field.cssx");
 		this.addPreloadCss(this.getPageFramePath() + "/HtmlTable.cssx");
-		this.addPreloadCss(this.getPageFramePath() + "/AppFrame.css");
+		this.addPreloadCss(this.getPageFramePath() + "/AppFrame.cssx");
 		this.addPreloadCss(this.getPageFramePath() + "/AppMenu.cssx");
 		this.addPreloadCss(this.getPageFramePath() + "/AppForm.cssx");
 		this.addPreloadCss(this.getPageFramePath() + "/AppField.cssx");

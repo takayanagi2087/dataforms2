@@ -27,6 +27,17 @@ class SelectField extends Field {
 	attach() {
 		super.attach();
 		this.setOptionList();
+		if (this.calcEventField) {
+			var comp = this.get();
+			var tag = comp.prop("tagName");
+			var type = comp.prop("type");
+			if ("INPUT" == tag && (type.toLowerCase() == "radio" || type.toLowerCase() == "checkbox")) {
+				comp.click(() => {
+					var form = this.getParentForm();
+					form.onCalc($(this));
+				});
+			}
+		}
 	}
 
 	/**

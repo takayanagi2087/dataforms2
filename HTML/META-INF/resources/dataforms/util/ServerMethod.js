@@ -214,7 +214,6 @@ class ServerMethod {
 		//}).then((text) => {
 		//	return eval("(" + text + ")");
 		}).then((data) => {
-			logger.dir(data);
 			if (window.currentPage != null) {
 				window.currentPage.unlock();
 			}

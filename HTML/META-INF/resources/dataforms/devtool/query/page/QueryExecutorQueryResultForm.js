@@ -30,7 +30,6 @@ class QueryExecutorQueryResultForm extends QueryResultForm {
 				table.fields[i].validatorList[j].uniqueId = "mainDiv.queryResultForm.queryResult[0]." + table.fields[i].validatorList[j].id;
 			}
 		}
-		logger.dir(table);
 		table.trLine = queryResult.dataHtml;
 		if (this.headerHtml != queryResult.headerHtml) {
 			logger.log("updateHeader");

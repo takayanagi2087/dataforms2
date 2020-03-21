@@ -49,7 +49,6 @@ class FuncEditForm extends EditForm {
 		var table = this.getComponent("funcTable");
 		this.find("[id$='\\.funcPath']").each(function() {
 			var f = thisForm.getComponent($(this).attr(thisForm.getIdAttribute()));
-			logger.dir(f);
 			logger.log("id=" + f.id + ":" + $(this).val());
 			if ($(this).val().indexOf("/dataforms") == 0) {
 				var field = table.getSameRowField($(this), "funcName");

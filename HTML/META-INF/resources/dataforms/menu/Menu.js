@@ -68,7 +68,6 @@ class Menu extends WebComponent {
 	 * @returns {String} HTML.
 	 */
 	getMenuHtml(mglist) {
-	    logger.dir(mglist);
 	    var ret = "";
 		var pat = new RegExp(this.id + "\\[0\\]", "g");
 		var patl = new RegExp("pageList\\[0\\]", "g");

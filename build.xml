@@ -131,7 +131,7 @@
 		<antcall target="build"/>
 	</target>
 
-	<target name="jar" depends="build,javadoc,jsdoc">
+	<target name="jar" depends="build,jsdoc,javadoc">
 		<buildnumber/>
 		<delete file="build/classes/log4j.xml"/>
 		<delete file="build/classes/log4j.dtd"/>
@@ -173,16 +173,6 @@
 		</exec>
 	</target>
 
-	<!-- Javadoc作成 -->
-	<target name="javadoc" description="Javadoc作成">
-		<echo message="Javadoc作成"/>
-		<delete dir="${javadoc.dir}" />
-		<mkdir dir="${javadoc.dir}" />
-		<javadoc packagenames="dataforms.*" sourcepath="src" destdir="${javadoc.dir}" encoding="UTF-8" charset="UTF-8" additionalparam="-J-Dfile.encoding=UTF-8" >
-			<classpath refid="dataforms.classpath"/>
-		</javadoc>
-	</target>
-
 	<!-- jsdoc作成 -->
 	<target name="jsdoc" description="jsdoc作成">
 		<echo message="jsdoc作成"/>
@@ -195,5 +185,16 @@
 			<arg value="HTML/META-INF/resources/dataforms"/>
 		</exec>
   	</target>
+
+	<!-- Javadoc作成 -->
+	<target name="javadoc" description="Javadoc作成">
+		<echo message="Javadoc作成"/>
+		<delete dir="${javadoc.dir}" />
+		<mkdir dir="${javadoc.dir}" />
+		<javadoc packagenames="dataforms.*" sourcepath="src" destdir="${javadoc.dir}" encoding="UTF-8" charset="UTF-8" additionalparam="-J-Dfile.encoding=UTF-8" >
+			<classpath refid="dataforms.classpath"/>
+		</javadoc>
+	</target>
+
 
 </project>

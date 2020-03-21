@@ -57,13 +57,21 @@ class Field extends WebComponent {
 		}
 		if (this.calcEventField) {
 			comp.change(function() {
-				var form = thisField.getParentForm();
-				form.onCalc($(this));
+				thisField.callOnCalc($(this));
 			});
 		}
 		if (this.readonly) {
 			this.lock(true);
 		}
+	}
+
+	/**
+	 * 親フォームのonCalcメソットを呼び出します。
+	 * @param {jQuery} f フィールド。
+	 */
+	callOnCalc(f) {
+		var form = this.getParentForm();
+		form.onCalc(f);
 	}
 
 	/**

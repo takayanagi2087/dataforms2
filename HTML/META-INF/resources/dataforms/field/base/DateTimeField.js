@@ -20,31 +20,62 @@ class DateTimeField extends Field {
 		this.displayFormat = null;
 		this.editFormat = null;
 	}
+
 	/**
 	 * 日付の表示フォーマットを指定します。
 	 * @param {String} displayFormat 表示時のフォーマット。
 	 * @param {String} editFormat 編集時のフォーマット。
 	 */
 	setFormat(displayFormat, editFormat) {
+		this.displayFormat = displayFormat;
+		this.editFormat = editFormat;
+		var thisForm = this;
 		this.get().focus(function() {
-			var v = $(this).val();
-			var fmt = new SimpleDateFormat(displayFormat);
-			var efmt = new SimpleDateFormat(editFormat);
-			var ev = fmt.parse(v);
-			if (ev != null) {
-				$(this).val(efmt.format(ev));
-			}
+			thisForm.toEditFormat($(this));
 		});
 		this.get().blur(function() {
-			var v = $(this).val();
-			var fmt = new SimpleDateFormat(displayFormat);
-			var efmt = new SimpleDateFormat(editFormat);
-			var ev = efmt.parse(v);
-			if (ev != null) {
-				$(this).val(fmt.format(ev));
-			}
+			thisForm.toDisplayFormat($(this));
 		});
-	};
+	}
+
+	/**
+	 * 日付を編集フォーマットに変更します。
+	 * @param {jQuery} f テキストフィールド。
+	 */
+	toEditFormat(f) {
+		var v = f.val();
+		var fmt = new SimpleDateFormat(this.displayFormat);
+		var efmt = new SimpleDateFormat(this.editFormat);
+		var ev = fmt.parse(v);
+		if (ev != null) {
+			f.val(efmt.format(ev));
+		}
+	}
+
+
+	/**
+	 * 日付を表示フォーマットに変更します。
+	 * @param {jQuery} f テキストフィールド。
+	 */
+	toDisplayFormat(f) {
+		var v = f.val();
+		var fmt = new SimpleDateFormat(this.displayFormat);
+		var efmt = new SimpleDateFormat(this.editFormat);
+		var ev = efmt.parse(v);
+		if (ev != null) {
+			f.val(fmt.format(ev));
+		}
+	}
+
+	/**
+	 * 親フォームのonCalcメソットを呼び出します。
+	 * @param {jQuery} f フィールド。
+	 */
+	callOnCalc(f) {
+		this.toDisplayFormat(f);
+		super.callOnCalc(f);
+	}
+
 
 	/**
 	 * 値を設定します。

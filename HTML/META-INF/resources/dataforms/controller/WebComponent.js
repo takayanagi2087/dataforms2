@@ -9,9 +9,21 @@
  * <pre>
  * HTML中の各要素の情報を保持するオブジェクトの基本クラスです。
  * ID、親の要素へのポインタと子要素のマップを持ちます。
+ * var 1.xxでは複数のFormクラスにを1ページにまとめると
+ * ページ内でIDが重複してしまうという問題がありました。
+ * WebComponent.js以下のクラスではコンポーネントの階層を判定して
+ * IDの重複があっても動作に問題発生しないようにしてあります。
+ * しかしこれはHTMLの規格上違反になってしまいます。
+ * そこでVer2.xxではこれを回避する機能を用意しました。
+ * web.xmlのuse-unique-idをtrueに設定すると、htmlに記述したidを
+ * data-idに設定し、idにはサーバから与えられたrealIdプロパティの
+ * 値を設定します。realIdコンポーネントの階層情報を持ちページ内で
+ * ユニークな値になります。
+ *
  * </pre>
  *
  * @prop id {String} コンポーネントのID。
+ * @prop realId {String} "mainDiv.queryForm"のようにコンポーネントの階層情報を持ったID。
  * @prop componentMap {Object} 所有するコンポーネントのマップです。this.componentMap[id]でIDを指定し、対応するコンポーネントを取得することができます。
  * @prop parent {WebComponent} 親となるコンポーネントです。
  *
@@ -116,15 +128,42 @@ class WebComponent {
 	 * <pre>
 	 * コンポーネントに対応したjQueryオブジェクトを取得します。
 	 * </pre>
+	 * @param {String} id コンポーネントのID。
+	 * <pre>
+	 * 	省略した場合このインスタンスのIDで検索します。
+	 *  idを指定した場合、このコンポーネントが内包する要素を検索します。
+	 * </pre>
 	 * @returns {jQuery} jQueryオブジェクト。
 	 */
-	get() {
+	get(id) {
 		var ret = null;
 		if (this.parent == null) {
-			ret = $(this.convertSelector('#' + this.selectorEscape(this.id)));
+			var sel = this.id;
+			if (id != null) {
+				sel = sel + " #" + id;
+			}
+			ret = $(this.convertSelector('#' + this.selectorEscape(sel)));
 		} else {
 			var sel = this.getUniqSelector();
+			if (id != null) {
+				sel += " #" + id
+			}
 			ret = $(this.convertSelector(sel));
+/*			if (currentPage.useUniqueId && (!(this instanceof Menu))) {
+				var sel = "#" + this.realId;
+				if (id != null) {
+					sel += " " + this.convertSelector("#" + id);
+				}
+				logger.log("B:" + this.id + ":get(" + id + ") sel=" + sel);
+				ret = $(this.selectorEscape(sel));
+			} else {
+				var sel = this.getUniqSelector();
+				if (id != null) {
+					sel += " #" + id
+				}
+				logger.log("C:" + this.id + ":get(" + id + ") sel=" + sel);
+				ret = $(this.convertSelector(sel));
+			}*/
 		}
 		return ret;
 	}
@@ -254,11 +293,11 @@ class WebComponent {
 	 */
 	attach() {
 		if (currentPage.useUniqueId) {
-			if (this.uniqueId.indexOf("[0]") >= 0) {
+			if (this.realId.indexOf("[0]") >= 0) {
 				let arg = this.id.match(/\[\d\]/);
-				this.uniqueId = this.uniqueId.replace(/\[0\]/, arg);
+				this.realId = this.realId.replace(/\[0\]/, arg);
 			}
-			this.get().attr("id", this.uniqueId);
+			this.get().attr("id", this.realId);
 		}
 		for (var id in this.componentMap) {
 			this.componentMap[id].attach();
@@ -302,7 +341,7 @@ class WebComponent {
 	}
 
 	/**
-	 * 一意に対応するjQueryを作成します。
+	 * 一意に対応するセレクタを作成します。
 	 * <pre>
 	 * コンポーネントの階層を辿り、一意になるjQueryセレクタを作成します。
 	 * </pre>
@@ -330,6 +369,7 @@ class WebComponent {
 	/**
 	 * 一意なIDを取得します。
 	 * <pre>
+	 * このIDはWebMethodを呼び出す際に各コンポーネントを区別するために使用します。
 	 * コンポーネントの階層を辿り、各コンポーネントのidを"."で繋げた文字列を返します。
 	 * </pre>
 	 *  * @returns {String} 一意なID。

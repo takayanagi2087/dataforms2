@@ -37,19 +37,13 @@ class LoginForm extends Form {
 	 * <pre>
 	 * 以下のイベント処理を登録します。
 	 * #loginButton ... ログイン処理。
-	 * #resetButton ... リセット処理。
-	 * #closeButton ... 閉じる処理。
 	 * </pre>
 	 */
 	attach() {
 		super.attach();
 		var form = this;
-		this.find('#loginButton').click(function() {
-			form.login();
-			return false;
-		});
-		this.find('#resetButton').click(function() {
-			form.reset();
+		this.get("loginButton").click(() => {
+			this.login();
 			return false;
 		});
 		if (this.passwordResetMailPage != null) {
@@ -58,10 +52,10 @@ class LoginForm extends Form {
 			$(this.convertSelector("#passwordResetLink")).hide();
 		}
 		if (this.autoLogin) {
-			this.find("#keepLogin").show();
+			this.get("keepLogin").show();
 			this.find("label[for='keepLogin']").show();
 		} else {
-			this.find("#keepLogin").hide();
+			this.get("keepLogin").hide();
 			this.find("label[for='keepLogin']").hide();
 		}
 	}

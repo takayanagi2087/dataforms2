@@ -329,9 +329,6 @@ public class WebComponent implements JDBCConnectableObject {
 		if (this.id != null) {
 			obj.put("id", this.id);
 		}
-		if (this.uniqueId != null) {
-			obj.put("uniqueId", this.uniqueId);
-		}
 		obj.put("className", this.getClass().getSimpleName());
 		obj.put("path", this.getViewPath());
 		String jspath = this.getScriptPath();
@@ -342,7 +339,7 @@ public class WebComponent implements JDBCConnectableObject {
 //			logger.debug("id変換後 html=" + this.convertIdArrtibute(additionalHtmlText));
 			obj.put("additionalHtmlText", this.convertIdAttribute(additionalHtmlText));
 		}
-		obj.put("uniqueId", this.getUniqueId());
+		obj.put("realId", this.getRealId());
 		return obj;
 	}
 
@@ -828,41 +825,41 @@ public class WebComponent implements JDBCConnectableObject {
 	/**
 	 * ページ中でユニークなID。
 	 */
-	private String uniqueId = null;
+	private String realId = null;
 
 	/**
-	 * ページ中でユニークなIDを取得します。
+	 * ページ中でユニークな実際のIDを取得します。
 	 * @return ページ中でユニークなID。
 	 */
-	public String getUniqueId() {
-		return uniqueId;
+	public String getRealId() {
+		return realId;
 	}
 
 
 	/**
-	 * ページ中でユニークなIDを設定します。
-	 * @param uniqueId ページ中でユニークなID。
+	 * ページ中でユニークな実際のIDを設定します。
+	 * @param realId ページ中でユニークな実際のID。
 	 */
-	public void setUniqueId(final String uniqueId) {
-		this.uniqueId = uniqueId;
+	public void setRealId(final String realId) {
+		this.realId = realId;
 	}
 
 	/**
-	 * ページにユニークなIDを初期設定します。
-	 * @param parentUniqueId 親となるユニークID。
+	 * ページにユニークな実際のIDを初期設定します。
+	 * @param realId ユニーク実際のID。
 	 */
-	public void initUniqueId(final String parentUniqueId) {
-		String pid = parentUniqueId;
-		this.setUniqueId(pid);
+	public void initRealId(final String realId) {
+		String pid = realId;
+		this.setRealId(pid);
 		List<WebComponent> list = this.getComponentList();
 		if (list != null) {
 			for (WebComponent c: list) {
 				if (this instanceof HtmlTable) {
 					String uid = pid + "[0]." + c.getId();
-					c.initUniqueId(uid);
+					c.initRealId(uid);
 				} else {
 					String uid = pid + "." + c.getId();
-					c.initUniqueId(uid);
+					c.initRealId(uid);
 				}
 			}
 		}

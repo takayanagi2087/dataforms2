@@ -117,8 +117,8 @@ class SelectField extends Field {
 						var opt = this.optionList[i];
 						if (currentPage.useUniqueId) {
 							opthtml +=
-								"<input type='radio' id='" + this.uniqueId + "[" + i + "]' data-id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
-									+ "<label for='" + this.uniqueId + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
+								"<input type='radio' id='" + this.realId + "[" + i + "]' data-id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
+									+ "<label for='" + this.realId + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
 						} else {
 							opthtml +=
 								"<input type='radio' id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
@@ -134,8 +134,8 @@ class SelectField extends Field {
 						var opt = this.optionList[i];
 						if (currentPage.useUniqueId) {
 							opthtml +=
-								"<input type='checkbox' id='" + this.uniqueId  + "[" + i + "]' data-id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
-									+ "<label for='" + this.uniqueId + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
+								"<input type='checkbox' id='" + this.realId  + "[" + i + "]' data-id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
+									+ "<label for='" + this.realId + "[" + i + "]'>" + opt.name + "</label>&nbsp;";
 						} else {
 							opthtml +=
 								"<input type='checkbox' id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"

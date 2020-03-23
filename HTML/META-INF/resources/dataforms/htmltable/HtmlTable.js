@@ -696,9 +696,9 @@ class HtmlTable extends WebComponent {
 		var f = new field.constructor();
 		Object.assign(f, field);
 		f.id = this.id + "[" + idx + "]." + field.id;
-		if (f.realId != null) {
+/*		if (f.realId != null) {
 			f.realId = this.realId + "[" + idx + "]." + field.id;
-		}
+		}*/
 		f.initValidator(f.validatorList);
 		return f;
 	}

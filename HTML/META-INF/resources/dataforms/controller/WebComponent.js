@@ -147,6 +147,10 @@ class WebComponent {
 //			logger.log("A:" + this.id + ":get(" + id + ") sel=" + sel + ",sel.length=" + ret.length);
 		} else {
 			if (currentPage.useUniqueId) {
+				var stridx = this.id.match(/\[.*\]/);
+				if (stridx != null) {
+					this.realId = this.realId.replace("[0]", stridx);
+				}
 				var sel = "#" + this.selectorEscape(this.realId);
 				if (id != null) {
 					sel += " " + this.convertSelector("#" + id);

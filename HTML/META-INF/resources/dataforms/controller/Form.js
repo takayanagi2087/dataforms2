@@ -180,8 +180,8 @@ class Form extends WebComponent {
 		if (this.htmlPath != null) {
 			var fhtml = $("<div>" + this.additionalHtmlText + "</div>").find("form").html();
 			var obj = this.get();
-			if (obj.length !=0) {
-				this.get().html(fhtml);
+			if (obj.length != 0) {
+				obj.html(fhtml);
 			} else {
 				obj = $(this.convertSelector("#" + this.selectorEscape(this.id)));
 				obj.html(fhtml);

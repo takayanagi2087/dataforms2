@@ -38,6 +38,7 @@ class WebComponent {
 		this.id = null;
 		this.componentMap = {};
 		this.parent = null;
+		this.idPrepared = false;
 	}
 
 
@@ -140,6 +141,7 @@ class WebComponent {
 	get(id) {
 		var ret = null;
 		if (this.parent == null) {
+			// ページトップの場合の検索
 			var sel = "#" + this.selectorEscape(this.id);
 			if (id != null) {
 				sel = sel + " #" + id;
@@ -148,7 +150,8 @@ class WebComponent {
 			ret = $(sel);
 //			logger.log("A:" + this.id + ":get(" + id + ") sel=" + sel + ",sel.length=" + ret.length);
 		} else {
-			if (currentPage.useUniqueId) {
+			if (currentPage.useUniqueId && this.idPrepared) {
+				// ユニークIDが有効でidアトリビュート設定済
 				var stridx = this.id.match(/\[.*\]/);
 				if (stridx != null) {
 					this.realId = this.realId.replace("[0]", stridx);
@@ -160,6 +163,7 @@ class WebComponent {
 				ret = $(sel);
 //				logger.log("B:" + this.id + ":get(" + id + ") sel=" + sel + ",sel.length=" + ret.length);
 			} else {
+				// ユニークIDが無効またはdアトリビュート設定前
 				var sel = this.getUniqSelector();
 				if (id != null) {
 					sel += " #" + id
@@ -307,6 +311,7 @@ class WebComponent {
 			}
 			jq.attr("id", this.realId);
 		}
+		this.idPrepared = true;
 	}
 
 	/**

@@ -2,6 +2,8 @@
  * @fileOverview {@link ImageField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class ImageField
  * 画像ファイルアップロードフィールドクラス。

@@ -2,6 +2,7 @@
  * @fileOverview  {@link TableUpdateForm}クラスを記述したファイルです。
  */
 
+'use strict';
 
 /**
  * @class TableUpdateForm

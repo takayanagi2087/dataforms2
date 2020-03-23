@@ -485,7 +485,7 @@ public class Page extends DataForms {
      */
     private static final  String INIT_SCRIPT1 =
 //		"\t\t\tdf.clientValidation = false;\n" +
-		"\t\t\twindow.currentPage = page;\n" +
+		"\t\t\tcurrentPage = page;\n" +
 		"\t\t\tpage.init();\n" +
 //		"\t\t\tpage.attach();\n" +
 		"\t\t});\n" +

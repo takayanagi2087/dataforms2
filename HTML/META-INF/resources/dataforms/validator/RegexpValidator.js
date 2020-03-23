@@ -2,6 +2,8 @@
  * @fileOverview {@link RegexpValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class RegexpValidator
  * 正規表現パターンバリデータ。

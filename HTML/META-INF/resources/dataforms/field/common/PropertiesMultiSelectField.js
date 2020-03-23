@@ -2,6 +2,8 @@
  * @fileOverview {@link PropertiesMultiSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class PropertiesMultiSelectField
  *

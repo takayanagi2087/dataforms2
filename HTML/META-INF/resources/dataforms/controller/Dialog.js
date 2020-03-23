@@ -2,6 +2,7 @@
  * @fileOverview {@link Dialog}クラスを記述したファイルです。
  */
 
+'use strict';
 
 /**
  * @class Dialog

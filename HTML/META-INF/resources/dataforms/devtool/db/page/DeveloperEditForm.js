@@ -2,6 +2,8 @@
  * @fileOverview {@link DeveloperEditForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class DeveloperEditForm
  *

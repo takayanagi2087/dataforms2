@@ -3,6 +3,8 @@
  * @fileOverview {@link NumberValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class NumbereValidator
  * 数値バリデータクラス。

@@ -2,6 +2,8 @@
  * @fileOverview {@link DeveloperPage}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class DeveloperPage
  * 開発者ページクラス。

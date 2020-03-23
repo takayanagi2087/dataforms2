@@ -2,6 +2,7 @@
  * @fileOverview  {@link ServerMethod}クラスを記述したファイルです。
  */
 
+'use strict';
 
 /**
  * @class ServerMethod

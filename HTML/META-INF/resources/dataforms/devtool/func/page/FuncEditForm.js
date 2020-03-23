@@ -2,6 +2,8 @@
  * @fileOverview {@link FuncEditForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class FuncEditForm
  *

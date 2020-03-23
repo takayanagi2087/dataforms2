@@ -2,6 +2,8 @@
  * @fileOverview {@link BasePage}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class BasePage
  * アプリケーションの基本ページクラス。

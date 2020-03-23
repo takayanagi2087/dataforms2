@@ -2,6 +2,8 @@
  * @fileOverview {@link SelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class SelectField
  * 選択肢フィールドクラス。

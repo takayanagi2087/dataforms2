@@ -2,6 +2,8 @@
  * @fileOverview  {@link StringUtil}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class StringUtil
  * 文字列ユーティリティ。

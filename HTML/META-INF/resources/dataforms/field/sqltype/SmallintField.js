@@ -2,6 +2,8 @@
  * @fileOverview {@link SmallintField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class SmallintField
  * Numeric型フィールドクラス。

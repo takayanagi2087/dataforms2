@@ -2,6 +2,8 @@
  * @fileOverview {@link CharSingleSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class CharSingleSelectField
  *

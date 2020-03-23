@@ -1,6 +1,9 @@
 /**
  * @fileOverview  {@link MessagesUtil}クラスを記述したファイルです。
  */
+
+'use strict';
+
 /**
  * @class MessagesUtil
  * メッセージユーティリティ。

@@ -2,6 +2,8 @@
  * @fileOverview {@link UserAttributeTypeField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class UserAttributeTypeField
  * ユーザ属性フィールドクラス。

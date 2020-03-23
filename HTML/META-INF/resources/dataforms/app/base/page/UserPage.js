@@ -2,6 +2,8 @@
  * @fileOverview {@link UserPage}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class UserPage
  * ユーザ向けページクラス。

@@ -2,6 +2,8 @@
  * @fileOverview {@link RestoreForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class RestoreForm
  *
@@ -13,11 +15,7 @@ class RestoreForm extends Form {
 	 */
 	attach() {
 		super.attach();
-		var thisForm = this;
-		this.find("#restoreButton").click(function() {
-			thisForm.restore();
-			return false;
-		});
+		this.get("restoreButton").click(() => { this.restore(); return false;	});
 	}
 
 	/**

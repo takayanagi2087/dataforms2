@@ -2,6 +2,8 @@
  * @fileOverview {@link TableInfoForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class TableInfoForm
  * テーブル情報フォームクラス。

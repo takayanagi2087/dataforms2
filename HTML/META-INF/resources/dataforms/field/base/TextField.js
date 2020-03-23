@@ -2,6 +2,8 @@
  * @fileOverview {@link TextField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class TextField
  * テキストフィールドクラス。

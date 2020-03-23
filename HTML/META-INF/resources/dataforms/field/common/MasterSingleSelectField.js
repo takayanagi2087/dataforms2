@@ -2,6 +2,8 @@
  * @fileOverview {@link MasterSingleSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class MasterSingleSelectField
  *

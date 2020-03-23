@@ -2,6 +2,8 @@
  * @fileOverview {@link AudioField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class AudioField
  * 音声ファイルアップロードフィールドクラス。

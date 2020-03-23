@@ -2,6 +2,8 @@
  * @fileOverview {@link SelectFieldHtmlTable}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class SelectFieldHtmlTable
  *

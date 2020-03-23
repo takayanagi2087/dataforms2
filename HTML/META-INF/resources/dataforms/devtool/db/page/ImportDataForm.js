@@ -2,6 +2,8 @@
  * @fileOverview {@link ImportDataForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class ImportDataForm
  * テーブル情報フォームクラス。

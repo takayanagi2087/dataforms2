@@ -2,6 +2,8 @@
  * @fileOverview {@link FieldValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class FieldValidator
  * フィールドバリデータ基本クラス。

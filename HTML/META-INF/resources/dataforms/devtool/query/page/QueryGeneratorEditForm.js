@@ -2,6 +2,8 @@
  * @fileOverview {@link QueryGeneratorEditForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class QueryGeneratorEditForm
  *

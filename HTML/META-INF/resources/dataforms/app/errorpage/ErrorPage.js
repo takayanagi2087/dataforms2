@@ -2,6 +2,8 @@
  * @fileOverview {@link ErrorPage}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class ErrorPage
  *

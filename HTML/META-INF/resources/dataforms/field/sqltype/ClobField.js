@@ -3,6 +3,8 @@
  * @fileOverview {@link ClobField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class ClobField
  * Varchar型フィールドクラス。

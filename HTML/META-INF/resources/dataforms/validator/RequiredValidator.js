@@ -2,6 +2,8 @@
  * @fileOverview {@link RequiredValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class RequiredValidator
  * 必須バリデータクラス。

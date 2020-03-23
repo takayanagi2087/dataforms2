@@ -2,6 +2,8 @@
  * @fileOverview {@link LoginForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class LoginForm
  * ログインフォームクラス。

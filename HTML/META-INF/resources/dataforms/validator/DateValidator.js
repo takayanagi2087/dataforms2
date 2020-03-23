@@ -2,6 +2,8 @@
  * @fileOverview {@link DateValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class DateValidator
  * 日付バリデータクラス。

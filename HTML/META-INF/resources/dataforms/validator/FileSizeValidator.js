@@ -2,6 +2,8 @@
  * @fileOverview {@link FileSizeValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class FileSizeValidator
  * 最大長バリデータクラス。

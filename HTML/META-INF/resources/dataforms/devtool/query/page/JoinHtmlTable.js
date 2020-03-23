@@ -2,6 +2,8 @@
  * @fileOverview {@link JoinHtmlTable}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class JoinHtmlTable
  *

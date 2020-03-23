@@ -2,6 +2,9 @@
  * @fileOverview {@link Menu}クラスを記述したファイルです。
  */
 
+'use strict';
+
+
 /**
  * @class Menu
  * メニュークラス。

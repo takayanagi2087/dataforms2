@@ -2,6 +2,8 @@
  * @fileOverview {@link DateTimeField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class DateTimeField
  *

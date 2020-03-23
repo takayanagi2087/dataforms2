@@ -3,6 +3,8 @@
  * @fileOverview {@link VarcharField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class VarcharField
  * Varchar型フィールドクラス。

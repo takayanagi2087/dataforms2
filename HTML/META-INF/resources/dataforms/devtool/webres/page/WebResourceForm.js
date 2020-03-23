@@ -2,6 +2,8 @@
  * @fileOverview {@link WebResourceForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class WebResourceForm
  * Webリソース作成フォームクラス。

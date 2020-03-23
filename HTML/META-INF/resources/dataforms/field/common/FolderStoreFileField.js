@@ -2,6 +2,8 @@
  * @fileOverview {@link FolderStoreFileField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class FolderStoreFileField
  * ファイルアップロードフィールドクラス。

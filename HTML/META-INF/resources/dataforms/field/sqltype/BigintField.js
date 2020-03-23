@@ -2,6 +2,8 @@
  * @fileOverview {@link BigintField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class BigintField
  * Bigint型フィールドクラス。

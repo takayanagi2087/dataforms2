@@ -2,6 +2,8 @@
  * @fileOverview  * {@link Form}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class Form
  *

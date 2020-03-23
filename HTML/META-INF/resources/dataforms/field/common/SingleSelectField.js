@@ -2,6 +2,8 @@
  * @fileOverview {@link SingleSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class SingleSelectField
  * 単一選択リストクラス。
@@ -16,7 +18,7 @@ class SingleSelectField extends SelectField {
 	constructor() {
 		super();
 	}
-	
+
 	/**
 	 * INPUTまたはSELECTタグへ値を設定します。
 	 * @param {jQuery} comp 値を設定するコンポーネント。

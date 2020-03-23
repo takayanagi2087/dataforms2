@@ -2,6 +2,8 @@
  * @fileOverview {@link VideoField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class VideoField
  * 動画ファイルアップロードフィールドクラス。

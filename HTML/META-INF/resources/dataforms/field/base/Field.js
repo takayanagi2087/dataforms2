@@ -2,6 +2,8 @@
  * @fileOverview {@link Field}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class Field
  * フィールドクラス。

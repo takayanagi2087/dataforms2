@@ -2,6 +2,8 @@
  * @fileOverview {@link VarcharSingleSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class VarcharSingleSelectField
  *

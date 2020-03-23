@@ -2,6 +2,8 @@
  * @fileOverview {@link QueryClassNameField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class QueryClassNameField
  *

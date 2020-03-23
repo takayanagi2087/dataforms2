@@ -2,6 +2,9 @@
  * @fileOverview {@link DisplayedRequiredValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
+
 /**
  * @class DisplayedRequiredValidator
  *

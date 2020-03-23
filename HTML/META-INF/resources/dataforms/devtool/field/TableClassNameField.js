@@ -2,6 +2,8 @@
  * @fileOverview {@link TableClassNameField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class TableClassNameField
  *

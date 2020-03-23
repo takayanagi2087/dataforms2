@@ -2,6 +2,8 @@
  * @fileOverview {@link PageGeneratorEditForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class PageGeneratorEditForm
  * テーブル情報フォームクラス。

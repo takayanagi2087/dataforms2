@@ -2,6 +2,8 @@
  * @fileOverview {@link AllTypeEditForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class AllTypeEditForm
  *

@@ -2,6 +2,8 @@
  * @fileOverview {@link AlertDialog}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class AlertDialog
  *

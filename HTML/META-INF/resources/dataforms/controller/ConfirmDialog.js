@@ -2,6 +2,8 @@
  * @fileOverview {@link ConfirmDialog}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class ConfirmDialog
  *

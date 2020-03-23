@@ -2,6 +2,8 @@
  * @fileOverview {@link NumericField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class NumericField
  * Numeric型フィールドクラス。

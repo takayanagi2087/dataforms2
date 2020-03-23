@@ -2,6 +2,8 @@
  * @fileOverview {@link BlobStoreFileField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class BlobStoreFileField
  * ファイルアップロードフィールドクラス。

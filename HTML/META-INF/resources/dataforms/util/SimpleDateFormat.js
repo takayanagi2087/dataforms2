@@ -1,7 +1,7 @@
 /**
  * @fileOverview  {@link SimpleDateFormat}クラスを記述したファイルです。
  */
-
+'use strict';
 /**
  * @class SimpleDateFormat
  *

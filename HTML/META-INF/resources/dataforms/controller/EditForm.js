@@ -2,6 +2,7 @@
  * @fileOverview  {@link EditForm}クラスを記述したファイルです。
  */
 
+'use strict';
 
 /**
  * @class EditForm

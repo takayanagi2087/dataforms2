@@ -1,6 +1,9 @@
 /**
  * @fileOverview {@link EnumTypeSingleSelectField}クラスを記述したファイルです。
  */
+
+'use strict';
+
 /**
  * @class EnumTypeSingleSelectField
  *

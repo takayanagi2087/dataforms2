@@ -2,6 +2,8 @@
  * @fileOverview {@link AdminPage}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class AdminPage
  * 監理者向けページクラス。

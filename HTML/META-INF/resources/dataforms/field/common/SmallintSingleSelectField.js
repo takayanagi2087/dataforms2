@@ -2,6 +2,8 @@
  * @fileOverview {@link SmallintSingleSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class SmallintSingleSelectField
  *

@@ -2,6 +2,8 @@
  * @fileOverview {@link DocFramePage}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class DocFramePage
  *

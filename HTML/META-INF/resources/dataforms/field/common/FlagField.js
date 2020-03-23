@@ -1,6 +1,9 @@
 /**
  * @fileOverview {@link FlagField}クラスを記述したファイルです。
  */
+
+'use strict';
+
 /**
  * @class FlagField
  * フラグフィールドクラス。

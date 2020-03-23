@@ -2,6 +2,8 @@
  * @fileOverview {@link QueryExecutorQueryResultForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class QueryExecutorQueryResultForm
  *

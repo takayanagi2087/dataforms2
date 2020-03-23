@@ -2,6 +2,8 @@
  * @fileOverview {@link EnumQueryForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class EnumQueryForm
  *

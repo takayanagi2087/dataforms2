@@ -2,6 +2,8 @@
  * @fileOverview {@link TimestampValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class TimestampValidator
  * タイムスタンプバリデータ。

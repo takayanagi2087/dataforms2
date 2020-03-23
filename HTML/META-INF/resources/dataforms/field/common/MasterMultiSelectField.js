@@ -2,6 +2,8 @@
  * @fileOverview {@link MasterMultiSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class MasterMultiSelectField
  *

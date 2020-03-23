@@ -2,6 +2,7 @@
  * @fileOverview  {@link DataForms}クラスを記述したファイルです。
  */
 
+'use strict';
 
 /**
  * @class DataForms

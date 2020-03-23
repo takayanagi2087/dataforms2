@@ -3,6 +3,8 @@
  * @fileOverview {@link TimestampField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class TimestampField
  * Timestamp型フィールドクラス。

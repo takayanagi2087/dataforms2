@@ -2,6 +2,7 @@
  * @fileOverview  {@link QueryStringUtil}クラスを記述したファイルです。
  */
 
+'use strict';
 
 /**
  * @class QueryStringUtil

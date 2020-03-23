@@ -1,6 +1,9 @@
 /**
  * @fileOverview {@link ZipCodeField}クラスを記述したファイルです。
  */
+
+'use strict';
+
 /**
  * @class ZipCodeField
  * フラグフィールドクラス。

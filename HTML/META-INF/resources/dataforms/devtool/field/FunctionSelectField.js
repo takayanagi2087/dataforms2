@@ -2,6 +2,8 @@
  * @fileOverview {@link FunctionSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class FunctionSelectField
  * 機能フィールドクラス。

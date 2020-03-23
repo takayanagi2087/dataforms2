@@ -2,6 +2,8 @@
  * @fileOverview {@link PropertiesSingleSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class PropertiesSingleSelectField
  *

@@ -2,6 +2,8 @@
  * @fileOverview {@link StreamingField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class StreamingField
  * ストリーミングファイルアップロードフィールドクラス。

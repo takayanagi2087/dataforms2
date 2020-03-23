@@ -3,6 +3,8 @@
  * @fileOverview {@link TableManagementQueryResultForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class TableManagementQueryResultForm
  * テーブル問い合わせ結果フォーム。

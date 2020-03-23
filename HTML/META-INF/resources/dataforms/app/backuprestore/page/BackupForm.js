@@ -2,6 +2,8 @@
  * @fileOverview {@link BackupForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class BackupForm
  *
@@ -13,11 +15,7 @@ class BackupForm extends Form {
 	 */
 	attach() {
 		super.attach();
-		var thisForm = this;
-		this.find("#backupButton").click(function() {
-			thisForm.backup();
-			return false;
-		});
+		this.get("backupButton").click(() => { this.backup(); return false;});
 	}
 
 	/**

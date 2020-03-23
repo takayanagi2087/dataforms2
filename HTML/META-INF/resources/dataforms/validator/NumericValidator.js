@@ -2,6 +2,8 @@
  * @fileOverview {@link NumericValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class NumericValidator
  * Numeric型数値バリデータクラス。

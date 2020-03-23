@@ -2,6 +2,8 @@
  * @fileOverview {@link QueryResultForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class QueryResultForm
  *

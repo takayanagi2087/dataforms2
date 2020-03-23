@@ -2,6 +2,8 @@
  * @fileOverview {@link MultiSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class MultiSelectField
  * 複数選択リストフィールドクラス。

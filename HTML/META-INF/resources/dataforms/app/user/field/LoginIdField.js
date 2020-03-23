@@ -2,6 +2,8 @@
  * @fileOverview {@link LoginIdField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class LoginIdField
  * ユーザIDフィールドクラス。

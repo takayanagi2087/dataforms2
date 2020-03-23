@@ -2,6 +2,8 @@
  * @fileOverview {@link ImageDialog}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class ImageDialog 画像表示ダイアログクラス。
  *

@@ -2,6 +2,8 @@
  * @fileOverview {@link JavaSourcePathField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class JavaSourcePathField
  *

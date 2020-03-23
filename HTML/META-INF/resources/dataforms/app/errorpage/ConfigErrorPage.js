@@ -2,6 +2,8 @@
  * @fileOverview {@link ConfigErrorPage}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class ConfigErrorPage
  * 設定エラーページクラス。

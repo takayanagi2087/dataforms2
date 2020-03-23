@@ -2,6 +2,8 @@
  * @fileOverview {@link PageScrollHtmlTable}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class PageScrollHtmlTable
  * ページスクロールHTMLテーブルクラス。

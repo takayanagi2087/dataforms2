@@ -2,6 +2,8 @@
  * @fileOverview {@link TableGeneratorQueryResultForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class TableGeneratorQueryResultForm
  *

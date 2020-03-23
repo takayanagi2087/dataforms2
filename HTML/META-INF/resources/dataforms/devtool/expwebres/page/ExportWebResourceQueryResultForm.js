@@ -2,6 +2,8 @@
  * @fileOverview {@link ExportWebResourceQueryResultForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class ExportWebResourceQueryResultForm
  *

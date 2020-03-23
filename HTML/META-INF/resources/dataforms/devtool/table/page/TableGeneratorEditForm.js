@@ -2,6 +2,8 @@
  * @fileOverview {@link TableGeneratorEditForm}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class TableGeneratorEditForm
  *

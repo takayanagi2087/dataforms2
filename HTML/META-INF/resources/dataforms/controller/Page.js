@@ -2,6 +2,23 @@
  * @fileOverview {@link Page}クラスを記述したファイルです。
  */
 
+'use strict';
+
+/**
+ * 現在のページインスタンスです。
+ */
+var currentPage = null;
+
+/**
+ * consoleのコピーです。
+ * <pre>
+ * javascriptのログ出力はconsoleでなくloggerを使用してください。
+ * loggerを使用すると、web.xmlのclient-log-levelの設定で、ログレベルの変更が可能です。
+ * </pre>
+ */
+var logger = null;
+
+
 /**
  * @class Page
  *
@@ -111,7 +128,7 @@ class Page extends DataForms {
 		if (typeof window.console.dir !== "function") {
 			window.console.dir = function() {};
 		}
-		window.logger = window.console;
+		logger = window.console;
 	}
 
 	/**
@@ -541,20 +558,5 @@ class Page extends DataForms {
 
 
 }
-
-
-/**
- * 現在のページインスタンスです。
- */
-currentPage = null;
-
-/**
- * consoleのコピーです。
- * <pre>
- * javascriptのログ出力はconsoleでなくloggerを使用してください。
- * loggerを使用すると、web.xmlのclient-log-levelの設定で、ログレベルの変更が可能です。
- * </pre>
- */
-logger = null;
 
 

@@ -2,6 +2,8 @@
  * @fileOverview  {@link WebComponent}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class WebComponent
  *

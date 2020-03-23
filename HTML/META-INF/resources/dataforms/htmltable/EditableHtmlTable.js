@@ -2,6 +2,8 @@
  * @fileOverview {@link EditableHtmlTable}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class EditableHtmlTable
  * 編集可能なHTMLテーブルクラス。

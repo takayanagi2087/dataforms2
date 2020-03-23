@@ -2,6 +2,8 @@
  * @fileOverview {@link NumberRangeValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class NumberRangeValidator
  * 数値範囲バリデータクラス。

@@ -2,6 +2,8 @@
  * @fileOverview {@link CharField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class CharField
  * Char型フィールドクラス。

@@ -2,6 +2,8 @@
  * @fileOverview {@link ClassNameValidator}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class ClassNameValidator
  *

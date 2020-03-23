@@ -2,6 +2,8 @@
  * @fileOverview {@link FieldListHtmlTable}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class FieldListHtmlTable
  *

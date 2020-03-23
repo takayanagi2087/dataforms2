@@ -1,6 +1,9 @@
 /**
  * @fileOverview {@link HtmlTable}クラスを記述したファイルです。
  */
+
+'use strict';
+
 /**
  * @class HtmlTable
  * HTMLテーブルクラス。

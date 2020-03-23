@@ -2,6 +2,8 @@
  * @fileOverview {@link IntegerSingleSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class IntegerSingleSelectField
  *

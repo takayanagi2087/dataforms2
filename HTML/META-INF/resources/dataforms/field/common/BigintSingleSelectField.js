@@ -2,6 +2,8 @@
  * @fileOverview {@link BigintSingleSelectField}クラスを記述したファイルです。
  */
 
+'use strict';
+
 /**
  * @class BigintSingleSelectField
  *

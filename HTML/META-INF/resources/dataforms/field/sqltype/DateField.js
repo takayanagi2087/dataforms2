@@ -134,7 +134,7 @@ class DateField extends DateTimeField {
 	 */
 	onDestroy() {
 		this.get().datepicker("destroy");
-		Field.prototype.onDestroy.call(this);
+		super.onDestroy();
 	}
 
 	/**
@@ -144,7 +144,7 @@ class DateField extends DateTimeField {
 	 * </pre>
 	 */
 	lock(lk) {
-		DateTimeField.prototype.lock.call(this, lk);
+		super.lock(lk);
 		var tbtn = this.get().next(".ui-datepicker-trigger:first");
 		if (lk) {
 			tbtn.hide();

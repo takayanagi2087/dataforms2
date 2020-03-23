@@ -55,7 +55,7 @@ class HtmlTable extends WebComponent {
 	 *
 	 */
 	init() {
-		WebComponent.prototype.init.call(this);
+		super.init();
 		this.initField(this.fieldList);
 	}
 

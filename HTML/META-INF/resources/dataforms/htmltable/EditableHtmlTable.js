@@ -182,10 +182,10 @@ class EditableHtmlTable extends HtmlTable {
 	 */
 	lockFields(lk) {
 		if (this.readonly) {
-			HtmlTable.prototype.lockFields.call(this, true);
+			super.lockFields(true);
 			this.lockEditButton(true);
 		} else {
-			HtmlTable.prototype.lockFields.call(this, lk);
+			super.lockFields(lk);
 			this.lockEditButton(lk);
 		}
 	}
@@ -366,7 +366,7 @@ class EditableHtmlTable extends HtmlTable {
 	 *
 	 */
 	resetBackgroundColor() {
-		HtmlTable.prototype.resetBackgroundColor.call(this);
+		super.resetBackgroundColor();
 		this.find('tr:last').removeClass("evenTr");
 		this.find('tr:last').removeClass("oddTr");
 	}

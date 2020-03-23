@@ -160,7 +160,7 @@ class Field extends WebComponent {
 	 * 初期化処理を行います。
 	 */
 	init() {
-		WebComponent.prototype.init.call(this);
+		super.init();
 		this.initValidator(this.validatorList);
 	}
 

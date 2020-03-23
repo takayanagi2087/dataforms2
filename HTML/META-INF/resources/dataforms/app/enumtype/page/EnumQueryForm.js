@@ -23,11 +23,11 @@ class EnumQueryForm extends QueryForm {
 	attach() {
 		super.attach();
 		if (currentPage.userInfo.userLevel == "developer") {
-			this.find("#exportInitDataButton").click(() => {
+			this.get("exportInitDataButton").click(() => {
 				this.exportInitData()
 			});
 		} else {
-			this.find("#exportInitDataButton").remove();
+			this.get("exportInitDataButton").remove();
 		}
 	}
 

@@ -61,7 +61,6 @@ table.columnFixedTable {
 	overflow: scroll;
 	width: 100%;
 	border-collapse: collapse;
-	font-size: 0;
 }
 
 table.columnFixedTable thead,
@@ -79,7 +78,6 @@ table.columnFixedTable th,
 table.columnFixedTable td {
 	display: inline-block;
 	padding: 1px;
-	font-size: 1.0rem;
 	height: 26px;
 	border-color: #ffffff;
 	border-width: 2px;

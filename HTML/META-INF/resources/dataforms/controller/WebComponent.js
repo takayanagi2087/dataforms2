@@ -138,32 +138,30 @@ class WebComponent {
 	get(id) {
 		var ret = null;
 		if (this.parent == null) {
-			var sel = this.id;
+			var sel = "#" + this.selectorEscape(this.id);
 			if (id != null) {
 				sel = sel + " #" + id;
 			}
-			ret = $(this.convertSelector('#' + this.selectorEscape(sel)));
+			sel = this.convertSelector(sel);
+			ret = $(sel);
+//			logger.log("A:" + this.id + ":get(" + id + ") sel=" + sel + ",sel.length=" + ret.length);
 		} else {
-			var sel = this.getUniqSelector();
-			if (id != null) {
-				sel += " #" + id
-			}
-			ret = $(this.convertSelector(sel));
-/*			if (currentPage.useUniqueId && (!(this instanceof Menu))) {
-				var sel = "#" + this.realId;
+			if (currentPage.useUniqueId) {
+				var sel = "#" + this.selectorEscape(this.realId);
 				if (id != null) {
 					sel += " " + this.convertSelector("#" + id);
 				}
-				logger.log("B:" + this.id + ":get(" + id + ") sel=" + sel);
-				ret = $(this.selectorEscape(sel));
+				ret = $(sel);
+//				logger.log("B:" + this.id + ":get(" + id + ") sel=" + sel + ",sel.length=" + ret.length);
 			} else {
 				var sel = this.getUniqSelector();
 				if (id != null) {
 					sel += " #" + id
 				}
-				logger.log("C:" + this.id + ":get(" + id + ") sel=" + sel);
-				ret = $(this.convertSelector(sel));
-			}*/
+				sel = this.convertSelector(sel);
+				ret = $(sel);
+//				logger.log("C:" + this.id + ":get(" + id + ") sel=" + sel + ",sel.length=" + ret.length);
+			}
 		}
 		return ret;
 	}
@@ -286,19 +284,33 @@ class WebComponent {
 	}
 
 	/**
+	 * 一意なidを設定します。
+	 */
+	setRealId() {
+		if (currentPage.useUniqueId) {
+			if (this.realId.indexOf("[0]") >= 0) {
+				let arg = this.id.match(/\[\d\]/);
+				this.realId = this.realId.replace(/\[0\]/, arg);
+			}
+			var jq = null;
+			if (this.parent == null) {
+				jq = $(this.convertSelector('#' + this.selectorEscape(this.id)));
+			} else {
+				var sel = this.getUniqSelector();
+				jq = $(this.convertSelector(sel));
+			}
+			jq.attr("id", this.realId);
+		}
+	}
+
+	/**
 	 * エレメントとの対応付けを行います。
 	 * <pre>
 	 * 各オブジェクトとHTMLの各エレメントへの対応付けを行い、イベント登録等の設定を行います。
 	 * </pre>
 	 */
 	attach() {
-		if (currentPage.useUniqueId) {
-			if (this.realId.indexOf("[0]") >= 0) {
-				let arg = this.id.match(/\[\d\]/);
-				this.realId = this.realId.replace(/\[0\]/, arg);
-			}
-			this.get().attr("id", this.realId);
-		}
+		this.setRealId();
 		for (var id in this.componentMap) {
 			this.componentMap[id].attach();
 		}

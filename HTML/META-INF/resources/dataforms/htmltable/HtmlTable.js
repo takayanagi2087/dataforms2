@@ -63,8 +63,8 @@ class HtmlTable extends WebComponent {
 	 * HTMLエレメントとの対応付けを行います。
 	 */
 	attach() {
-		// TODO:attachの呼び出しが必要かどうか検討する。
-		// WebComponent.prototype.attach.call(this);
+		// table配下のフィールドは行の追加時にattachを呼び出すので、ここではsuper.attach()は呼び出さない。
+		super.setRealId();
 		logger.log("fixedColumns=" + this.fixedColumns);
 		logger.log("fixedWidth=" + this.fixedWidth);
 		var thisTable = this;
@@ -696,6 +696,9 @@ class HtmlTable extends WebComponent {
 		var f = new field.constructor();
 		Object.assign(f, field);
 		f.id = this.id + "[" + idx + "]." + field.id;
+		if (f.realId != null) {
+			f.realId = this.realId + "[" + idx + "]." + field.id;
+		}
 		f.initValidator(f.validatorList);
 		return f;
 	}

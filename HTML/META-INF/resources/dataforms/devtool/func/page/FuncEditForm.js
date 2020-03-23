@@ -33,14 +33,6 @@ class FuncEditForm extends EditForm {
 
 
 	/**
-	 * フォームに対してデータを設定します。
-	 * @param data データ。
-	 */
-/*	FuncEditForm.prototype.setFormData = function(data) {
-		EditForm.prototype.setFormData.call(this, data);
-	};*/
-
-	/**
 	 * 編集モードにします。
 	 */
 	toEditMode() {

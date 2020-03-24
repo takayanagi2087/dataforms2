@@ -22,10 +22,10 @@ class ErrorPage extends BasePage {
 		var title = MessagesUtil.getMessage("errorpage.title");
 		var backButton = MessagesUtil.getMessage("errorpage.backbutton");
 		var message = this.errorMessage;
-		this.find('title').html(title);
-		this.find('h1').html(title);
-		this.find('#errorMessages').html(message);
-		this.find('#backButton').val(backButton);
+		$("title").html(title);
+		$("h1").html(title);
+		this.get("errorMessages").html(message);
+		this.get("backButton").val(backButton);
 	}
 }
 

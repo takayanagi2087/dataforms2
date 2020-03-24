@@ -25,15 +25,15 @@ class QueryForm extends Form {
 	attach() {
 		super.attach();
 		var queryForm = this;
-		this.find('#queryButton').click(function() {
+		this.get("queryButton").click(function() {
 			queryForm.query();
 			return false;
 		});
-		this.find('#resetButton').click(function() {
+		this.get("resetButton").click(function() {
 			queryForm.reset();
 			return false;
 		});
-		this.find('#exportButton').click(function() {
+		this.get("exportButton").click(function() {
 			queryForm.exportData();
 			return false;
 		});
@@ -66,7 +66,7 @@ class QueryForm extends Form {
 	showQueryResultForm() {
 		var resultForm = this.parent.componentMap["queryResultForm"];
 		if (resultForm != null) {
-			this.parent.find("#queryResultForm").show();
+			this.parent.get("queryResultForm").show();
 			var condition = this.get().serialize();
 			resultForm.condition = condition;
 			resultForm.changePage();
@@ -89,9 +89,9 @@ class QueryForm extends Form {
 	 */
 	toEditMode() {
 		this.lockFields(false);
-		this.find('#queryButton').show();
-		this.find('#resetButton').show();
-		this.find('#newButton').show();
+		this.get("queryButton").show();
+		this.get("resetButton").show();
+		this.get("newButton").show();
 	}
 
 
@@ -100,9 +100,9 @@ class QueryForm extends Form {
 	 */
 	toConfirmMode() {
 		this.lockFields(true);
-		this.find('#queryButton').hide();
-		this.find('#resetButton').hide();
-		this.find('#newButton').hide();
+		this.get("queryButton").hide();
+		this.get("resetButton").hide();
+		this.get("newButton").hide();
 	}
 
 	/**
@@ -120,7 +120,7 @@ class QueryForm extends Form {
 					queryForm.parent.setErrorInfo(queryForm.getValidationResult(result), queryForm);
 				}
 			});
-			this.find("#sortOrder").remove();
+			this.get("sortOrder").remove();
 		}
 	}
 

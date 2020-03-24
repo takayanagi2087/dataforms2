@@ -26,18 +26,17 @@ class ConfirmDialog extends Dialog {
 	 */
 	attach() {
 		super.attach();
-		var thisDialog = this;
-		this.find("#confirmOkButton").click(function() {
-			thisDialog.close();
-			if (thisDialog.okFunc != null) {
-				thisDialog.okFunc.call(this);
+		this.get("confirmOkButton").click(() => {
+			this.close();
+			if (this.okFunc != null) {
+				this.okFunc.call(this);
 			}
 			return false;
 		});
-		this.find("#confirmCancelButton").click(function() {
-			thisDialog.close();
-			if (thisDialog.cancelFunc != null) {
-				thisDialog.cancelFunc.call(this);
+		this.get("confirmCancelButton").click(() => {
+			this.close();
+			if (this.cancelFunc != null) {
+				this.cancelFunc.call(this);
 			}
 			return false;
 		});

@@ -74,6 +74,11 @@ table.columnFixedTable tr {
 	line-height: 26px;
 }
 
+div.hScrollDiv table th,
+div.hScrollDiv table td {
+	height: 26px;
+}
+
 table.columnFixedTable th,
 table.columnFixedTable td {
 	display: inline-block;

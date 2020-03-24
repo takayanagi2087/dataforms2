@@ -249,16 +249,16 @@
 	<!--
 		外部ユーザ登録ページ設定情報。
 	 -->
-	<!--  context-param>
+	<context-param>
 		<param-name>user-regist-page-config</param-name>
 		<param-value>
 			{
-				"loginIdIsMail": true, // MailをログインIDとする。
+				"loginIdIsMail": true, // メールアドレスをログインIDとする。
 				"mailCheck": true, // メールアドレスのチェックを行う。
 				"sendUserEnableMail": true // ユーザ有効化ページのURLをメールする。
 			}
 		</param-value>
-	</context-param -->
+	</context-param>
 	<!--
 		外部ユーザ有効化ページのパス。
 	 -->

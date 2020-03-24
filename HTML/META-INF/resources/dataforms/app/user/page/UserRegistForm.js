@@ -17,13 +17,13 @@ class UserRegistForm extends EditForm {
 		logger.log("config=" + JSON.stringify(this.config));
 		var thisForm = this;
 		if (this.config.loginIdIsMail) {
-			this.find("#loginId").parents("tr:first").hide();
-			this.find("#mailAddress").change(function() {
+			this.get("loginId").parents("tr:first").hide();
+			this.get("mailAddress").change(function() {
 				thisForm.copyToLoginId($(this));
 			});
 		}
 		if (!this.config.mailCheck) {
-			this.find("#mailAddressCheck").parents("tr:first").hide();
+			this.get("mailAddressCheck").parents("tr:first").hide();
 		}
 	};
 

@@ -60,6 +60,8 @@ public class UserRegistForm extends EditForm {
 		Boolean loginIdIsMail = (Boolean) config.get("loginIdIsMail");
 		if (loginIdIsMail) {
 			loginIdField.addValidator(new MailAddressValidator());
+		} else {
+			loginIdField.addValidator(new RequiredValidator());
 		}
 		this.addField(table.getUserNameField()).addValidator(new RequiredValidator()).setAutocomplete(false);
 		this.addField(table.getMailAddressField()).addValidator(new RequiredValidator());

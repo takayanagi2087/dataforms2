@@ -14,12 +14,11 @@ class UserQueryForm extends QueryForm {
 	attach() {
 		super.attach();
 		if (currentPage.userInfo.userLevel == "developer") {
-			var thisForm = this;
-			this.find("#exportInitDataButton").click(function() {
-				thisForm.exportInitData()
+			this.get("exportInitDataButton").click(() => {
+				this.exportInitData()
 			});
 		} else {
-			this.find("#exportInitDataButton").remove();
+			this.get("exportInitDataButton").remove();
 		}
 	}
 

@@ -40,11 +40,12 @@ class UserAttributeValueField extends EnumOptionSingleSelectField {
 	setUserAttributeType(type, v) {
 		var thisField = this;
 		var m = this.getServerMethod("getTypeOption");
-		var opt = m.execute("type=" + type, function(opt) {
+		var opt = m.execute("type=" + type, (opt) => {
 			if (opt.status == ServerMethod.SUCCESS) {
 				thisField.setOptionList(opt.result);
 				if (v != null) {
-					EnumOptionSingleSelectField.prototype.setValue.call(thisField, v);
+					logger.error("setValue");
+					super.setValue(v);
 				}
 			}
 		});

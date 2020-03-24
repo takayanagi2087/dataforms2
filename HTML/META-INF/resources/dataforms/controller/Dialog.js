@@ -50,9 +50,8 @@ class Dialog extends DataForms {
 	 */
 	attach() {
 		super.attach();
-		var thisDialog = this;
-		this.find("#closeButton").click(function() {
-			thisDialog.close();
+		this.get("closeButton").click(() => {
+			this.close();
 			return false;
 		});
 	}

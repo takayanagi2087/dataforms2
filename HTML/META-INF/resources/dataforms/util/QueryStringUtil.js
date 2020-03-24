@@ -21,7 +21,11 @@ class QueryStringUtil {
 	static parse(qs) {
 		let vars = {};
 		if (qs != null && qs.length > 0) {
-			let temp = qs.substring(1).split('&');
+			var sidx = 0;
+			if (qs.charAt(0) == "?") {
+				sidx = 1;
+			}
+			let temp = qs.substring(sidx).split('&');
 			for(let i = 0; i <temp.length; i++) {
 				let params = temp[i].split('=');
 				if (params[1] != null) {

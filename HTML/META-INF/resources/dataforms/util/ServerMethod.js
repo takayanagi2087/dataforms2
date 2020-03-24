@@ -327,7 +327,6 @@ class ServerMethod {
 	 *
 	 */
 	submitWithoutFile(form, func) {
-		form.find("#dfMethod").remove();
 		var data = form.serialize();
 		form.find(':file').each(function() {
 			if (data.length > 0) {

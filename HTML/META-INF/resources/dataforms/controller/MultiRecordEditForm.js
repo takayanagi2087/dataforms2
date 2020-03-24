@@ -69,7 +69,6 @@ class MultiRecordEditForm extends TableUpdateForm {
 		var title = MessagesUtil.getMessage("message.editformtitle.update");
 		this.find("#editFormTitle").text(title);
 		var form = this;
-		form.find("#dfMethod").remove();
 		var data = qs;
 		logger.log("qs=" + data);
 		var method = new ServerMethod("editForm.getDataByQueryFormCondition");

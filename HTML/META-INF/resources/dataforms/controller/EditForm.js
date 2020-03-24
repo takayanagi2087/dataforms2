@@ -132,7 +132,6 @@ class EditForm extends TableUpdateForm {
 				}
 			});
 		} else {
-			form.get("dfMethod").remove();
 			var data = qs;
 			logger.log("qs=" + data);
 			var method = new ServerMethod("editForm.getDataByQueryFormCondition");

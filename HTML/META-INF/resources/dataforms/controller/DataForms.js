@@ -53,17 +53,17 @@ class DataForms extends WebComponent {
 	 */
 	attach() {
 		var editMode = true;
-		var qf = this.find("#queryForm");
+		var qf = this.get("queryForm");
 		if (qf.length > 0) {
 			qf.show();
 			editMode = false;
 		}
-		var rf = this.find("#queryResultForm");
+		var rf = this.get("queryResultForm");
 		if (rf.length > 0) {
 			rf.hide();
 			editMode = false;
 		}
-		var ef = this.find("#editForm");
+		var ef = this.get("editForm");
 		if (editMode) {
 			this.replaceState("editMode", "editMode", location.href);
 			ef.show();
@@ -73,13 +73,13 @@ class DataForms extends WebComponent {
 		}
 		super.attach();
 		// エラーメッセージ領域が無い場合自動的に追加する.
-		if (this.find("#errorMessages").length == 0) {
+		if (this.get("errorMessages").length == 0) {
 			var f = this.find("form:first");
 			f.before('<div class="errorMessages" ' + this.getIdAttribute() + '="errorMessages"><!--エラーメッセージ領域--></div>');
 		}
 		if (ef.length == 0) {
 			// 編集フォームがない場合
-			this.find("#newButton").hide();
+			this.get("newButton").hide();
 		}
 	}
 
@@ -87,7 +87,7 @@ class DataForms extends WebComponent {
 	 * エラー状態をリセットする.
 	 */
 	resetErrorStatus() {
-		var area = this.find('#errorMessages');
+		var area = this.get("errorMessages");
 		area.html("");
 		var ef = this.find('.errorField');
 		ef.each(function() {
@@ -125,8 +125,8 @@ class DataForms extends WebComponent {
 	 * @reutrns {Boolean} QueryFormが存在しない場合falseを返します。
 	 */
 	toQueryMode() {
-		var qf = this.find("#queryForm");
-		var qrf = this.find("#queryResultForm");
+		var qf = this.get("queryForm");
+		var qrf = this.get("queryResultForm");
 		if (qf.length > 0 || qrf.length > 0) {
 			var queryForm = this.getComponent("queryForm");
 			if (queryForm != null) {
@@ -135,7 +135,7 @@ class DataForms extends WebComponent {
 			}
 			var queryResultForm = this.getComponent("queryResultForm");
 			if (queryResultForm != null) {
-				var rf = this.find("#queryResultForm");
+				var rf = this.get("queryResultForm");
 				if (queryResultForm.queryResult != null) {
 					rf.show();
 				} /*else {
@@ -144,7 +144,7 @@ class DataForms extends WebComponent {
 			}
 			var editForm = this.getComponent("editForm");
 			if (editForm != null) {
-				var ef = this.find("#editForm");
+				var ef = this.get("editForm");
 				ef.hide();
 			}
 			return true;
@@ -166,17 +166,17 @@ class DataForms extends WebComponent {
 			//constructor.name
 			var editForm = this.getComponent("editForm");
 			if (editForm != null && editForm.multiRecord == true) {
-				var qf = this.find("#queryForm");
+				var qf = this.get("queryForm");
 				qf.show();
 				queryForm.toConfirmMode();
 			} else {
-				var qf = this.find("#queryForm");
+				var qf = this.get("queryForm");
 				qf.hide();
 			}
 		}
-		var rf = this.find("#queryResultForm");
+		var rf = this.get("queryResultForm");
 		rf.hide();
-		var ef = this.find("#editForm");
+		var ef = this.get("editForm");
 		ef.show();
 		return (ef.length > 0);
 	}

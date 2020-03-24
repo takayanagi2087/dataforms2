@@ -49,7 +49,7 @@ class ConfirmDialog extends Dialog {
 	 *
 	 */
 	show(modal, p) {
-		this.find("#confirmMessage").html(this.message);
+		this.get("confirmMessage").html(this.message);
 		super.show(modal, p);
 	}
 }

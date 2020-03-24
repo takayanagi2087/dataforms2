@@ -212,14 +212,6 @@ class Page extends DataForms {
 		var frame = $("<div " + this.getIdAttribute() + "=\"rootDiv\">" + this.frameBody + "</div>");
 		this.wrapFrame(frame, frame.find(this.convertSelector("#mainDiv")), $(this.convertSelector("#mainDiv")));
 		var head = $("<div>" + this.frameHead + "</div>");
-		// ライブラリと競合するタグを削除
-		head.find("meta[charset='UTF-8']").remove();
-		head.find("meta[charset='utf-8']").remove();
-		head.find("link[rel='stylesheet'][href='Frame.css']").remove();
-		head.find("link[rel='stylesheet'][href='FramePC.css']").remove();
-		head.find("link[rel='stylesheet'][href='FrameTB.css']").remove();
-		head.find("link[rel='stylesheet'][href='FrameSP.css']").remove();
-		head.find("title").remove();
 		// /frame/のパス調整。
 		head.find("link[rel='stylesheet'][href*='/frame/']").each(function() {
 			var href = $(this).attr("href");

@@ -41,12 +41,11 @@ class MultiRecordEditForm extends TableUpdateForm {
 	 */
 	attach() {
 		super.attach();
-		var thisForm = this;
 		var list = this.getComponent("list");
-		list.onAddTr = function(rowid) {
+		list.onAddTr = (rowid) => {
 			EditableHtmlTable.prototype.onAddTr.call(list, rowid);
 			logger.log("custom onAddTr=" + rowid);
-			thisForm.setKeyValue(rowid);
+			this.setKeyValue(rowid);
 		}
 		this.toEditMode();
 	}

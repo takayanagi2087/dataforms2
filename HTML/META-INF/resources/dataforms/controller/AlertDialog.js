@@ -24,11 +24,10 @@ class AlertDialog extends Dialog {
 	 */
 	attach() {
 		super.attach();
-		var thisDialog = this;
-		this.find("#alertOkButton").click(function() {
-			thisDialog.close();
-			if (thisDialog.okFunc != null) {
-				thisDialog.okFunc.call(this);
+		this.get("alertOkButton").click(() => {
+			this.close();
+			if (this.okFunc != null) {
+				this.okFunc.call(this);
 			}
 			return false;
 		});
@@ -41,7 +40,7 @@ class AlertDialog extends Dialog {
 	 *
 	 */
 	show(modal, p) {
-		this.find("#alertMessage").html(this.message);
+		this.get("alertMessage").html(this.message);
 		super.show(modal, p);
 	}
 }

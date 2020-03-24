@@ -112,6 +112,7 @@ class QueryForm extends Form {
 		var queryForm = this;
 		if (queryForm.validate()) {
 			var sortOrder = this.getSortOrder();
+			logger.log("sortOrder=" + sortOrder);
 			this.setHiddenField("sortOrder", sortOrder);
 			queryForm.submitForDownload("exportData", function(result) {
 				queryForm.parent.resetErrorStatus();

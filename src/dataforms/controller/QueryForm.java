@@ -3,6 +3,8 @@ package dataforms.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import dataforms.annotation.WebMethod;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.FieldList;
@@ -26,7 +28,7 @@ public abstract class QueryForm extends Form {
     /**
      * Logger.
      */
-//    private static Logger log = Logger.getLogger(QueryForm.class.getName());
+    private static Logger logger = Logger.getLogger(QueryForm.class.getName());
 
 
     /**
@@ -129,6 +131,7 @@ public abstract class QueryForm extends Form {
     		result = new JsonResponse(JsonResponse.INVALID, err);
     	} else {
         	String sortOrder = (String) p.get("sortOrder");
+        	logger.debug("sortOrder=" + sortOrder);
     		Map<String, Object> data = this.convertToServerData(p);
     		data.put("sortOrder", sortOrder);
     		FieldList flist = this.getExportDataFieldList(data);

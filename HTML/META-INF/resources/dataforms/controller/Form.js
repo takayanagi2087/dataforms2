@@ -195,8 +195,8 @@ class Form extends WebComponent {
 		super.attach();
 		this.get().addClass(this.id);
 		var thisForm = this;
-		this.find("#newButton").prop("disabled" , false);
-		this.find("#newButton").click(function() {
+		this.get("newButton").prop("disabled" , false);
+		this.get("newButton").click(function() {
 			thisForm.newData();
 			return false;
 		});
@@ -447,19 +447,10 @@ class Form extends WebComponent {
 	setHiddenField(field, val) {
 		var hid = this.find('#' + field);
 		if (hid.length == 0) {
-			this.get().append("<input type='hidden' id='" + field + "' name='" + field + "' value='" + val + "'>");
+			this.get().append("<input type='hidden' " + this.getIdAttribute() + "='" + field + "' name='" + field + "' value='" + val + "'>");
 			hid = this.find('#' + field);
 		}
 		hid.val(val);
 	}
-
-
 }
-
-
-
-
-
-
-
 

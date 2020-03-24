@@ -26,7 +26,7 @@ class UserAttributeValueField extends EnumOptionSingleSelectField {
 		super.setValue(v);
 		// 一旦値を保持し、選択肢を取得してから設定します。
 		var tid = this.id.replace("userAttributeValue", "userAttributeType");
-		var type = this.parent.find("#" + this.selectorEscape(tid)).val();
+		var type = this.parent.getFieldValue(tid);
 		this.setUserAttributeType(type, v);
 	}
 

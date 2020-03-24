@@ -44,7 +44,6 @@ class MultiRecordEditForm extends TableUpdateForm {
 		var list = this.getComponent("list");
 		list.onAddTr = (rowid) => {
 			EditableHtmlTable.prototype.onAddTr.call(list, rowid);
-			logger.log("custom onAddTr=" + rowid);
 			this.setKeyValue(rowid);
 		}
 		this.toEditMode();
@@ -52,12 +51,12 @@ class MultiRecordEditForm extends TableUpdateForm {
 
 	/**
 	 * QueryFormで指定されたキー情報を設定します。
+	 * @param {String} rowid 行ID。
 	 */
 	setKeyValue(rowid) {
 		for (var k in this.keyMap) {
 			var id = rowid + "." + k;
-			logger.log("id=" + id);
-			this.find("#" + this.selectorEscape(id)).val(this.keyMap[k]);
+			this.setFieldValue(id, this.keyMap[k]);
 		}
 	}
 
@@ -67,7 +66,7 @@ class MultiRecordEditForm extends TableUpdateForm {
 	updateData(qs) {
 		this.keyMap = QueryStringUtil.parse(qs);
 		var title = MessagesUtil.getMessage("message.editformtitle.update");
-		this.find("#editFormTitle").text(title);
+		this.get("editFormTitle").text(title);
 		var form = this;
 		var data = qs;
 		logger.log("qs=" + data);

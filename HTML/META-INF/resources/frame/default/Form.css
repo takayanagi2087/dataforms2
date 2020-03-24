@@ -23,7 +23,7 @@
 @media screen and (min-width: var(--tb-screen-min)) {
 	.mainDiv table.responsive th,
 	.mainDiv table.responsive td {
-		height: 22px;
+		height: 26px;
 	}
 
 	/* レスポンシブテーブルの制御設定 */

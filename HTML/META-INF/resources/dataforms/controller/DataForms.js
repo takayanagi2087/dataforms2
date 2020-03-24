@@ -108,11 +108,11 @@ class DataForms extends WebComponent {
 	 * @param {Form} form エラーの発生したフォーム。
 	 */
 	setErrorInfo(errors, form) {
-		var area = this.find('#errorMessages');
+		var area = this.get("errorMessages");
 		this.resetErrorStatus();
 		for (var i = 0; i < errors.length; i++) {
 			area.append(errors[i].message + "<br/>");
-			form.find('#' + this.selectorEscape(errors[i].fieldId)).addClass("errorField");
+			form.get(this.selectorEscape(errors[i].fieldId)).addClass("errorField");
 		}
 	}
 

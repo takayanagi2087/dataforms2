@@ -44,7 +44,7 @@ class EditForm extends TableUpdateForm {
 	attach() {
 		super.attach();
 		var form = this;
-		form.find('#deleteButton').click(function() {
+		form.get('deleteButton').click(function() {
 			form.del();
 			return false;
 		});
@@ -92,7 +92,7 @@ class EditForm extends TableUpdateForm {
 	 */
 	newData() {
 		var title = MessagesUtil.getMessage("message.editformtitle.new");
-		this.find("#editFormTitle").text(title);
+		this.get("editFormTitle").text(title);
 		var form = this;
 		form.submitWithoutFile("getNewData", function(result) {
 			form.parent.resetErrorStatus();
@@ -116,7 +116,7 @@ class EditForm extends TableUpdateForm {
 	 */
 	updateData(qs) {
 		var title = MessagesUtil.getMessage("message.editformtitle.update");
-		this.find("#editFormTitle").text(title);
+		this.get("editFormTitle").text(title);
 		var form = this;
 		if (qs == null) {
 			form.submitWithoutFile("getData", function(result) {
@@ -132,7 +132,7 @@ class EditForm extends TableUpdateForm {
 				}
 			});
 		} else {
-			form.find("#dfMethod").remove();
+			form.get("dfMethod").remove();
 			var data = qs;
 			logger.log("qs=" + data);
 			var method = new ServerMethod("editForm.getDataByQueryFormCondition");
@@ -161,7 +161,7 @@ class EditForm extends TableUpdateForm {
 	 */
 	referData() {
 		var title = MessagesUtil.getMessage("message.editformtitle.refer");
-		this.find("#editFormTitle").text(title);
+		this.get("editFormTitle").text(title);
 		var form = this;
 		form.submitWithoutFile("getReferData", function(result) {
 			form.parent.resetErrorStatus();
@@ -186,7 +186,7 @@ class EditForm extends TableUpdateForm {
 	 */
 	viewData() {
 		var title = MessagesUtil.getMessage("message.editformtitle.view");
-		this.find("#editFormTitle").text(title);
+		this.get("editFormTitle").text(title);
 		var form = this;
 		form.submitWithoutFile("getData", function(result) {
 			form.parent.resetErrorStatus();
@@ -195,9 +195,9 @@ class EditForm extends TableUpdateForm {
 				form.saveMode = "update";
 				form.setFormData(result.result);
 				form.lockFields(true);
-				form.find("#confirmButton").hide();
-				form.find("#saveButton").hide();
-				form.find("#resetButton").hide();
+				form.get("confirmButton").hide();
+				form.get("saveButton").hide();
+				form.get("resetButton").hide();
 				form.parent.pushConfirmModeStatus();
 			} else {
 				form.parent.setErrorInfo(form.getValidationResult(result), form);
@@ -216,9 +216,9 @@ class EditForm extends TableUpdateForm {
 	setFormData(data) {
 		super.setFormData(data);
 		if (this.saveMode == "new") {
-			this.find('#deleteButton').hide();
+			this.get('deleteButton').hide();
 		} else {
-			this.find('#deleteButton').show();
+			this.get('deleteButton').show();
 		}
 	}
 

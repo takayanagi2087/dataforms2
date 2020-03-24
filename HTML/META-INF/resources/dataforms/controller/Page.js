@@ -456,15 +456,17 @@ class Page extends DataForms {
 	 * </pre>
 	 */
 	lock() {
-		$(this.convertSelector("#lockLayer")).css({
+		let sel = this.convertSelector("#lockLayer");
+		let h = $("body").height()
+		$(sel).css({
 			display: 'block',
 			width: $(document).width(),
-			height: $(document).height()
+			height: h
 		});
-		$(window).on("resize.lockLayer", function() {
-			$('#lockLayer').css({
+		$(window).on("resize", function() {
+			$(sel).css({
 				width: $(document).width(),
-				height: $(document).height()
+				height: h
 			});
 		});
 	}
@@ -476,8 +478,9 @@ class Page extends DataForms {
 	 * </pre>
 	 */
 	unlock() {
-		 $(this.convertSelector("#lockLayer")).css({display: 'none'});
-		 $(window).off("resize.lockLayer");
+		let sel = this.convertSelector("#lockLayer");
+		 $(sel).css({display: 'none'});
+		 $(window).off("resize");
 	}
 
 

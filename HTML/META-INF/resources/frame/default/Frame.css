@@ -258,12 +258,11 @@ body > .mainDiv {
 /* ページロックDIVのスタイル */
 .lockLayer {
 	background: url(./image/loading.gif) center no-repeat;
-	background-color: black;
+	background-color: rgba(0,0,0,0.0);
 	position: absolute;
 	display: block;
 	left: 0;
 	top: 0;
-	opacity: 0.0;
 	z-index: 10000;
 }
 

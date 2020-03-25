@@ -15,9 +15,8 @@ class FuncEditForm extends EditForm {
 	 */
 	attach() {
 		super.attach();
-		var thisForm = this;
-		this.find("#exportInitDataButton").click(function() {
-			thisForm.exportInitData()
+		this.get("exportInitDataButton").click(() => {
+			this.exportInitData();
 		});
 	}
 

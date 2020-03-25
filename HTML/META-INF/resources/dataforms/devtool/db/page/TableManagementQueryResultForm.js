@@ -21,47 +21,47 @@ class TableManagementQueryResultForm extends QueryResultForm {
 		super.attach();
 		var systemName = MessagesUtil.getMessage("message.systemname");
 		var thisForm = this;
-		this.find("#selectAllButton").click(function() {
+		this.get("selectAllButton").click(function() {
 			$("[name='checkedClass']").each(function() {
 				$(this).prop("checked", true);
 			});
 			thisForm.controlButton();
 		});
-		this.find("#selectNothingButton").click(function() {
+		this.get("selectNothingButton").click(function() {
 			for (var i = 0;;i++) {
 				var id = "queryResult[" + i + "].statusVal";
-				var st = thisForm.find("#" + thisForm.selectorEscape(id));
+				var st = thisForm.get(id);
 				if (st.length == 0) {
 					break;
 				}
 				if (st.val() == "0") {
 					var cbid = "queryResult[" + i + "].checkedClass";
-					thisForm.find("#" + thisForm.selectorEscape(cbid)).prop("checked", true);
+					thisForm.get(cbid).prop("checked", true);
 				}
 			}
 			thisForm.controlButton();
 		});
-		this.find("#selectDiffButton").click(function() {
+		this.get("selectDiffButton").click(function() {
 			for (var i = 0;;i++) {
 				var id = "queryResult[" + i + "].differenceVal";
-				var st = thisForm.find("#" + thisForm.selectorEscape(id));
+				var st = thisForm.get(id);
 				if (st.length == 0) {
 					break;
 				}
 				if (st.val() == "1") {
 					var cbid = "queryResult[" + i + "].checkedClass";
-					thisForm.find("#" + thisForm.selectorEscape(cbid)).prop("checked", true);
+					thisForm.get(cbid).prop("checked", true);
 				}
 			}
 			thisForm.controlButton();
 		});
-		this.find("#unselectAllButton").click(function() {
+		this.get("unselectAllButton").click(function() {
 			$("[name='checkedClass']").each(function() {
 				$(this).prop("checked", false);
 			});
 			thisForm.controlButton();
 		});
-		this.find("#initTableButton").click(function() {
+		this.get("initTableButton").click(function() {
 			currentPage.confirm(systemName, MessagesUtil.getMessage("message.initTableConfirm"), function() {
 				thisForm.submit("initTable", function(result) {
 					thisForm.updateTableInfoList(result);
@@ -69,7 +69,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			})
 		});
 
-		this.find("#updateTableButton").click(function() {
+		this.get("updateTableButton").click(function() {
 			currentPage.confirm(systemName, MessagesUtil.getMessage("message.updateTableConfirm"), function() {
 				thisForm.submit("updateTable", function(result) {
 					thisForm.updateTableInfoList(result);
@@ -77,7 +77,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			});
 		});
 
-		this.find("#dropTableButton").click(function() {
+		this.get("dropTableButton").click(function() {
 			currentPage.confirm(systemName, MessagesUtil.getMessage("message.dropTableConfirm"), function() {
 				thisForm.submit("dropTable", function(result) {
 					thisForm.updateTableInfoList(result);
@@ -85,7 +85,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			});
 		});
 
-		this.find("#exportAsInitialDataButton").click(function() {
+		this.get("exportAsInitialDataButton").click(function() {
 			currentPage.confirm(systemName, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"), function() {
 				thisForm.submit("exportTableAsInitialData", function(result) {
 					if (result.status == ServerMethod.SUCCESS) {
@@ -96,7 +96,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			});
 		});
 
-		this.find("#exportTableButton").click(function() {
+		this.get("exportTableButton").click(function() {
 			currentPage.confirm(systemName, MessagesUtil.getMessage("message.dexportTableConfirm"), function() {
 				thisForm.submit("exportTable", function(result) {
 					if (result.status == ServerMethod.SUCCESS) {
@@ -106,7 +106,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 				});
 			});
 		});
-		this.find("#importTableButton").click(function() {
+		this.get("importTableButton").click(function() {
 			var dlg = thisForm.parent.getComponent("importDataDialog");
 			dlg.showModal();
 		});
@@ -135,31 +135,31 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	controlButton() {
 		var tr = this.find("#queryResult>tbody>tr");
 		if (tr.length > 0) {
-			this.find("#selectAllButton").prop("disabled", false);
-			this.find("#selectNothingButton").prop("disabled", false);
-			this.find("#selectDiffButton").prop("disabled", false);
-			this.find("#unselectAllButton").prop("disabled", false);
+			this.get("selectAllButton").prop("disabled", false);
+			this.get("selectNothingButton").prop("disabled", false);
+			this.get("selectDiffButton").prop("disabled", false);
+			this.get("unselectAllButton").prop("disabled", false);
 		} else {
-			this.find("#selectAllButton").prop("disabled", true);
-			this.find("#selectNothingButton").prop("disabled", true);
-			this.find("#selectDiffButton").prop("disabled", true);
-			this.find("#unselectAllButton").prop("disabled", true);
+			this.get("selectAllButton").prop("disabled", true);
+			this.get("selectNothingButton").prop("disabled", true);
+			this.get("selectDiffButton").prop("disabled", true);
+			this.get("unselectAllButton").prop("disabled", true);
 		}
 		var ckcb = this.find("[name='checkedClass']:checked");
 		if (ckcb.length > 0) {
-			this.find("#updateTableButton").prop("disabled", false);
-			this.find("#initTableButton").prop("disabled", false);
-			this.find("#dropTableButton").prop("disabled", false);
-			this.find("#exportAsInitialDataButton").prop("disabled", false);
-			this.find("#exportTableButton").prop("disabled", false);
-			this.find("#importTableButton").prop("disabled", false);
+			this.get("updateTableButton").prop("disabled", false);
+			this.get("initTableButton").prop("disabled", false);
+			this.get("dropTableButton").prop("disabled", false);
+			this.get("exportAsInitialDataButton").prop("disabled", false);
+			this.get("exportTableButton").prop("disabled", false);
+			this.get("importTableButton").prop("disabled", false);
 		} else {
-			this.find("#updateTableButton").prop("disabled", true);
-			this.find("#initTableButton").prop("disabled", true);
-			this.find("#dropTableButton").prop("disabled", true);
-			this.find("#exportAsInitialDataButton").prop("disabled", true);
-			this.find("#exportTableButton").prop("disabled", true);
-			this.find("#importTableButton").prop("disabled", true);
+			this.get("updateTableButton").prop("disabled", true);
+			this.get("initTableButton").prop("disabled", true);
+			this.get("dropTableButton").prop("disabled", true);
+			this.get("exportAsInitialDataButton").prop("disabled", true);
+			this.get("exportTableButton").prop("disabled", true);
+			this.get("importTableButton").prop("disabled", true);
 		}
 	}
 
@@ -172,7 +172,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 		if (queryResult != null) {
 			for (var i = 0; i < queryResult.length; i++) {
 				var id = "queryResult[" + i + "].className";
-				this.find("#" + this.selectorEscape(id)).click(function() {
+				this.get(id).click(function() {
 					var clsname = $(this).html();
 					var qs="className=" + clsname;
 					var method = thisForm.getServerMethod("getTableInfo");
@@ -259,7 +259,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	updateTableInfo(result) {
 		for (var i = 0;;i++) {
 			var id = "queryResult[" + i + "].className";
-			var clsname = this.find("#" + this.selectorEscape(id));
+			var clsname = this.get(id);
 			if (clsname.length > 0) {
 				if (clsname.html() == result.className) {
 					result.rowNo = (i + 1);
@@ -301,7 +301,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 * Importを実行します。
 	 * @param {String} path インポートデータのパス。
 	 */
-	import(path) {
+	importTableData(path) {
 		var thisForm = this;
 		$(this.convertSelector("#datapath")).val(path);
 		thisForm.submit("importTable", function(result) {

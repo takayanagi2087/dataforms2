@@ -22,7 +22,7 @@ class ImportDataForm extends Form {
 		this.get("importButton").click(() => {
 			var rform = currentPage.getComponent("queryResultForm");
 			var path = this.getFieldValue("pathName");
-			rform.import(path);
+			rform.importTableData(path);
 			this.parent.close();
 		});
 	}

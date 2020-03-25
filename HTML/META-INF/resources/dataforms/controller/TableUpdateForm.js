@@ -29,19 +29,19 @@ class TableUpdateForm extends Form {
 	attach() {
 		super.attach();
 		var form = this;
-		form.find('#confirmButton').click(function () {
+		form.get("confirmButton").click(function () {
 			form.confirm();
 			return false;
 		});
-		form.find('#saveButton').click(function () {
+		form.get("saveButton").click(function () {
 			form.save();
 			return false;
 		});
-		form.find('#resetButton').click(function() {
+		form.get("resetButton").click(function() {
 			form.reset();
 			return false;
 		});
-		form.find('#backButton').click(function() {
+		form.get("backButton").click(function() {
 			if (form.parent.isBrowserBackEnabled()) {
 				history.back();
 			} else {
@@ -75,15 +75,15 @@ class TableUpdateForm extends Form {
 	toEditMode() {
 		this.mode = "edit";
 		this.lockFields(false);
-		var cb = this.find("#confirmButton");
+		var cb = this.get("confirmButton");
 		if (cb.length > 0) {
 			// 確認画面があるパターン.
 			cb.show();
-			this.find("#resetButton").show();
-			this.find("#saveButton").hide();
+			this.get("resetButton").show();
+			this.get("saveButton").hide();
 		} else {
 			// いきなり保存するパターン.
-			this.find("#saveButton").show();
+			this.get("saveButton").show();
 		}
 	}
 
@@ -96,15 +96,15 @@ class TableUpdateForm extends Form {
 	toConfirmMode() {
 		this.mode = "confirm";
 		this.lockFields(true);
-		var cb = this.find('#confirmButton');
+		var cb = this.get("confirmButton");
 		if (cb.length > 0) {
 			// 確認画面があるパターン.
 			cb.hide();
-			this.find('#resetButton').hide();
-			this.find('#saveButton').show();
+			this.get("resetButton").hide();
+			this.get("saveButton").show();
 		} else {
 			// いきなり保存するパターン.
-			this.find('#saveButton').show();
+			this.get("saveButton").show();
 		}
 	}
 
@@ -118,7 +118,7 @@ class TableUpdateForm extends Form {
 	confirm() {
 		var form = this;
 		if (form.validate()) {
-			this.find("#saveMode").val(this.saveMode);
+			this.get("saveMode").val(this.saveMode);
 			form.submitWithoutFile("confirm", function(result) {
 				form.parent.resetErrorStatus();
 				if (result.status == ServerMethod.SUCCESS) {
@@ -161,7 +161,7 @@ class TableUpdateForm extends Form {
 	save() {
 		var form = this;
 		if (form.validate()) {
-			this.find("#saveMode").val(this.saveMode);
+			this.get("saveMode").val(this.saveMode);
 			form.submit("save", function(result) {
 				form.parent.resetErrorStatus();
 				if (result.status == ServerMethod.SUCCESS) {

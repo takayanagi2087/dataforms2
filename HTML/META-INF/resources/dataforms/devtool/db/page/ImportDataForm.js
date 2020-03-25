@@ -19,12 +19,11 @@ class ImportDataForm extends Form {
 	 */
 	attach() {
 		super.attach();
-		var thisForm = this;
-		this.find("#importButton").click(function() {
+		this.get("importButton").click(() => {
 			var rform = currentPage.getComponent("queryResultForm");
-			var path = thisForm.getFieldValue("pathName");
+			var path = this.getFieldValue("pathName");
 			rform.import(path);
-			thisForm.parent.close();
+			this.parent.close();
 		});
 	}
 }

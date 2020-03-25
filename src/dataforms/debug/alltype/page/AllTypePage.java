@@ -1,6 +1,7 @@
 package dataforms.debug.alltype.page;
 
 import dataforms.app.base.page.AdminPage;
+import dataforms.app.user.dialog.UserQueryDialog;
 
 
 /**
@@ -15,7 +16,7 @@ public class AllTypePage extends AdminPage {
 		this.addForm(new AllTypeQueryForm());
 		this.addForm(new AllTypeQueryResultForm());
 		this.addForm(new AllTypeEditForm());
-		//this.addDialog(new UserQueryDialog());
+		this.addDialog(new UserQueryDialog());
 		
 	}
 }

@@ -24,19 +24,19 @@ class AllTypeEditForm extends EditForm {
 	attach() {
 		super.attach();
 		var thisForm = this;
-		this.find("#printButton").click(function() {
+		this.get("printButton").click(function() {
 			thisForm.print();
 		});
-		this.find("#printPdfButton").click(function() {
+		this.get("printPdfButton").click(function() {
 			thisForm.printPdf();
 		});
-		this.find("#printOutButton").click(function() {
+		this.get("printOutButton").click(function() {
 			thisForm.printOut();
 		});
-		this.find("#getValueTestButton").click(function() {
+		this.get("getValueTestButton").click(function() {
 			thisForm.getValueTest();
 		});
-		this.find("#userDialogButton").click(function() {
+		this.get("userDialogButton").click(function() {
 			var dlg = thisForm.parent.getComponent("userQueryDialog");
 			dlg.data = null;
 			dlg.showModal({

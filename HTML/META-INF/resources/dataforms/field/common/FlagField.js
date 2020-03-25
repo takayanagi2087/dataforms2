@@ -49,7 +49,7 @@ class FlagField extends CharField {
 		var type = comp.prop("type");
 		if ("INPUT" == tag && type.toLowerCase() == "checkbox") {
 			var span = this.addSpan(comp);
-			span.html("<input type='checkbox' id='" + this.id + "_ck' onclick='return false;'>");
+			span.html("<input type='checkbox' " + this.getIdAttribute() + "='" + this.id + "_ck' onclick='return false;'>");
 			this.parent.find("#" + this.selectorEscape(this.id + "_ck")).prop("checked", comp.prop("checked"));
 			if (lk) {
 				span.show()

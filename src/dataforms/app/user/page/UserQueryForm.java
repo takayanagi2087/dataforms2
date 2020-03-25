@@ -67,8 +67,8 @@ public class UserQueryForm extends QueryForm {
 		if (this.getPage().checkUserAttribute("userLevel", "developer")) {
 			TableManagerDao dao = new TableManagerDao(this);
 			String initialDataPath =  DeveloperPage.getExportInitalDataPath(this.getPage()); // DeveloperPage.getWebSourcePath() + "/WEB-INF/initialdata";
-			dao.exportData("dataforms.app.dao.user.UserInfoTable", initialDataPath);
-			dao.exportData("dataforms.app.dao.user.UserAttributeTable", initialDataPath);
+			dao.exportData("dataforms.app.user.dao.UserInfoTable", initialDataPath);
+			dao.exportData("dataforms.app.user.dao.UserAttributeTable", initialDataPath);
 			ret = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.initializationdatacreated"));
 		} else {
 			ret = new JsonResponse(JsonResponse.INVALID, MessagesUtil.getMessage(this.getPage(), "error.permission"));

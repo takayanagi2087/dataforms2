@@ -16,23 +16,26 @@ class DeveloperEditForm extends EditForm {
 	attach() {
 		super.attach();
 		if (this.userInfoDataExists) {
-			this.find("#flagDiv").show();
+			this.get("flagDiv").show();
 		} else {
-			this.find("#flagDiv").hide();
+			this.get("flagDiv").hide();
 		}
 		var thisForm = this;
-		this.find("#userImportFlag").click(function() {
+		this.get("userImportFlag").click(function() {
 			if ($(this).prop("checked")) {
-				thisForm.find("#userInfoTable").hide();
+				thisForm.get("userInfoTable").hide();
 			} else {
-				thisForm.find("#userInfoTable").show();
+				thisForm.get("userInfoTable").show();
 			}
 		});
 	}
 
-
+	/**
+	 * フォームのチェックを行います。
+	 *
+	 */
 	validate() {
-		if (this.find("#userImportFlag").prop("checked")) {
+		if (this.get("userImportFlag").prop("checked")) {
 			return true;
 		} else {
 			return super.validate();

@@ -30,31 +30,31 @@ class QueryResultForm extends Form {
 		super.attach();
 		this.queryResult = null;
 		var thisForm = this;
-		this.find("#linesPerPage").change(function() {
-			thisForm.find("#pageNo").val(0);
+		this.get("linesPerPage").change(function() {
+			thisForm.get("pageNo").val(0);
 			thisForm.changePage();
 		});
-		this.find("#pageNo").change(function() {
+		this.get("pageNo").change(function() {
 			thisForm.changePage();
 		});
 
-		this.find("#topPageButton").click(function() {
+		this.get("topPageButton").click(function() {
 			thisForm.topPage();
 			return false;
 		});
 
-		this.find("#bottomPageButton").click(function() {
+		this.get("bottomPageButton").click(function() {
 			thisForm.bottomPage();
 			return false;
 		});
 
-		this.find("#prevPageButton").click(function() {
+		this.get("prevPageButton").click(function() {
 			thisForm.prevPage();
 			return false;
 		});
 
 
-		this.find("#nextPageButton").click(function() {
+		this.get("nextPageButton").click(function() {
 			thisForm.nextPage();
 			return false;
 		});
@@ -66,7 +66,7 @@ class QueryResultForm extends Form {
 	 * 先頭ページに遷移します。
 	 */
 	topPage() {
-		this.find("#pageNo").val(0);
+		this.get("pageNo").val(0);
 		this.changePage();
 	}
 
@@ -77,7 +77,7 @@ class QueryResultForm extends Form {
 	bottomPage() {
 		var thisForm = this;
 		var v = thisForm.find("#pageNo>option:last").val();
-		thisForm.find("#pageNo").val(v);
+		thisForm.get("pageNo").val(v);
 		thisForm.changePage();
 	}
 
@@ -86,12 +86,12 @@ class QueryResultForm extends Form {
 	 */
 	prevPage() {
 		var thisForm = this;
-		var v = parseInt(thisForm.find("#pageNo").val(), 10);
+		var v = parseInt(thisForm.get("pageNo").val(), 10);
 		var idx = v - 1;
 		if (idx < 0){
 			idx = 0;
 		}
-		thisForm.find("#pageNo").val(idx);
+		thisForm.get("pageNo").val(idx);
 		thisForm.changePage();
 	}
 
@@ -101,40 +101,24 @@ class QueryResultForm extends Form {
 	nextPage() {
 		var thisForm = this;
 		var max = parseInt(thisForm.find("#pageNo>option:last").val(), 10);
-		var v = parseInt(thisForm.find("#pageNo").val(), 10);
+		var v = parseInt(thisForm.get("pageNo").val(), 10);
 		var idx = v + 1;
 		if (idx > max){
 			idx = max;
 		}
-		thisForm.find("#pageNo").val(idx);
+		thisForm.get("pageNo").val(idx);
 		thisForm.changePage();
 	}
-
-	/**
-	 * PKフィールドのdisabled属性を設定します。
-	 *
-	 * QueryResultFieldにPKフィールドを出力しないように修正したので、
-	 * 将来的にはこのメソッドは不要になります。
-	 * 古いHTMLでも動作するようにしばらく残しておきます。
-	 *
-	 * @param {Boolean} disabled disbaled属性。
-	 */
-	setDisabledPkField(disabled) {
-		for (var i = 0; i < this.pkFieldList.length; i++) {
-			this.find("#" + this.selectorEscape(this.pkFieldList[i])).prop("disabled", disabled);
-		}
-	}
-
 
 	/**
 	 * ページの更新を行います。
 	 */
 	changePage() {
 		var queryResultForm = this;
-		var lpp = this.find("#linesPerPage");
+		var lpp = this.get("linesPerPage");
 		var lines = "";
 		if (lpp.prop("disabled")) {
-			this.find("#linesPerPage").find("option").each(function() {
+			this.get("linesPerPage").find("option").each(function() {
 				if ($(this).attr("selected") == "selected") {
 					lines = "&linesPerPage=" + $(this).val();
 				}
@@ -142,12 +126,8 @@ class QueryResultForm extends Form {
 		}
 		var rt = this.getComponent("queryResult");
 		logger.log("sortOrder=" + rt.sortOrder);
-		// queryFormにPKが設定されている場合、PKフィールドを送信しないようにする。
-		this.setDisabledPkField(true);
 		var param = this.condition + lines +  "&" + this.get().serialize() + "&sortOrder=" + rt.sortOrder;
 		logger.log("param=" + param);
-		this.setDisabledPkField(false);
-
 		var method = this.getServerMethod("changePage");
 		method.execute(param, function(result) {
 			queryResultForm.parent.resetErrorStatus();
@@ -242,29 +222,29 @@ class QueryResultForm extends Form {
 	 */
 	controlPager() {
 		if (this.find("#queryResult>tbody>tr").length == 0) {
-			this.find("#linesPerPage").prop("disabled", true);
-			this.find("#topPageButton").prop("disabled", true);
-			this.find("#prevPageButton").prop("disabled", true);
-			this.find("#pageNo").prop("disabled", true);
-			this.find("#nextPageButton").prop("disabled", true);
-			this.find("#bottomPageButton").prop("disabled", true);
+			this.get("linesPerPage").prop("disabled", true);
+			this.get("topPageButton").prop("disabled", true);
+			this.get("prevPageButton").prop("disabled", true);
+			this.get("pageNo").prop("disabled", true);
+			this.get("nextPageButton").prop("disabled", true);
+			this.get("bottomPageButton").prop("disabled", true);
 		} else {
-			this.find("#linesPerPage").prop("disabled", false);
-			this.find("#topPageButton").prop("disabled", false);
-			this.find("#prevPageButton").prop("disabled", false);
-			this.find("#pageNo").prop("disabled", false);
-			this.find("#nextPageButton").prop("disabled", false);
-			this.find("#bottomPageButton").prop("disabled", false);
+			this.get("linesPerPage").prop("disabled", false);
+			this.get("topPageButton").prop("disabled", false);
+			this.get("prevPageButton").prop("disabled", false);
+			this.get("pageNo").prop("disabled", false);
+			this.get("nextPageButton").prop("disabled", false);
+			this.get("bottomPageButton").prop("disabled", false);
 			var minPage = 0;
 			var maxPage = parseInt(this.find("#pageNo>option:last").val(), 10);
-			var pageNo = parseInt(this.find("#pageNo").val(), 10);
+			var pageNo = parseInt(this.get("pageNo").val(), 10);
 			if (pageNo == minPage) {
-				this.find("#topPageButton").prop("disabled", true);
-				this.find("#prevPageButton").prop("disabled", true);
+				this.get("topPageButton").prop("disabled", true);
+				this.get("prevPageButton").prop("disabled", true);
 			}
 			if (pageNo == maxPage) {
-				this.find("#nextPageButton").prop("disabled", true);
-				this.find("#bottomPageButton").prop("disabled", true);
+				this.get("nextPageButton").prop("disabled", true);
+				this.get("bottomPageButton").prop("disabled", true);
 			}
 		}
 	}

@@ -324,7 +324,7 @@ class Field extends WebComponent {
 		var span = this.parent.find("#" + this.selectorEscape(spanid));
 		if (span.length == 0) {
 			if (currentPage.useUniqueId) {
-				comp.after("<span data-id='" + spanid + "' class='selectSpan'></span>");
+				comp.after("<span data-id='" + spanid + "' id='" + this.realId + "_span' class='selectSpan'></span>");
 			} else {
 				comp.after("<span id='" + spanid + "' class='selectSpan'></span>");
 			}

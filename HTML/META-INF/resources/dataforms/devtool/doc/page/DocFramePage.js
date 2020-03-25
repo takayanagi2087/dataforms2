@@ -20,18 +20,18 @@ class DocFramePage extends BasePage {
 		logger.log("doc=" + qs["doc"])
 		if (qs["doc"] != null) {
 			var src = "../../../../doc/" + qs["doc"];
-			this.find("#docFrame").attr("src", src);
+			this.get("docFrame").attr("src", src);
 		} else {
 			var src = "../../../../doc/introduction";
-			this.find("#docFrame").attr("src", src);
+			this.get("docFrame").attr("src", src);
 		}
 		this.find("a").click(function() {
 			var id = $(this).attr(thisPage.getIdAttribute());
 			var src = "../../../../doc/" + id;
-			thisPage.find("#docFrame").attr("src", src);
+			thisPage.get("docFrame").attr("src", src);
 
 		});
-		thisPage.find("#docFrame").on('load', function() {
+		thisPage.get("docFrame").on('load', function() {
 			thisPage.onLoadDocFrame($(this));
 		});
 
@@ -51,7 +51,7 @@ class DocFramePage extends BasePage {
 	 * ドキュメント表示用のiframeの高さを調整します。
 	 */
 	adjustDocFrameHeight() {
-		var docFrame = this.find("#docFrame");
+		var docFrame = this.get("docFrame");
 		docFrame.height(docFrame.contents().find("body").height() + 72);
 	}
 

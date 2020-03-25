@@ -19,18 +19,17 @@ class TableInfoForm extends Form {
 	 */
 	attach() {
 		super.attach();
-		var thisForm = this;
-		this.find("#initTableButton").click(function() {
-			thisForm.initTable();
+		this.get("initTableButton").click(() => {
+			this.initTable();
 		});
-		this.find("#updateTableButton").click(function() {
-			thisForm.updateTable();
+		this.get("updateTableButton").click(() => {
+			this.updateTable();
 		});
-		this.find("#dropTableButton").click(function() {
-			thisForm.dropTable();
+		this.get("dropTableButton").click(() => {
+			this.dropTable();
 		});
-		this.find("#closeButton").click(function() {
-			thisForm.parent.close();
+		this.get("closeButton").click(() => {
+			this.parent.close();
 		});
 	}
 
@@ -41,11 +40,9 @@ class TableInfoForm extends Form {
 	setFormData(formData) {
 		super.setFormData(formData);
 		if (formData.tableExists) {
-			this.find("#dropTableButton").prop("disabled", false);
-			this.find("#exportDataButton").prop("disabled", false);
+			this.get("dropTableButton").prop("disabled", false);
 		} else {
-			this.find("#dropTableButton").prop("disabled", true);
-			this.find("#exportDataButton").prop("disabled", true);
+			this.get("dropTableButton").prop("disabled", true);
 		}
 	}
 
@@ -66,7 +63,7 @@ class TableInfoForm extends Form {
 		var thisForm = this;
 		var systemName = MessagesUtil.getMessage("message.systemname");
 		currentPage.confirm(systemName, MessagesUtil.getMessage("message.initTableConfirm"), function() {
-			var clsname = thisForm.find("#className").html();
+			var clsname = thisForm.get("className").html();
 			var p = "className=" + clsname;
 			var method = thisForm.getServerMethod("initTable");
 			method.execute(p, function(result) {
@@ -86,7 +83,7 @@ class TableInfoForm extends Form {
 		var thisForm = this;
 		var systemName = MessagesUtil.getMessage("message.systemname");
 		currentPage.confirm(systemName, MessagesUtil.getMessage("message.dropTableConfirm"), function() {
-			var clsname = thisForm.find("#className").html();
+			var clsname = thisForm.get("className").html();
 			var p = "className=" + clsname;
 			var method = thisForm.getServerMethod("dropTable");
 			method.execute(p, function(result) {
@@ -105,7 +102,7 @@ class TableInfoForm extends Form {
 		var thisForm = this;
 		var systemName = MessagesUtil.getMessage("message.systemname");
 		currentPage.confirm(systemName, MessagesUtil.getMessage("message.updateTableConfirm"), function() {
-			var clsname = thisForm.find("#className").html();
+			var clsname = thisForm.get("className").html();
 			var p = "className=" + clsname;
 			var method = thisForm.getServerMethod("updateTable");
 			method.execute(p, function(result) {

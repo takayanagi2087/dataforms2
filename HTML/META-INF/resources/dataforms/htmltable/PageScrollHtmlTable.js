@@ -21,15 +21,36 @@ class PageScrollHtmlTable extends HtmlTable {
 		var thisTable = this;
 		super.attach();
 		thisTable.get().before(this.additionalHtmlText);
-		thisTable.parent.find(":input").each(function() {
+		thisTable.parent.find("div.pageController :input").each(function() {
+			let id = $(this).attr(thisTable.getIdAttribute());
 			if ($(this).attr("name") == null) {
-				$(this).attr("name", $(this).attr(thisTable.getIdAttribute()));
+				$(this).attr("name", id);
 			}
 		});
+		if (currentPage.useUniqueId) {
+			// TODO: ページャーの構造は見直した方がよいかも。
+			// ページャー関連のユニークIDを設定します。
+			this.setPageControllerRealId("hitCount");
+			this.setPageControllerRealId("pageNo");
+			this.setPageControllerRealId("linesPerPage");
+		}
 		this.sortOrder = this.getSortOrder();
 	}
 
+	/**
+	 * ページャー関連のコンポートネントにユニークなIDを設定します。
+	 * @param {String} fid フィールドID。
+	 */
+	setPageControllerRealId(fid) {
+		var comp = this.parent.getComponent(fid);
+		var jq = this.parent.find("[" + this.getIdAttribute() + "='" + fid + "']");
+		jq.attr("id", comp.realId);
+	}
 
+	/**
+	 * ソート順の情報を取得します。
+	 * @return {String} ソート順情報。
+	 */
 	getSortOrder() {
 		var flist = this.getSortFieldList();
 		var sortOrder = "";

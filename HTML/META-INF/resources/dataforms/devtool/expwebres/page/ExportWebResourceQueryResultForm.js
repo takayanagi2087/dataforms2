@@ -16,14 +16,14 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 	attach() {
 		var thisForm = this;
 		super.attach();
-		this.find("#selAll").click(function() {
+		this.get("selAll").click(function() {
 			logger.log("selAll=" + $(this).prop("checked"));
 			thisForm.selAll($(this));
 		});
-		this.find("#exportButton").click(function() {
+		this.get("exportButton").click(function() {
 			thisForm.exportWebRes();
 		});
-		this.find("#selectNotExportedButton").click(function() {
+		this.get("selectNotExportedButton").click(function() {
 			thisForm.selectedNotExportedFile();
 		});
 	}
@@ -35,11 +35,11 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 	validateFields() {
 		var ret = super.validateFields();
 		if (ret.length == 0) {
-			if (this.find("#forceOverwrite").prop("checked") == false) {
+			if (this.get("forceOverwrite").prop("checked") == false) {
 				var result = this.formData.queryResult;
 				for (var i = 0; i < result.length; i++) {
 					var selid = "queryResult[" + i + "].sel";
-					if (this.find("#" + this.selectorEscape(selid)).prop("checked")) {
+					if (this.get(selid).prop("checked")) {
 						var efid = "queryResult[" + i + "].existFlag";
 						if (this.getFieldValue(efid) == "1") {
 							ret.push(new ValidationError("queryResult[" + i + "].fileName",
@@ -61,7 +61,7 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 			var selid = "queryResult[" + i + "].sel";
 			var efid = "queryResult[" + i + "].existFlag";
 			if (this.getFieldValue(efid) != "1") {
-				this.find("#" + this.selectorEscape(selid)).prop("checked", true);
+				this.get(selid).prop("checked", true);
 			}
 		}
 	}

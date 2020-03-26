@@ -21,51 +21,49 @@ class PageGeneratorEditForm extends EditForm {
 		var thisForm = this;
 		super.attach();
 
-		this.find("#pageClassName").change(function() {
+		this.get("pageClassName").change(function() {
 			thisForm.updateFormName($(this));
 		});
-		this.find("#allErrorButton").click(function() {
+		this.get("allErrorButton").click(function() {
 			thisForm.find("[id$='OverwriteMode']").each(function() {
 				$(this).val("error");
 			});
 		});
-		this.find("#allSkipButton").click(function() {
+		this.get("allSkipButton").click(function() {
 			thisForm.find("[id$='OverwriteMode']").each(function() {
 				$(this).val("skip");
 			});
 		});
-		this.find("#allForceOverwriteButton").click(function() {
+		this.get("allForceOverwriteButton").click(function() {
 			thisForm.find("[id$='OverwriteMode']").each(function() {
 				$(this).val("force");
 			});
 		});
-		this.find("#errorSkipButton").click(function() {
-			logger.log("errorSkipButton");
+		this.get("errorSkipButton").click(function() {
 			thisForm.find(".errorField").each(function() {
-				var id = $(this).attr(this.getIdAttribute());
+				var id = $(this).attr(thisForm.getIdAttribute());
 				if (id.indexOf("ClassName") > 0) {
 					var owmId = id.replace("ClassName", "ClassOverwriteMode");
-					thisForm.find("#" + owmId).val("skip");
+					thisForm.setFieldValue(owmId, "skip");
 				}
 			});
 		});
-		this.find("#errorForceButton").click(function() {
-			logger.log("errorSkipButton");
+		this.get("errorForceButton").click(function() {
 			thisForm.find(".errorField").each(function() {
-				var id = $(this).attr(this.getIdAttribute());
+				var id = $(this).attr(thisForm.getIdAttribute());
 				if (id.indexOf("ClassName") > 0) {
 					var owmId = id.replace("ClassName", "ClassOverwriteMode");
-					thisForm.find("#" + owmId).val("force");
+					thisForm.setFieldValue(owmId, "force");
 				}
 			});
 		});
-		this.find("#queryFormClassFlag").click(function() {
+		this.get("queryFormClassFlag").click(function() {
 			thisForm.setFormFlag();
 		});
-		this.find("#queryResultFormClassFlag").click(function() {
+		this.get("queryResultFormClassFlag").click(function() {
 			thisForm.setFormFlag();
 		});
-		this.find("#editFormClassFlag").click(function() {
+		this.get("editFormClassFlag").click(function() {
 			thisForm.setFormFlag();
 		});
 		this.find("[name='updateTable']").click(function() {
@@ -80,9 +78,9 @@ class PageGeneratorEditForm extends EditForm {
 	updateFormName(pc) {
 		var pcname = pc.val();
 		var n = pcname.replace(/Page$/, "");
-		this.find("#queryFormClassName").val(n + "QueryForm");
-		this.find("#queryResultFormClassName").val(n + "QueryResultForm");
-		this.find("#editFormClassName").val(n + "EditForm");
+		this.setFieldValue("queryFormClassName", n + "QueryForm");
+		this.setFieldValue("queryResultFormClassName", n + "QueryResultForm");
+		this.setFieldValue("editFormClassName", n + "EditForm");
 	}
 
 	/**
@@ -124,11 +122,11 @@ class PageGeneratorEditForm extends EditForm {
 			pkgname.lock(true);
 			cnfield.lock(true);
 		}
-		this.find("#allErrorButton").prop("disabled", false);
-		this.find("#allSkipButton").prop("disabled", false);
-		this.find("#allForceOverwriteButton").prop("disabled", false);
-		this.find("#errorSkipButton").prop("disabled", false);
-		this.find("#errorForceButton").prop("disabled", false);
+		this.get("allErrorButton").prop("disabled", false);
+		this.get("allSkipButton").prop("disabled", false);
+		this.get("allForceOverwriteButton").prop("disabled", false);
+		this.get("errorSkipButton").prop("disabled", false);
+		this.get("errorForceButton").prop("disabled", false);
 	}
 
 	/**
@@ -139,11 +137,11 @@ class PageGeneratorEditForm extends EditForm {
 	 */
 	toConfirmMode() {
 		super.toConfirmMode();
-		this.find("#allErrorButton").prop("disabled", true);
-		this.find("#allSkipButton").prop("disabled", true);
-		this.find("#allForceOverwriteButton").prop("disabled", true);
-		this.find("#errorSkipButton").prop("disabled", true);
-		this.find("#errorForceButton").prop("disabled", true);
+		this.get("allErrorButton").prop("disabled", true);
+		this.get("allSkipButton").prop("disabled", true);
+		this.get("allForceOverwriteButton").prop("disabled", true);
+		this.get("errorSkipButton").prop("disabled", true);
+		this.get("errorForceButton").prop("disabled", true);
 	}
 
 	/**
@@ -156,7 +154,7 @@ class PageGeneratorEditForm extends EditForm {
 			if (element.attr(this.getIdAttribute()) == "functionSelect") {
 				var funcname = element.val();
 				var packageName = funcname.replace(/\//g, ".").substr(1) + ".dao";
-				this.find("#tablePackageName").val(packageName);
+				this.setFieldValue("tablePackageName", packageName);
 			}
 		}
 		this.setFormFlag();
@@ -168,32 +166,32 @@ class PageGeneratorEditForm extends EditForm {
 	 */
 	setFormFlag() {
 		var thisForm = this;
-		if (!this.find("#queryFormClassFlag").prop("checked")) {
-			thisForm.find("#queryFormClassName").val("");
-			thisForm.find("#queryFormClassName").prop("disabled", true);
-			thisForm.find("#queryFormClassOverwriteMode").prop("disabled", true);
+		if (!this.get("queryFormClassFlag").prop("checked")) {
+			thisForm.get("queryFormClassName").val("");
+			thisForm.get("queryFormClassName").prop("disabled", true);
+			thisForm.get("queryFormClassOverwriteMode").prop("disabled", true);
 		} else {
-			thisForm.find("#queryFormClassName").prop("disabled", false);
+			thisForm.get("queryFormClassName").prop("disabled", false);
 			thisForm.setFormClassNameField("queryFormClassName", "QueryForm");
-			thisForm.find("#queryFormClassOverwriteMode").prop("disabled", false);
+			thisForm.get("queryFormClassOverwriteMode").prop("disabled", false);
 		}
-		if (!this.find("#queryResultFormClassFlag").prop("checked")) {
-			thisForm.find("#queryResultFormClassName").val("");
-			thisForm.find("#queryResultFormClassName").prop("disabled", true);
-			thisForm.find("#queryResultFormClassOverwriteMode").prop("disabled", true);
+		if (!this.get("queryResultFormClassFlag").prop("checked")) {
+			thisForm.get("queryResultFormClassName").val("");
+			thisForm.get("queryResultFormClassName").prop("disabled", true);
+			thisForm.get("queryResultFormClassOverwriteMode").prop("disabled", true);
 		} else {
-			thisForm.find("#queryResultFormClassName").prop("disabled", false);
+			thisForm.get("queryResultFormClassName").prop("disabled", false);
 			thisForm.setFormClassNameField("queryResultFormClassName", "QueryResultForm");
-			thisForm.find("#queryResultFormClassOverwriteMode").prop("disabled", false);
+			thisForm.get("queryResultFormClassOverwriteMode").prop("disabled", false);
 		}
-		if (!this.find("#editFormClassFlag").prop("checked")) {
-			thisForm.find("#editFormClassName").val("");
-			thisForm.find("#editFormClassName").prop("disabled", true);
-			thisForm.find("#editFormClassOverwriteMode").prop("disabled", true);
+		if (!this.get("editFormClassFlag").prop("checked")) {
+			thisForm.get("editFormClassName").val("");
+			thisForm.get("editFormClassName").prop("disabled", true);
+			thisForm.get("editFormClassOverwriteMode").prop("disabled", true);
 		} else {
-			thisForm.find("#editFormClassName").prop("disabled", false);
+			thisForm.get("editFormClassName").prop("disabled", false);
 			thisForm.setFormClassNameField("editFormClassName", "EditForm");
-			thisForm.find("#editFormClassOverwriteMode").prop("disabled", false);
+			thisForm.get("editFormClassOverwriteMode").prop("disabled", false);
 		}
 	}
 
@@ -205,7 +203,7 @@ class PageGeneratorEditForm extends EditForm {
 	setFormClassNameField(name, type) {
 		var pageclass = this.getFieldValue("pageClassName");
 		var n = pageclass.replace(/Page$/, "");
-		var f = this.find("#" + name);
+		var f = this.get(name);
 		if (f.val() == "") {
 			if (!f.prop("disabled")) {
 				f.val(n + type);
@@ -224,9 +222,9 @@ class PageGeneratorEditForm extends EditForm {
 			this.setFormClassNameField("queryResultFormClassName", "QueryResultForm");
 			this.setFormClassNameField("editFormClassName", "EditForm");
 		} else {
-			this.find("#queryFormClassName").val("");
-			this.find("#queryResultFormClassName").val("");
-			this.find("#editFormClassName").val("");
+			this.setFieldValue("queryFormClassName", "");
+			this.setFieldValue("queryResultFormClassName", "");
+			this.setFieldValue("editFormClassName", "");
 		}
 
 	}

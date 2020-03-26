@@ -16,7 +16,7 @@ class QueryGeneratorEditForm extends EditForm {
 	attach() {
 		super.attach();
 		var thisForm = this;
-		this.find("#selectAll").click(function() {
+		this.get("selectAll").click(function() {
 			if (thisForm.mode == "confirm") {
 				return false;
 			}

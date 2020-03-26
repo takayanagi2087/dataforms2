@@ -24,7 +24,7 @@ class QueryExecutorQueryForm extends QueryForm {
 		var thisForm = this;
 		this.submit("getSql", function(r) {
 			if (r.status == ServerMethod.SUCCESS) {
-				thisForm.find("#sql").val(r.result);
+				thisForm.get("sql").val(r.result);
 			}
 		});
 	}

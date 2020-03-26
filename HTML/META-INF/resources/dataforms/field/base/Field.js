@@ -35,7 +35,7 @@ class Field extends WebComponent {
 			this.label = this.getLabel();
 		}
 		// nameが指定されていない場合nameにidを設定.
-		var comp = this.parent.find('#' + this.selectorEscape(this.id));
+		var comp = this.parent.get(this.id);
 		if (comp.attr("name") == null) {
 			comp.attr("name", comp.attr(this.getIdAttribute()));
 		}
@@ -108,35 +108,34 @@ class Field extends WebComponent {
 	 */
 	getLabelElement() {
 		var label = null;
-//		var tag = this.parent.find('#' + this.selectorEscape(this.labelId));
 		var tag = this.parent.find("label[for='" + this.id +"']");
 		if (tag.length > 0) {
 			// ラベルのIDが指定されていた場合の処理.
 			label = tag;
 		} else {
 			// フィールドに対応したラベルを探す処理.
-			var l = this.parent.find('#' + this.selectorEscape(this.id)).prev('label:last');
+			var l = this.parent.get(this.id).prev('label:last');
 			if (l.length > 0) {
 				label = l;
 			} else {
-				l = this.parent.find('#' + this.selectorEscape(this.id)).parent(':last').prev().find('label:first');
+				l = this.parent.get(this.id).parent(':last').prev().find('label:first');
 				if (l.length > 0) {
 					label = l;
 				} else {
-					l = this.parent.find('#' + this.selectorEscape(this.id)).parent(':last').prev();
+					l = this.parent.get(this.id).parent(':last').prev();
 					label = l;
 				}
 			}
 			if (label == null || label.length == 0) {
-				var l = this.parent.find('#' + this.selectorEscape(this.id + "[0]")).parent(':last').prev('label:last');
+				var l = this.parent.get(this.id + "[0]").parent(':last').prev('label:last');
 				if (l.length > 0) {
 					label = l;
 				} else {
-					l = this.parent.find('#' + this.selectorEscape(this.id + "[0]")).parent(':last').parent(':last').prev().find('label:first');
+					l = this.parent.get(this.id + "[0]").parent(':last').parent(':last').prev().find('label:first');
 					if (l.length > 0) {
 						label = l;
 					} else {
-						l = this.parent.find('#' + this.selectorEscape(this.id + "[0]")).parent(':last').parent(':last').prev();
+						l = this.parent.get(this.id + "[0]").parent(':last').parent(':last').prev();
 						label = l;
 					}
 				}
@@ -301,7 +300,7 @@ class Field extends WebComponent {
 	 * @returns {ValidationError} 検証結果。正常な場合null。
 	 */
 	performValidator(v) {
-		var val = this.parent.find('#' + this.selectorEscape(this.id)).val();
+		var val = this.getParentForm().getFieldValue(this.id);
 		this.value = val;
 		if (v.validate(val) == false) {
 			var msg = v.getMessage(this.label);
@@ -321,14 +320,14 @@ class Field extends WebComponent {
 	 */
 	addSpan(comp) {
 		var spanid = this.id + "_span";
-		var span = this.parent.find("#" + this.selectorEscape(spanid));
+		var span = this.parent.get(spanid);
 		if (span.length == 0) {
 			if (currentPage.useUniqueId) {
 				comp.after("<span data-id='" + spanid + "' id='" + this.realId + "_span' class='selectSpan'></span>");
 			} else {
 				comp.after("<span id='" + spanid + "' class='selectSpan'></span>");
 			}
-			span = this.parent.find("#" + this.selectorEscape(spanid));
+			span = this.parent.get(spanid);
 		}
 		return span;
 	}
@@ -410,8 +409,8 @@ class Field extends WebComponent {
 	lockFile(lk) {
 		var comp = this.get();
 		var span = this.addSpan(comp);
-		var check = this.parent.find("#" + this.selectorEscape(this.id + "_ck"));
-		var fnlink = this.parent.find("#" + this.selectorEscape(this.id + "_link"));
+		var check = this.parent.get(this.id + "_ck");
+		var fnlink = this.parent.get(this.id + "_link");
 		if (lk) {
 			check.hide();
 			check.next("label:first").hide();

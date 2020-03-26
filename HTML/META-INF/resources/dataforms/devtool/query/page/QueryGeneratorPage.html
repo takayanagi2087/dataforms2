@@ -35,40 +35,42 @@
 			</form>
 			<form id="queryResultForm">
 				<div class="formHeader">検索結果</div>
+				<!--
 				<input type="hidden" id="packageName" />
 				<input type="hidden" id="queryClassName" />
+				-->
 				<table class="responsive">
 					<tbody>
 					</tbody>
 				</table>
-					<div class="hScrollDiv">
-						<table id="queryResult">
-							<thead>
-								<tr>
-									<th>
-										No.
-									</th>
-									<th>
-										問合せクラス名
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<span id="queryResult[0].rowNo"></span>
-										<input type="hidden" id="queryResult[0].packageName" />
-										<input type="hidden" id="queryResult[0].queryClassName" />
-									</td>
-									<td>
-										<a href="javascript:void(0);" id="queryResult[0].updateButton">
-											<span id="queryResult[0].fullClassName"></span>
-										</a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+				<div class="hScrollDiv">
+					<table id="queryResult">
+						<thead>
+							<tr>
+								<th>
+									No.
+								</th>
+								<th>
+									問合せクラス名
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<span id="queryResult[0].rowNo"></span>
+									<input type="hidden" id="queryResult[0].packageName" />
+									<input type="hidden" id="queryResult[0].queryClassName" />
+								</td>
+								<td>
+									<a href="javascript:void(0);" id="queryResult[0].updateButton">
+										<span id="queryResult[0].fullClassName"></span>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</form>
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
@@ -120,10 +122,10 @@
 							<thead>
 								<tr>
 									<th class="buttonColumn" nowrap>
-										
+
 									</th>
 									<th class="buttonColumn" nowrap>
-										
+
 									</th>
 									<th nowrap>
 										No.
@@ -192,10 +194,10 @@
 							<thead>
 								<tr>
 									<th class="buttonColumn" nowrap>
-										
+
 									</th>
 									<th class="buttonColumn" nowrap>
-										
+
 									</th>
 									<th nowrap>
 										No.
@@ -264,10 +266,10 @@
 							<thead>
 								<tr>
 									<th class="buttonColumn" nowrap>
-										
+
 									</th>
 									<th class="buttonColumn" nowrap>
-										
+
 									</th>
 									<th nowrap>
 										No.

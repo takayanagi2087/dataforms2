@@ -166,7 +166,7 @@ class WebComponent {
 				// ユニークIDが無効またはdアトリビュート設定前
 				var sel = this.getUniqSelector();
 				if (id != null) {
-					sel += " #" + id
+					sel += " #" + id;
 				}
 				sel = this.convertSelector(sel);
 				ret = $(sel);

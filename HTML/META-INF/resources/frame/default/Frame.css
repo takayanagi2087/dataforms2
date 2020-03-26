@@ -272,11 +272,11 @@ body > .mainDiv {
  */
 .errorMessages {color: red;}
 /* エラーが発生したフィールドのスタイル */
-.errorField {background-color:mistyrose;}
+.errorField {background-color:mistyrose !important;}
 /* 警告行 */
-tr.warnTr td {background-color:khaki;}
+tr.warnTr td {background-color:khaki !important;}
 /* エラー行 */
-tr.errorTr td {background-color:mistyrose;}
+tr.errorTr td {background-color:mistyrose !important;}
 
 /*
  * エラーメッセージ領域(終了)

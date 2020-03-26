@@ -33,7 +33,7 @@ class WebResourceQueryResultForm extends QueryResultForm {
 		if (queryResult != null) {
 			for (var i = 0; i < queryResult.length; i++) {
 				var id = "queryResult[" + i + "].className";
-				this.find("#" + this.selectorEscape(id)).click(function() {
+				this.get(id).click(function() {
 					var classname = table.getSameRowField($(this), "className").html();
 					var webComponentType = table.getSameRowField($(this), "webComponentType").val();
 					var htmlStatus = table.getSameRowField($(this), "htmlStatus").val();
@@ -47,7 +47,7 @@ class WebResourceQueryResultForm extends QueryResultForm {
 					data.javascriptClass = javascriptClass;
 					var dlg = thisForm.parent.getComponent("webResourceDialog");
 					var f = dlg.getComponent("webResourceForm");
-					data.webSourcePath = f.find("#webSourcePath").val();
+					data.webSourcePath = f.getFieldValue("webSourcePath");
 					f.setFormData(data);
 					dlg.showModal({width: 850});
 				});

@@ -17,44 +17,44 @@ class TableGeneratorEditForm extends EditForm {
 		super.attach();
 		var thisForm = this;
 		var tbl = this.getComponent("fieldList");
-		this.find("#allErrorButton").click(function() {
+		this.get("allErrorButton").click(function() {
 			thisForm.find("[id$='\\.overwriteMode']").each(function() {
 				$(this).val("error");
 			});
 		});
-		this.find("#allSkipButton").click(function() {
+		this.get("allSkipButton").click(function() {
 			thisForm.find("[id$='\\.overwriteMode']").each(function() {
 				$(this).val("skip");
 			});
 		});
-		this.find("#allForceOverwriteButton").click(function() {
+		this.get("allForceOverwriteButton").click(function() {
 			thisForm.find("[id$='\\.overwriteMode']").each(function() {
 				$(this).val("force");
 			});
 		});
-		this.find("#errorSkipButton").click(function() {
+		this.get("errorSkipButton").click(function() {
 			thisForm.find("[id$='\\.fieldClassName'].errorField").each(function() {
 				tbl.getSameRowField($(this), "overwriteMode").val("skip");
 			});
 		});
-		this.find("#errorForceButton").click(function() {
+		this.get("errorForceButton").click(function() {
 			thisForm.find("[id$='\\.fieldClassName'].errorField").each(function() {
 				tbl.getSameRowField($(this), "overwriteMode").val("force");
 			});
 		});
-		this.find("#printButton").click(function() {
+		this.get("printButton").click(function() {
 			thisForm.print();
 		});
 
-		this.find("#showImportButton").click(function() {
+		this.get("showImportButton").click(function() {
 			thisForm.showImportField();
 		});
 
-		this.find("#importButton").click(function() {
+		this.get("importButton").click(function() {
 			thisForm.importTable();
 		});
 
-		this.find("#functionSelect").change(function() {
+		this.get("functionSelect").change(function() {
 			thisForm.onChangeFunction();
 		});
 	}
@@ -63,7 +63,7 @@ class TableGeneratorEditForm extends EditForm {
 	 * 機能変更時のパッケージ設定。
 	 */
 	onChangeFunction() {
-		var func = this.find("#functionSelect").val();
+		var func = this.getFieldValue("functionSelect");
 		if (func != null && func.length > 0) {
 			var fieldList = this.getComponent("fieldList");
 			for (var i = 0; i < fieldList.getRowCount(); i++) {
@@ -88,12 +88,12 @@ class TableGeneratorEditForm extends EditForm {
 	 * @param {Object} data インポートデータ。
 	 */
 	setTableInfo(data) {
-		this.find("#tableClassName").val(data.tableClassName);
-		this.find("#tableComment").val(data.tableComment);
+		this.setFieldValue("tableClassName", data.tableClassName);
+		this.setFieldValue("tableComment", data.tableComment);
 		if (data.updateInfoFlag == "0") {
-			this.find("#updateInfoFlag").prop("checked", false);
+			this.get("updateInfoFlag").prop("checked", false);
 		} else {
-			this.find("#updateInfoFlag").prop("checked", true);
+			this.get("updateInfoFlag").prop("checked", true);
 		}
 		var fieldList = this.getComponent("fieldList");
 		fieldList.setTableData(data.fieldList);
@@ -105,8 +105,8 @@ class TableGeneratorEditForm extends EditForm {
 	importTable() {
 		var thisForm = this;
 		var m = this.getServerMethod("importTable");
-		var importTable = this.find("#importTable").val();
-		var func = this.find("#functionSelect").val();
+		var importTable = this.getFieldValue("importTable");
+		var func = this.getFieldValue("functionSelect");
 		m.execute("importTable=" + importTable + "&functionSelect=" + func, function(r) {
 			if (r.status == ServerMethod.SUCCESS) {
 				thisForm.setTableInfo(r.result);
@@ -145,7 +145,7 @@ class TableGeneratorEditForm extends EditForm {
 			var ovm = tbl.getComponent("fieldList[" + i + "].overwriteMode");
 			logger.log("spkg.id=" + spkg.id);
 			logger.log("scls.id=" + scls.id);
-			var flg = this.find("#" + this.selectorEscape("fieldList[" + i + "].isDataformsField"));
+			var flg = this.get("fieldList[" + i + "].isDataformsField");
 			logger.log("flg=" + flg.val());
 			if (flg.val() == "0") {
 				logger.log("unlock");
@@ -165,11 +165,11 @@ class TableGeneratorEditForm extends EditForm {
 				}
 			}
 		}
-		this.find("#allErrorButton").prop("disabled", false);
-		this.find("#allSkipButton").prop("disabled", false);
-		this.find("#allForceOverwriteButton").prop("disabled", false);
-		this.find("#errorSkipButton").prop("disabled", false);
-		this.find("#errorForceButton").prop("disabled", false);
+		this.get("allErrorButton").prop("disabled", false);
+		this.get("allSkipButton").prop("disabled", false);
+		this.get("allForceOverwriteButton").prop("disabled", false);
+		this.get("errorSkipButton").prop("disabled", false);
+		this.get("errorForceButton").prop("disabled", false);
 	}
 
 	/**
@@ -180,11 +180,11 @@ class TableGeneratorEditForm extends EditForm {
 	 */
 	toConfirmMode() {
 		super.toConfirmMode();
-		this.find("#allErrorButton").prop("disabled", true);
-		this.find("#allSkipButton").prop("disabled", true);
-		this.find("#allForceOverwriteButton").prop("disabled", true);
-		this.find("#errorSkipButton").prop("disabled", true);
-		this.find("#errorForceButton").prop("disabled", true);
+		this.get("allErrorButton").prop("disabled", true);
+		this.get("allSkipButton").prop("disabled", true);
+		this.get("allForceOverwriteButton").prop("disabled", true);
+		this.get("errorSkipButton").prop("disabled", true);
+		this.get("errorForceButton").prop("disabled", true);
 	}
 
 

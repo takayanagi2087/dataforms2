@@ -16,7 +16,7 @@ class TableGeneratorQueryResultForm extends QueryResultForm {
 	attach() {
 		super.attach();
 		var thisForm = this;
-		this.find("#printButton").click(function() {
+		this.get("printButton").click(function() {
 			thisForm.print();
 		});
 		var tbl = this.getComponent("queryResult");

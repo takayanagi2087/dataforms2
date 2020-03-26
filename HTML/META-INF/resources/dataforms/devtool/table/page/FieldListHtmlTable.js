@@ -26,9 +26,9 @@ class FieldListHtmlTable extends EditableHtmlTable {
 		super.onAddTr(rowid);
 		logger.log("rowid=" + rowid);
 		var form = this.parent;
-		var tpkgname = form.find("#packageName").val();
-		var pkg = this.find("#" + this.selectorEscape(rowid + ".packageName"));
-		var spkg = this.find("#" + this.selectorEscape(rowid + ".superPackageName"));
+		var tpkgname = form.get("packageName").val();
+		var pkg = this.get(rowid + ".packageName");
+		var spkg = this.get(rowid + ".superPackageName");
 		if (pkg.val().length == 0) {
 			pkg.val(tpkgname.replace(".dao", ".field"));
 		}
@@ -37,9 +37,5 @@ class FieldListHtmlTable extends EditableHtmlTable {
 		}
 	}
 }
-
-
-
-
 
 

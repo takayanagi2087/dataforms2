@@ -16,18 +16,14 @@ class WebResourceForm extends Form {
 	 */
 	attach() {
 		super.attach();
-		var thisForm = this;
-		this.find("#generateButton").click(function() {
-			thisForm.generate();
+		this.get("closeButton").click(() => {
+			this.parent.close();
 		});
-		this.find('#closeButton').click(function() {
-			thisForm.parent.close();
+		this.get("generateHtml").click(() => {
+			this.generateHtml();
 		});
-		this.find("#generateHtml").click(function() {
-			thisForm.generateHtml();
-		});
-		this.find("#generateJavascript").click(function() {
-			thisForm.generateJavascript();
+		this.get("generateJavascript").click(() => {
+			this.generateJavascript();
 		});
 	}
 
@@ -36,27 +32,26 @@ class WebResourceForm extends Form {
 	 * @param {Object} data 表示データ。
 	 */
 	setFormData(data) {
-		this.find("#generateHtml").prop("checked", false);
-		this.find("#generateJavascript").prop("checked", false);
+		this.get("generateHtml").prop("checked", false);
+		this.get("generateJavascript").prop("checked", false);
 		if (data.className != null) {
 			data.htmlPath = "/" + data.className.replace(/\./g, "/") + ".html";
 			data.javascriptPath = "/" + data.className.replace(/\./g, "/") + ".js";
 		}
 		super.setFormData(data);
 		if (data.htmlStatus == "0" || data.htmlStatus == "1") {
-			this.find("#htmlTr").show();
-			this.find("#generateHtmlButton").show();
-			var type = this.find("#webComponentType").val();
-			this.find("#noFormContent").prop("checked", false);
-			this.find("#outputFormHtml").show();
+			this.get("htmlTr").show();
+			this.get("generateHtmlButton").show();
+			this.get("noFormContent").prop("checked", false);
+			this.get("outputFormHtml").show();
 			this.find("label[for='outputFormHtml']").show();
 		} else {
-			this.find("#htmlTr").hide();
+			this.get("htmlTr").hide();
 		}
 		if (data.javascriptStatus == "0" || data.javascriptStatus == "1") {
-			this.find("#generateJavascriptButton").show();
+			this.get("generateJavascriptButton").show();
 		} else {
-			this.find("#generateJavascriptButton").hide();
+			this.get("generateJavascriptButton").hide();
 		}
 	}
 
@@ -93,8 +88,5 @@ class WebResourceForm extends Form {
 	}
 
 }
-
-
-
 
 

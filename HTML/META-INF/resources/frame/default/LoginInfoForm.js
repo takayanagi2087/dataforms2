@@ -24,11 +24,11 @@ class LoginInfoForm extends Form {
 			if (ret.status == ServerMethod.SUCCESS) {
 				if (ret.result.loginId != null) {
 					thisForm.setFormData(ret.result);
-					thisForm.find("#underLoginDiv").show();
-					thisForm.find("#dontLoginDiv").hide();
+					thisForm.get("underLoginDiv").show();
+					thisForm.get("dontLoginDiv").hide();
 				} else {
-					thisForm.find("#underLoginDiv").hide();
-					thisForm.find("#dontLoginDiv").show();
+					thisForm.get("underLoginDiv").hide();
+					thisForm.get("dontLoginDiv").show();
 				}
 			}
 		});
@@ -52,17 +52,17 @@ class LoginInfoForm extends Form {
 		super.attach(this);
 		var form = this;
 		var thisPage = this.parent;
-		form.find('#loginButton').click(function () {
+		form.get('loginButton').click(function () {
 			thisPage.showLoginDialog();
 		});
 		if (form.userRegistPage != null) {
-			form.find('#regUserButton').click(function() {
+			form.get('regUserButton').click(function() {
 				window.location.href = thisPage.contextPath + form.userRegistPage + "." + currentPage.pageExt;
 			});
 		} else {
-			form.find('#regUserButton').remove();
+			form.get('regUserButton').remove();
 		}
-		form.find('#logoutButton').click(function() {
+		form.get('logoutButton').click(function() {
 			form.logout();
 		});
 		this.update();

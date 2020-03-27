@@ -28,13 +28,13 @@ class FileField extends Field {
 		var linkid = this.id + "_link"; // ダウンロードリンク.
 		var fnid = this.id + "_fn"; // ファイル名のリンク.
 		var ckid = this.id + "_ck"; // ファイル削除のチェックボックス.
-		var fnlink = this.parent.find("#" + this.selectorEscape(linkid))
+		var fnlink = this.parent.get(linkid);
 		var fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
-		this.parent.find("#" + this.selectorEscape(ckid)).click(function() {
+		this.parent.get(ckid).click(function() {
 			thisComp.delFile($(this));
 		});
 		comp.change(function() {
-			var ck = thisComp.parent.find("#" + thisComp.selectorEscape(ckid));
+			var ck = thisComp.parent.get(ckid);
 			ck.attr("checked", false);
 			fnlink.html(fnlink.attr("data-value"));
 			fnhidden.val(fnlink.attr("data-value"));
@@ -54,7 +54,7 @@ class FileField extends Field {
 		var comp = this.get();
 		var linkid = this.id + "_link"; // ダウンロードリンク.
 		var fnid = this.id + "_fn"; // ファイル名のリンク.
-		var fnlink = this.parent.find("#" + this.selectorEscape(linkid))
+		var fnlink = this.parent.get(linkid)
 		var fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
 		logger.log("checked=" + ck.prop("checked"));
 		if (ck.prop("checked")) {
@@ -74,7 +74,7 @@ class FileField extends Field {
 	showDelCheckbox() {
 		var ckid = this.id + "_ck";
 		logger.log("ckid=" + ckid);
-		var delcheck = this.parent.find("#" + this.selectorEscape(ckid));
+		var delcheck = this.parent.get(ckid);
 		delcheck.show();
 		delcheck.next("label:first").show();
 	}
@@ -84,7 +84,7 @@ class FileField extends Field {
 	 */
 	hideDelCheckbox() {
 		var ckid = this.id + "_ck";
-		var delcheck = this.parent.find("#" + this.selectorEscape(ckid));
+		var delcheck = this.parent.get(ckid);
 		delcheck.hide();
 		delcheck.next("label:first").hide();
 	}
@@ -117,14 +117,14 @@ class FileField extends Field {
 		var linkid = this.id + "_link";
 		var fnid = this.id + "_fn";
 		var ckid = this.id + "_ck";
-		var delcheck = this.parent.find("#" + this.selectorEscape(ckid));
+		var delcheck = this.parent.get(ckid);
 		if (value != null) {
 			var form = this.getParentForm();
 			var url = location.pathname + "?dfMethod=" + encodeURIComponent(this.getUniqId()) + ".download"  + "&" + value.downloadParameter;
 			if (currentPage.csrfToken != null) {
 				url += "&csrfToken=" + currentPage.csrfToken;
 			}
-			var fnlink = this.parent.find("#" + this.selectorEscape(linkid));
+			var fnlink = this.parent.get(linkid);
 			fnlink.attr("href", url);
 			var fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
 			fnlink.html(value.fileName);
@@ -143,7 +143,7 @@ class FileField extends Field {
 			}
 			delcheck.attr("checked", false);
 		} else {
-			var fnlink = this.parent.find("#" + this.selectorEscape(linkid));
+			var fnlink = this.parent.get(linkid);
 			fnlink.attr("href", "");
 			var fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
 			fnlink.html("");
@@ -167,7 +167,7 @@ class FileField extends Field {
 		var ret = this.get().val();
 		if (ret.length == 0) {
 			var fnid = this.id + "_link";
-			ret = this.parent.find("#" + this.selectorEscape(fnid)).text();
+			ret = this.parent.get(fnid).text();
 		}
 		return ret;
 	}

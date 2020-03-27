@@ -112,7 +112,12 @@ public class ImageData extends FileObject {
 			height = h;
 		}
 		log.debug("width,height=" + width + "," + height);
-		BufferedImage thumb = new BufferedImage(width, height, img.getType());
+		// なぜかPNGのタイプが0で返される。(JDKのBUGと思われる)
+		int type = img.getType();
+		if (type == 0) {
+			type = 5;
+		}
+		BufferedImage thumb = new BufferedImage(width, height, type);
 		thumb.getGraphics().drawImage(img.getScaledInstance(width, height, java.awt.Image.SCALE_AREA_AVERAGING), 0, 0, width, height, null);
 		ret.setContents(this.writeImage(thumb));
 		ret.setFileName("thumb.png");

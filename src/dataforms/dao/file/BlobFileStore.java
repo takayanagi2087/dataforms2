@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -366,6 +367,10 @@ public class BlobFileStore extends FileStore {
 			m.put("store", this.getClass().getName());
 			m.put("table", table.getClass().getName());
 			m.put("fieldId", field.getId());
+			// キャッシュされるのを防止するために時刻を追加
+			SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmss");
+			java.util.Date now = new java.util.Date();
+			m.put("ts", fmt.format(now));
 			for (Field<?> f : table.getPkFieldList()) {
 				m.put(f.getId(), d.get(f.getId()).toString());
 			}

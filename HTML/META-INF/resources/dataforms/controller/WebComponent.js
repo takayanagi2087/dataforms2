@@ -152,10 +152,6 @@ class WebComponent {
 		} else {
 			if (currentPage.useUniqueId && this.idPrepared) {
 				// ユニークIDが有効でidアトリビュート設定済
-/*				var stridx = this.id.match(/\[.*\]/);
-				if (stridx != null) {
-					this.realId = this.realId.replace("[0]", stridx);
-				}*/
 				var sel = "#" + this.selectorEscape(this.realId);
 				if (id != null) {
 					sel += " " + this.convertSelector("#" + id);

@@ -78,8 +78,7 @@ class PageScrollHtmlTable extends HtmlTable {
 			var f = this.fields[i];
 			f.sortOrder = f.currentSortOrder;
 		}
-
-		this.parent.find("#pageNo").val("0");
+		this.parent.get("pageNo").val("0");
 		this.parent.changePage();
 	}
 }

@@ -96,7 +96,7 @@ class EditableHtmlTable extends HtmlTable {
 				}
 			} else {
 				var ckid = this.id + ".sortable";
-				var ck = this.parent.find("#" + this.selectorEscape(ckid));
+				var ck = this.parent.get(ckid);
 				var sort = ck.prop("checked");
 				if (sort) {
 					// sortのチェックがOnの時のみ切り替える。
@@ -128,9 +128,12 @@ class EditableHtmlTable extends HtmlTable {
 			// タッチパネルの場合は行入替のOn/Off切り替え機能が必要。
 			var label = MessagesUtil.getMessage("message.table.sortablelabel");
 			var cb = '<input type="checkbox" id="' + ckid + '"><label for="' + ckid + '">' + label + '</label>';
+			if (currentPage.useUniqueId) {
+				cb = '<input type="checkbox" ' + this.getIdAttribute() + '="' + ckid + '" id="' + this.realId + '.sortable" "><label for="' + this.realId + '.sortable">' + label + '</label>';
+			}
 //			this.get().before(cb);
 			this.find("thead th:first").append(cb);
-			this.parent.find("#" + this.selectorEscape(ckid)).click(function() {
+			this.parent.get(ckid).click(function() {
 				if ($(this).prop("checked")) {
 					thisTable.find("[id$='\\.addButton']").prop("disabled", true);
 					thisTable.find("[id$='\\.deleteButton']").prop("disabled", true);
@@ -166,13 +169,13 @@ class EditableHtmlTable extends HtmlTable {
 		if (lk) {
 			addbtn.hide();
 			delbtn.hide();
-			this.find("#" + this.selectorEscape(ckid)).hide();
-			this.find("#" + this.selectorEscape(ckid)).next("label").hide();
+			this.get(ckid).hide();
+			this.get(ckid).next("label").hide();
 		} else {
 			addbtn.show();
 			delbtn.show();
-			this.find("#" + this.selectorEscape(ckid)).show();
-			this.find("#" + this.selectorEscape(ckid)).next("label").show();
+			this.get(ckid).show();
+			this.get(ckid).next("label").show();
 		}
 		this.lockSortable(lk);
 	}
@@ -241,11 +244,11 @@ class EditableHtmlTable extends HtmlTable {
 	 */
 	onAddTr(rowid) {
 		var thisTable = this;
-		thisTable.find("#" + this.selectorEscape(rowid + ".addButton")).click(function() {
+		thisTable.get(rowid + ".addButton").click(function() {
 			thisTable.addRow(this);
 			return false;
 		});
-		thisTable.find("#" + this.selectorEscape(rowid + ".deleteButton")).click(function() {
+		thisTable.get(rowid + ".deleteButton").click(function() {
 			thisTable.deleteRow(this);
 			return false;
 		});
@@ -308,9 +311,9 @@ class EditableHtmlTable extends HtmlTable {
 		var trlist = this.find("[" + this.getIdAttribute() + "$=\\.no]");
 		for (var i = 0; i < trlist.length; i++) {
 			var lineNoId = this.id + "[" + i + "].no";
-			this.find("#" + this.selectorEscape(lineNoId)).text(i + 1);
+			this.get(lineNoId).text(i + 1);
 			var sortOrderId = this.id + "[" + i + "].sortOrder";
-			this.find("#" + this.selectorEscape(sortOrderId)).val(i);
+			this.get(sortOrderId).val(i);
 
 		}
 		this.resetBackgroundColor();
@@ -322,28 +325,13 @@ class EditableHtmlTable extends HtmlTable {
 	 * @param {Array} list テーブルデータ。
 	 */
 	setTableData(list) {
-		var thisTable = this;
+		var ckid = this.id + ".sortable";
+		var ck = this.parent.get(ckid);
+		ck.prop("checked", false);
 		super.setTableData(list);
 		var lastAddButton = this.find("tfoot").find(this.convertSelector("[id$='\\.addButton']"));
-		if (lastAddButton.length == 0) {
-			var lidx = this.addTr();
-			this.find("#" + this.selectorEscape(this.id + "[" + lidx + "].addButton")).click(function() {
-				thisTable.addRow(this);
-				return false;
-			});
-			this.resetRowNo();
-			if (list != null) {
-				var tdlist = this.find("tbody>tr:eq(" + list.length + ")>td");
-				for (var i = 0; i < tdlist.length; i++) {
-					var td = $(tdlist.get(i));
-					if (td.find("[id$='addButton']").length == 0) {
-						td.empty();
-					}
-				}
-			}
-		} else {
-			this.resetRowNo();
-		}
+		lastAddButton.prop("disabled", false);
+		this.resetRowNo();
 	}
 
 

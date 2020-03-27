@@ -651,7 +651,7 @@ class HtmlTable extends WebComponent {
 				f.onDestroy();
 			}
 		}
-		var tbl = this.parent.find("#" + this.selectorEscape(this.id));
+		var tbl = this.parent.get(this.id);
 		tbl.find("tbody").empty();
 	}
 
@@ -922,7 +922,7 @@ class HtmlTable extends WebComponent {
 		if (f instanceof jQuery) {
 			var id = f.attr(this.getIdAttribute());
 			var rid = id.replace(/\]\..+$/, "]." + tid);
-			return this.find("#" + this.selectorEscape(rid));
+			return this.get(rid);
 		} else {
 			var rid = f.id.replace(/\]\..+$/, "]." + tid);
 			return this.getComponent(rid);
@@ -955,7 +955,7 @@ class HtmlTable extends WebComponent {
 	 */
 	getTd(row, id) {
 		var fid = this.id + "[" + row + "]." + id;
-		return this.find("#" + this.selectorEscape(fid)).parents("td:first");
+		return this.get(fid).parents("td:first");
 	}
 
 	/**

@@ -57,7 +57,7 @@ class FlagField extends CharField {
 		if ("INPUT" == tag && type.toLowerCase() == "checkbox") {
 			var span = this.addSpan(comp);
 			span.html("<input type='checkbox' " + this.getIdAttribute() + "='" + this.id + "_ck' onclick='return false;'>");
-			this.parent.find("#" + this.selectorEscape(this.id + "_ck")).prop("checked", comp.prop("checked"));
+			this.parent.get(this.id + "_ck").prop("checked", comp.prop("checked"));
 			if (lk) {
 				span.show()
 				comp.hide();

@@ -20,7 +20,7 @@ class StreamingField extends FileField {
 		super.attach();
 		var thisField = this;
 		var linkid = this.id + "_link";
-		var link = this.parent.find("#" + this.selectorEscape(linkid));
+		var link = this.parent.get(linkid);
 		var player = this.getPlayer();
 		this.get().change(function(){
 			for(var j=0; j<this.files.length; j++){
@@ -81,7 +81,7 @@ class StreamingField extends FileField {
 	 */
 	getPlayer() {
 		var playerid = this.id + "_player"; // プレーヤー.
-		var player = this.parent.find("#" + this.selectorEscape(playerid));
+		var player = this.parent.get(playerid);
 		return player;
 	}
 
@@ -90,7 +90,7 @@ class StreamingField extends FileField {
 	 */
 	deleteTempFile() {
 		var playerid = this.id + "_player"; // プレーヤーID.
-		var player = this.parent.find("#" + this.selectorEscape(playerid));
+		var player = this.parent.get(playerid);
 		var key = player.attr("data-key");
 		logger.log("key=" + key);
 		var m = this.getServerMethod("deleteTempFile");
@@ -105,7 +105,7 @@ class StreamingField extends FileField {
 	setValue(value) {
 		super.setValue(value);
 		var videoid = this.id + "_player"; // プレーヤーID.
-		var video = this.parent.find("#" + this.selectorEscape(videoid));
+		var video = this.parent.get(videoid);
 		this.downloadUrl = null;
 		if (value != null) {
 			this.downloadParameter = value.downloadParameter;
@@ -117,7 +117,8 @@ class StreamingField extends FileField {
 			video.attr("data-key", value.downloadParameter);
 			this.downloadUrl = url;
 		} else {
-			video.attr("src", null);
+			video.attr("src", "");
+			video.removeAttr("data-key");
 			this.downloadUrl = null;
 		}
 	}

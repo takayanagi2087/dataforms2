@@ -26,6 +26,7 @@ public class FileTestQueryResultForm extends QueryResultForm {
 		FieldList flist = new FieldList();
 		flist.add(new RowNoField());
 		flist.addAll(q.getFieldList());
+		flist.get(FileFieldTestTable.Entity.ID_FILE_COMMENT).setSortable(true);
 		PageScrollHtmlTable htmltbl = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, flist);
 		this.addHtmlTable(htmltbl);
 	}

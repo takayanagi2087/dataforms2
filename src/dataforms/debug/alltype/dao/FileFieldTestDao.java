@@ -51,6 +51,14 @@ public class FileFieldTestDao extends Dao {
 		query.setQueryFormFieldList(flist);
 		query.setQueryFormData(data);
 		//
+		String sortOrder = (String) data.get("sortOrder");
+		FieldList sflist = query.getFieldList().getOrderByFieldList(sortOrder);
+		if (sflist.size() == 0) {
+//			query.setOrderByFieldList(new FieldList(query.getField("recordIdField").setSortOrder(Field.SortOrder.DESC)));
+		} else {
+			query.setOrderByFieldList(sflist);
+		}
+
 		Map<String, Object> ret = executePageQuery(query);
 		return ret;
 	}

@@ -131,6 +131,9 @@
 										No.
 									</th>
 									<th>
+										結合方法
+									</th>
+									<th>
 										機能
 									</th>
 									<th>
@@ -159,6 +162,9 @@
 										<span id="joinTableList[0].no"></span>
 									</td>
 									<td>
+										<select id="joinTableList[0].joinType"></select>
+									</td>
+									<td>
 										<select id="joinTableList[0].functionSelect"></select>
 									</td>
 									<td>
@@ -180,151 +186,7 @@
 									<th style="width: 21px;">
 										<input type="button" id="joinTableList.addButton" value="+"/>
 									</th>
-									<th colspan="7">
-									</th>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-				<div style="overflow-x:scroll;width:100%">
-					<div class="hScrollDiv">
-						<table id="leftJoinTableList" class="editableTable">
-							<caption>LEFT JOINするテーブルリスト</caption>
-							<thead>
-								<tr>
-									<th class="buttonColumn" nowrap>
-
-									</th>
-									<th class="buttonColumn" nowrap>
-
-									</th>
-									<th nowrap>
-										No.
-									</th>
-									<th>
-										機能
-									</th>
-									<th>
-										パッケージ名
-									</th>
-									<th>
-										テーブルクラス名
-									</th>
-									<th>
-										別名
-									</th>
-									<th>
-										結合条件
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td style="width: 21px;">
-										<input type="button" id="leftJoinTableList[0].addButton" value="+"/>
-									</td>
-									<td style="width: 21px;">
-										<input type="button" id="leftJoinTableList[0].deleteButton" value="-"/>
-									</td>
-									<td style="text-align: right;">
-										<span id="leftJoinTableList[0].no"></span>
-									</td>
-									<td>
-										<select id="leftJoinTableList[0].functionSelect"></select>
-									</td>
-									<td>
-										<input type="text" id="leftJoinTableList[0].packageName" />
-									</td>
-									<td>
-										<input type="text" id="leftJoinTableList[0].tableClassName" />
-									</td>
-									<td>
-										<input type="text" id="leftJoinTableList[0].aliasName" />
-									</td>
-									<td>
-										<span id="leftJoinTableList[0].joinCondition" ></span>
-									</td>
-								</tr>
-							</tbody>
-							<tfoot>
-								<tr>
-									<th style="width: 21px;">
-										<input type="button" id="leftJoinTableList.addButton" value="+"/>
-									</th>
-									<th colspan="7">
-									</th>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-				<div style="overflow-x:scroll;width:100%">
-					<div class="hScrollDiv">
-						<table id="rightJoinTableList" class="editableTable">
-							<caption>RIGHT JOINするテーブルリスト</caption>
-							<thead>
-								<tr>
-									<th class="buttonColumn" nowrap>
-
-									</th>
-									<th class="buttonColumn" nowrap>
-
-									</th>
-									<th nowrap>
-										No.
-									</th>
-									<th>
-										機能
-									</th>
-									<th>
-										パッケージ名
-									</th>
-									<th>
-										テーブルクラス名
-									</th>
-									<th>
-										別名
-									</th>
-									<th>
-										結合条件
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td style="width: 21px;">
-										<input type="button" id="rightJoinTableList[0].addButton" value="+"/>
-									</td>
-									<td style="width: 21px;">
-										<input type="button" id="rightJoinTableList[0].deleteButton" value="-"/>
-									</td>
-									<td style="text-align: right;">
-										<span id="rightJoinTableList[0].no"></span>
-									</td>
-									<td>
-										<select id="rightJoinTableList[0].functionSelect"></select>
-									</td>
-									<td>
-										<input type="text" id="rightJoinTableList[0].packageName" />
-									</td>
-									<td>
-										<input type="text" id="rightJoinTableList[0].tableClassName" />
-									</td>
-									<td>
-										<input type="text" id="rightJoinTableList[0].aliasName" />
-									</td>
-									<td>
-										<span id="rightJoinTableList[0].joinCondition" ></span>
-									</td>
-								</tr>
-							</tbody>
-							<tfoot>
-								<tr>
-									<th style="width: 21px;">
-										<input type="button" id="rightJoinTableList.addButton" value="+"/>
-									</th>
-									<th colspan="7">
+									<th colspan="8">
 									</th>
 								</tr>
 							</tfoot>

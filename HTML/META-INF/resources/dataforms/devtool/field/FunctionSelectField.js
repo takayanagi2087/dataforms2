@@ -26,6 +26,10 @@ class FunctionSelectField extends SingleSelectField {
 		});
 	}
 
+	/**
+	 * パッケージ名称を設定します。
+	 * @param {String} jq パッケージ名を設定するフィールド。
+	 */
 	setPackageName(jq) {
 		var form = this.getParentForm();
 		var funcname = jq.val();
@@ -41,6 +45,22 @@ class FunctionSelectField extends SingleSelectField {
 				form.find("#" + this.selectorEscape(a[0] + "." + this.packageFieldId)).val(packageName);
 			} else {
 				form.find("#" + this.selectorEscape(this.packageFieldId)).val(packageName);
+			}
+		}
+	}
+
+	/**
+	 * パッケージ名から機能を設定します。
+	 * @param {String} packageName パッケージ名。
+	 */
+	selectPackage(packageName) {
+		for (let i = 0; i < this.optionList.length; i++) {
+			let path = this.optionList[i].value;
+			let pkg = path.substring(1).replace("/", ".");
+			if (packageName != null && packageName.length > 0) {
+				if (packageName.indexOf(pkg) == 0) {
+					this.get().val(path);
+				}
 			}
 		}
 	}

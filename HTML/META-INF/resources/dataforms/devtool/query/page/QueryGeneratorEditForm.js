@@ -32,12 +32,33 @@ class QueryGeneratorEditForm extends EditForm {
 	}
 
 	/**
+	 * パッケージ名から機能を設定します。
+	 * @param {String} sel 機能選択肢のid。
+	 * @param {String} pkg パッケージ名。
+	 */
+	setFunctionSelect(sel, pkg) {
+		let fsel = this.getComponent(sel);
+		let v = fsel.getValue();
+		if (v == null || v.length == 0) {
+			fsel.selectPackage(pkg);
+		}
+	}
+
+	/**
 	 * フォームに対してデータを設定します。
 	 * @param {Object} data 設定するデータ。
 	 */
 	setFormData(data) {
 		var thisForm = this;
 		super.setFormData(data);
+		this.setFunctionSelect("functionSelect", data.packageName);
+		let joinTableList = this.getComponent("joinTableList");
+		for (let i = 0; i < joinTableList.getRowCount(); i++) {
+			let pkg = joinTableList.getRowField(i, "packageName").getValue();
+			let id = "joinTableList[" + i + "].functionSelect";
+			this.setFunctionSelect(id, pkg);
+		}
+		this.setFunctionSelect("mainTableFunctionSelect", data.mainTablePackageName);
 		if (data.joinTableList != null || data.leftJoinTableList != null || data.rightJoinTableList != null) {
 			thisForm.submit("getJoinCondition", function(r) {
 				currentPage.resetErrorStatus();

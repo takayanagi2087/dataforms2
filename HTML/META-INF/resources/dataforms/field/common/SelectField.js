@@ -11,6 +11,8 @@
  * 各種選択肢フィールドの基底クラスです。
  * </pre>
  * @extends Field
+ * @prop {Array} optionList 選択肢リスト。
+ *
  */
 class SelectField extends Field {
 	/**

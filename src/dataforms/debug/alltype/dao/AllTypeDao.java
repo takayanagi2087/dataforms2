@@ -77,8 +77,8 @@ public class AllTypeDao extends Dao {
 				, new SqlField(new NumericField("sqlField", 10, 3), "numeric_field * 100")
 				));
 		query.setMainTable(tbl);
-		query.setQueryFormFieldList(flist);
-		query.setQueryFormData(data);
+		query.setConditionFieldList(flist);
+		query.setConditionData(data);
 
 		String sortOrder = (String) data.get("sortOrder");
 		log.debug("sortOrder=" + sortOrder);
@@ -112,8 +112,8 @@ public class AllTypeDao extends Dao {
 				, new SqlField(new NumericField("sqlField", 10, 3), "numeric_field * 100")
 				));
 		query.setMainTable(tbl);
-		query.setQueryFormFieldList(flist);
-		query.setQueryFormData(data);
+		query.setConditionFieldList(flist);
+		query.setConditionData(data);
 
 		String sortOrder = (String) data.get("sortOrder");
 		log.debug("sortOrder=" + sortOrder);
@@ -141,8 +141,8 @@ public class AllTypeDao extends Dao {
 		Query query = new Query();
 		query.setFieldList(table.getFieldList());
 		query.setMainTable(table);
-		query.setQueryFormFieldList(flist);
-		query.setQueryFormData(data);
+		query.setConditionFieldList(flist);
+		query.setConditionData(data);
 		Map<String, Object> rec = this.executeRecordQuery(query);
 		List<Map<String, Object>> list = this.getAttachFileList(data, flist);
 		rec.put("attachFileTable", list);
@@ -163,8 +163,8 @@ public class AllTypeDao extends Dao {
 		Query aquery = new Query();
 		aquery.setFieldList(atable.getFieldList());
 		aquery.setMainTable(atable);
-		aquery.setQueryFormFieldList(flist);
-		aquery.setQueryFormData(data);
+		aquery.setConditionFieldList(flist);
+		aquery.setConditionData(data);
 		aquery.setOrderByFieldList(new FieldList(atable.getField("sortOrder")));
 		List<Map<String, Object>> list = this.executeQuery(aquery);
 		return list;

@@ -1460,8 +1460,8 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 				flist.addField(query.getFieldList().get(idlist[0])).setMatchType(MatchType.PART);
 				Map<String, Object> p = new HashMap<String, Object>();
 				p.put(idlist[0], d.get(cfid));
-				query.setQueryFormFieldList(flist);
-				query.setQueryFormData(p);
+				query.setConditionFieldList(flist);
+				query.setConditionData(p);
 			}
 			, ids
 		);
@@ -1545,8 +1545,8 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 				flist.addField(query.getFieldList().get(idlist[0])).setMatchType(MatchType.FULL);
 				Map<String, Object> p = new HashMap<String, Object>();
 				p.put(idlist[0], d.get(cfid));
-				query.setQueryFormFieldList(flist);
-				query.setQueryFormData(p);
+				query.setConditionFieldList(flist);
+				query.setConditionData(p);
 			}
 			, ids
 		);

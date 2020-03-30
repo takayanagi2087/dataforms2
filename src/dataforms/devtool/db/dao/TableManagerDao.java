@@ -488,8 +488,8 @@ public class TableManagerDao extends Dao {
 		Query q = new Query();
 		q.setFieldList(table.getPkFieldList());
 		q.setMainTable(table);
-		q.setQueryFormFieldList(table.getPkFieldList());
-		q.setQueryFormData(data);
+		q.setConditionFieldList(table.getPkFieldList());
+		q.setConditionData(data);
 		q.setEffectivenessOfDeleteFlag(false);
 		List<Map<String, Object>> list = this.executeQuery(q);
 		return (list.size() > 0);

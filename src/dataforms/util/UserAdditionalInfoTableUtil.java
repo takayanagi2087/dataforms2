@@ -123,8 +123,8 @@ public class UserAdditionalInfoTableUtil {
 				Query query = new Query();
 				query.setFieldList(table.getFieldList());
 				query.setMainTable(table);
-				query.setQueryFormFieldList(table.getPkFieldList());
-				query.setQueryFormData(data);
+				query.setConditionFieldList(table.getPkFieldList());
+				query.setConditionData(data);
 				ret = dao.executeRecordQuery(query);
 			}
 		}

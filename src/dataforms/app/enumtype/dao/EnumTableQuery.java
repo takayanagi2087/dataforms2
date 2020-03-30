@@ -36,7 +36,7 @@ public class EnumTableQuery extends Query {
 			this.setCondition("m.parent_id=:parent_id");
 			EnumTable.Entity p = new EnumTable.Entity();
 			p.setParentId(parentId);
-			this.setQueryFormData(p.getMap());
+			this.setConditionData(p.getMap());
 		} else {
 			this.setCondition("m.parent_id is null");
 		}
@@ -52,7 +52,7 @@ public class EnumTableQuery extends Query {
 		this.setCondition("m.enum_code=:enum_code");
 		EnumTable.Entity p = new EnumTable.Entity();
 		p.setEnumCode(enumCode);
-		this.setQueryFormData(p.getMap());
+		this.setConditionData(p.getMap());
 	}
 }
 

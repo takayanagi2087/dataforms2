@@ -1001,12 +1001,12 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 */
 	private String generateWhereCondition(final Query query) {
 		StringBuilder sb = new StringBuilder();
-		Map<String, Object> p = query.getQueryFormData();
+		Map<String, Object> p = query.getConditionData();
 		if (query.getCondition() != null) {
 			sb.append(query.getCondition());
 		}
-		if (query.getQueryFormFieldList() != null) {
-			for (Field<?> f: query.getQueryFormFieldList()) {
+		if (query.getConditionFieldList() != null) {
+			for (Field<?> f: query.getConditionFieldList()) {
 				String id = f.getId();
 
 				Object v = p.get(id);
@@ -1316,8 +1316,8 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		for (Field<?> f: condField) {
 			list.add(table.getField(f.getId()));
 		}
-		query.setQueryFormFieldList(list);
-		query.setQueryFormData(data);
+		query.setConditionFieldList(list);
+		query.setConditionData(data);
 		String w = this.generateWhereCondition(query);
 		return w;
 	}
@@ -1572,8 +1572,8 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		Query query = new Query();
 		query.setFieldList(new FieldList(new MaxField(field.getId(), field)));
 		query.setMainTable(table);
-		query.setQueryFormFieldList(keyFieldList);
-		query.setQueryFormData(param);
+		query.setConditionFieldList(keyFieldList);
+		query.setConditionData(param);
 		String ret = this.generateQuerySql(query);
 		return ret;
 	}

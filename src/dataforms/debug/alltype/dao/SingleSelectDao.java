@@ -60,8 +60,8 @@ public class SingleSelectDao extends Dao {
 	 */
 	public Map<String, Object> queryPage(final Map<String, Object> data, final FieldList flist) throws Exception {
 		Query query = new SingleSelectTableQuery();
-		query.setQueryFormFieldList(flist);
-		query.setQueryFormData(data);
+		query.setConditionFieldList(flist);
+		query.setConditionData(data);
 		String sortOrder = (String) data.get("sortOrder");
 		FieldList sflist = query.getFieldList().getOrderByFieldList(sortOrder);
 		if (sflist.size() == 0) {
@@ -81,8 +81,8 @@ public class SingleSelectDao extends Dao {
 	 */
 	public List<Map<String, Object>> query(final Map<String, Object> data, final FieldList flist) throws Exception {
 		Query query = new SingleSelectTableQuery();
-		query.setQueryFormFieldList(flist);
-		query.setQueryFormData(data);
+		query.setConditionFieldList(flist);
+		query.setConditionData(data);
 		return this.executeQuery(query);
 	}
 
@@ -95,8 +95,8 @@ public class SingleSelectDao extends Dao {
 	 */
 	public Map<String, Object> query(final Map<String, Object> data) throws Exception {
 		Query query = new SingleSelectTableQuery();
-		query.setQueryFormFieldList(query.getMainTable().getPkFieldList());
-		query.setQueryFormData(data);
+		query.setConditionFieldList(query.getMainTable().getPkFieldList());
+		query.setConditionData(data);
 		return this.executeRecordQuery(query);
 	}
 

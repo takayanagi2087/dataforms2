@@ -25,6 +25,6 @@ public class EnumNameTableQuery extends Query {
 		this.setCondition("m.enum_id=:enum_id");
 		EnumNameTable.Entity p = new EnumNameTable.Entity();
 		p.setEnumId(enumId);
-		this.setQueryFormData(p.getMap());
+		this.setConditionData(p.getMap());
 	}
 }

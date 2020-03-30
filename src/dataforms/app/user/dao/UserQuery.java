@@ -129,8 +129,8 @@ public class UserQuery extends Query {
 		for (Table t: tl) {
 			this.addLeftJoin(t);
 		}
-		this.setQueryFormFieldList(flist);
-		this.setQueryFormData(data);
+		this.setConditionFieldList(flist);
+		this.setConditionData(data);
 	}
 
 }

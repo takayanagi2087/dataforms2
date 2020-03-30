@@ -63,11 +63,11 @@ public class Query {
 	 * 問い合わせフォームフィールドリスト。
 	 *
 	 */
-	private FieldList queryFormFieldList = null;
+	private FieldList conditionFieldList = null;
 	/**
 	 * 問い合わせフォームの入力データ。
 	 */
-	private Map<String, Object> queryFormData = null;
+	private Map<String, Object> conditionData = null;
 
 	/**
 	 * ソートフィールドリスト。
@@ -138,6 +138,7 @@ public class Query {
 	/**
 	 * 内部結合するテーブルリストを取得します。
 	 * @return 内部結合するテーブルリスト。
+	 * @deprecated {@link #getJoinInfoList()}に置き換えてください。
 	 */
 	@Deprecated
 	public TableList getJoinTableList() {
@@ -147,6 +148,7 @@ public class Query {
 	/**
 	 * 内部結合するテーブルリストを設定します。
 	 * @param joinTableList 内部結合するテーブリスト。
+	 * @deprecated {@link #addInnerJoin(Table, JoinConditionInterface)}
 	 */
 	@Deprecated
 	public void setJoinTableList(final TableList joinTableList) {
@@ -156,6 +158,7 @@ public class Query {
 	/**
 	 * 左外部結合するテーブルリストを取得します。
 	 * @return 左外部結合するテーブルリスト。
+	 * @deprecated {@link #getJoinInfoList()}に置き換えてください。
 	 */
 	@Deprecated
 	public TableList getLeftJoinTableList() {
@@ -165,6 +168,7 @@ public class Query {
 	/**
 	 * 左外部結合するテーブルリストを設定します。
 	 * @param leftJoinTableList 左外部結合するテーブルリスト。
+	 * @deprecated {@link #addLeftJoin(Table, JoinConditionInterface)}
 	 */
 	@Deprecated
 	public void setLeftJoinTableList(final TableList leftJoinTableList) {
@@ -174,6 +178,7 @@ public class Query {
 	/**
 	 * 右外部結合するテーブルリストを取得します。
 	 * @return 右外部結合するテーブルリスト。
+	 * @deprecated {@link #getJoinInfoList()}に置き換えてください。
 	 */
 	@Deprecated
 	public TableList getRightJoinTableList() {
@@ -183,6 +188,7 @@ public class Query {
 	/**
 	 * 右外部結合するテーブルリストを設定します。
 	 * @param rightJoinTableList 右外部結合するテーブルリスト。
+	 * @deprecated {@link #addRightJoin(Table, JoinConditionInterface)}
 	 */
 	@Deprecated
 	public void setRightJoinTableList(final TableList rightJoinTableList) {
@@ -291,14 +297,6 @@ public class Query {
 			this.joinInfoList = new ArrayList<JoinInfo>();
 		}
 		this.joinInfoList.add(joinInfo);
-	}
-
-	/**
-	 * 問い合わせフォームのフィールドリストを取得します。
-	 * @return 条件フィールドリスト。
-	 */
-	public FieldList getQueryFormFieldList() {
-		return queryFormFieldList;
 	}
 
 	/**
@@ -455,6 +453,46 @@ public class Query {
 	}
 
 	/**
+	 * 条件フィールドリストを設定します。
+	 * <pre>
+	 * 検索条件に使用するフィールドリスト指定します。
+	 * このフィールドリストに存在しかつ問い合わせフォームの入力データが存在した場合、
+	 * 検索の条件式を生成します。
+	 * このリスト中のフィールドにはMatchTypeを指定し、検索条件式の生成を制御できます。
+	 * </pre>
+	 *　
+	 *　<table>
+	 *  	<caption>MatchType一覧</caption>
+	 *		<thead>
+	 *			<tr>
+	 *				<th>条件タイプ</th><th>意味</th><th>生成条件式</th><th>データ編集</th>
+	 *			</tr>
+	 *		</thead>
+	 *		<tbody>
+	 *			<tr>
+	 *				<td>FULL</td><td>完全一致</td><td>field_id = :field_id</td><td></td>
+	 *				<td>PART</td><td>部分一致</td><td>field_id like :field_id</td><td>'%入力値%'</td>
+	 *				<td>BEGIN</td><td>先頭一致</td><td>field_id like :field_id</td><td>'入力値%'</td>
+	 *				<td>END</td><td>末尾一致</td><td>field_id like :field_id</td><td>'%入力値'</td>
+	 *				<td>RANGE_FROM</td><td>範囲開始</td><td>field_id &gt;= :field_id</td><td></td>
+	 *				<td>RANGE_TO</td><td>範囲終了</td><td>field_id &lt;= :field_id</td><td></td>
+	 *			</tr>
+	 *		</tbody>
+	 *  </table>
+	 *
+	 * @param conditionFieldList 条件フィールドリスト。
+	 */
+	public void setConditionFieldList(final FieldList conditionFieldList) {
+		this.conditionFieldList = conditionFieldList;
+		// 無条件に条件式を生成するように、仮パラメータを設定.
+		Map<String, Object> cond = new HashMap<String, Object>();
+		for (Field<?> f : conditionFieldList) {
+			cond.put(f.getId(), new Object());
+		}
+		this.setConditionData(cond);
+	}
+
+	/**
 	 * 問い合わせフォームのフィールドリストを設定します。
 	 * <pre>
 	 * 検索条件に使用するフィールドリスト指定します。
@@ -483,34 +521,67 @@ public class Query {
 	 *  </table>
 	 *
 	 * @param queryFormFieldList 条件フィールドリスト。
+	 * @deprecated 別のメソッドに置き換えられました {@link #setConditionFieldList(FieldList)}
 	 */
+	@Deprecated
 	public void setQueryFormFieldList(final FieldList queryFormFieldList) {
-		this.queryFormFieldList = queryFormFieldList;
-		// 無条件に条件式を生成するように、仮パラメータを設定.
-		Map<String, Object> cond = new HashMap<String, Object>();
-		for (Field<?> f : queryFormFieldList) {
-			cond.put(f.getId(), new Object());
-		}
-		this.setQueryFormData(cond);
+		this.setConditionFieldList(queryFormFieldList);
+	}
+
+	/**
+	 * 条件フィールドリストを取得します。
+	 * @return 条件フィールドリスト。
+	 */
+	public FieldList getConditionFieldList() {
+		return conditionFieldList;
+	}
+
+	/**
+	 * 問い合わせフォームのフィールドリストを取得します。
+	 * @return 条件フィールドリスト。
+	 * @deprecated 別のメソッドに置き換えられました {@link #getConditionFieldList()}
+	 */
+	@Deprecated
+	public FieldList getQueryFormFieldList() {
+		return conditionFieldList;
 	}
 
 
 	/**
-	 * 問い合わせフォームの入力データを取得します。
+	 * 条件データを取得します。
 	 * @return 問い合わせフォームの入力データ。
 	 */
+	public Map<String, Object> getConditionData() {
+		return conditionData;
+	}
+
+	/**
+	 * 問い合わせフォームの入力データを取得します。
+	 * @return 問い合わせフォームの入力データ。
+	 * @deprecated getConditionDataを使用してください。
+	 */
+	@Deprecated
 	public Map<String, Object> getQueryFormData() {
-		return queryFormData;
+		return conditionData;
+	}
+
+	/**
+	 * 条件データを設定します。
+	 * @param conditionData 問い合わせフォームの入力データ。
+	 */
+	public void setConditionData(final Map<String, Object> conditionData) {
+		this.conditionData = conditionData;
 	}
 
 	/**
 	 * 問い合わせフォームの入力データを設定します。
 	 * @param queryFormData 問い合わせフォームの入力データ。
+	 * @@deprecated setConditionDataを使用してください。
 	 */
+	@Deprecated
 	public void setQueryFormData(final Map<String, Object> queryFormData) {
-		this.queryFormData = queryFormData;
+		this.conditionData = queryFormData;
 	}
-
 
 	/**
 	 * 固定検索条件を取得します。

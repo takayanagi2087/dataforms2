@@ -23,6 +23,6 @@ public class EnumTypeQuery extends EnumQuery {
 		e.setEnumCode(enumCode);
 		EnumNameTable.Entity en = new EnumNameTable.Entity(e.getMap());
 		en.setLangCode(langCode);
-		this.setQueryFormData(e.getMap());
+		this.setConditionData(e.getMap());
 	}
 }

@@ -61,8 +61,8 @@ public class EnumDao extends Dao {
 	 */
 	public Map<String, Object> queryPage(final Map<String, Object> data, final FieldList flist) throws Exception {
 		EnumTableQuery query = new EnumTableQuery((Long) null);
-		query.setQueryFormFieldList(flist);
-		query.setQueryFormData(data);
+		query.setConditionFieldList(flist);
+		query.setConditionData(data);
 		String sortOrder = (String) data.get("sortOrder");
 		FieldList sflist = query.getFieldList().getOrderByFieldList(sortOrder);
 		if (sflist.size() == 0) {
@@ -82,8 +82,8 @@ public class EnumDao extends Dao {
 	 */
 	public List<Map<String, Object>> query(final Map<String, Object> data, final FieldList flist) throws Exception {
 		EnumTableQuery query = new EnumTableQuery();
-		query.setQueryFormFieldList(flist);
-		query.setQueryFormData(data);
+		query.setConditionFieldList(flist);
+		query.setConditionData(data);
 		return this.executeQuery(query);
 	}
 
@@ -115,8 +115,8 @@ public class EnumDao extends Dao {
 	 */
 	public Map<String, Object> query(final Map<String, Object> data) throws Exception {
 		EnumTableQuery query = new EnumTableQuery();
-		query.setQueryFormFieldList(query.getMainTable().getPkFieldList());
-		query.setQueryFormData(data);
+		query.setConditionFieldList(query.getMainTable().getPkFieldList());
+		query.setConditionData(data);
 		Map<String, Object> ret = this.executeRecordQuery(query);
 		this.queryName(ret);
 		EnumTable.Entity p = new EnumTable.Entity(ret);
@@ -340,8 +340,8 @@ public class EnumDao extends Dao {
 //			this.setJoinTableList(new TableList(mntbl));
 			this.addInnerJoin(mntbl);
 			this.setCondition("t.parent_id is null");
-			this.setQueryFormFieldList(new FieldList(ttbl.getEnumGroupCodeField(), mntbl.getLangCodeField()));
-			this.setQueryFormData(data);
+			this.setConditionFieldList(new FieldList(ttbl.getEnumGroupCodeField(), mntbl.getLangCodeField()));
+			this.setConditionData(data);
 			this.setOrderByFieldList(new FieldList(ttbl.getEnumGroupCodeField()));
 		}
 
@@ -469,12 +469,12 @@ public class EnumDao extends Dao {
 		FieldList flist = new FieldList();
 		flist.addField(new EnumCodeField()).setMatchType(MatchType.PART);
 		query.setCondition("e.parent_id is null");
-		query.setQueryFormFieldList(flist);
+		query.setConditionFieldList(flist);
 		EnumTable.Entity e = new EnumTable.Entity();
 		e.setEnumCode(text);
 		EnumNameTable.Entity ne = new EnumNameTable.Entity(e.getMap());
 		ne.setLangCode(langCode);
-		query.setQueryFormData(e.getMap());
+		query.setConditionData(e.getMap());
 		return this.executeQuery(query);
 	}
 
@@ -501,7 +501,7 @@ public class EnumDao extends Dao {
 	 */
 	public Map<String, Object> queryEnumType(final String enumTypeCode, final String langCode) throws Exception {
 		EnumTypeQuery query = new EnumTypeQuery(enumTypeCode, langCode);
-		query.setQueryFormFieldList(new FieldList(query.getFieldList().get(EnumTable.Entity.ID_ENUM_CODE)));
+		query.setConditionFieldList(new FieldList(query.getFieldList().get(EnumTable.Entity.ID_ENUM_CODE)));
 		Map<String, Object> ret = this.executeRecordQuery(query);
 		if (ret == null) {
 			EnumTable.Entity e = new EnumTable.Entity();

@@ -48,8 +48,8 @@ public class FileFieldTestDao extends Dao {
 	 */
 	public Map<String, Object> getQueryResult(final Map<String, Object> data, final FieldList flist) throws Exception {
 		Query query = new MainQuery();
-		query.setQueryFormFieldList(flist);
-		query.setQueryFormData(data);
+		query.setConditionFieldList(flist);
+		query.setConditionData(data);
 		//
 		String sortOrder = (String) data.get("sortOrder");
 		FieldList sflist = query.getFieldList().getOrderByFieldList(sortOrder);
@@ -76,7 +76,7 @@ public class FileFieldTestDao extends Dao {
 			FileFieldTestTable tbl = new FileFieldTestTable();
 			this.setFieldList(tbl.getFieldList());
 			this.setMainTable(tbl);
-			this.setQueryFormFieldList(tbl.getPkFieldList());
+			this.setConditionFieldList(tbl.getPkFieldList());
 		}
 	}
 
@@ -88,7 +88,7 @@ public class FileFieldTestDao extends Dao {
 	 */
 	public Map<String, Object> queryEditData(final Map<String, Object> data) throws Exception {
 		EditDataQuery query = new EditDataQuery();
-		query.setQueryFormData(data);
+		query.setConditionData(data);
 		return this.executeRecordQuery(query);
 	}
 }

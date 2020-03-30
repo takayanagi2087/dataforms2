@@ -532,7 +532,7 @@ public class Dao implements JDBCConnectableObject {
 	public List<Map<String, Object>> executeQuery(final Query query) throws Exception {
 		String sql = this.getSqlGenerator().generateQuerySql(query);
 		final List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		this.executeQuery(sql, this.convertToDBValue(query.getQueryFormFieldList(), query.getQueryFormData()), new RecordProcessor() {
+		this.executeQuery(sql, this.convertToDBValue(query.getConditionFieldList(), query.getConditionData()), new RecordProcessor() {
 			@Override
 			public boolean process(final Map<String, Object> rec) {
 				list.add(rec);
@@ -1640,7 +1640,7 @@ public class Dao implements JDBCConnectableObject {
 	 * @throws Exception 例外。
 	 */
 	public Map<String, Object> executePageQuery(final Query query, final int defaultLines) throws Exception {
-		Map<String, Object> param = query.getQueryFormData();
+		Map<String, Object> param = query.getConditionData();
 		Map<String, Object> ret = new HashMap<String, Object>();
 		int linesPerPage = defaultLines;
 		if (param.get("linesPerPage") != null) {
@@ -1659,7 +1659,7 @@ public class Dao implements JDBCConnectableObject {
 		//
 		String psql = this.getSqlGenerator().generateGetPageSql(qp);
 		FieldList flist = query.getFieldList();
-		Map<String, Object> data = this.convertToDBValue(query.getQueryFormFieldList(), query.getQueryFormData());
+		Map<String, Object> data = this.convertToDBValue(query.getConditionFieldList(), query.getConditionData());
 		List<Map<String, Object>> list = this.convertFromDBValue(flist, this.executeQuery(psql, data));
 		ret.put("queryResult", list);
 		return ret;
@@ -1676,7 +1676,7 @@ public class Dao implements JDBCConnectableObject {
 		String csql = this.getSqlGenerator().generateHitCountSql(query);
 		// FieldList qflist = query.getQueryFormFieldList();
 		// Long hitCount = NumberUtil.longValue(this.executeScalarQuery(csql, qflist.convertServerToDb(query.getQueryFormData())));
-		Map<String, Object> data = this.convertToDBValue(query.getQueryFormFieldList(), query.getQueryFormData());
+		Map<String, Object> data = this.convertToDBValue(query.getConditionFieldList(), query.getConditionData());
 		Long hitCount = NumberUtil.longValue(this.executeScalarQuery(csql, data));
 		return hitCount;
 	}
@@ -1770,8 +1770,8 @@ public class Dao implements JDBCConnectableObject {
 			}
 			q.setCondition("(" + sb.toString() + ")");
 		}
-		q.setQueryFormFieldList(flist);
-		q.setQueryFormData(data);
+		q.setConditionFieldList(flist);
+		q.setConditionData(data);
 //		String sql = this.getSqlGenerator().generateQuerySql(q);
 //		List<Map<String, Object>> list = this.executeQuery(sql, data);
 		List<Map<String, Object>> list = this.executeQuery(q);
@@ -1896,8 +1896,8 @@ public class Dao implements JDBCConnectableObject {
 			flist.add(table.getField(fieldId));
 			this.setFieldList(flist);
 			this.setMainTable(table);
-			this.setQueryFormFieldList(table.getPkFieldList());
-			this.setQueryFormData(data);
+			this.setConditionFieldList(table.getPkFieldList());
+			this.setConditionData(data);
 		}
 	}
 
@@ -2069,10 +2069,10 @@ public class Dao implements JDBCConnectableObject {
 		query.setFieldList(table.getFieldList());
 		query.setMainTable(table);
 		if (flist != null) {
-			query.setQueryFormFieldList(flist);
+			query.setConditionFieldList(flist);
 		}
 		if (cond != null) {
-			query.setQueryFormData(cond);
+			query.setConditionData(cond);
 		}
 		List<Map<String, Object>> oldlist = this.executeQuery(query);
 		this.deleteNotExistRecord(table, list, oldlist);
@@ -2119,8 +2119,8 @@ public class Dao implements JDBCConnectableObject {
 		Query query = new Query();
 		query.setFieldList(table.getFieldList());
 		query.setMainTable(table);
-		query.setQueryFormFieldList(table.getPkFieldList());
-		query.setQueryFormData(rec);
+		query.setConditionFieldList(table.getPkFieldList());
+		query.setConditionData(rec);
 		return this.executeRecordQuery(query);
 	}
 }

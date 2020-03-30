@@ -170,8 +170,8 @@ public class UserDao extends Dao {
 			UserInfoTable tbl = new UserInfoTable();
 			this.setFieldList(tbl.getFieldList());
 			this.setMainTable(tbl);
-			this.setQueryFormFieldList(new FieldList(tbl.getUserIdField()));
-			this.setQueryFormData(data);
+			this.setConditionFieldList(new FieldList(tbl.getUserIdField()));
+			this.setConditionData(data);
 		}
 	}
 
@@ -187,8 +187,8 @@ public class UserDao extends Dao {
 			UserInfoTable tbl = new UserInfoTable();
 			this.setFieldList(tbl.getFieldList());
 			this.setMainTable(tbl);
-			this.setQueryFormFieldList(new FieldList(tbl.getLoginIdField(), tbl.getPasswordField()));
-			this.setQueryFormData(data);
+			this.setConditionFieldList(new FieldList(tbl.getLoginIdField(), tbl.getPasswordField()));
+			this.setConditionData(data);
 		}
 	}
 
@@ -206,8 +206,8 @@ public class UserDao extends Dao {
 			UserAttributeTable tbl = new UserAttributeTable();
 			this.setFieldList(tbl.getFieldList());
 			this.setMainTable(tbl);
-			this.setQueryFormFieldList(new FieldList(tbl.getUserIdField()));
-			this.setQueryFormData(data);
+			this.setConditionFieldList(new FieldList(tbl.getUserIdField()));
+			this.setConditionData(data);
 		}
 	}
 

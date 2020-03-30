@@ -42,6 +42,7 @@ import dataforms.validator.ValidationError;
  */
 public class QueryGeneratorEditForm extends EditForm {
 
+
 	/**
 	 * パッケージ名フィールドID。
 	 */
@@ -78,9 +79,14 @@ public class QueryGeneratorEditForm extends EditForm {
 	private static final String ID_MAIN_TABLE_CLASS_NAME = "mainTableClassName";
 
 	/**
+	 * 別名のフィールドID。
+	 */
+	private static final String ID_ALIAS_NAME = "aliasName";
+
+	/**
 	 * テーブルクラス名フィールドID。
 	 */
-	private static final String ID_TABLE_CLASS_NAME = "tableClassName";
+	// private static final String ID_TABLE_CLASS_NAME = "tableClassName";
 
 
 
@@ -145,16 +151,16 @@ public class QueryGeneratorEditForm extends EditForm {
 				Table t = jinfo.getJoinTable();
 				Map<String, Object> m = new HashMap<String, Object>();
 				if (JoinInfo.INNER_JOIN.equals(jinfo.getJoinType())) {
-					m.put("joinType", JoinTypeField.INNER_JOIN);
+					m.put(JoinHtmlTable.ID_JOIN_TYPE, JoinTypeField.INNER_JOIN);
 				} else if (JoinInfo.LEFT_JOIN.equals(jinfo.getJoinType())) {
-					m.put("joinType", JoinTypeField.LEFT_JOIN);
+					m.put(JoinHtmlTable.ID_JOIN_TYPE, JoinTypeField.LEFT_JOIN);
 				} else if (JoinInfo.RIGHT_JOIN.equals(jinfo.getJoinType())) {
-					m.put("joinType", JoinTypeField.RIGHT_JOIN);
+					m.put(JoinHtmlTable.ID_JOIN_TYPE, JoinTypeField.RIGHT_JOIN);
 				}
 				m.put(ID_PACKAGE_NAME, t.getClass().getPackageName());
-				m.put(ID_TABLE_CLASS_NAME, t.getClass().getSimpleName());
-				m.put("aliasName", t.getAlias());
-				m.put("joinCondition", jinfo.getGeneratedCondition());
+				m.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, t.getClass().getSimpleName());
+				m.put(JoinHtmlTable.ID_ALIAS_NAME, t.getAlias());
+				m.put(JoinHtmlTable.ID_JOIN_CONDITION, jinfo.getGeneratedCondition());
 				logger.debug("generatedCondition=" + jinfo.getGeneratedCondition());
 				ret.add(m);
 			}
@@ -203,7 +209,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		ret.put(ID_FORCE_OVERWRITE, "0");
 		ret.put(ID_MAIN_TABLE_PACKAGE_NAME, q.getMainTable().getClass().getPackage().getName());
 		ret.put(ID_MAIN_TABLE_CLASS_NAME, q.getMainTable().getClass().getSimpleName());
-		ret.put("aliasName", q.getMainTable().getAlias());
+		ret.put(ID_ALIAS_NAME, q.getMainTable().getAlias());
 		ret.put(ID_JOIN_TABLE_LIST, this.getJoinTableData(q.getJoinInfoList()));
 		List<Map<String, Object>> flist = this.queryTableFieldList(ret);
 		FieldList qfl = q.getFieldList();
@@ -252,7 +258,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		for (int i = 0; i < list.size(); i++) {
 			Map<String, Object> ent = list.get(i);
 			String packageName = (String) ent.get(ID_PACKAGE_NAME);
-			String className = (String) ent.get(ID_TABLE_CLASS_NAME);
+			String className = (String) ent.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
 			String tClass = packageName + "." + className;
 			if (!this.classExists(tClass)) {
 				ret.add(new ValidationError(id + "[" + i + "].tableClassName", MessagesUtil.getMessage(this.getPage(), "error.tableclassnotfound", "{0}", tClass)));
@@ -303,13 +309,13 @@ public class QueryGeneratorEditForm extends EditForm {
 		for (Field<?> f: flist) {
 			Map<String, Object> ent = new HashMap<String, Object>();
 			ent.put("selectTableClass", table.getClass().getName());
-			ent.put(ID_TABLE_CLASS_NAME, table.getClass().getName());
+			ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getName());
 			ent.put("selectTableClassName", table.getClass().getSimpleName());
 			ent.put("sel", "0");
 			ent.put("fieldId", f.getId());
 			ent.put("fieldClassName", f.getClass().getName());
 			ent.put("comment", f.getComment());
-			ent.put(ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
+			ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
 			ret.add(ent);
 		}
 		return ret;
@@ -327,7 +333,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		for (int i = 0; i < list.size(); i++) {
 			Map<String, Object> ent = list.get(i);
 			String packageName = (String) ent.get(ID_PACKAGE_NAME);
-			String className = (String) ent.get(ID_TABLE_CLASS_NAME);
+			String className = (String) ent.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
 			String tClass = packageName + "." + className;
 			ret.addAll(this.queryTableFieldList(tClass));
 		}
@@ -376,6 +382,12 @@ public class QueryGeneratorEditForm extends EditForm {
 		return ret;
 	}
 
+	/**
+	 * 問合せクラスから結合条件を取得します。
+	 * @param query 問合せ。
+	 * @param t テーブル。
+	 * @return 結合条件。
+	 */
 	private String getJoinCondition(final Query query, final Table t) {
 		String ret = null;
 		if (query != null) {
@@ -436,8 +448,8 @@ public class QueryGeneratorEditForm extends EditForm {
 		for (int i= 0; i < list.size(); i++) {
 			Map<String, Object> m = list.get(i);
 			String packageName = (String) m.get(ID_PACKAGE_NAME);
-			String className = (String) m.get(ID_TABLE_CLASS_NAME);
-			String alias = (String) m.get("aliasName");
+			String className = (String) m.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
+			String alias = (String) m.get(ID_ALIAS_NAME);
 			if (StringUtil.isBlank(alias)) {
 				alias = defaultAlias + i;
 			}
@@ -465,7 +477,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		TableList list = new TableList();
 		String packageName = (String) data.get(ID_MAIN_TABLE_PACKAGE_NAME);
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
-		String aliasName = (String) data.get("aliasName");
+		String aliasName = (String) data.get(ID_ALIAS_NAME);
 		if (StringUtil.isBlank(aliasName)) {
 			aliasName = "m";
 		}
@@ -542,7 +554,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m:list) {
 			String packageName = (String) m.get(ID_PACKAGE_NAME);
-			String tableClassName = (String) m.get(ID_TABLE_CLASS_NAME);
+			String tableClassName = (String) m.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
 			sb.append("import " + packageName + "." + tableClassName + ";\n");
 		}
 		return sb.toString();
@@ -581,9 +593,9 @@ public class QueryGeneratorEditForm extends EditForm {
 	private String generateNewTableList(final List<Map<String, Object>> list) {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m:list) {
-			String tableClassName = (String) m.get(ID_TABLE_CLASS_NAME);
+			String tableClassName = (String) m.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
 			sb.append("\t\t" + tableClassName + " " + this.getTableVariableName(tableClassName) + " = new " + tableClassName + "();\n");
-			String aliasName = (String) m.get("aliasName");
+			String aliasName = (String) m.get(ID_ALIAS_NAME);
 			if (!StringUtil.isBlank(aliasName)) {
 				sb.append("\t\t" + this.getTableVariableName(tableClassName) + ".setAlias(\"" + aliasName + "\");\n");
 			}
@@ -602,7 +614,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		StringBuilder sb = new StringBuilder();
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
 		sb.append("\t\t" + mainTableClassName + " " + this.getTableVariableName(mainTableClassName) + " = new " + mainTableClassName + "();\n");
-		String aliasName = (String) data.get("aliasName");
+		String aliasName = (String) data.get(ID_ALIAS_NAME);
 		if (!StringUtil.isBlank(aliasName)) {
 			sb.append("\t\t" + this.getTableVariableName(mainTableClassName) + ".setAlias(\"" + aliasName + "\");\n");
 		}
@@ -649,7 +661,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST);
 		for (Map<String, Object> m: list) {
 			String joinType = (String) m.get("joinType");
-			String tableName = this.getTableVariableName((String) m.get(ID_TABLE_CLASS_NAME));
+			String tableName = this.getTableVariableName((String) m.get(JoinHtmlTable.ID_TABLE_CLASS_NAME));
 			if (JoinTypeField.INNER_JOIN.equals(joinType)) {
 				sb.append("\t\tthis.addInnerJoin(" + tableName + ");\n");
 			} else if (JoinTypeField.LEFT_JOIN.equals(joinType)) {

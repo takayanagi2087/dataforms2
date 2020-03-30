@@ -6,7 +6,7 @@ import dataforms.devtool.field.JoinTypeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.TableClassNameField;
 import dataforms.field.base.FieldList;
-import dataforms.field.sqltype.VarcharField;
+import dataforms.field.base.TextField;
 import dataforms.htmltable.EditableHtmlTable;
 
 /**
@@ -15,9 +15,29 @@ import dataforms.htmltable.EditableHtmlTable;
  */
 public class JoinHtmlTable extends EditableHtmlTable {
 	/**
+	 * 結合区分。
+	 */
+	public static final String ID_JOIN_TYPE = "joinType";
+
+	/**
+	 * パッケージ名。
+	 */
+	public static final String ID_PACKAGE_NAME = "packageName";
+
+	/**
 	 * テーブルクラス名フィールドID。
 	 */
-	private static final String ID_TABLE_CLASS_NAME = "tableClassName";
+	public static final String ID_TABLE_CLASS_NAME = "tableClassName";
+
+	/**
+	 * 別名フィールドID。
+	 */
+	public static final String ID_ALIAS_NAME = "aliasName";
+
+	/**
+	 * 結合条件フィールドID。
+	 */
+	public static final String ID_JOIN_CONDITION = "joinCondition";
 
 	/**
 	 * コンストラクタ。
@@ -26,12 +46,12 @@ public class JoinHtmlTable extends EditableHtmlTable {
 	public JoinHtmlTable(final String id) {
 		super(id);
 		FieldList flist = new FieldList(
-			new JoinTypeField()
+			new JoinTypeField(ID_JOIN_TYPE)
 			, new FunctionSelectField()
-			, new PackageNameField()
+			, new PackageNameField(ID_PACKAGE_NAME)
 			, new TableClassNameField(ID_TABLE_CLASS_NAME)
-			, (new AliasNameField()).setCalcEventField(true)
-			, (new VarcharField("joinCondition", 1024)).setReadonly(true)
+			, (new AliasNameField(ID_ALIAS_NAME)).setCalcEventField(true)
+			, (new TextField(ID_JOIN_CONDITION)).setReadonly(true)
 		);
 		flist.get(ID_TABLE_CLASS_NAME).setAutocomplete(true).setRelationDataAcquisition(true);
 		this.setFieldList(flist);

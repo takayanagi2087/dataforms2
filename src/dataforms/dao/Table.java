@@ -560,6 +560,20 @@ public class Table  {
 		return this.getLinkFieldCondition(field, joinTable, alias, field);
 	}
 
+	/**
+	 * フィールド単位のリンク条件を作成します。
+	 * <pre>
+	 * 結合元の別名を"m"とすると、以下のような結合条件を作成します。
+	 * m.field = alias.field
+	 * </pre>
+	 * @param field フィールドID。
+	 * @param joinTable 結合テーブル。
+	 * @return 結合条件。
+	 */
+	public final String getLinkFieldCondition(final String field, final Table joinTable) {
+		return this.getLinkFieldCondition(field, joinTable, joinTable.getAlias());
+	}
+
 
 	/**
 	 * 削除フラグフィールドを取得します。

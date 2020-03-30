@@ -896,6 +896,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 //			String c = mtable.getJoinCondition(table, table.getAlias());
 			String c = this.getJoinCondition(mtable, joinInfo);
 			if (c != null) {
+				joinInfo.setGeneratedCondition(c);
 				sb.append(c);
 				if (query.isEffectivenessOfDeleteFlag()) {
 					if (table.hasDeleteFlag()) {
@@ -916,6 +917,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 				c = this.getJoinConditionOtherThamMainTable(tlist, joinInfo);
 				if (c != null) {
 					sb.append(c);
+					joinInfo.setGeneratedCondition(c);
 					if (query.isEffectivenessOfDeleteFlag()) {
 						if (table.hasDeleteFlag()) {
 							String delColumn = table.getDeleteFlagField().getDbColumnName();

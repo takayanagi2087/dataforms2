@@ -220,6 +220,13 @@ public class Query {
 		 * 結合条件関数インターフェース。
 		 */
 		private JoinConditionInterface joinCondition = null;
+
+		/**
+		 * 生成された結合条件式。
+		 */
+		private String generatedCondition = null;
+
+
 		/**
 		 * コンストラクタ。
 		 * @param joinType 結合タイプ。
@@ -254,6 +261,24 @@ public class Query {
 		public JoinConditionInterface getJoinCondition() {
 			return joinCondition;
 		}
+
+
+		/**
+		 * 生成された条件式を取得します。
+		 * @return 生成された条件式。
+		 */
+		public String getGeneratedCondition() {
+			return generatedCondition;
+		}
+
+		/**
+		 * 生成された条件式を設定します。
+		 * @param generatedCondition 生成された条件式。
+		 */
+		public void setGeneratedCondition(final String generatedCondition) {
+			this.generatedCondition = generatedCondition;
+		}
+
 	}
 
 

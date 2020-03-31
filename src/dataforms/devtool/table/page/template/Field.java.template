@@ -17,8 +17,7 @@ ${constList}
 	 * コンストラクタ。
 	 */
 	public ${fieldClassSimpleName}() {
-		super(null${fieldLength});
-		this.setComment(COMMENT);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。

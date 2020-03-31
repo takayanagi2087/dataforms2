@@ -558,7 +558,7 @@ public class Query {
 	/**
 	 * 問い合わせフォームの入力データを取得します。
 	 * @return 問い合わせフォームの入力データ。
-	 * @deprecated getConditionDataを使用してください。
+	 * @deprecated {@link #getConditionData()}を使用してください。
 	 */
 	@Deprecated
 	public Map<String, Object> getQueryFormData() {
@@ -576,7 +576,7 @@ public class Query {
 	/**
 	 * 問い合わせフォームの入力データを設定します。
 	 * @param queryFormData 問い合わせフォームの入力データ。
-	 * @@deprecated setConditionDataを使用してください。
+	 * @deprecated {@link #setConditionData(Map)}を使用してください。
 	 */
 	@Deprecated
 	public void setQueryFormData(final Map<String, Object> queryFormData) {

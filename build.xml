@@ -5,7 +5,7 @@
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. -->
 <!DOCTYPE project>
-<project basedir="." default="build" name="dataforms">
+<project basedir="." default="jar" name="dataforms">
 	<!-- javadoc, jsdocとdataforms2.jarを作成します。-->
 	<property environment="env"/>
 	<property name="PLEIADES_HOME" value="C:/eclipse/pleiades-2019-12"/>
@@ -88,50 +88,9 @@
 		<path refid="EAR ライブラリー.libraryclasspath"/>
 		<path refid="Apache Tomcat v9.0 [Apache Tomcat v9.0].libraryclasspath"/>
 	</path>
-	<target name="init">
-		<mkdir dir="build/classes"/>
-		<copy includeemptydirs="false" todir="build/classes">
-		<fileset dir="src">
-			<exclude name="**/*.launch"/>
-			<exclude name="**/*.java"/>
-		</fileset>
-		</copy>
-		<copy includeemptydirs="false" todir="build/classes">
-		<fileset dir="HTML">
-			<exclude name="**/*.launch"/>
-			<exclude name="**/*.java"/>
-		</fileset>
-		</copy>
-	</target>
 	<target name="clean">
 		<delete dir="build/classes"/>
 	</target>
-	<target depends="clean" name="cleanall"/>
-	<target depends="build-subprojects,build-project" name="build"/>
-	<target name="build-subprojects"/>
-	<target depends="init" name="build-project">
-		<echo message="${ant.project.name}: ${ant.file}"/>
-		<javac debug="true" debuglevel="${debuglevel}" destdir="build/classes" includeantruntime="false" source="${source}" target="${target}">
-			<src path="src"/>
-			<src path="HTML"/>
-			<classpath refid="dataforms.classpath"/>
-		</javac>
-	</target>
-	<target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
-	<target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
-		<copy todir="${ant.library.dir}">
-			<fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-		</copy>
-		<unzip dest="${ant.library.dir}">
-			<patternset includes="jdtCompilerAdapter.jar"/>
-			<fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-		</unzip>
-	</target>
-	<target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
-		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-		<antcall target="build"/>
-	</target>
-
 	<!-- jsdoc作成 -->
 	<target name="jsdoc" description="jsdoc作成">
 		<echo message="jsdoc作成"/>
@@ -144,7 +103,6 @@
 			<arg value="HTML/META-INF/resources/dataforms"/>
 		</exec>
   	</target>
-
 	<!-- Javadoc作成 -->
 	<target name="javadoc" description="Javadoc作成">
 		<echo message="Javadoc作成"/>
@@ -155,10 +113,10 @@
 		</javadoc>
 		<echo message="Javadoc終了"/>
 	</target>
-
 	<target name="jar" depends="javadoc,jsdoc">
 		<buildnumber/>
 		<!-- javadocの出来上がりを待つ。 -->
+		<echo message="javadocの出来上がりを待っています。"/>
 		<sleep milliseconds="20000"/>
 		<delete file="build/classes/log4j.xml"/>
 		<delete file="build/classes/log4j.dtd"/>
@@ -181,7 +139,7 @@
 			SqlGeneratorのアノテーション取得でエラーとなる.
 		<jar jarfile="${jar.name}" basedir="build/classes" manifest="dataforms.mf"></jar>
 		-->
-		<!--  直接java8のjarコマンドを使うとうまく動作するjarができる。-->
+		<!--  直接jdkのjarコマンドを使うとうまく動作するjarができる。-->
 		<exec executable="${jar.command}" dir=".">
 			<arg value="cmf"/>
 			<arg value="dataforms.mf"/>

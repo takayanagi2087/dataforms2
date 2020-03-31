@@ -46,15 +46,6 @@ public class UserDao extends Dao {
 	 */
 	public List<String> queryUserAttributeList() throws Exception {
 		List<String> ret = new ArrayList<String>();
-/*		EnumGroupDao dao = new EnumGroupDao(this);
-		EnumGroupTable.Entity p = new EnumGroupTable.Entity();
-		p.setEnumGroupCode("userAttribute");
-		EnumGroupTable table = new EnumGroupTable();
-		List<Map<String, Object>> list = dao.query(p.getMap(), new FieldList(table.getEnumGroupCodeField()));
-		for (Map<String, Object> m: list) {
-			EnumGroupTable.Entity e = new EnumGroupTable.Entity(m);
-			ret.add(e.getEnumTypeCode());
-		}*/
 		EnumDao dao = new EnumDao(this);
 		List<Map<String, Object>> list = dao.getTypeList("userAttribute", "default");
 		for (Map<String, Object> m: list) {

@@ -303,8 +303,3 @@ class TableGeneratorEditForm extends EditForm {
 	}
 
 }
-
-
-
-
-

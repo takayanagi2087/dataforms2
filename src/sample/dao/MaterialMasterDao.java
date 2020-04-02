@@ -4,7 +4,7 @@ import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.TableSetDao;
 
 /**
- * 資材Daoクラス。
+ * 資材マスタDaoクラス。
  *
  */
 public class MaterialMasterDao extends TableSetDao {

@@ -38,6 +38,7 @@ import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.BlobStoreFileField;
 import dataforms.field.common.FileObjectField;
+import dataforms.field.sqlfunc.MaxField;
 import dataforms.field.sqltype.BigintField;
 import dataforms.field.sqltype.CharField;
 import dataforms.field.sqltype.ClobField;
@@ -115,9 +116,6 @@ public class Dao implements JDBCConnectableObject {
 	private BlobReadMode blobReadMode = BlobReadMode.FOR_DISPLAY_FILE_INFO;
 
 
-
-
-
 	/**
 	 * JDBC接続可能オブジェクトを設定設定します。
 	 * @param cobj JDBC接続可能オブジェクト。
@@ -132,15 +130,35 @@ public class Dao implements JDBCConnectableObject {
 		return this.jdbcConnectableObject.get().getConnection();
 	}
 
+
+	/**
+	 * コンストラクタ。
+	 */
+	public Dao() {
+
+	}
+
+
 	/**
 	 * コンストラクタ。
 	 * @param cobj JDBC接続可能Object。
 	 * @throws Exception 例外。
 	 */
 	public Dao(final JDBCConnectableObject cobj) throws Exception {
+		init(cobj);
+	}
+
+	/**
+	 * DB接続環境を初期化します。
+	 * @param cobj JDBC接続可能Object。
+	 * @throws Exception 例外。
+	 */
+	public void init(final JDBCConnectableObject cobj) throws Exception {
 		this.setJDBCConnectableObject(cobj);
 		this.sqlGenerator = SqlGenerator.getInstance(this.getConnection());
 	}
+
+
 
 	/**
 	 * 現在のページを取得する。
@@ -232,10 +250,6 @@ public class Dao implements JDBCConnectableObject {
 	protected void setSqlGenerator(final SqlGenerator sqlGenerator) {
 		this.sqlGenerator = sqlGenerator;
 	}
-
-
-
-
 
 
 	/**
@@ -670,31 +684,6 @@ public class Dao implements JDBCConnectableObject {
 		return null;
 	}
 
-	/**
-	 * Postgresql用例外処理。
-	 * @param e 例外。
-	 * @throws ApplicationException アプリケーション例外。
-	 * @throws Exception 例外。
-	 */
-/*	protected void checkPsqlException(final SQLException e) throws ApplicationException, Exception {
-		if ("org.postgresql.util.PSQLException".equals(e.getClass().getName())) {
-			logger.debug("exclass=" + e.getClass().getName());
-			SQLException sqlex = (SQLException) e;
-			org.postgresql.util.PSQLException pex = (org.postgresql.util.PSQLException) e;
-			logger.debug("th.getErrorCode()=" + pex.getErrorCode());
-			logger.debug("th.getMessage()=" + pex.getMessage());
-			logger.debug("th.getServerErrorMessage()=" + pex.getServerErrorMessage());
-			logger.debug("th.getLocalizedMessage()=" + pex.getLocalizedMessage());
-			logger.debug("th.getSQLState()=" + pex.getSQLState());
-			// 23505 一意制約違反
-			// 23503 外部キー違反
-			logger.debug("code=" + sqlex.getErrorCode() + ",msg=" +e.getLocalizedMessage(), e);
-			throw new ApplicationException(getPage(), "error.integrityconstraintviolation");
-		} else {
-			throw e;
-		}
-	}
-*/
 	/**
 	 * 更新系SQLを実行します。
 	 * <pre>
@@ -2122,5 +2111,49 @@ public class Dao implements JDBCConnectableObject {
 		query.setConditionFieldList(table.getPkFieldList());
 		query.setConditionData(rec);
 		return this.executeRecordQuery(query);
+	}
+
+
+	/**
+	 * 指定されたフィールドの最大値+1を取得し、次のコード地の候補とします。
+	 *
+	 * @param field 文字列フィールド(テーブル中のフィールドである必要があります)
+	 * @param condition 条件。
+	 * @return 次のコードの候補。
+	 * @throws Exception 例外。
+	 */
+	public String queryNextCode(final Field<?> field, final String condition) throws Exception {
+		Table table = field.getTable();
+		SingleTableQuery query = new SingleTableQuery(table);
+		FieldList flist = new FieldList();
+		flist.addField(new MaxField(field.getId(), field));
+		query.setFieldList(flist);
+		if (condition != null) {
+			query.setCondition(condition);
+		}
+		String ret = null;
+		String maxcode = (String) this.executeScalarQuery(query);
+		if (maxcode != null) {
+			Long no = Long.parseLong(maxcode);
+			ret = String.format("%0" + field.getLength() + "d", no.longValue() + 1);
+		} else {
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < field.getLength(); i++) {
+				sb.append("0");
+			}
+			ret = sb.toString();
+		}
+		return ret;
+	}
+
+	/**
+	 * 指定されたフィールドの最大値+1を取得し、次のコード地の候補とします。
+	 *
+	 * @param field 文字列フィールド(テーブル中のフィールドである必要があります)
+	 * @return 次のコードの候補。
+	 * @throws Exception 例外。
+	 */
+	public String queryNextCode(final Field<?> field) throws Exception {
+		return this.queryNextCode(field, null);
 	}
 }

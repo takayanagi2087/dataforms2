@@ -15,7 +15,6 @@ import dataforms.util.StringUtil;
  * 複数テーブル操作Dao。
  */
 public class TableGroupDao extends Dao {
-
 	/**
 	 * Logger。
 	 */
@@ -27,11 +26,6 @@ public class TableGroupDao extends Dao {
 	private Query mainQuery = null;
 
 	/**
-	 * 条件フィールドリスト。
-	 */
-	private FieldList conditionFieldList = null;
-
-	/**
 	 * 関連問合せ。
 	 */
 	private List<Query> relationQueryList = null;
@@ -40,6 +34,13 @@ public class TableGroupDao extends Dao {
 	 * 一覧問合せ。
 	 */
 	private Query listQuery = null;
+
+	/**
+	 * コンストラクタ。
+	 */
+	public TableGroupDao()  {
+
+	}
 
 	/**
 	 * コンストラクタ。
@@ -72,22 +73,6 @@ public class TableGroupDao extends Dao {
 	 */
 	public Query getMainQuery() {
 		return this.mainQuery;
-	}
-
-	/**
-	 * 条件フィールドリストを取得します。
-	 * @return 条件フィールドリスト。
-	 */
-	public FieldList getConditionFieldList() {
-		return conditionFieldList;
-	}
-
-	/**
-	 * 条件フィールドリストを設定します。
-	 * @param conditionFieldList 条件フィールドリスト。
-	 */
-	public void setConditionFieldList(final FieldList conditionFieldList) {
-		this.conditionFieldList = conditionFieldList;
 	}
 
 	/**
@@ -131,6 +116,15 @@ public class TableGroupDao extends Dao {
 	 */
 	public void setListQuery(final Query listQuery) {
 		this.listQuery = listQuery;
+	}
+
+
+	/**
+	 * 一覧用問合せを取得します。
+	 * @param table このテーブルでSingleTableQueryを作成し一覧用問合とします。
+	 */
+	public void setListQuery(final Table table) {
+		this.listQuery = new SingleTableQuery(table);
 	}
 
 	/**
@@ -322,10 +316,10 @@ public class TableGroupDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void update(final Map<String, Object> data) throws Exception {
-		this.insertMainTable(data);
+		this.updateMainTable(data);
 		if (this.relationQueryList != null) {
 			for (Query q: this.relationQueryList) {
-				this.insertRelationTable(q, data);
+				this.updateRelationTable(q, data);
 			}
 		}
 	}

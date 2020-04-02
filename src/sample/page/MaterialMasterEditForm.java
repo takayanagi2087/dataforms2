@@ -3,14 +3,14 @@ package sample.page;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.exception.ApplicationException;
 import dataforms.controller.EditForm;
 import dataforms.controller.QueryForm;
 import dataforms.dao.Table;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.common.FileField;
-import sample.dao.MaterialMasterTable;
 import sample.dao.MaterialMasterDao;
+import sample.dao.MaterialMasterTable;
 
 /**
  * 編集フォームクラス。
@@ -33,6 +33,17 @@ public class MaterialMasterEditForm extends EditForm {
 	@Override
 	public void init() throws Exception {
 		super.init();
+	}
+
+	@Override
+	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
+		Map<String, Object> ret = super.queryNewData(data);
+		MaterialMasterTable table = new MaterialMasterTable();
+		MaterialMasterDao dao = new MaterialMasterDao(this);
+		String newcode = dao.queryNextCode(table.getMaterialCodeField(), null);
+		MaterialMasterTable.Entity e = new MaterialMasterTable.Entity(ret);
+		e.setMaterialCode(newcode);
+		return ret;
 	}
 
 	/**

@@ -3,6 +3,7 @@ package sample.dao;
 import java.util.Map;
 import dataforms.dao.Table;
 import sample.field.MaterialIdField;
+import sample.field.MaterialCodeField;
 import sample.field.MaterialNameField;
 import sample.field.MaterialUnitField;
 import sample.field.UnitPriceField;
@@ -21,6 +22,7 @@ public class MaterialMasterTable extends Table {
 		this.setAutoIncrementId(true);
 		this.setComment("資材マスタ");
 		this.addPkField(new MaterialIdField()); //資材ID
+		this.addField(new MaterialCodeField()); //資材コード
 		this.addField(new MaterialNameField()); //資材名称
 		this.addField(new MaterialUnitField()); //資材在庫単位
 		this.addField(new UnitPriceField()); //単価
@@ -40,6 +42,8 @@ public class MaterialMasterTable extends Table {
 	public static class Entity extends dataforms.dao.Entity {
 		/** 資材IDのフィールドID。 */
 		public static final String ID_MATERIAL_ID = "materialId";
+		/** 資材コードのフィールドID。 */
+		public static final String ID_MATERIAL_CODE = "materialCode";
 		/** 資材名称のフィールドID。 */
 		public static final String ID_MATERIAL_NAME = "materialName";
 		/** 資材在庫単位のフィールドID。 */
@@ -76,6 +80,22 @@ public class MaterialMasterTable extends Table {
 		 */
 		public void setMaterialId(final java.lang.Long materialId) {
 			this.getMap().put(Entity.ID_MATERIAL_ID, materialId);
+		}
+
+		/**
+		 * 資材コードを取得します。
+		 * @return 資材コード。
+		 */
+		public java.lang.String getMaterialCode() {
+			return (java.lang.String) this.getMap().get(Entity.ID_MATERIAL_CODE);
+		}
+
+		/**
+		 * 資材コードを設定します。
+		 * @param materialCode 資材コード。
+		 */
+		public void setMaterialCode(final java.lang.String materialCode) {
+			this.getMap().put(Entity.ID_MATERIAL_CODE, materialCode);
 		}
 
 		/**
@@ -150,6 +170,14 @@ public class MaterialMasterTable extends Table {
 	 */
 	public MaterialIdField getMaterialIdField() {
 		return (MaterialIdField) this.getField(Entity.ID_MATERIAL_ID);
+	}
+
+	/**
+	 * 資材コードフィールドを取得します。
+	 * @return 資材コードフィールド。
+	 */
+	public MaterialCodeField getMaterialCodeField() {
+		return (MaterialCodeField) this.getField(Entity.ID_MATERIAL_CODE);
 	}
 
 	/**

@@ -1,12 +1,13 @@
 package sample.page;
 
 import java.util.Map;
+
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
-import sample.dao.MaterialMasterTable;
 import sample.dao.MaterialMasterDao;
+import sample.dao.MaterialMasterTable;
 
 
 /**
@@ -19,7 +20,8 @@ public class MaterialMasterQueryResultForm extends QueryResultForm {
 	public MaterialMasterQueryResultForm() {
 		MaterialMasterTable table = new MaterialMasterTable();
 		this.addPkFieldList(table.getPkFieldList());
-		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, MaterialMasterDao.getQueryResultFieldList());
+		MaterialMasterDao dao = new MaterialMasterDao();
+		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
 		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_NAME).setSortable(true);
 		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_UNIT).setSortable(true);
 		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_UNIT_PRICE).setSortable(true);

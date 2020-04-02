@@ -372,6 +372,7 @@
 		<param-value>
 			dataforms.app
 			,dataforms.debug
+			,sample
 		</param-value>
 	</context-param>
 	<!--

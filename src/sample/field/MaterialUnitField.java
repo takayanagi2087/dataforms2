@@ -11,7 +11,7 @@ public class MaterialUnitField extends EnumOptionSingleSelectField {
 	/**
 	 * 列挙名称。
 	 */
-	private static final String ENUM_TYPE = "enumTypeCode"; // 適切に修正して使用してください。
+	private static final String ENUM_TYPE = "materialUnit";
 
 	/**
 	 * フィールドコメント。

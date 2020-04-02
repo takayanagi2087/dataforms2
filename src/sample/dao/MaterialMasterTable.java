@@ -7,6 +7,7 @@ import sample.field.MaterialCodeField;
 import sample.field.MaterialNameField;
 import sample.field.MaterialUnitField;
 import sample.field.UnitPriceField;
+import sample.field.OrderPointField;
 import sample.field.MemoField;
 
 
@@ -26,6 +27,7 @@ public class MaterialMasterTable extends Table {
 		this.addField(new MaterialNameField()); //資材名称
 		this.addField(new MaterialUnitField()); //資材在庫単位
 		this.addField(new UnitPriceField()); //単価
+		this.addField(new OrderPointField()); //発注点
 		this.addField(new MemoField()); //メモ
 		this.addUpdateInfoFields();
 	}
@@ -50,6 +52,8 @@ public class MaterialMasterTable extends Table {
 		public static final String ID_MATERIAL_UNIT = "materialUnit";
 		/** 単価のフィールドID。 */
 		public static final String ID_UNIT_PRICE = "unitPrice";
+		/** 発注点のフィールドID。 */
+		public static final String ID_ORDER_POINT = "orderPoint";
 		/** メモのフィールドID。 */
 		public static final String ID_MEMO = "memo";
 
@@ -147,6 +151,22 @@ public class MaterialMasterTable extends Table {
 		}
 
 		/**
+		 * 発注点を取得します。
+		 * @return 発注点。
+		 */
+		public java.math.BigDecimal getOrderPoint() {
+			return (java.math.BigDecimal) this.getMap().get(Entity.ID_ORDER_POINT);
+		}
+
+		/**
+		 * 発注点を設定します。
+		 * @param orderPoint 発注点。
+		 */
+		public void setOrderPoint(final java.math.BigDecimal orderPoint) {
+			this.getMap().put(Entity.ID_ORDER_POINT, orderPoint);
+		}
+
+		/**
 		 * メモを取得します。
 		 * @return メモ。
 		 */
@@ -202,6 +222,14 @@ public class MaterialMasterTable extends Table {
 	 */
 	public UnitPriceField getUnitPriceField() {
 		return (UnitPriceField) this.getField(Entity.ID_UNIT_PRICE);
+	}
+
+	/**
+	 * 発注点フィールドを取得します。
+	 * @return 発注点フィールド。
+	 */
+	public OrderPointField getOrderPointField() {
+		return (OrderPointField) this.getField(Entity.ID_ORDER_POINT);
 	}
 
 	/**

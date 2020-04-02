@@ -12,13 +12,13 @@ import dataforms.field.base.FieldList;
 import dataforms.util.StringUtil;
 
 /**
- * 複数テーブル操作Dao。
+ * 関連するテーブルの集合を操作するDao。
  */
-public class TableGroupDao extends Dao {
+public class TableSetDao extends Dao {
 	/**
 	 * Logger。
 	 */
-	private static Logger logger = Logger.getLogger(TableGroupDao.class);
+	private static Logger logger = Logger.getLogger(TableSetDao.class);
 
 	/**
 	 * 主問合せ。
@@ -38,7 +38,7 @@ public class TableGroupDao extends Dao {
 	/**
 	 * コンストラクタ。
 	 */
-	public TableGroupDao()  {
+	public TableSetDao()  {
 
 	}
 
@@ -47,7 +47,7 @@ public class TableGroupDao extends Dao {
 	 * @param obj JDBC接続可能オブジェクト。
 	 * @throws Exception 例外。
 	 */
-	public TableGroupDao(final JDBCConnectableObject obj) throws Exception {
+	public TableSetDao(final JDBCConnectableObject obj) throws Exception {
 		super(obj);
 	}
 

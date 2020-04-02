@@ -9,6 +9,7 @@ import dataforms.dao.Table;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.common.FileField;
+import dataforms.validator.RequiredValidator;
 import sample.dao.MaterialMasterDao;
 import sample.dao.MaterialMasterTable;
 
@@ -20,7 +21,12 @@ public class MaterialMasterEditForm extends EditForm {
 	 * コンストラクタ。
 	 */
 	public MaterialMasterEditForm() {
-		MaterialMasterTable table = new MaterialMasterTable();
+		MaterialMasterDao dao = new MaterialMasterDao();
+		MaterialMasterTable table = (MaterialMasterTable) dao.getMainQuery().getMainTable();
+		table.getMaterialCodeField().addValidator(new RequiredValidator());
+		table.getMaterialNameField().addValidator(new RequiredValidator());
+		table.getMaterialUnitField().addValidator(new RequiredValidator());
+		table.getUnitPriceField().addValidator(new RequiredValidator());
 		this.addTableFields(table);
 	}
 

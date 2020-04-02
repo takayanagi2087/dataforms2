@@ -1,13 +1,13 @@
 package sample.dao;
 
 import dataforms.dao.JDBCConnectableObject;
-import dataforms.dao.TableGroupDao;
+import dataforms.dao.TableSetDao;
 
 /**
  * 資材Daoクラス。
  *
  */
-public class MaterialMasterDao extends TableGroupDao {
+public class MaterialMasterDao extends TableSetDao {
 	/**
 	 * コンストラクタ。
 	 * @throws Exception 例外。
@@ -26,4 +26,13 @@ public class MaterialMasterDao extends TableGroupDao {
 		this();
 		this.init(cobj);
 	}
+
+	/**
+	 * 主テーブルを取得します。
+	 * @return 主テーブル>
+	 */
+	public MaterialMasterTable getMainTable() {
+		return (MaterialMasterTable) this.getMainQuery().getMainTable();
+	}
+
 }

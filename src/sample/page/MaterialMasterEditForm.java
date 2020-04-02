@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import dataforms.controller.EditForm;
+import dataforms.controller.Page;
 import dataforms.controller.QueryForm;
 import dataforms.dao.Table;
 import dataforms.exception.ApplicationException;
@@ -22,7 +23,7 @@ public class MaterialMasterEditForm extends EditForm {
 	 */
 	public MaterialMasterEditForm() {
 		MaterialMasterDao dao = new MaterialMasterDao();
-		MaterialMasterTable table = (MaterialMasterTable) dao.getMainQuery().getMainTable();
+		MaterialMasterTable table = dao.getMainTable();
 		table.getMaterialCodeField().addValidator(new RequiredValidator());
 		table.getMaterialNameField().addValidator(new RequiredValidator());
 		table.getMaterialUnitField().addValidator(new RequiredValidator());
@@ -44,8 +45,8 @@ public class MaterialMasterEditForm extends EditForm {
 	@Override
 	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
 		Map<String, Object> ret = super.queryNewData(data);
-		MaterialMasterTable table = new MaterialMasterTable();
 		MaterialMasterDao dao = new MaterialMasterDao(this);
+		MaterialMasterTable table = dao.getMainTable();
 		String newcode = dao.queryNextCode(table.getMaterialCodeField(), null);
 		MaterialMasterTable.Entity e = new MaterialMasterTable.Entity(ret);
 		e.setMaterialCode(newcode);
@@ -103,7 +104,7 @@ public class MaterialMasterEditForm extends EditForm {
 	@Override
 	protected Map<String, Object> queryDataByQueryFormCondition(final Map<String, Object> data) throws Exception {
 		MaterialMasterDao dao = new MaterialMasterDao(this);
-		QueryForm qf = (QueryForm) this.getPage().getComponent("queryForm");
+		QueryForm qf = (QueryForm) this.getPage().getComponent(Page.ID_QUERY_FORM);
 		List<Map<String, Object>> list = dao.query(data, qf.getFieldList());
 		if (list.size() == 0) {
 			throw new ApplicationException(this.getPage(), "error.notfounddata");
@@ -124,7 +125,7 @@ public class MaterialMasterEditForm extends EditForm {
 	 */
 	@Override
 	protected boolean isUpdate(final Map<String, Object> data) throws Exception {
-		Table table = new MaterialMasterTable();
+		MaterialMasterTable table = new MaterialMasterTable();
 		boolean ret = this.isUpdate(table, data);
 		return ret;
 	}

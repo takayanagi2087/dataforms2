@@ -10,6 +10,7 @@ import dataforms.app.login.page.LoginInfoForm;
 import dataforms.app.menu.page.SideMenuForm;
 import dataforms.controller.DataForms;
 import dataforms.controller.Form;
+import dataforms.controller.Page;
 import dataforms.controller.WebComponent;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.ClassNameField;
@@ -189,11 +190,11 @@ public class WebResourceForm extends Form {
 		 */
 		public static FormHtmlGenerator newFormHtmlGenerator(final Form form, final int indent) {
 			FormHtmlGenerator gen = null;
-			if ("queryForm".equals(form.getId())) {
+			if (Page.ID_QUERY_FORM.equals(form.getId())) {
 				gen = new QueryFormHtmlGenerator(form, indent);
-			} else if ("queryResultForm".equals(form.getId())) {
+			} else if (Page.ID_QUERY_RESULT_FORM.equals(form.getId())) {
 				gen = new QueryResultFormHtmlGenerator(form, indent);
-			} else if ("editForm".equals(form.getId())) {
+			} else if (Page.ID_EDIT_FORM.equals(form.getId())) {
 				gen = new EditFormHtmlGenerator(form, indent);
 			} else {
 				gen = new FormHtmlGenerator(form, indent);

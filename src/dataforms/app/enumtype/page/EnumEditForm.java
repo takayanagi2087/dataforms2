@@ -8,6 +8,7 @@ import dataforms.app.enumtype.dao.EnumTable;
 import dataforms.app.enumtype.field.EnumNameField;
 import dataforms.controller.DataForms;
 import dataforms.controller.EditForm;
+import dataforms.controller.Page;
 import dataforms.controller.QueryForm;
 import dataforms.dao.Table;
 import dataforms.exception.ApplicationException;
@@ -125,7 +126,7 @@ public class EnumEditForm extends EditForm {
 	@Override
 	protected Map<String, Object> queryDataByQueryFormCondition(final Map<String, Object> data) throws Exception {
 		EnumDao dao = new EnumDao(this);
-		QueryForm qf = (QueryForm) this.getPage().getComponent("queryForm");
+		QueryForm qf = (QueryForm) this.getPage().getComponent(Page.ID_QUERY_FORM);
 		List<Map<String, Object>> list = dao.query(data, qf.getFieldList());
 		if (list.size() == 0) {
 			throw new ApplicationException(this.getPage(), "error.notfounddata");

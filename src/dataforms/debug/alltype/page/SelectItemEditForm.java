@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import dataforms.controller.EditForm;
+import dataforms.controller.Page;
 import dataforms.controller.QueryForm;
 import dataforms.dao.Table;
 import dataforms.debug.alltype.dao.SingleSelectDao;
 import dataforms.debug.alltype.dao.SingleSelectTable;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.common.FileField;
-import dataforms.exception.ApplicationException;
 
 /**
  * 編集フォームクラス。
@@ -86,7 +87,7 @@ public class SelectItemEditForm extends EditForm {
 	@Override
 	protected Map<String, Object> queryDataByQueryFormCondition(final Map<String, Object> data) throws Exception {
 		SingleSelectDao dao = new SingleSelectDao(this);
-		QueryForm qf = (QueryForm) this.getPage().getComponent("queryForm");
+		QueryForm qf = (QueryForm) this.getPage().getComponent(Page.ID_QUERY_FORM);
 		List<Map<String, Object>> list = dao.query(data, qf.getFieldList());
 		if (list.size() == 0) {
 			throw new ApplicationException(this.getPage(), "error.notfounddata");

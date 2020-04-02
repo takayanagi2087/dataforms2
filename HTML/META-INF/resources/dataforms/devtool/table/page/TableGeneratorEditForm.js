@@ -233,16 +233,16 @@ class TableGeneratorEditForm extends EditForm {
 					if (ret.result.isDataformsField == "1") {
 						if (ret.result.fieldLength != null && ret.result.fieldLength.length > 0) {
 							len.val(ret.result.fieldLength);
-							tbl.getComponent(len.attr(this.getIdAttribute())).lock(false);
+							tbl.getComponent(len.attr(thisForm.getIdAttribute())).lock(false);
 						} else {
 							len.val("");
-							tbl.getComponent(len.attr(this.getIdAttribute())).lock(true);
+							tbl.getComponent(len.attr(thisForm.getIdAttribute())).lock(true);
 						}
 						bpkg.val(ret.result.superClassPackage);
 						bcls.val(ret.result.superClassSimpleName);
 						cmnt.val(ret.result.fieldComment);
-						tbl.getComponent(bpkg.attr(this.getIdAttribute())).lock(true);
-						tbl.getComponent(bcls.attr(this.getIdAttribute())).lock(true);
+						tbl.getComponent(bpkg.attr(thisForm.getIdAttribute())).lock(true);
+						tbl.getComponent(bcls.attr(thisForm.getIdAttribute())).lock(true);
 						owm.hide();
 					} else {
 						if (ret.result.fieldLength != null && ret.result.fieldLength.length > 0) {

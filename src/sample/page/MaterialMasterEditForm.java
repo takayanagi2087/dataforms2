@@ -42,6 +42,12 @@ public class MaterialMasterEditForm extends EditForm {
 		super.init();
 	}
 
+	/**
+	 * 新規データの初期値を取得します。
+	 * <pre>
+	 * 資材コードを生成します。
+	 * </pre>
+	 */
 	@Override
 	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
 		Map<String, Object> ret = super.queryNewData(data);

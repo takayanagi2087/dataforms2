@@ -26,6 +26,7 @@ import dataforms.devtool.field.QueryClassNameField;
 import dataforms.devtool.field.TableClassNameField;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
+import dataforms.field.base.TextField;
 import dataforms.field.common.FlagField;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.response.JsonResponse;
@@ -41,6 +42,7 @@ import dataforms.validator.ValidationError;
  *
  */
 public class QueryGeneratorEditForm extends EditForm {
+
 
 
 	/**
@@ -84,6 +86,12 @@ public class QueryGeneratorEditForm extends EditForm {
 	private static final String ID_ALIAS_NAME = "aliasName";
 
 	/**
+	 * コメントフィールドID。
+	 */
+	private static final String ID_QUERY_COMMENT = "queryComment";
+
+
+	/**
 	 * テーブルクラス名フィールドID。
 	 */
 	// private static final String ID_TABLE_CLASS_NAME = "tableClassName";
@@ -115,6 +123,7 @@ public class QueryGeneratorEditForm extends EditForm {
 
 		this.addField(new FlagField(ID_DISTINCT_FLAG));
 		this.addField(new FlagField(ID_FORCE_OVERWRITE));
+		this.addField(new TextField(ID_QUERY_COMMENT));
 
 		this.addField((new FunctionSelectField(ID_MAIN_TABLE_FUNCTION_SELECT)).setPackageFieldId(ID_MAIN_TABLE_PACKAGE_NAME)).setComment("主テーブルの機能");
 		this.addField(new PackageNameField(ID_MAIN_TABLE_PACKAGE_NAME)).setComment("主テーブルのパッケージ").addValidator(new RequiredValidator());
@@ -206,6 +215,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		} else {
 			ret.put(ID_DISTINCT_FLAG, "0");
 		}
+		ret.put(ID_QUERY_COMMENT, q.getComment());
 		ret.put(ID_FORCE_OVERWRITE, "0");
 		ret.put(ID_MAIN_TABLE_PACKAGE_NAME, q.getMainTable().getClass().getPackage().getName());
 		ret.put(ID_MAIN_TABLE_CLASS_NAME, q.getMainTable().getClass().getSimpleName());
@@ -691,6 +701,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		} else {
 			javasrc = javasrc.replaceAll("\\$\\{distinctFlag\\}", "false");
 		}
+		javasrc = javasrc.replaceAll("\\$\\{queryComment\\}", (String) data.get("queryComment"));
 		javasrc = javasrc.replaceAll("\\$\\{joinTables\\}", this.generateJoinTables(data));
 		String javaSrc = (String) data.get("javaSourcePath");
 		String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");

@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
-import dataforms.util.StringUtil;
 
 /**
  * 関連するテーブルの集合を操作するDao。
@@ -18,7 +15,7 @@ public class TableSetDao extends Dao {
 	/**
 	 * Logger。
 	 */
-	private static Logger logger = Logger.getLogger(TableSetDao.class);
+	// private static Logger logger = Logger.getLogger(TableSetDao.class);
 
 	/**
 	 * 主問合せ。
@@ -171,18 +168,6 @@ public class TableSetDao extends Dao {
 		return this.executeQuery(query);
 	}
 
-	/**
-	 * 問合せに対応するHtmlTableのIDを取得します。
-	 * @param q 問合せ。
-	 * @return 問合せに対応するHtmlTableのID。
-	 */
-	protected String getListId(final Query q) {
-		Table mt = q.getMainTable();
-		String tableName = mt.getTableName();
-		String tid = StringUtil.snakeToCamel(tableName) + "List";
-		logger.debug("tid=" + tid);
-		return tid;
-	}
 
 	/**
 	 * 関連問合せの結果を取得します。
@@ -196,7 +181,7 @@ public class TableSetDao extends Dao {
 		Query query = this.getMainQuery();
 		q.setConditionFieldList(query.getMainTable().getPkFieldList());
 		q.setConditionData(data);
-		String tid = getListId(q);
+		String tid = q.getListId();
 		List<Map<String, Object>> list = this.executeQuery(query);
 		ret.put(tid, list);
 		return tid;
@@ -248,7 +233,7 @@ public class TableSetDao extends Dao {
 	 */
 	protected void insertRelationTable(final Query q, final Map<String, Object> data) throws Exception {
 		Table table = this.getMainQuery().getMainTable();
-		String id = this.getListId(q);
+		String id = q.getListId();
 		FieldList pklist = this.getMainQuery().getMainTable().getPkFieldList();
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(id);

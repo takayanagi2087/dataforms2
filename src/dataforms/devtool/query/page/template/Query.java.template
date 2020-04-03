@@ -14,6 +14,7 @@ public class ${queryClassName} extends Query {
 	 * コンストラクタ.
 	 */
 	public ${queryClassName}() {
+		this.setComment("${queryComment}");
 		this.setDistinct(${distinctFlag});
 ${newTables}
 ${selectFields}

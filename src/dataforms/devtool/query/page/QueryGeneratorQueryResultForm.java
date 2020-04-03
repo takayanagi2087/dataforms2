@@ -13,6 +13,7 @@ import dataforms.devtool.field.ClassNameField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryClassNameField;
 import dataforms.field.base.FieldList;
+import dataforms.field.base.TextField;
 import dataforms.field.common.RowNoField;
 import dataforms.htmltable.HtmlTable;
 import dataforms.util.ClassFinder;
@@ -32,6 +33,7 @@ public class QueryGeneratorQueryResultForm extends QueryResultForm {
 				, (new PackageNameField()).setHidden(true)
 				, (new QueryClassNameField()).setHidden(true)
 				, (new ClassNameField("fullClassName")).setSpanField(true).setComment("問合せクラス名")
+				, (new TextField("queryComment"))
 			);
 			this.addHtmlTable(htmltbl);
 			this.addPkField(htmltbl.getFieldList().get("packageName"));
@@ -74,10 +76,12 @@ public class QueryGeneratorQueryResultForm extends QueryResultForm {
 			m.put("packageName", querycls.getPackage().getName());
 			m.put("queryClassName", querycls.getSimpleName());
 			m.put("fullClassName", querycls.getName());
+			Query q = (Query) querycls.getDeclaredConstructor().newInstance();
+			m.put("queryComment", q.getComment());
 			result.add(m);
 			no++;
 		}
-		ret.put("queryResult", result); // とりあえず空のリストを返信。 
+		ret.put("queryResult", result); // とりあえず空のリストを返信。
 		return ret;
 	}
 

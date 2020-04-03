@@ -95,10 +95,43 @@ public class Query {
 	private String condition = null;
 
 	/**
+	 * コメント。
+	 */
+	private String comment = null;
+
+	/**
 	 * コンストラクタ。
 	 */
 	public Query() {
 
+	}
+
+	/**
+	 * コメントを取得します。
+	 * @return コメント。
+	 */
+	public String getComment() {
+		return comment;
+	}
+
+	/**
+	 * コメント。
+	 * @param comment コメント。
+	 */
+	public void setComment(final String comment) {
+		this.comment = comment;
+	}
+
+
+	/**
+	 * 問合せに対応するHtmlTableのIDを取得します。
+	 * @return 問合せに対応するHtmlTableのID。
+	 */
+	public String getListId() {
+		Table mt = this.getMainTable();
+		String tableName = mt.getTableName();
+		String tid = StringUtil.snakeToCamel(tableName) + "List";
+		return tid;
 	}
 
 	/**

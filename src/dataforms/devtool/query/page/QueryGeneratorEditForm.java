@@ -221,8 +221,27 @@ public class QueryGeneratorEditForm extends EditForm {
 		ret.put(ID_MAIN_TABLE_CLASS_NAME, q.getMainTable().getClass().getSimpleName());
 		ret.put(ID_ALIAS_NAME, q.getMainTable().getAlias());
 		ret.put(ID_JOIN_TABLE_LIST, this.getJoinTableData(q.getJoinInfoList()));
-		List<Map<String, Object>> flist = this.queryTableFieldList(ret);
+		List<Map<String, Object>> flist = new ArrayList<Map<String, Object>>();
+		flist.addAll(this.queryTableFieldList(ret));
 		FieldList qfl = q.getFieldList();
+		List<Map<String, Object>> selflist = new ArrayList<Map<String, Object>>();
+		for (Field<?> f: qfl) {
+			String id = f.getId();
+			for (Map<String, Object> m: flist) {
+				if (id.equals((String) m.get("fieldId"))) {
+					Map<String, Object> fmap = new HashMap<String, Object>();
+					fmap.putAll(m);
+					fmap.put("sel", "1");
+					selflist.add(fmap);
+					flist.remove(m);
+					break;
+				}
+			}
+		}
+		for (Map<String, Object> m: flist) {
+			selflist.add(m);
+		}
+		/*
 		for (Map<String, Object> m: flist) {
 			String fid = (String) m.get("fieldId");
 			String tclass = (String) m.get("selectTableClass");
@@ -237,8 +256,9 @@ public class QueryGeneratorEditForm extends EditForm {
 			} else {
 				m.put("sel", "0");
 			}
-		}
-		ret.put("selectFieldList", flist);
+		}*/
+
+		ret.put("selectFieldList", selflist);
 		return ret;
 	}
 

@@ -14,6 +14,7 @@ public class MaterialOrderItemQuery extends Query {
 	 * コンストラクタ.
 	 */
 	public MaterialOrderItemQuery() {
+		this.setComment("資材発注明細用の問合せ");
 		this.setDistinct(false);
 		MaterialOrderItemTable materialOrderItemTable = new MaterialOrderItemTable();
 		materialOrderItemTable.setAlias("m");
@@ -27,6 +28,10 @@ public class MaterialOrderItemQuery extends Query {
 			, materialOrderItemTable.getOrderIdField()
 			, materialOrderItemTable.getSortOrderField()
 			, materialOrderItemTable.getMaterialIdField()
+			, materialMasterTable.getMaterialCodeField()
+			, materialMasterTable.getMaterialNameField()
+			, materialMasterTable.getUnitPriceField()
+			, materialMasterTable.getMaterialUnitField()
 			, materialOrderItemTable.getOrderPriceField()
 			, materialOrderItemTable.getAmountField()
 			, materialOrderItemTable.getItemMemoField()
@@ -34,15 +39,6 @@ public class MaterialOrderItemQuery extends Query {
 			, materialOrderItemTable.getCreateTimestampField()
 			, materialOrderItemTable.getUpdateUserIdField()
 			, materialOrderItemTable.getUpdateTimestampField()
-			, materialOrderTable.getOrderNoField()
-			, materialOrderTable.getSupplierIdField()
-			, materialOrderTable.getOrderDateField()
-			, materialOrderTable.getMemoField()
-			, materialMasterTable.getMaterialCodeField()
-			, materialMasterTable.getMaterialNameField()
-			, materialMasterTable.getMaterialUnitField()
-			, materialMasterTable.getUnitPriceField()
-			, materialMasterTable.getOrderPointField()
 		));
 		this.setMainTable(materialOrderItemTable);
 		this.addInnerJoin(materialOrderTable);

@@ -5,15 +5,16 @@ import dataforms.devtool.field.FieldIdField;
 import dataforms.devtool.field.TableClassNameField;
 import dataforms.devtool.field.TableFullClassNameField;
 import dataforms.field.base.FieldList;
+import dataforms.field.base.TextField;
 import dataforms.field.common.FlagField;
-import dataforms.field.sqltype.VarcharField;
-import dataforms.htmltable.HtmlTable;
+import dataforms.field.common.SortOrderField;
+import dataforms.htmltable.EditableHtmlTable;
 
 /**
  * 選択フィールドHtmlテーブルクラス。
  *
  */
-public class SelectFieldHtmlTable extends HtmlTable {
+public class SelectFieldHtmlTable extends EditableHtmlTable {
 	/**
 	 * コンストラクタ。
 	 * @param id デーブルID。
@@ -21,13 +22,13 @@ public class SelectFieldHtmlTable extends HtmlTable {
 	public SelectFieldHtmlTable(final String id) {
 		super(id);
 		FieldList flist = new FieldList(
-			new TableFullClassNameField("selectTableClass")
-			, new TableClassNameField()
-			, new TableFullClassNameField("selectTableClassName")
-			, new FlagField("sel")
+			new FlagField("sel")
+			, new SortOrderField()
 			, (new FieldIdField()).setReadonly(true)
 			, new FieldFullClassNameField("fieldClassName")
-			, new VarcharField("comment", 1024));
+			, new TableFullClassNameField("selectTableClassName")
+			, new TableClassNameField()
+			, new TextField("comment"));
 		this.setFieldList(flist);
 	}
 

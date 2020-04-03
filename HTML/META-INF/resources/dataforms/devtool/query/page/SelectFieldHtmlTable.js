@@ -9,7 +9,7 @@
  *
  * @extends HtmlTable
  */
-class SelectFieldHtmlTable extends HtmlTable {
+class SelectFieldHtmlTable extends EditableHtmlTable {
 	/**
 	 * HTMLエレメントとの対応付けを行います。
 	 */
@@ -28,7 +28,7 @@ class SelectFieldHtmlTable extends HtmlTable {
 	setTableData(list) {
 		super.setTableData(list);
 		var form = this.getParentForm();
-		this.setRowSpan("tableClassName");
+//		this.setRowSpan("tableClassName");
 		var thisTable = this;
 		this.find("[id$='selectTableClass']").click(function() {
 			// 確認画面のロック対応

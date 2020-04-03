@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="mainDiv">
+			<form id="queryForm">
+				<div class="formHeader">検索条件</div>
+				<table class="responsive">
+					<tbody>
+						<tr>
+							<th>発注番号</th>
+							<td><input type="text" id="orderNo" /></td>
+						</tr>
+						<tr>
+							<th>発注日(from)</th>
+							<td><input type="text" id="orderDateFrom" /></td>
+						</tr>
+						<tr>
+							<th>発注日(to)</th>
+							<td><input type="text" id="orderDateTo" /></td>
+						</tr>
+						<tr>
+							<th>メモ</th>
+							<td><input type="text" id="memo" /></td>
+						</tr>
+					</tbody>
+				</table>
+				<input type="submit" id="queryButton" value="検索">
+				<input type="button" id="resetButton" value="リセット">&nbsp;
+				<input type="button" id="newButton" value="新規登録">
+			</form>
+			<form id="queryResultForm">
+				<div class="formHeader">検索結果</div>
+				<table class="responsive">
+					<tbody>
+					</tbody>
+				</table>
+				<div class="hScrollDiv">
+					<table id="queryResult">
+						<thead>
+							<tr>
+								<th>
+									発注番号
+								</th>
+								<th>
+									発注日
+								</th>
+								<th>
+									資材コード
+								</th>
+								<th>
+									資材名称
+								</th>
+								<th>
+									単価
+								</th>
+								<th>
+									数量
+								</th>
+								<th>
+									メモ
+								</th>
+								<th>
+									仕入先コード
+								</th>
+								<th>
+									仕入先名称
+								</th>
+								<th>
+									操作
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<span id="queryResult[0].orderNo"></span>
+									<input type="hidden" id="queryResult[0].orderItemId" />
+									<input type="hidden" id="queryResult[0].orderId" />
+									<input type="hidden" id="queryResult[0].sortOrder" />
+									<input type="hidden" id="queryResult[0].materialId" />
+									<input type="hidden" id="queryResult[0].supplierId" />
+									<input type="hidden" id="queryResult[0].createUserId" />
+									<input type="hidden" id="queryResult[0].createTimestamp" />
+									<input type="hidden" id="queryResult[0].updateUserId" />
+									<input type="hidden" id="queryResult[0].updateTimestamp" />
+								</td>
+								<td>
+									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].orderDate"></span></a>
+								</td>
+								<td>
+									<span id="queryResult[0].materialCode"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].materialName"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].orderPrice"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].amount"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].itemMemo"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].supplierCode"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].supplierName"></span>
+								</td>
+								<td>
+									<input type="button" id="queryResult[0].viewButton" value="表示">
+									<input type="button" id="queryResult[0].referButton" value="参照登録">
+									<input type="button" id="queryResult[0].deleteButton" value="削除">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</form>
+			<form id="editForm">
+				<div class="formHeader"><span id="editFormTitle"></span></div>
+				<input type="hidden" id="saveMode" />
+				<input type="hidden" id="orderId" />
+				<input type="hidden" id="supplierId" />
+				<input type="hidden" id="createUserId" />
+				<input type="hidden" id="createTimestamp" />
+				<input type="hidden" id="updateUserId" />
+				<input type="hidden" id="updateTimestamp" />
+				<table class="responsive">
+					<tbody>
+						<tr>
+							<th>発注番号</th>
+							<td><input type="text" id="orderNo" /></td>
+						</tr>
+						<tr>
+							<th>発注日</th>
+							<td><input type="text" id="orderDate" /></td>
+						</tr>
+						<tr>
+							<th>メモ</th>
+							<td><input type="text" id="memo" /></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="hScrollDiv">
+					<table id="materialOrderItemList" class="editableTable">
+						<thead>
+							<tr>
+								<th colspan="2" nowrap>
+									
+								</th>
+								<th nowrap>
+									No.
+								</th>
+								<th>
+									資材コード
+								</th>
+								<th>
+									資材名称
+								</th>
+								<th>
+									単価
+								</th>
+								<th>
+									資材在庫単位
+								</th>
+								<th>
+									単価
+								</th>
+								<th>
+									数量
+								</th>
+								<th>
+									メモ
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="buttonColumn">
+									<input type="button" id="materialOrderItemList[0].addButton" value="+"/>
+								</td>
+								<td class="buttonColumn">
+									<input type="button" id="materialOrderItemList[0].deleteButton" value="-"/>
+								</td>
+								<td style="text-align: right;" class="rowno">
+									<span id="materialOrderItemList[0].no"></span>
+								</td>
+								<td>
+									<input type="text" id="materialOrderItemList[0].materialCode" />
+									<input type="hidden" id="materialOrderItemList[0].orderItemId" />
+									<input type="hidden" id="materialOrderItemList[0].orderId" />
+									<input type="hidden" id="materialOrderItemList[0].sortOrder" />
+									<input type="hidden" id="materialOrderItemList[0].materialId" />
+									<input type="hidden" id="materialOrderItemList[0].createUserId" />
+									<input type="hidden" id="materialOrderItemList[0].createTimestamp" />
+									<input type="hidden" id="materialOrderItemList[0].updateUserId" />
+									<input type="hidden" id="materialOrderItemList[0].updateTimestamp" />
+								</td>
+								<td>
+									<input type="text" id="materialOrderItemList[0].materialName" />
+								</td>
+								<td>
+									<input type="text" id="materialOrderItemList[0].unitPrice" />
+								</td>
+								<td>
+									<select id="materialOrderItemList[0].materialUnit"></select>
+								</td>
+								<td>
+									<input type="text" id="materialOrderItemList[0].orderPrice" />
+								</td>
+								<td>
+									<input type="text" id="materialOrderItemList[0].amount" />
+								</td>
+								<td>
+									<input type="text" id="materialOrderItemList[0].itemMemo" />
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th class="buttonColumn">
+									<input type="button" id="materialOrderItemList.addButton" value="+"/>
+								</th>
+								<th colspan="9">
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<input type="button" id="confirmButton" value="確認"/>
+				<input type="button" id="saveButton" value="登録"/>
+				<input type="button" id="resetButton" value="リセット"/>
+				<input type="button" id="deleteButton" value="削除"/>
+				<input type="button" id="backButton" value="戻る"/>
+			</form>
+
+		</div>
+	</body>
+</html>

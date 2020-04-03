@@ -213,16 +213,19 @@
 							<thead>
 								<tr>
 									<th>
-										テーブル
+										<input type="checkbox" id="selectAll" value="1"/>
 									</th>
 									<th>
-										<input type="checkbox" id="selectAll" value="1"/>
+										No.
 									</th>
 									<th>
 										フィールドID
 									</th>
 									<th>
-										フィールドクラス名
+										フィールドクラス
+									</th>
+									<th>
+										テーブルクラス
 									</th>
 									<th>
 										コメント
@@ -232,20 +235,23 @@
 							<tbody>
 								<tr>
 									<td>
-										<input type="checkbox" id="selectFieldList[0].selectTableClass" value=""/>
-										<label for="selectFieldList[0].selectTableClass" id="selectFieldList[0].tableClassName" ></label>
-									</td>
-									<td>
-										<input type="hidden" id="selectFieldList[0].selectTableClassName" >
 										<input type="checkbox" id="selectFieldList[0].sel" value="1">
+										<input type="hidden" id="selectFieldList[0].selectTableClassName" >
+										<input type="hidden" id="selectFieldList[0].sortOrder" >
 									</td>
-									<td>
+									<td style="text-align: right;">
+										<span id="selectFieldList[0].no" ></span>
+									</td>
+									<td style="width: 180px;">
 										<input type="text" id="selectFieldList[0].fieldId"/>
 									</td>
-									<td>
+									<td style="width: 200px;">
 										<span id="selectFieldList[0].fieldClassName" ></span>
 									</td>
-									<td>
+									<td style="width: 200px;">
+										<span id="selectFieldList[0].tableClassName" ></span>
+									</td>
+									<td style="width: 300px;">
 										<span id="selectFieldList[0].comment" ></span>
 									</td>
 								</tr>

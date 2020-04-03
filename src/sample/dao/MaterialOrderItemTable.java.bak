@@ -1,14 +1,15 @@
 package sample.dao;
 
 import java.util.Map;
+
 import dataforms.dao.Table;
-import sample.field.OrderItemIdField;
-import sample.field.OrderIdField;
 import dataforms.field.common.SortOrderField;
-import sample.field.MaterialIdField;
-import sample.field.UnitPriceField;
 import sample.field.AmountField;
+import sample.field.MaterialIdField;
 import sample.field.MemoField;
+import sample.field.OrderIdField;
+import sample.field.OrderItemIdField;
+import sample.field.UnitPriceField;
 
 
 /**
@@ -51,11 +52,11 @@ public class MaterialOrderItemTable extends Table {
 		/** 資材IDのフィールドID。 */
 		public static final String ID_MATERIAL_ID = "materialId";
 		/** 単価のフィールドID。 */
-		public static final String ID_ORDER_PRICE = "orderPrice";
+		public static final String ID_UNIT_PRICE = "unitPrice";
 		/** 数量のフィールドID。 */
 		public static final String ID_AMOUNT = "amount";
 		/** メモのフィールドID。 */
-		public static final String ID_ITEM_MEMO = "itemMemo";
+		public static final String ID_MEMO = "memo";
 
 		/**
 		 * コンストラクタ。
@@ -138,16 +139,16 @@ public class MaterialOrderItemTable extends Table {
 		 * 単価を取得します。
 		 * @return 単価。
 		 */
-		public java.math.BigDecimal getOrderPrice() {
-			return (java.math.BigDecimal) this.getMap().get(Entity.ID_ORDER_PRICE);
+		public java.math.BigDecimal getUnitPrice() {
+			return (java.math.BigDecimal) this.getMap().get(Entity.ID_UNIT_PRICE);
 		}
 
 		/**
 		 * 単価を設定します。
-		 * @param orderPrice 単価。
+		 * @param unitPrice 単価。
 		 */
-		public void setOrderPrice(final java.math.BigDecimal orderPrice) {
-			this.getMap().put(Entity.ID_ORDER_PRICE, orderPrice);
+		public void setUnitPrice(final java.math.BigDecimal unitPrice) {
+			this.getMap().put(Entity.ID_UNIT_PRICE, unitPrice);
 		}
 
 		/**
@@ -170,16 +171,16 @@ public class MaterialOrderItemTable extends Table {
 		 * メモを取得します。
 		 * @return メモ。
 		 */
-		public java.lang.String getItemMemo() {
-			return (java.lang.String) this.getMap().get(Entity.ID_ITEM_MEMO);
+		public java.lang.String getMemo() {
+			return (java.lang.String) this.getMap().get(Entity.ID_MEMO);
 		}
 
 		/**
 		 * メモを設定します。
-		 * @param itemMemo メモ。
+		 * @param memo メモ。
 		 */
-		public void setItemMemo(final java.lang.String itemMemo) {
-			this.getMap().put(Entity.ID_ITEM_MEMO, itemMemo);
+		public void setMemo(final java.lang.String memo) {
+			this.getMap().put(Entity.ID_MEMO, memo);
 		}
 
 
@@ -220,8 +221,8 @@ public class MaterialOrderItemTable extends Table {
 	 * 単価フィールドを取得します。
 	 * @return 単価フィールド。
 	 */
-	public UnitPriceField getOrderPriceField() {
-		return (UnitPriceField) this.getField(Entity.ID_ORDER_PRICE);
+	public UnitPriceField getUnitPriceField() {
+		return (UnitPriceField) this.getField(Entity.ID_UNIT_PRICE);
 	}
 
 	/**
@@ -236,8 +237,8 @@ public class MaterialOrderItemTable extends Table {
 	 * メモフィールドを取得します。
 	 * @return メモフィールド。
 	 */
-	public MemoField getItemMemoField() {
-		return (MemoField) this.getField(Entity.ID_ITEM_MEMO);
+	public MemoField getMemoField() {
+		return (MemoField) this.getField(Entity.ID_MEMO);
 	}
 
 

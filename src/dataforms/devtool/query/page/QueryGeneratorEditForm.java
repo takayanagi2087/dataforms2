@@ -44,6 +44,10 @@ import dataforms.validator.ValidationError;
 public class QueryGeneratorEditForm extends EditForm {
 
 
+	/**
+	 * JAVAソースパスフィールドID。
+	 */
+	private static final String ID_JAVA_SOURCE_PATH = "javaSourcePath";
 
 	/**
 	 * パッケージ名フィールドID。
@@ -89,6 +93,11 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * コメントフィールドID。
 	 */
 	private static final String ID_QUERY_COMMENT = "queryComment";
+
+	/**
+	 * 選択フィールドリストのID。
+	 */
+	private static final String ID_SELECT_FIELD_LIST = "selectFieldList";
 
 
 	/**
@@ -136,7 +145,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		EditableHtmlTable joinTableList = new JoinHtmlTable(ID_JOIN_TABLE_LIST);
 		joinTableList.setCaption("JOINするテーブルリスト");
 		this.addHtmlTable(joinTableList);
-		SelectFieldHtmlTable slectFieldList = new SelectFieldHtmlTable("selectFieldList");
+		SelectFieldHtmlTable slectFieldList = new SelectFieldHtmlTable(ID_SELECT_FIELD_LIST);
 		slectFieldList.setCaption("選択フィールドリスト");
 		this.addHtmlTable(slectFieldList);
 
@@ -145,7 +154,7 @@ public class QueryGeneratorEditForm extends EditForm {
 	@Override
 	public void init() throws Exception {
 		super.init();
-		this.setFormData("javaSourcePath", DeveloperPage.getJavaSourcePath());
+		this.setFormData(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
 	}
 
 	/**
@@ -207,7 +216,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
 		Query q = this.getQueryInstance(packageName, queryClassName);
 		Map<String, Object> ret = new HashMap<String, Object>();
-		ret.put("javaSourcePath", DeveloperPage.getJavaSourcePath());
+		ret.put(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
 		ret.put(ID_PACKAGE_NAME, packageName);
 		ret.put(ID_QUERY_CLASS_NAME, queryClassName);
 		if (q.isDistinct()) {
@@ -239,26 +248,10 @@ public class QueryGeneratorEditForm extends EditForm {
 			}
 		}
 		for (Map<String, Object> m: flist) {
+			m.put("sel", "0");
 			selflist.add(m);
 		}
-		/*
-		for (Map<String, Object> m: flist) {
-			String fid = (String) m.get("fieldId");
-			String tclass = (String) m.get("selectTableClass");
-			Field<?> qfield = qfl.get(fid);
-			if (qfield != null) {
-				logger.debug(qfield.getId() + ":" + fid + "," + qfield.getTable().getClass().getName() + ":" + tclass);
-				if (qfield.getTable().getClass().getName().equals(tclass)) {
-					m.put("sel", "1");
-				} else {
-					m.put("sel", "0");
-				}
-			} else {
-				m.put("sel", "0");
-			}
-		}*/
-
-		ret.put("selectFieldList", selflist);
+		ret.put(ID_SELECT_FIELD_LIST, selflist);
 		return ret;
 	}
 
@@ -311,7 +304,7 @@ public class QueryGeneratorEditForm extends EditForm {
 
 		String packageName = (String) data.get(ID_PACKAGE_NAME);
 		String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
-		String javaSrc = (String) data.get("javaSourcePath");
+		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
 		String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");
 		String query = srcPath + "/" + queryClassName + ".java";
 		String forceOverwrite = (String) data.get(ID_FORCE_OVERWRITE);
@@ -660,7 +653,7 @@ public class QueryGeneratorEditForm extends EditForm {
 	private String generateSelectFieldList(final Map<String, Object> data) {
 		StringBuilder sb = new StringBuilder();
 		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get("selectFieldList");
+		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_SELECT_FIELD_LIST);
 		for (Map<String, Object> m: list) {
 			String sel = (String) m.get("sel");
 			if ("1".equals(sel)) {
@@ -723,7 +716,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 		javasrc = javasrc.replaceAll("\\$\\{queryComment\\}", (String) data.get("queryComment"));
 		javasrc = javasrc.replaceAll("\\$\\{joinTables\\}", this.generateJoinTables(data));
-		String javaSrc = (String) data.get("javaSourcePath");
+		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
 		String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");
 		String query = srcPath + "/" + queryClassName + ".java";
 		FileUtil.writeTextFileWithBackup(query, javasrc, DataFormsServlet.getEncoding());

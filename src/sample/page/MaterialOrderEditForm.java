@@ -12,6 +12,7 @@ import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.common.FileField;
 import dataforms.htmltable.EditableHtmlTable;
+import sample.dao.MaterialMasterTable;
 import sample.dao.MaterialOrderDao;
 import sample.dao.MaterialOrderTable;
 
@@ -28,6 +29,10 @@ public class MaterialOrderEditForm extends EditForm {
 		this.addTableFields(table);
 		for (Query q: dao.getRelationQueryList()) {
 			EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
+			if ("materialOrderItemList".equals(q.getListId())) {
+				q.getFieldList().get(MaterialMasterTable.Entity.ID_UNIT_PRICE).setReadonly(true);
+				q.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_UNIT).setReadonly(true);
+			}
 			this.addHtmlTable(rtable);
 		}
 	}
@@ -41,6 +46,19 @@ public class MaterialOrderEditForm extends EditForm {
 	@Override
 	public void init() throws Exception {
 		super.init();
+	}
+
+	@Override
+	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
+		Map<String, Object> ret = super.queryNewData(data);
+		MaterialOrderDao dao = new MaterialOrderDao(this);
+		MaterialOrderTable table = dao.getMainTable();
+		String newcode = dao.queryNextCode(table.getOrderNoField(), null);
+		MaterialOrderTable.Entity e = new MaterialOrderTable.Entity(ret);
+		e.setOrderNo(newcode);
+		java.sql.Date today = new java.sql.Date((new java.util.Date()).getTime());
+		e.setOrderDate(today);
+		return ret;
 	}
 
 	/**

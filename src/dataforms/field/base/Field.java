@@ -1488,7 +1488,24 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 			, ids
 		);
 	}
-/**
+
+
+	/**
+	 *
+	 * MAP調整インターフェース。
+	 *
+	 */
+	@FunctionalInterface
+	public interface AdjustMap {
+		/**
+		 * Mapの値を調整します。
+		 * @param data データ。
+		 */
+		public void adjust(final Map<String, Object> data);
+	}
+
+
+	/**
 	 * 関連データを取得します。
 	 * <pre>
 	 * Map&lt;String, Object&gt; queryRelationData(final Map&lt;String, Object&gt; data)メソッドの実装に便利なメソッドです。
@@ -1496,11 +1513,12 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	 * @param data 問合せ時にPOSTされたデータ。
 	 * @param query 問合せクラス。
 	 * @param qcb 問合せ条件構築関数インターフェース。
+	 * @param am マップ調整関数インターフェース。
 	 * @param ids IDリスト。
 	 * @return 関連データマップ。
 	 * @throws Exception 例外。
 	 */
-	protected Map<String, Object> queryRelationData(final Map<String, Object> data, final Query query, final QueryConditionBuilder qcb, final String... ids) throws Exception {
+	protected Map<String, Object> queryRelationData(final Map<String, Object> data, final Query query, final QueryConditionBuilder qcb, final AdjustMap am, final String... ids) throws Exception {
 		Map<String, Object> blankMap = new HashMap<String, Object>();
 		for (int i = 1; i < ids.length; i++) {
 			blankMap.put(ids[i], null);
@@ -1511,13 +1529,25 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		if (StringUtil.isBlank(text)) {
 			return blankMap;
 		}
-		qcb.setCondition(query, id, data, ids);
+		if (qcb != null) {
+			qcb.setCondition(query, id, data, ids);
+		} else {
+			FieldList flist = new FieldList();
+			flist.addField(query.getFieldList().get(ids[0])).setMatchType(MatchType.FULL);
+			Map<String, Object> p = new HashMap<String, Object>();
+			p.put(ids[0], data.get(ids[0]));
+			query.setConditionFieldList(flist);
+			query.setConditionData(p);
+		}
 		Dao dao = new Dao(this); // Dao使用し、完全一致で検索する。
 		List<Map<String, Object>> list = dao.executeQuery(query);
 		if (list.size() >= 1) {
 			Map<String, Object> ret = new HashMap<String, Object>();
 			for (int i = 1; i < ids.length; i++) {
 				ret.put(ids[i], list.get(0).get(ids[i]));
+			}
+			if (am != null) {
+				am.adjust(ret);
 			}
 			return ret;
 		} else {
@@ -1540,14 +1570,16 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		return this.queryRelationData(
 			data
 			, query
-			, (final Query q, final String cfid, final Map<String, Object> d, final String... idlist)->{
+/*			, (final Query q, final String cfid, final Map<String, Object> d, final String... idlist) -> {
 				FieldList flist = new FieldList();
 				flist.addField(query.getFieldList().get(idlist[0])).setMatchType(MatchType.FULL);
 				Map<String, Object> p = new HashMap<String, Object>();
 				p.put(idlist[0], d.get(cfid));
 				query.setConditionFieldList(flist);
 				query.setConditionData(p);
-			}
+			}*/
+			, null
+			, null
 			, ids
 		);
 	}

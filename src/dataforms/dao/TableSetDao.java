@@ -182,7 +182,7 @@ public class TableSetDao extends Dao {
 		q.setConditionFieldList(query.getMainTable().getPkFieldList());
 		q.setConditionData(data);
 		String tid = q.getListId();
-		List<Map<String, Object>> list = this.executeQuery(query);
+		List<Map<String, Object>> list = this.executeQuery(q);
 		ret.put(tid, list);
 		return tid;
 	}
@@ -201,7 +201,7 @@ public class TableSetDao extends Dao {
 		Map<String, Object> ret = this.executeRecordQuery(query);
 		if (this.relationQueryList != null) {
 			for (Query q: this.relationQueryList) {
-				setRelationQueryResult(q, data, ret);
+				this.setRelationQueryResult(q, data, ret);
 			}
 		}
 		return ret;
@@ -232,7 +232,7 @@ public class TableSetDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	protected void insertRelationTable(final Query q, final Map<String, Object> data) throws Exception {
-		Table table = this.getMainQuery().getMainTable();
+		Table table = q.getMainTable();
 		String id = q.getListId();
 		FieldList pklist = this.getMainQuery().getMainTable().getPkFieldList();
 		@SuppressWarnings("unchecked")

@@ -50,6 +50,17 @@ public class MaterialCodeField extends CharField {
 		this.addValidator(new MaxLengthValidator(this.getLength()));
 	}
 
+	/**
+	 * 関連フィールドリスト。
+	 */
+	private static final String[] IDLIST = {
+			MaterialMasterTable.Entity.ID_MATERIAL_CODE
+			, MaterialMasterTable.Entity.ID_MATERIAL_NAME
+			, MaterialMasterTable.Entity.ID_MATERIAL_ID
+			, MaterialMasterTable.Entity.ID_UNIT_PRICE
+			, MaterialMasterTable.Entity.ID_MATERIAL_UNIT
+	};
+
 	@Override
 	protected List<Map<String, Object>> queryAutocompleteSourceList(Map<String, Object> data) throws Exception {
 		SingleTableQuery query = new SingleTableQuery(new MaterialMasterTable());
@@ -57,11 +68,7 @@ public class MaterialCodeField extends CharField {
 			, (Map<String, Object> map, String ... ids) -> {
 				return (String) map.get(ids[0]) + ":" + (String) map.get(ids[1]);
 			}
-			, MaterialMasterTable.Entity.ID_MATERIAL_CODE
-			, MaterialMasterTable.Entity.ID_MATERIAL_NAME
-			, MaterialMasterTable.Entity.ID_MATERIAL_ID
-			, MaterialMasterTable.Entity.ID_UNIT_PRICE
-			, MaterialMasterTable.Entity.ID_MATERIAL_UNIT
+			, IDLIST
 		);
 		return list;
 	}
@@ -70,13 +77,9 @@ public class MaterialCodeField extends CharField {
 	protected Map<String, Object> queryRelationData(Map<String, Object> data) throws Exception {
 		SingleTableQuery query = new SingleTableQuery(new MaterialMasterTable());
 		Map<String, Object> ret = this.queryRelationData(data, query, null, (Map<String, Object> m) -> {
-					m.put(MaterialOrderItemTable.Entity.ID_ORDER_PRICE, m.get(MaterialMasterTable.Entity.ID_UNIT_PRICE));
-				}
-				, MaterialMasterTable.Entity.ID_MATERIAL_CODE
-				, MaterialMasterTable.Entity.ID_MATERIAL_NAME
-				, MaterialMasterTable.Entity.ID_MATERIAL_ID
-				, MaterialMasterTable.Entity.ID_UNIT_PRICE
-				, MaterialMasterTable.Entity.ID_MATERIAL_UNIT
+				m.put(MaterialOrderItemTable.Entity.ID_ORDER_PRICE, m.get(MaterialMasterTable.Entity.ID_UNIT_PRICE));
+			}
+			, IDLIST
 		);
 		return ret;
 	}

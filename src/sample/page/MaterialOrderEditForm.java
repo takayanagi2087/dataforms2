@@ -10,11 +10,13 @@ import dataforms.dao.Query;
 import dataforms.dao.Table;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
+import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
 import dataforms.htmltable.EditableHtmlTable;
 import sample.dao.MaterialMasterTable;
 import sample.dao.MaterialOrderDao;
 import sample.dao.MaterialOrderTable;
+import sample.dao.SupplierMasterTable;
 
 /**
  * 編集フォームクラス。
@@ -25,8 +27,10 @@ public class MaterialOrderEditForm extends EditForm {
 	 */
 	public MaterialOrderEditForm() {
 		MaterialOrderDao dao = new MaterialOrderDao();
-		MaterialOrderTable table = dao.getMainTable();
-		this.addTableFields(table);
+		FieldList flist = dao.getMainQuery().getFieldList();
+		flist.get(SupplierMasterTable.Entity.ID_SUPPLIER_CODE).setAutocomplete(true).setRelationDataAcquisition(true);
+		flist.get(SupplierMasterTable.Entity.ID_SUPPLIER_NAME).setAutocomplete(true).setRelationDataAcquisition(true);
+		this.addFieldList(flist);
 		for (Query q: dao.getRelationQueryList()) {
 			EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
 			if ("materialOrderItemList".equals(q.getListId())) {

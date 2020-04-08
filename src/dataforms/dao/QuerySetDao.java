@@ -10,9 +10,9 @@ import dataforms.field.base.FieldList;
 import dataforms.field.common.RowNoField;
 
 /**
- * 関連するテーブルの集合を操作するDao。
+ * 関連する問合せの集合を操作するDao。
  */
-public class TableSetDao extends Dao {
+public class QuerySetDao extends Dao {
 	/**
 	 * Logger。
 	 */
@@ -36,7 +36,7 @@ public class TableSetDao extends Dao {
 	/**
 	 * コンストラクタ。
 	 */
-	public TableSetDao()  {
+	public QuerySetDao()  {
 
 	}
 
@@ -45,7 +45,7 @@ public class TableSetDao extends Dao {
 	 * @param obj JDBC接続可能オブジェクト。
 	 * @throws Exception 例外。
 	 */
-	public TableSetDao(final JDBCConnectableObject obj) throws Exception {
+	public QuerySetDao(final JDBCConnectableObject obj) throws Exception {
 		super(obj);
 	}
 

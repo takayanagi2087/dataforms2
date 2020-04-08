@@ -1,13 +1,13 @@
 package sample.dao;
 
 import dataforms.dao.JDBCConnectableObject;
-import dataforms.dao.TableSetDao;
+import dataforms.dao.QuerySetDao;
 
 /**
  * 仕入先マスタDaoクラス。
  *
  */
-public class SupplierMasterDao extends TableSetDao {
+public class SupplierMasterDao extends QuerySetDao {
 	/**
 	 * コンストラクタ。
 	 */

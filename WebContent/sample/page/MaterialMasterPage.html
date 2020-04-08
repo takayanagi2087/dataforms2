@@ -39,6 +39,9 @@
 						<thead>
 							<tr>
 								<th>
+									No.
+								</th>
+								<th>
 									資材コード
 								</th>
 								<th>
@@ -51,6 +54,9 @@
 									単価
 								</th>
 								<th>
+									発注点
+								</th>
+								<th>
 									メモ
 								</th>
 								<th>
@@ -61,7 +67,7 @@
 						<tbody>
 							<tr>
 								<td>
-									<span id="queryResult[0].materialCode"></span>
+									<span id="queryResult[0].rowNo"></span>
 									<input type="hidden" id="queryResult[0].materialId" />
 									<input type="hidden" id="queryResult[0].createUserId" />
 									<input type="hidden" id="queryResult[0].createTimestamp" />
@@ -69,13 +75,19 @@
 									<input type="hidden" id="queryResult[0].updateTimestamp" />
 								</td>
 								<td>
-									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].materialName"></span></a>
+									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].materialCode"></span></a>
+								</td>
+								<td>
+									<span id="queryResult[0].materialName"></span>
 								</td>
 								<td>
 									<span id="queryResult[0].materialUnit"></span>
 								</td>
 								<td>
 									<span id="queryResult[0].unitPrice"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].orderPoint"></span>
 								</td>
 								<td>
 									<span id="queryResult[0].memo"></span>

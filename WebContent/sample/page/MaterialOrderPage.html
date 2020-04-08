@@ -43,6 +43,9 @@
 						<thead>
 							<tr>
 								<th>
+									No.
+								</th>
+								<th>
 									発注番号
 								</th>
 								<th>
@@ -77,7 +80,7 @@
 						<tbody>
 							<tr>
 								<td>
-									<span id="queryResult[0].orderNo"></span>
+									<span id="queryResult[0].rowNo"></span>
 									<input type="hidden" id="queryResult[0].orderItemId" />
 									<input type="hidden" id="queryResult[0].orderId" />
 									<input type="hidden" id="queryResult[0].sortOrder" />
@@ -89,7 +92,10 @@
 									<input type="hidden" id="queryResult[0].updateTimestamp" />
 								</td>
 								<td>
-									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].orderDate"></span></a>
+									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].orderNo"></span></a>
+								</td>
+								<td>
+									<span id="queryResult[0].orderDate"></span>
 								</td>
 								<td>
 									<span id="queryResult[0].materialCode"></span>

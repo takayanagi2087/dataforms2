@@ -39,6 +39,9 @@
 						<thead>
 							<tr>
 								<th>
+									No.
+								</th>
+								<th>
 									仕入先コード
 								</th>
 								<th>
@@ -67,7 +70,7 @@
 						<tbody>
 							<tr>
 								<td>
-									<span id="queryResult[0].supplierCode"></span>
+									<span id="queryResult[0].rowNo"></span>
 									<input type="hidden" id="queryResult[0].supplierId" />
 									<input type="hidden" id="queryResult[0].createUserId" />
 									<input type="hidden" id="queryResult[0].createTimestamp" />
@@ -75,7 +78,10 @@
 									<input type="hidden" id="queryResult[0].updateTimestamp" />
 								</td>
 								<td>
-									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].supplierName"></span></a>
+									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].supplierCode"></span></a>
+								</td>
+								<td>
+									<span id="queryResult[0].supplierName"></span>
 								</td>
 								<td>
 									<span id="queryResult[0].supplierKanaName"></span>

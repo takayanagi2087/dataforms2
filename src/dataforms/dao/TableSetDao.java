@@ -7,6 +7,7 @@ import java.util.Map;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
+import dataforms.field.common.RowNoField;
 
 /**
  * 関連するテーブルの集合を操作するDao。
@@ -129,7 +130,10 @@ public class TableSetDao extends Dao {
 	 * @return 検索結果のフィールドリスト。
 	 */
 	public FieldList getListFieldList() {
-		return this.listQuery.getFieldList();
+		FieldList list = new FieldList();
+		list.addField(new RowNoField());
+		list.addAll(this.listQuery.getFieldList());
+		return list;
 	}
 
 

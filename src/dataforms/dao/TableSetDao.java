@@ -348,11 +348,11 @@ public class TableSetDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void delete(final Map<String, Object> data) throws Exception {
-		this.deleteMainTable(data);
 		if (this.relationQueryList != null) {
 			for (Query q: this.relationQueryList) {
 				this.deleteRelationTable(q, data);
 			}
 		}
+		this.deleteMainTable(data);
 	}
 }

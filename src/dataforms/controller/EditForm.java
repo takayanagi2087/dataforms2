@@ -1,5 +1,6 @@
 package dataforms.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,8 +8,10 @@ import dataforms.annotation.WebMethod;
 import dataforms.dao.Table;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
+import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.response.JsonResponse;
+import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
 import dataforms.validator.ValidationError;
 
@@ -20,11 +23,18 @@ import dataforms.validator.ValidationError;
  * </pre>
  *
  */
-public abstract class EditForm extends TableUpdateForm {
+public abstract class EditForm extends Form {
 	/**
 	 * Logger.
 	 */
 //	private static Logger logger = Logger.getLogger(EditForm.class.getName());
+
+
+	/**
+	 * PKフィールドリスト。
+	 */
+	private List<String> pkFieldIdList = null;
+
 
 
 	/**
@@ -45,6 +55,45 @@ public abstract class EditForm extends TableUpdateForm {
 	}
 
 	/**
+	 * 主キーフィールドリストを取得します。
+	 * @return 主キーフィールドリスト。
+	 */
+	public List<String> getPkFieldIdList() {
+		return pkFieldIdList;
+	}
+
+
+	/**
+	 * 主キーフィールドリストを設定します。
+	 * @param pkFieldList 主キーフィールドリスト。
+	 */
+	public void setPkFieldIdList(final FieldList pkFieldList) {
+		this.pkFieldIdList = new ArrayList<String>();
+		for (Field<?> f: pkFieldList) {
+			this.pkFieldIdList.add(f.getId());
+		}
+	}
+
+
+	/**
+	 * 主キーフィールドリストを設定します。
+	 * @param list 主キーIDリスト。
+	 */
+	public void setPkFieldIdList(final List<String> list) {
+		this.pkFieldIdList = list;
+	}
+
+	@Override
+	public Map<String, Object> getProperties() throws Exception {
+		Map<String, Object> ret = super.getProperties();
+		if (this.pkFieldIdList != null) {
+			ret.put("pkFieldIdList", this.pkFieldIdList);
+		}
+		return ret;
+	}
+
+
+	/**
 	 * {@inheritDoc}
 	 * <pre>
 	 * 指定しれたテーブルの主キーフィールドリストの設定も行います。
@@ -56,6 +105,40 @@ public abstract class EditForm extends TableUpdateForm {
 		this.setPkFieldIdList(table.getPkFieldList());
 	}
 
+	/**
+	 * 保存時のメッセージキーを取得します。
+	 * <pre>
+	 * "message.saved"を返します。
+	 * 保存時のメッセージを指定する場合、オーバーライドします。
+	 * </pre>
+	 * @param data 保存したデータ。
+	 * @return 保存時のメッセージ。
+	 */
+	protected String getSavedMessage(final Map<String, Object> data) {
+		return MessagesUtil.getMessage(this.getPage(), "message.saved");
+	}
+
+	/**
+	 * 編集対象のデータを取得します。
+	 * @param data 編集対象を特定するためのデータ。
+	 * @return 問い合わせ結果。
+	 * @throws Exception 例外。
+	 */
+	protected abstract Map<String, Object> queryData(final Map<String, Object> data) throws Exception;
+
+	/**
+	 * 選択されたデータを取得します。
+	 *
+	 * @param param パラメータ。
+	 * @return 取得したデータ。
+	 * @throws Exception 例外。
+	 */
+	@WebMethod
+	public JsonResponse getData(final Map<String, Object> param) throws Exception {
+		Map<String, Object> data = this.convertToServerData(param);
+		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, this.convertToClientData(this.queryData(data)));
+		return result;
+	}
 
 	/**
 	 * 新規データを取得します。
@@ -137,6 +220,27 @@ public abstract class EditForm extends TableUpdateForm {
 	}
 
 	/**
+	 * 編集フォームの確認処理を行います。
+	 * <pre>
+	 * バリデーションを行いその結果を返します。
+	 * </pre>
+	 * @param param パラメータ。
+	 * @return 応答情報。
+	 * @throws Exception 例外。
+	 */
+	@WebMethod
+	public JsonResponse confirm(final Map<String, Object> param) throws Exception {
+		List<ValidationError> err = this.validate(param);
+		JsonResponse result = null;
+		if (err.size() > 0) {
+			result = new JsonResponse(JsonResponse.INVALID, err);
+		} else {
+			result = new JsonResponse(JsonResponse.SUCCESS, "");
+		}
+		return result;
+	}
+
+	/**
 	 * 更新すべきかどうかを判定します。
 	 * <pre>
 	 * 主キー指定がない場合、新規と判定するように実装します。
@@ -205,7 +309,6 @@ public abstract class EditForm extends TableUpdateForm {
 	 * @throws Exception 例外。
 	 */
 	@WebMethod
-	@Override
 	public JsonResponse save(final Map<String, Object> param) throws Exception {
 		List<ValidationError> err = this.validate(param);
 		JsonResponse result = null;

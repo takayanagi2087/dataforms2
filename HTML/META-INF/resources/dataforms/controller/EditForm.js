@@ -19,7 +19,7 @@
  *
  *
  */
-class EditForm extends TableUpdateForm {
+class EditForm extends Form {
 	/**
 	 * コンストラクタ。
 	 */
@@ -44,12 +44,47 @@ class EditForm extends TableUpdateForm {
 	attach() {
 		super.attach();
 		var form = this;
+		form.get("confirmButton").click(function () {
+			form.confirm();
+			return false;
+		});
+		form.get("saveButton").click(function () {
+			form.save();
+			return false;
+		});
+		form.get("resetButton").click(function() {
+			form.reset();
+			return false;
+		});
+		form.get("backButton").click(function() {
+			if (form.parent.isBrowserBackEnabled()) {
+				history.back();
+			} else {
+				form.back();
+			}
+			return false;
+		});
 		form.get('deleteButton').click(function() {
 			form.del();
 			return false;
 		});
 		form.toEditMode();
 	}
+
+	/**
+	 * 戻るボタンのイベント処理を行います。
+	 */
+	back() {
+		if (this.mode == "edit") {
+			this.clearData();
+			if (!this.parent.toQueryMode()) {
+				currentPage.toTopPage();
+			}
+		} else if (this.mode == "confirm") {
+			this.toEditMode();
+		}
+	}
+
 	/**
 	 * 更新モードの時にPKをロックします。
 	 *
@@ -78,10 +113,64 @@ class EditForm extends TableUpdateForm {
 	 * </pre>
 	 */
 	toEditMode() {
-		super.toEditMode();
+		this.mode = "edit";
+		this.lockFields(false);
+		var cb = this.get("confirmButton");
+		if (cb.length > 0) {
+			// 確認画面があるパターン.
+			cb.show();
+			this.get("resetButton").show();
+			this.get("saveButton").hide();
+		} else {
+			// いきなり保存するパターン.
+			this.get("saveButton").show();
+		}
 		this.lockPkFields();
 	}
 
+	/**
+	 * 確認モードにします。
+	 * <pre>
+	 * 各フィールドを編集不可状態にします。
+	 * </pre>
+	 */
+	toConfirmMode() {
+		this.mode = "confirm";
+		this.lockFields(true);
+		var cb = this.get("confirmButton");
+		if (cb.length > 0) {
+			// 確認画面があるパターン.
+			cb.hide();
+			this.get("resetButton").hide();
+			this.get("saveButton").show();
+		} else {
+			// いきなり保存するパターン.
+			this.get("saveButton").show();
+		}
+	}
+
+	/**
+	 * 確認ボタンのイベント処理を行います。
+	 * <pre>
+	 * 対応するFormのconfirmメソッドを呼び出し、問題なければ確認モードに遷移します。
+	 * ファイルアップロードフィールドはサーバーに送信されません。
+	 * </pre>
+	 */
+	confirm() {
+		var form = this;
+		if (form.validate()) {
+			this.get("saveMode").val(this.saveMode);
+			form.submitWithoutFile("confirm", function(result) {
+				form.parent.resetErrorStatus();
+				if (result.status == ServerMethod.SUCCESS) {
+					form.toConfirmMode();
+					form.parent.pushConfirmModeStatus();
+				} else {
+					form.parent.setErrorInfo(form.getValidationResult(result), form);
+				}
+			});
+		}
+	}
 
 	/**
 	 * 新規登録モードにします。
@@ -202,6 +291,56 @@ class EditForm extends TableUpdateForm {
 			this.get('deleteButton').show();
 		}
 	}
+
+	/**
+	 * 保存や削除後の画面状態遷移を行います。
+	 */
+	changeStateForAfterUpdate() {
+		var form = this;
+		var queryForm = form.parent.getComponent("queryForm");
+		var resultForm = form.parent.getComponent("queryResultForm");
+		if (queryForm == null && resultForm == null) {
+			form.clearData();
+			currentPage.toTopPage();
+		} else {
+			form.clearData();
+			form.toEditMode();
+			form.parent.toQueryMode();
+			var queryResultForm = form.parent.getComponent("queryResultForm");
+			if (queryResultForm != null) {
+				queryResultForm.changePage();
+			}
+		}
+	}
+
+	/**
+	 * 保存ボタンのイベント処理を行います。
+	 * <pre>
+	 * 対応するFormのsaveメソッドを呼び出し、保存処理を行います。
+	 * ファイルアップロードフィールドもサーバーに送信されます。
+	 * </pre>
+	 */
+	save() {
+		var form = this;
+		if (form.validate()) {
+			this.get("saveMode").val(this.saveMode);
+			form.submit("save", function(result) {
+				form.parent.resetErrorStatus();
+				if (result.status == ServerMethod.SUCCESS) {
+					if (result.result != null && result.result.length > 0) {
+						currentPage.alert(null, result.result, function() {
+							form.changeStateForAfterUpdate();
+						});
+					} else {
+						form.changeStateForAfterUpdate();
+					}
+				} else {
+					form.parent.setErrorInfo(form.getValidationResult(result), form);
+				}
+			});
+		}
+	}
+
 
 	/**
 	 * 保存ボタンのイベント処理を行います。

@@ -154,17 +154,6 @@ public abstract class EditForm extends Form {
 	}
 
 	/**
-	 * 問い合わせフォームに入力された条件から編集対象のデータを取得します。
-	 * @param data 検索条件。
-	 * @return 検索結果。
-	 * @throws Exception 例外。
-	 *
-	 */
-	protected Map<String, Object> queryDataByQueryFormCondition(final Map<String, Object> data) throws Exception {
-		throw new ApplicationException(this.getPage(), "error.notimplemetmethod");
-	}
-
-	/**
 	 * 新規データを取得します。
 	 * <pre>
 	 * フォームの初期化処理を実行し、そのフォームデータを返します。
@@ -188,21 +177,6 @@ public abstract class EditForm extends Form {
 	 */
 	protected Map<String, Object> queryReferData(final Map<String, Object> data) throws Exception {
 		throw new ApplicationException(this.getPage(), "error.notimplemetmethod");
-	}
-
-
-	/**
-	 * 問い合わせフォームの条件から編集データを取得します。
-	 *
-	 * @param param パラメータ。
-	 * @return 取得したデータ。
-	 * @throws Exception 例外。
-	 */
-	@WebMethod
-	public JsonResponse getDataByQueryFormCondition(final Map<String, Object> param) throws Exception {
-		Map<String, Object> data = this.convertToServerData(param);
-		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, this.convertToClientData(this.queryDataByQueryFormCondition(data)));
-		return result;
 	}
 
 	/**

@@ -26,12 +26,6 @@ public class ${editFormClassName} extends EditForm {
 	}
 
 	@Override
-	protected Map<String, Object> queryDataByQueryFormCondition(final Map<String, Object> data) throws Exception {
-		// TODO:編集対象データ(問い合わせフォームの検索条件指定)の取得処理を実装してください。
-		return null;
-	}
-
-	@Override
 	protected boolean isUpdate(final Map<String, Object> data) throws Exception {
 		// TODO:入力されたデータが更新対象データであるかを判定します。
 		return false;

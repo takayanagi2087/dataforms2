@@ -1,13 +1,9 @@
 package sample.page;
 
-import java.util.List;
 import java.util.Map;
 
 import dataforms.controller.EditForm;
-import dataforms.controller.Page;
-import dataforms.controller.QueryForm;
 import dataforms.dao.Table;
-import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.common.FileField;
 import dataforms.validator.RequiredValidator;
@@ -58,7 +54,7 @@ public class MaterialMasterEditForm extends EditForm {
 		e.setMaterialCode(newcode);
 		return ret;
 	}
-
+	
 	/**
 	 * 編集対象のデータを取得します。
 	 * <pre>
@@ -95,30 +91,6 @@ public class MaterialMasterEditForm extends EditForm {
 			}
 		}
 		return ret;
-	}
-
-
-	/**
-	 * 編集対象のデータを取得します。
-	 * <pre>
-	 * 問い合わせフォームと編集フォームのみが配置されたページ(問い合わせ結果フォームが存在しないページ)の場合、
-	 * 問い合わせフォームの入力データが渡され、それを元に編集対象のデータを取得します。
-	 * </pre>
-	 * @param data 問い合わせフォームの入力データ。
-	 * @return 編集対象データ。
-	 */
-	@Override
-	protected Map<String, Object> queryDataByQueryFormCondition(final Map<String, Object> data) throws Exception {
-		MaterialMasterDao dao = new MaterialMasterDao(this);
-		QueryForm qf = (QueryForm) this.getPage().getComponent(Page.ID_QUERY_FORM);
-		List<Map<String, Object>> list = dao.query(data, qf.getFieldList());
-		if (list.size() == 0) {
-			throw new ApplicationException(this.getPage(), "error.notfounddata");
-		}
-		if (list.size() > 1) {
-			throw new ApplicationException(this.getPage(), "error.cannotidentifydata");
-		}
-		return list.get(0);
 	}
 
 	/**

@@ -31,7 +31,7 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(Field.class.getName());
+	private static Logger logger = Logger.getLogger(Field.class.getName());
 
 	/**
 	 * autocompleteや関連データ取得時に対象のフィールドIDがこのパラメータで渡されます。
@@ -732,7 +732,7 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		try {
 			ret = (Field<?>) super.clone();
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new ApplicationError(e);
 		}
 		return ret;
@@ -1089,7 +1089,7 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 					}
 				}
 			} catch (Exception e) {
-				log.debug(e.getMessage());
+				logger.debug(e.getMessage());
 			}
 		}
 		return ret;
@@ -1524,7 +1524,6 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 			blankMap.put(ids[i], null);
 		}
 		String id = (String) data.get(ID_CURRENT_FIELD_ID);
-//		String fid = this.getHtmlTableColumnId(id);
 		String text = (String) data.get(id);
 		if (StringUtil.isBlank(text)) {
 			return blankMap;
@@ -1532,10 +1531,11 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		if (qcb != null) {
 			qcb.setCondition(query, id, data, ids);
 		} else {
+			Field<?> f = query.getFieldList().get(ids[0]);
 			FieldList flist = new FieldList();
-			flist.addField(query.getFieldList().get(ids[0])).setMatchType(MatchType.FULL);
+			flist.addField(f).setMatchType(MatchType.FULL);
 			Map<String, Object> p = new HashMap<String, Object>();
-			p.put(ids[0], data.get(ids[0]));
+			p.put(ids[0], data.get(id));
 			query.setConditionFieldList(flist);
 			query.setConditionData(p);
 		}
@@ -1570,14 +1570,6 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		return this.queryRelationData(
 			data
 			, query
-/*			, (final Query q, final String cfid, final Map<String, Object> d, final String... idlist) -> {
-				FieldList flist = new FieldList();
-				flist.addField(query.getFieldList().get(idlist[0])).setMatchType(MatchType.FULL);
-				Map<String, Object> p = new HashMap<String, Object>();
-				p.put(idlist[0], d.get(cfid));
-				query.setConditionFieldList(flist);
-				query.setConditionData(p);
-			}*/
 			, null
 			, null
 			, ids

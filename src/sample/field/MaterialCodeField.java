@@ -62,7 +62,7 @@ public class MaterialCodeField extends CharField {
 	};
 
 	@Override
-	protected List<Map<String, Object>> queryAutocompleteSourceList(Map<String, Object> data) throws Exception {
+	protected List<Map<String, Object>> queryAutocompleteSourceList(final Map<String, Object> data) throws Exception {
 		SingleTableQuery query = new SingleTableQuery(new MaterialMasterTable());
 		List<Map<String, Object>> list = this.queryAutocompleteSourceList(data, query
 			, (Map<String, Object> map, String ... ids) -> {
@@ -74,7 +74,7 @@ public class MaterialCodeField extends CharField {
 	}
 
 	@Override
-	protected Map<String, Object> queryRelationData(Map<String, Object> data) throws Exception {
+	protected Map<String, Object> queryRelationData(final Map<String, Object> data) throws Exception {
 		SingleTableQuery query = new SingleTableQuery(new MaterialMasterTable());
 		Map<String, Object> ret = this.queryRelationData(data, query, null, (Map<String, Object> m) -> {
 				m.put(MaterialOrderItemTable.Entity.ID_ORDER_PRICE, m.get(MaterialMasterTable.Entity.ID_UNIT_PRICE));

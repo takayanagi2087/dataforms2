@@ -79,8 +79,13 @@ class QueryForm extends Form {
 	showEditForm() {
 		var editForm = this.parent.componentMap["editForm"];
 		if (editForm != null) {
-			var condition = this.get().serialize();
-			editForm.updateData(condition);
+			for (let i = 0; i < this.fields.length; i++) {
+				let f = editForm.getComponent(this.fields[i].id);
+				f.setValue(this.getFieldValue(this.fields[i].id));
+			}
+			editForm.updateData();
+//			var condition = this.get().serialize();
+//			editForm.updateData(condition);
 		}
 	}
 

@@ -1,6 +1,7 @@
 package dataforms.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,12 @@ public class QuerySetDao extends Dao {
 	 */
 	private Query listQuery = null;
 
+
+	/**
+	 * 問合せフィールドリスト。
+	 */
+	private FieldList relationKeyList = null;
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -55,6 +62,31 @@ public class QuerySetDao extends Dao {
 	 */
 	public void setMainQuery(final Query query) {
 		this.mainQuery = query;
+	}
+
+	/**
+	 * 関連問合の条件フィールドリストを取得します。
+	 * @return 関連問合の条件フィールドリスト。
+	 */
+	public FieldList getRelationKeyList() {
+		if (this.relationKeyList != null) {
+			return this.relationKeyList;
+		} else {
+			if (this.getMainQuery() != null) {
+				// 通常はMainTableのPK。
+				return this.getMainQuery().getMainTable().getPkFieldList();
+			} else {
+				return null;
+			}
+		}
+	}
+
+	/**
+	 * 関連問合の条件フィールドリストを設定します。
+	 * @param relationKeyList 関連問合の条件フィールドリスト。
+	 */
+	public void setRelationKeyList(final FieldList relationKeyList) {
+		this.relationKeyList = relationKeyList;
 	}
 
 	/**
@@ -182,8 +214,8 @@ public class QuerySetDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	protected String setRelationQueryResult(final Query q, final Map<String, Object> data,  final Map<String, Object> ret) throws Exception {
-		Query query = this.getMainQuery();
-		q.setConditionFieldList(query.getMainTable().getPkFieldList());
+		//Query query = this.getMainQuery();
+		q.setConditionFieldList(this.getRelationKeyList());
 		q.setConditionData(data);
 		String tid = q.getListId();
 		List<Map<String, Object>> list = this.executeQuery(q);
@@ -199,10 +231,17 @@ public class QuerySetDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public Map<String, Object> query(final Map<String, Object> data) throws Exception {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		ret.putAll(data);
 		Query query = this.getMainQuery();
-		query.setConditionFieldList(query.getMainTable().getPkFieldList());
-		query.setConditionData(data);
-		Map<String, Object> ret = this.executeRecordQuery(query);
+		if (query != null) {
+			query.setConditionFieldList(query.getMainTable().getPkFieldList());
+			query.setConditionData(data);
+			Map<String, Object> rec = this.executeRecordQuery(query);
+			if (rec != null) {
+				ret.putAll(rec);
+			}
+		}
 		if (this.relationQueryList != null) {
 			for (Query q: this.relationQueryList) {
 				this.setRelationQueryResult(q, data, ret);
@@ -221,8 +260,10 @@ public class QuerySetDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	protected void insertMainTable(final Map<String, Object> data) throws Exception {
-		Table table = this.getMainQuery().getMainTable();
-		this.executeInsert(table, data);
+		if (this.getMainQuery() != null) {
+			Table table = this.getMainQuery().getMainTable();
+			this.executeInsert(table, data);
+		}
 	}
 
 	/**
@@ -238,7 +279,7 @@ public class QuerySetDao extends Dao {
 	protected void insertRelationTable(final Query q, final Map<String, Object> data) throws Exception {
 		Table table = q.getMainTable();
 		String id = q.getListId();
-		FieldList pklist = this.getMainQuery().getMainTable().getPkFieldList();
+		FieldList pklist = this.getRelationKeyList();
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(id);
 		// 各関連テーブルにPKの値を設定します。
@@ -274,13 +315,15 @@ public class QuerySetDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void updateMainTable(final Map<String, Object> data) throws Exception {
-		Table table = this.getMainQuery().getMainTable();
-		boolean ret = this.isUpdatable(table, data);
-		if (!ret) {
-			throw new ApplicationException(this.getPage(), "error.notupdatable");
+		if (this.getMainQuery() != null) {
+			Table table = this.getMainQuery().getMainTable();
+			boolean ret = this.isUpdatable(table, data);
+			if (!ret) {
+				throw new ApplicationException(this.getPage(), "error.notupdatable");
+			}
+			// データ更新
+			this.executeUpdate(table, data);
 		}
-		// データ更新
-		this.executeUpdate(table, data);
 	}
 
 	/**
@@ -340,8 +383,7 @@ public class QuerySetDao extends Dao {
 	 *
 	 */
 	public void deleteRelationTable(final Query q, final Map<String, Object> data) throws Exception {
-		Table mainTable = this.getMainQuery().getMainTable();
-		FieldList pklist = mainTable.getPkFieldList();
+		FieldList pklist = this.getRelationKeyList();
 		Table table = q.getMainTable();
 		this.executeDelete(table, pklist, data, true);
 	}

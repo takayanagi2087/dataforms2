@@ -22,15 +22,25 @@
 				</table>
 				<input type="submit" id="queryButton" value="検索">
 				<input type="button" id="resetButton" value="リセット">&nbsp;
+				<input type="button" id="newButton" value="新規登録">
 			</form>
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
+				<input type="hidden" id="saveMode" />
 				<table class="responsive">
 					<tbody>
+						<tr>
+							<th>キー1</th>
+							<td><input type="text" id="key1" /></td>
+						</tr>
+						<tr>
+							<th>キー2</th>
+							<td><input type="text" id="key2" /></td>
+						</tr>
 					</tbody>
 				</table>
 				<div class="hScrollDiv">
-					<table id="list" class="editableTable">
+					<table id="smallMasterList" class="editableTable">
 						<thead>
 							<tr>
 								<th colspan="2" nowrap>
@@ -38,12 +48,6 @@
 								</th>
 								<th nowrap>
 									No.
-								</th>
-								<th>
-									キー1
-								</th>
-								<th>
-									キー2
 								</th>
 								<th>
 									コメント
@@ -56,40 +60,36 @@
 						<tbody>
 							<tr>
 								<td class="buttonColumn">
-									<input type="button" id="list[0].addButton" value="+"/>
+									<input type="button" id="smallMasterList[0].addButton" value="+"/>
 								</td>
 								<td class="buttonColumn">
-									<input type="button" id="list[0].deleteButton" value="-"/>
+									<input type="button" id="smallMasterList[0].deleteButton" value="-"/>
 								</td>
 								<td style="text-align: right;" class="rowno">
-									<span id="list[0].no"></span>
+									<span id="smallMasterList[0].no"></span>
 								</td>
 								<td>
-									<input type="text" id="list[0].key1" />
-									<input type="hidden" id="list[0].smallMasterId" />
-									<input type="hidden" id="list[0].sortOrder" />
-									<input type="hidden" id="list[0].createUserId" />
-									<input type="hidden" id="list[0].createTimestamp" />
-									<input type="hidden" id="list[0].updateUserId" />
-									<input type="hidden" id="list[0].updateTimestamp" />
+									<input type="text" id="smallMasterList[0].comment1" />
+									<input type="hidden" id="smallMasterList[0].smallMasterId" />
+									<input type="hidden" id="smallMasterList[0].key1" />
+									<input type="hidden" id="smallMasterList[0].key2" />
+									<input type="hidden" id="smallMasterList[0].sortOrder" />
+									<input type="hidden" id="smallMasterList[0].createUserId" />
+									<input type="hidden" id="smallMasterList[0].createTimestamp" />
+									<input type="hidden" id="smallMasterList[0].updateUserId" />
+									<input type="hidden" id="smallMasterList[0].updateTimestamp" />
 								</td>
 								<td>
-									<input type="text" id="list[0].key2" />
-								</td>
-								<td>
-									<input type="text" id="list[0].comment1" />
-								</td>
-								<td>
-									<input type="file" id="list[0].attachFile" />
+									<input type="file" id="smallMasterList[0].attachFile" />
 								</td>
 							</tr>
 						</tbody>
 						<tfoot>
 							<tr>
 								<th class="buttonColumn">
-									<input type="button" id="list.addButton" value="+"/>
+									<input type="button" id="smallMasterList.addButton" value="+"/>
 								</th>
-								<th colspan="6">
+								<th colspan="4">
 								</th>
 							</tr>
 						</tfoot>
@@ -98,6 +98,7 @@
 				<input type="button" id="confirmButton" value="確認"/>
 				<input type="button" id="saveButton" value="登録"/>
 				<input type="button" id="resetButton" value="リセット"/>
+				<input type="button" id="deleteButton" value="削除"/>
 				<input type="button" id="backButton" value="戻る"/>
 			</form>
 

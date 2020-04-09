@@ -366,8 +366,10 @@ public class QuerySetDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void deleteMainTable(final Map<String, Object> data) throws Exception {
-		Table table = this.getMainQuery().getMainTable();
-		this.executeDelete(table, data);
+		if (this.getMainQuery() != null) {
+			Table table = this.getMainQuery().getMainTable();
+			this.executeDelete(table, data);
+		}
 	}
 
 	/**

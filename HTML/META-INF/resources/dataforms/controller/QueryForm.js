@@ -84,8 +84,6 @@ class QueryForm extends Form {
 				f.setValue(this.getFieldValue(this.fields[i].id));
 			}
 			editForm.updateData();
-//			var condition = this.get().serialize();
-//			editForm.updateData(condition);
 		}
 	}
 

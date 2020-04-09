@@ -114,40 +114,22 @@ class EditForm extends TableUpdateForm {
 	 * 各フィールドに取得データを設定し、編集モードにします。
 	 * </pre>
 	 */
-	updateData(qs) {
+	updateData() {
 		var title = MessagesUtil.getMessage("message.editformtitle.update");
 		this.get("editFormTitle").text(title);
 		var form = this;
-		if (qs == null) {
-			form.submitWithoutFile("getData", function(result) {
-				form.parent.resetErrorStatus();
-				if (result.status == ServerMethod.SUCCESS) {
-					form.parent.toEditMode();
-					form.saveMode = "update";
-					form.setFormData(result.result);
-					form.toEditMode();
-					form.parent.pushEditModeStatus();
-				} else {
-					form.parent.setErrorInfo(form.getValidationResult(result), form);
-				}
-			});
-		} else {
-			var data = qs;
-			logger.log("qs=" + data);
-			var method = new ServerMethod("editForm.getDataByQueryFormCondition");
-			method.execute(data, function(result) {
-				form.parent.resetErrorStatus();
-				if (result.status == ServerMethod.SUCCESS) {
-					form.parent.toEditMode();
-					form.saveMode = "update";
-					form.setFormData(result.result);
-					form.toEditMode();
-					form.parent.pushEditModeStatus();
-				} else {
-					form.parent.setErrorInfo(form.getValidationResult(result), form);
-				}
-			});
-		}
+		form.submitWithoutFile("getData", function(result) {
+			form.parent.resetErrorStatus();
+			if (result.status == ServerMethod.SUCCESS) {
+				form.parent.toEditMode();
+				form.saveMode = "update";
+				form.setFormData(result.result);
+				form.toEditMode();
+				form.parent.pushEditModeStatus();
+			} else {
+				form.parent.setErrorInfo(form.getValidationResult(result), form);
+			}
+		});
 	}
 
 	/**

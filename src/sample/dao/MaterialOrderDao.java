@@ -13,6 +13,7 @@ public class MaterialOrderDao extends QuerySetDao {
 	 * @throws Exception 例外。
 	 */
 	public MaterialOrderDao() {
+		this.setComment("発注情報Dao");
 		this.setListQuery(new MaterialOrderListQuery());
 		this.setMainQuery(new MaterialOrderQuery());
 		this.addRelationQuery(new MaterialOrderItemQuery());

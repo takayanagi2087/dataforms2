@@ -13,6 +13,7 @@ public class MaterialMasterDao extends QuerySetDao {
 	 * @throws Exception 例外。
 	 */
 	public MaterialMasterDao() {
+		this.setComment("資材マスタDao");
 		this.setMainQuery(new MaterialMasterTable());
 		this.setListQuery(new MaterialMasterTable());
 	}

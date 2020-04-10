@@ -12,6 +12,7 @@ public class SupplierMasterDao extends QuerySetDao {
 	 * コンストラクタ。
 	 */
 	public SupplierMasterDao() {
+		this.setComment("仕入先マスタDao");
 		this.setMainQuery(new SupplierMasterTable());
 		this.setListQuery(new SupplierMasterTable());
 	}

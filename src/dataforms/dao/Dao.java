@@ -67,6 +67,12 @@ public class Dao implements JDBCConnectableObject {
     private static Logger logger = Logger.getLogger(Dao.class.getName());
 
 
+    /**
+     * コメント。
+     */
+    private String comment = null;
+
+
 	/**
 	 * JDBC接続可能オブジェクト。
 	 */
@@ -158,6 +164,23 @@ public class Dao implements JDBCConnectableObject {
 		this.sqlGenerator = SqlGenerator.getInstance(this.getConnection());
 	}
 
+
+	/**
+	 * コメントを取得します。
+	 * @return コメント。
+	 */
+	public String getComment() {
+		return this.comment;
+	}
+
+
+	/**
+	 * コメントを設定します。
+	 * @param comment コメント。
+	 */
+	public void setComment(final String comment) {
+		this.comment = comment;
+	}
 
 
 	/**

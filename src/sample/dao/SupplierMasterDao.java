@@ -13,7 +13,7 @@ public class SupplierMasterDao extends QuerySetDao {
 	 */
 	public SupplierMasterDao() {
 		this.setComment("仕入先マスタDao");
-		this.setMainQuery(new SupplierMasterTable());
+		this.setSingleRecordQuery(new SupplierMasterTable());
 		this.setListQuery(new SupplierMasterTable());
 	}
 
@@ -32,6 +32,6 @@ public class SupplierMasterDao extends QuerySetDao {
 	 * @return 主テーブル>
 	 */
 	public SupplierMasterTable getMainTable() {
-		return (SupplierMasterTable) this.getMainQuery().getMainTable();
+		return (SupplierMasterTable) this.getSingleRecordQuery().getMainTable();
 	}
 }

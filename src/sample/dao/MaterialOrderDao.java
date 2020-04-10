@@ -15,8 +15,8 @@ public class MaterialOrderDao extends QuerySetDao {
 	public MaterialOrderDao() {
 		this.setComment("発注情報Dao");
 		this.setListQuery(new MaterialOrderListQuery());
-		this.setMainQuery(new MaterialOrderQuery());
-		this.addRelationQuery(new MaterialOrderItemQuery());
+		this.setSingleRecordQuery(new MaterialOrderQuery());
+		this.addMultiRecordQueryList(new MaterialOrderItemQuery());
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class MaterialOrderDao extends QuerySetDao {
 	 * @return 主テーブル>
 	 */
 	public MaterialOrderTable getMainTable() {
-		return (MaterialOrderTable) this.getMainQuery().getMainTable();
+		return (MaterialOrderTable) this.getSingleRecordQuery().getMainTable();
 	}
 
 }

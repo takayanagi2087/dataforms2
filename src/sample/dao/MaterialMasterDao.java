@@ -14,7 +14,7 @@ public class MaterialMasterDao extends QuerySetDao {
 	 */
 	public MaterialMasterDao() {
 		this.setComment("資材マスタDao");
-		this.setMainQuery(new MaterialMasterTable());
+		this.setSingleRecordQuery(new MaterialMasterTable());
 		this.setListQuery(new MaterialMasterTable());
 	}
 
@@ -33,7 +33,7 @@ public class MaterialMasterDao extends QuerySetDao {
 	 * @return 主テーブル>
 	 */
 	public MaterialMasterTable getMainTable() {
-		return (MaterialMasterTable) this.getMainQuery().getMainTable();
+		return (MaterialMasterTable) this.getSingleRecordQuery().getMainTable();
 	}
 
 }

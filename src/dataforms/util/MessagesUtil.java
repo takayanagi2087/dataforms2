@@ -327,7 +327,12 @@ public final class MessagesUtil {
 		List<Map<String, Object>> options = new ArrayList<Map<String, Object>>();
 		Map<String, String> map = MessagesUtil.getClientMessageMap(page);
 		Set<String> keyset = map.keySet();
-		for (String k: keyset) {
+		List<String> list = new ArrayList<String>();
+		list.addAll(keyset);
+		list.sort((String a, String b) -> {
+			return a.compareTo(b);
+		});
+		for (String k: list) {
 			if (k.indexOf(pkey) == 0) {
 				String value = k.replaceAll(pkey + ".", "");
 				String name = map.get(k);

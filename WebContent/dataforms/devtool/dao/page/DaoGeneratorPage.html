@@ -113,117 +113,135 @@
 						</tr>
 					</tbody>
 				</table>
-				<h2>単一レコード問合せ</h2>
-				<table class="responsive thtdthtdthtd">
-					<caption></caption>
-					<tbody>
-						<tr>
-							<th>機能</th>
-							<td><select id="singleRecordQueryFunctionSelect"></select></td>
-							<th>パッケージ</th>
-							<td><input type="text" id="singleRecordQueryPackageName" /></td>
-							<th>クラス名</th>
-							<td><input type="text" id="singleRecordQueryClassName" /></td>
-						</tr>
-					</tbody>
-				</table>
-				<h2>キーフィールドリスト</h2>
-				<div class="hScrollDiv">
-					<table id="multiRecordQueryKeyList" class="editableTable">
-						<thead>
-							<tr>
-								<th colspan="2" nowrap>
-
-								</th>
-								<th nowrap>
-									No.
-								</th>
-								<th>
-									フィールドID
-								</th>
-							</tr>
-						</thead>
+				<div class="singleRecord">
+					<h2>単一レコード問合せ</h2>
+					<table class="responsive thtdthtdthtd">
+						<caption></caption>
 						<tbody>
 							<tr>
-								<td class="buttonColumn">
-									<input type="button" id="multiRecordQueryKeyList[0].addButton" value="+"/>
-								</td>
-								<td class="buttonColumn">
-									<input type="button" id="multiRecordQueryKeyList[0].deleteButton" value="-"/>
-								</td>
-								<td style="text-align: right;" class="rowno">
-									<span id="multiRecordQueryKeyList[0].no"></span>
-								</td>
-								<td>
-									<select id="multiRecordQueryKeyList[0].fieldSingleSelect"></select>
-								</td>
+								<th>機能</th>
+								<td><select id="singleRecordQueryFunctionSelect"></select></td>
+								<th>パッケージ</th>
+								<td><input type="text" id="singleRecordQueryPackageName" /></td>
+								<th>クラス名</th>
+								<td><input type="text" id="singleRecordQueryClassName" /></td>
 							</tr>
 						</tbody>
-						<tfoot>
-							<tr>
-								<th class="buttonColumn">
-									<input type="button" id="multiRecordQueryKeyList.addButton" value="+"/>
-								</th>
-								<th colspan="3">
-								</th>
-							</tr>
-						</tfoot>
 					</table>
+					<h2>複数レコード問合せ一覧</h2>
+					<div class="hScrollDiv">
+						<table id="multiRecordQueryList" class="editableTable">
+							<thead>
+								<tr>
+									<th colspan="2" nowrap>
+
+									</th>
+									<th nowrap>
+										No.
+									</th>
+									<th>
+										機能
+									</th>
+									<th>
+										パッケージ名
+									</th>
+									<th>
+										問合せクラス名
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="buttonColumn">
+										<input type="button" id="multiRecordQueryList[0].addButton" value="+"/>
+									</td>
+									<td class="buttonColumn">
+										<input type="button" id="multiRecordQueryList[0].deleteButton" value="-"/>
+									</td>
+									<td style="text-align: right;" class="rowno">
+										<span id="multiRecordQueryList[0].no"></span>
+									</td>
+									<td>
+										<select id="multiRecordQueryList[0].functionSelect"></select>
+									</td>
+									<td>
+										<input type="text" id="multiRecordQueryList[0].packageName" />
+									</td>
+									<td>
+										<input type="text" id="multiRecordQueryList[0].queryClassName" />
+									</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th class="buttonColumn">
+										<input type="button" id="multiRecordQueryList.addButton" value="+"/>
+									</th>
+									<th colspan="5">
+									</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
 				</div>
-				<h2>複数レコード問合せ一覧</h2>
-				<div class="hScrollDiv">
-					<table id="multiRecordQueryList" class="editableTable">
-						<thead>
-							<tr>
-								<th colspan="2" nowrap>
-
-								</th>
-								<th nowrap>
-									No.
-								</th>
-								<th>
-									機能
-								</th>
-								<th>
-									パッケージ名
-								</th>
-								<th>
-									問合せクラス名
-								</th>
-							</tr>
-						</thead>
+				<div class="multiRecord">
+					<h2>複数レコード問合せ</h2>
+					<table class="responsive thtdthtdthtd">
+						<caption></caption>
 						<tbody>
 							<tr>
-								<td class="buttonColumn">
-									<input type="button" id="multiRecordQueryList[0].addButton" value="+"/>
-								</td>
-								<td class="buttonColumn">
-									<input type="button" id="multiRecordQueryList[0].deleteButton" value="-"/>
-								</td>
-								<td style="text-align: right;" class="rowno">
-									<span id="multiRecordQueryList[0].no"></span>
-								</td>
-								<td>
-									<select id="multiRecordQueryList[0].functionSelect"></select>
-								</td>
-								<td>
-									<input type="text" id="multiRecordQueryList[0].packageName" />
-								</td>
-								<td>
-									<input type="text" id="multiRecordQueryList[0].queryClassName" />
-								</td>
+								<th>機能</th>
+								<td><select id="multiRecordQueryFunctionSelect"></select></td>
+								<th>パッケージ</th>
+								<td><input type="text" id="multiRecordQueryPackageName" /></td>
+								<th>クラス名</th>
+								<td><input type="text" id="multiRecordQueryClassName" /></td>
 							</tr>
 						</tbody>
-						<tfoot>
-							<tr>
-								<th class="buttonColumn">
-									<input type="button" id="multiRecordQueryList.addButton" value="+"/>
-								</th>
-								<th colspan="5">
-								</th>
-							</tr>
-						</tfoot>
 					</table>
+					<h2>キーフィールドリスト</h2>
+					<div class="hScrollDiv">
+						<table id="multiRecordQueryKeyList" class="editableTable">
+							<thead>
+								<tr>
+									<th colspan="2" nowrap>
+
+									</th>
+									<th nowrap>
+										No.
+									</th>
+									<th>
+										フィールドID
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="buttonColumn">
+										<input type="button" id="multiRecordQueryKeyList[0].addButton" value="+"/>
+									</td>
+									<td class="buttonColumn">
+										<input type="button" id="multiRecordQueryKeyList[0].deleteButton" value="-"/>
+									</td>
+									<td style="text-align: right;" class="rowno">
+										<span id="multiRecordQueryKeyList[0].no"></span>
+									</td>
+									<td>
+										<select id="multiRecordQueryKeyList[0].fieldSingleSelect"></select>
+									</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th class="buttonColumn">
+										<input type="button" id="multiRecordQueryKeyList.addButton" value="+"/>
+									</th>
+									<th colspan="3">
+									</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
 				</div>
 				<input type="button" id="confirmButton" value="確認"/>
 				<input type="button" id="saveButton" value="登録"/>

@@ -57,7 +57,22 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * javaソースパスフィールドID。
 	 */
 	public static final String ID_JAVA_SOURCE_PATH = "javaSourcePath";
-
+	/**
+	 * 問合せクラス名のフィールドID。
+	 */
+	public static final String ID_QUERY_CLASS_NAME = "queryClassName";
+	/**
+	 * 複数選択問合せ機能選択フィールドID。
+	 */
+	public static final String ID_MULTI_RECORD_QUERY_FUNCTION_SELECT = "multiRecordQueryFunctionSelect";
+	/**
+	 * 複数選択問合せパッケージフィールドID。
+	 */
+	public static final String ID_MULTI_RECORD_QUERY_PACKAGE_NAME = "multiRecordQueryPackageName";
+	/**
+	 * 複数選択問合せクラス名フィールドID。
+	 */
+	public static final String ID_MULTI_RECORD_QUERY_CLASS_NAME = "multiRecordQueryClassName";
 	/**
 	 * コンストラクタ。
 	 */
@@ -85,24 +100,30 @@ public class DaoGeneratorEditForm extends EditForm {
 			.setPackageNameFieldId(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME))
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);
-		//
+		{
+			FieldList flist = new FieldList();
+			flist.addField(new FunctionSelectField());
+			flist.addField(new PackageNameField());
+			flist.addField(new QueryOrTableClassNameField(ID_QUERY_CLASS_NAME))
+				.setAutocomplete(true)
+				.setRelationDataAcquisition(true);
+			EditableHtmlTable list = new EditableHtmlTable(ID_MULTI_RECORD_QUERY_LIST, flist);
+			this.addHtmlTable(list);
+		}
+
+		this.addField((new FunctionSelectField(ID_MULTI_RECORD_QUERY_FUNCTION_SELECT)).setPackageFieldId(ID_MULTI_RECORD_QUERY_PACKAGE_NAME).setComment("単一レコード取得用問合せの機能"));
+		this.addField((new PackageNameField(ID_MULTI_RECORD_QUERY_PACKAGE_NAME)).setComment("単一レコード取得用問合せのパッケージ"));
+		this.addField((new QueryOrTableClassNameField(ID_MULTI_RECORD_QUERY_CLASS_NAME))
+			.setPackageNameFieldId(ID_MULTI_RECORD_QUERY_PACKAGE_NAME))
+			.setAutocomplete(true)
+			.setRelationDataAcquisition(true);
 		{
 			FieldList flist = new FieldList();
 			flist.addField(new FieldSingleSelectField());
 			EditableHtmlTable list = new EditableHtmlTable(ID_MULTI_RECORD_QUERY_KEY_LIST, flist);
 			this.addHtmlTable(list);
 		}
-		//
-		{
-			FieldList flist = new FieldList();
-			flist.addField(new FunctionSelectField());
-			flist.addField(new PackageNameField());
-			flist.addField(new QueryOrTableClassNameField("queryClassName"))
-				.setAutocomplete(true)
-				.setRelationDataAcquisition(true);
-			EditableHtmlTable list = new EditableHtmlTable(ID_MULTI_RECORD_QUERY_LIST, flist);
-			this.addHtmlTable(list);
-		}
+
 	}
 
 	@Override

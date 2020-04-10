@@ -23,11 +23,11 @@ public class MaterialOrderEditForm extends EditForm {
 	 */
 	public MaterialOrderEditForm() {
 		MaterialOrderDao dao = new MaterialOrderDao();
-		FieldList flist = dao.getMainQuery().getFieldList();
+		FieldList flist = dao.getSingleRecordQuery().getFieldList();
 		flist.get(SupplierMasterTable.Entity.ID_SUPPLIER_CODE).setAutocomplete(true).setRelationDataAcquisition(true);
 		flist.get(SupplierMasterTable.Entity.ID_SUPPLIER_NAME).setAutocomplete(true).setRelationDataAcquisition(true);
 		this.addFieldList(flist);
-		for (Query q: dao.getRelationQueryList()) {
+		for (Query q: dao.getMultiRecordQueryList()) {
 			EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
 			if ("materialOrderItemList".equals(q.getListId())) {
 				q.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_CODE).setAutocomplete(true).setRelationDataAcquisition(true);

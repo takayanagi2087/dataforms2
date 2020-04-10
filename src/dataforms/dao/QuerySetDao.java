@@ -20,25 +20,37 @@ public class QuerySetDao extends Dao {
 	// private static Logger logger = Logger.getLogger(TableSetDao.class);
 
 	/**
-	 * 主問合せ。
+	 * 単一レコード取得用問合せ。
+	 * <pre>
+	 * 編集対象の1レコードを取得する問合せを指定します。
+	 * </pre>
 	 */
-	private Query mainQuery = null;
+	private Query singleRecordQuery = null;
 
 	/**
-	 * 関連問合せ。
+	 * 複数レコード取得用問合せ。
+	 * <pre>
+	 * 「検索条件指定 → 一覧表示 → 1件編集」
+	 *  singleRecordQueryで取得したレコードに関連した別テーブルの
+	 *  レコードを同時に編集したい場合、その情報を取得する問合せを
+	 *  追加します。この問合せは複数追加することができます。
+	 *
+	 * 「検索条件指定 → 複数件編集」
+	 *  singleRecordQueryは設定せず、multiRecordQueryListに1件指定します。
+	 *  取得条件はmultiRecordQueryKeyListで指定します。
+	 * </pre>
 	 */
-	private List<Query> relationQueryList = null;
+	private List<Query> multiRecordQueryList = null;
+
+	/**
+	 * 複数レコード取得時のキーフィールドリスト。
+	 */
+	private FieldList multiRecordQueryKeyList = null;
 
 	/**
 	 * 一覧問合せ。
 	 */
 	private Query listQuery = null;
-
-
-	/**
-	 * 問合せフィールドリスト。
-	 */
-	private FieldList relationKeyList = null;
 
 	/**
 	 * コンストラクタ。
@@ -57,24 +69,45 @@ public class QuerySetDao extends Dao {
 	}
 
 	/**
-	 * 主となる問合せを設定します。
+	 * 単一レコード取得用問合せを設定します。
+	 *
 	 * @param query 問合せ。
 	 */
-	public void setMainQuery(final Query query) {
-		this.mainQuery = query;
+	public void setSingleRecordQuery(final Query query) {
+		this.singleRecordQuery = query;
 	}
 
 	/**
-	 * 関連問合の条件フィールドリストを取得します。
-	 * @return 関連問合の条件フィールドリスト。
+	 * 単一レコード取得用問合せを設定します。
+	 * @param table このテーブルでSingleTableQueryを作成し関連問合せとします。
 	 */
-	public FieldList getRelationKeyList() {
-		if (this.relationKeyList != null) {
-			return this.relationKeyList;
+	public void setSingleRecordQuery(final Table table) {
+		this.singleRecordQuery = new SingleTableQuery(table);
+	}
+
+	/**
+	 * 単一レコード取得用問合せを取得します。
+	 * @return 単一レコード取得用問合せ。
+	 */
+	public Query getSingleRecordQuery() {
+		return this.singleRecordQuery;
+	}
+
+	/**
+	 * 複数レコード取得時のキーフィールドリストを取得します。
+	 * <pre>
+	 * multiRecordQueryKeyList指定されていない場合、singleRecordQueryの
+	 * mainTableの主キーフィールドリストを返します。
+	 * </pre>
+	 * @return 複数レコード取得時のキーフィールドリスト。
+	 */
+	public FieldList getMultiRecordQueryKeyList() {
+		if (this.multiRecordQueryKeyList != null) {
+			return this.multiRecordQueryKeyList;
 		} else {
-			if (this.getMainQuery() != null) {
+			if (this.getSingleRecordQuery() != null) {
 				// 通常はMainTableのPK。
-				return this.getMainQuery().getMainTable().getPkFieldList();
+				return this.getSingleRecordQuery().getMainTable().getPkFieldList();
 			} else {
 				return null;
 			}
@@ -82,54 +115,38 @@ public class QuerySetDao extends Dao {
 	}
 
 	/**
-	 * 関連問合の条件フィールドリストを設定します。
-	 * @param relationKeyList 関連問合の条件フィールドリスト。
+	 * 複数レコード取得時のキーフィールドリストを設定します。
+	 * @param keyList 複数レコード取得時のキーフィールドリスト。
 	 */
-	public void setRelationKeyList(final FieldList relationKeyList) {
-		this.relationKeyList = relationKeyList;
+	public void setMultiRecordQueryKeyList(final FieldList keyList) {
+		this.multiRecordQueryKeyList = keyList;
 	}
 
 	/**
-	 * 主となるテーブルを設定します。
-	 * @param table このテーブルでSingleTableQueryを作成し関連問合せとします。
-	 */
-	public void setMainQuery(final Table table) {
-		this.mainQuery = new SingleTableQuery(table);
-	}
-
-	/**
-	 * 主問合せを取得します。
-	 * @return 主問合せ。
-	 */
-	public Query getMainQuery() {
-		return this.mainQuery;
-	}
-
-	/**
-	 * 関連問合せを追加します。
+	 * 複数レコード取得用問合せを追加します。
 	 * @param query 関連問合せ。
 	 */
-	public void addRelationQuery(final Query query) {
-		if (this.relationQueryList == null) {
-			this.relationQueryList = new ArrayList<Query>();
+	public void addMultiRecordQueryList(final Query query) {
+		if (this.multiRecordQueryList == null) {
+			this.multiRecordQueryList = new ArrayList<Query>();
 		}
-		this.relationQueryList.add(query);
+		this.multiRecordQueryList.add(query);
 	}
 
 	/**
-	 * 関連問合せを追加します。
+	 * 複数レコード取得用問合せを追加します。
 	 * @param table このテーブルでSingleTableQueryを作成し関連問合せとします。
 	 */
-	public void addRelationQuery(final Table table) {
-		this.addRelationQuery(new SingleTableQuery(table));
+	public void addMultiRecordQueryList(final Table table) {
+		this.addMultiRecordQueryList(new SingleTableQuery(table));
 	}
 
 	/**
-	 * 関連問合せリストを取得します。
+	 * 複数レコード取得用問合せリストを取得します。
 	 * @return 関連問合せリスト。
 	 */
-	public List<Query> getRelationQueryList() {
-		return relationQueryList;
+	public List<Query> getMultiRecordQueryList() {
+		return multiRecordQueryList;
 	}
 
 	/**
@@ -150,7 +167,7 @@ public class QuerySetDao extends Dao {
 
 
 	/**
-	 * 一覧用問合せを取得します。
+	 * 一覧用問合せを設定します。
 	 * @param table このテーブルでSingleTableQueryを作成し一覧用問合とします。
 	 */
 	public void setListQuery(final Table table) {
@@ -213,9 +230,9 @@ public class QuerySetDao extends Dao {
 	 * @return テーブルID。
 	 * @throws Exception 例外。
 	 */
-	protected String setRelationQueryResult(final Query q, final Map<String, Object> data,  final Map<String, Object> ret) throws Exception {
+	protected String setMultiRecordQueryResult(final Query q, final Map<String, Object> data,  final Map<String, Object> ret) throws Exception {
 		//Query query = this.getMainQuery();
-		q.setConditionFieldList(this.getRelationKeyList());
+		q.setConditionFieldList(this.getMultiRecordQueryKeyList());
 		q.setConditionData(data);
 		String tid = q.getListId();
 		List<Map<String, Object>> list = this.executeQuery(q);
@@ -233,7 +250,7 @@ public class QuerySetDao extends Dao {
 	public Map<String, Object> query(final Map<String, Object> data) throws Exception {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		ret.putAll(data);
-		Query query = this.getMainQuery();
+		Query query = this.getSingleRecordQuery();
 		if (query != null) {
 			query.setConditionFieldList(query.getMainTable().getPkFieldList());
 			query.setConditionData(data);
@@ -242,44 +259,44 @@ public class QuerySetDao extends Dao {
 				ret.putAll(rec);
 			}
 		}
-		if (this.relationQueryList != null) {
-			for (Query q: this.relationQueryList) {
-				this.setRelationQueryResult(q, data, ret);
+		if (this.multiRecordQueryList != null) {
+			for (Query q: this.multiRecordQueryList) {
+				this.setMultiRecordQueryResult(q, data, ret);
 			}
 		}
 		return ret;
 	}
 
 	/**
-	 * 主テーブルを追加します。
+	 * 単一レコード取得用問合せに対応したテーブルにデータを追加します。
 	 * <pre>
-	 * デフォルトの実装では主問合せのmainTableの追加処理が実装されています。
+	 * 単一レコード取得用問合せのmainTableへの追加処理が実装されています。
 	 * mainTable以外のテーブルの保存が必要な場合オーバーライドして実装してください。
 	 * </pre>
 	 * @param data 登録データ。
 	 * @throws Exception 例外。
 	 */
-	protected void insertMainTable(final Map<String, Object> data) throws Exception {
-		if (this.getMainQuery() != null) {
-			Table table = this.getMainQuery().getMainTable();
+	protected void insertSingleRecordTable(final Map<String, Object> data) throws Exception {
+		if (this.getSingleRecordQuery() != null) {
+			Table table = this.getSingleRecordQuery().getMainTable();
 			this.executeInsert(table, data);
 		}
 	}
 
 	/**
-	 * 関連テーブルを追加します。
+	 * 複数レコード取得用問合せに対応したテーブルにデータを追加します。
 	 * <pre>
-	 * デフォルトの実装では関連問合せのmainTableの追加処理が実装されています。
+	 * 複数レコード取得用問合せのmainTableの追加処理が実装されています。
 	 * mainTable以外のテーブルの保存が必要な場合オーバーライドして実装してください。
 	 * </pre>
 	 * @param q 関連テーブル問合せ。
 	 * @param data データ。
 	 * @throws Exception 例外。
 	 */
-	protected void insertRelationTable(final Query q, final Map<String, Object> data) throws Exception {
+	protected void insertMultiRecordTable(final Query q, final Map<String, Object> data) throws Exception {
 		Table table = q.getMainTable();
 		String id = q.getListId();
-		FieldList pklist = this.getRelationKeyList();
+		FieldList pklist = this.getMultiRecordQueryKeyList();
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(id);
 		// 各関連テーブルにPKの値を設定します。
@@ -297,26 +314,26 @@ public class QuerySetDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void insert(final Map<String, Object> data) throws Exception {
-		this.insertMainTable(data);
-		if (this.relationQueryList != null) {
-			for (Query q: this.relationQueryList) {
-				this.insertRelationTable(q, data);
+		this.insertSingleRecordTable(data);
+		if (this.multiRecordQueryList != null) {
+			for (Query q: this.multiRecordQueryList) {
+				this.insertMultiRecordTable(q, data);
 			}
 		}
 	}
 
 	/**
-	 * 主テーブルを更新します。
+	 * 単一レコード取得用問合せに対応したテーブルを更新します。
 	 * <pre>
-	 * デフォルトの実装では主問合せのmainTableの追加処理が実装されています。
+	 * 単一レコード取得用問合せのmainTableの更新処理が実装されています。
 	 * mainTable以外のテーブルの更新が必要な場合オーバーライドして実装してください。
 	 * </pre>
 	 * @param data 登録データ。
 	 * @throws Exception 例外。
 	 */
-	public void updateMainTable(final Map<String, Object> data) throws Exception {
-		if (this.getMainQuery() != null) {
-			Table table = this.getMainQuery().getMainTable();
+	public void updateSingleRecordTable(final Map<String, Object> data) throws Exception {
+		if (this.getSingleRecordQuery() != null) {
+			Table table = this.getSingleRecordQuery().getMainTable();
 			boolean ret = this.isUpdatable(table, data);
 			if (!ret) {
 				throw new ApplicationException(this.getPage(), "error.notupdatable");
@@ -327,9 +344,9 @@ public class QuerySetDao extends Dao {
 	}
 
 	/**
-	 * 関連テーブルを更新します。
+	 * 複数レコード取得用問合せに対応したテーブルを更新します。
 	 * <pre>
-	 * デフォルトの実装では関連問合せのmainTableの更新処理が実装されています。
+	 * 複数レコード取得用問合せのmainTableの更新処理が実装されています。
 	 * mainTable以外のテーブルの更新が必要な場合オーバーライドして実装してください。
 	 * </pre>
 	 *
@@ -338,8 +355,8 @@ public class QuerySetDao extends Dao {
 	 * @throws Exception 例外。
 	 *
 	 */
-	public void updateRelationTable(final Query q, final Map<String, Object> data) throws Exception {
-		this.insertRelationTable(q, data);
+	public void updateMultiRecordTable(final Query q, final Map<String, Object> data) throws Exception {
+		this.insertMultiRecordTable(q, data);
 	}
 
 	/**
@@ -348,34 +365,34 @@ public class QuerySetDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void update(final Map<String, Object> data) throws Exception {
-		this.updateMainTable(data);
-		if (this.relationQueryList != null) {
-			for (Query q: this.relationQueryList) {
-				this.updateRelationTable(q, data);
+		this.updateSingleRecordTable(data);
+		if (this.multiRecordQueryList != null) {
+			for (Query q: this.multiRecordQueryList) {
+				this.updateMultiRecordTable(q, data);
 			}
 		}
 	}
 
 	/**
-	 * 主テーブルを削除します。
+	 * 単一レコード取得用問合せに対応したテーブルデータの削除を行います。
 	 * <pre>
-	 * デフォルトの実装では主問合せのmainTableの削除処理が実装されています。
+	 * 単一レコード取得用問合せのmainTableの削除処理が実装されています。
 	 * mainTable以外のテーブルの削除が必要な場合オーバーライドして実装してください。
 	 * </pre>
 	 * @param data 登録データ。
 	 * @throws Exception 例外。
 	 */
-	public void deleteMainTable(final Map<String, Object> data) throws Exception {
-		if (this.getMainQuery() != null) {
-			Table table = this.getMainQuery().getMainTable();
+	protected void deleteSingleRecordTable(final Map<String, Object> data) throws Exception {
+		if (this.getSingleRecordQuery() != null) {
+			Table table = this.getSingleRecordQuery().getMainTable();
 			this.executeDelete(table, data);
 		}
 	}
 
 	/**
-	 * 関連テーブルを削除します。
+	 * 複数レコード取得用問合せに対応したテーブルデータを削除します。
 	 * <pre>
-	 * デフォルトの実装では関連問合せのmainTableの削除処理が実装されています。
+	 * 複数レコード取得用問合せのmainTableの削除処理が実装されています。
 	 * mainTable以外のテーブルの削除が必要な場合オーバーライドして実装してください。
 	 * </pre>
 	 *
@@ -384,8 +401,8 @@ public class QuerySetDao extends Dao {
 	 * @throws Exception 例外。
 	 *
 	 */
-	public void deleteRelationTable(final Query q, final Map<String, Object> data) throws Exception {
-		FieldList pklist = this.getRelationKeyList();
+	public void deleteMultiRecordTable(final Query q, final Map<String, Object> data) throws Exception {
+		FieldList pklist = this.getMultiRecordQueryKeyList();
 		Table table = q.getMainTable();
 		this.executeDelete(table, pklist, data, true);
 	}
@@ -396,11 +413,11 @@ public class QuerySetDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void delete(final Map<String, Object> data) throws Exception {
-		if (this.relationQueryList != null) {
-			for (Query q: this.relationQueryList) {
-				this.deleteRelationTable(q, data);
+		if (this.multiRecordQueryList != null) {
+			for (Query q: this.multiRecordQueryList) {
+				this.deleteMultiRecordTable(q, data);
 			}
 		}
-		this.deleteMainTable(data);
+		this.deleteSingleRecordTable(data);
 	}
 }

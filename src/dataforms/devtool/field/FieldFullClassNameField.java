@@ -19,9 +19,7 @@ public class FieldFullClassNameField extends SimpleClassNameField {
 	 * コンストラクタ。
 	 */
 	public FieldFullClassNameField() {
-		this.setBaseClass(Field.class);
-		this.setComment(COMMENT);
-		this.addExceptionPattern(EXCEPTION_PATTERN);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -29,7 +27,7 @@ public class FieldFullClassNameField extends SimpleClassNameField {
 	 */
 	public FieldFullClassNameField(final String id) {
 		super(id);
-		this.setBaseClass(Field.class);
+		this.addBaseClass(Field.class);
 		this.setComment(COMMENT);
 		this.addExceptionPattern(EXCEPTION_PATTERN);
 	}

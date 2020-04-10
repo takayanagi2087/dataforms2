@@ -70,7 +70,7 @@
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
 				<input type="hidden" id="saveMode" />
-				<table class="responsive">
+				<table class="responsive thtd">
 					<tbody>
 						<tr>
 							<th>フォルダのパス。</th>
@@ -85,49 +85,55 @@
 							<td><select id="overwriteMode"></select></td>
 						</tr>
 						<tr>
+					</tbody>
+				</table>
+				<h2>DAOクラス</h2>
+				<table class="responsive thtdthtdthtd">
+					<tbody>
+						<tr>
 							<th>機能</th>
 							<td><select id="functionSelect"></select></td>
-						</tr>
-						<tr>
 							<th>パッケージ名</th>
 							<td><input type="text" id="packageName" /></td>
-						</tr>
-						<tr>
-							<th>DAOクラス名</th>
+							<th>クラス名</th>
 							<td><input type="text" id="daoClassName" /></td>
 						</tr>
+					</tbody>
+				</table>
+				<h2>一覧問合せ</h2>
+				<table class="responsive thtdthtdthtd">
+					<tbody>
 						<tr>
-							<th>一覧問合せの機能</th>
+							<th>機能</th>
 							<td><select id="listQueryFunctionSelect"></select></td>
-						</tr>
-						<tr>
-							<th>一覧問合せのパッケージ</th>
+							<th>パッケージ</th>
 							<td><input type="text" id="listQueryPackageName" /></td>
-						</tr>
-						<tr>
-							<th>問合せクラス名</th>
+							<th>クラス名</th>
 							<td><input type="text" id="listQueryClassName" /></td>
 						</tr>
+					</tbody>
+				</table>
+				<h2>単一レコード問合せ</h2>
+				<table class="responsive thtdthtdthtd">
+					<caption></caption>
+					<tbody>
 						<tr>
-							<th>単一レコード取得用問合せの機能</th>
+							<th>機能</th>
 							<td><select id="singleRecordQueryFunctionSelect"></select></td>
-						</tr>
-						<tr>
-							<th>単一レコード取得用問合せのパッケージ</th>
+							<th>パッケージ</th>
 							<td><input type="text" id="singleRecordQueryPackageName" /></td>
-						</tr>
-						<tr>
-							<th>問合せクラス名</th>
+							<th>クラス名</th>
 							<td><input type="text" id="singleRecordQueryClassName" /></td>
 						</tr>
 					</tbody>
 				</table>
+				<h2>キーフィールドリスト</h2>
 				<div class="hScrollDiv">
 					<table id="multiRecordQueryKeyList" class="editableTable">
 						<thead>
 							<tr>
 								<th colspan="2" nowrap>
-									
+
 								</th>
 								<th nowrap>
 									No.
@@ -164,12 +170,13 @@
 						</tfoot>
 					</table>
 				</div>
+				<h2>複数レコード問合せ一覧</h2>
 				<div class="hScrollDiv">
 					<table id="multiRecordQueryList" class="editableTable">
 						<thead>
 							<tr>
 								<th colspan="2" nowrap>
-									
+
 								</th>
 								<th nowrap>
 									No.

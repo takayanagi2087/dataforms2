@@ -20,9 +20,7 @@ public class FieldClassNameField extends SimpleClassNameField {
 	 * コンストラクタ。
 	 */
 	public FieldClassNameField() {
-		this.setBaseClass(Field.class);
-		this.setComment(COMMENT);
-		this.addExceptionPattern(EXCEPTION_PATTERN);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -30,11 +28,11 @@ public class FieldClassNameField extends SimpleClassNameField {
 	 */
 	public FieldClassNameField(final String id) {
 		super(id);
-		this.setBaseClass(Field.class);
+		this.addBaseClass(Field.class);
 		this.setComment(COMMENT);
 		this.addExceptionPattern(EXCEPTION_PATTERN);
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();

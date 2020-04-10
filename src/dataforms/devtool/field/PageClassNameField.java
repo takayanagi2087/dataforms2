@@ -16,8 +16,7 @@ public class PageClassNameField extends SimpleClassNameField {
 	 * コンストラクタ。
 	 */
 	public PageClassNameField() {
-		this.setBaseClass(Page.class);
-		this.setComment(COMMENT);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -25,10 +24,10 @@ public class PageClassNameField extends SimpleClassNameField {
 	 */
 	public PageClassNameField(final String id) {
 		super(id);
-		this.setBaseClass(Page.class);
+		this.addBaseClass(Page.class);
 		this.setComment(COMMENT);
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();

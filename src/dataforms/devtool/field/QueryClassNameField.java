@@ -24,9 +24,7 @@ public class QueryClassNameField extends SimpleClassNameField {
 	 * コンストラクタ。
 	 */
 	public QueryClassNameField() {
-		this.setBaseClass(Query.class);
-		this.setComment(COMMENT);
-		this.setAutocomplete(true);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -34,11 +32,11 @@ public class QueryClassNameField extends SimpleClassNameField {
 	 */
 	public QueryClassNameField(final String id) {
 		super(id);
-		this.setBaseClass(Query.class);
+		this.addBaseClass(Query.class);
 		this.setComment(COMMENT);
 		this.setAutocomplete(true);
 	}
-	
+
 	@Override
 	protected boolean isExcetionClass(final String classname) throws Exception {
 		log.debug("classname=" + classname);
@@ -63,7 +61,7 @@ public class QueryClassNameField extends SimpleClassNameField {
 		boolean ret = super.isExcetionClass(classname);
 		return ret;
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();

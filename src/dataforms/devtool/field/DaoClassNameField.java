@@ -1,6 +1,6 @@
 package dataforms.devtool.field;
 
-import dataforms.dao.Table;
+import dataforms.dao.QuerySetDao;
 import dataforms.devtool.validator.ClassNameValidator;
 
 /**
@@ -16,9 +16,7 @@ public class DaoClassNameField extends SimpleClassNameField {
 	 * コンストラクタ。
 	 */
 	public DaoClassNameField() {
-		this.setBaseClass(Table.class);
-		this.setComment(COMMENT);
-		this.setAutocomplete(false);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -26,7 +24,7 @@ public class DaoClassNameField extends SimpleClassNameField {
 	 */
 	public DaoClassNameField(final String id) {
 		super(id);
-		this.setBaseClass(Table.class);
+		this.addBaseClass(QuerySetDao.class);
 		this.setComment(COMMENT);
 		this.setAutocomplete(false);
 	}

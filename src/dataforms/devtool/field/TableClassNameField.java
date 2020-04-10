@@ -16,17 +16,16 @@ public class TableClassNameField extends SimpleClassNameField {
 	 * コンストラクタ。
 	 */
 	public TableClassNameField() {
-		this.setBaseClass(Table.class);
-		this.setComment(COMMENT);
-		this.setAutocomplete(false);
+		this(null);
 	}
+
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
 	public TableClassNameField(final String id) {
 		super(id);
-		this.setBaseClass(Table.class);
+		this.addBaseClass(Table.class);
 		this.setComment(COMMENT);
 		this.setAutocomplete(false);
 	}

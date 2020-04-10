@@ -20,7 +20,7 @@ import dataforms.util.StringUtil;
  *
  */
 public class SimpleClassNameField extends VarcharField {
-	
+
 	/**
 	 * Logger.
 	 */
@@ -39,7 +39,7 @@ public class SimpleClassNameField extends VarcharField {
 	/**
 	 * autocompleで検索する際の基本クラス。
 	 */
-	private Class<?> baseClass = null;
+	private List<Class<?>> baseClassList = null;
 
 	/**
 	 * パッケージ名フィールドID。
@@ -58,8 +58,6 @@ public class SimpleClassNameField extends VarcharField {
 	public SimpleClassNameField() {
 		super(null, LENGTH);
 		this.setComment(COMMENT);
-		//this.setAutocomplete(true);
-		//this.setRelationDataAcquisition(true);
 		this.setAjaxParameter(AjaxParameter.FORM);
 	}
 
@@ -70,30 +68,21 @@ public class SimpleClassNameField extends VarcharField {
 	public SimpleClassNameField(final String id) {
 		super(id, LENGTH);
 		this.setComment(COMMENT);
-		//this.setAutocomplete(true);
-		//this.setRelationDataAcquisition(true);
 		this.setAjaxParameter(AjaxParameter.FORM);
 	}
 
 	/**
-	 * autocomplete検索時のベースクラスを取得します。
-	 * @return autocomplete検索時のベースクラス。
-	 */
-	public Class<?> getBaseClass() {
-		return baseClass;
-	}
-
-	/**
-	 * autocomplete検索時のベースクラスを設定します。
+	 * autocomplete検索時のベースクラスを追加します。
 	 * @param baseClass autocomplete検索時のベースクラス。
 	 * @return 設定したフィールド。
 	 */
-	public Field<?> setBaseClass(final Class<?> baseClass) {
-		this.baseClass = baseClass;
+	public Field<?> addBaseClass(final Class<?> baseClass) {
+		if (this.baseClassList == null) {
+			this.baseClassList = new ArrayList<Class<?>>();
+		}
+		this.baseClassList.add(baseClass);
 		return this;
 	}
-
-
 
 	/**
 	 * パッケージ名フィールドのIDを取得します。
@@ -152,7 +141,26 @@ public class SimpleClassNameField extends VarcharField {
 		String []sp = c.getName().split("\\.");
 		return sp[sp.length -1];
 	}
-	
+
+	/**
+	 * 指定されたパッケージ中のクラスリストを取得します。
+	 *
+	 * @param packageName パッケージ名。
+	 * @return クラスリスト。
+	 * @throws Exception 例外。
+	 */
+	private List<Class<?>> findClasses(final String packageName) throws Exception {
+		List<Class<?>> ret = new ArrayList<Class<?>>();
+		ClassFinder finder = new ClassFinder();
+		for (Class<?> cls: this.baseClassList) {
+			List<Class<?>> list = finder.findClasses(packageName, cls);
+			if (list != null) {
+				ret.addAll(list);
+			}
+		}
+		return ret;
+	}
+
 	@Override
 	protected List<Map<String, Object>> queryAutocompleteSourceList(final 	Map<String, Object> data) throws Exception {
 		String id = (String) data.get("currentFieldId");
@@ -160,17 +168,16 @@ public class SimpleClassNameField extends VarcharField {
 		String colid = this.getHtmlTableColumnId(id);
 		String packageName = (String) data.get(StringUtil.isBlank(rowid) ? this.getPackageNameFieldId() : rowid + "." + this.getPackageNameFieldId());
 		String simpleClassName = (String) data.get(id);
-		ClassFinder finder = new ClassFinder();
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		if (StringUtil.isBlank(packageName)) {
 			return result;
 		}
-		List<Class<?>> list = finder.findClasses(packageName, this.baseClass);
+		List<Class<?>> list = this.findClasses(packageName);
 		for (Class<?> c: list) {
 			if (this.isExcetionClass(c.getName())) {
 				continue;
 			}
-			
+
 			String name = this.getClassName(c);
 			if (name.toLowerCase().indexOf(simpleClassName.toLowerCase()) >= 0) {
 				if (!Modifier.isAbstract(c.getModifiers())) {
@@ -183,7 +190,7 @@ public class SimpleClassNameField extends VarcharField {
 		}
 		return this.convertToAutocompleteList(rowid, result, colid, colid, this.getPackageNameFieldId());
 	}
-	
+
 	@Override
 	protected Map<String, Object> queryRelationData(final Map<String, Object> data) throws Exception {
 		String id = (String) data.get("currentFieldId");
@@ -196,13 +203,11 @@ public class SimpleClassNameField extends VarcharField {
 			return new HashMap<String, Object>();
 		}
 		Map<String, Object> ret = new HashMap<String, Object>();
-		ClassFinder finder = new ClassFinder();
-		List<Class<?>> list = finder.findClasses(packageName, this.baseClass);
+		List<Class<?>> list = this.findClasses(packageName);
 		for (Class<?> c: list) {
 			if (this.isExcetionClass(c.getName())) {
 				continue;
 			}
-			
 			String name = this.getClassName(c);
 			logger.debug("className=" + name);
 			if (name.equals(simpleClassName)) {

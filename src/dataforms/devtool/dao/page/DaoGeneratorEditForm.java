@@ -10,7 +10,7 @@ import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.JavaSourcePathField;
 import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
-import dataforms.devtool.field.QueryClassNameField;
+import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryTypeField;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;
@@ -34,15 +34,15 @@ public class DaoGeneratorEditForm extends EditForm {
 	 */
 	public static final String ID_LIST_QUERY_PACKAGE_NAME = "listQueryPackageName";
 	/**
-	 * 主問合せの機能選択フィールドID。
+	 * 単一レコード取得問合せの機能選択フィールドID。
 	 */
 	public static final String ID_SINGLE_RECORD_QUERY_FUNCTION_SELECT = "singleRecordQueryFunctionSelect";
 	/**
-	 * 主問合せのパッケージ名フィールドID。
+	 * 単一レコード取得問合せのパッケージ名フィールドID。
 	 */
 	public static final String ID_SINGLE_RECORD_QUERY_PACKAGE_NAME = "singleRecordQueryPackageName";
 	/**
-	 * 主問合せのクラス名フィールドID。
+	 * 単一レコード取得問合せのクラス名フィールドID。
 	 */
 	public static final String ID_SINGLE_RECORD_QUERY_CLASS_NAME = "singleRecordQueryClassName";
 	/**
@@ -50,7 +50,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	 */
 	public static final String ID_MULTI_RECORD_QUERY_KEY_LIST = "multiRecordQueryKeyList";
 	/**
-	 * 関連問合せリストID。
+	 * 複数レコード取得問合せリストID。
 	 */
 	public static final String ID_MULTI_RECORD_QUERY_LIST = "multiRecordQueryList";
 	/**
@@ -73,12 +73,18 @@ public class DaoGeneratorEditForm extends EditForm {
 		this.addField(new DaoClassNameField()).addValidator(new RequiredValidator());
 		//
 		this.addField((new FunctionSelectField(ID_LIST_QUERY_FUNCTION_SELECT)).setPackageFieldId(ID_LIST_QUERY_PACKAGE_NAME).setComment("一覧問合せの機能"));
-		this.addField((new PackageNameField(ID_LIST_QUERY_PACKAGE_NAME)).setComment("一覧問合せのパッケージ").addValidator(new RequiredValidator()));
-		this.addField((new QueryClassNameField(ID_LIST_QUERY_CLASS_NAME)).setPackageNameFieldId(ID_LIST_QUERY_PACKAGE_NAME));
+		this.addField((new PackageNameField(ID_LIST_QUERY_PACKAGE_NAME)).setComment("一覧問合せのパッケージ"));
+		this.addField((new QueryOrTableClassNameField(ID_LIST_QUERY_CLASS_NAME))
+			.setPackageNameFieldId(ID_LIST_QUERY_PACKAGE_NAME))
+			.setAutocomplete(true)
+			.setRelationDataAcquisition(true);
 		//
 		this.addField((new FunctionSelectField(ID_SINGLE_RECORD_QUERY_FUNCTION_SELECT)).setPackageFieldId(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME).setComment("単一レコード取得用問合せの機能"));
-		this.addField((new PackageNameField(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME)).setComment("単一レコード取得用問合せのパッケージ").addValidator(new RequiredValidator()));
-		this.addField((new QueryClassNameField(ID_SINGLE_RECORD_QUERY_CLASS_NAME)).setPackageNameFieldId(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME));
+		this.addField((new PackageNameField(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME)).setComment("単一レコード取得用問合せのパッケージ"));
+		this.addField((new QueryOrTableClassNameField(ID_SINGLE_RECORD_QUERY_CLASS_NAME))
+			.setPackageNameFieldId(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME))
+			.setAutocomplete(true)
+			.setRelationDataAcquisition(true);
 		//
 		{
 			FieldList flist = new FieldList();
@@ -91,7 +97,9 @@ public class DaoGeneratorEditForm extends EditForm {
 			FieldList flist = new FieldList();
 			flist.addField(new FunctionSelectField());
 			flist.addField(new PackageNameField());
-			flist.addField(new QueryClassNameField());
+			flist.addField(new QueryOrTableClassNameField("queryClassName"))
+				.setAutocomplete(true)
+				.setRelationDataAcquisition(true);
 			EditableHtmlTable list = new EditableHtmlTable(ID_MULTI_RECORD_QUERY_LIST, flist);
 			this.addHtmlTable(list);
 		}
@@ -101,8 +109,16 @@ public class DaoGeneratorEditForm extends EditForm {
 	public void init() throws Exception {
 		super.init();
 		this.setFormData(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
+		this.setFormData("queryType", "0");
 	}
 
+	@Override
+	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
+		Map<String, Object> ret = super.queryNewData(data);
+		ret.put("queryType", "0");
+		ret.put("overwriteMode", "error");
+		return ret;
+	}
 
 	@Override
 	protected Map<String, Object> queryData(Map<String, Object> data) throws Exception {

@@ -15,9 +15,7 @@ public class TableFullClassNameField extends SimpleClassNameField {
 	 * コンストラクタ。
 	 */
 	public TableFullClassNameField() {
-		this.setBaseClass(Table.class);
-		this.setComment(COMMENT);
-		this.setAutocomplete(false);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -25,7 +23,7 @@ public class TableFullClassNameField extends SimpleClassNameField {
 	 */
 	public TableFullClassNameField(final String id) {
 		super(id);
-		this.setBaseClass(Table.class);
+		this.addBaseClass(Table.class);
 		this.setComment(COMMENT);
 		this.setAutocomplete(false);
 	}

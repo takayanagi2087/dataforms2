@@ -14,8 +14,8 @@ public class SmallMasterDao extends QuerySetDao {
 	 */
 	public SmallMasterDao() {
 		SmallMasterTable table = new SmallMasterTable();
-		this.setRelationKeyList(new FieldList(table.getKey1Field(), table.getKey2Field()));
-		this.addRelationQuery(new SmallMasterTable());
+		this.setMultiRecordQueryKeyList(new FieldList(table.getKey1Field(), table.getKey2Field()));
+		this.addMultiRecordQueryList(new SmallMasterTable());
 		// this.setListQuery(new SmallMasterTable());
 	}
 

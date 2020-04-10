@@ -27,12 +27,12 @@ public class SmallMasterEditForm extends EditForm {
 	 */
 	public SmallMasterEditForm() {
 		SmallMasterDao dao = new SmallMasterDao();
-		FieldList flist = dao.getRelationKeyList();
+		FieldList flist = dao.getMultiRecordQueryKeyList();
 		for (Field<?> f: flist) {
 			f.setReadonly(true);
 		}
 		this.addFieldList(flist);
-		for (Query q: dao.getRelationQueryList()) {
+		for (Query q: dao.getMultiRecordQueryList()) {
 			FieldList fl = q.getFieldList();
 			fl.get(SmallMasterTable.Entity.ID_KEY1).setHidden(true);
 			fl.get(SmallMasterTable.Entity.ID_KEY2).setHidden(true);

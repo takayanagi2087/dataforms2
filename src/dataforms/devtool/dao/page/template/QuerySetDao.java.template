@@ -1,0 +1,41 @@
+package ${packageName};
+
+import dataforms.dao.JDBCConnectableObject;
+import dataforms.dao.QuerySetDao;
+${importTables}
+
+/**
+ * Daoクラスです。
+ *
+ */
+public class ${daoClassName} extends QuerySetDao {
+	/**
+	 * コンストラクタ。
+	 * @throws Exception 例外。
+	 */
+	public ${daoClassName}() {
+		this.setComment("${comment}");
+		this.setListQuery(${listQuery});
+		this.setSingleRecordQuery(${singleRecordQuery});
+${addMultiRecordQueryList}
+	}
+
+	/**
+	 * コンストラクタ。
+	 * @param cobj JDBC接続可能Object。
+	 * @throws Exception 例外。
+	 */
+	public ${daoClassName}(final JDBCConnectableObject cobj) throws Exception {
+		this();
+		this.init(cobj);
+	}
+
+	/**
+	 * 主テーブルを取得します。
+	 * @return 主テーブル>
+	 */
+	public ${mainTable} getMainTable() {
+		return (${mainTable}) this.getSingleRecordQuery().getMainTable();
+	}
+
+}

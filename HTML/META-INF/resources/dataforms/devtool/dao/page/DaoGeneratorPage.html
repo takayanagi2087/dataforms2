@@ -72,21 +72,14 @@
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
 				<input type="hidden" id="saveMode" />
-				<table class="responsive thtd">
+				<table class="responsive thtdthtd">
 					<tbody>
 						<tr>
-							<th>フォルダのパス。</th>
+							<th>Javaソース出力先</th>
 							<td><input type="text" id="javaSourcePath" /></td>
-						</tr>
-						<tr>
-							<th>問合せパターン</th>
-							<td><span><input type="radio" id="queryType[0]" name="queryType"/></span></td>
-						</tr>
-						<tr>
 							<th>上書きモード</th>
 							<td><select id="overwriteMode"></select></td>
 						</tr>
-						<tr>
 					</tbody>
 				</table>
 				<h2>DAOクラス</h2>
@@ -115,24 +108,27 @@
 						</tr>
 					</tbody>
 				</table>
+				<h2>編集フォーム用問合せ</h2>
+				<table class="responsive thtdthtdthtd">
+					<tbody>
+						<tr>
+							<th>編集フォーム</th>
+							<td colspan="5"><span><input type="radio" id="queryType[0]" name="queryType"/></span></td>
+						</tr>
+						<tr>
+							<th>機能</th>
+							<td><select id="singleRecordQueryFunctionSelect"></select></td>
+							<th>パッケージ</th>
+							<td><input type="text" id="singleRecordQueryPackageName" /></td>
+							<th>クラス名</th>
+							<td><input type="text" id="singleRecordQueryClassName" /></td>
+						</tr>
+					</tbody>
+				</table>
 				<div class="singleRecord">
-					<h2>単一レコード問合せ</h2>
-					<table class="responsive thtdthtdthtd">
-						<caption></caption>
-						<tbody>
-							<tr>
-								<th>機能</th>
-								<td><select id="singleRecordQueryFunctionSelect"></select></td>
-								<th>パッケージ</th>
-								<td><input type="text" id="singleRecordQueryPackageName" /></td>
-								<th>クラス名</th>
-								<td><input type="text" id="singleRecordQueryClassName" /></td>
-							</tr>
-						</tbody>
-					</table>
-					<h2>複数レコード問合せ一覧</h2>
 					<div class="hScrollDiv">
 						<table id="multiRecordQueryList" class="editableTable">
+							<caption>複数レコード問合せ一覧</caption>
 							<thead>
 								<tr>
 									<th colspan="2" nowrap>
@@ -187,23 +183,9 @@
 					</div>
 				</div>
 				<div class="multiRecord">
-					<h2>複数レコード問合せ</h2>
-					<table class="responsive thtdthtdthtd">
-						<caption></caption>
-						<tbody>
-							<tr>
-								<th>機能</th>
-								<td><select id="multiRecordQueryFunctionSelect"></select></td>
-								<th>パッケージ</th>
-								<td><input type="text" id="multiRecordQueryPackageName" /></td>
-								<th>クラス名</th>
-								<td><input type="text" id="multiRecordQueryClassName" /></td>
-							</tr>
-						</tbody>
-					</table>
-					<h2>キーフィールドリスト</h2>
 					<div class="hScrollDiv">
 						<table id="multiRecordQueryKeyList" class="editableTable">
+							<caption>キーフィールドリスト</caption>
 							<thead>
 								<tr>
 									<th colspan="2" nowrap>

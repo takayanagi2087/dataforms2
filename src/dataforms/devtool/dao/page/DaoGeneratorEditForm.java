@@ -11,6 +11,7 @@ import dataforms.controller.EditForm;
 import dataforms.dao.Query;
 import dataforms.dao.QuerySetDao;
 import dataforms.dao.SingleTableQuery;
+import dataforms.dao.Table;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.DaoClassNameField;
 import dataforms.devtool.field.FieldSingleSelectField;
@@ -22,6 +23,7 @@ import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryTypeField;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
 
 public class DaoGeneratorEditForm extends EditForm {
@@ -91,23 +93,11 @@ public class DaoGeneratorEditForm extends EditForm {
 	 */
 	public static final String ID_QUERY_CLASS_NAME = "queryClassName";
 	/**
-	 * 複数選択問合せ機能選択フィールドID。
-	 */
-	public static final String ID_MULTI_RECORD_QUERY_FUNCTION_SELECT = "multiRecordQueryFunctionSelect";
-	/**
-	 * 複数選択問合せパッケージフィールドID。
-	 */
-	public static final String ID_MULTI_RECORD_QUERY_PACKAGE_NAME = "multiRecordQueryPackageName";
-	/**
-	 * 複数選択問合せクラス名フィールドID。
-	 */
-	public static final String ID_MULTI_RECORD_QUERY_CLASS_NAME = "multiRecordQueryClassName";
-	/**
 	 * コンストラクタ。
 	 */
 	public DaoGeneratorEditForm() {
 		this.addField(new JavaSourcePathField());
-		this.addField(new QueryTypeField()).setComment("問合せパターン");
+		this.addField(new QueryTypeField()).setComment("編集フォーム");
 		this.addField(new OverwriteModeField(ID_OVERWRITE_MODE)).setComment("上書きモード");
 		FunctionSelectField funcField = new FunctionSelectField();
 		funcField.setPackageOption("dao");
@@ -139,13 +129,6 @@ public class DaoGeneratorEditForm extends EditForm {
 			EditableHtmlTable list = new EditableHtmlTable(ID_MULTI_RECORD_QUERY_LIST, flist);
 			this.addHtmlTable(list);
 		}
-
-		this.addField((new FunctionSelectField(ID_MULTI_RECORD_QUERY_FUNCTION_SELECT)).setPackageFieldId(ID_MULTI_RECORD_QUERY_PACKAGE_NAME).setComment("単一レコード取得用問合せの機能"));
-		this.addField((new PackageNameField(ID_MULTI_RECORD_QUERY_PACKAGE_NAME)).setComment("単一レコード取得用問合せのパッケージ"));
-		this.addField((new QueryOrTableClassNameField(ID_MULTI_RECORD_QUERY_CLASS_NAME))
-			.setPackageNameFieldId(ID_MULTI_RECORD_QUERY_PACKAGE_NAME))
-			.setAutocomplete(true)
-			.setRelationDataAcquisition(true);
 		{
 			FieldList flist = new FieldList();
 			flist.addField(new FieldSingleSelectField());
@@ -205,7 +188,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		}
 
 		if (dao.getSingleRecordQuery() != null) {
-			Object obj = this.getQueryOrTableClass(dao.getListQuery());
+			Object obj = this.getQueryOrTableClass(dao.getSingleRecordQuery());
 			ret.put(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
 			ret.put(ID_SINGLE_RECORD_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
 		}
@@ -227,26 +210,68 @@ public class DaoGeneratorEditForm extends EditForm {
 
 	@Override
 	protected boolean isUpdate(Map<String, Object> data) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 
 	@Override
 	protected void insertData(Map<String, Object> data) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
+		List<String> implist = new ArrayList<String>();
+		String javasrc = this.getStringResourse("template/QuerySetDao.java.template");
+		//logger.debug("template=" + javasrc);
+		String packageName = (String) data.get(ID_PACKAGE_NAME);
+		String daoClassName = (String) data.get(ID_DAO_CLASS_NAME);
+		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", packageName);
+		javasrc = javasrc.replaceAll("\\$\\{daoClassName\\}", daoClassName);
+		implist.add(packageName + "." + daoClassName);
+		{
+			String queryPackage = (String) data.get("listQueryPackageName");
+			String queryClass = (String) data.get("listQueryClassName");
+			if (!StringUtil.isBlank(queryClass)) {
+				implist.add(queryPackage + "." + queryClass);
+				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "new " + queryClass + "()");
+			} else {
+				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "null");
+			}
+		}
+		String queryType = (String) data.get("queryType");
+		if ("0".equals(queryType)) {
+			{
+				String queryPackage = (String) data.get("singleRecordQueryPackageName");
+				String queryClass = (String) data.get("singleRecordQueryClassName");
+				if (!StringUtil.isBlank(queryClass)) {
+					implist.add(queryPackage + "." + queryClass);
+					javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "new " + queryClass + "()");
+				}
+				String className = queryPackage + "." + queryClass;
+				Class<?> qclass = Class.forName(className);
+				Query q = (Query) qclass.getConstructor().newInstance();
+				Table mainTable = q.getMainTable();
+				javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
+			}
+			StringBuilder sb = new StringBuilder();
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> list = (List<Map<String, Object>>) data.get("multiRecordQueryList");
+			for (Map<String, Object> m: list) {
+				String pkgname = (String) m.get("packageName");
+				String clsname = (String) m.get("queryClassName");
+				implist.add(pkgname + "." + clsname);
+				sb.append("\t\tthis.addMultiRecordQueryList(new " + clsname + "());\n");
+			}
+			javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", sb.toString());
+		} else {
 
+		}
+		logger.debug("javasrc=" + javasrc);
 	}
 
 	@Override
 	protected void updateData(Map<String, Object> data) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-
+		// 使用しない。
 	}
 
 	@Override
 	public void deleteData(Map<String, Object> data) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-
+		// 使用しない。
 	}
 
 }

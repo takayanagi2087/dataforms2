@@ -21,7 +21,7 @@ public class QueryTypeField extends PropertiesSingleSelectField {
 	public QueryTypeField(final String id) {
 		super(id, "querytype", 1);
 		this.setComment("問合せパターン");
-		this.setHtmlFieldType(HtmlFieldType.RADIO);
+		this.setHtmlFieldType(HtmlFieldType.SELECT);
 	}
 
 }

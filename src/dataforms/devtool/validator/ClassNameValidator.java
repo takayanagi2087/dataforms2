@@ -10,12 +10,12 @@ import dataforms.validator.RegexpValidator;
  *
  */
 public class ClassNameValidator extends RegexpValidator {
-	
+
 	/**
 	 * クラスタイプ。
 	 */
 	private String classType = null;
-	
+
 	/**
 	 * コンストラクタ。
 	 * @param classType クラスタイプ。
@@ -24,12 +24,12 @@ public class ClassNameValidator extends RegexpValidator {
 		super("error.classname", "^[A-Z].*" + classType + "$");
 		this.classType = classType;
 	}
-	
+
 	@Override
 	public String getMessage() {
 		return MessagesUtil.getMessage(this.getPage(), this.getMessageKey(), "{0}", this.classType);
 	}
-	
+
 	@Override
 	public Map<String, Object> getProperties() throws Exception {
 		Map<String, Object> prop = super.getProperties();

@@ -211,15 +211,17 @@ public class DaoGeneratorEditForm extends EditForm {
 		}
 
 		List<Query> qlist = dao.getMultiRecordQueryList();
-		List<Map<String, Object>> mqlist = new ArrayList<Map<String, Object>>();
-		for (Query q: qlist) {
-			Object obj = this.getQueryOrTableClass(q);
-			Map<String, Object> m = new HashMap<String, Object>();
-			m.put(ID_PACKAGE_NAME, obj.getClass().getPackageName());
-			m.put(ID_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
-			mqlist.add(m);
+		if (qlist != null) {
+			List<Map<String, Object>> mqlist = new ArrayList<Map<String, Object>>();
+			for (Query q: qlist) {
+				Object obj = this.getQueryOrTableClass(q);
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put(ID_PACKAGE_NAME, obj.getClass().getPackageName());
+				m.put(ID_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
+				mqlist.add(m);
+			}
+			ret.put(ID_MULTI_RECORD_QUERY_LIST, mqlist);
 		}
-		ret.put(ID_MULTI_RECORD_QUERY_LIST, mqlist);
 		return ret;
 	}
 

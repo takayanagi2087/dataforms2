@@ -43,5 +43,25 @@ class DaoGeneratorEditForm extends EditForm {
 			this.find("div.multiRecord").show();
 		}
 	}
+
+	/**
+	 * フォームに対してデータを設定します。
+	 * @param {Object} data フォームデータ。
+	 */
+	setFormData(data) {
+		super.setFormData(data);
+		let fsel = this.getComponent("functionSelect");
+		fsel.selectPackage(data.packageName);
+		let lqsel = this.getComponent("listQueryFunctionSelect");
+		lqsel.selectPackage(data.listQueryPackageName);
+		let sqsel = this.getComponent("singleRecordQueryFunctionSelect");
+		sqsel.selectPackage(data.singleRecordQueryPackageName);
+		let qlist = this.getComponent("multiRecordQueryList");
+		for (let i = 0; i < qlist.getRowCount(); i++) {
+			let sel = qlist.getRowField(i, "functionSelect");
+			let pkg = qlist.getRowField(i, "packageName").getValue();
+			sel.selectPackage(pkg);
+		}
+	}
 }
 

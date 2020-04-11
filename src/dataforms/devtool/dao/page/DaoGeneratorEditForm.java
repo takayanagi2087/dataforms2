@@ -1,8 +1,16 @@
 package dataforms.devtool.dao.page;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import dataforms.controller.EditForm;
+import dataforms.dao.Query;
+import dataforms.dao.QuerySetDao;
+import dataforms.dao.SingleTableQuery;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.DaoClassNameField;
 import dataforms.devtool.field.FieldSingleSelectField;
@@ -17,6 +25,27 @@ import dataforms.htmltable.EditableHtmlTable;
 import dataforms.validator.RequiredValidator;
 
 public class DaoGeneratorEditForm extends EditForm {
+
+	/**
+	 * Logger。
+	 */
+	private static Logger logger = Logger.getLogger(DaoGeneratorEditForm.class);
+
+	/**
+	 * 問合せタイプ。
+	 */
+	private static final String ID_QUERY_TYPE = "queryType";
+
+	/**
+	 * パッケージ名。
+	 */
+	public static final String ID_PACKAGE_NAME = "packageName";
+
+	/**
+	 * Daoクラス名。
+	 */
+	public static final String ID_DAO_CLASS_NAME = "daoClassName";
+
 	/**
 	 * 上書きモードフィールドID。
 	 */
@@ -130,21 +159,68 @@ public class DaoGeneratorEditForm extends EditForm {
 	public void init() throws Exception {
 		super.init();
 		this.setFormData(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
-		this.setFormData("queryType", "0");
+		this.setFormData(ID_QUERY_TYPE, "0");
+		this.setFormData(ID_OVERWRITE_MODE, "error");
 	}
 
 	@Override
-	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
+	protected Map<String, Object> queryNewData(final Map<String, Object> data) throws Exception {
 		Map<String, Object> ret = super.queryNewData(data);
-		ret.put("queryType", "0");
-		ret.put("overwriteMode", "error");
+		ret.put(ID_QUERY_TYPE, "0");
+		ret.put(ID_OVERWRITE_MODE, "error");
 		return ret;
 	}
 
+	private Object getQueryOrTableClass(final Query query) {
+		if (query instanceof SingleTableQuery) {
+			return query.getMainTable();
+		} else {
+			return query;
+		}
+	}
+
 	@Override
-	protected Map<String, Object> queryData(Map<String, Object> data) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		String pkgName = (String) data.get(ID_PACKAGE_NAME);
+		String className = (String) data.get(ID_DAO_CLASS_NAME);
+		String daoClassName = pkgName + "." + className;
+		logger.debug("DAO class name=" + daoClassName);
+		Class<?> daoclass = Class.forName(daoClassName);
+		QuerySetDao dao = (QuerySetDao) daoclass.getConstructor().newInstance();
+
+		ret.put(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
+		ret.put(ID_OVERWRITE_MODE, "error");
+		if (dao.getSingleRecordQuery() != null) {
+			ret.put(ID_QUERY_TYPE, "0");
+		} else {
+			ret.put(ID_QUERY_TYPE, "1");
+		}
+		ret.put(ID_PACKAGE_NAME, daoclass.getPackageName());
+		ret.put(ID_DAO_CLASS_NAME, daoclass.getSimpleName());
+		if (dao.getListQuery() != null) {
+			Object obj = this.getQueryOrTableClass(dao.getListQuery());
+			ret.put(ID_LIST_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
+			ret.put(ID_LIST_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
+		}
+
+		if (dao.getSingleRecordQuery() != null) {
+			Object obj = this.getQueryOrTableClass(dao.getListQuery());
+			ret.put(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
+			ret.put(ID_SINGLE_RECORD_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
+		}
+
+		List<Query> qlist = dao.getMultiRecordQueryList();
+		List<Map<String, Object>> mqlist = new ArrayList<Map<String, Object>>();
+		for (Query q: qlist) {
+			Object obj = this.getQueryOrTableClass(q);
+			Map<String, Object> m = new HashMap<String, Object>();
+			m.put(ID_PACKAGE_NAME, obj.getClass().getPackageName());
+			m.put(ID_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
+			mqlist.add(m);
+		}
+		ret.put(ID_MULTI_RECORD_QUERY_LIST, mqlist);
+		return ret;
 	}
 
 	@Override

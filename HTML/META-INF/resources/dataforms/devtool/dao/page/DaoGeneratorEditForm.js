@@ -26,7 +26,7 @@ class DaoGeneratorEditForm extends EditForm {
 		this.find("[name='queryType']").click(function() {
 			thisForm.onChangeType($(this).val());
 		});
-		this.onChangeType("0");
+		this.onChangeType("1");
 	}
 
 	/**
@@ -36,9 +36,15 @@ class DaoGeneratorEditForm extends EditForm {
 	 */
 	onChangeType(type) {
 		if (type == "0") {
+			this.find("table .editFormQuery").hide();
+			this.find("div.singleRecord").hide();
+			this.find("div.multiRecord").hide();
+		} else if (type == "1") {
+			this.find("table .editFormQuery").show();
 			this.find("div.singleRecord").show();
 			this.find("div.multiRecord").hide();
 		} else {
+			this.find("table .editFormQuery").show();
 			this.find("div.singleRecord").hide();
 			this.find("div.multiRecord").show();
 		}

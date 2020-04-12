@@ -142,14 +142,14 @@ public class DaoGeneratorEditForm extends EditForm {
 	public void init() throws Exception {
 		super.init();
 		this.setFormData(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
-		this.setFormData(ID_QUERY_TYPE, "0");
+		this.setFormData(ID_QUERY_TYPE, "1");
 		this.setFormData(ID_OVERWRITE_MODE, "error");
 	}
 
 	@Override
 	protected Map<String, Object> queryNewData(final Map<String, Object> data) throws Exception {
 		Map<String, Object> ret = super.queryNewData(data);
-		ret.put(ID_QUERY_TYPE, "0");
+		ret.put(ID_QUERY_TYPE, "1");
 		ret.put(ID_OVERWRITE_MODE, "error");
 		return ret;
 	}
@@ -174,10 +174,12 @@ public class DaoGeneratorEditForm extends EditForm {
 
 		ret.put(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
 		ret.put(ID_OVERWRITE_MODE, "error");
-		if (dao.getSingleRecordQuery() != null) {
+		if (dao.getSingleRecordQuery() == null || dao.getMultiRecordQueryList() == null) {
 			ret.put(ID_QUERY_TYPE, "0");
-		} else {
+		} else if (dao.getSingleRecordQuery() != null) {
 			ret.put(ID_QUERY_TYPE, "1");
+		} else {
+			ret.put(ID_QUERY_TYPE, "2");
 		}
 		ret.put(ID_PACKAGE_NAME, daoclass.getPackageName());
 		ret.put(ID_DAO_CLASS_NAME, daoclass.getSimpleName());
@@ -234,7 +236,7 @@ public class DaoGeneratorEditForm extends EditForm {
 			}
 		}
 		String queryType = (String) data.get("queryType");
-		if ("0".equals(queryType)) {
+		if ("1".equals(queryType)) {
 			{
 				String queryPackage = (String) data.get("singleRecordQueryPackageName");
 				String queryClass = (String) data.get("singleRecordQueryClassName");

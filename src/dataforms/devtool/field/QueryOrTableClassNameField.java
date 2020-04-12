@@ -29,7 +29,7 @@ public class QueryOrTableClassNameField extends QueryClassNameField {
 	protected void onBind() {
 		super.onBind();
 		this.removeValidator(ClassNameValidator.class);
-		this.addValidator(new ClassNameValidator("(Query)|(Table)"));
+		this.addValidator(new ClassNameValidator("((Query)|(Table))"));
 	}
 
 }

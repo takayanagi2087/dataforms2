@@ -35,7 +35,14 @@ ${addMultiRecordQueryList}
 	 * @return 主テーブル>
 	 */
 	public ${mainTable} getMainTable() {
-		return (${mainTable}) this.getSingleRecordQuery().getMainTable();
+		if (this.getSingleRecordQuery() != null) {
+			return (${mainTable}) this.getSingleRecordQuery().getMainTable();
+		} else {
+			if (this.getSingleRecordQuery() != null) {
+				return (${mainTable}) this.getSingleRecordQuery().get(0).getMainTable();
+			}
+		}
+		return null;
 	}
 
 }

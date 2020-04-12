@@ -14,13 +14,13 @@ import dataforms.dao.SingleTableQuery;
 import dataforms.dao.Table;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.DaoClassNameField;
-import dataforms.devtool.field.FieldSingleSelectField;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.JavaSourcePathField;
 import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryTypeField;
+import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.htmltable.EditableHtmlTable;
@@ -98,6 +98,13 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * 問合せクラス名のフィールドID。
 	 */
 	public static final String ID_QUERY_CLASS_NAME = "queryClassName";
+
+	/**
+	 * キーフィールドリスト。
+	 */
+	private static final String ID_KEY_FIELD_LIST = "keyFieldList";
+
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -137,10 +144,8 @@ public class DaoGeneratorEditForm extends EditForm {
 			this.addHtmlTable(list);
 		}
 		{
-			FieldList flist = new FieldList();
-			flist.addField(new FieldSingleSelectField());
-			EditableHtmlTable list = new EditableHtmlTable(ID_MULTI_RECORD_QUERY_KEY_LIST, flist);
-			this.addHtmlTable(list);
+			SelectFieldHtmlTable fieldList = new SelectFieldHtmlTable(ID_KEY_FIELD_LIST);
+			this.addHtmlTable(fieldList);
 		}
 
 	}
@@ -181,13 +186,6 @@ public class DaoGeneratorEditForm extends EditForm {
 
 		ret.put(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
 		ret.put(ID_OVERWRITE_MODE, "error");
-		if (dao.getSingleRecordQuery() == null || dao.getMultiRecordQueryList() == null) {
-			ret.put(ID_QUERY_TYPE, "0");
-		} else if (dao.getSingleRecordQuery() != null) {
-			ret.put(ID_QUERY_TYPE, "1");
-		} else {
-			ret.put(ID_QUERY_TYPE, "2");
-		}
 		ret.put(ID_PACKAGE_NAME, daoclass.getPackageName());
 		ret.put(ID_DAO_CLASS_NAME, daoclass.getSimpleName());
 		if (dao.getListQuery() != null) {
@@ -196,23 +194,39 @@ public class DaoGeneratorEditForm extends EditForm {
 			ret.put(ID_LIST_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
 		}
 
-		if (dao.getSingleRecordQuery() != null) {
-			Object obj = this.getQueryOrTableClass(dao.getSingleRecordQuery());
-			ret.put(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
-			ret.put(ID_SINGLE_RECORD_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
-		}
-
-		List<Query> qlist = dao.getMultiRecordQueryList();
-		if (qlist != null) {
-			List<Map<String, Object>> mqlist = new ArrayList<Map<String, Object>>();
-			for (Query q: qlist) {
-				Object obj = this.getQueryOrTableClass(q);
-				Map<String, Object> m = new HashMap<String, Object>();
-				m.put(ID_PACKAGE_NAME, obj.getClass().getPackageName());
-				m.put(ID_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
-				mqlist.add(m);
+		if (dao.getSingleRecordQuery() == null && dao.getMultiRecordQueryList() == null) {
+			ret.put(ID_QUERY_TYPE, "0");
+		} else if (dao.getSingleRecordQuery() != null) {
+			ret.put(ID_QUERY_TYPE, "1");
+			{
+				Object obj = this.getQueryOrTableClass(dao.getSingleRecordQuery());
+				ret.put(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
+				ret.put(ID_SINGLE_RECORD_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
 			}
-			ret.put(ID_MULTI_RECORD_QUERY_LIST, mqlist);
+			List<Query> qlist = dao.getMultiRecordQueryList();
+			if (qlist != null) {
+				List<Map<String, Object>> mqlist = new ArrayList<Map<String, Object>>();
+				for (Query q: qlist) {
+					Object obj = this.getQueryOrTableClass(q);
+					Map<String, Object> m = new HashMap<String, Object>();
+					m.put(ID_PACKAGE_NAME, obj.getClass().getPackageName());
+					m.put(ID_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
+					mqlist.add(m);
+				}
+				ret.put(ID_MULTI_RECORD_QUERY_LIST, mqlist);
+			}
+		} else {
+			ret.put(ID_QUERY_TYPE, "2");
+			List<Query> qlist = dao.getMultiRecordQueryList();
+			if (qlist != null && qlist.size() > 0) {
+				Query q = qlist.get(0);
+				Object obj = this.getQueryOrTableClass(q);
+				ret.put(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
+				ret.put(ID_SINGLE_RECORD_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
+				List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(q.getFieldList());
+				list = SelectFieldHtmlTable.selectKey(list, dao.getMultiRecordQueryKeyList());
+				ret.put(ID_KEY_FIELD_LIST, list);
+			}
 		}
 		return ret;
 	}
@@ -250,7 +264,13 @@ public class DaoGeneratorEditForm extends EditForm {
 		} else if ("1".equals(queryType)) {
 			javasrc = this.singleRecordEditForm(data, implist, javasrc);
 		} else {
-
+			String packagename = (String) data.get(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME);
+			String classname = (String) data.get(ID_SINGLE_RECORD_QUERY_CLASS_NAME);
+			javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "\t\tthis.addMultiRecordQueryList(new " + classname + "());\n");
+			javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "null");
+			implist.add(packagename + "." + classname);
+			Table mainTable = this.getMainTable(packagename + "." + classname);
+			javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
 		}
 		StringBuilder isb = new StringBuilder();
 		for (String s: implist) {
@@ -278,9 +298,7 @@ public class DaoGeneratorEditForm extends EditForm {
 				javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "new " + queryClass + "()");
 			}
 			String className = queryPackage + "." + queryClass;
-			Class<?> qclass = Class.forName(className);
-			Query q = (Query) qclass.getConstructor().newInstance();
-			Table mainTable = q.getMainTable();
+			Table mainTable = this.getMainTable(className);
 			javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
 		}
 		StringBuilder sb = new StringBuilder();
@@ -294,6 +312,25 @@ public class DaoGeneratorEditForm extends EditForm {
 		}
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", sb.toString());
 		return javasrc;
+	}
+
+	/**
+	 * Mainテーブルを取得します。
+	 * @param className QueryまたはTableのクラス名。
+	 * @return 主テーブルのインスタンス。
+	 * @throws Exception 例外。
+	 */
+	private Table getMainTable(final String className) throws Exception {
+		Table mainTable = null;
+		Class<?> qclass = Class.forName(className);
+		Object obj = qclass.getConstructor().newInstance();
+		if (obj instanceof Query) {
+			Query q = (Query) obj;
+			mainTable = q.getMainTable();
+		} else if (obj instanceof Table){
+			mainTable = (Table) obj;
+		}
+		return mainTable;
 	}
 
 	/**

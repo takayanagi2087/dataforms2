@@ -55,6 +55,7 @@ class DaoGeneratorEditForm extends EditForm {
 	 * @param {Object} data フォームデータ。
 	 */
 	setFormData(data) {
+		logger.dir(data);
 		super.setFormData(data);
 		let fsel = this.getComponent("functionSelect");
 		fsel.selectPackage(data.packageName);
@@ -68,6 +69,7 @@ class DaoGeneratorEditForm extends EditForm {
 			let pkg = qlist.getRowField(i, "packageName").getValue();
 			sel.selectPackage(pkg);
 		}
+		this.onChangeType(data.queryType);
 	}
 }
 

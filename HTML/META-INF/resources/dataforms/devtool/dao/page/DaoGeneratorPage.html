@@ -209,46 +209,54 @@
 				</div>
 				<div class="multiRecord">
 					<div class="hScrollDiv">
-						<table id="multiRecordQueryKeyList" class="editableTable">
-							<caption>キーフィールドリスト</caption>
+						<table id="keyFieldList">
+							<caption>選択フィールドリスト</caption>
 							<thead>
 								<tr>
-									<th colspan="2" nowrap>
-
+									<th>
+										<input type="checkbox" id="selectAll" value="1"/>
 									</th>
-									<th nowrap>
+									<th>
 										No.
 									</th>
 									<th>
 										フィールドID
 									</th>
+									<th>
+										フィールドクラス
+									</th>
+									<th>
+										テーブルクラス
+									</th>
+									<th>
+										コメント
+									</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td class="buttonColumn">
-										<input type="button" id="multiRecordQueryKeyList[0].addButton" value="+"/>
-									</td>
-									<td class="buttonColumn">
-										<input type="button" id="multiRecordQueryKeyList[0].deleteButton" value="-"/>
-									</td>
-									<td style="text-align: right;" class="rowno">
-										<span id="multiRecordQueryKeyList[0].no"></span>
-									</td>
 									<td>
-										<select id="multiRecordQueryKeyList[0].fieldSingleSelect"></select>
+										<input type="checkbox" id="keyFieldList[0].sel" value="1">
+										<input type="hidden" id="keyFieldList[0].selectTableClassName" >
+										<input type="hidden" id="keyFieldList[0].sortOrder" >
+									</td>
+									<td style="text-align: right;">
+										<span id="keyFieldList[0].no" ></span>
+									</td>
+									<td style="width: 180px;">
+										<input type="text" id="keyFieldList[0].fieldId"/>
+									</td>
+									<td style="width: 200px;">
+										<span id="keyFieldList[0].fieldClassName" ></span>
+									</td>
+									<td style="width: 200px;">
+										<span id="keyFieldList[0].tableClassName" ></span>
+									</td>
+									<td style="width: 300px;">
+										<span id="keyFieldList[0].comment" ></span>
 									</td>
 								</tr>
 							</tbody>
-							<tfoot>
-								<tr>
-									<th class="buttonColumn">
-										<input type="button" id="multiRecordQueryKeyList.addButton" value="+"/>
-									</th>
-									<th colspan="3">
-									</th>
-								</tr>
-							</tfoot>
 						</table>
 					</div>
 				</div>

@@ -324,23 +324,11 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * @throws Exception 例外。
 	 */
 	private List<Map<String, Object>> queryTableFieldList(final String tableClass) throws Exception {
-		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
 		@SuppressWarnings("unchecked")
 		Class<? extends Table> clazz = (Class<? extends Table>) Class.forName(tableClass);
 		Table table = clazz.getDeclaredConstructor().newInstance();
 		FieldList flist = table.getFieldList();
-		for (Field<?> f: flist) {
-			Map<String, Object> ent = new HashMap<String, Object>();
-			ent.put("selectTableClass", table.getClass().getName());
-			ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getName());
-			ent.put("selectTableClassName", table.getClass().getSimpleName());
-			ent.put("sel", "0");
-			ent.put("fieldId", f.getId());
-			ent.put("fieldClassName", f.getClass().getName());
-			ent.put("comment", f.getComment());
-			ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
-			ret.add(ent);
-		}
+		List<Map<String, Object>> ret = SelectFieldHtmlTable.getTableData(flist);
 		return ret;
 
 	}

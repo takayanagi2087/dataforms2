@@ -27,6 +27,8 @@ import dataforms.field.base.TextField;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
+import dataforms.servlet.DataFormsServlet;
+import dataforms.util.FileUtil;
 import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
 
@@ -261,7 +263,8 @@ public class DaoGeneratorEditForm extends EditForm {
 		String daoClassName = (String) data.get(ID_DAO_CLASS_NAME);
 		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", packageName);
 		javasrc = javasrc.replaceAll("\\$\\{daoClassName\\}", daoClassName);
-		implist.add(packageName + "." + daoClassName);
+		String daoclass = packageName + "." + daoClassName;
+		implist.add(daoclass);
 		String comment = (String) data.get(ID_COMMENT);
 		javasrc = javasrc.replaceAll("\\$\\{comment\\}", comment);
 		{
@@ -288,6 +291,11 @@ public class DaoGeneratorEditForm extends EditForm {
 		}
 		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", isb.toString());
 		logger.debug("javasrc=" + javasrc);
+
+		String path = (String) data.get(ID_JAVA_SOURCE_PATH);
+		String srcPath = path + "/" + daoclass.replaceAll("\\.", "/") + ".java";
+		FileUtil.writeTextFileWithBackup(srcPath, javasrc, DataFormsServlet.getEncoding());
+
 	}
 
 	/**

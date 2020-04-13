@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import dataforms.annotation.WebMethod;
 import dataforms.controller.EditForm;
 import dataforms.dao.Query;
 import dataforms.dao.QuerySetDao;
@@ -24,6 +25,8 @@ import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.response.JsonResponse;
+import dataforms.response.Response;
 import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
 
@@ -71,17 +74,17 @@ public class DaoGeneratorEditForm extends EditForm {
 	 */
 	public static final String ID_LIST_QUERY_PACKAGE_NAME = "listQueryPackageName";
 	/**
-	 * 単一レコード取得問合せの機能選択フィールドID。
+	 * 編集フォームレコード取得問合せの機能選択フィールドID。
 	 */
-	public static final String ID_SINGLE_RECORD_QUERY_FUNCTION_SELECT = "singleRecordQueryFunctionSelect";
+	public static final String ID_EDIT_FORM_QUERY_FUNCTION_SELECT = "editFormQueryFunctionSelect";
 	/**
-	 * 単一レコード取得問合せのパッケージ名フィールドID。
+	 * 編集フォームレコード取得問合せのパッケージ名フィールドID。
 	 */
-	public static final String ID_SINGLE_RECORD_QUERY_PACKAGE_NAME = "singleRecordQueryPackageName";
+	public static final String ID_EDIT_FORM_QUERY_PACKAGE_NAME = "editFormQueryPackageName";
 	/**
-	 * 単一レコード取得問合せのクラス名フィールドID。
+	 * 編集フォームレコード取得問合せのクラス名フィールドID。
 	 */
-	public static final String ID_SINGLE_RECORD_QUERY_CLASS_NAME = "singleRecordQueryClassName";
+	public static final String ID_EDIT_FORM_QUERY_CLASS_NAME = "editFormQueryClassName";
 	/**
 	 * キーフィールドリストID。
 	 */
@@ -127,12 +130,13 @@ public class DaoGeneratorEditForm extends EditForm {
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);
 		//
-		this.addField((new FunctionSelectField(ID_SINGLE_RECORD_QUERY_FUNCTION_SELECT)).setPackageFieldId(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME).setComment("単一レコード取得用問合せの機能"));
-		this.addField((new PackageNameField(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME)).setComment("単一レコード取得用問合せのパッケージ"));
-		this.addField((new QueryOrTableClassNameField(ID_SINGLE_RECORD_QUERY_CLASS_NAME))
-			.setPackageNameFieldId(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME))
+		this.addField((new FunctionSelectField(ID_EDIT_FORM_QUERY_FUNCTION_SELECT)).setPackageFieldId(ID_EDIT_FORM_QUERY_PACKAGE_NAME).setComment("単一レコード取得用問合せの機能"));
+		this.addField((new PackageNameField(ID_EDIT_FORM_QUERY_PACKAGE_NAME)).setComment("単一レコード取得用問合せのパッケージ"));
+		this.addField((new QueryOrTableClassNameField(ID_EDIT_FORM_QUERY_CLASS_NAME)).setPackageNameFieldId(ID_EDIT_FORM_QUERY_PACKAGE_NAME))
+			.setCalcEventField(true)
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);
+		//
 		{
 			FieldList flist = new FieldList();
 			flist.addField(new FunctionSelectField());
@@ -200,8 +204,8 @@ public class DaoGeneratorEditForm extends EditForm {
 			ret.put(ID_QUERY_TYPE, "1");
 			{
 				Object obj = this.getQueryOrTableClass(dao.getSingleRecordQuery());
-				ret.put(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
-				ret.put(ID_SINGLE_RECORD_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
+				ret.put(ID_EDIT_FORM_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
+				ret.put(ID_EDIT_FORM_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
 			}
 			List<Query> qlist = dao.getMultiRecordQueryList();
 			if (qlist != null) {
@@ -221,8 +225,8 @@ public class DaoGeneratorEditForm extends EditForm {
 			if (qlist != null && qlist.size() > 0) {
 				Query q = qlist.get(0);
 				Object obj = this.getQueryOrTableClass(q);
-				ret.put(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
-				ret.put(ID_SINGLE_RECORD_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
+				ret.put(ID_EDIT_FORM_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
+				ret.put(ID_EDIT_FORM_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
 				List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(q.getFieldList());
 				list = SelectFieldHtmlTable.selectKey(list, dao.getMultiRecordQueryKeyList());
 				ret.put(ID_KEY_FIELD_LIST, list);
@@ -230,6 +234,18 @@ public class DaoGeneratorEditForm extends EditForm {
 		}
 		return ret;
 	}
+
+	@WebMethod
+	public Response getKeyList(final Map<String, Object> p) throws Exception {
+		Map<String, Object> data = this.convertToServerData(p);
+		String packageName = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
+		String className = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
+		Table table = this.getMainTable(packageName + "." + className);
+		List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(table.getFieldList());
+		Response resp = new JsonResponse(JsonResponse.SUCCESS, list);
+		return resp;
+	}
+
 
 	@Override
 	protected boolean isUpdate(Map<String, Object> data) throws Exception {
@@ -274,9 +290,15 @@ public class DaoGeneratorEditForm extends EditForm {
 		logger.debug("javasrc=" + javasrc);
 	}
 
+	/**
+	 * 選択フィールドリストのソースを作成します。
+	 * @param data フォームデータ。
+	 * @return 選択フィールドリストのソース。
+	 * @throws Exception 例外。
+	 */
 	private String getKeyListSource(final Map<String, Object> data) throws Exception {
 		StringBuilder sb = new StringBuilder();
-		String table = (String) data.get(ID_SINGLE_RECORD_QUERY_CLASS_NAME);
+		String table = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
 		sb.append("\t\t" + table + " table = new " + table + "();\n");
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_KEY_FIELD_LIST);
@@ -308,8 +330,8 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * @throws Exception 例外。
 	 */
 	private String multiRecordEditForm(final Map<String, Object> data, final List<String> implist, String javasrc) throws Exception {
-		String packagename = (String) data.get(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME);
-		String classname = (String) data.get(ID_SINGLE_RECORD_QUERY_CLASS_NAME);
+		String packagename = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
+		String classname = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
 		String src = this.getKeyListSource(data) + "\t\tthis.addMultiRecordQueryList(new " + classname + "());\n";
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", src);
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
@@ -331,8 +353,8 @@ public class DaoGeneratorEditForm extends EditForm {
 	private String singleRecordEditForm(final Map<String, Object> data, final List<String> implist, String javasrc)
 			throws Exception {
 		{
-			String queryPackage = (String) data.get("singleRecordQueryPackageName");
-			String queryClass = (String) data.get("singleRecordQueryClassName");
+			String queryPackage = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
+			String queryClass = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
 			if (!StringUtil.isBlank(queryClass)) {
 				implist.add(queryPackage + "." + queryClass);
 				javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "new " + queryClass + "()");

@@ -12,6 +12,29 @@ import dataforms.field.common.RowNoField;
 
 /**
  * 関連する問合せの集合を操作するDao。
+ * <pre>
+ * ページ中の各フォームが使用する問合せをまとめたDAOクラスで、
+ * 各種テーブルの登録、更新、削除機能も実装します。
+ *
+ * listQueryプロパティ					QueryFormの検索ボタンの処理で使用される問合せです。
+ * singleRecordQueryプロパティ			EditFormで編集対象データとして1レコードを取得する場合に使用する問合せです。
+ * multiRecordQueryListプロパティ		EditFormで編集対象データとして複数レコードを取得する場合に使用する問合せです。
+ * multiRecordQueryKeyListプロパティ	multiRecordQueryListに登録された問合せの実行時にレコードを限定する条件フィールドを指定します。
+ *
+ * 「編集フォーム無」の場合
+ *  singleRecordQuery、multiRecordQueryListともにnullを設定します。
+ *
+ * 「1件編集」の場合
+ *  singleRecordQueryに編集対象の1レコードを取得する問合せ設定します。
+ *  この問合せに関連する別テーブルの複数レコードを同時に編集する場合、
+ *  multiRecordQueryListにその情報を取得する問合せを追加します。
+ *  これらの問合せはsingleRecordQueryの主キーでフィールドで限定されます。
+ *
+ * 「複数レコード編集」の場合
+ *  singleRecordQueryは設定せず、multiRecordQueryListに1件指定します。
+ *  取得条件はmultiRecordQueryKeyListで指定します。
+ *
+ * </pre>
  */
 public class QuerySetDao extends Dao {
 	/**
@@ -20,9 +43,14 @@ public class QuerySetDao extends Dao {
 	// private static Logger logger = Logger.getLogger(TableSetDao.class);
 
 	/**
+	 * 一覧問合せ。
+	 */
+	private Query listQuery = null;
+
+	/**
 	 * 単一レコード取得用問合せ。
 	 * <pre>
-	 * 編集対象の1レコードを取得する問合せを指定します。
+	 * EditFormで編集対象の1レコードを取得する問合せです。
 	 * </pre>
 	 */
 	private Query singleRecordQuery = null;
@@ -30,14 +58,7 @@ public class QuerySetDao extends Dao {
 	/**
 	 * 複数レコード取得用問合せ。
 	 * <pre>
-	 * 「検索条件指定 → 一覧表示 → 1件編集」
-	 *  singleRecordQueryで取得したレコードに関連した別テーブルの
-	 *  レコードを同時に編集したい場合、その情報を取得する問合せを
-	 *  追加します。この問合せは複数追加することができます。
-	 *
-	 * 「検索条件指定 → 複数件編集」
-	 *  singleRecordQueryは設定せず、multiRecordQueryListに1件指定します。
-	 *  取得条件はmultiRecordQueryKeyListで指定します。
+	 * EditFormで編集対象の複数レコードを取得する問合せです。
 	 * </pre>
 	 */
 	private List<Query> multiRecordQueryList = null;
@@ -46,11 +67,6 @@ public class QuerySetDao extends Dao {
 	 * 複数レコード取得時のキーフィールドリスト。
 	 */
 	private FieldList multiRecordQueryKeyList = null;
-
-	/**
-	 * 一覧問合せ。
-	 */
-	private Query listQuery = null;
 
 	/**
 	 * コンストラクタ。
@@ -67,6 +83,32 @@ public class QuerySetDao extends Dao {
 	public QuerySetDao(final JDBCConnectableObject obj) throws Exception {
 		super(obj);
 	}
+
+	/**
+	 * 一覧用問合せを取得します。
+	 * @return 一覧用問合せを取得。
+	 */
+	public Query getListQuery() {
+		return listQuery;
+	}
+
+	/**
+	 * 一覧用問合せを取得します。
+	 * @param listQuery 一覧用問合せを取得。
+	 */
+	public void setListQuery(final Query listQuery) {
+		this.listQuery = listQuery;
+	}
+
+
+	/**
+	 * 一覧用問合せを設定します。
+	 * @param table このテーブルでSingleTableQueryを作成し一覧用問合とします。
+	 */
+	public void setListQuery(final Table table) {
+		this.listQuery = new SingleTableQuery(table);
+	}
+
 
 	/**
 	 * 単一レコード取得用問合せを設定します。
@@ -147,31 +189,6 @@ public class QuerySetDao extends Dao {
 	 */
 	public List<Query> getMultiRecordQueryList() {
 		return multiRecordQueryList;
-	}
-
-	/**
-	 * 一覧用問合せを取得します。
-	 * @return 一覧用問合せを取得。
-	 */
-	public Query getListQuery() {
-		return listQuery;
-	}
-
-	/**
-	 * 一覧用問合せを取得します。
-	 * @param listQuery 一覧用問合せを取得。
-	 */
-	public void setListQuery(final Query listQuery) {
-		this.listQuery = listQuery;
-	}
-
-
-	/**
-	 * 一覧用問合せを設定します。
-	 * @param table このテーブルでSingleTableQueryを作成し一覧用問合とします。
-	 */
-	public void setListQuery(final Table table) {
-		this.listQuery = new SingleTableQuery(table);
 	}
 
 	/**

@@ -558,6 +558,7 @@ class Field extends WebComponent {
 					}
 				}
 				if (thisField.calcEventField) {
+					logger.log("thisField.calcEventField=" + thisField.calcEventField);
 					var form = thisField.getParentForm();
 					form.onCalc($(event.target));
 				}

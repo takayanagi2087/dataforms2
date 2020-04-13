@@ -3,8 +3,9 @@ package sample.dao;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.QuerySetDao;
 
+
 /**
- * 資材マスタDaoクラス。
+ * Daoクラスです。
  *
  */
 public class MaterialMasterDao extends QuerySetDao {
@@ -14,8 +15,9 @@ public class MaterialMasterDao extends QuerySetDao {
 	 */
 	public MaterialMasterDao() {
 		this.setComment("資材マスタDao");
-		this.setSingleRecordQuery(new MaterialMasterTable());
 		this.setListQuery(new MaterialMasterTable());
+		this.setSingleRecordQuery(new MaterialMasterTable());
+
 	}
 
 	/**
@@ -33,7 +35,14 @@ public class MaterialMasterDao extends QuerySetDao {
 	 * @return 主テーブル>
 	 */
 	public MaterialMasterTable getMainTable() {
-		return (MaterialMasterTable) this.getSingleRecordQuery().getMainTable();
+		if (this.getSingleRecordQuery() != null) {
+			return (MaterialMasterTable) this.getSingleRecordQuery().getMainTable();
+		} else {
+			if (this.getMultiRecordQueryList() != null) {
+				return (MaterialMasterTable) this.getMultiRecordQueryList().get(0).getMainTable();
+			}
+		}
+		return null;
 	}
 
 }

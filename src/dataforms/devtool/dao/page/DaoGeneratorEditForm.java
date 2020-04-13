@@ -172,6 +172,11 @@ public class DaoGeneratorEditForm extends EditForm {
 		return ret;
 	}
 
+	/**
+	 * 指定されたaueryがSingleTableQueryの場合、mainTableを返します。
+	 * @param query 問合せ。
+	 * @return mainTable。
+	 */
 	private Object getQueryOrTableClass(final Query query) {
 		if (query instanceof SingleTableQuery) {
 			return query.getMainTable();
@@ -194,6 +199,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		ret.put(ID_OVERWRITE_MODE, "error");
 		ret.put(ID_PACKAGE_NAME, daoclass.getPackageName());
 		ret.put(ID_DAO_CLASS_NAME, daoclass.getSimpleName());
+		ret.put(ID_COMMENT, dao.getComment());
 		if (dao.getListQuery() != null) {
 			Object obj = this.getQueryOrTableClass(dao.getListQuery());
 			ret.put(ID_LIST_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());

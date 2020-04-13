@@ -1,5 +1,6 @@
 package dataforms.devtool.dao.page;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;
 import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
+import dataforms.validator.ValidationError;
 
 public class DaoGeneratorEditForm extends EditForm {
 
@@ -254,6 +256,26 @@ public class DaoGeneratorEditForm extends EditForm {
 		return resp;
 	}
 
+
+	@Override
+	protected List<ValidationError> validateForm(Map<String, Object> data) throws Exception {
+		List<ValidationError> list = super.validateForm(data);
+		if (list.size() == 0) {
+			String path = (String) data.get(ID_JAVA_SOURCE_PATH);
+			String packageName = (String) data.get(ID_PACKAGE_NAME);
+			String daoClassName = (String) data.get(ID_DAO_CLASS_NAME);
+			String daoclass = packageName + "." + daoClassName;
+			String srcPath = path + "/" + daoclass.replaceAll("\\.", "/") + ".java";
+			String overwriteMode = (String) data.get("overwriteMode");
+			if (OverwriteModeField.ERROR.equals(overwriteMode)) {
+				File tbl = new File(srcPath);
+				if (tbl.exists()) {
+					list.add(new ValidationError(ID_DAO_CLASS_NAME, this.getPage().getMessage("error.sourcefileexist", daoClassName + ".java")));
+				}
+			}
+		}
+		return list;
+	}
 
 	@Override
 	protected boolean isUpdate(Map<String, Object> data) throws Exception {

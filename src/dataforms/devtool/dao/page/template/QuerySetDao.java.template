@@ -1,5 +1,6 @@
 package ${packageName};
 
+import dataforms.dao.Query;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.QuerySetDao;
 ${importTables}
@@ -38,8 +39,8 @@ ${addMultiRecordQueryList}
 		if (this.getSingleRecordQuery() != null) {
 			return (${mainTable}) this.getSingleRecordQuery().getMainTable();
 		} else {
-			if (this.getSingleRecordQuery() != null) {
-				return (${mainTable}) this.getSingleRecordQuery().get(0).getMainTable();
+			if (this.getMultiRecordQueryList() != null) {
+				return (${mainTable}) this.getMultiRecordQueryList().get(0).getMainTable();
 			}
 		}
 		return null;

@@ -255,7 +255,7 @@ public class DaoGeneratorEditForm extends EditForm {
 				implist.add(queryPackage + "." + queryClass);
 				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "new " + queryClass + "()");
 			} else {
-				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "null");
+				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "(Query) null");
 			}
 		}
 		String queryType = (String) data.get("queryType");
@@ -264,13 +264,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		} else if ("1".equals(queryType)) {
 			javasrc = this.singleRecordEditForm(data, implist, javasrc);
 		} else {
-			String packagename = (String) data.get(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME);
-			String classname = (String) data.get(ID_SINGLE_RECORD_QUERY_CLASS_NAME);
-			javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "\t\tthis.addMultiRecordQueryList(new " + classname + "());\n");
-			javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "null");
-			implist.add(packagename + "." + classname);
-			Table mainTable = this.getMainTable(packagename + "." + classname);
-			javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
+			javasrc = this.multiRecordEditForm(data, implist, javasrc);
 		}
 		StringBuilder isb = new StringBuilder();
 		for (String s: implist) {
@@ -280,8 +274,54 @@ public class DaoGeneratorEditForm extends EditForm {
 		logger.debug("javasrc=" + javasrc);
 	}
 
+	private String getKeyListSource(final Map<String, Object> data) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		String table = (String) data.get(ID_SINGLE_RECORD_QUERY_CLASS_NAME);
+		sb.append("\t\t" + table + " table = new " + table + "();\n");
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_KEY_FIELD_LIST);
+		sb.append("\t\tthis.setMultiRecordQueryKeyList(new FieldList(");
+		StringBuilder fsb = new StringBuilder();
+		for (Map<String, Object> m: list) {
+			String sel = (String) m.get("sel");
+			if ("1".equals(sel)) {
+				if (fsb.length() > 0) {
+					fsb.append(", ");
+				}
+				String fieldId = (String) m.get("fieldId");
+				String fc =  fieldId.substring(0, 1).toUpperCase();
+				fsb.append("table.get" + fc + fieldId.substring(1)+ "Field()");
+			}
+		}
+		sb.append(fsb.toString());
+		sb.append("));\n");
+		return sb.toString();
+	}
+
 	/**
-	 * 1レコード編集フォーム用問合せの設定。
+	 * 複数レコード編集フォーム用DAOソース生成を行います。
+	 *
+	 * @param data フォームデータ。
+	 * @param implist インポートリスト。
+	 * @param javasrc javaソーステキスト。
+	 * @return javaソーステキスト。
+	 * @throws Exception 例外。
+	 */
+	private String multiRecordEditForm(final Map<String, Object> data, final List<String> implist, String javasrc) throws Exception {
+		String packagename = (String) data.get(ID_SINGLE_RECORD_QUERY_PACKAGE_NAME);
+		String classname = (String) data.get(ID_SINGLE_RECORD_QUERY_CLASS_NAME);
+		String src = this.getKeyListSource(data) + "\t\tthis.addMultiRecordQueryList(new " + classname + "());\n";
+		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", src);
+		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
+		implist.add(packagename + "." + classname);
+		Table mainTable = this.getMainTable(packagename + "." + classname);
+		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
+		implist.add("dataforms.field.base.FieldList");
+		return javasrc;
+	}
+
+	/**
+	 * 1レコード編集フォーム用DAOソース生成を行います。
 	 * @param data フォームデータ。
 	 * @param implist インポートリスト。
 	 * @param javasrc javaソーステキスト。
@@ -334,12 +374,12 @@ public class DaoGeneratorEditForm extends EditForm {
 	}
 
 	/**
-	 * 編集フォーム無のソース生成。
+	 * 編集フォーム無DAOソース生成を行います。
 	 * @param javasrc javaソース文字列。
 	 * @return javaソース文字列。
 	 */
 	private String noEditForm(String javasrc) {
-		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "null");
+		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "");
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", "Table");
 		return javasrc;

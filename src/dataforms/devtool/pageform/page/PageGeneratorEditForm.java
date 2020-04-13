@@ -398,10 +398,10 @@ public class PageGeneratorEditForm extends EditForm {
 			javasrc = javasrc.replaceAll("\\$\\{" + formFieldId + "\\}", formClassName);
 			javasrc = javasrc.replaceAll("\\$\\{daoClassName\\}", daoClassName);
 
-			@SuppressWarnings("unchecked")
-			Class<? extends QuerySetDao> daoclass = (Class<? extends QuerySetDao>) Class.forName(daoPackageName + "." + daoClassName);
-			QuerySetDao dao = daoclass.getDeclaredConstructor().newInstance();
 			if (this.isUpdateTable(data)) {
+				@SuppressWarnings("unchecked")
+				Class<? extends QuerySetDao> daoclass = (Class<? extends QuerySetDao>) Class.forName(daoPackageName + "." + daoClassName);
+				QuerySetDao dao = daoclass.getDeclaredConstructor().newInstance();
 				{
 					ImportUtil implist0 = new ImportUtil();
 					javasrc = javasrc.replaceAll("\\$\\{queryFormFieldList\\}", this.getQueryFieldList(dao.getListQuery(), implist0));

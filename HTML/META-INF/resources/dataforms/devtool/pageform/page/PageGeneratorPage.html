@@ -41,7 +41,7 @@
 									ページクラス名
 								</th>
 								<th>
-									操作テーブルクラス名
+									DAOクラス名
 								</th>
 							</tr>
 						</thead>
@@ -58,7 +58,7 @@
 									</a>
 								</td>
 								<td>
-									<span id="queryResult[0].tableClassName"></span>
+									<span id="queryResult[0].daoClassName"></span>
 								</td>
 							</tr>
 						</tbody>
@@ -103,34 +103,22 @@
 							</td>
 						</tr>
 						<tr>
-							<th colspan="2">テーブル操作</th>
+							<th rowspan="3">DAOクラス</th>
+							<th>機能</th>
 							<td colspan="5">
-								<span>
-									<input type="radio" id="updateTable[0]" name="updateTable">有
-								</span>
+								<select id="daoFunctionSelect"></select>
 							</td>
 						</tr>
 						<tr>
-							<th rowspan="3">操作テーブル</th>
-							<th>テーブルパッケージ名</th>
+							<th>パッケージ名</th>
 							<td colspan="5">
-								<input type="text" id="tablePackageName">
-							</td>
-						</tr>
-						<tr>
-							<th>テーブルクラス名</th>
-							<td colspan="5">
-								<input type="text" id="tableClassName">
+								<input type="text" id="daoPackageName">
 							</td>
 						</tr>
 						<tr>
 							<th>DAOクラス名</th>
-							<td>
+							<td colspan="5">
 								<input type="text" id="daoClassName">
-							</td>
-							<th>上書モード</th>
-							<td colspan="3">
-								<select id="daoClassOverwriteMode"></select>
 							</td>
 						</tr>
 						<tr>

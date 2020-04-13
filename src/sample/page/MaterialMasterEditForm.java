@@ -4,11 +4,12 @@ import java.util.Map;
 
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
+import dataforms.dao.Query;
 import dataforms.field.base.Field;
+import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
-import dataforms.validator.RequiredValidator;
+import dataforms.htmltable.EditableHtmlTable;
 import sample.dao.MaterialMasterDao;
-import sample.dao.MaterialMasterTable;
 
 /**
  * 編集フォームクラス。
@@ -19,12 +20,16 @@ public class MaterialMasterEditForm extends EditForm {
 	 */
 	public MaterialMasterEditForm() {
 		MaterialMasterDao dao = new MaterialMasterDao();
-		MaterialMasterTable table = dao.getMainTable();
-		table.getMaterialCodeField().addValidator(new RequiredValidator());
-		table.getMaterialNameField().addValidator(new RequiredValidator());
-		table.getMaterialUnitField().addValidator(new RequiredValidator());
-		table.getUnitPriceField().addValidator(new RequiredValidator());
-		this.addTableFields(table);
+		if (dao.getSingleRecordQuery() != null) {
+			FieldList flist = dao.getSingleRecordQuery().getFieldList();
+			this.addFieldList(flist);
+		}
+		if (dao.getMultiRecordQueryList() != null) {
+			for (Query q: dao.getMultiRecordQueryList()) {
+				EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
+				this.addHtmlTable(rtable);
+			}
+		}
 	}
 
 	/**
@@ -38,23 +43,6 @@ public class MaterialMasterEditForm extends EditForm {
 		super.init();
 	}
 
-	/**
-	 * 新規データの初期値を取得します。
-	 * <pre>
-	 * 資材コードを生成します。
-	 * </pre>
-	 */
-	@Override
-	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
-		Map<String, Object> ret = super.queryNewData(data);
-		MaterialMasterDao dao = new MaterialMasterDao(this);
-		MaterialMasterTable table = dao.getMainTable();
-		String newcode = dao.queryNextCode(table.getMaterialCodeField(), null);
-		MaterialMasterTable.Entity e = new MaterialMasterTable.Entity(ret);
-		e.setMaterialCode(newcode);
-		return ret;
-	}
-	
 	/**
 	 * 編集対象のデータを取得します。
 	 * <pre>
@@ -80,7 +68,8 @@ public class MaterialMasterEditForm extends EditForm {
 	 */
 	@Override
 	protected Map<String, Object> queryReferData(final Map<String, Object> data) throws Exception {
-		Table table = new MaterialMasterTable();
+		MaterialMasterDao dao = new MaterialMasterDao(this);
+		Table table = dao.getMainTable();
 		Map<String, Object> ret = this.queryData(data);
 		for (Field<?> f: table.getPkFieldList()) {
 			ret.remove(f.getId());
@@ -103,7 +92,8 @@ public class MaterialMasterEditForm extends EditForm {
 	 */
 	@Override
 	protected boolean isUpdate(final Map<String, Object> data) throws Exception {
-		MaterialMasterTable table = new MaterialMasterTable();
+		MaterialMasterDao dao = new MaterialMasterDao(this);
+		Table table = dao.getMainTable();
 		boolean ret = this.isUpdate(table, data);
 		return ret;
 	}

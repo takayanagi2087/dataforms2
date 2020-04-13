@@ -5,8 +5,10 @@ import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
-import sample.dao.MaterialMasterTable;
+import dataforms.dao.Table;
 import sample.dao.MaterialMasterDao;
+import sample.dao.MaterialMasterTable;
+
 
 
 /**
@@ -17,13 +19,15 @@ public class MaterialMasterQueryResultForm extends QueryResultForm {
 	 * コンストラクタ。
 	 */
 	public MaterialMasterQueryResultForm() {
-		MaterialMasterTable table = new MaterialMasterTable();
-		this.addPkFieldList(table.getPkFieldList());
 		MaterialMasterDao dao = new MaterialMasterDao();
+		Table table = dao.getMainTable();
+		this.addPkFieldList(table.getPkFieldList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
+		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_CODE).setSortable(true);
 		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_NAME).setSortable(true);
 		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_UNIT).setSortable(true);
 		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_UNIT_PRICE).setSortable(true);
+		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_ORDER_POINT).setSortable(true);
 		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MEMO).setSortable(true);
 
 		this.addHtmlTable(htmltable);

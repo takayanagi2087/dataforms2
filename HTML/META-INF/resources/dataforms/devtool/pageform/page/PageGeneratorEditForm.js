@@ -260,6 +260,8 @@ class PageGeneratorEditForm extends EditForm {
 	setFormData(data) {
 		super.setFormData(data);
 		this.setUpdateTable();
+		var daoFunctionSelect = this.getComponent("daoFunctionSelect");
+		daoFunctionSelect.selectPackage(this.getComponent("daoPackageName").getValue());
 	}
 }
 

@@ -2,8 +2,6 @@ package ${packageName};
 
 import dataforms.app.base.page.BasePage;
 import dataforms.dao.Dao;
-import dataforms.dao.Table;
-import ${tableClassFullName};
 import ${daoClassFullName};
 
 
@@ -25,17 +23,6 @@ ${formList}
 	 */
 	public String getFunctionPath() {
 		return "${functionPath}";
-	}
-
-	/**
-	 * 操作対象テーブルクラスを取得します。
-	 * <pre>
-	 * ページjavaクラス作成用のメソッドです。
-	 * </pre>
-	 * @return 操作対象テーブル。
-	 */
-	public Class<? extends  Table> getTableClass() {
-		return ${tableClass}.class;
 	}
 
 	/**

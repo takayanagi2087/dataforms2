@@ -37,7 +37,7 @@ public class PageGeneratorQueryResultForm extends QueryResultForm {
 			, (new PackageNameField()).setHidden(true)
 			, (new PageClassNameField()).setHidden(true)
 			, (new ClassNameField("fullClassName")).setSpanField(true)
-			, (new ClassNameField("tableClassName")).setSpanField(true)
+			, (new ClassNameField("daoClassName")).setSpanField(true)
 		);
 		this.addHtmlTable(htmltbl);
 		this.addPkField(htmltbl.getFieldList().get("packageName"));
@@ -90,7 +90,7 @@ public class PageGeneratorQueryResultForm extends QueryResultForm {
 			Class<?> cls = Class.forName(className);
 			Page p = (Page) cls.getDeclaredConstructor().newInstance();
 			PageClassInfo pi = new PageClassInfo(p);
-			r.put("tableClassName", pi.getTableClass());
+			r.put("daoClassName", pi.getDaoClass());
 		}
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("queryResult", queryResult);

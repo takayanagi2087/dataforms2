@@ -67,62 +67,57 @@
 			</form>
 			<form id="editForm">
 				指定されたパッケージに、ページクラスとその中に配置する各種フォームクラスのjavaソースファイルを作成します。
+				<h2>生成するページクラス</h2>
 				<table class="responsive thtdthtdthtd">
 					<tbody>
 						<tr>
-							<th colspan="2">Javaソース出力先</th>
-							<td colspan="5">
-								<input type="text" id="javaSourcePath" >
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2">機能</th>
-							<td colspan="5"><select id="functionSelect"></select></td>
-						</tr>
-						<tr>
-							<th rowspan="3">ページ</th>
-							<th>ページ名</th>
-							<td colspan="5">
-								<input type="text" id="pageName">
-							</td>
-						</tr>
-						<tr>
+							<th>Javaソース出力先</th>
+							<td><input type="text" id="javaSourcePath" ></td>
+							<th>機能</th>
+							<td><select id="functionSelect"></select></td>
 							<th>パッケージ名</th>
-							<td colspan="5">
-								<input type="text" id="packageName">
-							</td>
+							<td><input type="text" id="packageName"></td>
 						</tr>
 						<tr>
 							<th>クラス名</th>
 							<td>
 								<input type="text" id="pageClassName" >
 							</td>
+							<th>コメント</th>
+							<td>
+								<input type="text" id="pageName">
+							</td>
 							<th>上書モード</th>
-							<td  colspan="3">
+							<td>
 								<select id="pageClassOverwriteMode"></select>
 							</td>
 						</tr>
+					</tbody>
+				</table>
+				<h2>使用するDAOクラス</h2>
+				<table class="responsive thtdthtdthtd">
+					<tbody>
 						<tr>
-							<th rowspan="3">DAOクラス</th>
 							<th>機能</th>
-							<td colspan="5">
+							<td>
 								<select id="daoFunctionSelect"></select>
 							</td>
-						</tr>
-						<tr>
 							<th>パッケージ名</th>
-							<td colspan="5">
+							<td>
 								<input type="text" id="daoPackageName">
 							</td>
-						</tr>
-						<tr>
 							<th>DAOクラス名</th>
 							<td colspan="5">
 								<input type="text" id="daoClassName">
 							</td>
 						</tr>
+					</tbody>
+				</table>
+				<h2>作成するフォームクラス</h2>
+				<table class="responsive thtdthtdthtd">
+					<tbody>
 						<tr>
-							<th colspan="2">問い合わせフォームクラス名</th>
+							<th>問い合わせフォーム</th>
 							<td>
 								<input type="text" id="queryFormClassName">
 							</td>
@@ -130,13 +125,12 @@
 							<td>
 								<select id="queryFormClassOverwriteMode"></select>
 							</td>
-							<th>生成</th>
-							<td>
-								<input type="checkbox" id="queryFormClassFlag" value="1"><br/>
+							<td style="width: 25%;">
+								<input type="checkbox" id="queryFormClassFlag" value="1"><label for="queryFormClassFlag">作成する</label>
 							</td>
 						</tr>
 						<tr>
-							<th colspan="2">問い合わせ結果フォームクラス名</th>
+							<th>問い合わせ結果フォーム</th>
 							<td>
 								<input type="text" id="queryResultFormClassName">
 							</td>
@@ -144,13 +138,12 @@
 							<td>
 								<select id="queryResultFormClassOverwriteMode"></select>
 							</td>
-							<th>生成</th>
-							<td>
-								<input type="checkbox" id="queryResultFormClassFlag" value="1"><br/>
+							<td style="width: 25%;">
+								<input type="checkbox" id="queryResultFormClassFlag" value="1"><label for="queryResultFormClassFlag">作成する</label>
 							</td>
 						</tr>
 						<tr>
-							<th colspan="2">編集フォームクラス名</th>
+							<th>編集フォーム</th>
 							<td>
 								<input type="text" id="editFormClassName">
 							</td>
@@ -158,9 +151,8 @@
 							<td>
 								<select id="editFormClassOverwriteMode"></select>
 							</td>
-							<th>生成</th>
-							<td>
-								<input type="checkbox" id="editFormClassFlag" value="1"><br/>
+							<td style="width: 25%;">
+								<input type="checkbox" id="editFormClassFlag" value="1"><label for="editFormClassFlag">作成する</label>
 							</td>
 						</tr>
 					</tbody>

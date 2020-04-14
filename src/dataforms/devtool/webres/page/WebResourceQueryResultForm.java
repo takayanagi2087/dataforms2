@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import dataforms.controller.Dialog;
 import dataforms.controller.Form;
 import dataforms.controller.Page;
@@ -17,10 +19,10 @@ import dataforms.devtool.field.JavascriptClassField;
 import dataforms.devtool.field.WebComponentTypeField;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
-import dataforms.field.common.MultiSelectField;
 import dataforms.field.common.PresenceField;
 import dataforms.field.common.RowNoField;
 import dataforms.htmltable.HtmlTable;
+import dataforms.util.ClassFinder;
 import dataforms.util.StringUtil;
 import dataforms.validator.FieldValidator;
 
@@ -28,36 +30,54 @@ import dataforms.validator.FieldValidator;
  * 問い合わせ結果フォームクラス。
  */
 public class WebResourceQueryResultForm extends QueryResultForm {
+	/**
+	 * WebコンポーネントタイプフィールドID。
+	 */
+	private static final String ID_WEB_COMPONENT_TYPE_LIST = "webComponentTypeList";
+	/**
+	 * Webコンポーネントタイプ。
+	 */
+	private static final String ID_WEB_COMPONENT_TYPE = "webComponentType";
+	/**
+	 * HTML有無。
+	 */
+	private static final String ID_HTML_STATUS = "htmlStatus";
+	/**
+	 * Javascript有無。
+	 */
+	private static final String ID_JAVASCRIPT_STATUS = "javascriptStatus";
+	/**
+	 * Javascriptクラス。
+	 */
+	private static final String ID_JAVASCRIPT_CLASS = "javascriptClass";
 
 	/**
 	 * Logger.
 	 */
-//s	private static Logger log = Logger.getLogger(WebResourceQueryResultForm.class.getName());
+	private static Logger logger = Logger.getLogger(WebResourceQueryResultForm.class.getName());
 
 
 	/**
 	 * コンストラクタ。
 	 */
 	public WebResourceQueryResultForm() {
-		this.addField(new ClassNameField());
-		this.addField(new MultiSelectField<String>("checkedClass", 256));
 		HtmlTable htmltbl = new HtmlTable(Page.ID_QUERY_RESULT
 			, new RowNoField()
 			, new ClassNameField()
 			, new WebComponentTypeField()
-			, new PresenceField("htmlStatus")
-			, new PresenceField("javascriptStatus")
+			, new PresenceField(ID_HTML_STATUS)
+			, new PresenceField(ID_JAVASCRIPT_STATUS)
 			, new JavascriptClassField()
 		);
-		htmltbl.getFieldList().get("webComponentType").setReadonly(true);
-		htmltbl.getFieldList().get("htmlStatus").setReadonly(true);
-		htmltbl.getFieldList().get("javascriptStatus").setReadonly(true);
-		htmltbl.getFieldList().get("javascriptClass").setReadonly(true);
+		htmltbl.getFieldList().get(ID_WEB_COMPONENT_TYPE).setReadonly(true);
+		htmltbl.getFieldList().get(ID_HTML_STATUS).setReadonly(true);
+		htmltbl.getFieldList().get(ID_JAVASCRIPT_STATUS).setReadonly(true);
+		htmltbl.getFieldList().get(ID_JAVASCRIPT_CLASS).setReadonly(true);
 		this.addHtmlTable(htmltbl);
 	}
 
 	/**
-	 * 同一のクラス名を場外するためのSet.
+	 * 同一のクラス名を除外するためのSet.
 	 */
 	private HashSet<String> classNameSet = null;
 
@@ -73,7 +93,7 @@ public class WebResourceQueryResultForm extends QueryResultForm {
 			WebComponent c = wcmap.get(key);
 			if (!this.classNameSet.contains(c.getClass().getName())) {
 				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("checkedClass", c.getClass().getName());
+//				m.put(ID_CHECKED_CLASS, c.getClass().getName());
 				m.put("className", c.getClass().getName());
 				result.add(m);
 				this.getComponentList(result, c);
@@ -199,6 +219,45 @@ public class WebResourceQueryResultForm extends QueryResultForm {
 		return classname;
 	}
 
+	/**
+	 * 指定されたページ内のコンポーネントの一覧を取得します。
+	 * @param packageName ページのパッケージ名。
+	 * @param pageClassName ページクラス名。
+	 * @return ページ内のコンポーネントの一覧。
+	 * @throws Exception 例外。
+	 */
+	private List<Map<String, Object>> queryPageCompoentList(final String packageName, final String pageClassName) throws Exception {
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		@SuppressWarnings("unchecked")
+		Class<? extends Page> cls = (Class<? extends Page>) Class.forName(packageName + "." + pageClassName);
+		Page p = cls.getDeclaredConstructor().newInstance();
+		this.classNameSet = new HashSet<String>();
+		Map<String, Object> r = new HashMap<String, Object>();
+		r.put("className", p.getClass().getName());
+		result.add(r);
+		this.getComponentList(result, p);
+		return result;
+	}
+
+	/**
+	 * 指定されたパッケージ内のコンポーネントの一覧を取得します。
+	 * @param packageName ページのパッケージ名。
+	 * @return ページ内のコンポーネントの一覧。
+	 * @throws Exception 例外。
+	 */
+	private List<Map<String, Object>> queryCompoentList(final String packageName) throws Exception {
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		ClassFinder finder = new ClassFinder();
+		List<Class<?>> list = finder.findClasses(packageName, WebComponent.class);
+		for (Class<?> cls: list) {
+			Map<String, Object> r = new HashMap<String, Object>();
+			logger.debug("class=" + cls.getName());
+			r.put("className", cls.getName());
+			result.add(r);
+		}
+		logger.debug("result.size()=" + result.size());
+		return result;
+	}
 
 	@Override
 	protected Map<String, Object> queryPage(final Map<String, Object> data, final FieldList queryFormFieldList) throws Exception {
@@ -208,21 +267,16 @@ public class WebResourceQueryResultForm extends QueryResultForm {
 		String packageName = (String) data.get("packageName");
 		String pageClassName = (String) data.get("pageClassName");
 		String generatableOnly = (String) data.get("generatableOnly");
-
-		@SuppressWarnings("unchecked")
-		Class<? extends Page> cls = (Class<? extends Page>) Class.forName(packageName + "." + pageClassName);
-		Page p = cls.getDeclaredConstructor().newInstance();
-		this.classNameSet = new HashSet<String>();
-		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-		Map<String, Object> r = new HashMap<String, Object>();
-		r.put("checkedClass", p.getClass().getName());
-		r.put("className", p.getClass().getName());
-		result.add(r);
-		this.getComponentList(result, p);
-
+		List<Map<String, Object>> result = null;
+		if (!StringUtil.isBlank(pageClassName)) {
+			// 指定されたページクラス以下のコンポーネント一覧を取得する。
+			result = this.queryPageCompoentList(packageName, pageClassName);
+		} else {
+			result = this.queryCompoentList(packageName);
+		}
 		List<Map<String, Object>> queryResult = new ArrayList<Map<String, Object>>();
 		@SuppressWarnings("unchecked")
-		List<String> tlist = (List<String>) data.get("webComponentTypeList");
+		List<String> tlist = (List<String>) data.get(ID_WEB_COMPONENT_TYPE_LIST);
 		int no = 1;
 		for (Map<String, Object> m: result) {
 			String classname = (String) m.get("className");
@@ -247,14 +301,14 @@ public class WebResourceQueryResultForm extends QueryResultForm {
 					}
 				}
 				m.put("rowNo", Integer.valueOf(no++));
-				m.put("webComponentType", this.getComponentTypeName(c));
-				m.put("htmlStatus", htmlStatus);
-				m.put("javascriptStatus", javascriptStatus);
-				m.put("javascriptClass", this.getJavascriptClass(c));
+				m.put(ID_WEB_COMPONENT_TYPE, this.getComponentTypeName(c));
+				m.put(ID_HTML_STATUS, htmlStatus);
+				m.put(ID_JAVASCRIPT_STATUS, javascriptStatus);
+				m.put(ID_JAVASCRIPT_CLASS, this.getJavascriptClass(c));
 				queryResult.add(m);
 			}
 		}
-		ret.put("queryResult", queryResult);
+		ret.put(Page.ID_QUERY_RESULT, queryResult);
 		return ret;
 	}
 }

@@ -1192,20 +1192,23 @@ public class WebResourceForm extends Form {
 			if ("1".equals(outputFormHtml)) {
 				this.outputForms(fullClassName, sourcePath, forceOverwrite);
 			}
-		} else {
-
-		}
-		String srcpath = sourcePath + "/" + fullClassName.replaceAll("\\.", "/") + ".html";
-		File f = new File(srcpath);
-		if ((!f.exists()) || "1".equals(forceOverwrite)) {
-			if (!f.getParentFile().exists()) {
-				f.getParentFile().mkdirs();
+			String srcpath = sourcePath + "/" + fullClassName.replaceAll("\\.", "/") + ".html";
+			File f = new File(srcpath);
+			if ((!f.exists()) || "1".equals(forceOverwrite)) {
+				if (!f.getParentFile().exists()) {
+					f.getParentFile().mkdirs();
+				}
+				FileUtil.writeTextFileWithBackup(srcpath, gensrc, DataFormsServlet.getEncoding());
+				return srcpath;
+			} else {
+				return null;
 			}
-			FileUtil.writeTextFileWithBackup(srcpath, gensrc, DataFormsServlet.getEncoding());
-			return srcpath;
-		} else {
-			return null;
+		} else if ("form".equals(webComponentType)) {
+			Class<?> fcls = Class.forName(fullClassName);
+			Form f = (Form) fcls.getConstructor().newInstance();
+			return 	this.outputFormHtml(f, sourcePath, forceOverwrite);
 		}
+		return null;
 	}
 
 

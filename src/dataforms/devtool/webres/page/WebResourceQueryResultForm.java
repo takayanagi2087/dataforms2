@@ -167,7 +167,7 @@ public class WebResourceQueryResultForm extends QueryResultForm {
 	 * @throws Exception 例外。
 	 */
 	private String getHtmlStatus(final Class<?> c, final String webResourcePath) throws Exception {
-		if (Page.class.isAssignableFrom(c) || Dialog.class.isAssignableFrom(c)) {
+		if (Page.class.isAssignableFrom(c) || Dialog.class.isAssignableFrom(c) || Form.class.isAssignableFrom(c)) {
 			String respath =  "/" + this.getWebResourcePath(c) + ".html";
 			String ret = this.getWebResource(respath);
 			File resfile = new File(webResourcePath + respath);

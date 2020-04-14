@@ -43,8 +43,13 @@ class WebResourceForm extends Form {
 			this.get("htmlTr").show();
 			this.get("generateHtmlButton").show();
 			this.get("noFormContent").prop("checked", false);
-			this.get("outputFormHtml").show();
-			this.find("label[for='outputFormHtml']").show();
+			if (data.className.match(/Form$/) == null) {
+				this.get("outputFormHtml").show();
+				this.find("label.outputFormHtml").show();
+			} else {
+				this.get("outputFormHtml").hide();
+				this.find("label.outputFormHtml").hide();
+			}
 		} else {
 			this.get("htmlTr").hide();
 		}

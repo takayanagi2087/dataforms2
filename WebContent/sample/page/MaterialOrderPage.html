@@ -8,6 +8,8 @@
 		<div id="mainDiv">
 			<form id="queryForm">
 				<div class="formHeader">検索条件</div>
+				<input type="hidden" id="sortOrderFrom" />
+				<input type="hidden" id="sortOrderTo" />
 				<table class="responsive">
 					<tbody>
 						<tr>
@@ -23,8 +25,40 @@
 							<td><input type="text" id="orderDateTo" /></td>
 						</tr>
 						<tr>
+							<th>資材コード</th>
+							<td><input type="text" id="materialCode" /></td>
+						</tr>
+						<tr>
+							<th>資材名称</th>
+							<td><input type="text" id="materialName" /></td>
+						</tr>
+						<tr>
+							<th>単価(from)</th>
+							<td><input type="text" id="orderPriceFrom" /></td>
+						</tr>
+						<tr>
+							<th>単価(to)</th>
+							<td><input type="text" id="orderPriceTo" /></td>
+						</tr>
+						<tr>
+							<th>数量(from)</th>
+							<td><input type="text" id="amountFrom" /></td>
+						</tr>
+						<tr>
+							<th>数量(to)</th>
+							<td><input type="text" id="amountTo" /></td>
+						</tr>
+						<tr>
 							<th>メモ</th>
-							<td><input type="text" id="memo" /></td>
+							<td><input type="text" id="itemMemo" /></td>
+						</tr>
+						<tr>
+							<th>仕入先コード</th>
+							<td><input type="text" id="supplierCode" /></td>
+						</tr>
+						<tr>
+							<th>仕入先名称</th>
+							<td><input type="text" id="supplierName" /></td>
 						</tr>
 					</tbody>
 				</table>

@@ -85,34 +85,28 @@
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
 				<input type="hidden" id="saveMode" />
-				<table class="responsive thtdthtd">
+				<h2>作成するDAOクラス</h2>
+				<table class="responsive thtdthtdthtd">
 					<tbody>
 						<tr>
 							<th>Javaソース出力先</th>
 							<td><input type="text" id="javaSourcePath" /></td>
+							<th>機能</th>
+							<td><select id="functionSelect"></select></td>
+							<th>パッケージ名</th>
+							<td><input type="text" id="packageName" /></td>
+						</tr>
+						<tr>
+							<th>クラス名</th>
+							<td><input type="text" id="daoClassName" /></td>
+							<th>コメント</th>
+							<td><input type="text" id="comment" /></td>
 							<th>上書きモード</th>
 							<td><select id="overwriteMode"></select></td>
 						</tr>
 					</tbody>
 				</table>
-				<h2>DAOクラス</h2>
-				<table class="responsive thtdthtdthtd">
-					<tbody>
-						<tr>
-							<th>機能</th>
-							<td><select id="functionSelect"></select></td>
-							<th>パッケージ名</th>
-							<td><input type="text" id="packageName" /></td>
-							<th>クラス名</th>
-							<td><input type="text" id="daoClassName" /></td>
-						</tr>
-						<tr>
-							<th>コメント</th>
-							<td colspan="5"><input type="text" id="comment" /></td>
-						</tr>
-					</tbody>
-				</table>
-				<h2>一覧用問合せ</h2>
+				<h2>一覧用問合せまたはテーブル</h2>
 				<table class="responsive thtdthtdthtd">
 					<tbody>
 						<tr>
@@ -125,7 +119,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<h2>編集フォーム用問合せ</h2>
+				<h2>編集フォーム用問合せまたはテーブル</h2>
 				<table class="responsive thtdthtdthtd" style="table-layout: fixed;">
 					<tbody>
 						<tr class="firsttr">
@@ -151,9 +145,9 @@
 					</tbody>
 				</table>
 				<div class="singleRecord">
+					<h3>複数レコード取得用問合せまたはテーブルの一覧</h3>
 					<div class="hScrollDiv">
-						<table id="multiRecordQueryList" class="editableTable">
-							<caption>複数レコード問合せ一覧</caption>
+						<table id="multiRecordQueryList" class="editableTable" style="table-layout: fixed;">
 							<thead>
 								<tr>
 									<th colspan="2" nowrap>
@@ -181,16 +175,16 @@
 									<td class="buttonColumn">
 										<input type="button" id="multiRecordQueryList[0].deleteButton" value="-"/>
 									</td>
-									<td style="text-align: right;" class="rowno">
+									<td style="text-align: right; width: 40px;" class="rowno">
 										<span id="multiRecordQueryList[0].no"></span>
 									</td>
-									<td>
+									<td style="width: 200px;">
 										<select id="multiRecordQueryList[0].functionSelect"></select>
 									</td>
-									<td>
+									<td style="width: 300px;">
 										<input type="text" id="multiRecordQueryList[0].packageName" />
 									</td>
-									<td>
+									<td style="width: 250px;">
 										<input type="text" id="multiRecordQueryList[0].queryClassName" />
 									</td>
 								</tr>

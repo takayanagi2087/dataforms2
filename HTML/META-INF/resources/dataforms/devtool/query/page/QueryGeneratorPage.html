@@ -80,14 +80,12 @@
 			</form>
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
-				<table class="responsive thtdthtd">
-					<caption>生成する問合せクラス</caption>
+				<h2>生成する問合せクラス</h2>
+				<table class="responsive thtdthtdthtd">
 					<tbody>
 						<tr>
 							<th>Javaソース出力先</th>
-							<td colspan="3"><input type="text" id="javaSourcePath"/></td>
-						</tr>
-						<tr>
+							<td><input type="text" id="javaSourcePath"/></td>
 							<th>機能</th>
 							<td><select id="functionSelect"></select></td>
 							<th>パッケージ名</th>
@@ -96,22 +94,20 @@
 						<tr>
 							<th>問合せクラス名</th>
 							<td><input type="text" id="queryClassName" /></td>
+							<th>コメント</th>
+							<td>
+								<input type="text" id="queryComment"/>
+							</td>
 							<th>オプション</th>
 							<td>
 								<input type="checkbox" id="distinctFlag" value="1"/><label for="distinctFlag">Distinct</label>
 								<input type="checkbox" id="forceOverwrite" value="1"><label for="forceOverwrite">強制的に上書する</label>
 							</td>
 						</tr>
-						<tr>
-							<th>コメント</th>
-							<td colspan="3">
-								<input type="text" id="queryComment"/>
-							</td>
-						</tr>
 					</tbody>
 				</table>
+				<h2>問合せる主テーブル</h2>
 				<table class="responsive thtdthtd">
-					<caption>問合せる主テーブル</caption>
 					<tbody>
 						<tr>
 							<th>機能</th>
@@ -127,10 +123,10 @@
 						</tr>
 					</tbody>
 				</table>
+				<h2>JOINするテーブルリスト</h2>
 				<div style="overflow-x:scroll;width:100%">
 					<div class="hScrollDiv">
 						<table id="joinTableList" class="editableTable">
-							<caption>JOINするテーブルリスト</caption>
 							<thead>
 								<tr>
 									<th class="buttonColumn" nowrap>
@@ -205,11 +201,11 @@
 						</table>
 					</div>
 				</div>
+				<h2>選択フィールドリスト</h2>
 				<div style="overflow-x:scroll;width:100%">
 					<div class="hScrollDiv">
 						<table><tbody><tr><td id="tdtest">
 						<table id="selectFieldList">
-							<caption>選択フィールドリスト</caption>
 							<thead>
 								<tr>
 									<th>

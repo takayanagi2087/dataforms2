@@ -1,13 +1,14 @@
 package sample.page;
 
 import java.util.Map;
-
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
+import dataforms.dao.Table;
 import sample.dao.SupplierMasterDao;
 import sample.dao.SupplierMasterTable;
+
 
 
 /**
@@ -19,7 +20,7 @@ public class SupplierMasterQueryResultForm extends QueryResultForm {
 	 */
 	public SupplierMasterQueryResultForm() {
 		SupplierMasterDao dao = new SupplierMasterDao();
-		SupplierMasterTable table = dao.getMainTable();
+		Table table = dao.getMainTable();
 		this.addPkFieldList(table.getPkFieldList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
 		htmltable.getFieldList().get(SupplierMasterTable.Entity.ID_SUPPLIER_CODE).setSortable(true);
@@ -27,6 +28,8 @@ public class SupplierMasterQueryResultForm extends QueryResultForm {
 		htmltable.getFieldList().get(SupplierMasterTable.Entity.ID_SUPPLIER_KANA_NAME).setSortable(true);
 		htmltable.getFieldList().get(SupplierMasterTable.Entity.ID_PHONE_NO).setSortable(true);
 		htmltable.getFieldList().get(SupplierMasterTable.Entity.ID_FAX_NO).setSortable(true);
+		htmltable.getFieldList().get(SupplierMasterTable.Entity.ID_ZIP_CODE).setSortable(true);
+		htmltable.getFieldList().get(SupplierMasterTable.Entity.ID_ADDRESS).setSortable(true);
 
 		this.addHtmlTable(htmltable);
 	}

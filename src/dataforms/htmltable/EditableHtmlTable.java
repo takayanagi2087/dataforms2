@@ -27,7 +27,7 @@ public class EditableHtmlTable extends HtmlTable {
 	 * Sortableの切り替えチェックボックスを表示するかどうかのフラグ。
 	 */
 	private boolean sortableSwitching = false;
-	
+
 	/**
 	 * コンストラクタ。
 	 * @param id テーブルID。
@@ -94,7 +94,7 @@ public class EditableHtmlTable extends HtmlTable {
 
 	/**
 	 * 行入替チェックボックス表示フラグを返します。
-	 * 
+	 *
 	 * @return 行入替チェックボックスを表示する場合true。
 	 */
 	public boolean isSortableSwitching() {

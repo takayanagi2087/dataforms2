@@ -3,16 +3,13 @@ package sample.page;
 import java.util.Map;
 
 import dataforms.controller.EditForm;
-import dataforms.dao.Query;
 import dataforms.dao.Table;
+import dataforms.dao.Query;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
 import dataforms.htmltable.EditableHtmlTable;
-import sample.dao.MaterialMasterTable;
 import sample.dao.MaterialOrderDao;
-import sample.dao.MaterialOrderTable;
-import sample.dao.SupplierMasterTable;
 
 /**
  * 編集フォームクラス。
@@ -23,19 +20,15 @@ public class MaterialOrderEditForm extends EditForm {
 	 */
 	public MaterialOrderEditForm() {
 		MaterialOrderDao dao = new MaterialOrderDao();
-		FieldList flist = dao.getSingleRecordQuery().getFieldList();
-		flist.get(SupplierMasterTable.Entity.ID_SUPPLIER_CODE).setAutocomplete(true).setRelationDataAcquisition(true);
-		flist.get(SupplierMasterTable.Entity.ID_SUPPLIER_NAME).setAutocomplete(true).setRelationDataAcquisition(true);
-		this.addFieldList(flist);
-		for (Query q: dao.getMultiRecordQueryList()) {
-			EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
-			if ("materialOrderItemList".equals(q.getListId())) {
-				q.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_CODE).setAutocomplete(true).setRelationDataAcquisition(true);
-				q.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_NAME).setAutocomplete(true).setRelationDataAcquisition(true);
-				q.getFieldList().get(MaterialMasterTable.Entity.ID_UNIT_PRICE).setReadonly(true);
-				q.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_UNIT).setReadonly(true);
+		if (dao.getSingleRecordQuery() != null) {
+			FieldList flist = dao.getSingleRecordQuery().getFieldList();
+			this.addFieldList(flist);
+		}
+		if (dao.getMultiRecordQueryList() != null) {
+			for (Query q: dao.getMultiRecordQueryList()) {
+				EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
+				this.addHtmlTable(rtable);
 			}
-			this.addHtmlTable(rtable);
 		}
 	}
 
@@ -48,19 +41,6 @@ public class MaterialOrderEditForm extends EditForm {
 	@Override
 	public void init() throws Exception {
 		super.init();
-	}
-
-	@Override
-	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
-		Map<String, Object> ret = super.queryNewData(data);
-		MaterialOrderDao dao = new MaterialOrderDao(this);
-		MaterialOrderTable table = dao.getMainTable();
-		String newcode = dao.queryNextCode(table.getOrderNoField(), null);
-		MaterialOrderTable.Entity e = new MaterialOrderTable.Entity(ret);
-		e.setOrderNo(newcode);
-		java.sql.Date today = new java.sql.Date((new java.util.Date()).getTime());
-		e.setOrderDate(today);
-		return ret;
 	}
 
 	/**
@@ -88,7 +68,8 @@ public class MaterialOrderEditForm extends EditForm {
 	 */
 	@Override
 	protected Map<String, Object> queryReferData(final Map<String, Object> data) throws Exception {
-		Table table = new MaterialOrderTable();
+		MaterialOrderDao dao = new MaterialOrderDao(this);
+		Table table = dao.getMainTable();
 		Map<String, Object> ret = this.queryData(data);
 		for (Field<?> f: table.getPkFieldList()) {
 			ret.remove(f.getId());
@@ -111,7 +92,8 @@ public class MaterialOrderEditForm extends EditForm {
 	 */
 	@Override
 	protected boolean isUpdate(final Map<String, Object> data) throws Exception {
-		Table table = new MaterialOrderTable();
+		MaterialOrderDao dao = new MaterialOrderDao(this);
+		Table table = dao.getMainTable();
 		boolean ret = this.isUpdate(table, data);
 		return ret;
 	}

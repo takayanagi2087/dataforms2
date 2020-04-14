@@ -4,10 +4,12 @@ import java.util.Map;
 
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
+import dataforms.dao.Query;
 import dataforms.field.base.Field;
+import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
+import dataforms.htmltable.EditableHtmlTable;
 import sample.dao.SupplierMasterDao;
-import sample.dao.SupplierMasterTable;
 
 /**
  * 編集フォームクラス。
@@ -17,8 +19,17 @@ public class SupplierMasterEditForm extends EditForm {
 	 * コンストラクタ。
 	 */
 	public SupplierMasterEditForm() {
-		SupplierMasterTable table = new SupplierMasterTable();
-		this.addTableFields(table);
+		SupplierMasterDao dao = new SupplierMasterDao();
+		if (dao.getSingleRecordQuery() != null) {
+			FieldList flist = dao.getSingleRecordQuery().getFieldList();
+			this.addFieldList(flist);
+		}
+		if (dao.getMultiRecordQueryList() != null) {
+			for (Query q: dao.getMultiRecordQueryList()) {
+				EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
+				this.addHtmlTable(rtable);
+			}
+		}
 	}
 
 	/**
@@ -30,17 +41,6 @@ public class SupplierMasterEditForm extends EditForm {
 	@Override
 	public void init() throws Exception {
 		super.init();
-	}
-
-	@Override
-	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
-		Map<String, Object> ret = super.queryNewData(data);
-		SupplierMasterDao dao = new SupplierMasterDao(this);
-		SupplierMasterTable table = dao.getMainTable();
-		String newcode = dao.queryNextCode(table.getSupplierCodeField(), null);
-		SupplierMasterTable.Entity e = new SupplierMasterTable.Entity(ret);
-		e.setSupplierCode(newcode);
-		return ret;
 	}
 
 	/**
@@ -68,7 +68,8 @@ public class SupplierMasterEditForm extends EditForm {
 	 */
 	@Override
 	protected Map<String, Object> queryReferData(final Map<String, Object> data) throws Exception {
-		Table table = new SupplierMasterTable();
+		SupplierMasterDao dao = new SupplierMasterDao(this);
+		Table table = dao.getMainTable();
 		Map<String, Object> ret = this.queryData(data);
 		for (Field<?> f: table.getPkFieldList()) {
 			ret.remove(f.getId());
@@ -81,7 +82,6 @@ public class SupplierMasterEditForm extends EditForm {
 		return ret;
 	}
 
-
 	/**
 	 * ポストされたデータが更新するのか新規追加するのかを判定します。
 	 * <pre>
@@ -92,7 +92,8 @@ public class SupplierMasterEditForm extends EditForm {
 	 */
 	@Override
 	protected boolean isUpdate(final Map<String, Object> data) throws Exception {
-		Table table = new SupplierMasterTable();
+		SupplierMasterDao dao = new SupplierMasterDao(this);
+		Table table = dao.getMainTable();
 		boolean ret = this.isUpdate(table, data);
 		return ret;
 	}

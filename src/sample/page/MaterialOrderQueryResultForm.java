@@ -1,13 +1,17 @@
 package sample.page;
 
 import java.util.Map;
-
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
+import dataforms.dao.Table;
 import sample.dao.MaterialOrderDao;
+import sample.dao.MaterialMasterTable;
+import sample.dao.MaterialOrderItemTable;
+import sample.dao.SupplierMasterTable;
 import sample.dao.MaterialOrderTable;
+
 
 
 /**
@@ -19,13 +23,19 @@ public class MaterialOrderQueryResultForm extends QueryResultForm {
 	 */
 	public MaterialOrderQueryResultForm() {
 		MaterialOrderDao dao = new MaterialOrderDao();
-		MaterialOrderTable table = new MaterialOrderTable();
+		Table table = dao.getMainTable();
 		this.addPkFieldList(table.getPkFieldList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
-/*		htmltable.getFieldList().get(MaterialOrderTable.Entity.ID_ORDER_NO).setSortable(true);
+		htmltable.getFieldList().get(MaterialOrderTable.Entity.ID_ORDER_NO).setSortable(true);
 		htmltable.getFieldList().get(MaterialOrderTable.Entity.ID_ORDER_DATE).setSortable(true);
-		htmltable.getFieldList().get(MaterialOrderTable.Entity.ID_MEMO).setSortable(true);
-*/
+		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_CODE).setSortable(true);
+		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_NAME).setSortable(true);
+		htmltable.getFieldList().get(MaterialOrderItemTable.Entity.ID_ORDER_PRICE).setSortable(true);
+		htmltable.getFieldList().get(MaterialOrderItemTable.Entity.ID_AMOUNT).setSortable(true);
+		htmltable.getFieldList().get(MaterialOrderItemTable.Entity.ID_ITEM_MEMO).setSortable(true);
+		htmltable.getFieldList().get(SupplierMasterTable.Entity.ID_SUPPLIER_CODE).setSortable(true);
+		htmltable.getFieldList().get(SupplierMasterTable.Entity.ID_SUPPLIER_NAME).setSortable(true);
+
 		this.addHtmlTable(htmltable);
 	}
 

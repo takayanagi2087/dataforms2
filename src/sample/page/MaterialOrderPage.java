@@ -2,8 +2,6 @@ package sample.page;
 
 import dataforms.app.base.page.BasePage;
 import dataforms.dao.Dao;
-import dataforms.dao.Table;
-import sample.dao.MaterialOrderTable;
 import sample.dao.MaterialOrderDao;
 
 
@@ -28,17 +26,6 @@ public class MaterialOrderPage extends BasePage {
 	 */
 	public String getFunctionPath() {
 		return "/sample";
-	}
-
-	/**
-	 * 操作対象テーブルクラスを取得します。
-	 * <pre>
-	 * ページjavaクラス作成用のメソッドです。
-	 * </pre>
-	 * @return 操作対象テーブル。
-	 */
-	public Class<? extends  Table> getTableClass() {
-		return MaterialOrderTable.class;
 	}
 
 	/**

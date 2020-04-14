@@ -21,6 +21,7 @@ import dataforms.devtool.field.AliasNameField;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.JavaSourcePathField;
 import dataforms.devtool.field.JoinTypeField;
+import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryClassNameField;
 import dataforms.devtool.field.TableClassNameField;
@@ -60,6 +61,12 @@ public class QueryGeneratorEditForm extends EditForm {
 	private static final String ID_QUERY_CLASS_NAME = "queryClassName";
 
 	/**
+	 * 上書きモードフィールドID。
+	 */
+	private static final String ID_OVERWRITE_MODE = "overwriteMode";
+
+
+	/**
 	 * distinctフラグフィールドID。
 	 */
 	private static final String ID_DISTINCT_FLAG = "distinctFlag";
@@ -67,7 +74,7 @@ public class QueryGeneratorEditForm extends EditForm {
 	/**
 	 * 強制上書きフラグフィールドID。
 	 */
-	private static final String ID_FORCE_OVERWRITE = "forceOverwrite";
+//	private static final String ID_FORCE_OVERWRITE = "forceOverwrite";
 
 	/**
 	 * 主テーブル機能選択フィールドID。
@@ -130,8 +137,8 @@ public class QueryGeneratorEditForm extends EditForm {
 		this.addField(new QueryClassNameField()).setAutocomplete(false).addValidator(new RequiredValidator());
 		this.addField(new AliasNameField()).setCalcEventField(true);
 
+		this.addField(new OverwriteModeField());
 		this.addField(new FlagField(ID_DISTINCT_FLAG));
-		this.addField(new FlagField(ID_FORCE_OVERWRITE));
 		this.addField(new TextField(ID_QUERY_COMMENT));
 
 		this.addField((new FunctionSelectField(ID_MAIN_TABLE_FUNCTION_SELECT)).setPackageFieldId(ID_MAIN_TABLE_PACKAGE_NAME)).setComment("主テーブルの機能");
@@ -155,6 +162,7 @@ public class QueryGeneratorEditForm extends EditForm {
 	public void init() throws Exception {
 		super.init();
 		this.setFormData(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
+		this.setFormData(ID_OVERWRITE_MODE, OverwriteModeField.ERROR);
 	}
 
 	/**
@@ -225,7 +233,9 @@ public class QueryGeneratorEditForm extends EditForm {
 			ret.put(ID_DISTINCT_FLAG, "0");
 		}
 		ret.put(ID_QUERY_COMMENT, q.getComment());
-		ret.put(ID_FORCE_OVERWRITE, "0");
+//		ret.put(ID_FORCE_OVERWRITE, "0");
+		ret.put(ID_OVERWRITE_MODE, OverwriteModeField.ERROR);
+
 		ret.put(ID_MAIN_TABLE_PACKAGE_NAME, q.getMainTable().getClass().getPackage().getName());
 		ret.put(ID_MAIN_TABLE_CLASS_NAME, q.getMainTable().getClass().getSimpleName());
 		ret.put(ID_ALIAS_NAME, q.getMainTable().getAlias());
@@ -307,8 +317,8 @@ public class QueryGeneratorEditForm extends EditForm {
 		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
 		String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");
 		String query = srcPath + "/" + queryClassName + ".java";
-		String forceOverwrite = (String) data.get(ID_FORCE_OVERWRITE);
-		if (!"1".equals(forceOverwrite)) {
+		String forceOverwrite = (String) data.get(ID_OVERWRITE_MODE);
+		if (OverwriteModeField.ERROR.equals(forceOverwrite)) {
 			File f = new File(query);
 			if (f.exists()) {
 				ret.add(new ValidationError(ID_QUERY_CLASS_NAME, this.getPage().getMessage("error.sourcefileexist", queryClassName + ".java")));
@@ -378,10 +388,10 @@ public class QueryGeneratorEditForm extends EditForm {
 	@WebMethod
 	public JsonResponse getFieldList(final Map<String, Object> param) throws Exception {
 		JsonResponse ret = null;
-		param.put(ID_FORCE_OVERWRITE, "1");
+//		param.put(ID_FORCE_OVERWRITE, "1");
 		Map<String, Object> p = new HashMap<String, Object>();
 		p.putAll(param);
-		p.put(ID_FORCE_OVERWRITE, "1");
+//		p.put(ID_FORCE_OVERWRITE, "1");
 		List<ValidationError> vlist = this.validate(p);
 		if (vlist.size() == 0) {
 			Map<String, Object> data = this.convertToServerData(param);
@@ -533,10 +543,10 @@ public class QueryGeneratorEditForm extends EditForm {
 	@WebMethod
 	public JsonResponse getJoinCondition(final Map<String, Object> param) throws Exception {
 		JsonResponse ret = null;
-		param.put(ID_FORCE_OVERWRITE, "1");
+//		param.put(ID_FORCE_OVERWRITE, "1");
 		Map<String, Object> p = new HashMap<String, Object>();
 		p.putAll(param);
-		p.put(ID_FORCE_OVERWRITE, "1");
+//		p.put(ID_FORCE_OVERWRITE, "1");
 		List<ValidationError> vlist = this.validate(p);
 		if (vlist.size() == 0) {
 			Map<String, Object> data = this.convertToServerData(param);

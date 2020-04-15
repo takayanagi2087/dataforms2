@@ -1,5 +1,65 @@
 @charset "UTF-8";
 
+
+/* ボタンのスタイル */
+button, input[type='button'], input[type='submit'] {
+	color: var(--button-color);
+	background-color: var(--button-background-color);
+	border-color: var(--button-border-color);
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 3px;
+	transition: .4s;
+	outline: none;
+}
+
+button:hover, input[type='button']:hover, input[type='submit']:hover {
+  background: var(--button-color);
+  color: var(--button-background-color);
+}
+
+.largeButton {
+	margin-top: 4px;
+	height: 30px;
+}
+
+button:not(.largeButton), input[type='button']:not(.largeButton), input[type='submit']:not(.largeButton) {
+	height: 26px;
+}
+
+/* テキストボックスまたはプルダウンスタイル */
+input[type='text'],
+input[type='password'],
+input[type='number'],
+input[type='email'],
+select,
+textarea {
+	color: var(--textbox-color);
+	background-color: var(--textbox-background-color);
+	border-color: var(--textbox-border-color);
+	border-width: 1px;
+	border-style: solid;
+	outline: none;
+}
+
+tr.evenTr input[type='text'],
+tr.evenTr input[type='password'],
+tr.evenTr input[type='number'],
+tr.evenTr input[type='email'],
+tr.evenTr select,
+tr.evenTr textarea {
+	background-color: rgba(255,255,255,0.0);
+}
+
+tr.oddTr input[type='text'],
+tr.oddTr input[type='password'],
+tr.oddTr input[type='number'],
+tr.oddTr input[type='email'],
+tr.oddTr select,
+tr.oddTr textarea {
+	background-color: rgba(255,255,255,0.0);
+}
+
 /* テキストボックスロック時のスタイル */
 .lockedTextbox {
 }
@@ -42,7 +102,6 @@
  * jQuery-uiのdatepiker関連の設定(終了)。
  */
 
-
 /* 必須入力フィールドのスタイル */
 .requiredFieldLabel:after {
 	content: " (*)";
@@ -84,15 +143,6 @@
 		vertical-align: middle;
 	}
 
-	/* ボタンサイズを指定 */
-	input[type='button'],
-	input[type='submit'],
-	button {
-		height: 24px;
-		line-height: 16px;
-		margin: 0px 4px;
-	}
-
 }
 
 /* スマートフォン  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
@@ -123,14 +173,6 @@
 		display:table-cell;
 		height: 20px;
 		vertical-align: middle;
-	}
-
-	/* ボタンサイズを指定 */
-	input[type='button'],
-	input[type='submit'],
-	button {
-		height: 32px;
-		margin: 0px 4px;
 	}
 
 }

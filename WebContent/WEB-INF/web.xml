@@ -279,14 +279,14 @@
 	 -->
 	<context-param>
 		<param-name>password-reset-mail-page</param-name>
-		<param-value>/dataforms/app/page/user/PasswordResetMailPage</param-value>
+		<param-value>/dataforms/app/user/page/PasswordResetMailPage</param-value>
 	</context-param>
 	<!--
 		パスワードリセットページのパス。
 	 -->
 	<context-param>
 		<param-name>password-reset-page</param-name>
-		<param-value>/dataforms/app/page/user/PasswordResetPage</param-value>
+		<param-value>/dataforms/app/user/page/PasswordResetPage</param-value>
 	</context-param>
 	<!--
 		開発ツールの無効フラグを設定します。

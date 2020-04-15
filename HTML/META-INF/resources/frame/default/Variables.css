@@ -30,5 +30,20 @@
 	--footer-width: 100%;	/* フッターの幅 */
 	--footer-height: 30px;	/* フッターの高さ */
 	--footer-background-color: lavender; /* フッターの背景色 */
+
+	/* 色関連設定 */
+	--base-color: black;				/* 基本前景色 */
+	--base-background-color: white;		/* 基本背景色 */
+	--base-border-color: #dddddd;		/* 基本ボーダー色 */
+
+	/* ボタン関連 */
+	--button-color: var(--base-color);
+	--button-background-color: var(--base-background-color);
+	--button-border-color: var(--base-border-color);
+
+	/* テキストボックスまたはプルダウン関連 */
+	--textbox-color: var(--base-color);
+	--textbox-background-color: var(--base-background-color);
+	--textbox-border-color: var(--base-border-color);
 }
 

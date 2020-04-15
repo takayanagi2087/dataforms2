@@ -45,5 +45,15 @@
 	--textbox-color: var(--base-color);
 	--textbox-background-color: var(--base-background-color);
 	--textbox-border-color: var(--base-border-color);
+
+	/* テーブル関連色 */
+	--th-background-color: #cccccc;		/* thの背景色 */
+	--even-tr-background-color: white;
+	--odd-tr-background-color: #eeeeee;
+
+
+	/* フォーム関連設定 */
+	--form-border-color: var(--base-border-color);
+
 }
 

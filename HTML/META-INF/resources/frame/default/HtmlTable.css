@@ -11,16 +11,21 @@ table caption {
 	text-align: left;
 }
 
-th {background-color: #E0E0FF; text-align:center; font-weight:normal; border : 0px;}
+th {
+	background-color: var(--th-background-color);
+	text-align:center;
+	font-weight:normal;
+	border : 0px;
+}
 
 /* テーブル奇数行のスタイル */
 .oddTr {
-	background-color:#ffffff
+	background-color:var(--odd-tr-background-color);
 }
 
 /* テーブルの偶数行のスタイル*/
 .evenTr {
-	background-color:rgb(232,242,254)
+	background-color:var(--even-tr-background-color);
 }
 
 /* 横スクロール用DIV */

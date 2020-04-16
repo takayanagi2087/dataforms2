@@ -39,6 +39,12 @@
 	background: var(--scrollbar-thumb-color);
 }
 
+table.columnFixedTable,
+div.hScrollDiv {
+	scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+}
+
+
 /* PC,タブレット  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (min-width: var(--tb-screen-min)) {
 	.mainDiv table.responsive th,

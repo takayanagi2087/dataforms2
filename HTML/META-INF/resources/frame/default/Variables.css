@@ -34,10 +34,11 @@
 	--base-color: 0,0%;		/* グレー系統 */
 	--base-color: 207,51%;	/* 青系統 */
 	--base-color: 140,38%;	/* 緑系統 */
+	--base-color: 0,70%;	/* 赤系統 */
 
-	--frame-base-color: 207,51%;	/* クレー系統*/
-	--menu-base-color: 207,51%;	/* 緑系統 */
-	--field-base-color: 207,51%;	/* 青系統 */
+	--frame-base-color: var(--base-color);	/* クレー系統*/
+	--menu-base-color: var(--base-color);	/* 緑系統 */
+	--field-base-color: var(--base-color);	/* 青系統 */
 
 	/* フィールド関連の配色 */
 	--field-text-color: hsl(var(--field-base-color),0%);

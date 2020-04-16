@@ -429,7 +429,7 @@ class Page extends DataForms {
 	 */
 	onResize() {
 		logger.log("onResize");
-		$(this.convertSelector("#menuDiv")).css("display", "");
+		$(this.convertSelector("div.menuDiv")).css("display", "");
 	}
 
 

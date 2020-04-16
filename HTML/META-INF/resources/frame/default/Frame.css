@@ -9,6 +9,7 @@ html body {
 	font-weight: normal;
 	width: var(--body-width);
 	min-width: var(--body-min-width);
+	color: var(--text-color);
 }
 
 /**

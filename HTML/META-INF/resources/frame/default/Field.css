@@ -1,5 +1,17 @@
 @charset "UTF-8";
 
+/* アンカーのスタイル */
+a:link,
+a:visited {
+	color: var(--anchor-color);
+}
+
+a:hover,
+a:active {
+	color: var(	--anchor-hover-color);
+	font-weight: bold;
+}
+
 
 /* ボタンのスタイル */
 button, input[type='button'], input[type='submit'] {
@@ -13,7 +25,9 @@ button, input[type='button'], input[type='submit'] {
 	outline: none;
 }
 
-button:hover, input[type='button']:hover, input[type='submit']:hover {
+button:hover,
+input[type='button']:hover,
+input[type='submit']:hover {
 	color: var(--button-hover-color);
 	background: var(--button-hover-background-color);
 }
@@ -23,7 +37,9 @@ button:hover, input[type='button']:hover, input[type='submit']:hover {
 	height: 30px;
 }
 
-button:not(.largeButton), input[type='button']:not(.largeButton), input[type='submit']:not(.largeButton) {
+button:not(.largeButton),
+input[type='button']:not(.largeButton),
+input[type='submit']:not(.largeButton) {
 	height: 26px;
 }
 
@@ -42,6 +58,13 @@ textarea {
 	outline: none;
 }
 
+input[type='radio'] + label,
+input[type='checkbox'] + label {
+	color: var(--textbox-color);
+}
+/* テーブル行内の背景色を透明に設定 */
+tr.evenTr input[type='button'],
+tr.evenTr button,
 tr.evenTr input[type='text'],
 tr.evenTr input[type='password'],
 tr.evenTr input[type='number'],
@@ -51,6 +74,14 @@ tr.evenTr textarea {
 	background-color: rgba(255,255,255,0.0);
 }
 
+tr.evenTr input[type='button']:hover,
+tr.evenTr button:hover {
+	color: var(--button-hover-color);
+	background: var(--button-hover-background-color);
+}
+
+tr.oddTr input[type='button'],
+tr.oddTr button,
 tr.oddTr input[type='text'],
 tr.oddTr input[type='password'],
 tr.oddTr input[type='number'],
@@ -59,6 +90,13 @@ tr.oddTr select,
 tr.oddTr textarea {
 	background-color: rgba(255,255,255,0.0);
 }
+
+tr.oddTr input[type='button']:hover,
+tr.oddTr button:hover {
+	color: var(--button-hover-color);
+	background: var(--button-hover-background-color);
+}
+
 
 /* テキストボックスロック時のスタイル */
 .lockedTextbox {

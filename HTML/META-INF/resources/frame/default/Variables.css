@@ -52,27 +52,35 @@
 	--base-color03: hsl(207,51%,85.0%);
 	--base-color04: hsl(207,51%,100.0%);
 
+	/* ボーダー色 */
+	--border-color: var(--base-color02);
+	--text-color: var(--base-color00);
+
 	/* ボタン関連 */
 	--button-color: var(--base-color00);
 	--button-background-color: var(--base-color04);
-	--button-border-color: var(--base-color02);
+	--button-border-color: var(--border-color);
 
 	--button-hover-color: var(--base-color04);
 	--button-hover-background-color: var(--base-color01);
 
 	/* テキストボックスまたはプルダウン関連 */
-	--textbox-color: var(--base-color00);
+	--textbox-color: black;
 	--textbox-background-color: var(--base-color04);
-	--textbox-border-color: var(--base-color02);
+	--textbox-border-color: var(--border-color);
 
 	/* テーブル関連色 */
-	--th-color: var(--base-color00);		/* thの背景色 */
+	--th-color: var(--base-color00);				/* thの背景色 */
 	--th-background-color: var(--base-color01);		/* thの背景色 */
 	--even-tr-background-color: var(--base-color04);
 	--odd-tr-background-color: var(--base-color03);
 
 	/* フォーム関連設定 */
-	--form-border-color: var(--base-color02);
+	--form-border-color: var(--border-color);
+
+	/* アンカーの色 */
+	--anchor-color: var(--text-color);
+	--anchor-hover-color: var(--text-color);
 
 }
 

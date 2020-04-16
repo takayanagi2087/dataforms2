@@ -31,10 +31,10 @@
 	--footer-height: 30px;	/* フッターの高さ */
 
 	/* 色の系統指定 */
-	--base-color: 0,0%;		/* グレー系統 */
-	--base-color: 207,51%;	/* 青系統 */
 	--base-color: 140,38%;	/* 緑系統 */
 	--base-color: 0,70%;	/* 赤系統 */
+	--base-color: 0,0%;		/* グレー系統 */
+	--base-color: 207,51%;	/* 青系統 */
 
 	--frame-base-color: var(--base-color);	/* クレー系統*/
 	--menu-base-color: var(--base-color);	/* 緑系統 */

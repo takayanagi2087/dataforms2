@@ -53,21 +53,22 @@ h3 {
 .headerDiv .systemName {
 	font-size: 140%;
 	text-align: left;
-	background-color: lavender;
+	background-color: var(--header1-background-color);
 	vertical-align: middle;
 }
 
 /* ページ名ブロック */
 .headerDiv .pageName {
-	background-color: beige;
+	background-color: var(--header2-background-color);
  	text-align: left;
 }
 
 /* ユーザ情報 */
 .headerDiv .loginInfo {
 	height: 100%;
-	background-color: beige;
+	background-color: var(--header2-background-color);
  	text-align: right;
+ 	padding-right: 4px;
 }
 
 /*

@@ -23,21 +23,20 @@ ul.accordion ul{
 	padding:0px;
 }
 
-
-ul.accordion li p{
-	background: #c0c0e0;
+/* メニュー1階層目 */
+ul.accordion li p {
+	background-color: var(--menu-level1-background-color);
 	padding-left:6px;
 	padding-top: 2px;
 	padding-bottom: 2px;
 	margin:1px 1px 1px 1px;
-	border-bottom: 1px solid #0f0f0f;
 	cursor: pointer;/*カーソルを通常の物に*/
 }
 
+/* メニュー2階層目 */
 ul.accordion ul li{
-	background: #f0f0f0;
+	background-color: var(--menu-level2-background-color);
 	padding:1px 1px 1px 10px;
-	border-bottom: 1px dashed #fff;
 }
 
 ul.accordion ul li:last-child{

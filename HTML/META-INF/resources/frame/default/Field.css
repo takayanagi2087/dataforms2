@@ -30,6 +30,7 @@ input[type='button']:hover,
 input[type='submit']:hover {
 	color: var(--button-hover-color);
 	background: var(--button-hover-background-color);
+	font-weight: bold;
 }
 
 .largeButton {

@@ -35,43 +35,58 @@
 	--base-color: 207,51%;	/* 青系統 */
 	--base-color: 140,38%;	/* 緑系統 */
 
-	/* テキストー色 */
-	--text-color: hsl(var(--base-color),10%);
-	--border-color: hsl(var(--base-color),60%);
+	--frame-base-color: 207,51%;	/* クレー系統*/
+	--menu-base-color: 207,51%;	/* 緑系統 */
+	--field-base-color: 207,51%;	/* 青系統 */
+
+	/* フィールド関連の配色 */
+	--field-text-color: hsl(var(--field-base-color),0%);
+	--field-border-color: hsl(var(--field-base-color),60%);
+	--field-background-color: hsl(var(--field-base-color),100%);
+
 
 	/* ボタン関連 */
-	--button-color: hsl(var(--base-color),10%);
-	--button-background-color: hsl(var(--base-color),100.0%);
-	--button-border-color: var(--border-color);
-	--button-hover-color: hsl(var(--base-color),100.0%);
-	--button-hover-background-color: hsl(var(--base-color),75.0%);
+	--button-color: var(--field-text-color);
+	--button-background-color: var(--field-background-color);
+	--button-border-color: var(--field-border-color);
+	--button-hover-color: var(--field-background-color);
+	--button-hover-background-color: hsl(var(--field-base-color),75.0%);
 
 	/* テキストボックスまたはプルダウン関連 */
-	--textbox-color: black;
-	--textbox-background-color: hsl(var(--base-color),100.0%);
-	--textbox-border-color: var(--border-color);
+	--textbox-color: var(--field-text-color);
+	--textbox-background-color: var(--field-background-color);
+	--textbox-border-color: var(--field-border-color);
 
 	/* テーブル関連色 */
-	--th-color: hsl(var(--base-color),10%);				/* thの前景色 */
-	--th-background-color: hsl(var(--base-color),75.0%);		/* thの背景色 */
-	--even-tr-background-color: hsl(var(--base-color),100.0%);
-	--odd-tr-background-color: hsl(var(--base-color),85.0%);
+	--th-color: hsl(var(--field-base-color),10%);				/* thの前景色 */
+	--th-background-color: hsl(var(--field-base-color),75.0%);		/* thの背景色 */
+	--even-tr-background-color: hsl(var(--field-base-color),100.0%);
+	--odd-tr-background-color: hsl(var(--field-base-color),85.0%);
 
-	/* フォーム関連設定 */
-	--form-border-color: var(--border-color);
+	--scrollbar-track-color: hsl(var(--field-base-color),95.0%);
+	--scrollbar-thumb-color: hsl(var(--field-base-color),50.0%);
+
+	/* フォームのボーダー */
+	--form-border-color: var(--field-border-color);
 
 	/* アンカーの色 */
-	--anchor-color: var(--text-color);
-	--anchor-hover-color: var(--text-color);
+	--anchor-color: var(--field-text-color);
+	--anchor-hover-color: var(--field-text-color);
 
 	/* ヘッター1 */
-	--header1-background-color: hsl(var(--base-color),75.0%);
-	--header2-background-color: hsl(var(--base-color),90.0%);
-	--footer-background-color: hsl(var(--base-color),75.0%);
+	--header1-color: black;
+	--header1-background-color: hsl(var(--frame-base-color),75.0%);
+	--header2-color: black;
+	--header2-background-color: hsl(var(--frame-base-color),90.0%);
+	--footer-color: black;
+	--footer-background-color: hsl(var(--frame-base-color),75.0%);
 
+	/* メニュー BOX*/
+	--menu-box-background-color: hsl(var(--menu-base-color),100.0%);
+	--menu-box-border-color: hsl(var(--menu-base-color),60.0%);
 	/* メニュー1階層目 */
-	--menu-level1-background-color: hsl(var(--base-color),75.0%);
+	--menu-level1-background-color: hsl(var(--menu-base-color),75.0%);
 	/* メニュー2階層目 */
-	--menu-level2-background-color: hsl(var(--base-color),95.0%);
+	--menu-level2-background-color: hsl(var(--menu-base-color),95.0%);
 }
 

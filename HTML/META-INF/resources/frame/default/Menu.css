@@ -80,8 +80,12 @@ ul.accordion ul li:last-child{
 		position: absolute;
     	top:  50px;
     	left: 10px;
+    	padding-top: 4px;
 		width: var(--menu-width);
-		background-color: rgba(192,192,192,1.0);
+		background-color: var(--menu-box-background-color);
+		border-style: solid;
+		border-width: 1px;
+		border-color: var(--menu-box-border-color);
 	}
 }
 
@@ -97,7 +101,10 @@ ul.accordion ul li:last-child{
 		top: 56px;
 		left: 12px;
 		width: var(--menu-width);
-		background-color: rgba(192,192,192,1.0);
+		background-color: var(--menu-box-background-color);
+		border-style: solid;
+		border-width: 1px;
+		border-color: var(--menu-box-border-color);
 	}
 }
 

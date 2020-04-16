@@ -52,6 +52,7 @@
 	--button-border-color: var(--field-border-color);
 	--button-hover-color: var(--field-background-color);
 	--button-hover-background-color: hsl(var(--field-base-color),75.0%);
+	--button-disabled-color:hsl(var(--field-base-color),80.0%);
 
 	/* テキストボックスまたはプルダウン関連 */
 	--textbox-color: var(--field-text-color);

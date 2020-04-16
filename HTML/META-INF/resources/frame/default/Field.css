@@ -33,6 +33,16 @@ input[type='submit']:hover {
 	font-weight: bold;
 }
 
+button:disabled,
+input[type='button']:disabled,
+input[type='submit']:disabled {
+	color: var(--button-disabled-color);
+	border-color: var(--button-disabled-color);
+	background: var(--button-background-color);
+	font-weight: normal;
+
+}
+
 .largeButton {
 	margin-top: 4px;
 	height: 30px;

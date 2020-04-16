@@ -1011,9 +1011,9 @@ public class WebResourceForm extends Form {
 		@Override
 		protected String getFormButtionHtml() {
 			String tabs = this.getTabs();
-			String ret = tabs + "\t<input type=\"submit\" id=\"queryButton\" value=\"検索\">\n" +
-					tabs + "\t<input type=\"button\" id=\"resetButton\" value=\"リセット\">&nbsp;\n" +
-					tabs + "\t<input type=\"button\" id=\"newButton\" value=\"新規登録\">\n";
+			String ret = tabs + "\t<input type=\"submit\" id=\"queryButton\" class=\"largeButton\" value=\"検索\">\n" +
+					tabs + "\t<input type=\"button\" id=\"resetButton\" class=\"largeButton\" value=\"リセット\">&nbsp;\n" +
+					tabs + "\t<input type=\"button\" id=\"newButton\" class=\"largeButton\" value=\"新規登録\">\n";
 			return ret;
 		}
 	}
@@ -1073,11 +1073,11 @@ public class WebResourceForm extends Form {
 		@Override
 		protected String getFormButtionHtml() {
 			String tabs = this.getTabs();
-			String ret = tabs + "\t<input type=\"button\" id=\"confirmButton\" value=\"確認\"/>\n" +
-					tabs + "\t<input type=\"button\" id=\"saveButton\" value=\"登録\"/>\n" +
-					tabs + "\t<input type=\"button\" id=\"resetButton\" value=\"リセット\"/>\n" +
-					tabs + "\t<input type=\"button\" id=\"deleteButton\" value=\"削除\"/>\n" +
-					tabs + "\t<input type=\"button\" id=\"backButton\" value=\"戻る\"/>\n";
+			String ret = tabs + "\t<input type=\"button\" id=\"confirmButton\" class=\"largeButton\" value=\"確認\"/>\n" +
+					tabs + "\t<input type=\"button\" id=\"saveButton\" class=\"largeButton\" value=\"登録\"/>\n" +
+					tabs + "\t<input type=\"button\" id=\"resetButton\" class=\"largeButton\" value=\"リセット\"/>\n" +
+					tabs + "\t<input type=\"button\" id=\"deleteButton\" class=\"largeButton\" value=\"削除\"/>\n" +
+					tabs + "\t<input type=\"button\" id=\"backButton\" class=\"largeButton\" value=\"戻る\"/>\n";
 			return ret;
 		}
 

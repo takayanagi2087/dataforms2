@@ -12,6 +12,7 @@ table caption {
 }
 
 th {
+	color: var(--th-color);
 	background-color: var(--th-background-color);
 	text-align:center;
 	font-weight:normal;

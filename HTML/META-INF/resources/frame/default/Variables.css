@@ -32,28 +32,47 @@
 	--footer-background-color: lavender; /* フッターの背景色 */
 
 	/* 色関連設定 */
-	--base-color: black;				/* 基本前景色 */
-	--base-background-color: white;		/* 基本背景色 */
-	--base-border-color: #dddddd;		/* 基本ボーダー色 */
+	/* グレー */
+	--base-color00: hsl(0,0%,0%);
+	--base-color01: hsl(0,0%,85.0%);
+	--base-color02: hsl(0,0%,90.0%);
+	--base-color03: hsl(0,0%,95.0%);
+	--base-color04: hsl(0,0%,100.0%);
+	/* 緑 */
+	--base-color00: hsl(140,38%,10%);
+	--base-color01: hsl(140,38%,75.0%);
+	--base-color02: hsl(140,38%,80.0%);
+	--base-color03: hsl(140,38%,85.0%);
+	--base-color04: hsl(140,38%,100.0%);
+
+	/* 青 */
+	--base-color00: hsl(207,51%,10%);
+	--base-color01: hsl(207,51%,75.0%);
+	--base-color02: hsl(207,51%,80.0%);
+	--base-color03: hsl(207,51%,85.0%);
+	--base-color04: hsl(207,51%,100.0%);
 
 	/* ボタン関連 */
-	--button-color: var(--base-color);
-	--button-background-color: var(--base-background-color);
-	--button-border-color: var(--base-border-color);
+	--button-color: var(--base-color00);
+	--button-background-color: var(--base-color04);
+	--button-border-color: var(--base-color02);
+
+	--button-hover-color: var(--base-color04);
+	--button-hover-background-color: var(--base-color01);
 
 	/* テキストボックスまたはプルダウン関連 */
-	--textbox-color: var(--base-color);
-	--textbox-background-color: var(--base-background-color);
-	--textbox-border-color: var(--base-border-color);
+	--textbox-color: var(--base-color00);
+	--textbox-background-color: var(--base-color04);
+	--textbox-border-color: var(--base-color02);
 
 	/* テーブル関連色 */
-	--th-background-color: #cccccc;		/* thの背景色 */
-	--even-tr-background-color: white;
-	--odd-tr-background-color: #eeeeee;
-
+	--th-color: var(--base-color00);		/* thの背景色 */
+	--th-background-color: var(--base-color01);		/* thの背景色 */
+	--even-tr-background-color: var(--base-color04);
+	--odd-tr-background-color: var(--base-color03);
 
 	/* フォーム関連設定 */
-	--form-border-color: var(--base-border-color);
+	--form-border-color: var(--base-color02);
 
 }
 

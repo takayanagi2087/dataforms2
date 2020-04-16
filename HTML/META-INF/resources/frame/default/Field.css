@@ -14,8 +14,8 @@ button, input[type='button'], input[type='submit'] {
 }
 
 button:hover, input[type='button']:hover, input[type='submit']:hover {
-  background: var(--button-color);
-  color: var(--button-background-color);
+	color: var(--button-hover-color);
+	background: var(--button-hover-background-color);
 }
 
 .largeButton {

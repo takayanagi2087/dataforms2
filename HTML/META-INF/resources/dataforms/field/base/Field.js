@@ -408,30 +408,24 @@ class Field extends WebComponent {
 	 */
 	lockFile(lk) {
 		var comp = this.get();
-		var span = this.addSpan(comp);
-		var check = this.parent.get(this.id + "_ck");
+		var selbtn = this.parent.get(this.id + "_sel");
+		var delbtn = this.parent.get(this.id + "_del");
 		var fnlink = this.parent.get(this.id + "_link");
 		if (lk) {
-			check.hide();
-			check.next("label:first").hide();
-			comp.hide();
+			selbtn.hide();
+			delbtn.hide();
 			if (comp.val().length > 0) {
 				comp.next("a:first").hide();
 			}
-			span.show();
-			this.setTextValue(span, comp.val());
 		} else {
+			selbtn.show();
 			var v = fnlink.attr("href");
 			if (v != null && v.length > 0) {
-				check.show();
-				check.next("label:first").show();
+				delbtn.show();
 			} else {
-				check.hide();
-				check.next("label:first").hide();
+				delbtn.hide();
 			}
-			comp.show();
 			comp.next("a:first").show();
-			span.hide();
 		}
 	}
 

@@ -31,6 +31,7 @@ input[type='submit']:hover {
 	color: var(--button-hover-color);
 	background: var(--button-hover-background-color);
 	font-weight: bold;
+	cursor: pointer;
 }
 
 button:disabled,
@@ -52,6 +53,23 @@ button:not(.largeButton),
 input[type='button']:not(.largeButton),
 input[type='submit']:not(.largeButton) {
 	height: 26px;
+}
+
+button.fileFieldButton {
+	width: 16px;
+	padding-left: 0px;
+	padding-right: 0px;
+	color: var(--button-color);
+	background-color: var(--button-background-color);
+	border-style: none;
+}
+
+button.fileFieldButton:hover {
+	color: var(--button-color);
+	background-color: var(--button-background-color);
+	border-style: none;
+	font-weight: normal;
+	cursor: pointer;
 }
 
 /* テキストボックスまたはプルダウンスタイル */

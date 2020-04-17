@@ -44,11 +44,7 @@ class FileField extends Field {
 			thisComp.delFile($(this));
 		});
 		comp.change(function() {
-			selfile.text($(this).val());
-			fnlink.html(fnlink.attr("data-value"));
-			fnhidden.val(fnlink.attr("data-value"));
-			thisComp.id = $(this).attr(thisComp.getIdAttribute());
-			thisComp.showDelCheckbox();
+			thisComp.selectFile($(this));
 		});
 		if (this.readonly) {
 			this.lock(true);
@@ -62,6 +58,31 @@ class FileField extends Field {
 		} else {
 			this.parent.get(selid).hide();
 		}
+	}
+
+	/**
+	 * ファイルの選択処理。
+	 * @param {jQuery} fld ファイルフィールド。
+	 */
+	selectFile(fld) {
+		var selfileid = this.id + "_selfile"; // 選択ボタンID.
+		var selfile = this.parent.get(selfileid);
+		selfile.text(fld.val());
+
+		var linkid = this.id + "_link"; // ダウンロードリンク.
+		var fnlink = this.parent.get(linkid);
+
+		fnlink.attr("data-value", "");
+		fnlink.attr("data-size", "");
+		fnlink.attr("data-dlparam", "");
+
+		fnlink.html(fnlink.attr("data-value"));
+
+		var fnid = this.id + "_fn"; // ファイル名のリンク.
+		var fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
+		fnhidden.val(fnlink.attr("data-value"));
+		this.id = fld.attr(this.getIdAttribute());
+		this.showDelCheckbox();
 	}
 
 	/**

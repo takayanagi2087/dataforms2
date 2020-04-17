@@ -22,14 +22,6 @@ class StreamingField extends FileField {
 		var linkid = this.id + "_link";
 		var link = this.parent.get(linkid);
 		var player = this.getPlayer();
-		this.get().change(function(){
-			for(var j=0; j<this.files.length; j++){
-				var url = URL.createObjectURL(this.files[j])
-				logger.log("url=" + url);
-				player.attr("src", url);
-			}
-			thisField.showDelCheckbox();
-		});
 		player.on("abort", function() {
 			logger.log("abort");
 			setTimeout(function() {
@@ -43,6 +35,23 @@ class StreamingField extends FileField {
 			}, 3000);
 		});
 	}
+
+	/**
+	 * ファイルの選択処理。
+	 * @param {jQuery} fld ファイルフィールド。
+	 */
+	selectFile(fld) {
+		super.selectFile(fld);
+		var player = this.getPlayer();
+		var f = fld.get()[0];
+		for(var j=0; j < f.files.length; j++){
+			var url = URL.createObjectURL(f.files[j])
+			logger.log("url=" + url);
+			player.attr("src", url);
+		}
+	}
+
+
 	/**
 	 * 削除チェックボックスの処理を行います。
 	 */

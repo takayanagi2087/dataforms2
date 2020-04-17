@@ -45,10 +45,17 @@ class ImageField extends FileField {
 				thisField.showImage(val);
 			}
 		});
-		this.get().change(function() {
-			thisField.previewImage(this, thumb)
-			thisField.showDelCheckbox();
-		});
+	}
+
+	/**
+	 * ファイルの選択処理。
+	 * @param {jQuery} fld ファイルフィールド。
+	 */
+	selectFile(fld) {
+		super.selectFile(fld);
+		var thumbid = this.id + "_thm"; // サムネイルID.
+		var thumb = this.parent.get(thumbid);
+		this.previewImage(fld, thumb);
 	}
 
 	/**
@@ -70,9 +77,11 @@ class ImageField extends FileField {
 
 	/**
 	 * 画像ファイル指定時のprevie表示。
+	 * @param {jQuery} inputFile ファイルフィールド。
+	 * @param {jQuery} thumb サムネイル。
 	 */
 	previewImage(inputFile, thumb) {
-		var fileList = inputFile.files;
+		var fileList = inputFile.get()[0].files;
 		if (fileList.length > 0) {
 			var fileReader = new FileReader() ;
 			// 読み込み後の処理を決めておく
@@ -169,7 +178,4 @@ class ImageField extends FileField {
 		}
 	}
 }
-
-
-
 

@@ -55,7 +55,11 @@ class FileField extends Field {
 		} else {
 			this.lock(false);
 		}
-		comp.hide();
+		var tag = comp.prop("tagName");
+		var type = comp.prop("type");
+		if (tag == "INPUT" && type.toLowerCase() == "file") {
+			comp.hide();
+		}
 	}
 
 	/**

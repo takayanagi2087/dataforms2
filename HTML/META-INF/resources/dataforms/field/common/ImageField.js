@@ -27,7 +27,6 @@ class ImageField extends FileField {
 		thumb.attr("height", this.thumbnailHeight);
 
 		thumb.click(function(e) {
-			logger.log("file=" + thisField.get().val().length);
 			var fval = thisField.get().val();
 			var val = {};
 			if (fval.length == 0) {

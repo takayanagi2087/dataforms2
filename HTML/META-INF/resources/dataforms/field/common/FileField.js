@@ -59,6 +59,8 @@ class FileField extends Field {
 		var type = comp.prop("type");
 		if (tag == "INPUT" && type.toLowerCase() == "file") {
 			comp.hide();
+		} else {
+			this.parent.get(selid).hide();
 		}
 	}
 

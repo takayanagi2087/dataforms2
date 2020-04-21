@@ -31,6 +31,7 @@ import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;
 import dataforms.util.StringUtil;
+import dataforms.validator.DisplayedRequiredValidator;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
@@ -134,12 +135,19 @@ public class DaoGeneratorEditForm extends EditForm {
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);
 		//
-		this.addField((new FunctionSelectField(ID_EDIT_FORM_QUERY_FUNCTION_SELECT)).setPackageFieldId(ID_EDIT_FORM_QUERY_PACKAGE_NAME).setComment("単一レコード取得用問合せの機能"));
-		this.addField((new PackageNameField(ID_EDIT_FORM_QUERY_PACKAGE_NAME)).setComment("単一レコード取得用問合せのパッケージ"));
-		this.addField((new QueryOrTableClassNameField(ID_EDIT_FORM_QUERY_CLASS_NAME)).setPackageNameFieldId(ID_EDIT_FORM_QUERY_PACKAGE_NAME))
+		this.addField((new FunctionSelectField(ID_EDIT_FORM_QUERY_FUNCTION_SELECT))
+			.setPackageFieldId(ID_EDIT_FORM_QUERY_PACKAGE_NAME)
+			.setComment("単一レコード取得用問合せの機能"))
+			.addValidator(new DisplayedRequiredValidator());
+		this.addField((new PackageNameField(ID_EDIT_FORM_QUERY_PACKAGE_NAME))
+			.setComment("単一レコード取得用問合せのパッケージ"))
+			.addValidator(new DisplayedRequiredValidator());
+		this.addField((new QueryOrTableClassNameField(ID_EDIT_FORM_QUERY_CLASS_NAME))
+			.setPackageNameFieldId(ID_EDIT_FORM_QUERY_PACKAGE_NAME))
 			.setCalcEventField(true)
 			.setAutocomplete(true)
-			.setRelationDataAcquisition(true);
+			.setRelationDataAcquisition(true)
+			.addValidator(new DisplayedRequiredValidator());
 		//
 		{
 			FieldList flist = new FieldList();
@@ -307,7 +315,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		}
 		String queryType = (String) data.get("queryType");
 		if ("0".equals(queryType)) {
-			javasrc = this.noEditForm(javasrc);
+			javasrc = this.noEditForm(javasrc, implist);
 		} else if ("1".equals(queryType)) {
 			javasrc = this.singleRecordEditForm(data, implist, javasrc);
 		} else {
@@ -392,12 +400,22 @@ public class DaoGeneratorEditForm extends EditForm {
 			String queryPackage = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
 			String queryClass = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
 			if (!StringUtil.isBlank(queryClass)) {
-				implist.add(queryPackage + "." + queryClass);
-				javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "new " + queryClass + "()");
+				if (!StringUtil.isBlank(queryClass)) {
+					implist.add(queryPackage + "." + queryClass);
+					javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "new " + queryClass + "()");
+				} else {
+					implist.add(Query.class.getName());
+					javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
+				}
 			}
-			String className = queryPackage + "." + queryClass;
-			Table mainTable = this.getMainTable(className);
-			javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
+			if (!StringUtil.isBlank(queryClass)) {
+				String className = queryPackage + "." + queryClass;
+				Table mainTable = this.getMainTable(className);
+				javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
+			} else {
+				implist.add(Table.class.getName());
+				javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", "Table");
+			}
 		}
 		StringBuilder sb = new StringBuilder();
 		@SuppressWarnings("unchecked")
@@ -420,13 +438,15 @@ public class DaoGeneratorEditForm extends EditForm {
 	 */
 	private Table getMainTable(final String className) throws Exception {
 		Table mainTable = null;
-		Class<?> qclass = Class.forName(className);
-		Object obj = qclass.getConstructor().newInstance();
-		if (obj instanceof Query) {
-			Query q = (Query) obj;
-			mainTable = q.getMainTable();
-		} else if (obj instanceof Table){
-			mainTable = (Table) obj;
+		if (!StringUtil.isBlank(className)) {
+			Class<?> qclass = Class.forName(className);
+			Object obj = qclass.getConstructor().newInstance();
+			if (obj instanceof Query) {
+				Query q = (Query) obj;
+				mainTable = q.getMainTable();
+			} else if (obj instanceof Table){
+				mainTable = (Table) obj;
+			}
 		}
 		return mainTable;
 	}
@@ -434,9 +454,11 @@ public class DaoGeneratorEditForm extends EditForm {
 	/**
 	 * 編集フォーム無DAOソース生成を行います。
 	 * @param javasrc javaソース文字列。
+	 * @param implist インポートリスト。
 	 * @return javaソース文字列。
 	 */
-	private String noEditForm(String javasrc) {
+	private String noEditForm(String javasrc, final List<String> implist) {
+		implist.add(Table.class.getName());
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "");
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", "Table");

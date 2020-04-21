@@ -329,16 +329,6 @@ public class ExcelReport extends Report {
 	 * @param to コピー先行。
 	 */
 	protected void copyRow(final Sheet sheet, final int from, final int to) {
-/*		Row fromRow = sheet.getRow(from);
-		if (fromRow != null) {
-			Row toRow = sheet.getRow(to);
-			if (toRow != null) {
-				sheet.removeRow(toRow);
-			}
-			toRow = sheet.createRow(to);
-			toRow.setHeight(fromRow.getHeight());
-			this.copyCells(fromRow, toRow);
-		}*/
 		this.copyRow(sheet, from, sheet, to);
 	}
 
@@ -364,6 +354,52 @@ public class ExcelReport extends Report {
 			}
 		}
 	}
+
+
+	/**
+	 * リストのインデックスを設定します。
+	 * @param sh シート。
+	 * @param listId リストID。
+	 * @param rowIndex 行インデックス。
+	 * @param dataIndex データのインデックス。
+	 */
+	protected void setListIndex(final Sheet sh, final String listId, final int rowIndex, final int dataIndex) {
+		Row row = sh.getRow(rowIndex);
+		for (int i = 0; i < row.getLastCellNum(); i++) {
+			Cell cell = row.getCell(i);
+			String text = cell.getStringCellValue();
+			if (text != null) {
+				if (text.indexOf("[0]") > 0) {
+					String v = text.replaceAll(listId + "\\[0\\]", listId + "[" + dataIndex + "]");
+					cell.setCellValue(v);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Excelワークブックのリストを展開。
+	 * <pre>
+	 * 「listId[0].aaa,listId[0].bbb...」と定義した開始行を指定し、指定行数分のリスト設定を行います。
+	 * </pre>
+	 *
+	 * @param listId リストのID。
+	 * @param startRow 開始行。
+	 * @param rows 行数。
+	 * @throws Exception 例外。
+	 */
+	public void buildList(final String listId, final int startRow, final int rows) throws Exception {
+		Workbook wb = this.getTamplate();
+		Sheet sh = wb.getSheetAt(0);
+		for (int i = 1; i < rows; i++) {
+			int torow = startRow + i;
+			this.copyRow(sh, startRow, sh, torow);
+			this.setListIndex(sh, listId, torow, i);
+		}
+		this.setRowsParPage(rows);
+	}
+
+
 
 	/**
 	 * セルの位置情報。

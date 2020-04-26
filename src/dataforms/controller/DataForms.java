@@ -129,31 +129,6 @@ public class DataForms extends WebComponent {
 	}
 
 
-
-
-    /**
-     * javascriptファイルを取得します。
-     * <pre>
-     * partsパラメータに対応したjavascriptファイルの内容を取得します。
-     * </pre>
-     *
-     * @param params パラメータ。
-     * @return javascriptファイルの内容。
-     * @throws Exception 例外。
-     */
-	/*
-    @WebMethod(useDB = false)
-	public JsonResponse getJs(final Map<String, Object> params) throws Exception {
-		this.methodStartLog(log, params);
-		String jspath = (String) params.get("parts");
-		String jstext = this.getWebResource("/" + jspath);
-		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, jstext);
-		this.methodFinishLog(log, ret);
-		return ret;
-	}
-	*/
-
-
 	/**
 	 * フォームマップを取得します。
 	 * @return フォームマップ。

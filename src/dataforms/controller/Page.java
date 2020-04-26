@@ -931,44 +931,44 @@ public class Page extends DataForms {
 	}
 
     /**
-     * 要求情報への弱参照.
+     * 要求情報への弱参照。
      */
     private WeakReference<HttpServletRequest> request = null;
 
     /**
-     * 応答情報への弱参照.
+     * 応答情報への弱参照。
      */
     private WeakReference<HttpServletResponse> response = null;
 
 
 
 	/**
-	 * 要求情報を取得する.
-	 * @return 要求情報.
+	 * 要求情報を取得します。
+	 * @return 要求情報。
 	 */
 	public final HttpServletRequest getRequest() {
 		return request.get();
 	}
 
 	/**
-	 * 要求情報を設定する.
-	 * @param request 要求情報.
+	 * 要求情報を設定します。
+	 * @param request 要求情報。
 	 */
 	public void setRequest(final HttpServletRequest request) {
 		this.request = new WeakReference<HttpServletRequest>(request);
 	}
 
 	/**
-	 * 応答情報を取得する.
-	 * @return 応答情報.
+	 * 応答情報を取得します。
+	 * @return 応答情報。
 	 */
 	public final HttpServletResponse getResponse() {
 		return response.get();
 	}
 
 	/**
-	 * 応答情報を設定する.
-	 * @param response 応答情報.
+	 * 応答情報を設定します。
+	 * @param response 応答情報。
 	 */
 	public void setResponse(final HttpServletResponse response) {
 		this.response = new WeakReference<HttpServletResponse>(response);
@@ -977,7 +977,7 @@ public class Page extends DataForms {
 
 	/**
 	 * dataforms.jarのバージョンを取得します。
-	 * @throws Exception 例外.
+	 * @throws Exception 例外。
 	 *
 	 */
 	public void initDataformsVersion() throws Exception {
@@ -1008,9 +1008,9 @@ public class Page extends DataForms {
 
     /**
 	 * ページ情報を取得します。
-	 * @param params パラメータ.
-	 * @return 応答.
-	 * @throws Exception 例外.
+	 * @param params パラメータ。
+	 * @return 応答。
+	 * @throws Exception 例外。
 	 */
     @WebMethod(useDB = true)
 	public JsonResponse getPageInfo(final Map<String, Object> params) throws Exception {
@@ -1020,8 +1020,8 @@ public class Page extends DataForms {
 	}
 
     /**
-     * ログイン中のユーザIDを取得する.
-     * @return ログイン中のID.
+     * ログイン中のユーザIDを取得する。
+     * @return ログイン中のID。
      */
     public long getUserId() {
     	long userid = -1L;
@@ -1035,12 +1035,12 @@ public class Page extends DataForms {
 
 
 	/**
-	 * 現在の言語コードを取得する.
+	 * 現在の言語コードを取得する。
 	 * <pre>
 	 * アクセスしたブラウザの言語コードがサポートされていない場合、
-	 * "default"を設定する.
+	 * "default"を設定する。
 	 * </pre>
-	 * @return 現在の言語コード.
+	 * @return 現在の言語コード。
 	 */
 	public String getCurrentLanguage() {
 		String lang = DataFormsServlet.getFixedLanguage();
@@ -1055,8 +1055,8 @@ public class Page extends DataForms {
 	}
 
 	/**
-	 * セッションからユーザ情報を取得する.
-	 * @return ユーザ情報.
+	 * セッションからユーザ情報を取得します。
+	 * @return ユーザ情報。
 	 */
 	public Map<String, Object> getUserInfo() {
 		@SuppressWarnings("unchecked")
@@ -1065,10 +1065,10 @@ public class Page extends DataForms {
 	}
 
 	/**
-	 * 該当するユーザ属性を持つかをチェックする.
-	 * @param t ユーザ属性.
-	 * @param v ユーザ属性値.
-	 * @return 指定されたユーザ属性を持つ場合true.
+	 * 該当するユーザ属性を持つかをチェックします。
+	 * @param t ユーザ属性。
+	 * @param v ユーザ属性値。
+	 * @return 指定されたユーザ属性を持つ場合true。
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean checkUserAttribute(final String t, final String v) {
@@ -1112,16 +1112,16 @@ public class Page extends DataForms {
 
 
 	/**
-	 * フレームのパスを取得する.
-	 * @return レイアウトのパス.
+	 * フレームのパスを取得します。
+	 * @return レイアウトのパス。
 	 */
     public static String getFramePath() {
 		return framePath;
 	}
 
     /**
-     * フレームのパスを設定する.
-     * @param framePath レイアウトのパス.
+     * フレームのパスを設定する。
+     * @param framePath レイアウトのパス。
      */
 	public static void setFramePath(final String framePath) {
 		Page.framePath = framePath;
@@ -1140,16 +1140,16 @@ public class Page extends DataForms {
 	}
 
 	/**
-	 * メニュー項目フラグを取得する.
-	 * @return メニュー項目フラグ.
+	 * メニュー項目フラグを取得します。
+	 * @return メニュー項目フラグ。
 	 */
 	public boolean isMenuItem() {
 		return menuItem;
 	}
 
 	/**
-	 * メニュー項目フラグを設定する.
-	 * @param menuItem メニュー項目フラグ.
+	 * メニュー項目フラグを設定します。
+	 * @param menuItem メニュー項目フラグ。
 	 */
 	public void setMenuItem(final boolean menuItem) {
 		this.menuItem = menuItem;
@@ -1167,7 +1167,7 @@ public class Page extends DataForms {
 
 	/**
 	 * フレーム無フラグを設定します。
-	 * @param noFrame フレーム無フラグ.
+	 * @param noFrame フレーム無フラグ。
 	 */
 	public void setNoFrame(final boolean noFrame) {
 		this.noFrame = noFrame;

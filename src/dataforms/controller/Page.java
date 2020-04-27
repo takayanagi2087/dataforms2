@@ -30,7 +30,6 @@ import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.AutoLoginCookie;
 import dataforms.util.ClassFinder;
-import dataforms.util.CryptUtil;
 import dataforms.util.MessagesUtil;
 import dataforms.util.SequentialProperties;
 import dataforms.util.StringUtil;
@@ -40,7 +39,7 @@ import dataforms.validator.FieldValidator;
 /**
  * ページ制御クラス。
  */
-public class Page extends DataForms {
+public class Page extends DataForms implements WebEntryPoint {
 
 	/**
      * Logger.
@@ -447,6 +446,7 @@ public class Page extends DataForms {
 	 * JDBC接続を設定します。
 	 * @param connection JDBC接続。
 	 */
+	@Override
 	public void setConnection(final Connection connection) {
 		this.connection = new WeakReference<Connection>(connection);
 	}
@@ -497,7 +497,7 @@ public class Page extends DataForms {
      * @return CSRF対策のTOKEN。
      * @throws Exception 例外。
      */
-    public String getCsrfToken() throws Exception{
+/*    public String getCsrfToken() throws Exception{
 		String token = null;
 		String pass = DataFormsServlet.getCsrfSessionidCrypPassword();
 		if (pass != null) {
@@ -510,14 +510,14 @@ public class Page extends DataForms {
 		return token;
 
     }
-
+*/
     /**
      * CSRF対策のリクエストチェックを行います。
      * @param param パラメータ。
      * @return 問題ない場合true。
      * @throws Exception 例外。
      */
-    public boolean isValidRequest(final Map<String, Object> param) throws Exception {
+/*    public boolean isValidRequest(final Map<String, Object> param) throws Exception {
     	boolean ret = false;
     	if (DataFormsServlet.getCsrfSessionidCrypPassword() == null) {
     		ret = true;
@@ -533,7 +533,7 @@ public class Page extends DataForms {
     	}
     	return ret;
     }
-
+*/
 	/**
 	 * HTMLにcssとscriptを追加します。
 	 * @param html HTML。
@@ -722,6 +722,7 @@ public class Page extends DataForms {
 	 * QueryStringマップを設定します。
 	 * @param map マップ。
 	 */
+	@Override
 	public void setQueryString(final Map<String, Object> map) {
 		this.queryString = map;
 	}
@@ -730,6 +731,7 @@ public class Page extends DataForms {
 	 * QueryStringマップを取得します。
 	 * @return QueryStringマップ。
 	 */
+	@Override
 	public Map<String, Object> getQueryString() {
 		return this.queryString;
 	}
@@ -946,6 +948,7 @@ public class Page extends DataForms {
 	 * 要求情報を取得します。
 	 * @return 要求情報。
 	 */
+    @Override
 	public final HttpServletRequest getRequest() {
 		return request.get();
 	}
@@ -954,6 +957,7 @@ public class Page extends DataForms {
 	 * 要求情報を設定します。
 	 * @param request 要求情報。
 	 */
+    @Override
 	public void setRequest(final HttpServletRequest request) {
 		this.request = new WeakReference<HttpServletRequest>(request);
 	}
@@ -962,6 +966,7 @@ public class Page extends DataForms {
 	 * 応答情報を取得します。
 	 * @return 応答情報。
 	 */
+    @Override
 	public final HttpServletResponse getResponse() {
 		return response.get();
 	}
@@ -970,10 +975,10 @@ public class Page extends DataForms {
 	 * 応答情報を設定します。
 	 * @param response 応答情報。
 	 */
+    @Override
 	public void setResponse(final HttpServletResponse response) {
 		this.response = new WeakReference<HttpServletResponse>(response);
 	}
-
 
 	/**
 	 * dataforms.jarのバージョンを取得します。
@@ -1058,12 +1063,12 @@ public class Page extends DataForms {
 	 * セッションからユーザ情報を取得します。
 	 * @return ユーザ情報。
 	 */
-	public Map<String, Object> getUserInfo() {
+/*	public Map<String, Object> getUserInfo() {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute("userInfo");
 		return userInfo;
 	}
-
+*/
 	/**
 	 * 該当するユーザ属性を持つかをチェックします。
 	 * @param t ユーザ属性。

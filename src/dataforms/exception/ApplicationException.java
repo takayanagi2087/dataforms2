@@ -1,6 +1,6 @@
 package dataforms.exception;
 
-import dataforms.controller.Page;
+import dataforms.controller.WebEntryPoint;
 import dataforms.util.MessagesUtil;
 
 /**
@@ -20,12 +20,12 @@ public class ApplicationException extends Exception {
 
 	/**
 	 * コンストラクタ。
-	 * @param page エラーが発生したページ。
+	 * @param epoint エラーが発生したページ。
 	 * @param msgkey メッセージのキー。
 	 * @param args メッセージ引数。
 	 */
-	public ApplicationException(final Page page, final String msgkey, final String... args) {
-		super(MessagesUtil.getMessage(page, msgkey, args));
+	public ApplicationException(final WebEntryPoint epoint, final String msgkey, final String... args) {
+		super(MessagesUtil.getMessage(epoint, msgkey, args));
 		this.messageKey = msgkey;
 	}
 

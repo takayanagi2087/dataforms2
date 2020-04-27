@@ -50,12 +50,12 @@ public class WebComponent implements JDBCConnectableObject {
 	private static WeakReference<DataFormsServlet> servlet = null;
 
 	/**
-	 * Pageへの参照。
+	 * WebEntryPointへの参照。
 	 * <pre>
 	 * スレッドごとに記録します。
 	 * </pre>
 	 */
-	private static ThreadLocal<Page> page = new ThreadLocal<Page>();
+	private static ThreadLocal<WebEntryPoint> entryPoint = new ThreadLocal<WebEntryPoint>();
 
 	/**
 	 * コンポーネントマップ。
@@ -360,11 +360,19 @@ public class WebComponent implements JDBCConnectableObject {
 	}
 
     /**
-     * ページを設定します。
-     * @param page ページ。
+     * WEBエントリーポイントを設定します。
+     * @param epoint WEBエントリーポイント。
      */
-	public void setPage(final Page page) {
-		WebComponent.page.set(page);
+	public void setWebEntryPoint(final WebEntryPoint epoint) {
+		WebComponent.entryPoint.set(epoint);
+	}
+
+	/**
+     * WEBエントリーポイントを設定します。
+	 * @return WEBエントリーポイント。
+	 */
+	public WebEntryPoint getWebEntryPoint() {
+		return (Page) WebComponent.entryPoint.get();
 	}
 
 	/**
@@ -372,14 +380,14 @@ public class WebComponent implements JDBCConnectableObject {
 	 * @return ページ。
 	 */
 	public Page getPage() {
-		return WebComponent.page.get();
+		return (Page) WebComponent.entryPoint.get();
 	}
 
 	/**
 	 * ページを削除します。
 	 */
-	public void releasePage() {
-		WebComponent.page.remove();
+	public void releaseWebEntryPoint() {
+		WebComponent.entryPoint.remove();
 	}
 
 	/**

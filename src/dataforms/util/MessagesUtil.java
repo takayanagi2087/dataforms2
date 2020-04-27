@@ -10,6 +10,8 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import dataforms.controller.Page;
+import dataforms.controller.WebComponent;
+import dataforms.controller.WebEntryPoint;
 import dataforms.exception.ApplicationError;
 import dataforms.field.common.SelectField;
 
@@ -145,16 +147,17 @@ public final class MessagesUtil {
 	 * 指定されたパスのプロパティファイルを順序情報を含めて読み込みます。
 	 * 基本的にFunction.properties用のメソッドです。
 	 * </pre>
-	 * @param page ページ情報。言語の判定などに使用します。
+	 * @param epoint ページ情報。言語の判定などに使用します。
 	 * @param path パス。
 	 * @return プロパティ。
 	 *
 	 */
-	public static SequentialProperties getProperties(final Page page, final String path) {
+	public static SequentialProperties getProperties(final WebEntryPoint epoint, final String path) {
+		WebComponent comp = (WebComponent) epoint;
 		SequentialProperties prop = new SequentialProperties();
 		try {
-			String proppath = page.getAppropriatePath(path + ".properties", page.getRequest());
-			String proptext = page.getWebResource(proppath);
+			String proppath = comp.getAppropriatePath(path + ".properties", epoint.getRequest());
+			String proptext = comp.getWebResource(proppath);
 			prop.loadText(proptext);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -166,14 +169,14 @@ public final class MessagesUtil {
 	/**
 	 * 指定されたプロパティファイルからメッセージを取得ます。
 	 *
-	 * @param page ページ。
+	 * @param epoint ページ。
 	 * @param messageKey メッセージキー。
 	 * @param prop プロパティファイルのパス。
 	 * @return メッセージ。
 	 */
-	public static String getMessageFromPropfile(final Page page, final String messageKey, final String prop) {
+	public static String getMessageFromPropfile(final WebEntryPoint epoint, final String messageKey, final String prop) {
 		String msg = null;
-		Properties appClientMessages = getProperties(page, prop);
+		Properties appClientMessages = getProperties(epoint, prop);
 		if (appClientMessages.containsKey(messageKey)) {
 			msg = appClientMessages.getProperty(messageKey);
 		}
@@ -187,13 +190,13 @@ public final class MessagesUtil {
      * サーブレットの初期化パラメータ、"client-messages"に指定されたファイルからメッセージを取得します。
      * 上記に無い場合、"messages"に指定されたファイルからメッセージを取得します。
      * </pre>
-	 * @param page ページ情報。言語の判定などに使用します。
+	 * @param epoint ページ情報。言語の判定などに使用します。
      * @param messageKey メッセージキー。
      * @param args メッセージの引数。
      * @return メッセージ。
      */
-    public static String getMessage(final Page page, final String messageKey, final String... args) {
-        String msg = getMessage(page, messageKey);
+    public static String getMessage(final WebEntryPoint epoint, final String messageKey, final String... args) {
+        String msg = getMessage(epoint, messageKey);
         int idx = 0;
         for (String arg : args) {
             msg = msg.replaceAll("\\{" + idx + "\\}", arg);
@@ -208,12 +211,12 @@ public final class MessagesUtil {
      * <pre>
      * 指定されたパスのプロパティファイルのメッセージマップを読み込みます。
      * </pre>
-	 * @param page ページ情報。言語の判定などに使用します。
+	 * @param epoint ページ情報。言語の判定などに使用します。
      * @param prop プロパティファイルパス。
      * @return メッセージマップ。
      */
-    public static Map<String, String> getMessageMap(final Page page, final String prop) {
-        Properties clientMessages = getProperties(page, prop);
+    public static Map<String, String> getMessageMap(final WebEntryPoint epoint, final String prop) {
+        Properties clientMessages = getProperties(epoint, prop);
         Map<String, String> map = new HashMap<String, String>();
         for (Object key : clientMessages.keySet()) {
         	map.put((String) key, clientMessages.getProperty((String) key));
@@ -233,34 +236,34 @@ public final class MessagesUtil {
 	 * }
 	 * </pre>
 	 *
-	 * @param page
+	 * @param epoint
 	 *            ページ情報。言語の判定などに使用します。
 	 * @param messageKey
 	 *            メッセージキー。
 	 * @return メッセージ。
 	 */
-	public static String getMessage(final Page page, final String messageKey) {
+	public static String getMessage(final WebEntryPoint epoint, final String messageKey) {
 
-		String clsname = page.getClass().getName();
+		String clsname = epoint.getClass().getName();
 		String pageprop = "/" + clsname.replaceAll("\\.", "/");
-		Map<String, String> pageMap = MessagesUtil.getMessageMap(page, pageprop);
+		Map<String, String> pageMap = MessagesUtil.getMessageMap(epoint, pageprop);
 		String msg =  pageMap.get(messageKey);
 		if (msg != null) {
 			return msg;
 		}
-		msg = getMessageFromPropfile(page, messageKey, appClientMessagesName);
+		msg = getMessageFromPropfile(epoint, messageKey, appClientMessagesName);
 		if (msg != null) {
 			return msg;
 		}
-		msg = getMessageFromPropfile(page, messageKey, appMessagesName);
+		msg = getMessageFromPropfile(epoint, messageKey, appMessagesName);
 		if (msg != null) {
 			return msg;
 		}
-		msg = getMessageFromPropfile(page, messageKey, clientMessagesName);
+		msg = getMessageFromPropfile(epoint, messageKey, clientMessagesName);
 		if (msg != null) {
 			return msg;
 		}
-		msg = getMessageFromPropfile(page, messageKey, messagesName);
+		msg = getMessageFromPropfile(epoint, messageKey, messagesName);
 		if (msg != null) {
 			return msg;
 		}

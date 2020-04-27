@@ -41,6 +41,7 @@ import dataforms.app.user.page.PasswordResetMailForm;
 import dataforms.app.user.page.UserRegistForm;
 import dataforms.controller.Page;
 import dataforms.controller.WebComponent;
+import dataforms.controller.WebEntryPoint;
 import dataforms.dao.Constraint;
 import dataforms.dao.ForeignKey;
 import dataforms.dao.Index;
@@ -918,10 +919,10 @@ public class DataFormsServlet extends HttpServlet {
 	 * @return クラスのインスタンス。
 	 * @throws Exception 例外。
 	 */
-	private Page newDataFormsInstance(final String classname) throws Exception {
+	private WebEntryPoint newWebEntryPointInstance(final String classname) throws Exception {
 		@SuppressWarnings("unchecked")
 		Class<? extends Page> clazz = (Class<? extends Page>) Class.forName(classname);
-		Page dataforms = clazz.getDeclaredConstructor().newInstance();
+		WebEntryPoint dataforms = clazz.getDeclaredConstructor().newInstance();
 		return dataforms;
 	}
 
@@ -932,7 +933,7 @@ public class DataFormsServlet extends HttpServlet {
 	 * @return DataFormsのインスタンス。
 	 * @throws Exception 例外。
 	 */
-	protected final Page getPage(final HttpServletRequest req) throws Exception {
+	protected final WebEntryPoint getWebEntryPoint(final HttpServletRequest req) throws Exception {
 		String pageext = this.getPageExt();
 		if (DataFormsServlet.configStatus == null) {
 			String uri = req.getRequestURI();
@@ -940,14 +941,18 @@ public class DataFormsServlet extends HttpServlet {
 			logger.info("context=" + context + ", uri=" + uri);
 			String classname = DataFormsServlet.convertPageClassName(this.getTargetClassName(context, uri));
 			logger.info("classname=" + classname);
-			Page page = this.newDataFormsInstance(classname);
-			page.setPage(page);
-			page.setRequest(req);
-			page.setPageExt(pageext);
-			return page;
+			WebEntryPoint ep = this.newWebEntryPointInstance(classname);
+			if (ep instanceof Page) {
+				Page page = (Page) ep;
+				page.setPageExt(pageext);
+			}
+			WebComponent wc = (WebComponent) ep;
+			wc.setWebEntryPoint(ep);
+			ep.setRequest(req);
+			return ep;
 		} else {
 			ConfigErrorPage page = new ConfigErrorPage(DataFormsServlet.configStatus);
-			page.setPage(page);
+			page.setWebEntryPoint(page);
 			page.setRequest(req);
 			page.setPageExt(pageext);
 			return page;
@@ -1055,7 +1060,6 @@ public class DataFormsServlet extends HttpServlet {
 			UserInfoTable.Entity e = new UserInfoTable.Entity(userInfo);
 			userId = e.getLoginId() + "(" + e.getUserId() + ")";
 		}
-		// TODO:passwordになるキーワードを外す機能を考える。
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.putAll(param);
 		map.remove("password");
@@ -1092,10 +1096,10 @@ public class DataFormsServlet extends HttpServlet {
 			throws ServletException, IOException {
 		boolean isJsonResponse = false;
 		req.setCharacterEncoding(encoding);
-		Page page = null;
+		WebEntryPoint epoint = null;
 		try {
 			try {
-				page = this.getPage(req);
+				epoint = this.getWebEntryPoint(req);
 				try {
 					Map<String, Object> param = this.getParameterMap(req);
 
@@ -1104,19 +1108,19 @@ public class DataFormsServlet extends HttpServlet {
 						method = GET_HTML_METHOD_NAME;
 						String queryString = req.getQueryString();
 						logger.debug("getHtml queryString=" + queryString);
-						page.setQueryString(this.parseQueryString(queryString));
+						epoint.setQueryString(this.parseQueryString(queryString));
 					} else {
-						page.setQueryString(this.getQueryString(req, param));
+						epoint.setQueryString(this.getQueryString(req, param));
 					}
 					logger.info("method=" + method);
-					Map<String, Object> userinfo = page.getUserInfo();
+					Map<String, Object> userinfo = epoint.getUserInfo();
 					if (userinfo != null) {
 						logger.info("access user=" + userinfo.get("loginId") + "(" + userinfo.get("userId") + ")");
 					}
 //					String[] split = method.split("\\.");
 					int lidx = method.lastIndexOf(".");
 					Method m = null;
-					WebComponent obj = page;
+					WebComponent obj = (WebComponent) epoint;
 					if (lidx < 0) {
 						// 該当ページのメソッドを呼び出す。
 						m = obj.getClass().getMethod(method, Map.class);
@@ -1136,14 +1140,14 @@ public class DataFormsServlet extends HttpServlet {
 					}
 
 					if (!GET_HTML_METHOD_NAME.equals(method)) {
-						if (!page.isValidRequest(param)) {
-							throw new ApplicationException(page, "error.csrftoken");
+						if (!epoint.isValidRequest(param)) {
+							throw new ApplicationException(epoint, "error.csrftoken");
 						}
 					}
 
 					WebMethod wma = m.getAnnotation(WebMethod.class);
 					if (wma == null) {
-						logger.error(MessagesUtil.getMessage(page, "error.notwebmethod", method));
+						logger.error(MessagesUtil.getMessage(epoint, "error.notwebmethod", method));
 						throw new Exception();
 					}
 					Connection conn = null;
@@ -1151,15 +1155,17 @@ public class DataFormsServlet extends HttpServlet {
 						conn = this.getConnection();
 					}
 					try {
-						page.setConnection(conn);
-						page.autoLogin();
+						epoint.setConnection(conn);
+						if (epoint instanceof Page) {
+							((Page) epoint).autoLogin();
+						}
 						if (!wma.everyone()) {
-							if (!page.isAuthenticated(param)) {
-								throw new ApplicationException(page, "error.auth");
+							if (!epoint.isAuthenticated(param)) {
+								throw new ApplicationException(epoint, "error.auth");
 							}
 						}
-						page.setRequest(req);
-						page.setResponse(resp);
+						epoint.setRequest(req);
+						epoint.setResponse(resp);
 						param.remove("dfMethod");
 						this.methodStartLog(userinfo, obj, param, m);
 						Response r = this.callMethod(obj, param, m);
@@ -1180,7 +1186,7 @@ public class DataFormsServlet extends HttpServlet {
 						}
 					}
 				} finally {
-					page.releasePage();
+					((WebComponent) epoint).releaseWebEntryPoint();
 				}
 			} catch (ApplicationException e) {
 				// TODO:JsonResponseを戻り値にしないと、csrfエラーメッセージが表示されな問題を対策する必要がある。
@@ -1192,7 +1198,7 @@ public class DataFormsServlet extends HttpServlet {
 					JsonResponse r = new JsonResponse(JsonResponse.APPLICATION_EXCEPTION, einfo);
 					r.send(resp);
 				} else {
-					this.redirectErrorPage(page, req, resp, e.getMessage());
+					this.redirectErrorPage((Page) epoint, req, resp, e.getMessage());
 				}
 			}
 		} catch (Exception e) {

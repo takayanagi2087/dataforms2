@@ -34,11 +34,12 @@ public abstract class Dialog extends DataForms {
 		}
 	}
 
-
+/*
 	@Override
 	public boolean isAuthenticated(final Map<String, Object> params) throws Exception {
 		return true;
 	}
+*/
 
 	@Override
 	public void init() throws Exception {
@@ -46,7 +47,7 @@ public abstract class Dialog extends DataForms {
 		String path = this.getViewPath();
 		this.setAdditionalHtml(path + ".html");
 	}
-	
+
 	/**
 	 * タイトルの取得。
 	 * @return タイトル文字列。

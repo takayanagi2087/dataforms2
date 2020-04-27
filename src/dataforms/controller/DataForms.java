@@ -49,19 +49,6 @@ public class DataForms extends WebComponent {
      */
     public static final String ID_EDIT_FORM = "editForm";
 
-
-
-
-	/**
-	 * 認証済みかどうかを返します。
-	 * @param params POSTされたパラメータ。
-	 * @return 認証済みの場合true。
-	 * @throws Exception 例外。
-	 */
-	public boolean isAuthenticated(final Map<String, Object> params) throws Exception {
-		return false;
-	}
-
     /**
      * HTMLテキスト中のtitleの内容を取得します。
      * <pre>

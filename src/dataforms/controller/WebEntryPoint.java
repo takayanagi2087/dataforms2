@@ -22,7 +22,14 @@ import dataforms.util.StringUtil;
 public interface WebEntryPoint {
 
 
-	Response getHtml(final Map<String, Object> params) throws Exception;
+//	Response getHtml(final Map<String, Object> params) throws Exception;
+	/**
+	 * Webアプリケーションの処理を実行します。
+	 * @param p パラメータ。
+	 * @return 応答情報。
+	 * @throws Exception 例外。
+	 */
+	Response exec(final Map<String, Object> p) throws Exception;
 
 	/**
 	 * 要求情報を取得します。

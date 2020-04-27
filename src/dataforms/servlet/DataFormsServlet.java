@@ -86,9 +86,9 @@ import net.arnx.jsonic.JSON;
 public class DataFormsServlet extends HttpServlet {
 
 	/**
-	 * HTML取得のメソッド名。
+	 * 実行のメソッド名。
 	 */
-	private static final String GET_HTML_METHOD_NAME = "getHtml";
+	private static final String EXEC_METHOD = "exec";
 
 	/**
 	 * UID.
@@ -1105,7 +1105,7 @@ public class DataFormsServlet extends HttpServlet {
 
 					String method = (String) param.get("dfMethod");
 					if (method == null) {
-						method = GET_HTML_METHOD_NAME;
+						method = EXEC_METHOD;
 						String queryString = req.getQueryString();
 						logger.debug("getHtml queryString=" + queryString);
 						epoint.setQueryString(this.parseQueryString(queryString));
@@ -1139,7 +1139,7 @@ public class DataFormsServlet extends HttpServlet {
 						isJsonResponse = true;
 					}
 
-					if (!GET_HTML_METHOD_NAME.equals(method)) {
+					if (!EXEC_METHOD.equals(method)) {
 						if (!epoint.isValidRequest(param)) {
 							throw new ApplicationException(epoint, "error.csrftoken");
 						}

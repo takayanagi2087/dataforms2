@@ -736,13 +736,18 @@ public class Page extends DataForms implements WebEntryPoint {
 		return this.queryString;
 	}
 
-    /**
+	@WebMethod(useDB = true)
+	@Override
+	public Response exec(final Map<String, Object> p) throws Exception {
+		return this.getHtml(p);
+	}
+
+	/**
      * ページのHTMLを取得します。
      * @param params パラメータ。
      * @return HTMLページ応答。
      * @throws Exception 例外。
      */
-    @WebMethod(useDB = true)
 	public Response getHtml(final Map<String, Object> params) throws Exception {
     	this.processQueryString(params);
 		HttpServletRequest req = this.getRequest();

@@ -13,7 +13,6 @@ import dataforms.field.base.FieldList;
 public class SmallMasterDao extends QuerySetDao {
 	/**
 	 * コンストラクタ。
-	 * @throws Exception 例外。
 	 */
 	public SmallMasterDao() {
 		this.setComment("");
@@ -37,7 +36,7 @@ public class SmallMasterDao extends QuerySetDao {
 
 	/**
 	 * 主テーブルを取得します。
-	 * @return 主テーブル>
+	 * @return 主テーブル。
 	 */
 	public SmallMasterTable getMainTable() {
 		if (this.getSingleRecordQuery() != null) {

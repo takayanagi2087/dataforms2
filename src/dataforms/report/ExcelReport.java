@@ -974,4 +974,21 @@ public class ExcelReport extends Report {
 		sh.enableLocking();
 	}
 
+
+	/**
+	 * テンプレートを初期化します。
+	 * <pre>
+	 * リストを行数分展開します。
+	 * </pre>
+	 * @param data データ。
+	 * @throws Exception 例外。
+	 */
+	protected void initTemplate(Map<String, Object> data) throws Exception {
+	}
+
+	@Override
+	public byte[] print(Map<String, Object> data) throws Exception {
+		this.initTemplate(data);
+		return super.print(data);
+	}
 }

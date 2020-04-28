@@ -1,11 +1,13 @@
 package dataforms.controller;
 
 import java.sql.Connection;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dataforms.app.user.dao.UserAttributeTable;
 import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.CryptUtil;
@@ -94,6 +96,66 @@ public interface WebEntryPoint {
 		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute("userInfo");
 		return userInfo;
 	}
+
+    /**
+     * ログイン中のユーザIDを取得する。
+     * @return ログイン中のID。
+     */
+	default long getUserId() {
+    	long userid = -1L;
+    	@SuppressWarnings("unchecked")
+		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute("userInfo");
+    	if (userInfo != null) {
+        	userid = (Long) userInfo.get("userId");
+    	}
+    	return userid;
+    }
+
+	/**
+	 * 該当するユーザ属性を持つかをチェックします。
+	 * @param t ユーザ属性。
+	 * @param v ユーザ属性値。
+	 * @return 指定されたユーザ属性を持つ場合true。
+	 */
+	@SuppressWarnings("unchecked")
+	default boolean checkUserAttribute(final String t, final String v) {
+		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute("userInfo");
+		if (userInfo != null) {
+			List<Map<String, Object>> attlist = (List<Map<String, Object>>) userInfo.get("attTable");
+			for (Map<String, Object> m: attlist) {
+				String type = (String) m.get("userAttributeType");
+				String value = (String) m.get("userAttributeValue");
+				if (t.equals(type) && v.equals(value)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * ユーザ属性を取得します。
+	 * @param attrib 属性名称。
+	 * @return 属性値。
+	 */
+	default String getUserArribute(final String attrib) {
+		String ret = null;
+		Map<String, Object> userInfo = this.getUserInfo();
+		if (userInfo != null) {
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> attlist = (List<Map<String, Object>>) userInfo.get("attTable");
+			for (Map<String, Object> m: attlist) {
+				UserAttributeTable.Entity e = new UserAttributeTable.Entity();
+				e.setMap(m);
+				if (attrib.equals(e.getUserAttributeType())) {
+					ret = e.getUserAttributeValue();
+					break;
+				}
+			}
+		}
+		return ret;
+	}
+
 
 
     /**

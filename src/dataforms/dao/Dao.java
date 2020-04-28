@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 
 import dataforms.controller.Page;
 import dataforms.controller.WebComponent;
+import dataforms.controller.WebEntryPoint;
 import dataforms.dao.file.BlobFileStore;
 import dataforms.dao.file.FileObject;
 import dataforms.dao.sqldatatype.SqlVarchar;
@@ -186,10 +187,9 @@ public class Dao implements JDBCConnectableObject {
 	/**
 	 * 現在のページを取得する。
 	 * @return ページ。
+	 *
 	 */
 	protected Page getPage() {
-//		WebComponent comp = (WebComponent) this.jdbcConnectableObject.get();
-//		return comp.getPage();
 		JDBCConnectableObject cobj = this.jdbcConnectableObject.get();
 		while (cobj instanceof Dao) {
 			Dao dao = (Dao) cobj;
@@ -198,6 +198,21 @@ public class Dao implements JDBCConnectableObject {
 		WebComponent comp = (WebComponent) cobj;
 		return comp.getPage();
 	}
+
+	/**
+	 * WebEntryPointを取得します。
+	 * @return WebEntryPoint。
+	 */
+	protected WebEntryPoint getWebEntryPoint() {
+		JDBCConnectableObject cobj = this.jdbcConnectableObject.get();
+		while (cobj instanceof Dao) {
+			Dao dao = (Dao) cobj;
+			cobj = dao.jdbcConnectableObject.get();
+		}
+		WebComponent comp = (WebComponent) cobj;
+		return comp.getWebEntryPoint();
+	}
+
 
 	/**
 	 * JDBC接続可能オブジェクトを取得します。

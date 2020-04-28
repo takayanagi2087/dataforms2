@@ -625,7 +625,7 @@ public class WebComponent implements JDBCConnectableObject {
 	 * @throws Exception 例外。
 	 */
 	public String getWebResourceUrl(final String path) throws Exception {
-		HttpServletRequest req = this.getPage().getRequest();
+		HttpServletRequest req = this.getWebEntryPoint().getRequest();
 		URL accessurl = new URL(req.getRequestURL().toString());
 		String url = null;
 		if (StringUtil.isBlank(DataFormsServlet.getWebResourceUrl())) {

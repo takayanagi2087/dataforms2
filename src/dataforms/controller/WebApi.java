@@ -11,8 +11,8 @@ import dataforms.response.Response;
 public abstract class WebApi extends WebProcess {
 	/**
 	 * {@inheritDoc}
-	 *
 	 * <pre>
+	 * APIを使用できるユーザを判定する処理を実装します。
 	 * </pre>
 	 */
 	@Override
@@ -22,6 +22,7 @@ public abstract class WebApi extends WebProcess {
 	 * {@inheritDoc}
 	 *
 	 * <pre>
+	 * APIの処理を実装します。
 	 * </pre>
 	 *
 	 */

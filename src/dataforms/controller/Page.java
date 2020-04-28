@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
-import dataforms.app.user.dao.UserAttributeTable;
 import dataforms.field.base.Field;
 import dataforms.htmltable.HtmlTable;
 import dataforms.menu.Menu;
@@ -1033,7 +1032,7 @@ public class Page extends DataForms implements WebEntryPoint {
      * ログイン中のユーザIDを取得する。
      * @return ログイン中のID。
      */
-    public long getUserId() {
+/*    public long getUserId() {
     	long userid = -1L;
     	@SuppressWarnings("unchecked")
 		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute("userInfo");
@@ -1042,7 +1041,7 @@ public class Page extends DataForms implements WebEntryPoint {
     	}
     	return userid;
     }
-
+*/
 
 	/**
 	 * 現在の言語コードを取得する。
@@ -1080,7 +1079,7 @@ public class Page extends DataForms implements WebEntryPoint {
 	 * @param v ユーザ属性値。
 	 * @return 指定されたユーザ属性を持つ場合true。
 	 */
-	@SuppressWarnings("unchecked")
+/*	@SuppressWarnings("unchecked")
 	public boolean checkUserAttribute(final String t, final String v) {
 		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute("userInfo");
 		if (userInfo != null) {
@@ -1095,14 +1094,14 @@ public class Page extends DataForms implements WebEntryPoint {
 		}
 		return false;
 	}
-
+*/
 
 	/**
 	 * ユーザ属性を取得します。
 	 * @param attrib 属性名称。
 	 * @return 属性値。
 	 */
-	public String getUserArribute(final String attrib) {
+/*	public String getUserArribute(final String attrib) {
 		String ret = null;
 		Map<String, Object> userInfo = this.getUserInfo();
 		if (userInfo != null) {
@@ -1119,7 +1118,7 @@ public class Page extends DataForms implements WebEntryPoint {
 		}
 		return ret;
 	}
-
+*/
 
 	/**
 	 * フレームのパスを取得します。

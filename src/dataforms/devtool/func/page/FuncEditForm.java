@@ -150,7 +150,7 @@ public class FuncEditForm extends EditForm {
 	public void deleteData(final Map<String, Object> data) throws Exception {
 		// 何もしない
 	}
-	
+
 	/**
 	 * 列挙型関連テーブルのエクスポートを行います。
 	 * @param p パラメータ。
@@ -163,7 +163,7 @@ public class FuncEditForm extends EditForm {
 		if (this.getPage().checkUserAttribute("userLevel", "developer")) {
 			TableManagerDao dao = new TableManagerDao(this);
 			String initialDataPath =  DeveloperPage.getExportInitalDataPath(this.getPage()); //DeveloperPage.getWebSourcePath() + "/WEB-INF/initialdata";
-			dao.exportData("dataforms.app.dao.func.FuncInfoTable", initialDataPath);
+			dao.exportData("dataforms.app.func.dao.FuncInfoTable", initialDataPath);
 			ret = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.initializationdatacreated"));
 		} else {
 			ret = new JsonResponse(JsonResponse.INVALID, MessagesUtil.getMessage(this.getPage(), "error.permission"));

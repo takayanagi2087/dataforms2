@@ -260,16 +260,13 @@ public class DataFormsServlet extends HttpServlet {
 	 * ページオーバーライドマップを初期化します。
 	 */
 	private void initPageOverrideMap() {
-		Enumeration<String> e = this.getServletContext().getInitParameterNames();
-		while (e.hasMoreElements()) {
-			String key = e.nextElement();
-			if (key.trim().indexOf("page-override:") == 0) {
-				String keyclass = key.trim().replaceAll("page-override:", "");
-				String classname = this.getServletContext().getInitParameter(key);
-				DataFormsServlet.pageOverrideMap.put(keyclass, classname);
-			}
+		String json = this.getServletContext().getInitParameter("page-override");
+		ArrayList<ArrayList<String>> list = JSON.decode(json);
+		for (int i = 0; i < list.size(); i++) {
+			DataFormsServlet.pageOverrideMap.put(list.get(i).get(0), list.get(i).get(1));
 		}
 	}
+
 
 	/**
 	 * 各メティア対応のスタイルシート設定を取得します。

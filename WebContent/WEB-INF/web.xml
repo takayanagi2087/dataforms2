@@ -204,41 +204,32 @@
 	</context-param>
 
 	<!--
-		ページのオーバーライドを指定します。
+		ページのオーバーライドをJSON形式で指定します。
 		既存ページを組み替える場合、新たにページクラスを作成し
 		既存ページクラスを置き換える設定を以下に記述します。
-		またdataforms.app.page.base.HiddenPageに置き換えれば
+		またdataforms.app.base.page.HiddenPageに置き換えれば
 		メニューにも表示されず、アクセスできないページになります。
 		つまり既存ページを隠すことができます。
 	 -->
-	<!-- パスワード変更ページを隠す場合は以下を有効にしてください。 -->
-	<!--
 	<context-param>
-		<param-name>page-override:dataforms.app.page.user.ChangePasswordPage</param-name>
-		<param-value>dataforms.app.page.base.HiddenPage</param-value>
+		<param-name>page-override</param-name>
+		<param-value>
+			[
+				// ダミー
+				["", ""]
+				// パスワード変更ページを隠す場合は以下を有効にしてください
+				// , ["dataforms.app.user.page.ChangePasswordPage", "dataforms.app.base.page.HiddenPage"]
+				// ユーザ情報変更ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.UserSelfEditPage", "dataforms.app.base.page.HiddenPage"]
+				// ユーザ登録ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.UserRegistPage", "dataforms.app.base.page.HiddenPage"]
+				// パスワードリセットメール送信ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.PasswordResetMailPage", "dataforms.app.base.page.HiddenPage"]
+				// ユーザ有効化ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.UserEnablePage", "dataforms.app.base.page.HiddenPage"]
+			]
+		</param-value>
 	</context-param>
-	 -->
-	<!-- ユーザ情報変更ページを隠す場合は以下を有効にしてください。 -->
-	<!--
-	<context-param>
-		<param-name>page-override:dataforms.app.page.user.UserSelfEditPage</param-name>
-		<param-value>dataforms.app.page.base.HiddenPage</param-value>
-	</context-param>
-	-->
-	<!-- ユーザ登録ページを隠す場合は以下を有効にしてください。 -->
-	<!--
-	<context-param>
-		<param-name>page-override:dataforms.app.page.user.UserRegistPage</param-name>
-		<param-value>dataforms.app.page.base.HiddenPage</param-value>
-	</context-param>
-	-->
-	<!-- ユーザ有効化ページを隠す場合は以下を有効にしてください。 -->
-	<!--
-	<context-param>
-		<param-name>page-override:dataforms.app.page.user.UserEnablePage</param-name>
-		<param-value>dataforms.app.page.base.HiddenPage</param-value>
-	</context-param>
-	 -->
 	<!--
 		ユーザ登録ページのパス。
 	 -->

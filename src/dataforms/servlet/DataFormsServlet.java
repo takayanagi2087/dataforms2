@@ -187,7 +187,7 @@ public class DataFormsServlet extends HttpServlet {
 	/**
 	 * QueryStringを暗号化する際に使用するパスワード。
 	 */
-	private static String queryStringCryptPassword = "yyy_password_yyy";
+	private static String queryStringCryptPassword = null;
 
 	/**
 	 * 設定の状態.
@@ -375,11 +375,8 @@ public class DataFormsServlet extends HttpServlet {
 				.parseBoolean(this.getServletContext().getInitParameter("disable-developer-tools") == null ? "true"
 						: this.getServletContext().getInitParameter("disable-developer-tools"));
 		logger.info("init:disableDeveloperTools=" + DataFormsServlet.disableDeveloperTools);
-		CryptUtil.setCryptPassword(this.getServletContext().getInitParameter("crypt-password") == null ? "d@d@f0ms"
-				: this.getServletContext().getInitParameter("crypt-password"));
-		DataFormsServlet.setQueryStringCryptPassword(this.getServletContext().getInitParameter("query-string-crypt-password") == null ? "d@d@f0ms"
-				: this.getServletContext().getInitParameter("query-string-crypt-password"));
-		DataFormsServlet.csrfSessionidCrypPassword = this.getServletContext().getInitParameter("csrf-sessionid-crypt-password");
+
+		this.initPassword();
 
 		DataFormsServlet.cookieCheck = Boolean.parseBoolean(
 				this.getServletContext().getInitParameter("cookie-check") == null ? "false"
@@ -460,6 +457,53 @@ public class DataFormsServlet extends HttpServlet {
 		this.makeConstraintMap();
 	}
 
+	/**
+	 * デフォルト設定。
+	 */
+	private static final String DEFAULT_CRYPT_CONFIG = "			{\r\n" +
+			"				\"algorithm\": \"des\",\r\n" +
+			"				\"aesInitialVector\": \"Initi@lVect0r\",\r\n" +
+			"				\"defaultPassword\": null,\r\n" +
+			"				\"queryStringCryptPassword\": \"QueryStringPassword\",\r\n" +
+			"				\"csrfSessionidCryptPassword\": \"CSRFpassword\"\r\n" +
+			"			}\r\n" +
+			"";
+
+
+	/**
+	 * パスワード関連の初期化。
+	 *
+	 */
+	private void initPassword() {
+		String conf = this.getServletContext().getInitParameter("crypt-config");
+		if (conf == null) {
+			conf = DEFAULT_CRYPT_CONFIG;
+		}
+		Map<String, Object> m = JSON.decode(conf);
+		String algorithm = (String) m.get(CryptUtil.ALGORITHM);
+		CryptUtil.setAlgorithm(algorithm);
+		String initialVector = (String) m.get(CryptUtil.AES_INITIAL_VECTOR);
+		CryptUtil.setAesInitialVector(initialVector);
+		String defaultPassword = (String) m.get(CryptUtil.DEFAULT_PASSWORD);
+		if (defaultPassword != null) {
+			CryptUtil.setCryptPassword(defaultPassword);
+		} else {
+			CryptUtil.setCryptPassword(CryptUtil.DES_PASSWORD_OR_AES_KEY);
+		}
+		String queryStringCryptPassword = (String) m.get(CryptUtil.QUERY_STRING_CRYPT_PASSWORD);
+		if (queryStringCryptPassword != null) {
+			DataFormsServlet.setQueryStringCryptPassword(queryStringCryptPassword);
+		} else {
+			CryptUtil.setCryptPassword(CryptUtil.DES_PASSWORD_OR_AES_KEY);
+		}
+		String csrfSessionidCryptPassword = (String) m.get(CryptUtil.CSRF_SESSIONID_CRYPT_PASSWORD);
+		if (csrfSessionidCryptPassword != null) {
+			DataFormsServlet.csrfSessionidCrypPassword = csrfSessionidCryptPassword;
+		} else {
+			DataFormsServlet.csrfSessionidCrypPassword = null;
+		}
+		logger.debug("cryptConfig=" + conf);
+	}
 
 	/**
 	 * サポートする言語リストを取得します。

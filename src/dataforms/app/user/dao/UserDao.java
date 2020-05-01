@@ -10,6 +10,7 @@ import dataforms.app.enumtype.dao.EnumDao;
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.Query;
+import dataforms.dao.SingleTableQuery;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.FieldList;
@@ -27,7 +28,7 @@ public class UserDao extends Dao {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(UserDao.class.getName());
+    private static Logger logger = Logger.getLogger(UserDao.class.getName());
 
 
 	/**
@@ -245,7 +246,7 @@ public class UserDao extends Dao {
 				}
 			}
 		}
-		log.debug("isUpdatableUser=" + ret);
+		logger.debug("isUpdatableUser=" + ret);
 		return ret;
 	}
 
@@ -446,4 +447,32 @@ public class UserDao extends Dao {
 		return this.queryUserList(flist, e.getMap());
 	}
 
+	/**
+	 * パスワードの再暗号化を行います。
+	 * @param algolithm 暗号化アルゴリズム。
+	 * @param password パスワード/暗号化キー。
+	 * @throws Exception 例外。
+	 */
+	public void reencryptPassword(final String algolithm, final String password) throws Exception {
+		UserInfoTable table = new UserInfoTable();
+		SingleTableQuery q = new SingleTableQuery(table);
+		List<Map<String, Object>> list = this.executeQuery(q);
+		for (Map<String, Object> m: list) {
+			UserInfoTable.Entity e = new UserInfoTable.Entity(m);
+			String enc = e.getPassword();
+			String upass = CryptUtil.decrypt(enc);
+
+			String nenc = null;
+			if (CryptUtil.DES_ALGORITHM.equals(algolithm)) {
+				nenc = CryptUtil.desEncrypt(upass, password);
+			} else {
+				nenc = CryptUtil.aesEncrypt(upass, password, CryptUtil.getAesInitialVector());
+			}
+			e.setPassword(nenc);
+			logger.debug("old=" + enc + ",upass=" + upass + ",nenc=" + nenc);
+			FieldList uflist = new FieldList();
+			uflist.addField(table.getPasswordField());
+			this.executeUpdate(table, uflist, table.getPkFieldList(), e.getMap(), true);
+		}
+	}
 }

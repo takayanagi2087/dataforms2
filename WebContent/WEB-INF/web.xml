@@ -57,10 +57,10 @@
 	</context-param>
 	-->
 	<!-- 使用する文字コードを指定します。-->
-	<!--  context-param>
+	<context-param>
 		<param-name>encoding</param-name>
 		<param-value>utf-8</param-value>
-	</context-param-->
+	</context-param>
 
 	<!-- debugログに出力するjsonを整形するかどうかを指定します。-->
 	<context-param>
@@ -69,33 +69,33 @@
 	</context-param>
 
 	<!-- 一時ファイルを置くパスを指定します。 -->
-	<!--  context-param>
+	<context-param>
 		<param-name>temp-dir</param-name>
 		<param-value>/tmp</param-value>
-	</context-param -->
+	</context-param>
 
 	<!-- 開発ツールでデータをエクスポート/インポートする際に使用するパスを指定します。 -->
-	<!--  context-param>
+	<context-param>
 		<param-name>export-import-dir</param-name>
 		<param-value>/tmp/data</param-value>
-	</context-param -->
+	</context-param>
 	<!-- jqueryなどの標準ライブラリなどを読み込むhtmlを指定します。 -->
-	<!-- context-param>
+	<context-param>
 		<param-name>css-and-scripts</param-name>
 		<param-value>/frame/jslib.html</param-value>
-	</context-param-->
+	</context-param>
 	<!-- エラーページのパスを指定します。 -->
-	<!--  context-param>
+	<context-param>
 		<param-name>error-page</param-name>
 		<param-value>/dataforms/app/errorpage/ErrorPage</param-value>
-	</context-param -->
+	</context-param>
 	<!--
 		 クライアントバリデーションの有無をしています。
 	 -->
-	<!-- context-param>
+	<context-param>
 		<param-name>client-validation</param-name>
 		<param-value>true</param-value>
-	</context-param-->
+	</context-param>
 	<!--
 		 クライアントログレベルを指定します。
 		 javascriptでのコンソール出力はconsoleではなくloggerを使用してください。
@@ -112,10 +112,10 @@
 		<!-- param-value>none</param-value -->
 	</context-param>
 	<!-- アップロードデータを保存するフォルダを指定します。 -->
-	<!-- context-param>
+	<context-param>
 		<param-name>upload-data-folder</param-name>
 		<param-value>/uploadData</param-value>
-	</context-param-->
+	</context-param>
 	<!-- サポートする言語コードを指定します。
 		default以外の言語コードを","区切りで指定します。
 		EnumOptionNameTable等、言語ごとに名称を登録するテーブルで使用します。
@@ -126,34 +126,49 @@
 	</context-param>
 
 	<!-- ブラウザの言語設定を無視し、言語を固定する場合は以下の設定を有効にします。	-->
-	<!--context-param>
+	<!--
+	<context-param>
 		<param-name>fixed-language</param-name>
 		<param-value>en</param-value>
-	</context-param-->
-	<!--
-		CryptUtilで使用する暗号用デフォルトパスワードを指定します。
-		UserInfoTableのパスワードの暗号化で使用するので、 ユーザ登録後変更するとログインできなくなります。
-	-->
-	<!-- context-param>
-		<param-name>crypt-password</param-name>
-		<param-value>xxx_password_xxx</param-value>
-	</context-param-->
-	<!--
-		QueryStringを暗号化する場合使用するパスワードです。
-		BLOBデータ等のダウンロードパラメータの暗号化に使用しています。
-		運用時に変更しても問題ありません。
-	-->
-	<context-param>
-		<param-name>query-string-crypt-password</param-name>
-		<param-value>yyy_password_yyy</param-value>
 	</context-param>
+	 -->
 	<!--
-		CSRF対策を行う場合以下のパスワードを有効にしてください。
-		指定されたパスワードでセッションIDを暗号化し、CSRFトークンとしてブラウザに送信します。
-	-->
+		暗号化設定
+	 -->
 	<context-param>
-		<param-name>csrf-sessionid-crypt-password</param-name>
-		<param-value>CSRFpassword</param-value>
+		<param-name>crypt-config</param-name>
+		<param-value>
+			{
+				//
+				// 暗号化アルゴリズムを選択します。("des" or "aes")
+				"algorithm": "aes",
+				//
+				// AESの初期化ベクトルを指定します。
+				// AES初期化ベクトルは16Byteである必要があるため、自動的に保管して使用します。
+				"aesInitialVector": "Initi@lVect0r",
+				//
+				// ===================================================================================
+				// 以下項目はDESパスワードまたはAESキーを指定します。
+				// AESキーは16Byteである必要があるため、自動的に保管して使用します。
+				// ===================================================================================
+				// CryptUtilで使用するデフォルトのDESパスワードまたはAESキーを指定します。
+				// UserInfoTableのパスワードの暗号化で使用するので、
+				// 変更する場合は事前にUserInfoTableのパスワードの再構築を行う必要があります。
+				// nullを指定するとライブラリにハードコーディングされたものを使用します。
+				"defaultPassword": null,
+				// QueryStringを暗号化する場合に使用するDESパスワードまたはAESキーを指定します。
+				// BLOBデータ等のダウンロードパラメータの暗号化に使用しています。
+				// 運用時に変更しても問題ありません。
+				// nullを指定するとライブラリにハードコーディングされたものを使用します。
+				"queryStringCryptPassword": "QueryStringPassword",
+				// CSRF対策に使用するDESパスワードまたはAESキーを指定します。
+				// 指定されたDESパスワードまたはAESキーでセッションIDを暗号化し、
+				// CSRFトークンとしてブラウザに送信します。
+				// 運用時に変更しても問題ありません。
+				// nullを指定するとCSRF対策を行いません。
+				"csrfSessionidCryptPassword": "CSRFpassword"
+			}
+		</param-value>
 	</context-param>
 	<!--
 		ブラウザがクッキーを許可していることを確認する場合、trueを指定してください。
@@ -164,25 +179,25 @@
 	</context-param>
 
 	<!-- クライアントに送信して使用するメッセージリソースの名称を指定します。 -->
-	<!-- context-param>
+	<context-param>
 		<param-name>client-messages</param-name>
 		<param-value>/frame/messages/ClientMessages</param-value>
-	</context-param-->
+	</context-param>
 	<!-- サーバ側で使用するメッセージリソースの名称を指定します。 -->
-	<!-- context-param>
+	<context-param>
 		<param-name>messages</param-name>
 		<param-value>/frame/messages/Messages</param-value>
-	</context-param-->
+	</context-param>
 	<!-- クライアントに送信して使用するメッセージリソースの名称を指定します。 -->
-	<!-- context-param>
+	<context-param>
 		<param-name>app-client-messages</param-name>
 		<param-value>/frame/messages/AppClientMessages</param-value>
-	</context-param-->
+	</context-param>
 	<!-- サーバ側で使用するメッセージリソースの名称を指定します。 -->
-	<!-- context-param>
+	<context-param>
 		<param-name>app-messages</param-name>
 		<param-value>/frame/messages/AppMessages</param-value>
-	</context-param-->
+	</context-param>
 	<!--
 		メッセージリソースのブラウザ送信設定
 		CLIENT_ONLY:(default)
@@ -202,7 +217,6 @@
 		<param-name>frame-path</param-name>
 		<param-value>/frame/default</param-value>
 	</context-param>
-
 	<!--
 		ページのオーバーライドをJSON形式で指定します。
 		既存ページを組み替える場合、新たにページクラスを作成し
@@ -498,7 +512,6 @@
 
 		このオプションを指定すると、idアトリビュートの値は書き換えられるため、
 		jQueryを直接使用する場合は注意してください。
-
 	 -->
 	<context-param>
 		<param-name>use-unique-id</param-name>

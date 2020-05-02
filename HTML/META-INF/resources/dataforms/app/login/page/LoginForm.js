@@ -55,10 +55,10 @@ class LoginForm extends Form {
 		}
 		if (this.autoLogin) {
 			this.get("keepLogin").show();
-			this.find("label[for='keepLogin']").show();
+			this.find("label[for='" + this.get("keepLogin").attr("id") + "']").show();
 		} else {
 			this.get("keepLogin").hide();
-			this.find("label[for='keepLogin']").hide();
+			this.find("label[for='" + this.get("keepLogin").attr("id") + "']").hide();
 		}
 	}
 

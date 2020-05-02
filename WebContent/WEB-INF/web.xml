@@ -218,34 +218,16 @@
 		<param-value>/frame/default</param-value>
 	</context-param>
 	<!--
-		ページのオーバーライドをJSON形式で指定します。
-		既存ページを組み替える場合、新たにページクラスを作成し
-		既存ページクラスを置き換える設定を以下に記述します。
-		またdataforms.app.base.page.HiddenPageに置き換えれば
-		メニューにも表示されず、アクセスできないページになります。
-		つまり既存ページを隠すことができます。
+		トップページを指定します。
+		基本的にTopPage.dfを指定しておきます。
+		このページはシステムやユーザの状態に応じて、ログイン画面やサイトマップに遷移します。
 	 -->
 	<context-param>
-		<param-name>page-override</param-name>
-		<param-value>
-			[
-				// ダミー
-				["", ""]
-				// パスワード変更ページを隠す場合は以下を有効にしてください
-				// , ["dataforms.app.user.page.ChangePasswordPage", "dataforms.app.base.page.HiddenPage"]
-				// ユーザ情報変更ページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.UserSelfEditPage", "dataforms.app.base.page.HiddenPage"]
-				// ユーザ登録ページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.UserRegistPage", "dataforms.app.base.page.HiddenPage"]
-				// パスワードリセットメール送信ページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.PasswordResetMailPage", "dataforms.app.base.page.HiddenPage"]
-				// ユーザ有効化ページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.UserEnablePage", "dataforms.app.base.page.HiddenPage"]
-			]
-		</param-value>
+		<param-name>top-page</param-name>
+		<param-value>/dataforms/app/top/page/TopPage.df</param-value>
 	</context-param>
 	<!--
-		ユーザ登録ページのパス。
+		外部ユーザ登録ページのパス。
 	 -->
 	<context-param>
 		<param-name>user-regist-page</param-name>
@@ -272,13 +254,6 @@
 		<param-value>/dataforms/app/page/user/UserEnablePage</param-value>
 	</context-param>
 	<!--
-		ユーザ登録時のメール送信確認フラグ。
-	 -->
-	<context-param>
-		<param-name>send-user-enable-mail</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<!--
 		パスワードリセットメール送信ページのパス。
 		この設定を有効にすると、ログイン画面のパスワードリセットリンクが表示されます。
 	 -->
@@ -292,6 +267,41 @@
 	<context-param>
 		<param-name>password-reset-page</param-name>
 		<param-value>/dataforms/app/user/page/PasswordResetPage</param-value>
+	</context-param>
+		<!--
+		ページのオーバーライドをJSON形式で指定します。
+		既存ページを組み替える場合、新たにページクラスを作成し
+		既存ページクラスを置き換える設定を以下に記述します。
+		またdataforms.app.base.page.HiddenPageに置き換えれば
+		メニューにも表示されず、アクセスできないページになります。
+		つまり既存ページを隠すことができます。
+	 -->
+	<context-param>
+		<param-name>page-override</param-name>
+		<param-value>
+			[
+				// ダミー
+				["", ""]
+				// パスワード変更ページを隠す場合は以下を有効にしてください
+				// , ["dataforms.app.user.page.ChangePasswordPage", "dataforms.app.base.page.HiddenPage"]
+				// ユーザ情報変更ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.UserSelfEditPage", "dataforms.app.base.page.HiddenPage"]
+				//
+				// 外部ユーザ登録関連(外部ユーザ登録機能を無効にするには以下の2ページを無効にしてください)
+				//
+				// ユーザ登録ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.UserRegistPage", "dataforms.app.base.page.HiddenPage"]
+				// ユーザ有効化ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.UserEnablePage", "dataforms.app.base.page.HiddenPage"]
+				//
+				// パスワードリセット機能(パスワードリセット機能を無効にするには以下の2ページを無効にしてください)
+				//
+				// パスワードリセットメール送信ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.PasswordResetMailPage", "dataforms.app.base.page.HiddenPage"]
+				// パスワードリセットページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.PasswordResetPage", "dataforms.app.base.page.HiddenPage"]
+			]
+		</param-value>
 	</context-param>
 	<!--
 		開発ツールの無効フラグを設定します。
@@ -336,15 +346,6 @@
 		<param-value>false</param-value>
 		-->
 	</context-param>
-	<!--
-		トップページを指定します。
-		基本的にTopPage.dfを指定しておきます。
-		このページはシステムやユーザの状態に応じて、ログイン画面やサイトマップに遷移します。
-	 -->
-	<context-param>
-		<param-name>top-page</param-name>
-		<param-value>/dataforms/app/top/page/TopPage.df</param-value>
-	</context-param>
 	<!-- 開発ツールのjavaソース出力フォルダを指定します。 -->
 	<context-param>
 		<param-name>java-source-path</param-name>
@@ -381,7 +382,8 @@
 		</param-value>
 	</context-param>
 	<!--
-		DataFormsServlet#init,destoryで何らかの処理が必要な場合、ServletInstanceBeanから派生したクラスを作成し、そのクラスを設定してください。
+		DataFormsServlet#init,destoryで何らかの処理が必要な場合、ServletInstanceBeanから派生したクラスを作成し
+		そのクラスを設定してください。
 	 -->
 	 <!--
 	<context-param>

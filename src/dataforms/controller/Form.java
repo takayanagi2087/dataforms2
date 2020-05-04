@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.Table;
 import dataforms.dao.file.FileObject;
@@ -27,7 +28,7 @@ public  class Form extends WebComponent {
 	/**
 	 * Log.
 	 */
-	private static Logger log = Logger.getLogger(Form.class.getName());
+	private static Logger logger = LogManager.getLogger(Form.class.getName());
 
 	/**
 	 * フィールドリスト。
@@ -371,7 +372,7 @@ public  class Form extends WebComponent {
 				String key = tbl.getId();
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				int count = this.getArraySize(key, param);
-				log.debug(key + ".size()=" + count);
+				logger.debug(key + ".size()=" + count);
 				for (int i = 0; i < count; i++) {
 					Map<String, Object> m = new HashMap<String, Object>();
 					for (Field<?> f : tbl.getFieldList()) {

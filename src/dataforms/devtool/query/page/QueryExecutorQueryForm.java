@@ -2,7 +2,8 @@ package dataforms.devtool.query.page;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.QueryForm;
@@ -25,7 +26,7 @@ public class QueryExecutorQueryForm extends QueryForm {
 	/**
 	 * Log.
 	 */
-	private static Logger log = Logger.getLogger(QueryExecutorQueryForm.class);
+	private static Logger logger = LogManager.getLogger(QueryExecutorQueryForm.class);
 
 	/**
 	 * コンストラクタ。
@@ -55,7 +56,7 @@ public class QueryExecutorQueryForm extends QueryForm {
 	private Query newQuery(final Map<String, Object> param) throws Exception {
 		String packageName = (String) param.get("packageName");
 		String queryClassName = (String) param.get("queryClassName");
-		log.debug("queryClass=" + packageName + "." + queryClassName);
+		logger.debug("queryClass=" + packageName + "." + queryClassName);
 		@SuppressWarnings("unchecked")
 		Class<? extends Query> q = (Class<? extends Query>) Class.forName(packageName + "." + queryClassName);
 		return q.getDeclaredConstructor().newInstance();

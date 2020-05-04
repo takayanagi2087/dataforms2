@@ -7,7 +7,8 @@ import java.io.ByteArrayOutputStream;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 画像データクラス。
@@ -22,7 +23,7 @@ public class ImageData extends FileObject {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(ImageData.class);
+	private static Logger logger = LogManager.getLogger(ImageData.class);
 
 	/**
 	 * コンストラクタ。
@@ -111,7 +112,7 @@ public class ImageData extends FileObject {
 			width = (int) (iw * (h / ih));
 			height = h;
 		}
-		log.debug("width,height=" + width + "," + height);
+		logger.debug("width,height=" + width + "," + height);
 		// なぜかPNGのタイプが0で返される。(JDKのBUGと思われる)
 		int type = img.getType();
 		if (type == 0) {

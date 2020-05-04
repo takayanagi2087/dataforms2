@@ -6,7 +6,8 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.app.user.dao.UserDao;
 import dataforms.app.user.dao.UserInfoTable;
@@ -25,13 +26,13 @@ public final class AutoLoginCookie {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(AutoLoginCookie.class);
-	
+	private static Logger logger = LogManager.getLogger(AutoLoginCookie.class);
+
 	/**
 	 * 自動ログイン情報のクッキーID。
 	 */
 	private static final String ID_AUTO_LOGIN_INFO = "loginInfo";
-	
+
 	/**
 	 * Login維持フラグのID。
 	 */
@@ -47,20 +48,20 @@ public final class AutoLoginCookie {
 	 * 自動ログイン。
 	 */
 	private static boolean autoLogin = false;
-	
+
 	/**
 	 * クッキーのセキュアフラグ。
 	 */
 	private static boolean secure = false;
-	
-	
+
+
 	/**
 	 * コンストラクタ。
 	 */
 	private AutoLoginCookie() {
-		
+
 	}
-	
+
 	/**
 	 * 自動ログインの許可状況を取得します。
 	 * @return 許可されている場合true。
@@ -131,7 +132,7 @@ public final class AutoLoginCookie {
 			}
 		}
 	}
-	
+
 	/**
 	 * 自動ログイン用クッキーを設定します。
 	 * @param page ページ。
@@ -155,21 +156,21 @@ public final class AutoLoginCookie {
 				String userInfo = CryptUtil.encrypt(json, DataFormsServlet.getQueryStringCryptPassword());
 				logger.debug("json=" + json + ",userInfo=" + userInfo);
 				cookie = new Cookie(ID_AUTO_LOGIN_INFO, userInfo);
-			} 
+			}
 		}
 		cookie.setHttpOnly(true);
 		cookie.setMaxAge(COOKIE_MAX_AGE);
 		cookie.setPath(page.getRequest().getContextPath());
 		cookie.setSecure(secure);
 		page.getResponse().addCookie(cookie);
-		
+
 		Cookie flgCookie = new Cookie(ID_KEEP_LOGIN, keepLoginFlag);
 		flgCookie.setHttpOnly(true);
 		flgCookie.setMaxAge(COOKIE_MAX_AGE);
 		flgCookie.setPath(page.getRequest().getContextPath());
 		flgCookie.setSecure(secure);
 		page.getResponse().addCookie(flgCookie);
-		
+
 	}
 
 	/**
@@ -184,7 +185,7 @@ public final class AutoLoginCookie {
 		cookie.setSecure(secure);
 		page.getResponse().addCookie(cookie);
 	}
-	
+
 	/**
 	 * ログイン保持フラグを取得します。
 	 * @param page ページ。

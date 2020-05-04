@@ -7,7 +7,8 @@ import java.util.Map;
 import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.app.user.dao.UserDao;
 import dataforms.app.user.dao.UserInfoTable;
@@ -27,24 +28,24 @@ import net.arnx.jsonic.JSON;
  *
  */
 public class PasswordResetMailForm extends EditForm {
-	
+
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(PasswordResetMailForm.class);
+	private static Logger logger = LogManager.getLogger(PasswordResetMailForm.class);
 
 	/**
 	 * パスワードリセットページ。
 	 */
 	private static String passwordResetPage = null;
-	
+
 	/**
 	 * コンストラクタ。
 	 */
 	public PasswordResetMailForm() {
 		this.addField(new MailAddressField()).addValidator(new RequiredValidator()).setComment("メールアドレス");
 	}
-	
+
 	/**
 	 * パスワードリセットページを取得します。
 	 * @return パスワードリセットページ。
@@ -80,11 +81,11 @@ public class PasswordResetMailForm extends EditForm {
 		String path = this.getAppropriatePath("/mailTemplate/passwordResetMail.txt", this.getPage().getRequest());
 		String text = this.getWebResource(path);
 		logger.debug("template=" + text);
-		
+
 		HttpServletRequest req = this.getPage().getRequest();
 		String url = req.getRequestURL().toString();
 		String uri = req.getRequestURI();
-		url = url.replaceAll(uri, req.getContextPath()) + PasswordResetMailForm.getPasswordResetPage() + 
+		url = url.replaceAll(uri, req.getContextPath()) + PasswordResetMailForm.getPasswordResetPage() +
 				"." + WebComponent.getServlet().getPageExt();
 		MailTemplate template = new MailTemplate(text, null);
 		String urllist = "";
@@ -119,7 +120,7 @@ public class PasswordResetMailForm extends EditForm {
 	protected String getSavedMessage(final Map<String, Object> data) {
 		return MessagesUtil.getMessage(this.getPage(), "message.passwordmailsent");
 	}
-	
+
 	@Override
 	protected void updateData(final Map<String, Object> data) throws Exception {
 	}

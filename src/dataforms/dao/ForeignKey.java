@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.util.StringUtil;
 
@@ -17,7 +18,7 @@ public class ForeignKey extends Constraint {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(ForeignKey.class);
+	private static Logger logger = LogManager.getLogger(ForeignKey.class);
 
 	/**
 	 * 参照元テーブルのインスタンス。

@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.Form;
@@ -32,7 +33,7 @@ public class RestoreForm extends Form {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(RestoreForm.class);
+	private static Logger logger = LogManager.getLogger(RestoreForm.class);
 	/**
 	 * コンストラクタ。
 	 */
@@ -90,9 +91,9 @@ public class RestoreForm extends Form {
 			List<String> flist = FileUtil.getFileList(path);
 			for (String fn: flist) {
 				if (Pattern.matches(".*\\.data\\.json$", fn)) {
-					log.debug("fn=" + fn);
+					logger.debug("fn=" + fn);
 					String classname = fn.substring(path.length() + 1).replaceAll("[\\\\/]", ".").replaceAll("\\.data\\.json$", "");
-					log.debug("classname=" + classname);
+					logger.debug("classname=" + classname);
 					if ("1".equals(deleteDataFlag)) {
 						dao.deleteTableData(classname);
 					}

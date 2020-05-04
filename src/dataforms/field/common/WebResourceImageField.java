@@ -1,6 +1,8 @@
 package dataforms.field.common;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.file.ImageData;
 import dataforms.dao.file.WebResource;
@@ -15,7 +17,7 @@ public class WebResourceImageField extends ImageField implements WebResource {
 	/**
 	 * Log.
 	 */
-	private Logger log = Logger.getLogger(BlobStoreImageField.class);
+	private Logger logger = LogManager.getLogger(BlobStoreImageField.class);
 
 	/**
 	 * URL.
@@ -79,7 +81,7 @@ public class WebResourceImageField extends ImageField implements WebResource {
 			WebResourceFileStore store = (WebResourceFileStore) this.newFileStore();
 			val.copy(store.readWebResource(this.url));
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new ApplicationError(e);
 		}
 		return val;

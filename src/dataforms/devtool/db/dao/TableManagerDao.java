@@ -21,7 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.app.func.dao.FuncInfoTable;
 import dataforms.controller.Page;
@@ -59,7 +60,7 @@ public class TableManagerDao extends Dao {
     /**
      * Logger.
      */
-    private static Logger logger = Logger.getLogger(TableManagerDao.class.getName());
+    private static Logger logger = LogManager.getLogger(TableManagerDao.class.getName());
 
 	/**
 	 * コンストラクタ。

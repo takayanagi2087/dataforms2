@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.Page;
@@ -35,7 +36,7 @@ public class TableGeneratorQueryResultForm extends QueryResultForm {
 	/**
 	 * Log.
 	 */
-	private static Logger log = Logger.getLogger(TableGeneratorQueryResultForm.class.getName());
+	private static Logger logger = LogManager.getLogger(TableGeneratorQueryResultForm.class.getName());
 
 	/**
 	 * コンストラクタ。
@@ -95,7 +96,7 @@ public class TableGeneratorQueryResultForm extends QueryResultForm {
 		File template = TableReport.makeTemplate(this);
 		List<Map<String, Object>> tlist = new ArrayList<Map<String, Object>>();
 		try {
-			log.debug("template path=" + template.getAbsolutePath());
+			logger.debug("template path=" + template.getAbsolutePath());
 			TableReport rep = new TableReport(template.getAbsolutePath(), list.size() - 1);
 			rep.setSystemHeader(MessagesUtil.getMessage(this.getPage(), "message.systemname"));
 			for (int i = 0; i < list.size(); i++) {

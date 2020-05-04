@@ -3,7 +3,8 @@ package dataforms.app.user.page;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.base.page.BasePage;
@@ -22,12 +23,12 @@ public class PasswordResetPage extends BasePage {
 	 * パスワードリセット情報のキー。
 	 */
 	public static final String PASSWORD_RESET_INFO = "passwordResetInfo";
-	
+
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(PasswordResetPage.class);
-	
+	private static Logger logger = LogManager.getLogger(PasswordResetPage.class);
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -35,8 +36,8 @@ public class PasswordResetPage extends BasePage {
 		this.addForm(new ChangePasswordForm(true));
 		this.setMenuItem(false);
 	}
-	
-	
+
+
 	@WebMethod
 	@Override
 	public Response getHtml(final Map<String, Object> p) throws Exception {

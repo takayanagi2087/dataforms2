@@ -2,7 +2,8 @@ package dataforms.debug.alltype.page;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.controller.EditForm;
 import dataforms.debug.alltype.dao.FileFieldTestDao;
@@ -18,7 +19,7 @@ public class FileTestEditForm extends EditForm {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(FileTestEditForm.class);
+	private static Logger logger = LogManager.getLogger(FileTestEditForm.class);
 	/**
 	 * コンストラクタ。
 	 */
@@ -50,7 +51,7 @@ public class FileTestEditForm extends EditForm {
 	@Override
 	protected void insertData(final Map<String, Object> data) throws Exception {
 		this.setUserInfo(data);
-		log.debug("insert data=" + JSON.encode(data, true));
+		logger.debug("insert data=" + JSON.encode(data, true));
 		FileFieldTestDao dao = new FileFieldTestDao(this);
 		dao.executeInsert(new FileFieldTestTable(), data);
 	}
@@ -58,7 +59,7 @@ public class FileTestEditForm extends EditForm {
 	@Override
 	protected void updateData(final Map<String, Object> data) throws Exception {
 		this.setUserInfo(data);
-		log.debug("updatet data=" + JSON.encode(data, true));
+		logger.debug("updatet data=" + JSON.encode(data, true));
 		FileFieldTestDao dao = new FileFieldTestDao(this);
 		dao.executeUpdate(new FileFieldTestTable(), data);
 	}

@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.Dao;
 import dataforms.field.base.TextField;
@@ -19,7 +20,7 @@ public class DbTableNameField extends TextField {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(DbTableNameField.class);
+	private static Logger logger = LogManager.getLogger(DbTableNameField.class);
 
 	/**
 	 * コンストラクタ。

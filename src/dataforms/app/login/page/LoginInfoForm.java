@@ -2,7 +2,8 @@ package dataforms.app.login.page;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.user.field.LoginIdField;
@@ -23,7 +24,7 @@ public class LoginInfoForm extends Form {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(LoginInfoForm.class.getName());
+    private static Logger logger = LogManager.getLogger(LoginInfoForm.class.getName());
 
 	/**
 	 * ユーザ登録ページのアドレス。
@@ -119,7 +120,7 @@ public class LoginInfoForm extends Form {
     @WebMethod
 	public JsonResponse logout(final Map<String, Object> param) throws Exception {
 		Map<String, Object> userInfo = this.getPage().getUserInfo();
-		log.info("logout success=" + userInfo.get("loginId") + "(" + userInfo.get("userId") + ")");
+		logger.info("logout success=" + userInfo.get("loginId") + "(" + userInfo.get("userId") + ")");
 		this.getPage().getRequest().getSession().setAttribute("userInfo", null);
 		AutoLoginCookie.clearAutoLoginCookie(this.getPage());
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, "");

@@ -2,7 +2,8 @@ package dataforms.util;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.app.user.field.UserIdField;
 import dataforms.controller.Page;
@@ -26,7 +27,7 @@ public class UserAdditionalInfoTableUtil {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(UserAdditionalInfoTableUtil.class);
+	private static Logger logger = LogManager.getLogger(UserAdditionalInfoTableUtil.class);
 
 	/**
 	 * コンストラクタ。

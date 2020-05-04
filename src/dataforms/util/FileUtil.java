@@ -22,7 +22,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * ファイルI/Oユーティリティクラス。
@@ -32,7 +33,7 @@ public final class FileUtil {
 	/**
      * Logger.
      */
-    private static Logger logger = Logger.getLogger(FileUtil.class.getName());
+    private static Logger logger = LogManager.getLogger(FileUtil.class.getName());
 
 
 	/**

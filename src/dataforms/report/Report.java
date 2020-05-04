@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.Table;
 import dataforms.dao.file.WebResource;
@@ -22,7 +23,7 @@ public abstract class Report {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(Report.class);
+	private static Logger logger = LogManager.getLogger(Report.class);
 
 
 	/**
@@ -370,7 +371,7 @@ public abstract class Report {
 	protected void buildReport(final Map<String, Object> data) throws Exception {
 		this.pageStartPositionList = new ArrayList<Integer>();
 		this.getWebResource(data);
-		log.debug("data=" + JSON.encode(data, true));
+		logger.debug("data=" + JSON.encode(data, true));
 		int pages = this.countPage(data);
 		this.initPage(pages);
 		for (int i = 0; i < pages; i++) {

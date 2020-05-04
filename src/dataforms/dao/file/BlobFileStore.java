@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.Dao;
 import dataforms.dao.JDBCConnectableObject;
@@ -36,7 +37,7 @@ public class BlobFileStore extends FileStore {
 	/**
 	 * Log.
 	 */
-	private static Logger log = Logger.getLogger(BlobFileStore.class);
+	private static Logger logger = LogManager.getLogger(BlobFileStore.class);
 
 	/**
 	 * フィールドへのポインタ。
@@ -74,7 +75,7 @@ public class BlobFileStore extends FileStore {
 	 * 一時ファイルの残骸を削除する。
 	 */
 	public static void cleanup() {
-		log.debug("cleanup");
+		logger.debug("cleanup");
 		File tempdir = new File(DataFormsServlet.getTempDir() + "/blobStore");
 		if (!tempdir.exists()) {
 			tempdir.mkdirs();
@@ -86,7 +87,7 @@ public class BlobFileStore extends FileStore {
 			}
 		});
 		for (File f: list) {
-			log.debug("delete temp file=" + f.getAbsolutePath());
+			logger.debug("delete temp file=" + f.getAbsolutePath());
 			f.delete();
 		}
 	}
@@ -114,7 +115,7 @@ public class BlobFileStore extends FileStore {
 		} finally {
 			os.close();
 		}
-		log.debug("blobfile=" + blobFile.getAbsolutePath());
+		logger.debug("blobfile=" + blobFile.getAbsolutePath());
 		return blobFile;
 	}
 
@@ -187,7 +188,7 @@ public class BlobFileStore extends FileStore {
 		byte[] lenbuf = new byte[8];
 		is.read(lenbuf);
 		int len = Integer.parseInt(new String(lenbuf));
-		log.debug("header length=" + len);
+		logger.debug("header length=" + len);
 		byte[] fileHeaderBuffer = new byte[len];
 		is.read(fileHeaderBuffer);
 		BlobFileHeader header = (BlobFileHeader) ObjectUtil.getObject(fileHeaderBuffer);
@@ -322,7 +323,7 @@ public class BlobFileStore extends FileStore {
 	@Override
 	public FileObject readFileObject(final Map<String, Object> param) throws Exception {
 		String downloadingFile = (String) param.get("downloadingFile");
-		log.debug("downloadingFile=" + downloadingFile);
+		logger.debug("downloadingFile=" + downloadingFile);
 		Dao dao = new Dao(this.jdbcConnectableObject);
 		String tblclass = (String) param.get("table");
 		@SuppressWarnings("unchecked")
@@ -354,7 +355,7 @@ public class BlobFileStore extends FileStore {
 	public String getDownloadParameter(final FileField<?> field, final Map<String, Object> d) {
 		Map<String, Object> m = getDownloadInfoMap(field, d);
 		String ret = "key=" + this.encryptDownloadParameter(m);
-		log.debug("downloadParameter=" + ret);
+		logger.debug("downloadParameter=" + ret);
 		return ret;
 	}
 
@@ -375,7 +376,7 @@ public class BlobFileStore extends FileStore {
 				m.put(f.getId(), d.get(f.getId()).toString());
 			}
 		} else {
-			log.warn("Table not found. field ID=" + field.getId());
+			logger.warn("Table not found. field ID=" + field.getId());
 		}
 		return m;
 	}

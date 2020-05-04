@@ -28,7 +28,8 @@ import javax.sql.DataSource;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.backuprestore.page.BackupForm;
@@ -98,7 +99,8 @@ public class DataFormsServlet extends HttpServlet {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(DataFormsServlet.class.getName());
+//	private static Logger logger = Logger.getLogger(DataFormsServlet.class.getName());
+	private static Logger logger = LogManager.getLogger(DataFormsServlet.class.getName());
 
 	/**
 	 * jndi-prefix.
@@ -1085,7 +1087,7 @@ public class DataFormsServlet extends HttpServlet {
 	/**
 	 * httpRequest Logger.
 	 */
-	private static Logger accessLogger = Logger.getLogger("HttpRequest");
+	private static Logger accessLogger = LogManager.getLogger("HttpRequest");
 
 
 	/**

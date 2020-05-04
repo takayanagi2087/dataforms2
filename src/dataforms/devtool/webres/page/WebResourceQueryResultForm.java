@@ -7,7 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.controller.Dialog;
 import dataforms.controller.Form;
@@ -54,7 +55,7 @@ public class WebResourceQueryResultForm extends QueryResultForm {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(WebResourceQueryResultForm.class.getName());
+	private static Logger logger = LogManager.getLogger(WebResourceQueryResultForm.class.getName());
 
 
 	/**

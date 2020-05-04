@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.controller.EditForm;
 import dataforms.controller.Page;
@@ -127,7 +128,7 @@ public class PageGeneratorEditForm extends EditForm {
 	/**
 	 * Logger。
 	 */
-	private static Logger logger = Logger.getLogger(PageGeneratorEditForm.class.getName());
+	private static Logger logger = LogManager.getLogger(PageGeneratorEditForm.class.getName());
 
 	/**
 	 * コンストラクタ。

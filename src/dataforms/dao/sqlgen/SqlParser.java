@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.file.FileObject;
 import dataforms.util.StringUtil;
@@ -26,7 +27,7 @@ public class SqlParser {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(SqlParser.class.getName());
+    private static Logger logger = LogManager.getLogger(SqlParser.class.getName());
 
 	/**
 	 * オリジナルSQL。
@@ -70,8 +71,8 @@ public class SqlParser {
 	 * @return パラメータを?に変換したSQL。
 	 */
 	private String parseSql(final String sql) {
-		if (log.isDebugEnabled()) {
-			log.debug("sql=" + sql);
+		if (logger.isDebugEnabled()) {
+			logger.debug("sql=" + sql);
 		}
 		this.paramnames = new ArrayList<String>();
 		StringBuilder sb = new StringBuilder();
@@ -157,7 +158,7 @@ public class SqlParser {
 	 */
 	protected void setBlobData(final PreparedStatement st, final int idx, final FileObject v, final ParameterMetaData meta) throws Exception {
 		FileObject f =  v;
-		log.debug("blobFileName=" + f.getFileName());
+		logger.debug("blobFileName=" + f.getFileName());
 		InputStream is = f.openInputStream();
 		if (is != null) {
 			this.blobIsList.add(is);
@@ -186,14 +187,14 @@ public class SqlParser {
 			ParameterMetaData meta = getParameterMetaData(st);
 			for (String p : this.paramnames) {
 				Object v = this.getParam(p, param);
-				if (log.isDebugEnabled()) {
-					log.debug(idx + " :" + p + "=" + v);
+				if (logger.isDebugEnabled()) {
+					logger.debug(idx + " :" + p + "=" + v);
 				}
 				if (v == null) {
 					st.setNull(idx, this.getParameterType(meta, idx));
 				} else {
 					if (v instanceof FileObject) {
-						log.debug("valueClass=" + v.getClass().getName());
+						logger.debug("valueClass=" + v.getClass().getName());
 						this.setBlobData(st, idx, (FileObject) v, meta);
 					} else {
 						st.setObject(idx, v);
@@ -237,10 +238,10 @@ public class SqlParser {
 				Object v = this.getParam(p, param);
 				if (v != null) {
 					if (v instanceof FileObject) {
-						log.debug("removeBlobTempFile class=" + v.getClass().getName());
+						logger.debug("removeBlobTempFile class=" + v.getClass().getName());
 						FileObject f = (FileObject) v;
 						if (f.getTempFile() != null) {
-							log.debug("tempfile=" + f.getTempFile().getAbsolutePath());
+							logger.debug("tempfile=" + f.getTempFile().getAbsolutePath());
 							f.getTempFile().delete();
 						}
 					}

@@ -5,7 +5,8 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.SimpleDateFormat;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
 import dataforms.dao.Query;
@@ -34,7 +35,7 @@ public class OracleSqlGenerator extends SqlGenerator {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(OracleSqlGenerator.class);
+	private static Logger logger = LogManager.getLogger(OracleSqlGenerator.class);
 
 	/**
 	 * データベースシステムの名称。

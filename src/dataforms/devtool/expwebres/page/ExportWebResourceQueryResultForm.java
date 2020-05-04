@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.QueryResultForm;
@@ -37,7 +38,7 @@ public class ExportWebResourceQueryResultForm extends QueryResultForm {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(ExportWebResourceQueryResultForm.class);
+	private static Logger logger = LogManager.getLogger(ExportWebResourceQueryResultForm.class);
 
 	/**
 	 * コンストラクタ。
@@ -96,7 +97,7 @@ public class ExportWebResourceQueryResultForm extends QueryResultForm {
 				continue;
 			}
 			if (this.isMatchFile(respath, fileNamePattern, "1".equals(regexp))) {
-				log.debug("res=" + respath);
+				logger.debug("res=" + respath);
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("rowNo", Integer.valueOf(rowNo));
 				m.put("sel", respath);
@@ -124,7 +125,7 @@ public class ExportWebResourceQueryResultForm extends QueryResultForm {
 		@SuppressWarnings("unchecked")
 		List<String> list = (List<String>) data.get("sel");
 		for (String r: list) {
-			log.debug("r=" + r);
+			logger.debug("r=" + r);
 			this.exportResourceFile(webSourcePath, r);
 		}
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, "エクスポートしました。");
@@ -142,7 +143,7 @@ public class ExportWebResourceQueryResultForm extends QueryResultForm {
 	private void exportResourceFile(final String webResourcePath, final String path) throws Exception {
 		byte[] res = this.getBinaryWebResource(path);
 		File file = new File(webResourcePath + "/" + path);
-		log.debug("outpath=" + file.getAbsolutePath());
+		logger.debug("outpath=" + file.getAbsolutePath());
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}

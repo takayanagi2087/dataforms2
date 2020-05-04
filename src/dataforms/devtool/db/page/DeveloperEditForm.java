@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.app.user.dao.UserDao;
 import dataforms.app.user.dao.UserInfoTable;
@@ -30,7 +31,7 @@ public class DeveloperEditForm extends EditForm {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(DeveloperEditForm.class.getName());
+    private static Logger logger = LogManager.getLogger(DeveloperEditForm.class.getName());
 
 	/**
 	 * コンストラクタ。
@@ -76,7 +77,7 @@ public class DeveloperEditForm extends EditForm {
 	public Map<String, Object> getProperties() throws Exception {
 		Map<String, Object> ret = super.getProperties();
 		boolean exists = this.userInfoDataExists();
-		log.debug("userInfoDataExists=" + exists);
+		logger.debug("userInfoDataExists=" + exists);
 		ret.put("userInfoDataExists", exists);
 		return ret;
 	}
@@ -154,7 +155,7 @@ public class DeveloperEditForm extends EditForm {
 		UserInfoTable table = new UserInfoTable();
 		String path = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata");
 		String userInitialFile = table.getImportData(path);
-		log.debug("userInitialFile=" + userInitialFile);
+		logger.debug("userInitialFile=" + userInitialFile);
 		if (userInitialFile != null) {
 			return true;
 		} else {

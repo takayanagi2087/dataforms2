@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.exception.ApplicationError;
@@ -37,7 +38,7 @@ public class Table  {
 	/**
 	 * Log.
 	 */
-	private static Logger logger = Logger.getLogger(Table.class.getName());
+	private static Logger logger = LogManager.getLogger(Table.class.getName());
 
 
 	/**

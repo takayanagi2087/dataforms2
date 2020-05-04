@@ -9,7 +9,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.field.common.FileField;
 
@@ -24,8 +25,8 @@ public class StreamingFileCleaner implements HttpSessionListener {
 	/**
 	 * Logger.
 	 */
-	private Logger log = Logger.getLogger(StreamingFileCleaner.class);
-	
+	private Logger logger = LogManager.getLogger(StreamingFileCleaner.class);
+
 	@Override
 	public void sessionCreated(final HttpSessionEvent arg0) {
 	}
@@ -37,9 +38,9 @@ public class StreamingFileCleaner implements HttpSessionListener {
 		while (e.hasMoreElements()) {
 			String name = e.nextElement();
 			if (Pattern.matches("^" + FileField.DOWNLOADING_FILE + ".+", name)) {
-				log.debug("attribute name=" + name);
+				logger.debug("attribute name=" + name);
 				String filename = (String) session.getAttribute(name);
-				log.debug("filename=" + filename);
+				logger.debug("filename=" + filename);
 				File f = new File(filename);
 				f.delete();
 			}

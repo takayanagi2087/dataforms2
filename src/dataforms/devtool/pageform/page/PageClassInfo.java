@@ -2,7 +2,8 @@ package dataforms.devtool.pageform.page;
 
 import java.lang.reflect.Method;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.controller.Page;
 import dataforms.dao.Dao;
@@ -16,7 +17,7 @@ public class PageClassInfo {
 	/**
 	 * Log.
 	 */
-	private static Logger log = Logger.getLogger(PageClassInfo.class);
+	private static Logger logger = LogManager.getLogger(PageClassInfo.class);
 	/**
 	 * ページクラス。
 	 */
@@ -48,7 +49,7 @@ public class PageClassInfo {
 				}
 			}
 		} catch (NoSuchMethodException e) {
-			log.warn("Page class '" + this.page.getClass().getName() + "' does no have '" + methodName + "' method.");
+			logger.warn("Page class '" + this.page.getClass().getName() + "' does no have '" + methodName + "' method.");
 		}
 		return ret;
 	}
@@ -71,7 +72,7 @@ public class PageClassInfo {
 				}
 			}
 		} catch (NoSuchMethodException e) {
-			log.warn("Page class '" + this.page.getClass().getName() + "' does no have '" + methodName + "' method.");
+			logger.warn("Page class '" + this.page.getClass().getName() + "' does no have '" + methodName + "' method.");
 		}
 		return ret;
 	}

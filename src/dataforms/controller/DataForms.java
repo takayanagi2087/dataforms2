@@ -6,7 +6,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.response.JsonResponse;
@@ -28,7 +29,7 @@ public class DataForms extends WebComponent {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(DataForms.class.getName());
+    private static Logger logger = LogManager.getLogger(DataForms.class.getName());
 
 
     /**
@@ -140,7 +141,7 @@ public class DataForms extends WebComponent {
 	 * @throws Exception 例外。
 	 */
 	private Map<String, Object> getFormInfo() throws Exception {
-		log.info("fmap=" + this.getFormMap());
+		logger.info("fmap=" + this.getFormMap());
 		Map<String, Object> map = new HashMap<String, Object>();
 		Set<String> keyset = this.getFormMap().keySet();
 		for (String key : keyset) {

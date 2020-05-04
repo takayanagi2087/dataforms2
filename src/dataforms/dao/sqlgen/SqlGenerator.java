@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
 import dataforms.controller.Page;
@@ -66,7 +67,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
     /**
      * Logger。
      */
-    private static Logger logger = Logger.getLogger(SqlGenerator.class.getName());
+    private static Logger logger = LogManager.getLogger(SqlGenerator.class.getName());
 
     /**
      * JDBC接続情報。

@@ -6,7 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.user.dao.UserDao;
@@ -28,7 +29,7 @@ public class LoginForm extends Form {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(LoginForm.class.getName());
+	private static Logger logger = LogManager.getLogger(LoginForm.class.getName());
 
 	/**
 	 * ユーザ登録ページのアドレス。

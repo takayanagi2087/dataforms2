@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
@@ -20,7 +21,7 @@ public class Index {
 	/**
 	 * Logger。
 	 */
-	private Logger logger = Logger.getLogger(Index.class);
+	private Logger logger = LogManager.getLogger(Index.class);
 
 	/**
 	 * テーブルクラス。

@@ -1,6 +1,7 @@
 package dataforms.servlet;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * サーブレットインスタンス設定クラスです。
@@ -10,13 +11,13 @@ import org.apache.log4j.Logger;
  * </pre>
  */
 public class ServletInstanceBean {
-	
+
 	/**
-	 * Log.
+	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(ServletInstanceBean.class);
-	
-	
+	private static Logger logger = LogManager.getLogger(ServletInstanceBean.class);
+
+
 	/**
 	 * サーブレット初期化メソッド。
 	 * <pre>
@@ -25,10 +26,10 @@ public class ServletInstanceBean {
 	 * @throws Exception 例外。
 	 */
 	public void init() throws Exception {
-		log.info("init DataFormsServlet instance.");
-		
+		logger.info("init DataFormsServlet instance.");
+
 	}
-	
+
 	/**
 	 * サーブレット破壊メソッド。
 	 * <pre>
@@ -37,6 +38,6 @@ public class ServletInstanceBean {
 	 * @throws Exception 例外。
 	 */
 	public void destroy()  throws Exception {
-		log.info("destroy DataFormsServlet instance.");
+		logger.info("destroy DataFormsServlet instance.");
 	}
 }

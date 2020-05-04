@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.WebComponent;
@@ -31,7 +32,7 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(Field.class.getName());
+	private static Logger logger = LogManager.getLogger(Field.class.getName());
 
 	/**
 	 * autocompleteや関連データ取得時に対象のフィールドIDがこのパラメータで渡されます。

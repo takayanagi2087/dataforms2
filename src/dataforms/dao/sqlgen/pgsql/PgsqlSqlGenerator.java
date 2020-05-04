@@ -3,7 +3,8 @@ package dataforms.dao.sqlgen.pgsql;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
 import dataforms.dao.QueryPager;
@@ -22,7 +23,7 @@ public class PgsqlSqlGenerator extends SqlGenerator {
     /**
      * Logger.
      */
-    private static Logger logger = Logger.getLogger(PgsqlSqlGenerator.class.getName());
+    private static Logger logger = LogManager.getLogger(PgsqlSqlGenerator.class.getName());
 
 	/**
 	 * データベースシステムの名称。

@@ -5,7 +5,8 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
 import dataforms.dao.QueryPager;
@@ -20,7 +21,7 @@ public class DerbySqlGenerator extends SqlGenerator {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(DerbySqlGenerator.class);
+	private static Logger logger = LogManager.getLogger(DerbySqlGenerator.class);
 
 	/**
 	 * データベースシステムの名称。

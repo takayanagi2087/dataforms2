@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;
@@ -21,7 +22,7 @@ public class MailTemplate {
 	/**
 	 * Logger。
 	 */
-	private static Logger log = Logger.getLogger(MailTemplate.class);
+	private static Logger logger = LogManager.getLogger(MailTemplate.class);
 
 	/**
 	 * 引数マップ。
@@ -156,11 +157,11 @@ public class MailTemplate {
 	 */
 	private List<AttachFileInfo> attachFileList = new ArrayList<AttachFileInfo>();
 
-	
-	
+
+
 	/**
 	 * コンストラクタ。
-	 * 
+	 *
 	 * @param templete テキストテンプレート。
 	 * @param htmlframe HTMLメールのテンプルレート。
 	 * @throws Exception 例外。
@@ -176,7 +177,7 @@ public class MailTemplate {
 	 * @throws Exception 例外。
 	 */
 	private void setTemplate(final String templete) throws Exception {
-		log.debug("rpath=" + templete);
+		logger.debug("rpath=" + templete);
 		Pattern p = Pattern.compile(".*");
 		Matcher m = p.matcher(templete);
 		m.find();
@@ -197,7 +198,7 @@ public class MailTemplate {
 		return text;
 	}
 
-	
+
 	/**
 	 * メールテンプレートの読み込み。
 	 * @param htmlframe HTMLメールテンプレート。
@@ -209,10 +210,10 @@ public class MailTemplate {
 		} else {
 			this.htmlFrame = this.getStringResourse("htmlframe/htmlFrame.html");
 		}
-		log.debug("htmltext=" + this.htmlFrame);
+		logger.debug("htmltext=" + this.htmlFrame);
 	}
 
-	
+
 	/**
 	 * 変身先アドレスを取得します。
 	 * @return 変身先アドレス。
@@ -229,9 +230,9 @@ public class MailTemplate {
 		this.replyTo = replyTo;
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * TOアドレスを追加します。
 	 * @param toAddress TOアドレス。
@@ -308,7 +309,7 @@ public class MailTemplate {
 
 	/**
 	 * 送信元アドレスを設定します。
-	 * @param from 送信元アドレス。 
+	 * @param from 送信元アドレス。
 	 */
 	public void setFrom(final String from) {
 		this.from = from;
@@ -369,7 +370,7 @@ public class MailTemplate {
 	public String getMailTextBody() {
 		String text = this.mailBody;
 		for (String key: this.argMap.keySet()) {
-			log.debug("key=" + key);
+			logger.debug("key=" + key);
 			String value = this.argMap.get(key);
 			text = text.replaceAll("\\$\\{" + key + "\\}", value);
 		}
@@ -397,7 +398,7 @@ public class MailTemplate {
 		}
 		text = text.replaceAll("\r", "");
 		text = text.replaceAll("\n", "<br/>");
-		log.debug("text=" + text);
+		logger.debug("text=" + text);
 		text = this.htmlFrame.replaceAll("\\$\\{mailBody\\}", text);
 		return text;
 	}

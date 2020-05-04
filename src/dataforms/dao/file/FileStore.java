@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.field.common.FileField;
 import dataforms.servlet.DataFormsServlet;
@@ -21,12 +22,12 @@ import net.arnx.jsonic.JSON;
  *
  */
 public abstract class FileStore {
-	
+
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(FileStore.class);
-	
+	private static Logger logger = LogManager.getLogger(FileStore.class);
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -107,8 +108,8 @@ public abstract class FileStore {
 	 * @return 削除すべき一時ファイル。
 	 */
 	public abstract File getTempFile(final FileObject fobj);
-	
-	
+
+
 	/**
 	 * ファイルのダウンロードに必要な情報のマップを作成します。
 	 * @param field フィールドクラス。
@@ -117,7 +118,7 @@ public abstract class FileStore {
 	 */
 	public abstract Map<String, Object> getDownloadInfoMap(final FileField<?> field, final Map<String, Object> d);
 
-	
+
 	/**
 	 * ダウンロードパラメータを取得します。
 	 * @param field フィールド。
@@ -125,7 +126,7 @@ public abstract class FileStore {
 	 * @return ダウンロードパラメータ。
 	 */
 	public abstract String getDownloadParameter(final FileField<?> field, final Map<String, Object> d);
-	
+
 	/**
 	 * 暗号化されたダウンロードパラメータを取得します。
 	 * @param p ダウンロードパラメータマップ。
@@ -141,7 +142,7 @@ public abstract class FileStore {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * 暗号化されたダウンロードパラメータを複合します。
 	 * @param p 暗号化されたダウンロードパラメータ。
@@ -151,7 +152,7 @@ public abstract class FileStore {
 		Map<String, Object> ret = null;
 		try {
 			String json = CryptUtil.decrypt(p, DataFormsServlet.getQueryStringCryptPassword());
-			log.debug("json=" + json);
+			logger.debug("json=" + json);
 			ret =  JSON.decode(json);
 		} catch (Exception e) {
 			e.printStackTrace();

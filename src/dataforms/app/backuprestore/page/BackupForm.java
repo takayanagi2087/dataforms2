@@ -8,7 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.func.field.FunctionMultiSelectField;
@@ -31,7 +32,7 @@ public class BackupForm extends Form {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(BackupForm.class);
+	private static Logger logger = LogManager.getLogger(BackupForm.class);
 
 	/**
 	 * バックアップファイル名。
@@ -103,7 +104,7 @@ public class BackupForm extends Form {
 		List<ValidationError> el = this.validate(p);
 		if (el.size() == 0) {
 			Map<String, Object> data = this.convertToServerData(p);
-			log.debug("data=" + data);
+			logger.debug("data=" + data);
 			@SuppressWarnings("unchecked")
 			List<String> list = (List<String>) data.get("functionMultiSelect");
 			if (list.size() > 0) {
@@ -128,7 +129,7 @@ public class BackupForm extends Form {
 					resp = new BinaryResponse(backup.toString() + ".zip", "application/zip", BackupForm.getBackupFileName() + fmt.format(new Date()) + ".zip");
 					((BinaryResponse) resp).setTempFile(new File(backup.toString() + ".zip"));
 				} finally {
-					log.debug("delete:" + backup.toString());
+					logger.debug("delete:" + backup.toString());
 					if (backup.toString().indexOf("backup") > 0) {
 						FileUtil.deleteDirectory(backup.toString());
 					}

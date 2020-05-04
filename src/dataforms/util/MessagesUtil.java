@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.controller.Page;
 import dataforms.controller.WebComponent;
@@ -24,7 +25,7 @@ public final class MessagesUtil {
     /**
      * Log.
      */
-	private static Logger logger = Logger.getLogger(MessagesUtil.class.getName());
+	private static Logger logger = LogManager.getLogger(MessagesUtil.class.getName());
 
 	/**
 	 * クライアント用メッセージプロパティ。

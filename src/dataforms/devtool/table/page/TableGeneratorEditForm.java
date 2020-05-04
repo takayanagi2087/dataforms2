@@ -13,7 +13,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.EditForm;
@@ -101,7 +102,7 @@ public class TableGeneratorEditForm extends EditForm {
 	/**
 	 * Logger.
 	 */
-	private Logger logger = Logger.getLogger(TableGeneratorEditForm .class);
+	private Logger logger = LogManager.getLogger(TableGeneratorEditForm .class);
 
 	/**
 	 * コンストラクタ。

@@ -2,7 +2,8 @@ package dataforms.controller;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.response.Response;
@@ -16,7 +17,7 @@ public abstract class BatchProcess extends WebProcess {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(BatchProcess.class);
+	private static Logger logger = LogManager.getLogger(BatchProcess.class);
 
 	/**
 	 * コンストラクタ。

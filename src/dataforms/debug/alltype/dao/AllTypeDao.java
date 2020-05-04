@@ -3,7 +3,8 @@ package dataforms.debug.alltype.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.Dao;
 import dataforms.dao.Index;
@@ -34,7 +35,7 @@ public class AllTypeDao extends Dao {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(AllTypeDao.class.getName());
+    private static Logger logger = LogManager.getLogger(AllTypeDao.class.getName());
 
 
 	/**
@@ -48,9 +49,9 @@ public class AllTypeDao extends Dao {
 		List<Index> ilist = tbl.getIndexList();
 		SqlGenerator gen = this.getSqlGenerator();
 		for (Index index: ilist) {
-			log.debug("index=" + index.getClass().getName());
-			log.debug("create index sql = " + gen.generateCreateIndexSql(index));
-			log.debug("drop index sql = " + gen.generateDropIndexSql(index));
+			logger.debug("index=" + index.getClass().getName());
+			logger.debug("create index sql = " + gen.generateCreateIndexSql(index));
+			logger.debug("drop index sql = " + gen.generateDropIndexSql(index));
 		}
 		this.getCurrentDBIndexInfo(tbl);
 	}
@@ -81,9 +82,9 @@ public class AllTypeDao extends Dao {
 		query.setConditionData(data);
 
 		String sortOrder = (String) data.get("sortOrder");
-		log.debug("sortOrder=" + sortOrder);
+		logger.debug("sortOrder=" + sortOrder);
 		FieldList sflist = tbl.getFieldList().getOrderByFieldList(sortOrder);
-		log.debug("sflist.size()=" + sflist.size());
+		logger.debug("sflist.size()=" + sflist.size());
 		if (sflist.size() == 0) {
 			query.setOrderByFieldList(new FieldList(tbl.getField("recordIdField").setSortOrder(Field.SortOrder.DESC)));
 		} else {
@@ -116,9 +117,9 @@ public class AllTypeDao extends Dao {
 		query.setConditionData(data);
 
 		String sortOrder = (String) data.get("sortOrder");
-		log.debug("sortOrder=" + sortOrder);
+		logger.debug("sortOrder=" + sortOrder);
 		FieldList sflist = tbl.getFieldList().getOrderByFieldList(sortOrder);
-		log.debug("sflist.size()=" + sflist.size());
+		logger.debug("sflist.size()=" + sflist.size());
 		if (sflist.size() == 0) {
 			query.setOrderByFieldList(new FieldList(tbl.getField("recordIdField").setSortOrder(Field.SortOrder.DESC)));
 		} else {
@@ -291,7 +292,7 @@ public class AllTypeDao extends Dao {
 	 */
 	public void deleteAllType(final Map<String, Object> data) throws Exception {
 		this.setTablePrimaryKey(data);
-		log.debug("delete data=" + JSON.encode(data, true));
+		logger.debug("delete data=" + JSON.encode(data, true));
 		AllTypeTable tbl = new AllTypeTable();
 		this.executeDelete(tbl, data);
 //		this.executeRemove(tbl, data);
@@ -432,6 +433,6 @@ public class AllTypeDao extends Dao {
 		TestQuery query = new TestQuery();
 		List<Map<String, Object>> list = this.executeQuery(query);
 		String json = JSON.encode(list, true);
-		log.debug("testQueryResult=" + json);
+		logger.debug("testQueryResult=" + json);
 	}
 }

@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.func.dao.FuncInfoDao;
@@ -36,7 +37,7 @@ public class FuncEditForm extends EditForm {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(FuncEditForm.class.getName());
+    private static Logger logger = LogManager.getLogger(FuncEditForm.class.getName());
 
 	/**
 	 * コンストラクタ。
@@ -69,7 +70,7 @@ public class FuncEditForm extends EditForm {
 			String funcPath = e.getFuncPath(); // (String) m.get("funcPath");
 			String propFile = funcPath + "/Function";
 			String key = funcPath.substring(1).replaceAll("/", ".");
-			log.debug("key=" + key);
+			logger.debug("key=" + key);
 			SequentialProperties prop = MessagesUtil.getProperties(this.getPage(), propFile);
 			String name = prop.getProperty(key);
 			m.put("funcName", name);
@@ -135,12 +136,12 @@ public class FuncEditForm extends EditForm {
 				if (propfile.exists()) {
 					text = FileUtil.readTextFile(funcprop, DataFormsServlet.getEncoding());
 				}
-				log.debug("funcprop=" + funcprop);
+				logger.debug("funcprop=" + funcprop);
 				SequentialProperties prop = new SequentialProperties();
 				prop.loadText(text);
 				prop.put(path.substring(1).replaceAll("/", "."), name);
 				String str = prop.getSaveText();
-				log.debug("str=" + str);
+				logger.debug("str=" + str);
 				FileUtil.writeTextFileWithBackup(funcprop, str, DataFormsServlet.getEncoding());
 			}
 		}

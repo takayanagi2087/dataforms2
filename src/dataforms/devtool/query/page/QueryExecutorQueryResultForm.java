@@ -3,7 +3,8 @@ package dataforms.devtool.query.page;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.Page;
@@ -25,7 +26,7 @@ public class QueryExecutorQueryResultForm extends QueryResultForm {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(QueryExecutorQueryResultForm.class);
+	private static Logger logger = LogManager.getLogger(QueryExecutorQueryResultForm.class);
 
 	/**
 	 * HTMLテーブル。
@@ -50,9 +51,9 @@ public class QueryExecutorQueryResultForm extends QueryResultForm {
 		if (!StringUtil.isBlank(sortOrder)) {
 			String[] sp = sortOrder.split("\\,");
 			for (String f: sp) {
-				log.debug("f=" + f);
+				logger.debug("f=" + f);
 				String[] fsp = f.split("\\:");
-				log.debug("fsp[0]=" + fsp[0]);
+				logger.debug("fsp[0]=" + fsp[0]);
 				String id = fsp[0];
 				String order = fsp[1];
 				if (sb.length() > 0) {
@@ -71,7 +72,7 @@ public class QueryExecutorQueryResultForm extends QueryResultForm {
 		String sql = (String) data.get("sql");
 		String sortOrder = (String) data.get("sortOrder");
 		String orderby = this.getOrderByString(sortOrder);
-		log.debug("orderby=" + orderby);
+		logger.debug("orderby=" + orderby);
 		if (sortOrder.length() > 0) {
 			sql = "select * from (" + sql + ") m order by " + orderby;
 		}
@@ -90,7 +91,7 @@ public class QueryExecutorQueryResultForm extends QueryResultForm {
 		}
 		this.htmlTable.getFieldList().getOrderByFieldList(sortOrder);
 		ret.put("htmlTable", htmlTable.getProperties());
-		log.debug("result=" + JSON.encode(ret, true));
+		logger.debug("result=" + JSON.encode(ret, true));
 		return ret;
 	}
 

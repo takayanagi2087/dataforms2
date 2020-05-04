@@ -17,7 +17,9 @@ import javax.mail.internet.MimeUtility;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 
 /**
@@ -28,13 +30,13 @@ public class MailSender {
 	/**
 	 * Logger.
 	 */
-	private Logger log = Logger.getLogger(MailSender.class);
+	private Logger log = LogManager.getLogger(MailSender.class);
 
 	/**
 	 * jndi-prefix。
 	 */
 	private static String jndiPrefix = null;
-	
+
 	/**
 	 * メールセッション名称。
 	 */
@@ -45,7 +47,7 @@ public class MailSender {
 	 */
 	private static String mailFrom = null;
 
-	
+
 	/**
 	 * コンストラクタ。
 	 * @throws Exception 例外。
@@ -129,7 +131,7 @@ public class MailSender {
 		Session session = (Session) initCtx.lookup(MailSender.jndiPrefix + MailSender.mailSessionName);
 		return session;
 	}
-	
+
 	/**
 	 * アドレスリストを変換します。
 	 * @param list アドレスリスト。

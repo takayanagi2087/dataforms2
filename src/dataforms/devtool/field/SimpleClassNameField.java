@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.field.base.Field;
 import dataforms.field.sqltype.VarcharField;
@@ -24,7 +25,7 @@ public class SimpleClassNameField extends VarcharField {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(SimpleClassNameField.class);
+	private static Logger logger = LogManager.getLogger(SimpleClassNameField.class);
 
 	/**
 	 * フィールドコメント。

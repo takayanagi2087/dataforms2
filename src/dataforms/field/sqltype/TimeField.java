@@ -4,7 +4,8 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.sqldatatype.SqlTime;
 import dataforms.exception.ApplicationError;
@@ -21,7 +22,7 @@ public class TimeField extends DateTimeField<Time> implements SqlTime {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(TimeField.class.getName());
+    private static Logger logger = LogManager.getLogger(TimeField.class.getName());
 
 
 	/**
@@ -53,7 +54,7 @@ public class TimeField extends DateTimeField<Time> implements SqlTime {
 			Time t = new Time(fmt.parse((String) v).getTime());
 			this.setValue(t);
 		} catch (ParseException e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new ApplicationError(e);
 		}
 	}

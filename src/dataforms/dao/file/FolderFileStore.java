@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.controller.Page;
 import dataforms.field.common.FileField;
@@ -30,9 +31,9 @@ import dataforms.util.StringUtil;
 public class FolderFileStore extends FileStore {
 
 	/**
-	 * Log.
+	 * Logger。
 	 */
-	private Logger log = Logger.getLogger(FolderFileStore.class);
+	private Logger logger = LogManager.getLogger(FolderFileStore.class);
 
 	/**
 	 * ファイル名を一意にするためのタイムスタンプパターン。
@@ -69,7 +70,7 @@ public class FolderFileStore extends FileStore {
 	 * ファイルのパス。
 	 */
 	private String filePath = null;
-	
+
 	/**
 	 * ファイルのタイムスタンプ。
 	 */
@@ -171,7 +172,7 @@ public class FolderFileStore extends FileStore {
 		}
 		return file;
 	}
-	
+
 	@Override
 	public File makeTemp(final String filename, final File orgfile) throws Exception {
 		this.fileName = filename; //FileUtil.getFileName(orgfile.getAbsolutePath());
@@ -207,7 +208,7 @@ public class FolderFileStore extends FileStore {
 					File folder = new File(this.uploadDataForlder);
 					String ret = fobj.getTempFile().getAbsolutePath().substring(folder.getAbsolutePath().length());
 					ret = ret.replaceAll("\\\\", "/");
-					log.debug("FileFolderStore:path=" +  ret);
+					logger.debug("FileFolderStore:path=" +  ret);
 					return ret;
 				} else {
 					return null;

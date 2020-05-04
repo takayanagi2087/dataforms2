@@ -8,7 +8,9 @@ import javax.print.DocFlavor;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * プリンターの管理クラス。
@@ -19,7 +21,7 @@ public final class PrintDevices {
 	/**
 	 * Logger。
 	 */
-	private static Logger logger = Logger.getLogger(PrintDevices.class);
+	private static Logger logger = LogManager.getLogger(PrintDevices.class);
 
 	/**
 	 * コンストラクタ。

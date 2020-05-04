@@ -2,7 +2,8 @@ package dataforms.devtool.field;
 
 import java.lang.reflect.Modifier;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.Query;
 import dataforms.devtool.validator.ClassNameValidator;
@@ -15,7 +16,7 @@ public class QueryClassNameField extends SimpleClassNameField {
 	/**
 	 * Log.
 	 */
-	private static Logger log = Logger.getLogger(QueryClassNameField.class);
+	private static Logger log = LogManager.getLogger(QueryClassNameField.class);
 	/**
 	 * フィールドコメント。
 	 */

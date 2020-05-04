@@ -12,7 +12,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.exception.ApplicationError;
 import dataforms.util.FileUtil;
@@ -33,7 +34,7 @@ public class FileObject implements Serializable {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(FileObject.class);
+	private static Logger logger = LogManager.getLogger(FileObject.class);
 
 	/**
 	 * ファイル名。
@@ -222,7 +223,7 @@ public class FileObject implements Serializable {
 					String fnPattern = m.get("fnPattern");
 					if (Pattern.matches(fnPattern, fileName)) {
 						this.setContentType(m.get("contentType"));
-						log.debug("fileName=" + fileName + ",fnPattern=" + fnPattern + ",contentType=" + this.getContentType());
+						logger.debug("fileName=" + fileName + ",fnPattern=" + fnPattern + ",contentType=" + this.getContentType());
 						break;
 					}
 
@@ -372,7 +373,7 @@ public class FileObject implements Serializable {
 			String[] sp = webResourceUrl.split("/");
 			this.setFileName(sp[sp.length - 1]);
 		} catch (UnsupportedEncodingException e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new ApplicationError(e);
 		}
 	}

@@ -17,7 +17,8 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.app.login.page.LoginInfoForm;
 import dataforms.app.menu.page.MenuForm;
@@ -41,7 +42,7 @@ public class WebComponent implements JDBCConnectableObject {
     /**
      * Logger.
      */
-    private static Logger logger = Logger.getLogger(WebComponent.class.getName());
+    private static Logger logger = LogManager.getLogger(WebComponent.class.getName());
 
 
 	/**

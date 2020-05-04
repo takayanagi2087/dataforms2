@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.user.dao.UserDao;
@@ -30,7 +31,7 @@ public class UserQueryForm extends QueryForm {
     /**
      * Logger.
      */
-    private static Logger logger = Logger.getLogger(UserQueryForm.class.getName());
+    private static Logger logger = LogManager.getLogger(UserQueryForm.class.getName());
 
 	/**
 	 * コンストラクタ。

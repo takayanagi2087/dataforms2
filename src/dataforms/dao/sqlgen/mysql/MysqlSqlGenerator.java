@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
 import dataforms.dao.Index;
@@ -25,7 +26,7 @@ public class MysqlSqlGenerator extends SqlGenerator {
     /**
      * Logger.
      */
-    private static Logger logger = Logger.getLogger(MysqlSqlGenerator.class.getName());
+    private static Logger logger = LogManager.getLogger(MysqlSqlGenerator.class.getName());
 
 	/**
 	 * データベースシステムの名称。

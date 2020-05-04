@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-//import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.controller.Page;
 import dataforms.controller.WebComponent;
@@ -65,7 +65,7 @@ public class Dao implements JDBCConnectableObject {
     /**
      * Logger.
      */
-    private static Logger logger = Logger.getLogger(Dao.class.getName());
+    private static Logger logger = LogManager.getLogger(Dao.class.getName());
 
 
     /**

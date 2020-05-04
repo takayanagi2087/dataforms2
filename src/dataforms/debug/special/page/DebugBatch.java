@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.controller.BatchProcess;
 import dataforms.debug.alltype.dao.SingleSelectDao;
@@ -18,7 +19,7 @@ public class DebugBatch extends BatchProcess {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(DebugBatch.class);
+	private static Logger logger = LogManager.getLogger(DebugBatch.class);
 
 	@Override
 	public int run(Map<String, Object> params) {

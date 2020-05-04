@@ -10,49 +10,50 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * HTTPのGET時にRangeリクエストヘッダが付いた場合の計算ロジックをまとメタクラスです。
  *
  */
 public class HttpRangeInfo {
-	
+
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(HttpRangeInfo.class);
-	
+	private static Logger logger = LogManager.getLogger(HttpRangeInfo.class);
+
 	/**
 	 * ブロックサイズリスト。
 	 */
 	private static List<LinkedHashMap<String, Object>> blockSizeList = null;
-	
+
 	/**
 	 * 範囲の終了が指定されなかった場合、転送するサイズ。
 	 */
 	private static final long DEFAULT_BLOCK_SIZE = 16 * 1024 * 1024;
-	
+
 	/**
 	 * HttpのRangeヘッダ。
 	 */
 	private String rangeHeader = null;
-	
+
 	/**
 	 * HttpのUser-Agentヘッダ。
 	 */
 	private String userAgent = null;
-	
+
 	/**
 	 * ダウンロード開始位置。
-	 * 
+	 *
 	 */
 	private long start = 0;
 	/**
 	 * ダウンロード終了位置。
 	 */
 	private long finish = -1;
-	
+
 	/**
 	 * 送信バイト数。
 	 */
@@ -62,12 +63,12 @@ public class HttpRangeInfo {
 	 * HTTP status。
 	 */
 	private int status = HttpURLConnection.HTTP_OK; // OK
-	
+
 	/**
 	 * contentRangeヘッダ。
 	 */
 	private String contentRange = null;
-	
+
 	/**
 	 * ブロックサイズリストを取得します。
 	 * @return ブロックサイズリスト。
@@ -94,8 +95,8 @@ public class HttpRangeInfo {
 			this.rangeHeader = req.getHeader("Range");
 			this.userAgent = req.getHeader("User-Agent");
 		}
-		log.debug("this.rangeHeader=" + this.rangeHeader);
-		log.debug("this.userAgent=" + this.userAgent);
+		logger.debug("this.rangeHeader=" + this.rangeHeader);
+		logger.debug("this.userAgent=" + this.userAgent);
 	}
 
 
@@ -171,7 +172,7 @@ public class HttpRangeInfo {
 
 	/**
 	 * ストリーミング転送のブロックサイズを取得します。
-	 * @return ストリーミング転送のブロックサイズ。 
+	 * @return ストリーミング転送のブロックサイズ。
 	 */
 	private long getBlockSize() {
 		if (HttpRangeInfo.blockSizeList == null) {
@@ -194,18 +195,18 @@ public class HttpRangeInfo {
 
 		}
 	}
-	
+
 	/**
 	 * 指定されたRangeヘッダを解析し、ファイルの部分転送範囲の決定と、各種応答情報を作成します。
 	 * @param size ファイルサイズ。
 	 */
 	public void parse(final long size) {
-		log.debug("size=" + size);
+		logger.debug("size=" + size);
 		this.start = 0;
 		this.finish = size - 1;
 		if (!StringUtil.isBlank(this.rangeHeader)) {
 			if (Pattern.matches("bytes=[0-9]+\\-[0-9]*", this.rangeHeader)) {
-				log.debug("range=" + this.rangeHeader);
+				logger.debug("range=" + this.rangeHeader);
 				String [] sp = this.rangeHeader.split("[=-]");
 				if (sp.length == 3) {
 					this.start = Long.parseLong(sp[1]);
@@ -222,17 +223,17 @@ public class HttpRangeInfo {
 						}
 					}
 				}
-				log.debug("start=" + this.start);
-				log.debug("finish=" + this.finish);
+				logger.debug("start=" + this.start);
+				logger.debug("finish=" + this.finish);
 				this.status = HttpURLConnection.HTTP_PARTIAL;
 				this.contentRange = "bytes " + this.start + "-" + this.finish + "/" + size;
 			}
 		}
 		this.contentLength = this.finish - this.start + 1;
-		log.debug("status=" + this.status);
-		log.debug("contentRange=" + this.contentRange);
-		log.debug("contentLength=" + this.contentLength);
+		logger.debug("status=" + this.status);
+		logger.debug("contentRange=" + this.contentRange);
+		logger.debug("contentLength=" + this.contentLength);
 	}
-	
-	
+
+
 }

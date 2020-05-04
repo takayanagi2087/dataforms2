@@ -10,7 +10,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 指定パッケージ中のクラスのリストを取得します。
@@ -20,7 +21,7 @@ public class ClassFinder {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(ClassFinder.class.getName());
+    private static Logger log = LogManager.getLogger(ClassFinder.class.getName());
 
 
     /**

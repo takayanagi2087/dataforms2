@@ -18,7 +18,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.util.FileUtil;
 import dataforms.util.StringUtil;
@@ -43,7 +44,7 @@ public class CssFilter implements Filter {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(CssFilter.class);
+	private static Logger logger = LogManager.getLogger(CssFilter.class);
 
 	/**
 	 * CSS Map.

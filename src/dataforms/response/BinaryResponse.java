@@ -13,7 +13,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.file.FileObject;
 import dataforms.servlet.DataFormsServlet;
@@ -28,7 +29,7 @@ public class BinaryResponse extends FileResponse {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(BinaryResponse.class);
+	private static Logger logger = LogManager.getLogger(BinaryResponse.class);
 
 	/**
 	 * 入力ストリーム。
@@ -177,16 +178,16 @@ public class BinaryResponse extends FileResponse {
 	@Override
 	public void send(final HttpServletResponse resp) throws Exception {
 		resp.setContentType(this.getContentType());
-		log.debug("content-type:" + resp.getContentType());
+		logger.debug("content-type:" + resp.getContentType());
 		if (this.getFileName() != null) {
 			resp.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(this.getFileName(), DataFormsServlet.getEncoding()));
 		}
 		HttpRangeInfo p = new HttpRangeInfo(this.getRequest());
 		p.parse(this.inputStream);
-		log.debug("status=" + p.getStatus());
-		log.debug("contentLength=" + p.getContentLength());
-		log.debug("contentRange=" + p.getContentRange());
-		log.debug("Accept-Ranges=" + "bytes");
+		logger.debug("status=" + p.getStatus());
+		logger.debug("contentLength=" + p.getContentLength());
+		logger.debug("contentRange=" + p.getContentRange());
+		logger.debug("Accept-Ranges=" + "bytes");
 		resp.setHeader("Accept-Ranges", "bytes");
 		resp.setHeader("Content-Length", "" +  p.getContentLength());
 		resp.setStatus(p.getStatus());
@@ -219,9 +220,9 @@ public class BinaryResponse extends FileResponse {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			logger.error(e.getMessage());
 		} finally {
-			log.debug("sendSize=" + sendSize);
+			logger.debug("sendSize=" + sendSize);
 		}
 	}
 

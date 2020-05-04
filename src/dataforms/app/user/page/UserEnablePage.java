@@ -5,7 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.base.page.BasePage;
@@ -25,8 +26,8 @@ public class UserEnablePage extends BasePage {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(UserEnablePage.class);
-	
+	private static Logger log = LogManager.getLogger(UserEnablePage.class);
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -34,7 +35,7 @@ public class UserEnablePage extends BasePage {
 		this.addForm(new UserEnableForm());
 		this.setMenuItem(false);
 	}
-	
+
 	@Override
 	@WebMethod
 	public Response getHtml(final Map<String, Object> params) throws Exception {

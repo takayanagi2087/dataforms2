@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.enumtype.dao.EnumDao;
@@ -36,7 +37,7 @@ public class AllTypeEditForm extends EditForm {
     /**
      * Logger.
      */
-	private static Logger logger = Logger.getLogger(AllTypeEditForm.class.getName());
+	private static Logger logger = LogManager.getLogger(AllTypeEditForm.class.getName());
 
 	/**
 	 * コンストラクタ。

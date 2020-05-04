@@ -33,7 +33,8 @@ import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
 import org.apache.fop.render.print.PrintRenderer;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -54,7 +55,7 @@ public class XslFoReport extends Report {
 	/**
 	 * Logger.
 	 */
-	private Logger logger = Logger.getLogger(XslFoReport.class);
+	private Logger logger = LogManager.getLogger(XslFoReport.class);
 
 	/**
 	 * テンプレートファイルのパス。

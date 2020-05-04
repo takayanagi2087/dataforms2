@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.app.enumtype.dao.EnumDao;
 import dataforms.dao.Dao;
@@ -28,7 +29,7 @@ public class UserDao extends Dao {
     /**
      * Logger.
      */
-    private static Logger logger = Logger.getLogger(UserDao.class.getName());
+    private static Logger logger = LogManager.getLogger(UserDao.class.getName());
 
 
 	/**

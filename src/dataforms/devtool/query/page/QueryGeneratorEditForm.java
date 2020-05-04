@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.EditForm;
@@ -124,7 +125,7 @@ public class QueryGeneratorEditForm extends EditForm {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(QueryGeneratorEditForm.class);
+	private static Logger logger = LogManager.getLogger(QueryGeneratorEditForm.class);
 
 
 	/**

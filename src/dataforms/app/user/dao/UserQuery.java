@@ -3,7 +3,8 @@ package dataforms.app.user.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.app.enumtype.dao.EnumNameTable;
 import dataforms.app.enumtype.dao.EnumOptionQuery;
@@ -27,7 +28,7 @@ public class UserQuery extends Query {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(UserQuery.class);
+	private static Logger logger = LogManager.getLogger(UserQuery.class);
 
 	/**
 	 * 指定されたユーザタイプを取得する問い合わせクラス。

@@ -2,7 +2,8 @@ package dataforms.devtool.query.page;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.dao.Dao;
@@ -15,11 +16,11 @@ import dataforms.response.Response;
  * ページクラス。
  */
 public class QueryExecutorPage extends DeveloperPage {
-	
+
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = Logger.getLogger(QueryExecutorPage.class);
+	private static Logger logger = LogManager.getLogger(QueryExecutorPage.class);
 
 	/**
 	 * テーブル名のセッションID。

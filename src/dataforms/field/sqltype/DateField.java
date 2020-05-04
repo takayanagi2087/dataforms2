@@ -5,7 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.sqldatatype.SqlDate;
 import dataforms.exception.ApplicationError;
@@ -22,13 +23,13 @@ public class DateField extends DateTimeField<Date> implements SqlDate {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(DateField.class.getName());
+    private static Logger logger = LogManager.getLogger(DateField.class.getName());
 
     /**
      * Datepickerを有効フラグします。
      */
     private boolean datepickerEnabled = true;
-    
+
 	/**
 	 * コンストラクタ。
 	 * @param id ID。
@@ -58,7 +59,7 @@ public class DateField extends DateTimeField<Date> implements SqlDate {
 			Date d = new Date(fmt.parse((String) v).getTime());
 			this.setValue(d);
 		} catch (ParseException e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new ApplicationError(e);
 		}
 	}

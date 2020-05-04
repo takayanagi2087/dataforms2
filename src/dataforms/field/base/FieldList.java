@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.dao.file.FileObject;
 import dataforms.dao.sqldatatype.SqlBlob;
@@ -25,7 +26,7 @@ public class FieldList extends ArrayList<Field<?>> {
     /**
      * Logger.
      */
-    private static Logger log = Logger.getLogger(FieldList.class.getName());
+    private static Logger logger = LogManager.getLogger(FieldList.class.getName());
 
 	/**
 	 * コンストラクタ。
@@ -252,9 +253,9 @@ public class FieldList extends ArrayList<Field<?>> {
 		if (!StringUtil.isBlank(sortOrder)) {
 			String[] sp = sortOrder.split("\\,");
 			for (String f: sp) {
-				log.debug("f=" + f);
+				logger.debug("f=" + f);
 				String[] fsp = f.split("\\:");
-				log.debug("fsp[0]=" + fsp[0]);
+				logger.debug("fsp[0]=" + fsp[0]);
 				Field<?> field = this.get(fsp[0]);
 				if (field != null) {
 					if ("ASC".equals(fsp[1])) {

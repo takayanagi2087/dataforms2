@@ -32,7 +32,7 @@ public class AlltypeExcelReport extends ExcelReport {
 
 		this.setRowsParPage(10);
 		this.setMainTableId(htmltable.getId());
-		this.addBreakField(htmltable.getFieldList().get("fileComment"));
+		//this.addBreakField(htmltable.getFieldList().get("fileComment"));
 	}
 
 /*	@Override
@@ -42,7 +42,7 @@ public class AlltypeExcelReport extends ExcelReport {
 		return ret;
 	}*/
 
-	
+
 	@Override
 	public byte[] getReport() throws Exception {
 //		Workbook wb = this.getWorkbook();

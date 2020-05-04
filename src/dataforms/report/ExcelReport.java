@@ -282,18 +282,18 @@ public class ExcelReport extends Report {
 				}
 				CellStyle cellstyle = cell.getCellStyle();
 				toCell.setCellStyle(cellstyle);
-				if  (cell.getCellTypeEnum() == CellType.STRING) {
+				if  (cell.getCellType() == CellType.STRING) {
 					toCell.setCellValue(cell.getRichStringCellValue());
-				} else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+				} else if (cell.getCellType() == CellType.NUMERIC) {
 					if (DateUtil.isCellDateFormatted(cell)) {
 						toCell.setCellValue(cell.getDateCellValue());
 					} else {
 						toCell.setCellValue(cell.getNumericCellValue());
 					}
-				} else if (cell.getCellTypeEnum() == CellType.FORMULA) {
+				} else if (cell.getCellType() == CellType.FORMULA) {
 					//toCell.setCellFormula(cell.getCellFormula());
 					this.copyCellFormula(cell, toCell);
-				} else if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
+				} else if (cell.getCellType() == CellType.BOOLEAN) {
 					toCell.setCellValue(cell.getBooleanCellValue());
 				}
 			}
@@ -629,7 +629,7 @@ public class ExcelReport extends Report {
 		Sheet sheet = wb.getSheetAt(this.sheetIndex);
 		for (Row row: sheet) {
 			for (Cell cell: row) {
-				if (cell.getCellTypeEnum() == CellType.STRING) {
+				if (cell.getCellType() == CellType.STRING) {
 					int ridx = cell.getRowIndex();
 					int cidx = cell.getColumnIndex();
 					String value = cell.getStringCellValue();

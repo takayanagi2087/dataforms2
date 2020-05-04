@@ -1344,7 +1344,7 @@ public class DataFormsServlet extends HttpServlet {
 		factory.setRepository(new File(tempDir)); //一時的に保存する際のディレクトリ
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setHeaderEncoding(encoding);
-		@SuppressWarnings("unchecked")
+//		@SuppressWarnings("unchecked")
 		List<FileItem> list = upload.parseRequest(req);
 		for (FileItem item : list) {
 			String key = item.getFieldName();

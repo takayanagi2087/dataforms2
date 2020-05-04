@@ -55,8 +55,10 @@ public class  DateTimeValidator extends FieldValidator {
 		}
 		String str = (String) value;
 		log.info("DateTimeValudator.format=" + this.dateFormat);
-		org.apache.commons.validator.DateValidator v = org.apache.commons.validator.DateValidator.getInstance();
-		return v.isValid(str, this.dateFormat, true);
+//		org.apache.commons.validator.DateValidator v = org.apache.commons.validator.DateValidator.getInstance();
+//		return v.isValid(str, this.dateFormat, true);
+		org.apache.commons.validator.routines.DateValidator v = org.apache.commons.validator.routines.DateValidator.getInstance();
+		return v.isValid(str, this.dateFormat);
 	}
 
 	@Override

@@ -222,13 +222,13 @@ public class ForeignKey extends Constraint {
 		String[] rflist = this.getReferenceFieldIdList();
 
 		List<Map<String, Object>> fldlist = this.getForeignKeyFieldList(constname, dbfklist);
-		logger.debug("fldlist.size()=" + fldlist.size());
+		logger.debug(() -> "fldlist.size()=" + fldlist.size());
 		if (flist.length != fldlist.size()) {
-			logger.info("foreign key " + constname + " field count missmatch.");
+			logger.info(() -> "foreign key " + constname + " field count missmatch.");
 			return false;
 		}
 		if (rflist.length != fldlist.size()) {
-			logger.info("foreign key " + constname + " field count missmatch.");
+			logger.info(() -> "foreign key " + constname + " field count missmatch.");
 			return false;
 		}
 		int fidx = 0;
@@ -240,15 +240,15 @@ public class ForeignKey extends Constraint {
 			String fkcol = (String) m.get("fkcolumnName");
 			String pkcol = (String) m.get("pkcolumnName");
 			if (!tblname.equalsIgnoreCase(pktable)) {
-				logger.info("foreign key " + constname + " tabe name missmatch.(" + tblname + "," + pktable +  ")");
+				logger.info(() -> "foreign key " + constname + " tabe name missmatch.(" + tblname + "," + pktable +  ")");
 				return false;
 			}
 			if (!fld.equalsIgnoreCase(fkcol)) {
-				logger.info("foreign key " + constname + " fk column name missmatch.(" + fld + "," + fkcol +  ")");
+				logger.info(() -> "foreign key " + constname + " fk column name missmatch.(" + fld + "," + fkcol +  ")");
 				return false;
 			}
 			if (!rfld.equalsIgnoreCase(pkcol)) {
-				logger.info("foreign key " + constname + " pk column name missmatch.(" + rfld + "," + pkcol +  ")");
+				logger.info(() -> "foreign key " + constname + " pk column name missmatch.(" + rfld + "," + pkcol +  ")");
 				return false;
 			}
 		}

@@ -268,9 +268,9 @@ public class OracleSqlGenerator extends SqlGenerator {
 	public String getConstraintViolationException(final SQLException ex) {
 		if (ex instanceof SQLIntegrityConstraintViolationException) {
 			SQLIntegrityConstraintViolationException e = (SQLIntegrityConstraintViolationException) ex;
-			logger.debug("massage=" + e.getMessage());
-			logger.debug("errorCode=" + e.getErrorCode());
-			logger.debug("SQLState=" + e.getSQLState());
+			logger.debug(() -> "massage=" + e.getMessage());
+			logger.debug(() -> "errorCode=" + e.getErrorCode());
+			logger.debug(() -> "SQLState=" + e.getSQLState());
 			if (e.getErrorCode() == 1) {
 				String pat = "unique constraint \\(.+?\\.(.+?)\\) violated";
 				if (DataFormsServlet.getDuplicateErrorMessage() != null) {

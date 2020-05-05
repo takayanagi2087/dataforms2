@@ -361,18 +361,18 @@ public class Table  {
 				String colname0 = f.getDbColumnName();
 				Map<String, Object> m = this.getColumnInfo(colname0, collist);
 				if (m == null) {
-					logger.warn(this.getTableName() + ":column " + colname0 + " is not found.");
+					logger.warn(() -> this.getTableName() + ":column " + colname0 + " is not found.");
 					return false;
 				} else {
 					String colname1 = (String) m.get("columnName");
 					if (!colname0.equals(colname1)) {
-						logger.warn(this.getTableName() + ":column name missmatch.(" + colname0 + "," + colname1 + ")");
+						logger.warn(() -> this.getTableName() + ":column name missmatch.(" + colname0 + "," + colname1 + ")");
 						return false;
 					} else {
 						String type0 = gen.getDatabaseType(f);
 						String type1 = (String) m.get("dataType");
 						if (!type0.equals(type1)) {
-							logger.warn(this.getTableName() + ":column " + colname0 + " type missmatch.(" + type0 + "," + type1 + ")");
+							logger.warn(() -> this.getTableName() + ":column " + colname0 + " type missmatch.(" + type0 + "," + type1 + ")");
 							return false;
 						}
 					}
@@ -394,7 +394,7 @@ public class Table  {
 		List<String> pklist = dao.getTablePkList(this);
 		if (this.columnListAccords(gen, collist)) {
 			if (this.pkFieldList.size() != pklist.size()) {
-				logger.warn(this.getTableName() + ":pk column count missmatch.");
+				logger.warn(() -> this.getTableName() + ":pk column count missmatch.");
 				return false;
 			} else {
 				for (int i = 0; i < this.pkFieldList.size(); i++) {
@@ -402,7 +402,7 @@ public class Table  {
 					String colname0 = f.getDbColumnName();
 					String colname1 = pklist.get(i);
 					if (!colname0.equals(colname1)) {
-						logger.warn(this.getTableName() + ":pk missmatch.(" + colname0 + ","  + colname1 + ")");
+						logger.warn(() -> this.getTableName() + ":pk missmatch.(" + colname0 + ","  + colname1 + ")");
 						return false;
 					}
 				}
@@ -412,7 +412,7 @@ public class Table  {
 		}
 		List<Index> ilist = this.getIndexList();
 		for (Index idx: ilist) {
-			logger.debug("index class=" + idx.getClass().getName());
+			logger.debug(() -> "index class=" + idx.getClass().getName());
 			List<Map<String, Object>> iflist = dao.getIndexFieldList(this, idx.getIndexName());
 			if (!idx.structureAccords(iflist)) {
 				return false;
@@ -420,15 +420,15 @@ public class Table  {
 		}
 		TableRelation rel = this.getTableRelation();
 		if (rel != null) {
-			logger.debug("tableClassName=" + this.getClass().getName());
+			logger.debug(() -> "tableClassName=" + this.getClass().getName());
 			List<ForeignKey> fklist = rel.getForeignKeyList();
 			Set<String> fkset = dao.getForeignKeyNameSet(this);
 			if (fkset.size() != fklist.size()) {
-				logger.info("table " + this.getTableName() + " foreign key count missmatch.(" + fkset.size() + "," + fklist.size() +  ")");
+				logger.info(() -> "table " + this.getTableName() + " foreign key count missmatch.(" + fkset.size() + "," + fklist.size() +  ")");
 				return false;
 			}
 			List<Map<String, Object>> dbfklist = dao.getCurrentDBForeignKeyInfo(this);
-			logger.debug("dbfklist=" + JSON.encode(dbfklist, true));
+			logger.debug(() -> "dbfklist=" + JSON.encode(dbfklist, true));
 			for (ForeignKey fk: fklist) {
 				if (!fk.structureAccords(dbfklist)) {
 					return false;
@@ -696,7 +696,7 @@ public class Table  {
 	public String getImportData(final String path) throws Exception {
 		Class<?> cls = this.getClass();
 		String jsonfile = path + "/" + cls.getName().replaceAll("\\.", "/") + ".data.json";
-		logger.debug("jsonfile=" + jsonfile);
+		logger.debug("jsonfile={}", jsonfile);
 		File f = new File(jsonfile);
 		if (f.exists()) {
 			;

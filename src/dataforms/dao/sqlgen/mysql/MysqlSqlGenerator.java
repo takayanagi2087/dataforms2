@@ -270,8 +270,8 @@ public class MysqlSqlGenerator extends SqlGenerator {
 	public String getConstraintViolationException(SQLException ex) {
 		if (ex instanceof SQLIntegrityConstraintViolationException) {
 			SQLIntegrityConstraintViolationException cex = (SQLIntegrityConstraintViolationException) ex;
-			logger.debug("message=" + cex.getMessage());
-			logger.debug("errorCode=" + cex.getErrorCode());
+			logger.debug(() -> "message=" + cex.getMessage());
+			logger.debug(() -> "errorCode=" + cex.getErrorCode());
 			if (cex.getErrorCode() == 1062) {
 				// cex.getErrorCode() == 1062 一意制約違反
 				// Duplicate entry 'e01' for key 'enum_index'

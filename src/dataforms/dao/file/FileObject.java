@@ -223,7 +223,7 @@ public class FileObject implements Serializable {
 					String fnPattern = m.get("fnPattern");
 					if (Pattern.matches(fnPattern, fileName)) {
 						this.setContentType(m.get("contentType"));
-						logger.debug("fileName=" + fileName + ",fnPattern=" + fnPattern + ",contentType=" + this.getContentType());
+						logger.debug(() -> "fileName=" + fileName + ",fnPattern=" + fnPattern + ",contentType=" + this.getContentType());
 						break;
 					}
 

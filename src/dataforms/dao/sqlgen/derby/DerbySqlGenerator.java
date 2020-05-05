@@ -150,8 +150,8 @@ public class DerbySqlGenerator extends SqlGenerator {
 		if (ex instanceof SQLIntegrityConstraintViolationException) {
 			if ("org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException".equals(ex.getClass().getName())) {
 				DerbySQLIntegrityConstraintViolationException dex = (DerbySQLIntegrityConstraintViolationException) ex;
-				logger.debug("dex.getTableName()=" + dex.getTableName());
-				logger.debug("dex.getConstraintName()=" + dex.getConstraintName());
+				logger.debug(() -> "dex.getTableName()=" + dex.getTableName());
+				logger.debug(() -> "dex.getConstraintName()=" + dex.getConstraintName());
 				return dex.getConstraintName();
 			}
 		}

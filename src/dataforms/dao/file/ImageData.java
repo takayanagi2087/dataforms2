@@ -112,7 +112,7 @@ public class ImageData extends FileObject {
 			width = (int) (iw * (h / ih));
 			height = h;
 		}
-		logger.debug("width,height=" + width + "," + height);
+		logger.debug("width,height={},{}", width, height);
 		// なぜかPNGのタイプが0で返される。(JDKのBUGと思われる)
 		int type = img.getType();
 		if (type == 0) {

@@ -240,15 +240,15 @@ public class PgsqlSqlGenerator extends SqlGenerator {
 
 	@Override
 	public String getConstraintViolationException(SQLException ex) {
-		logger.debug("message=" + ex.getMessage());
-		logger.debug("errorCode=" + ex.getErrorCode());
-		logger.debug("getSQLState=" + ex.getSQLState());
+		logger.debug(() -> "message=" + ex.getMessage());
+		logger.debug(() -> "errorCode=" + ex.getErrorCode());
+		logger.debug(() -> "getSQLState=" + ex.getSQLState());
 		if ("23505".equals(ex.getSQLState())) {
 			String pat = "重複キーが一意性制約\"(.+?)\"に違反しています";
 			if (DataFormsServlet.getDuplicateErrorMessage() != null) {
 				pat = DataFormsServlet.getDuplicateErrorMessage();
 			}
-			logger.debug("DuplicateErrorMessage=" + pat);
+			logger.debug("DuplicateErrorMessage={}", pat);
 			// ERROR: 重複キーが一意性制約"enum_index"に違反しています
 			return this.getConstraintName(pat, ex.getMessage());
 		} else if ("23503".equals(ex.getSQLState())) {
@@ -257,7 +257,7 @@ public class PgsqlSqlGenerator extends SqlGenerator {
 			if (DataFormsServlet.getForeignKeyErrorMessage() != null) {
 				pat = DataFormsServlet.getForeignKeyErrorMessage();
 			}
-			logger.debug("ForeignKeyErrorMessage=" + pat);
+			logger.debug("ForeignKeyErrorMessage={}", pat);
 			return this.getConstraintName(pat, ex.getMessage());
 		}
 		return null;

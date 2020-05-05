@@ -175,14 +175,11 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	public static SqlGenerator getInstance(final Connection conn) throws Exception {
 		//SqlGenerator ret = null;
 		if (SqlGenerator.sqlGeneratorClass == null) {
-			logger.info("databaseName=" + conn.getMetaData().getDatabaseProductName()
-					+ "," + conn.getMetaData().getDatabaseProductVersion()
-					);
-			logger.info("driver=" + conn.getMetaData().getDriverName() +
-					"," + conn.getMetaData().getDriverVersion() +
-					"," + conn.getMetaData().getDriverMajorVersion() +
-					"," + conn.getMetaData().getDriverMinorVersion()
-					);
+			logger.info("databaseName={}.{}", conn.getMetaData().getDatabaseProductName(), conn.getMetaData().getDatabaseProductVersion());
+			logger.info("driver={},{},{},{}" + conn.getMetaData().getDriverName(),
+					conn.getMetaData().getDriverVersion(),
+					conn.getMetaData().getDriverMajorVersion(),
+					conn.getMetaData().getDriverMinorVersion());
 			SqlGenerator.sqlGeneratorClass = (Class<SqlGenerator>) SqlGenerator.getSqlGeneratorClass(conn.getMetaData().getDatabaseProductName());
 		}
 		Constructor<?> c = SqlGenerator.sqlGeneratorClass.getConstructor(Connection.class);
@@ -1879,7 +1876,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @return 制約名称。
 	 */
 	protected String getConstraintName(final String pat, final String message) {
-		logger.debug("ConstraintViolationMessagePattern=" + pat);
+		logger.debug(() -> "ConstraintViolationMessagePattern=" + pat);
 		Pattern p = Pattern.compile(pat);
 		Matcher m = p.matcher(message);
 		if (m.find()) {

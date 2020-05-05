@@ -87,7 +87,7 @@ public class BlobFileStore extends FileStore {
 			}
 		});
 		for (File f: list) {
-			logger.debug("delete temp file=" + f.getAbsolutePath());
+			logger.debug(() -> "delete temp file=" + f.getAbsolutePath());
 			f.delete();
 		}
 	}
@@ -115,7 +115,7 @@ public class BlobFileStore extends FileStore {
 		} finally {
 			os.close();
 		}
-		logger.debug("blobfile=" + blobFile.getAbsolutePath());
+		logger.debug(() -> "blobfile=" + blobFile.getAbsolutePath());
 		return blobFile;
 	}
 
@@ -188,7 +188,7 @@ public class BlobFileStore extends FileStore {
 		byte[] lenbuf = new byte[8];
 		is.read(lenbuf);
 		int len = Integer.parseInt(new String(lenbuf));
-		logger.debug("header length=" + len);
+		logger.debug(() -> "header length=" + len);
 		byte[] fileHeaderBuffer = new byte[len];
 		is.read(fileHeaderBuffer);
 		BlobFileHeader header = (BlobFileHeader) ObjectUtil.getObject(fileHeaderBuffer);
@@ -323,7 +323,7 @@ public class BlobFileStore extends FileStore {
 	@Override
 	public FileObject readFileObject(final Map<String, Object> param) throws Exception {
 		String downloadingFile = (String) param.get("downloadingFile");
-		logger.debug("downloadingFile=" + downloadingFile);
+		logger.debug(() -> "downloadingFile=" + downloadingFile);
 		Dao dao = new Dao(this.jdbcConnectableObject);
 		String tblclass = (String) param.get("table");
 		@SuppressWarnings("unchecked")
@@ -355,7 +355,7 @@ public class BlobFileStore extends FileStore {
 	public String getDownloadParameter(final FileField<?> field, final Map<String, Object> d) {
 		Map<String, Object> m = getDownloadInfoMap(field, d);
 		String ret = "key=" + this.encryptDownloadParameter(m);
-		logger.debug("downloadParameter=" + ret);
+		logger.debug(() -> "downloadParameter=" + ret);
 		return ret;
 	}
 
@@ -376,7 +376,7 @@ public class BlobFileStore extends FileStore {
 				m.put(f.getId(), d.get(f.getId()).toString());
 			}
 		} else {
-			logger.warn("Table not found. field ID=" + field.getId());
+			logger.warn(() -> "Table not found. field ID=" + field.getId());
 		}
 		return m;
 	}

@@ -184,7 +184,7 @@ public class Index {
 						Map<String, Object> m = iflist.get(i);
 						String idxname = StringUtil.snakeToCamel(((String) m.get("columnName")).toLowerCase());
 						Field<?> f = this.getFieldList().get(i);
-						logger.debug("indexed field:" + f.getId() + ", " + idxname);
+						logger.debug(() -> "indexed field:" + f.getId() + ", " + idxname);
 						if (!f.getId().equals(idxname)) {
 							return false;
 						}

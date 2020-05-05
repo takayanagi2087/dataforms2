@@ -152,7 +152,7 @@ public abstract class FileStore {
 		Map<String, Object> ret = null;
 		try {
 			String json = CryptUtil.decrypt(p, DataFormsServlet.getQueryStringCryptPassword());
-			logger.debug("json=" + json);
+			logger.debug(() -> "json=" + json);
 			ret =  JSON.decode(json);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -71,9 +71,7 @@ public class SqlParser {
 	 * @return パラメータを?に変換したSQL。
 	 */
 	private String parseSql(final String sql) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("sql=" + sql);
-		}
+		logger.debug(() -> "sql=" + sql);
 		this.paramnames = new ArrayList<String>();
 		StringBuilder sb = new StringBuilder();
 		Pattern p = Pattern.compile("\\:\\w+(\\[[0-9]+\\](\\.\\w+){0,1})?");
@@ -158,7 +156,7 @@ public class SqlParser {
 	 */
 	protected void setBlobData(final PreparedStatement st, final int idx, final FileObject v, final ParameterMetaData meta) throws Exception {
 		FileObject f =  v;
-		logger.debug("blobFileName=" + f.getFileName());
+		logger.debug(() -> "blobFileName=" + f.getFileName());
 		InputStream is = f.openInputStream();
 		if (is != null) {
 			this.blobIsList.add(is);
@@ -194,7 +192,7 @@ public class SqlParser {
 					st.setNull(idx, this.getParameterType(meta, idx));
 				} else {
 					if (v instanceof FileObject) {
-						logger.debug("valueClass=" + v.getClass().getName());
+						logger.debug(() -> "valueClass=" + v.getClass().getName());
 						this.setBlobData(st, idx, (FileObject) v, meta);
 					} else {
 						st.setObject(idx, v);
@@ -238,10 +236,10 @@ public class SqlParser {
 				Object v = this.getParam(p, param);
 				if (v != null) {
 					if (v instanceof FileObject) {
-						logger.debug("removeBlobTempFile class=" + v.getClass().getName());
+						logger.debug(() -> "removeBlobTempFile class=" + v.getClass().getName());
 						FileObject f = (FileObject) v;
 						if (f.getTempFile() != null) {
-							logger.debug("tempfile=" + f.getTempFile().getAbsolutePath());
+							logger.debug(() -> "tempfile=" + f.getTempFile().getAbsolutePath());
 							f.getTempFile().delete();
 						}
 					}

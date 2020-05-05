@@ -208,7 +208,7 @@ public class FolderFileStore extends FileStore {
 					File folder = new File(this.uploadDataForlder);
 					String ret = fobj.getTempFile().getAbsolutePath().substring(folder.getAbsolutePath().length());
 					ret = ret.replaceAll("\\\\", "/");
-					logger.debug("FileFolderStore:path=" +  ret);
+					logger.debug("FileFolderStore:path={}", ret);
 					return ret;
 				} else {
 					return null;

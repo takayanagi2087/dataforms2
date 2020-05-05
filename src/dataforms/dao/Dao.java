@@ -869,7 +869,7 @@ public class Dao implements JDBCConnectableObject {
 						File tf = oldfile.getTempFile();
 						if (tf != null) {
 							ret.add(tf.getAbsolutePath());
-							logger.info("deleteFile=" + tf.getAbsolutePath() + "," + kf);
+							logger.info(() -> "deleteFile=" + tf.getAbsolutePath() + "," + kf);
 						}
 					}
 				}
@@ -1190,7 +1190,7 @@ public class Dao implements JDBCConnectableObject {
 		if (nullable == 0) {
 			dataType += " not null";
 		}
-		logger.debug(cat + " " + schem + " " + name + " " + dataType);
+		logger.debug("{} {} {} {}", cat, schem, name, dataType);
 		colinfo.put("columnName", name.toLowerCase());
 		colinfo.put("dataType", dataType);
 		return colinfo;
@@ -1206,7 +1206,7 @@ public class Dao implements JDBCConnectableObject {
 		try {
 			schema = conn.getSchema();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
+			logger.error(e.getMessage(), e);
 		}
 		return schema;
 	}
@@ -1284,9 +1284,9 @@ public class Dao implements JDBCConnectableObject {
 	public List<Map<String, Object>> queryTableInfo() throws Exception {
 		Connection conn = this.getConnection();
 		DatabaseMetaData md = conn.getMetaData();
-		logger.debug("currentCatalog=" + conn.getCatalog());
+		logger.debug("currentCatalog={}", conn.getCatalog());
 		String schema = conn.getSchema();
-		logger.debug("currentSchema=" + schema);
+		logger.debug("currentSchema={}", schema);
 		List<Map<String, Object>> tableList = new ArrayList<Map<String, Object>>();
 		try (ResultSet rs = md.getTables(conn.getCatalog(), schema, "%", new String[]{"TABLE"})) {
 			while (rs.next()) {
@@ -1308,9 +1308,9 @@ public class Dao implements JDBCConnectableObject {
 	public Map<String, Object> queryTableInfo(final String table) throws Exception {
 		Connection conn = this.getConnection();
 		DatabaseMetaData md = conn.getMetaData();
-		logger.debug("currentCatalog=" + conn.getCatalog());
+		logger.debug("currentCatalog={}", conn.getCatalog());
 		String schema = conn.getSchema();
-		logger.debug("currentSchema=" + schema);
+		logger.debug("currentSchema={}", schema);
 		TableInfoEntity e = new TableInfoEntity();
 		try (ResultSet rs = md.getTables(conn.getCatalog(), schema, table, new String[]{"TABLE"})) {
 			if (rs.next()) {
@@ -1331,9 +1331,9 @@ public class Dao implements JDBCConnectableObject {
 		SqlGenerator gen = this.getSqlGenerator();
 		Connection conn = this.getConnection();
 		DatabaseMetaData md = conn.getMetaData();
-		logger.debug("currentCatalog=" + conn.getCatalog());
+		logger.debug("currentCatalog={}" + conn.getCatalog());
 		String schema = getSchema(conn);
-		logger.debug("currentSchema=" + schema);
+		logger.debug("currentSchema={}" + schema);
 		List<Map<String, Object>> collist = new ArrayList<Map<String, Object>>();
 		ResultSet rs = md.getColumns(conn.getCatalog(), schema, gen.convertTableNameForDatabaseMetaData(tblname), "%");
 		logger.debug("----\n");
@@ -1380,7 +1380,7 @@ public class Dao implements JDBCConnectableObject {
 	 */
 	private List<Map<String, Object>> getCurrentDBIndexInfo(final DatabaseMetaData md, final String catalog, final String schema, final String table, final boolean unique) throws Exception {
 		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
-		logger.debug("catalog=" + catalog + ", schema=" + schema + ", table=" + table + ", unique=" + unique);
+		logger.debug(() -> "catalog=" + catalog + ", schema=" + schema + ", table=" + table + ", unique=" + unique);
 		ResultSet rset = md.getIndexInfo(catalog, schema, table, unique, false);
 		try {
 			ResultSetMetaData rmd = rset.getMetaData();
@@ -1393,7 +1393,7 @@ public class Dao implements JDBCConnectableObject {
 				}
 				Object nu = m.get("nonUnique");
 				Boolean nonUnique = this.getNonUnique(nu);
-				logger.debug("nu=" + nu + ", nonUnique=" + nonUnique);
+				logger.debug(() -> "nu=" + nu + ", nonUnique=" + nonUnique);
 				if (nonUnique != unique) {
 					ret.add(m);
 				}
@@ -1418,11 +1418,11 @@ public class Dao implements JDBCConnectableObject {
 		DatabaseMetaData md = conn.getMetaData();
 		String catalog = conn.getCatalog();
 		String schema = getSchema(conn);
-		logger.debug("currentSchema=" + schema);
+		logger.debug(() -> "currentSchema=" + schema);
 		String tablename = gen.convertTableNameForDatabaseMetaData(table.getTableName());
 		List<Map<String, Object>> ret = this.getCurrentDBIndexInfo(md, catalog, schema, tablename, true);
 		ret.addAll(this.getCurrentDBIndexInfo(md, catalog, schema, tablename, false));
-		logger.debug("indexInfo=" + JSON.encode(ret, true));
+		logger.debug(() -> "indexInfo=" + JSON.encode(ret, true));
 		return ret;
 	}
 
@@ -1438,7 +1438,7 @@ public class Dao implements JDBCConnectableObject {
 	 */
 	private List<Map<String, Object>> getCurrentDBForeignKeyInfo(final DatabaseMetaData md, final String catalog, final String schema, final String table) throws Exception {
 		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
-		logger.debug("catalog=" + catalog + ", schema=" + schema + ", table=" + table);
+		logger.debug(() -> "catalog=" + catalog + ", schema=" + schema + ", table=" + table);
 		ResultSet rset = md.getImportedKeys(catalog, schema, table);
 		try {
 			ResultSetMetaData rmd = rset.getMetaData();
@@ -1472,10 +1472,10 @@ public class Dao implements JDBCConnectableObject {
 		DatabaseMetaData md = conn.getMetaData();
 		String catalog = conn.getCatalog();
 		String schema = getSchema(conn);
-		logger.debug("currentSchema=" + schema);
+		logger.debug(() -> "currentSchema=" + schema);
 		String tablename = gen.convertTableNameForDatabaseMetaData(table.getTableName());
 		List<Map<String, Object>> ret = this.getCurrentDBForeignKeyInfo(md, catalog, schema, tablename);
-		logger.debug("ForeignKey Info=" + JSON.encode(ret, true));
+		logger.debug(() -> "ForeignKey Info=" + JSON.encode(ret, true));
 		return ret;
 	}
 
@@ -1568,7 +1568,7 @@ public class Dao implements JDBCConnectableObject {
 		List<String> collist = new ArrayList<String>();
 		List<Short> seqlist = new ArrayList<Short>();
 		String schema = getSchema(conn);
-		logger.debug("currentSchema=" + schema);
+		logger.debug(() -> "currentSchema=" + schema);
 
 		ResultSet rs = md.getPrimaryKeys(conn.getCatalog(), schema, gen.convertTableNameForDatabaseMetaData(tbl.getTableName()));
 //		ResultSet rs = md.getPrimaryKeys("", "", tbl.getTableName().toLowerCase());
@@ -1637,7 +1637,7 @@ public class Dao implements JDBCConnectableObject {
 				Entity u = new Entity(uinfo);
 				java.sql.Timestamp ut1 = u.getUpdateTimestamp(); //(java.sql.Timestamp) uinfo.get("updateTimestamp");
 //				return /*uid0.equals(uid1) &&*/ ut0.equals(ut1);
-				logger.debug("isUpdatable:ut0=" + ut0.toString() + ",ut1=" + ut1.toString());
+				logger.debug(() -> "isUpdatable:ut0=" + ut0.toString() + ",ut1=" + ut1.toString());
 				return ut0.getTime() == ut1.getTime();
 			} else {
 				logger.warn("There is no updateUserId, updateTimestamp on this page.Therefore the exclusive control does not work.");

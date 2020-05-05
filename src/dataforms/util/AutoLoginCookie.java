@@ -105,14 +105,14 @@ public final class AutoLoginCookie {
 			if (cookie != null) {
 				String val = cookie.getValue();
 				if (!StringUtil.isBlank(val)) {
-					logger.debug("autoLogin userInfo=" + val);
+					logger.debug(() -> "autoLogin userInfo=" + val);
 					String json = null;
 					try {
 						json = CryptUtil.decrypt(val, DataFormsServlet.getQueryStringCryptPassword());
 					} catch (Exception e) {
 						logger.debug(e.getMessage());
 					}
-					logger.debug("userInfo json=" + json);
+					logger.debug("userInfo json={}", json);
 					if (json != null) {
 						TableManagerDao tmdao = new TableManagerDao(page);
 						if (tmdao.isDatabaseInitialized()) {
@@ -140,7 +140,7 @@ public final class AutoLoginCookie {
 	 * @throws Exception 例外。
 	 */
 	public static void setAutoLoginCookie(final Page page, final Map<String, Object> p) throws Exception {
-		logger.debug("secure cookie=" + secure);
+		logger.debug(() -> "secure cookie=" + secure);
 		String keepLoginFlag = "0";
 		Cookie cookie = new Cookie(ID_AUTO_LOGIN_INFO, "");
 		if (AutoLoginCookie.autoLogin) {
@@ -154,7 +154,7 @@ public final class AutoLoginCookie {
 				loginInfo.put(UserInfoTable.Entity.ID_PASSWORD, password);
 				String json = JSON.encode(loginInfo);
 				String userInfo = CryptUtil.encrypt(json, DataFormsServlet.getQueryStringCryptPassword());
-				logger.debug("json=" + json + ",userInfo=" + userInfo);
+				logger.debug(() -> "json=" + json + ",userInfo=" + userInfo);
 				cookie = new Cookie(ID_AUTO_LOGIN_INFO, userInfo);
 			}
 		}

@@ -178,16 +178,16 @@ public class BinaryResponse extends FileResponse {
 	@Override
 	public void send(final HttpServletResponse resp) throws Exception {
 		resp.setContentType(this.getContentType());
-		logger.debug("content-type:" + resp.getContentType());
+		logger.debug(() -> "content-type:" + resp.getContentType());
 		if (this.getFileName() != null) {
 			resp.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(this.getFileName(), DataFormsServlet.getEncoding()));
 		}
 		HttpRangeInfo p = new HttpRangeInfo(this.getRequest());
 		p.parse(this.inputStream);
-		logger.debug("status=" + p.getStatus());
-		logger.debug("contentLength=" + p.getContentLength());
-		logger.debug("contentRange=" + p.getContentRange());
-		logger.debug("Accept-Ranges=" + "bytes");
+		logger.debug(() -> "status=" + p.getStatus());
+		logger.debug(() -> "contentLength=" + p.getContentLength());
+		logger.debug(() -> "contentRange=" + p.getContentRange());
+		logger.debug(() -> "Accept-Ranges=" + "bytes");
 		resp.setHeader("Accept-Ranges", "bytes");
 		resp.setHeader("Content-Length", "" +  p.getContentLength());
 		resp.setStatus(p.getStatus());
@@ -222,7 +222,7 @@ public class BinaryResponse extends FileResponse {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		} finally {
-			logger.debug("sendSize=" + sendSize);
+			logger.debug("sendSize={}", sendSize);
 		}
 	}
 

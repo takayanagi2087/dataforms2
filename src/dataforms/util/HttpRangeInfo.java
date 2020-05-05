@@ -95,8 +95,8 @@ public class HttpRangeInfo {
 			this.rangeHeader = req.getHeader("Range");
 			this.userAgent = req.getHeader("User-Agent");
 		}
-		logger.debug("this.rangeHeader=" + this.rangeHeader);
-		logger.debug("this.userAgent=" + this.userAgent);
+		logger.debug(() -> "this.rangeHeader=" + this.rangeHeader);
+		logger.debug(() -> "this.userAgent=" + this.userAgent);
 	}
 
 
@@ -201,12 +201,12 @@ public class HttpRangeInfo {
 	 * @param size ファイルサイズ。
 	 */
 	public void parse(final long size) {
-		logger.debug("size=" + size);
+		logger.debug(() -> "size=" + size);
 		this.start = 0;
 		this.finish = size - 1;
 		if (!StringUtil.isBlank(this.rangeHeader)) {
 			if (Pattern.matches("bytes=[0-9]+\\-[0-9]*", this.rangeHeader)) {
-				logger.debug("range=" + this.rangeHeader);
+				logger.debug(() -> "range=" + this.rangeHeader);
 				String [] sp = this.rangeHeader.split("[=-]");
 				if (sp.length == 3) {
 					this.start = Long.parseLong(sp[1]);
@@ -223,16 +223,16 @@ public class HttpRangeInfo {
 						}
 					}
 				}
-				logger.debug("start=" + this.start);
-				logger.debug("finish=" + this.finish);
+				logger.debug(() -> "start=" + this.start);
+				logger.debug(() -> "finish=" + this.finish);
 				this.status = HttpURLConnection.HTTP_PARTIAL;
 				this.contentRange = "bytes " + this.start + "-" + this.finish + "/" + size;
 			}
 		}
 		this.contentLength = this.finish - this.start + 1;
-		logger.debug("status=" + this.status);
-		logger.debug("contentRange=" + this.contentRange);
-		logger.debug("contentLength=" + this.contentLength);
+		logger.debug(() -> "status=" + this.status);
+		logger.debug(() -> "contentRange=" + this.contentRange);
+		logger.debug(() -> "contentLength=" + this.contentLength);
 	}
 
 

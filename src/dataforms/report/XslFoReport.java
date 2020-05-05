@@ -170,7 +170,7 @@ public class XslFoReport extends Report {
 				cv = field.getClientValue();
 			}
 		}
-		logger.debug("id=" + field.getId() + ", value=" + cv.toString());
+		logger.debug("id={}, value={}", field.getId(), cv.toString());
 		this.pageBuffer = this.pageBuffer.replace("${" + field.getId() + "}", cv.toString());
 	}
 
@@ -271,12 +271,12 @@ public class XslFoReport extends Report {
 
 	@Override
 	protected void initPage(final int pages) throws Exception {
-		logger.debug("pages=" + pages);
+		logger.debug(() -> "pages=" + pages);
 		this.docFo = this.getXmlDocument(this.templatePath);
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		xpath.setNamespaceContext(new NamespaceResolver(this.docFo));
 		Node page = (Node) xpath.evaluate("/fo:root/fo:page-sequence/fo:flow/fo:block", this.docFo, XPathConstants.NODE);
-		logger.debug("page nodeName=" + page.getNodeName());
+		logger.debug(() -> "page nodeName=" + page.getNodeName());
 		this.pageBlockFo = this.convertToString(page).replace("xmlns:fo=\"http://www.w3.org/1999/XSL/Format\"", "page-break-before=\"always\"");
 		this.pageFlow = (Node) xpath.evaluate("/fo:root/fo:page-sequence/fo:flow", this.docFo, XPathConstants.NODE);
 		this.pageFlow.removeChild(page);
@@ -344,7 +344,7 @@ public class XslFoReport extends Report {
 	@Override
 	public byte[] getReport() throws Exception {
 		String xml = this.getXslFo();
-		logger.debug("xslFo=" + xml);
+		logger.debug(() -> "xslFo=" + xml);
 		return this.createPdf(xml);
 	}
 
@@ -386,7 +386,7 @@ public class XslFoReport extends Report {
 		this.buildReport(data);
 //		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + this.getXslFo();
 		String xml = this.getXslFo();
-		logger.debug("xslFo=" + xml);
+		logger.debug(() -> "xslFo=" + xml);
 		this.print(xml, printJob);
 	}
 

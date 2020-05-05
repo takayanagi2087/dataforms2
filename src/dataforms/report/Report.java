@@ -371,7 +371,7 @@ public abstract class Report {
 	protected void buildReport(final Map<String, Object> data) throws Exception {
 		this.pageStartPositionList = new ArrayList<Integer>();
 		this.getWebResource(data);
-		logger.debug("data=" + JSON.encode(data, true));
+		logger.debug(() -> "data=" + JSON.encode(data, true));
 		int pages = this.countPage(data);
 		this.initPage(pages);
 		for (int i = 0; i < pages; i++) {

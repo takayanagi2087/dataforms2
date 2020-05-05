@@ -253,7 +253,7 @@ public final class FileUtil {
 
 		@Override
 		public FileVisitResult visitFile(final Path path, final BasicFileAttributes attributes) throws IOException {
-			logger.debug("delete file : " + path.getFileName());
+			logger.debug(() -> "delete file : " + path.getFileName());
 			Files.delete(path);
 			return checkNotExist(path);
 		}
@@ -261,7 +261,7 @@ public final class FileUtil {
 		@Override
 		public FileVisitResult postVisitDirectory(final Path path, final IOException exception) throws IOException {
 			if (exception == null) {
-				logger.debug("delete directory : " + path.getFileName());
+				logger.debug(() -> "delete directory : " + path.getFileName());
 				Files.delete(path);
 				return checkNotExist(path);
 			} else {
@@ -307,7 +307,7 @@ public final class FileUtil {
 	private static void addFileToZip(final String basePath, final File file, final ZipOutputStream zos) throws Exception {
 		if (!file.isDirectory()) {
 			String p = file.getAbsolutePath().substring(basePath.length() + 1).replaceAll("\\\\", "/");
-			logger.debug("path=" + p);
+			logger.debug(() -> "path=" + p);
 			ZipEntry zent = new ZipEntry(p);
 			zos.putNextEntry(zent);
 			FileInputStream is = new FileInputStream(file);
@@ -378,12 +378,12 @@ public final class FileUtil {
 				if (entry.isDirectory()) {
 					String relativePath = entry.getName();
 					File dir = new File(outDir, relativePath);
-					logger.debug("*** dir=" + dir.getAbsolutePath());
+					logger.debug(() -> "*** dir=" + dir.getAbsolutePath());
 					dir.mkdirs();
 				} else {
 					String relativePath = entry.getName();
 					File outFile = new File(outDir, relativePath);
-					logger.debug("*** file=" + outFile.getAbsolutePath());
+					logger.debug(() -> "*** file=" + outFile.getAbsolutePath());
 					// 出力先のディレクトリを作成する
 					File parentFile = outFile.getParentFile();
 					parentFile.mkdirs();

@@ -209,11 +209,11 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	@WebMethod(useDB = false)
 	public JsonResponse deleteTempFile(final Map<String, Object> p) throws Exception {
 		String key = (String) p.get("key");
-		logger.debug("key=" + key);
+		logger.debug(() -> "key=" + key);
 		if (key != null) {
 			String sessionKey = DOWNLOADING_FILE + key;
 			String downloadingFile = (String) this.getPage().getRequest().getSession().getAttribute(sessionKey);
-			logger.debug("downloadingFile=" + downloadingFile);
+			logger.debug(() -> "downloadingFile=" + downloadingFile);
 			if (downloadingFile != null) {
 				File tf = new File(downloadingFile);
 				tf.delete();
@@ -234,13 +234,13 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 		HttpServletRequest req = this.getPage().getRequest();
 		Map<String, Object> param = p;
 		String key = (String) p.get("key");
-		logger.debug("key=" + key);
+		logger.debug(() -> "key=" + key);
 		if (key != null) {
 			param = FileStore.decryptDownloadParameter(key);
 			// Rangeヘッダが指定されていた場合、送信中ファイルがあればそれをセットする。
 			if (!StringUtil.isBlank(req.getHeader("Range"))) {
 				String sessionKey = DOWNLOADING_FILE + key;
-				logger.debug("*sessionKey=" + sessionKey);
+				logger.debug(() -> "*sessionKey=" + sessionKey);
 				String downloadingFile = (String) req.getSession().getAttribute(sessionKey);
 				if (downloadingFile != null) {
 					File tf = new File(downloadingFile);
@@ -249,7 +249,7 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 					}
 				}
 			}
-			logger.debug("param=" + param);
+			logger.debug("param={}", param);
 		}
 
 		FileStore store = this.newFileStore(param);

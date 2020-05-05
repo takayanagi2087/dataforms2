@@ -253,9 +253,9 @@ public class FieldList extends ArrayList<Field<?>> {
 		if (!StringUtil.isBlank(sortOrder)) {
 			String[] sp = sortOrder.split("\\,");
 			for (String f: sp) {
-				logger.debug("f=" + f);
+				logger.debug(() -> "f=" + f);
 				String[] fsp = f.split("\\:");
-				logger.debug("fsp[0]=" + fsp[0]);
+				logger.debug(() -> "fsp[0]=" + fsp[0]);
 				Field<?> field = this.get(fsp[0]);
 				if (field != null) {
 					if ("ASC".equals(fsp[1])) {

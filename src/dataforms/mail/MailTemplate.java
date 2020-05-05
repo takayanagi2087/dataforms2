@@ -177,7 +177,7 @@ public class MailTemplate {
 	 * @throws Exception 例外。
 	 */
 	private void setTemplate(final String templete) throws Exception {
-		logger.debug("rpath=" + templete);
+		logger.debug(() -> "rpath=" + templete);
 		Pattern p = Pattern.compile(".*");
 		Matcher m = p.matcher(templete);
 		m.find();
@@ -210,7 +210,7 @@ public class MailTemplate {
 		} else {
 			this.htmlFrame = this.getStringResourse("htmlframe/htmlFrame.html");
 		}
-		logger.debug("htmltext=" + this.htmlFrame);
+		logger.debug(() -> "htmltext=" + this.htmlFrame);
 	}
 
 
@@ -370,7 +370,7 @@ public class MailTemplate {
 	public String getMailTextBody() {
 		String text = this.mailBody;
 		for (String key: this.argMap.keySet()) {
-			logger.debug("key=" + key);
+			logger.debug(() -> "key=" + key);
 			String value = this.argMap.get(key);
 			text = text.replaceAll("\\$\\{" + key + "\\}", value);
 		}
@@ -398,7 +398,7 @@ public class MailTemplate {
 		}
 		text = text.replaceAll("\r", "");
 		text = text.replaceAll("\n", "<br/>");
-		logger.debug("text=" + text);
+		logger.debug("text={}" + text);
 		text = this.htmlFrame.replaceAll("\\$\\{mailBody\\}", text);
 		return text;
 	}

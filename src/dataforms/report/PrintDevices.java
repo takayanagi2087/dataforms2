@@ -54,7 +54,7 @@ public final class PrintDevices {
 		PrintService[] services = PrinterJob.lookupPrintServices();
 		PrintService ps = null;
 		for (PrintService svc : services) {
-			logger.debug("printer=" + svc.getName());
+			logger.debug(() -> "printer=" + svc.getName());
 			if (printerName.equals(svc.getName())) {
 				ps = svc;
 				break;

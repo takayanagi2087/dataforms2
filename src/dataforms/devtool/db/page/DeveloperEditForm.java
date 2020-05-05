@@ -77,7 +77,7 @@ public class DeveloperEditForm extends EditForm {
 	public Map<String, Object> getProperties() throws Exception {
 		Map<String, Object> ret = super.getProperties();
 		boolean exists = this.userInfoDataExists();
-		logger.debug("userInfoDataExists=" + exists);
+		logger.debug(() -> "userInfoDataExists=" + exists);
 		ret.put("userInfoDataExists", exists);
 		return ret;
 	}
@@ -155,7 +155,7 @@ public class DeveloperEditForm extends EditForm {
 		UserInfoTable table = new UserInfoTable();
 		String path = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata");
 		String userInitialFile = table.getImportData(path);
-		logger.debug("userInitialFile=" + userInitialFile);
+		logger.debug(() -> "userInitialFile=" + userInitialFile);
 		if (userInitialFile != null) {
 			return true;
 		} else {

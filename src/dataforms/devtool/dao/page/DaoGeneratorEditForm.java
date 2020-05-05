@@ -202,7 +202,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		String pkgName = (String) data.get(ID_PACKAGE_NAME);
 		String className = (String) data.get(ID_DAO_CLASS_NAME);
 		String daoClassName = pkgName + "." + className;
-		logger.debug("DAO class name=" + daoClassName);
+		logger.debug(() -> "DAO class name=" + daoClassName);
 		Class<?> daoclass = Class.forName(daoClassName);
 		QuerySetDao dao = (QuerySetDao) daoclass.getConstructor().newInstance();
 
@@ -327,7 +327,7 @@ public class DaoGeneratorEditForm extends EditForm {
 			isb.append("import " + s + ";\n");
 		}
 		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", isb.toString());
-		logger.debug("javasrc=" + javasrc);
+		logger.debug("javasrc={}", javasrc);
 
 		String path = (String) data.get(ID_JAVA_SOURCE_PATH);
 		String srcPath = path + "/" + daoclass.replaceAll("\\.", "/") + ".java";

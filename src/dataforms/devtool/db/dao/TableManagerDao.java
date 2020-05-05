@@ -326,7 +326,7 @@ public class TableManagerDao extends Dao {
 			}
 		}
 		Map<String, Object> dlp = this.getDownloadParamMap(fo.getDownloadParameter());
-		logger.debug("dlp=" + JSON.encode(dlp, true));
+		logger.debug(() -> "dlp=" + JSON.encode(dlp, true));
 		ret.put("filename", fo.getFileName());
 		String key = "";
 		for (Field<?> pkf: table.getPkFieldList()) {
@@ -354,7 +354,7 @@ public class TableManagerDao extends Dao {
 	public String exportData(final String classname, final String outdir) throws Exception {
 		final Table tbl = Table.newInstance(classname);
 		String datapath = outdir + "/" + classname.replaceAll("\\.", "/") + ".data.json";
-		logger.debug("datapath=" + datapath);
+		logger.debug(() -> "datapath=" + datapath);
 
 		String filePath = outdir + "/" + classname.replaceAll("\\.", "/");
 		File ff = new File(filePath);
@@ -383,7 +383,7 @@ public class TableManagerDao extends Dao {
 					this.executeQuery(sql, null,  new RecordProcessor() {
 						@Override
 						public boolean process(final Map<String, Object> m) throws Exception {
-							logger.debug("m=" + m.toString());
+							logger.debug(() -> "m=" + m.toString());
 							Map<String, Object> rec = new HashMap<String, Object>();
 							FieldList flist = tbl.getFieldList();
 							for (Field<?> fld : flist) {
@@ -526,7 +526,7 @@ public class TableManagerDao extends Dao {
 					if (type ==  JSONEventType.START_OBJECT) {
 						@SuppressWarnings("unchecked")
 						Map<String, Object> m = (Map<String, Object>) reader.getMap();
-						logger.debug("m=" + m.toString());
+						logger.debug(() -> "m=" + m.toString());
 						for (String key: m.keySet()) {
 							Object v = m.get(key);
 							if (v instanceof String) {
@@ -608,7 +608,7 @@ public class TableManagerDao extends Dao {
 			if (idxName != null) {
 				idxName = idxName.toLowerCase();
 				if (Pattern.matches(".+_index$", idxName)) {
-					logger.debug("idxName=" + idxName);
+					logger.debug("idxName={}", idxName);
 					if (!inset.contains(idxName)) {
 						try {
 							String usql = gen.generateDropUniqueSql(table, idxName);
@@ -647,7 +647,7 @@ public class TableManagerDao extends Dao {
 					String sql = gen.generateDropForeignKeySql(table.getTableName(), fkName);
 					this.executeUpdate(sql, (Map<String, Object>) null);
 				} catch (SQLException e) {
-					logger.warn("msg=" + e.getMessage(), e);
+					logger.warn(() -> "msg=" + e.getMessage(), e);
 				}
 			}
 		}
@@ -667,7 +667,7 @@ public class TableManagerDao extends Dao {
 				String sql = gen.generateCreateIndexSql(index);
 				this.executeUpdate(sql, (Map<String, Object>) null);
 			} catch (SQLException e) {
-				logger.warn("msg=" + e.getMessage(), e);
+				logger.warn(() -> "msg=" + e.getMessage(), e);
 			}
 			if (index.isUnique()) {
 				// ユニークインデックスの場合一意制約も付ける。
@@ -676,7 +676,7 @@ public class TableManagerDao extends Dao {
 					try {
 						this.executeUpdate(usql, (Map<String, Object>) null);
 					} catch (SQLException e) {
-						logger.warn("msg=" + e.getMessage(), e);
+						logger.warn(() -> "msg=" + e.getMessage(), e);
 					}
 				}
 			}
@@ -699,7 +699,7 @@ public class TableManagerDao extends Dao {
 						String sql = gen.generateCreateForeignKeySql(fk);
 						this.executeUpdate(sql, (Map<String, Object>) null);
 					} catch (Exception e) {
-						logger.warn("msg=" + e.getMessage(), e);
+						logger.warn(() -> "msg=" + e.getMessage(), e);
 					}
 				}
 			}
@@ -958,7 +958,7 @@ public class TableManagerDao extends Dao {
 			for (String s: scriptList) {
 				String sc = s.trim();
 				if (sc.length() > 0) {
-					logger.debug("script=" + s);
+					logger.debug(() -> "script=" + s);
 					try (PreparedStatement st = conn.prepareStatement(s)) {
 						st.execute();
 					}

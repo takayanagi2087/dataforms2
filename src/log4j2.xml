@@ -26,22 +26,31 @@
 		</Console>
 
 		<!-- ファイルに出力する設定 -->
-		<RollingFile name="logfile001" append="true" fileName="${logfile}" filePattern="${logfile-archive}">
+		<RollingFile name="Logfile001" append="true" fileName="${logfile}" filePattern="${logfile-archive}">
 			<PatternLayout>
 				<pattern>${format1}</pattern>
 			</PatternLayout>
 			<Policies>
-				<SizeBasedTriggeringPolicy size="10000KB"/>
+				<SizeBasedTriggeringPolicy size="1MB"/>
 			</Policies>
 			<DefaultRolloverStrategy max="3"/>
 		</RollingFile>
 	</Appenders>
 
 	<Loggers>
-		// trace以上のログを出力する
 		<Root level="debug">
 			<AppenderRef ref="Console" />
-			<AppenderRef ref="logfile001" />
+			<AppenderRef ref="Logfile001" />
 		</Root>
+		<!--
+			Rootのlevelをinfo以上に設定した場合、logにSQLが必要力されなくなります。
+			実行したSQLをlogに出力したい場合、以下の設定を有効にしてください。
+		-->
+		<!--
+		<Logger name="dataforms.dao.sqlgen" level="debug" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="Logfile001" />
+		</Logger>
+		-->
 	</Loggers>
 </Configuration>

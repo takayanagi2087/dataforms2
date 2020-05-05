@@ -504,7 +504,6 @@ public class DataFormsServlet extends HttpServlet {
 		} else {
 			DataFormsServlet.csrfSessionidCrypPassword = null;
 		}
-		logger.debug("cryptConfig=" + conf);
 	}
 
 	/**

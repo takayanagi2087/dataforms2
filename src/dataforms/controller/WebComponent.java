@@ -304,7 +304,7 @@ public class WebComponent implements JDBCConnectableObject {
 	 */
 	private String getAdditionalHtmlText() throws Exception {
 		if (this.additionalHtml != null) {
-			logger.debug("additionalHtml=" + this.additionalHtml);
+			logger.debug(() -> "additionalHtml=" + this.additionalHtml);
 			String htmlpath = this.getAppropriatePath(this.additionalHtml, this.getPage().getRequest());
 			String htmltext = this.getWebResource(htmlpath);
 			if (htmltext != null) {
@@ -567,7 +567,7 @@ public class WebComponent implements JDBCConnectableObject {
 	private String readWebResource(final String path) throws Exception {
 		URL url = new URL(getWebResourceUrl(path));
 		String ret = "";
-		logger.debug("webResourceUrl=" + url.toString());
+		logger.debug(() -> "webResourceUrl=" + url.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.connect();
 		try {
@@ -604,7 +604,7 @@ public class WebComponent implements JDBCConnectableObject {
 	public byte[] readBinaryWebResource(final String path) throws Exception {
 		URL url = new URL(getWebResourceUrl(path));
 		byte[] ret = null;
-		logger.debug("webResourceUrl=" + url.toString());
+		logger.debug(() -> "webResourceUrl=" + url.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.connect();
 		try {
@@ -634,8 +634,8 @@ public class WebComponent implements JDBCConnectableObject {
 		} else {
 			url = DataFormsServlet.getWebResourceUrl() + req.getContextPath() + path;
 		}
-		logger.debug("getWebResourceUrl:path=" + path);
-		logger.debug("getWebResourceUrl:url=" + url);
+		logger.debug(() -> "getWebResourceUrl:path=" + path);
+		logger.debug("getWebResourceUrl:url={}", url);
 		return url;
 	}
 

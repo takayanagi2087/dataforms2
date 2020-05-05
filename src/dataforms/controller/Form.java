@@ -372,7 +372,7 @@ public  class Form extends WebComponent {
 				String key = tbl.getId();
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				int count = this.getArraySize(key, param);
-				logger.debug(key + ".size()=" + count);
+				logger.debug(() -> key + ".size()=" + count);
 				for (int i = 0; i < count; i++) {
 					Map<String, Object> m = new HashMap<String, Object>();
 					for (Field<?> f : tbl.getFieldList()) {

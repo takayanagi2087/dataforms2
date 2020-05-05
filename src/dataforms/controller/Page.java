@@ -492,48 +492,6 @@ public class Page extends DataForms implements WebEntryPoint {
 		"\t\t-->\n" +
 		"\t\t</script>\n";
 
-    /**
-     * CSRF対策のTOKENを取得します。
-     * @return CSRF対策のTOKEN。
-     * @throws Exception 例外。
-     */
-/*    public String getCsrfToken() throws Exception{
-		String token = null;
-		String pass = DataFormsServlet.getCsrfSessionidCrypPassword();
-		if (pass != null) {
-			String sid = this.getRequest().getSession().getId();
-			String key = CryptUtil.encrypt(sid, pass);
-//			token = java.net.URLEncoder.encode(key, DataFormsServlet.getEncoding());
-			token = key; //java.net.URLEncoder.encode(key, DataFormsServlet.getEncoding());
-		}
-		logger.debug("csrfToken=" + token);
-		return token;
-
-    }
-*/
-    /**
-     * CSRF対策のリクエストチェックを行います。
-     * @param param パラメータ。
-     * @return 問題ない場合true。
-     * @throws Exception 例外。
-     */
-/*    public boolean isValidRequest(final Map<String, Object> param) throws Exception {
-    	boolean ret = false;
-    	if (DataFormsServlet.getCsrfSessionidCrypPassword() == null) {
-    		ret = true;
-    	} else {
-    		String csrfToken = (String) param.get("csrfToken");
-    		String token = this.getCsrfToken();
-    		if (!StringUtil.isBlank(csrfToken)) {
-    			String etoken = java.net.URLEncoder.encode(token, DataFormsServlet.getEncoding());
-    			if (csrfToken.equals(token) || csrfToken.equals(etoken)) {
-    				ret = true;
-    			}
-    		}
-    	}
-    	return ret;
-    }
-*/
 	/**
 	 * HTMLにcssとscriptを追加します。
 	 * @param html HTML。
@@ -688,7 +646,7 @@ public class Page extends DataForms implements WebEntryPoint {
 		//String htmlpath = this.getWebResourcePath(this.getHtmlPageClass()) + ".html";
 		String htmlpath = this.getHtmlPath();
 		htmlpath = this.getAppropriatePath(htmlpath, req);
-		logger.info("sendHtml=" + htmlpath);
+		logger.info("sendHtml={}", htmlpath);
 		String htmltext = this.getWebResource(htmlpath);
 		htmltext = this.addAppcacheFile(htmltext, context);
 		// langアトリビュートの属性
@@ -753,8 +711,8 @@ public class Page extends DataForms implements WebEntryPoint {
 		HttpServletRequest req = this.getRequest();
 		String uri = req.getRequestURI();
 		String context = req.getContextPath();
-		logger.info("context=" + context + ", uri=" + uri);
-		logger.info("path=" + req.getServletPath());
+		logger.info(() -> "context=" + context + ", uri=" + uri);
+		logger.info(() -> "path=" + req.getServletPath());
 
 		String htmltext = this.getHtmlText(req, context);
 
@@ -1196,13 +1154,13 @@ public class Page extends DataForms implements WebEntryPoint {
 		for (int i = 0; i < dirs.length - 1; i++) {
 			path += ("/" + dirs[i]);
 			String funcprop = this.getAppropriateLangPath(path + "/Function.properties", this.getRequest());
-			logger.debug("funcprop=" + funcprop);
+			logger.debug(() -> "funcprop=" + funcprop);
 			if (funcprop != null) {
 				String str = this.getWebResource(funcprop);
 				SequentialProperties p = new SequentialProperties();
 				p.loadText(str);
 				String v = p.getProperty(clsname);
-				logger.debug("v=" + v);
+				logger.debug(() -> "v=" + v);
 				if (v != null) {
 					String [] t = v.split("\\|");
 					ret = t[0];

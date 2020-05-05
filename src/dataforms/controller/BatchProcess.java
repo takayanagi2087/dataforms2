@@ -32,7 +32,7 @@ public abstract class BatchProcess extends WebProcess {
 	@Override
 	public boolean isAuthenticated(Map<String, Object> params) throws Exception {
 		String rhost = this.getRequest().getRemoteAddr();
-		logger.debug("rhost=" + rhost);
+		logger.debug(() -> "rhost=" + rhost);
 		if ("0:0:0:0:0:0:0:1".equals(rhost) || "127.0.0.1".equals(rhost)) {
 			return true;
 		} else {

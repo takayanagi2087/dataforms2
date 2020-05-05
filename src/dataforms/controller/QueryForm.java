@@ -132,7 +132,7 @@ public abstract class QueryForm extends Form {
     		result = new JsonResponse(JsonResponse.INVALID, err);
     	} else {
         	String sortOrder = (String) p.get("sortOrder");
-        	logger.debug("sortOrder=" + sortOrder);
+        	logger.debug(() -> "sortOrder=" + sortOrder);
     		Map<String, Object> data = this.convertToServerData(p);
     		data.put("sortOrder", sortOrder);
     		FieldList flist = this.getExportDataFieldList(data);

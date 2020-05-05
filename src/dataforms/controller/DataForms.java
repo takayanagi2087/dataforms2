@@ -141,7 +141,7 @@ public class DataForms extends WebComponent {
 	 * @throws Exception 例外。
 	 */
 	private Map<String, Object> getFormInfo() throws Exception {
-		logger.info("fmap=" + this.getFormMap());
+		logger.info(() -> "fmap=" + this.getFormMap());
 		Map<String, Object> map = new HashMap<String, Object>();
 		Set<String> keyset = this.getFormMap().keySet();
 		for (String key : keyset) {

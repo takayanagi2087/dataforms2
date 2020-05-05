@@ -23,7 +23,7 @@ public class DebugBatch extends BatchProcess {
 
 	@Override
 	public int run(Map<String, Object> params) {
-		logger.debug("params=" + params);
+		logger.debug(() -> "params=" + params);
 		try {
 			SingleSelectDao dao = new SingleSelectDao(this);
 			List<Map<String, Object>> list = dao.query(new HashMap<String, Object>(), new FieldList());

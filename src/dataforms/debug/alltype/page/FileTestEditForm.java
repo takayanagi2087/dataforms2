@@ -51,7 +51,7 @@ public class FileTestEditForm extends EditForm {
 	@Override
 	protected void insertData(final Map<String, Object> data) throws Exception {
 		this.setUserInfo(data);
-		logger.debug("insert data=" + JSON.encode(data, true));
+		logger.debug(() -> "insert data=" + JSON.encode(data, true));
 		FileFieldTestDao dao = new FileFieldTestDao(this);
 		dao.executeInsert(new FileFieldTestTable(), data);
 	}
@@ -59,7 +59,7 @@ public class FileTestEditForm extends EditForm {
 	@Override
 	protected void updateData(final Map<String, Object> data) throws Exception {
 		this.setUserInfo(data);
-		logger.debug("updatet data=" + JSON.encode(data, true));
+		logger.debug(() -> "updatet data=" + JSON.encode(data, true));
 		FileFieldTestDao dao = new FileFieldTestDao(this);
 		dao.executeUpdate(new FileFieldTestTable(), data);
 	}

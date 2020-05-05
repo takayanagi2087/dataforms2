@@ -67,7 +67,7 @@ public class AllTypeEditForm extends EditForm {
 		super.init();
 		this.setFormData("attachFileTable", new ArrayList<HashMap<String, Object>>());
 
-		logger.debug("userInfo=" + JSON.encode(this.getPage().getUserInfo()));
+		logger.debug(() -> "userInfo=" + JSON.encode(this.getPage().getUserInfo()));
 
 	}
 
@@ -161,7 +161,7 @@ public class AllTypeEditForm extends EditForm {
 	 */
 	@WebMethod
 	public Response print(final Map<String, Object> param) throws Exception {
-		logger.debug("queryString=" + JSON.encode(this.getPage().getQueryString(), true));
+		logger.debug(() -> "queryString=" + JSON.encode(this.getPage().getQueryString(), true));
 		Map<String, Object> data = this.convertToServerData(param);
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get("attachFileTable");
@@ -170,9 +170,9 @@ public class AllTypeEditForm extends EditForm {
 			m.put("no", Integer.valueOf(i + 1));
 			m.put("barcode", this.getBarcodeImage(Integer.toString(123450000 + i)));
 		}
-		logger.debug("data=" + JSON.encode(data, true));
+		logger.debug(() -> "data=" + JSON.encode(data, true));
 		String template = AllTypeEditForm.getServlet().getServletContext().getRealPath("/exceltemplate/alltypeExcelTempl.xlsx");
-		logger.debug("template=" + template);
+		logger.debug(() -> "template=" + template);
 		AlltypeExcelReport rep = new AlltypeExcelReport(template);
 		byte[] excel = rep.print(data);
 		BinaryResponse ret = new BinaryResponse(excel);
@@ -197,10 +197,10 @@ public class AllTypeEditForm extends EditForm {
 			m.put("barcode", this.getBarcodeImage(Integer.toString(123450000 + i)));
 		}
 
-		logger.debug("list.size()=" + list.size());
-		logger.debug("data=" + JSON.encode(data, true));
+		logger.debug(() -> "list.size()=" + list.size());
+		logger.debug(() -> "data=" + JSON.encode(data, true));
 		String template = AllTypeEditForm.getServlet().getServletContext().getRealPath("/exceltemplate/alltypeExcelTempl.fo");
-		logger.debug("template=" + template);
+		logger.debug(() -> "template=" + template);
 		AlltypeXslFoReport rep = new AlltypeXslFoReport(template);
 		byte[] pdf = rep.print(data);
 		BinaryResponse ret = new BinaryResponse(pdf);
@@ -226,10 +226,10 @@ public class AllTypeEditForm extends EditForm {
 			m.put("barcode", this.getBarcodeImage(Integer.toString(123450000 + i)));
 		}
 
-		logger.debug("list.size()=" + list.size());
-		logger.debug("data=" + JSON.encode(data, true));
+		logger.debug(() -> "list.size()=" + list.size());
+		logger.debug(() -> "data=" + JSON.encode(data, true));
 		String template = AllTypeEditForm.getServlet().getServletContext().getRealPath("/exceltemplate/alltypeExcelTempl.fo");
-		logger.debug("template=" + template);
+		logger.debug(() -> "template=" + template);
 		AlltypeXslFoReport rep = new AlltypeXslFoReport(template);
 
 
@@ -251,10 +251,10 @@ public class AllTypeEditForm extends EditForm {
 	 */
 	@WebMethod
 	public Response testJsonPost(final Map<String, Object> p) throws Exception {
-		logger.debug("param=" + JSON.encode(p, true));
+		logger.debug(() -> "param=" + JSON.encode(p, true));
 
 		EnumDao dao = new EnumDao(this);
-		logger.debug("optionName=" + dao.getOptionName("userLevel", "admin", Locale.JAPAN.getLanguage()));
+		logger.debug("optionName={}", dao.getOptionName("userLevel", "admin", Locale.JAPAN.getLanguage()));
 
 		return new JsonResponse(JsonResponse.SUCCESS, "ok");
 	}

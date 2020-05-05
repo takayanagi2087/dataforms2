@@ -85,7 +85,7 @@ public class LoginForm extends Form {
 			Map<String, Object> userInfo = dao.login(params);
 			HttpSession session = this.getPage().getRequest().getSession();
 			session.setAttribute("userInfo", userInfo);
-			logger.info("login success=" + userInfo.get("loginId") + "(" + userInfo.get("userId") + ")");
+			logger.info(() -> "login success=" + userInfo.get("loginId") + "(" + userInfo.get("userId") + ")");
 			AutoLoginCookie.setAutoLoginCookie(this.getPage(), params);
 			ret = new JsonResponse(JsonResponse.SUCCESS, "");
 		}

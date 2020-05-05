@@ -120,7 +120,7 @@ public class LoginInfoForm extends Form {
     @WebMethod
 	public JsonResponse logout(final Map<String, Object> param) throws Exception {
 		Map<String, Object> userInfo = this.getPage().getUserInfo();
-		logger.info("logout success=" + userInfo.get("loginId") + "(" + userInfo.get("userId") + ")");
+		logger.info(() -> "logout success=" + userInfo.get("loginId") + "(" + userInfo.get("userId") + ")");
 		this.getPage().getRequest().getSession().setAttribute("userInfo", null);
 		AutoLoginCookie.clearAutoLoginCookie(this.getPage());
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, "");

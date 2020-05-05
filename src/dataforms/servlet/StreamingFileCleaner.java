@@ -38,9 +38,9 @@ public class StreamingFileCleaner implements HttpSessionListener {
 		while (e.hasMoreElements()) {
 			String name = e.nextElement();
 			if (Pattern.matches("^" + FileField.DOWNLOADING_FILE + ".+", name)) {
-				logger.debug("attribute name=" + name);
+				logger.debug(() -> "attribute name=" + name);
 				String filename = (String) session.getAttribute(name);
-				logger.debug("filename=" + filename);
+				logger.debug(() -> "filename=" + filename);
 				File f = new File(filename);
 				f.delete();
 			}

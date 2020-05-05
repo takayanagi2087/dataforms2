@@ -44,12 +44,12 @@ public class PasswordResetPage extends BasePage {
 		String key = (String) p.get("key");
 		if (key != null) {
 			try {
-				logger.debug("key=" + key);
+				logger.debug(() -> "key=" + key);
 				String json = CryptUtil.decrypt(key, DataFormsServlet.getQueryStringCryptPassword());
-				logger.debug("json=" + json);
+				logger.debug(() -> "json=" + json);
 				@SuppressWarnings("unchecked")
 				Map<String, Object> userInfo = (Map<String, Object>) JSON.decode(json, HashMap.class);
-				logger.debug("userInfo=" + userInfo);
+				logger.debug(() -> "userInfo=" + userInfo);
 				this.getPage().getRequest().getSession().setAttribute(PASSWORD_RESET_INFO, userInfo);
 			} catch (java.lang.IllegalArgumentException e) {
 				throw new ApplicationException(this.getPage(), "error.auth");

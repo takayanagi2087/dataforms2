@@ -9,7 +9,6 @@ import java.net.HttpURLConnection;
 import java.net.URLDecoder;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -271,24 +270,6 @@ public class DataFormsServlet extends HttpServlet {
 
 
 	/**
-	 * 各メティア対応のスタイルシート設定を取得します。
-	 */
-	private void initMediaCss() {
-		Enumeration<String> e = this.getServletContext().getInitParameterNames();
-		while (e.hasMoreElements()) {
-			String key = e.nextElement();
-			if (key.trim().indexOf("css-media:") == 0) {
-				String cssfile = key.trim().replaceAll("css-media:", "");
-				String media = this.getServletContext().getInitParameter(key);
-				logger.debug("css=" + cssfile + ",media=" + media);
-				Page.addPreloadCss(cssfile, media);
-			}
-		}
-	}
-
-
-
-	/**
 	 * WEBリソースアクセス用のURLを取得します。
 	 *
 	 * @return WEBリソースアクセス用のURL。
@@ -304,27 +285,26 @@ public class DataFormsServlet extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		this.initPageOverrideMap();
-		this.initMediaCss();
 		DataFormsServlet.jndiPrefix = this.getServletContext().getInitParameter("jndi-prefix");
 		if (DataFormsServlet.jndiPrefix == null) {
 			DataFormsServlet.jndiPrefix = "java:/comp/env/";
 		}
 		DataFormsServlet.dataSourceName = this.getServletContext().getInitParameter("data-source");
-		logger.info("init:dataSourceName=" + DataFormsServlet.dataSourceName);
+		logger.info(() -> "init:dataSourceName=" + DataFormsServlet.dataSourceName);
 		String webresurl= this.getServletContext().getInitParameter("web-resource-url");
 		if (!StringUtil.isBlank(webresurl)) {
 			DataFormsServlet.webResourceUrl = webresurl;
 		}
-		logger.info("init:webResourceUrl=" + DataFormsServlet.webResourceUrl);
+		logger.info(() -> "init:webResourceUrl=" + DataFormsServlet.webResourceUrl);
 		DataFormsServlet.encoding = this.getServletContext().getInitParameter("encoding");
 		if (DataFormsServlet.encoding == null) {
 			DataFormsServlet.encoding = "utf-8";
 		}
-		logger.info("init:encoding=" + DataFormsServlet.encoding);
+		logger.info(() -> "init:encoding=" + DataFormsServlet.encoding);
 		DataFormsServlet.jsonDebug = Boolean
 				.parseBoolean(this.getServletContext().getInitParameter("json-debug") == null ? "false"
 						: this.getServletContext().getInitParameter("json-debug"));
-		logger.info("init:jsonDebug=" + DataFormsServlet.jsonDebug);
+		logger.info(() -> "init:jsonDebug=" + DataFormsServlet.jsonDebug);
 		DataFormsServlet.tempDir = this.getServletContext().getInitParameter("temp-dir");
 		if (DataFormsServlet.tempDir == null) {
 			DataFormsServlet.tempDir = "/tmp";
@@ -334,49 +314,49 @@ public class DataFormsServlet extends HttpServlet {
 		if (!tmp.exists()) {
 			tmp.mkdirs();
 		}
-		logger.info("init:tempDir=" + DataFormsServlet.tempDir);
+		logger.info(() -> "init:tempDir=" + DataFormsServlet.tempDir);
 		DataFormsServlet.exportImportDir = this.getServletContext().getInitParameter("export-import-dir");
 		if (DataFormsServlet.exportImportDir == null) {
 			DataFormsServlet.exportImportDir = "/tmp/data";
 		}
-		logger.info("init:exportImportDir=" + DataFormsServlet.exportImportDir);
+		logger.info(() -> "init:exportImportDir=" + DataFormsServlet.exportImportDir);
 		DataFormsServlet.cssAndScript = this.getServletContext().getInitParameter("css-and-scripts");
 		if (DataFormsServlet.cssAndScript == null) {
 			DataFormsServlet.cssAndScript = "/frame/jslib.html";
 		}
-		logger.info("init:cssAndScript=" + DataFormsServlet.cssAndScript);
+		logger.info(() -> "init:cssAndScript=" + DataFormsServlet.cssAndScript);
 		DataFormsServlet.errorPage = this.getServletContext().getInitParameter("error-page");
 		if (DataFormsServlet.errorPage == null) {
 			DataFormsServlet.errorPage = "/dataforms/app/errorpage/ErrorPage." + this.getPageExt();
 		} else {
 			DataFormsServlet.errorPage += ("." + this.getPageExt());
 		}
-		logger.info("init:errorPage=" + DataFormsServlet.errorPage);
+		logger.info(() -> "init:errorPage=" + DataFormsServlet.errorPage);
 		DataFormsServlet.clientValidation = Boolean
 				.parseBoolean(this.getServletContext().getInitParameter("client-validation") == null ? "true"
 						: this.getServletContext().getInitParameter("client-validation"));
-		logger.info("init:clientValidation=" + DataFormsServlet.clientValidation);
+		logger.info(() -> "init:clientValidation=" + DataFormsServlet.clientValidation);
 		DataFormsServlet.clientLogLevel = this.getServletContext().getInitParameter("client-log-level");
 		if (DataFormsServlet.clientLogLevel == null) {
 			DataFormsServlet.clientLogLevel = "info";
 		}
-		logger.info("init:clientLogLevel=" + DataFormsServlet.clientLogLevel);
+		logger.info(() -> "init:clientLogLevel=" + DataFormsServlet.clientLogLevel);
 		DataFormsServlet.uploadDataFolder = this.getServletContext().getInitParameter("upload-data-folder");
 		if (DataFormsServlet.uploadDataFolder == null) {
 			DataFormsServlet.uploadDataFolder = "/uploadData";
 		}
-		logger.info("init:uploadDataFolder=" + DataFormsServlet.uploadDataFolder);
+		logger.info(() -> "init:uploadDataFolder=" + DataFormsServlet.uploadDataFolder);
 		DataFormsServlet.supportLanguage = this.getServletContext().getInitParameter("support-language");
 		if (DataFormsServlet.supportLanguage == null) {
 			DataFormsServlet.supportLanguage = "ja";
 		}
-		logger.info("init:supportLanguage=" + DataFormsServlet.supportLanguage);
+		logger.info(() -> "init:supportLanguage=" + DataFormsServlet.supportLanguage);
 		DataFormsServlet.fixedLanguage = this.getServletContext().getInitParameter("fixed-language");
-		logger.info("init:fixedLanguage=" + DataFormsServlet.fixedLanguage);
+		logger.info(() -> "init:fixedLanguage=" + DataFormsServlet.fixedLanguage);
 		DataFormsServlet.disableDeveloperTools = Boolean
 				.parseBoolean(this.getServletContext().getInitParameter("disable-developer-tools") == null ? "true"
 						: this.getServletContext().getInitParameter("disable-developer-tools"));
-		logger.info("init:disableDeveloperTools=" + DataFormsServlet.disableDeveloperTools);
+		logger.info(() -> "init:disableDeveloperTools=" + DataFormsServlet.disableDeveloperTools);
 
 		this.initPassword();
 
@@ -386,7 +366,7 @@ public class DataFormsServlet extends HttpServlet {
 		);
 		Page.setFramePath(this.getServletContext().getInitParameter("frame-path") == null ? "/frame/default"
 				: this.getServletContext().getInitParameter("frame-path"));
-		logger.info("init:framePath=" + Page.getFramePath());
+		logger.info(() -> "init:framePath=" + Page.getFramePath());
 		Page.setAppcacheFile(this.getServletContext().getInitParameter("appcache-file"));
 		this.getMessageProperties();
 		String topPage = this.getServletContext().getInitParameter("top-page");
@@ -408,7 +388,7 @@ public class DataFormsServlet extends HttpServlet {
 		DeveloperPage.setJavaSourcePath(this.getServletContext().getInitParameter("java-source-path"));
 		DeveloperPage.setWebSourcePath(this.getServletContext().getInitParameter("web-source-path"));
 		String streamingBlockSize = this.getServletContext().getInitParameter("streaming-block-size");
-		logger.debug("streamingBlockSize=" + streamingBlockSize);
+		logger.debug(() -> "streamingBlockSize=" + streamingBlockSize);
 		if (!StringUtil.isBlank(streamingBlockSize)) {
 			@SuppressWarnings("unchecked")
 			List<LinkedHashMap<String, Object>> bslist = (List<LinkedHashMap<String, Object>>) JSON.decode(streamingBlockSize, ArrayList.class);
@@ -416,7 +396,7 @@ public class DataFormsServlet extends HttpServlet {
 		}
 
 		String contentTypeList = this.getServletContext().getInitParameter("content-type-list");
-		logger.debug("contentTypeList=" + contentTypeList);
+		logger.debug(() -> "contentTypeList=" + contentTypeList);
 		if (!StringUtil.isBlank(contentTypeList)) {
 			@SuppressWarnings("unchecked")
 			List<LinkedHashMap<String, String>> ctlist = (List<LinkedHashMap<String, String>>) JSON.decode(contentTypeList, ArrayList.class);
@@ -428,7 +408,7 @@ public class DataFormsServlet extends HttpServlet {
 		}
 		BackupForm.setBackupFileName(backupFileName);
 		String apacheFopConfig = this.getServletContext().getInitParameter("apache-fop-config");
-		logger.debug("apacheFopConfig=" + contentTypeList);
+		logger.debug(() -> "apacheFopConfig=" + contentTypeList);
 		if (apacheFopConfig != null) {
 			DataFormsServlet.setApacheFopConfig(apacheFopConfig);
 		}
@@ -537,8 +517,8 @@ public class DataFormsServlet extends HttpServlet {
 			logger.debug("user-regist-page-config is missing. use default. " + conf);
 		}
 		Map<String, Object> m = JSON.decode(conf);
-		logger.debug("m.class=" + m.getClass().getName());
-		logger.debug("conf=" + m.toString());
+		logger.debug(() -> "m.class=" + m.getClass().getName());
+		logger.debug(() -> "conf=" + m.toString());
 		UserRegistForm.setConfig(m);
 		// メール関連設定。
 		String mailSession = this.getServletContext().getInitParameter("mail-session");
@@ -569,10 +549,10 @@ public class DataFormsServlet extends HttpServlet {
 		if (appMessages == null) {
 			appMessages = "/frame/messages/AppMessages";
 		}
-		logger.info("init:clientMessages=" + clientMessages);
-		logger.info("init:appClientMessages=" + appClientMessages);
-		logger.info("init:messages=" + messages);
-		logger.info("init:appMessages=" + appMessages);
+		logger.info("init:clientMessages={}", clientMessages);
+		logger.info("init:appClientMessages={}", appClientMessages);
+		logger.info("init:messages={}", messages);
+		logger.info("init:appMessages={}", appMessages);
 		MessagesUtil.setClientMessagesName(clientMessages);
 		MessagesUtil.setAppClientMessagesName(appClientMessages);
 		MessagesUtil.setMessagesName(messages);
@@ -590,7 +570,7 @@ public class DataFormsServlet extends HttpServlet {
 	 */
 	private void setupServletInstanceBean() {
 		String beanClass = this.getServletContext().getInitParameter("servlet-instance-bean");
-		logger.info("beanClass = " + beanClass);
+		logger.info(() -> "beanClass = " + beanClass);
 		if (beanClass != null) {
 			try {
 				@SuppressWarnings("unchecked")
@@ -642,32 +622,32 @@ public class DataFormsServlet extends HttpServlet {
 				if (DataFormsServlet.dataSourceName != null) {
 					Context initContext = new InitialContext();
 					String dspath = DataFormsServlet.jndiPrefix + DataFormsServlet.dataSourceName;
-					logger.info("lookup data source=" + dspath);
+					logger.info(() -> "lookup data source=" + dspath);
 					this.dataSource = (DataSource) initContext.lookup(dspath);
 
 					try {
 						DataFormsServlet.duplicateErrorMessage = (String) initContext.lookup(DataFormsServlet.jndiPrefix + "duplicateErrorMessage");
 					} catch (Exception ex) {
-						logger.debug(ex.getMessage());
+						logger.debug(() -> ex.getMessage());
 					}
 					try {
 						DataFormsServlet.foreignKeyErrorMessage = (String) initContext.lookup(DataFormsServlet.jndiPrefix + "foreignKeyErrorMessage");
 					} catch (Exception ex) {
-						logger.debug(ex.getMessage());
+						logger.debug(() -> ex.getMessage());
 					}
 
-					logger.debug("DataFormsServlet.duplicateErrorMessage=" + DataFormsServlet.duplicateErrorMessage);
-					logger.debug("DataFormsServlet.foreignKeyErrorMessage=" + DataFormsServlet.foreignKeyErrorMessage);
+					logger.debug(() -> "DataFormsServlet.duplicateErrorMessage=" + DataFormsServlet.duplicateErrorMessage);
+					logger.debug(() -> "DataFormsServlet.foreignKeyErrorMessage=" + DataFormsServlet.foreignKeyErrorMessage);
 				}
 			} catch (NameNotFoundException e) {
 				// アプリケーションサーバにデータソースの設定が無い場合。
-				logger.error(e.getMessage(), e);
+				logger.error(() -> e.getMessage(), e);
 				DataFormsServlet.configStatus = "error.notfounddatasource";
 			} catch (Exception e) {
 				// DBサーバが動作していない場合のエラーであるため、運用時トラブルで発生する可能性がある。
 				// そのため設定エラーとしない。
 				//DataFormsServlet.dbStatus = "error.cannotconnectdatasource";
-				logger.error(e.getMessage(), e);
+				logger.error(() -> e.getMessage(), e);
 			}
 		}
 	}
@@ -697,7 +677,7 @@ public class DataFormsServlet extends HttpServlet {
 						String differenceVal = (String) m.get("differenceVal");
 						if ("1".equals(differenceVal)) {
 							String className = (String) m.get("className");
-							logger.info("update table structure=" + className);
+							logger.info(() -> "update table structure=" + className);
 							dao.dropAllForeignKeys();
 							dao.updateTable(className);
 							dao.createAllForeignKeys();
@@ -709,7 +689,7 @@ public class DataFormsServlet extends HttpServlet {
 				conn.close();
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			logger.error(() -> e.getMessage(), e);
 		}
 	}
 
@@ -756,7 +736,7 @@ public class DataFormsServlet extends HttpServlet {
 				ClassFinder f = new ClassFinder();
 				List<Class<?>> tblist = f.findClasses(pkg, Table.class);
 				for (Class<?> cls: tblist) {
-					logger.debug("table class=" + cls.getName());
+					logger.debug(() -> "table class=" + cls.getName());
 					if (cls.isAnonymousClass()) {
 						continue;
 					}
@@ -767,7 +747,7 @@ public class DataFormsServlet extends HttpServlet {
 					TableRelation rel = tbl.getTableRelation();
 					for (ForeignKey fk: rel.getForeignKeyList()) {
 						DataFormsServlet.constraintMap.put(fk.getConstraintName(), fk);
-						logger.debug("ForeignKey:" + fk.getConstraintName());
+						logger.debug(() -> "ForeignKey:" + fk.getConstraintName());
 					}
 				}
 				// インデックスから一意制約を取り出す。
@@ -777,12 +757,12 @@ public class DataFormsServlet extends HttpServlet {
 					UniqueKey uk = tbl.getUniqueKey();
 					if (uk != null) {
 						DataFormsServlet.constraintMap.put(uk.getConstraintName(), uk);
-						logger.debug("UniqueKey:" + uk.getConstraintName());
+						logger.debug(() -> "UniqueKey:" + uk.getConstraintName());
 					}
 				}
 			}
 		} catch (Exception e) {
-			logger.debug(e.getMessage(), e);
+			logger.debug(() -> e.getMessage(), e);
 		}
 	}
 
@@ -980,9 +960,9 @@ public class DataFormsServlet extends HttpServlet {
 		if (DataFormsServlet.configStatus == null) {
 			String uri = req.getRequestURI();
 			String context = req.getContextPath();
-			logger.info("context=" + context + ", uri=" + uri);
+			logger.info(() -> "context=" + context + ", uri=" + uri);
 			String classname = DataFormsServlet.convertPageClassName(this.getTargetClassName(context, uri));
-			logger.info("classname=" + classname);
+			logger.info(() -> "classname=" + classname);
 			WebEntryPoint ep = this.newWebEntryPointInstance(classname);
 			if (ep instanceof Page) {
 				Page page = (Page) ep;
@@ -1059,7 +1039,7 @@ public class DataFormsServlet extends HttpServlet {
 				}
 			}
 		}
-		logger.debug("queryString=" + JSON.encode(ret, true));
+		logger.debug(() -> "queryString=" + JSON.encode(ret, true));
 		return ret;
 
 	}
@@ -1074,12 +1054,12 @@ public class DataFormsServlet extends HttpServlet {
 	private Map<String, Object> getQueryString(final HttpServletRequest req, final Map<String, Object> param) throws Exception {
 		// ajax呼び出しの場合はヘッダにqueryStringが設定されてくる。
 		String queryString = req.getHeader("queryString");
-		logger.debug("header queryString=" + queryString);
+		logger.debug("header queryString={}", queryString);
 		if (queryString == null) {
 			// formのsubmitの場合はPOSTされた情報にqueryStringを入れておく。
 			queryString = (String) param.get("dfQueryString");
 		}
-		logger.debug("other queryString=" + queryString);
+		logger.debug("other queryString={}", queryString);
 		return this.parseQueryString(queryString);
 	}
 
@@ -1105,8 +1085,8 @@ public class DataFormsServlet extends HttpServlet {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.putAll(param);
 		map.remove("password");
-		accessLogger.info(userId + ":" + comp.getClass().getName() + "#" + m.getName() + " start.");
-		accessLogger.debug(userId + ":" + map);
+		accessLogger.info("{}:{}#{} start.", userId, comp.getClass().getName(), m.getName());
+		accessLogger.debug("{}:{}", userId, map);
 	}
 
 	/**
@@ -1122,8 +1102,8 @@ public class DataFormsServlet extends HttpServlet {
 			UserInfoTable.Entity e = new UserInfoTable.Entity(userInfo);
 			userId = e.getLoginId() + "(" + e.getUserId() + ")";
 		}
-		accessLogger.info(userId + ":" + comp.getClass().getName() + "#" + m.getName() +  " finish.");
-		accessLogger.debug(userId + ":" + resp.toString());
+		accessLogger.info("{}:{}#{} finish.", userId, comp.getClass().getName(), m.getName());
+		accessLogger.debug("{}:{}", userId, resp.toString());
 	}
 
 
@@ -1149,15 +1129,15 @@ public class DataFormsServlet extends HttpServlet {
 					if (method == null) {
 						method = EXEC_METHOD;
 						String queryString = req.getQueryString();
-						logger.debug("getHtml queryString=" + queryString);
+						logger.debug(() -> "getHtml queryString=" + queryString);
 						epoint.setQueryString(this.parseQueryString(queryString));
 					} else {
 						epoint.setQueryString(this.getQueryString(req, param));
 					}
-					logger.info("method=" + method);
+					logger.info("method={}", method);
 					Map<String, Object> userinfo = epoint.getUserInfo();
 					if (userinfo != null) {
-						logger.info("access user=" + userinfo.get("loginId") + "(" + userinfo.get("userId") + ")");
+						logger.info("access user={}({})", () -> userinfo.get("loginId"), () -> userinfo.get("userId"));
 					}
 //					String[] split = method.split("\\.");
 					int lidx = method.lastIndexOf(".");
@@ -1220,7 +1200,7 @@ public class DataFormsServlet extends HttpServlet {
 						if (conn != null) {
 							conn.rollback();
 						}
-						logger.error(e.getMessage(), e);
+						logger.error(() -> e.getMessage(), e);
 						throw e;
 					} finally {
 						if (conn != null) {
@@ -1232,7 +1212,7 @@ public class DataFormsServlet extends HttpServlet {
 				}
 			} catch (ApplicationException e) {
 				// TODO:JsonResponseを戻り値にしないと、csrfエラーメッセージが表示されな問題を対策する必要がある。
-				logger.error(e.getMessageKey() + ":" + e.getMessage(), e);
+				logger.error(() -> e.getMessageKey() + ":" + e.getMessage(), e);
 				if (isJsonResponse) {
 					Map<String, Object> einfo = new HashMap<String, Object>();
 					einfo.put("key", e.getMessageKey());
@@ -1244,7 +1224,7 @@ public class DataFormsServlet extends HttpServlet {
 				}
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			logger.error(() -> e.getMessage(), e);
 			resp.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);
 		}
 
@@ -1383,7 +1363,7 @@ public class DataFormsServlet extends HttpServlet {
 		}
 //		String url = context + errorPage + "?msg=" + java.net.URLEncoder.encode(message, DataFormsServlet.encoding);
 		String url = context + errorPage;
-		logger.info("errorPage=" + url);
+		logger.info(() -> "errorPage=" + url);
 		try {
 			req.getSession().setAttribute(ErrorPage.ID_ERROR_MESSAGE, message);
 			resp.sendRedirect(url);
@@ -1407,7 +1387,7 @@ public class DataFormsServlet extends HttpServlet {
 			try {
 				DataFormsServlet.servletInstanceBean.destroy();
 			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
+				logger.error(() -> e.getMessage(), e);
 			}
 		}
 		super.destroy();

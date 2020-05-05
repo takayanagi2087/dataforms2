@@ -91,9 +91,9 @@ public class RestoreForm extends Form {
 			List<String> flist = FileUtil.getFileList(path);
 			for (String fn: flist) {
 				if (Pattern.matches(".*\\.data\\.json$", fn)) {
-					logger.debug("fn=" + fn);
+					logger.debug(() -> "fn=" + fn);
 					String classname = fn.substring(path.length() + 1).replaceAll("[\\\\/]", ".").replaceAll("\\.data\\.json$", "");
-					logger.debug("classname=" + classname);
+					logger.debug(() -> "classname=" + classname);
 					if ("1".equals(deleteDataFlag)) {
 						dao.deleteTableData(classname);
 					}

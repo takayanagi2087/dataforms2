@@ -247,7 +247,7 @@ public class UserDao extends Dao {
 				}
 			}
 		}
-		logger.debug("isUpdatableUser=" + ret);
+		logger.debug("isUpdatableUser={}", ret);
 		return ret;
 	}
 
@@ -470,7 +470,6 @@ public class UserDao extends Dao {
 				nenc = CryptUtil.aesEncrypt(upass, password, CryptUtil.getAesInitialVector());
 			}
 			e.setPassword(nenc);
-			logger.debug("old=" + enc + ",upass=" + upass + ",nenc=" + nenc);
 			FieldList uflist = new FieldList();
 			uflist.addField(table.getPasswordField());
 			this.executeUpdate(table, uflist, table.getPkFieldList(), e.getMap(), true);

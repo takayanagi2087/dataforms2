@@ -67,8 +67,8 @@ public class CssFilter implements Filter {
 		} else {
 			url = DataFormsServlet.getWebResourceUrl() + path;
 		}
-		logger.debug("getWebResourceUrl:path=" + path);
-		logger.debug("getWebResourceUrl:url=" + url);
+		logger.debug("getWebResourceUrl:path={}", path);
+		logger.debug("getWebResourceUrl:url={}", url);
 		return url;
 	}
 
@@ -81,14 +81,14 @@ public class CssFilter implements Filter {
 	 * @throws Exception 例外。
 	 */
 	private String readWebResource(final HttpServletRequest req, final String path) throws Exception {
-		logger.debug("readWebResource path=" + path);
+		logger.debug("readWebResource path={}", path);
 		String css = CssFilter.cssMap.get(path);
 		if (css != null) {
 			return css;
 		}
 		URL url = new URL(getWebResourceUrl(req, path));
 		String ret = "";
-		logger.debug("webResourceUrl=" + url.toString());
+		logger.debug(() -> "webResourceUrl=" + url.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.connect();
 		try {
@@ -129,7 +129,7 @@ public class CssFilter implements Filter {
 				line = line.replaceAll("/\\*.*\\*/", "");
 				Matcher vm = vp.matcher(line);
 				if (vm.find()) {
-					logger.debug("var=" + vm.group(1) + "," + vm.group(2));
+					logger.debug(() -> "var=" + vm.group(1) + "," + vm.group(2));
 					CssFilter.varMap.put(vm.group(1), vm.group(2));
 				}
 			}
@@ -169,7 +169,7 @@ public class CssFilter implements Filter {
 					out.print(contents);
 				}
 			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
+				logger.error(() -> e.getMessage(), e);
 			}
 		}
 	}

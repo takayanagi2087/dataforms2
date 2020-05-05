@@ -77,10 +77,10 @@ public class PasswordResetMailForm extends EditForm {
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
 		UserDao dao = new UserDao(this);
 		List<Map<String, Object>> list = dao.queryUserListByMail(e.getMailAddress());
-		logger.debug("userInfo=" + JSON.encode(list, true));
+		logger.debug(() -> "userInfo=" + JSON.encode(list, true));
 		String path = this.getAppropriatePath("/mailTemplate/passwordResetMail.txt", this.getPage().getRequest());
 		String text = this.getWebResource(path);
-		logger.debug("template=" + text);
+		logger.debug(() -> "template=" + text);
 
 		HttpServletRequest req = this.getPage().getRequest();
 		String url = req.getRequestURL().toString();
@@ -100,7 +100,7 @@ public class PasswordResetMailForm extends EditForm {
 			String key = CryptUtil.encrypt(json, DataFormsServlet.getQueryStringCryptPassword());
 			String enckey = java.net.URLEncoder.encode(key, DataFormsServlet.getEncoding());
 			url += "?key=" + enckey;
-			logger.debug("url=" + url);
+			logger.debug("url={}", url);
 			urllist = url;
 		}
 		template.setLink("passwordResetPage", urllist, urllist);

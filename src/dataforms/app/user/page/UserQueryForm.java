@@ -97,7 +97,7 @@ public class UserQueryForm extends QueryForm {
 		for (Map<String, Object> m: list) {
 			m.put("rowNo", Integer.valueOf(rowNo++));
 		}
-		logger.debug("userList=" + JSON.encode(list));
+		logger.debug(() -> "userList=" + JSON.encode(list));
 		return list;
 	}
 }

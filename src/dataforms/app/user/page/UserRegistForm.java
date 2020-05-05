@@ -174,7 +174,7 @@ public class UserRegistForm extends EditForm {
 	protected void sendMail(final Map<String, Object> data) throws Exception {
 		String path = this.getAppropriatePath("/mailTemplate/userRegistMail.txt", this.getPage().getRequest());
 		String text = this.getWebResource(path);
-		logger.debug("mailTemplate=" + text);
+		logger.debug(() -> "mailTemplate=" + text);
 		MailTemplate template = new MailTemplate(text, null);
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
 		template.addToAddress(e.getMailAddress());

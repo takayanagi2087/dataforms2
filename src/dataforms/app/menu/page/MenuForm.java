@@ -128,7 +128,7 @@ public class MenuForm extends Form {
 		    	if (page.isMenuItem()) {
 			    	if (page.isAuthenticated(new HashMap<String, Object>())) {
 			    		String menuName = (String) m.get("menuName");
-			    		logger.debug("menuName=" + menuName);
+			    		logger.debug(() -> "menuName=" + menuName);
 			    		m.put("menuName", page.decorateMenuName(menuName));
 			    		String menuUrl = page.getMenuUrl();
 			    		if (menuUrl != null) {
@@ -142,7 +142,7 @@ public class MenuForm extends Form {
 			    	}
 		    	}
 			} catch (Error e) {
-				logger.error(e.getMessage(), e);
+				logger.error(() -> e.getMessage(), e);
 			}
 		}
 		return mlist;

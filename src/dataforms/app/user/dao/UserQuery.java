@@ -89,7 +89,7 @@ public class UserQuery extends Query {
 				}
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			logger.error(() -> e.getMessage(), e);
 		}
 	}
 
@@ -101,7 +101,7 @@ public class UserQuery extends Query {
 	public UserQuery(final FieldList flist, final Map<String, Object> data) {
 		@SuppressWarnings("unchecked")
 		List<String> atlist = (List<String>) data.get("userAttributeList");
-		logger.debug("atlist=" + JSON.encode(atlist));
+		logger.debug(() -> "atlist=" + JSON.encode(atlist));
 		this.setDistinct(true);
 		UserInfoTable mtbl = new UserInfoTable();
 		FieldList fl = new FieldList();

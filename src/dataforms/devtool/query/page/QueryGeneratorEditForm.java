@@ -616,11 +616,62 @@ public class QueryGeneratorEditForm extends EditForm {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m:list) {
 			String tableClassName = (String) m.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
-			sb.append("\t\t" + tableClassName + " " + this.getTableVariableName(tableClassName) + " = new " + tableClassName + "();\n");
+			sb.append("\t\tthis." + this.getTableVariableName(tableClassName) + " = new " + tableClassName + "();\n");
 			String aliasName = (String) m.get(ID_ALIAS_NAME);
 			if (!StringUtil.isBlank(aliasName)) {
-				sb.append("\t\t" + this.getTableVariableName(tableClassName) + ".setAlias(\"" + aliasName + "\");\n");
+				sb.append("\t\tthis." + this.getTableVariableName(tableClassName) + ".setAlias(\"" + aliasName + "\");\n");
 			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * 問合せに使用するテーブルプロパティ設定ソースを作成します。
+	 * @param packageName パッケージ名。
+	 * @param tableClassName テーブルクラス名。
+	 * @return テーブルプロパティ設定ソース。
+	 * @throws Exception 例外。
+	 */
+	private String getTableProperty(final String packageName, final String tableClassName) throws Exception {
+		String src = "	/**\n" +
+					"	 * ${comment}。\n" +
+					"	 */\n" +
+					"	private ${className} ${variableName} = null;\n\n" +
+					"	/**\n" +
+					"	 * ${comment}を取得します。\n" +
+					"	 * @return ${comment}。\n" +
+					"	 */\n" +
+					"	public ${className} get${className}() {\n" +
+					"		return this.${variableName};\n" +
+					"	}\n\n";
+
+		Class<?> c = Class.forName(packageName + "." + tableClassName);
+		Table table = (Table) c.getConstructor().newInstance();
+		String ret = src.replaceAll("\\$\\{className\\}", tableClassName);
+		ret = ret.replaceAll("\\$\\{variableName\\}", this.getTableVariableName(tableClassName));
+		ret = ret.replaceAll("\\$\\{comment\\}", table.getComment());
+		return ret;
+
+	}
+
+
+	/**
+	 * テーブルクラスのインポート文を作成。
+	 * @param data POSTされたデータ。
+	 * @return インポート文。
+	 * @throws Exception 例外。
+	 */
+	@SuppressWarnings("unchecked")
+	private String generateProperties(final Map<String, Object> data) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		String mainTablePackageName = (String) data.get(ID_MAIN_TABLE_PACKAGE_NAME);
+		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
+		sb.append(this.getTableProperty(mainTablePackageName, mainTableClassName));
+		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST);
+		for (Map<String, Object> m: list) {
+			String packageName = (String) m.get(ID_PACKAGE_NAME);
+			String tableClassName = (String) m.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
+			sb.append(this.getTableProperty(packageName, tableClassName));
 		}
 		return sb.toString();
 	}
@@ -635,10 +686,10 @@ public class QueryGeneratorEditForm extends EditForm {
 	private String generateNewTables(final Map<String, Object> data) {
 		StringBuilder sb = new StringBuilder();
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
-		sb.append("\t\t" + mainTableClassName + " " + this.getTableVariableName(mainTableClassName) + " = new " + mainTableClassName + "();\n");
+		sb.append("\t\tthis." + this.getTableVariableName(mainTableClassName) + " = new " + mainTableClassName + "();\n");
 		String aliasName = (String) data.get(ID_ALIAS_NAME);
 		if (!StringUtil.isBlank(aliasName)) {
-			sb.append("\t\t" + this.getTableVariableName(mainTableClassName) + ".setAlias(\"" + aliasName + "\");\n");
+			sb.append("\t\tthis." + this.getTableVariableName(mainTableClassName) + ".setAlias(\"" + aliasName + "\");\n");
 		}
 		sb.append(this.generateNewTableList((List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST)));
 		return sb.toString();
@@ -657,9 +708,9 @@ public class QueryGeneratorEditForm extends EditForm {
 			String sel = (String) m.get("sel");
 			if ("1".equals(sel)) {
 				if (sb.length() > 0) {
-					sb.append("\t\t\t, ");
+					sb.append("\t\t\t, this.");
 				} else {
-					sb.append("\t\t\t");
+					sb.append("\t\t\tthis.");
 				}
 				String tableClassName = (String) m.get("selectTableClassName");
 				logger.debug("tableClassName=" + tableClassName);
@@ -703,6 +754,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", packageName);
 		javasrc = javasrc.replaceAll("\\$\\{queryClassName\\}", queryClassName);
 		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", this.generateImportTables(data));
+		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.generateProperties(data));
 		javasrc = javasrc.replaceAll("\\$\\{newTables\\}", this.generateNewTables(data));
 		javasrc = javasrc.replaceAll("\\$\\{selectFields\\}", this.generateSelectFieldList(data));
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);

@@ -8,15 +8,55 @@ import dataforms.dao.QuerySetDao;
  *
  */
 public class MaterialOrderDao extends QuerySetDao {
+
+	/**
+	 * 資材発注一覧の問合せ。
+	 */
+	private MaterialOrderListQuery materialOrderListQuery = null;
+
+	/**
+	 * 資材発注情報取得問合せ。
+	 */
+	private MaterialOrderQuery materialOrderQuery = null;
+
+	/**
+	 * 資材発注明細取得問合せ。
+	 */
+	private MaterialOrderItemQuery materialOrderItemQuery = null;
+
+	/**
+	 * 資材発注一覧の問合せを取得します。
+	 * @return 資材発注一覧の問合せ。
+	 */
+	public MaterialOrderListQuery getMaterialOrderListQuery() {
+		return materialOrderListQuery;
+	}
+
+	/**
+	 * 資材発注情報取得問合せを取得します。
+	 * @return 資材発注情報取得問合せ。
+	 */
+	public MaterialOrderQuery getMaterialOrderQuery() {
+		return materialOrderQuery;
+	}
+
+	/**
+	 * 資材発注明細取得問合せを取得します。
+	 * @return 資材発注明細取得問合せ。
+	 */
+	public MaterialOrderItemQuery getMaterialOrderItemQuery() {
+		return materialOrderItemQuery;
+	}
+
 	/**
 	 * コンストラクタ。
 	 * @throws Exception 例外。
 	 */
 	public MaterialOrderDao() {
 		this.setComment("発注情報Dao");
-		this.setListQuery(new MaterialOrderListQuery());
-		this.setSingleRecordQuery(new MaterialOrderQuery());
-		this.addMultiRecordQueryList(new MaterialOrderItemQuery());
+		this.setListQuery(this.materialOrderListQuery = new MaterialOrderListQuery());
+		this.setSingleRecordQuery(this.materialOrderQuery = new MaterialOrderQuery());
+		this.addMultiRecordQueryList(this.materialOrderItemQuery = new MaterialOrderItemQuery());
 	}
 
 	/**

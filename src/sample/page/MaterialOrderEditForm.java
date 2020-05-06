@@ -3,8 +3,8 @@ package sample.page;
 import java.util.Map;
 
 import dataforms.controller.EditForm;
-import dataforms.dao.Table;
 import dataforms.dao.Query;
+import dataforms.dao.Table;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
@@ -21,10 +21,14 @@ public class MaterialOrderEditForm extends EditForm {
 	public MaterialOrderEditForm() {
 		MaterialOrderDao dao = new MaterialOrderDao();
 		if (dao.getSingleRecordQuery() != null) {
+			dao.getMaterialOrderQuery().getSupplierMasterTable().getSupplierCodeField().setAutocomplete(true).setRelationDataAcquisition(true);
+			dao.getMaterialOrderQuery().getSupplierMasterTable().getSupplierNameField().setAutocomplete(true).setRelationDataAcquisition(true);
 			FieldList flist = dao.getSingleRecordQuery().getFieldList();
 			this.addFieldList(flist);
 		}
 		if (dao.getMultiRecordQueryList() != null) {
+			dao.getMaterialOrderItemQuery().getMaterialMasterTable().getMaterialCodeField().setAutocomplete(true).setRelationDataAcquisition(true);
+			dao.getMaterialOrderItemQuery().getMaterialMasterTable().getMaterialNameField().setAutocomplete(true).setRelationDataAcquisition(true);
 			for (Query q: dao.getMultiRecordQueryList()) {
 				EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
 				this.addHtmlTable(rtable);

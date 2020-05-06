@@ -6,8 +6,6 @@ import java.util.Map;
 import dataforms.dao.SingleTableQuery;
 import dataforms.field.sqltype.CharField;
 import dataforms.validator.MaxLengthValidator;
-import sample.dao.MaterialMasterTable;
-import sample.dao.MaterialOrderItemTable;
 import sample.dao.SupplierMasterTable;
 
 
@@ -51,33 +49,46 @@ public class SupplierCodeField extends CharField {
 	 * 関連フィールドリスト。
 	 */
 	private static final String[] IDLIST = {
+		// このフィールドのIDを指定します
 		SupplierMasterTable.Entity.ID_SUPPLIER_CODE
+		// 確定時にフォームに設定するフィールドIDを複数しています。
 		, SupplierMasterTable.Entity.ID_SUPPLIER_NAME
 		, SupplierMasterTable.Entity.ID_SUPPLIER_ID
 	};
-
-
+	/**
+	 * Autocomplete用の一覧を取得するメソッドを実装します。
+	 * @param data パラメータ。
+	 * @return 関連データのマップ。
+	 * @throws Exception 例外。
+	 */
 	@Override
-	protected List<Map<String, Object>> queryAutocompleteSourceList(Map<String, Object> data) throws Exception {
-		SingleTableQuery query = new SingleTableQuery(new SupplierMasterTable());
-		List<Map<String, Object>> list = this.queryAutocompleteSourceList(data, query
+	protected List<Map<String, Object>> queryAutocompleteSourceList(final Map<String, Object> data) throws Exception {
+		SingleTableQuery query = new SingleTableQuery(new SupplierMasterTable()); // 一覧を取得する問合せを作成。
+		List<Map<String, Object>> list = this.queryAutocompleteSourceList(
+			data					// フォームのデータ
+			, query					// 問合せ
 			, (Map<String, Object> map, String ... ids) -> {
 				return (String) map.get(ids[0]) + ":" + (String) map.get(ids[1]);
-			}
+			}						// ラベルの構築処理を指定します。
 			, IDLIST
 		);
 		return list;
 	}
 
+	/**
+	 * 関連データを取得します。
+	 * @param data パラメータ。
+	 * @return 関連データのマップ。
+	 * @throws Exception 例外。
+	 */
 	@Override
-	protected Map<String, Object> queryRelationData(Map<String, Object> data) throws Exception {
-		SingleTableQuery query = new SingleTableQuery(new SupplierMasterTable());
-		Map<String, Object> ret = this.queryRelationData(data, query, null, (Map<String, Object> m) -> {
-				m.put(MaterialOrderItemTable.Entity.ID_ORDER_PRICE, m.get(MaterialMasterTable.Entity.ID_UNIT_PRICE));
-			}
+	protected Map<String, Object> queryRelationData(final Map<String, Object> data) throws Exception {
+		SingleTableQuery query = new SingleTableQuery(new SupplierMasterTable()); // 関連データを取得する問合せを作成。
+		Map<String, Object> ret = this.queryRelationData(
+			data					// フォームのデータ
+			, query					// 問合せ
 			, IDLIST
 		);
 		return ret;
 	}
-
 }

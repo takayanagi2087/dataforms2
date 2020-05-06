@@ -569,15 +569,18 @@ public class QueryGeneratorEditForm extends EditForm {
 
 	/**
 	 * 各JOINリストのインポート文を作成します。
-	 * @param list  POSTされたデータ。
+	 * @param queryPackageName テーブルのパッケージ名。
+	 * @param list JOINテーブルリスト。
 	 * @return インポート文。
 	 */
-	private String generateImportTableList(final List<Map<String, Object>> list) {
+	private String generateImportTableList(final String queryPackageName, final List<Map<String, Object>> list) {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m:list) {
 			String packageName = (String) m.get(ID_PACKAGE_NAME);
 			String tableClassName = (String) m.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
-			sb.append("import " + packageName + "." + tableClassName + ";\n");
+			if (!queryPackageName.equals(packageName)) {
+				sb.append("import " + packageName + "." + tableClassName + ";\n");
+			}
 		}
 		return sb.toString();
 	}
@@ -590,10 +593,13 @@ public class QueryGeneratorEditForm extends EditForm {
 	@SuppressWarnings("unchecked")
 	private String generateImportTables(final Map<String, Object> data) {
 		StringBuilder sb = new StringBuilder();
+		String queryPackageName = (String) data.get(ID_PACKAGE_NAME);
 		String packageName = (String) data.get(ID_MAIN_TABLE_PACKAGE_NAME);
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
-		sb.append("import " + packageName + "." + mainTableClassName + ";\n");
-		sb.append(this.generateImportTableList((List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST)));
+		if (!queryPackageName.equals(packageName)) {
+			sb.append("import " + packageName + "." + mainTableClassName + ";\n");
+		}
+		sb.append(this.generateImportTableList(queryPackageName, (List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST)));
 		return sb.toString();
 	}
 

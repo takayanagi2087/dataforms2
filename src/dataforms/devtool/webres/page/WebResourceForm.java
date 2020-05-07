@@ -1253,7 +1253,7 @@ public class WebResourceForm extends Form {
 		cls.getSuperclass().getSimpleName();
 		String superClassName = cls.getSuperclass().getSimpleName(); // (String) data.get("javascriptClass");
 		String className = ClassNameUtil.getSimpleClassName(fullClassName);
-		String src = this.getStringResourse("template/JavascriptClass.js.template");
+		String src = this.getStringResourse("template/WebComponent.js.template");
 		String gensrc = src.replaceAll("\\$\\{className\\}", className);
 		gensrc = gensrc.replaceAll("\\$\\{superClassName\\}", superClassName);
 		String srcpath = sourcePath + "/" + fullClassName.replaceAll("\\.", "/") + ".js";

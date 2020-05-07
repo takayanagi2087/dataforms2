@@ -54,4 +54,6 @@ ${queryResultFieldSetting}
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.delete(data);
 	}
+
+${webMethod}
 }

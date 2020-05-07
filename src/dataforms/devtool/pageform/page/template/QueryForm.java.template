@@ -14,4 +14,15 @@ public class ${queryFormClassName} extends QueryForm {
 	public ${queryFormClassName}() {
 ${queryFormFieldList}
 	}
+
+	@Override
+	public void init() throws Exception {
+		super.init();
+		// フィールドに初期値を設定する場合は以下の様にしてください。
+		// this.setFormData("fieldId", "初期値");
+	}
+
+${validateForm}
+
+${webMethod}
 }

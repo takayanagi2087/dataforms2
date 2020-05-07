@@ -41,6 +41,8 @@ public class ${editFormClassName} extends EditForm {
 	@Override
 	public void init() throws Exception {
 		super.init();
+		// フィールドに初期値を設定する場合は以下の様にしてください。
+		// this.setFormData("fieldId", "初期値");
 	}
 
 	/**
@@ -130,4 +132,8 @@ public class ${editFormClassName} extends EditForm {
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.delete(data);
 	}
+
+${validateForm}
+
+${webMethod}
 }

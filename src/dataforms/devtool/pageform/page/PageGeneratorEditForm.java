@@ -399,6 +399,11 @@ public class PageGeneratorEditForm extends EditForm {
 			javasrc = javasrc.replaceAll("\\$\\{" + formFieldId + "\\}", formClassName);
 			javasrc = javasrc.replaceAll("\\$\\{daoClassName\\}", daoClassName);
 
+			String validateForm = this.getStringResourse("template/validateForm.java.template");
+			String webMethod = this.getStringResourse("template/webMethod.java.template");
+			javasrc = javasrc.replaceAll("\\$\\{validateForm\\}", validateForm);
+			javasrc = javasrc.replaceAll("\\$\\{webMethod\\}", webMethod);
+
 			if (this.isUpdateTable(data)) {
 				@SuppressWarnings("unchecked")
 				Class<? extends QuerySetDao> daoclass = (Class<? extends QuerySetDao>) Class.forName(daoPackageName + "." + daoClassName);

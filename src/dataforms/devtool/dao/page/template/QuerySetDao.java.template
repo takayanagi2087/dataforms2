@@ -1,6 +1,5 @@
 package ${packageName};
 
-import dataforms.dao.Query;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.QuerySetDao;
 ${importTables}
@@ -10,6 +9,7 @@ ${importTables}
  *
  */
 public class ${daoClassName} extends QuerySetDao {
+${properties}
 	/**
 	 * コンストラクタ。
 	 * @throws Exception 例外。

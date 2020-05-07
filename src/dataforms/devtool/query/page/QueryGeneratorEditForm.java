@@ -609,8 +609,7 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * @return テーブルクラスのインスタンス変数名。
 	 */
 	private String getTableVariableName(final String classname) {
-		String ret = classname.substring(0, 1).toLowerCase() + classname.substring(1);
-		return ret;
+		return StringUtil.firstLetterToLowerCase(classname);
 	}
 
 	/**

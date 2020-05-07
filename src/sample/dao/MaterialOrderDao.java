@@ -3,50 +3,51 @@ package sample.dao;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.QuerySetDao;
 
+
 /**
- * 資材マスタDaoクラス。
+ * Daoクラスです。
  *
  */
 public class MaterialOrderDao extends QuerySetDao {
-
 	/**
-	 * 資材発注一覧の問合せ。
+	 * 資材発注一覧用問合せ。
 	 */
 	private MaterialOrderListQuery materialOrderListQuery = null;
 
 	/**
-	 * 資材発注情報取得問合せ。
+	 * 資材発注一覧用問合せを取得します。
+	 * @return 資材発注一覧用問合せ。
+	 */
+	public MaterialOrderListQuery getMaterialOrderListQuery() {
+		return this.materialOrderListQuery;
+	}
+
+	/**
+	 * 発注ヘッダ部取得の問合せ。
 	 */
 	private MaterialOrderQuery materialOrderQuery = null;
 
 	/**
-	 * 資材発注明細取得問合せ。
+	 * 発注ヘッダ部取得の問合せを取得します。
+	 * @return 発注ヘッダ部取得の問合せ。
+	 */
+	public MaterialOrderQuery getMaterialOrderQuery() {
+		return this.materialOrderQuery;
+	}
+
+	/**
+	 * 資材発注明細用の問合せ。
 	 */
 	private MaterialOrderItemQuery materialOrderItemQuery = null;
 
 	/**
-	 * 資材発注一覧の問合せを取得します。
-	 * @return 資材発注一覧の問合せ。
-	 */
-	public MaterialOrderListQuery getMaterialOrderListQuery() {
-		return materialOrderListQuery;
-	}
-
-	/**
-	 * 資材発注情報取得問合せを取得します。
-	 * @return 資材発注情報取得問合せ。
-	 */
-	public MaterialOrderQuery getMaterialOrderQuery() {
-		return materialOrderQuery;
-	}
-
-	/**
-	 * 資材発注明細取得問合せを取得します。
-	 * @return 資材発注明細取得問合せ。
+	 * 資材発注明細用の問合せを取得します。
+	 * @return 資材発注明細用の問合せ。
 	 */
 	public MaterialOrderItemQuery getMaterialOrderItemQuery() {
-		return materialOrderItemQuery;
+		return this.materialOrderItemQuery;
 	}
+
 
 	/**
 	 * コンストラクタ。
@@ -57,6 +58,7 @@ public class MaterialOrderDao extends QuerySetDao {
 		this.setListQuery(this.materialOrderListQuery = new MaterialOrderListQuery());
 		this.setSingleRecordQuery(this.materialOrderQuery = new MaterialOrderQuery());
 		this.addMultiRecordQueryList(this.materialOrderItemQuery = new MaterialOrderItemQuery());
+
 	}
 
 	/**
@@ -74,7 +76,14 @@ public class MaterialOrderDao extends QuerySetDao {
 	 * @return 主テーブル>
 	 */
 	public MaterialOrderTable getMainTable() {
-		return (MaterialOrderTable) this.getSingleRecordQuery().getMainTable();
+		if (this.getSingleRecordQuery() != null) {
+			return (MaterialOrderTable) this.getSingleRecordQuery().getMainTable();
+		} else {
+			if (this.getMultiRecordQueryList() != null) {
+				return (MaterialOrderTable) this.getMultiRecordQueryList().get(0).getMainTable();
+			}
+		}
+		return null;
 	}
 
 }

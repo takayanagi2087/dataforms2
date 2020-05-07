@@ -10,13 +10,27 @@ import dataforms.dao.QuerySetDao;
  */
 public class MaterialMasterDao extends QuerySetDao {
 	/**
+	 * 資材マスタ。
+	 */
+	private MaterialMasterTable materialMasterTable = null;
+
+	/**
+	 * 資材マスタを取得します。
+	 * @return 資材マスタ。
+	 */
+	public MaterialMasterTable getMaterialMasterTable() {
+		return this.materialMasterTable;
+	}
+
+
+	/**
 	 * コンストラクタ。
 	 * @throws Exception 例外。
 	 */
 	public MaterialMasterDao() {
 		this.setComment("資材マスタDao");
-		this.setListQuery(new MaterialMasterTable());
-		this.setSingleRecordQuery(new MaterialMasterTable());
+		this.setListQuery(this.materialMasterTable = new MaterialMasterTable());
+		this.setSingleRecordQuery(this.materialMasterTable = new MaterialMasterTable());
 
 	}
 

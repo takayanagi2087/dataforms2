@@ -93,6 +93,15 @@ public final class StringUtil {
 	}
 	
 	/**
+	 * 先頭文字を小文字に変換します。
+	 * @param str 変換元の文字。
+	 * @return 変換結果。
+	 */
+	public static String firstLetterToLowerCase(final String str) {
+		return str.substring(0, 1).toLowerCase() + str.substring(1);
+	}
+	
+	/**
 	 * テスト。
 	 * @param args
 	 */

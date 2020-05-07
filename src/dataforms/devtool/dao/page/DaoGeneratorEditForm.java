@@ -3,8 +3,10 @@ package dataforms.devtool.dao.page;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -291,25 +293,115 @@ public class DaoGeneratorEditForm extends EditForm {
 		return false;
 	}
 
+
+	/**
+	 * 問合せに使用するテーブルプロパティ設定ソースを作成します。
+	 * @param packageName パッケージ名。
+	 * @param tableClassName テーブルクラス名。
+	 * @return テーブルプロパティ設定ソース。
+	 * @throws Exception 例外。
+	 */
+	private String getProperty(final String packageName, final String tableClassName) throws Exception {
+		String src = "	/**\n" +
+					"	 * ${comment}。\n" +
+					"	 */\n" +
+					"	private ${className} ${variableName} = null;\n\n" +
+					"	/**\n" +
+					"	 * ${comment}を取得します。\n" +
+					"	 * @return ${comment}。\n" +
+					"	 */\n" +
+					"	public ${className} get${className}() {\n" +
+					"		return this.${variableName};\n" +
+					"	}\n\n";
+
+		Class<?> c = Class.forName(packageName + "." + tableClassName);
+		Object obj = (Object) c.getConstructor().newInstance();
+		String comment = "";
+		if (obj instanceof Table) {
+			Table table = (Table) obj;
+			comment = table.getComment();
+		} else if (obj instanceof Query){
+			Query query = (Query) obj;
+			comment = query.getComment();
+		}
+		String ret = src.replaceAll("\\$\\{className\\}", tableClassName);
+		ret = ret.replaceAll("\\$\\{variableName\\}", StringUtil.firstLetterToLowerCase(tableClassName));
+		ret = ret.replaceAll("\\$\\{comment\\}", comment);
+		return ret;
+
+	}
+
+
+	/**
+	 * テーブルまたは問合せのプロパティコードを作成します。
+	 * @param data データ。
+	 * @return プロパティのソース。
+	 * @throws Exception 例外。
+	 */
+	private String getProperties(final Map<String, Object> data) throws Exception {
+		Set<String> set = new HashSet<String>();
+		StringBuilder sb = new StringBuilder();
+		{
+			String packageName = (String) data.get(ID_LIST_QUERY_PACKAGE_NAME);
+			String className = (String) data.get(ID_LIST_QUERY_CLASS_NAME);
+			String fullClassName = packageName + "." + className;
+			if (!StringUtil.isBlank(className)) {
+				if (!set.contains(fullClassName)) {
+					sb.append(this.getProperty(packageName, className));
+					set.add(fullClassName);
+				}
+			}
+		}
+		{
+			String packageName = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
+			String className = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
+			String fullClassName = packageName + "." + className;
+			if (!StringUtil.isBlank(className)) {
+				if (!set.contains(fullClassName)) {
+					sb.append(this.getProperty(packageName, className));
+					set.add(fullClassName);
+				}
+			}
+		}
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_MULTI_RECORD_QUERY_LIST);
+		for (Map<String, Object> m: list) {
+			String packageName = (String) m.get(ID_PACKAGE_NAME);
+			String className = (String) m.get(ID_QUERY_CLASS_NAME);
+			String fullClassName = packageName + "." + className;
+			if (!StringUtil.isBlank(className)) {
+				if (!set.contains(fullClassName)) {
+					sb.append(this.getProperty(packageName, className));
+					set.add(fullClassName);
+				}
+			}
+		}
+		return sb.toString();
+	}
+
+
 	@Override
 	protected void insertData(final Map<String, Object> data) throws Exception {
-		List<String> implist = new ArrayList<String>();
+		Set<String> implist = new HashSet<String>();
 		String javasrc = this.getStringResourse("template/QuerySetDao.java.template");
 		//logger.debug("template=" + javasrc);
 		String packageName = (String) data.get(ID_PACKAGE_NAME);
 		String daoClassName = (String) data.get(ID_DAO_CLASS_NAME);
 		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", packageName);
 		javasrc = javasrc.replaceAll("\\$\\{daoClassName\\}", daoClassName);
+		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.getProperties(data));
+
 		String daoclass = packageName + "." + daoClassName;
-		implist.add(daoclass);
 		String comment = (String) data.get(ID_COMMENT);
 		javasrc = javasrc.replaceAll("\\$\\{comment\\}", comment);
 		{
 			String queryPackage = (String) data.get("listQueryPackageName");
 			String queryClass = (String) data.get("listQueryClassName");
 			if (!StringUtil.isBlank(queryClass)) {
-				implist.add(queryPackage + "." + queryClass);
-				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "new " + queryClass + "()");
+				if (!packageName.equals(queryPackage)) {
+					implist.add(queryPackage + "." + queryClass);
+				}
+				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");
 			} else {
 				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "(Query) null");
 			}
@@ -374,13 +466,17 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * @return javaソーステキスト。
 	 * @throws Exception 例外。
 	 */
-	private String multiRecordEditForm(final Map<String, Object> data, final List<String> implist, String javasrc) throws Exception {
+	private String multiRecordEditForm(final Map<String, Object> data, final Set<String> implist, String javasrc) throws Exception {
+		String p = (String) data.get(ID_PACKAGE_NAME);
 		String packagename = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
 		String classname = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
-		String src = this.getKeyListSource(data) + "\t\tthis.addMultiRecordQueryList(new " + classname + "());\n";
+		String src = this.getKeyListSource(data) + "\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(classname) + " = new " + classname + "());\n";
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", src);
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
-		implist.add(packagename + "." + classname);
+		if (!p.equals(packagename)) {
+			implist.add(packagename + "." + classname);
+		}
+
 		Table mainTable = this.getMainTable(packagename + "." + classname);
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
 		implist.add("dataforms.field.base.FieldList");
@@ -395,15 +491,18 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * @return javaソーステキスト。
 	 * @throws Exception 例外。
 	 */
-	private String singleRecordEditForm(final Map<String, Object> data, final List<String> implist, String javasrc)
+	private String singleRecordEditForm(final Map<String, Object> data, final Set<String> implist, String javasrc)
 			throws Exception {
+		String p = (String) data.get(ID_PACKAGE_NAME);
 		{
 			String queryPackage = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
 			String queryClass = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
 			if (!StringUtil.isBlank(queryClass)) {
 				if (!StringUtil.isBlank(queryClass)) {
-					implist.add(queryPackage + "." + queryClass);
-					javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "new " + queryClass + "()");
+					if (!p.equals(queryPackage)) {
+						implist.add(queryPackage + "." + queryClass);
+					}
+					javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");
 				} else {
 					implist.add(Query.class.getName());
 					javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
@@ -424,8 +523,10 @@ public class DaoGeneratorEditForm extends EditForm {
 		for (Map<String, Object> m: list) {
 			String pkgname = (String) m.get("packageName");
 			String clsname = (String) m.get("queryClassName");
-			implist.add(pkgname + "." + clsname);
-			sb.append("\t\tthis.addMultiRecordQueryList(new " + clsname + "());\n");
+			if (!p.equals(pkgname)) {
+				implist.add(pkgname + "." + clsname);
+			}
+			sb.append("\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(clsname) + " = new " + clsname + "());\n");
 		}
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", sb.toString());
 		return javasrc;
@@ -458,7 +559,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * @param implist インポートリスト。
 	 * @return javaソース文字列。
 	 */
-	private String noEditForm(String javasrc, final List<String> implist) {
+	private String noEditForm(String javasrc, final Set<String> implist) {
 		implist.add(Table.class.getName());
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "");

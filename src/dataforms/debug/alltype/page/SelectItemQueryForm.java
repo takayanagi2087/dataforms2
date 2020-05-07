@@ -23,7 +23,7 @@ public class SelectItemQueryForm extends QueryForm {
 		this.addField(table.getIntegerIetmField()).setMatchType(MatchType.FULL);
 		this.addField(table.getBigintItemField()).setMatchType(MatchType.FULL);
 		this.addField(table.getPresenceItemField()).setMatchType(MatchType.FULL);
-		this.addField(new PropertiesSingleSelectField("psel", "presence", 1));
-		this.addField(new PropertiesMultiSelectField("pmsel", "presence", 1));
+		this.addField(new PropertiesSingleSelectField("psel", 1, "presence"));
+		this.addField(new PropertiesMultiSelectField("pmsel", "presence"));
 	}
 }

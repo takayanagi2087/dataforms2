@@ -19,7 +19,7 @@ public class QueryTypeField extends PropertiesSingleSelectField {
 	 * @param id フィールドID。
 	 */
 	public QueryTypeField(final String id) {
-		super(id, "querytype", 1);
+		super(id, 1, "querytype");
 		this.setComment("問合せパターン");
 		this.setHtmlFieldType(HtmlFieldType.SELECT);
 	}

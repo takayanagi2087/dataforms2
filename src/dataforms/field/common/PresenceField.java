@@ -12,6 +12,6 @@ public class PresenceField extends PropertiesSingleSelectField implements SqlVar
 	 * @param id フィールドID。
 	 */
 	public PresenceField(final String id) {
-		super(id, "presence", 1);
+		super(id, 1, "presence");
 	}
 }

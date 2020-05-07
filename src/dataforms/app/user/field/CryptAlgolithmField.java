@@ -19,6 +19,6 @@ public class CryptAlgolithmField extends PropertiesSingleSelectField {
 	 * @param id フィールドID。
 	 */
 	public CryptAlgolithmField(final String id) {
-		super(id, "cryptalgolithm", 4);
+		super(id, 4, "cryptalgolithm");
 	}
 }

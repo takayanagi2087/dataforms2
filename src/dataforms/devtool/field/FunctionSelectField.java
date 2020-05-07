@@ -33,8 +33,7 @@ public class FunctionSelectField extends SingleSelectField<Long> {
 	 * コンストラクタ。
 	 */
 	public FunctionSelectField() {
-		super(null);
-		this.setComment(COMMENT);
+		this(null);
 	}
 
 	/**
@@ -44,6 +43,7 @@ public class FunctionSelectField extends SingleSelectField<Long> {
 	public FunctionSelectField(final String id) {
 		super(id);
 		this.setComment(COMMENT);
+		this.setBlankOption(true);
 	}
 
 
@@ -59,7 +59,7 @@ public class FunctionSelectField extends SingleSelectField<Long> {
 			opt.put("name", m.get("funcPath"));
 			options.add(opt);
 		}
-		this.setOptionList(options, true);
+		this.setOptionList(options);
 	}
 
 	@Override

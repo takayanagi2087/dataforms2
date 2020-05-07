@@ -22,8 +22,7 @@ public class BigintItemField extends BigintSingleSelectField {
 	 * コンストラクタ。
 	 */
 	public BigintItemField() {
-		super(null);
-		this.setComment(COMMENT);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -32,6 +31,7 @@ public class BigintItemField extends BigintSingleSelectField {
 	public BigintItemField(final String id) {
 		super(id);
 		this.setComment(COMMENT);
+		this.setBlankOption(true);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class BigintItemField extends BigintSingleSelectField {
 	@Override
 	public void init() throws Exception {
 		super.init();
-		this.setOptionList(this.queryOptionList(), true);
+		this.setOptionList(this.queryOptionList());
 	}
 
 	/**

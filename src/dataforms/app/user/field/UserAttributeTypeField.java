@@ -14,6 +14,7 @@ public class UserAttributeTypeField extends EnumTypeSingleSelectField {
 	public UserAttributeTypeField() {
 		super(null, "userAttribute");
 		this.setComment("ユーザ属性");
+		this.setBlankOption(true);
 	}
 
 
@@ -26,21 +27,12 @@ public class UserAttributeTypeField extends EnumTypeSingleSelectField {
 		this.setComment("ユーザ属性");
 	}
 
-	/*
-	@Override
-	protected void onBind() {
-		Form form = this.getParentForm();
-		if (form instanceof UserEditForm) {
-			this.addValidator(new RequiredValidator());
-		}
-	}*/
-
 	@Override
 	public void init() throws Exception {
 		super.init();
 		EnumDao dao = new EnumDao(this);
 		String lang = this.getPage().getCurrentLanguage();
-		this.setOptionList(dao.getTypeList(this.getEnumGroupCode(), lang), true);
+		this.setOptionList(dao.getTypeList(this.getEnumGroupCode(), lang));
 	}
 
 }

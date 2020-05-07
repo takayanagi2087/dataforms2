@@ -22,8 +22,7 @@ public class IntegerIetmField extends IntegerSingleSelectField {
 	 * コンストラクタ。
 	 */
 	public IntegerIetmField() {
-		super(null);
-		this.setComment(COMMENT);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -32,6 +31,7 @@ public class IntegerIetmField extends IntegerSingleSelectField {
 	public IntegerIetmField(final String id) {
 		super(id);
 		this.setComment(COMMENT);
+		this.setBlankOption(true);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class IntegerIetmField extends IntegerSingleSelectField {
 	@Override
 	public void init() throws Exception {
 		super.init();
-		this.setOptionList(this.queryOptionList(), true);
+		this.setOptionList(this.queryOptionList());
 	}
 
 	/**

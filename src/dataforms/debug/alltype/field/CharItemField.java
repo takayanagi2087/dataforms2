@@ -27,8 +27,7 @@ public class CharItemField extends CharSingleSelectField {
 	 * コンストラクタ。
 	 */
 	public CharItemField() {
-		super(null, LENGTH);
-		this.setComment(COMMENT);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -37,6 +36,7 @@ public class CharItemField extends CharSingleSelectField {
 	public CharItemField(final String id) {
 		super(id, LENGTH);
 		this.setComment(COMMENT);
+		this.setBlankOption(true);
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class CharItemField extends CharSingleSelectField {
 	@Override
 	public void init() throws Exception {
 		super.init();
-		this.setOptionList(this.queryOptionList(), true);
+		this.setOptionList(this.queryOptionList());
 	}
 
 	/**

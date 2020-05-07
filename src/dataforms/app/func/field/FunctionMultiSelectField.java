@@ -20,14 +20,11 @@ public class FunctionMultiSelectField extends MultiSelectField<String> {
 	 */
 	private static final String COMMENT = "機能複数選択";
 
-
 	/**
 	 * コンストラクタ。
 	 */
 	public FunctionMultiSelectField() {
-		super(null);
-		this.setComment(COMMENT);
-		this.setHtmlFieldType(HtmlFieldType.CHECKBOX);
+		this(null);
 	}
 
 	/**
@@ -39,8 +36,8 @@ public class FunctionMultiSelectField extends MultiSelectField<String> {
 		this.setComment(COMMENT);
 		this.setHtmlFieldType(HtmlFieldType.CHECKBOX);
 	}
-	
-	
+
+
 	@Override
 	public void init() throws Exception {
 		super.init();
@@ -62,6 +59,6 @@ public class FunctionMultiSelectField extends MultiSelectField<String> {
 			}
 			options.add(opt);
 		}
-		this.setOptionList(options, false);
+		this.setOptionList(options);
 	}
 }

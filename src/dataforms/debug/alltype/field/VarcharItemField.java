@@ -27,8 +27,7 @@ public class VarcharItemField extends VarcharSingleSelectField {
 	 * コンストラクタ。
 	 */
 	public VarcharItemField() {
-		super(null, LENGTH);
-		this.setComment(COMMENT);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -37,6 +36,7 @@ public class VarcharItemField extends VarcharSingleSelectField {
 	public VarcharItemField(final String id) {
 		super(id, LENGTH);
 		this.setComment(COMMENT);
+		this.setBlankOption(true);
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class VarcharItemField extends VarcharSingleSelectField {
 	@Override
 	public void init() throws Exception {
 		super.init();
-		this.setOptionList(this.queryOptionList(), true);
+		this.setOptionList(this.queryOptionList());
 	}
 
 	/**

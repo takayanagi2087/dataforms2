@@ -31,6 +31,7 @@ public class SingleSelectField<TYPE> extends SelectField<TYPE> {
 	 */
 	private HtmlFieldType htmlFieldType = HtmlFieldType.SELECT;
 
+
 	/**
 	 * HTMLフィールドタイプを取得します。
 	 * @return HTMLフィールドタイプ。
@@ -51,8 +52,6 @@ public class SingleSelectField<TYPE> extends SelectField<TYPE> {
 		this.htmlFieldType = htmlFieldType;
 		return this;
 	}
-
-
 
 	/**
 	 * コンストラクタ。

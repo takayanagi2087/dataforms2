@@ -1,7 +1,6 @@
 package dataforms.field.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,12 +79,31 @@ public abstract class SelectField<TYPE> extends Field<TYPE> {
 		}
 	}
 
-
 	/**
 	 * 選択肢。
 	 */
 	private List<Map<String, Object>> optionList = null;
 
+	/**
+	 * 空白選択肢追加フラグ。
+	 */
+	private boolean blankOption = false;
+
+	/**
+	 * 空白選択肢追加フラグを取得します。
+	 * @return 空白選択肢追加フラグ。
+	 */
+	public boolean isBlankOption() {
+		return blankOption;
+	}
+
+	/**
+	 * 空白選択肢追加フラグを設定します。
+	 * @param blankOption 空白選択肢追加フラグ。
+	 */
+	public void setBlankOption(final boolean blankOption) {
+		this.blankOption = blankOption;
+	}
 
 	/**
 	 * コンストラクタ。
@@ -94,7 +112,6 @@ public abstract class SelectField<TYPE> extends Field<TYPE> {
 	public SelectField(final String id) {
 		super(id);
 	}
-
 
 	/**
 	 * コンストラクタ。
@@ -117,39 +134,22 @@ public abstract class SelectField<TYPE> extends Field<TYPE> {
 	/**
 	 * 選択肢のリストを設定します。
 	 * @param optionList 選択肢のリスト。
-	 * @param addBlankOption 空白オプションを追加する。
-	 * @return 設定したフィールド。
-	 */
-	public SelectField<TYPE> setOptionList(final List<Map<String, Object>> optionList, final boolean addBlankOption) {
-		ArrayList<Map<String, Object>> olist = new ArrayList<Map<String, Object>>();
-		if (addBlankOption) {
-			HashMap<String, Object> bm = new HashMap<String, Object>();
-			bm.put("value", "");
-			bm.put("name", "");
-			olist.add(bm);
-		}
-		olist.addAll(optionList);
-		this.optionList = olist;
-		return this;
-	}
-
-	/**
-	 * 選択肢のリストを設定します。
-	 * @param optionList 選択肢のリスト。
 	 * @return 設定したフィールド。
 	 */
 	public SelectField<TYPE> setOptionList(final List<Map<String, Object>> optionList) {
-//		this.optionList = optionList;
-		this.setOptionList(optionList, false);
+		this.optionList = optionList;
 		return this;
 	}
-
-
 
 	@Override
 	public Map<String, Object> getProperties() throws Exception {
 		Map<String, Object> ret = super.getProperties();
-		ret.put("optionList", this.optionList);
+		ArrayList<Map<String, Object>> olist = new ArrayList<Map<String, Object>>();
+		if (this.optionList != null) {
+			olist.addAll(this.optionList);
+		}
+		ret.put("optionList", olist);
+		ret.put("blankOption", this.blankOption);
 		return ret;
 	}
 

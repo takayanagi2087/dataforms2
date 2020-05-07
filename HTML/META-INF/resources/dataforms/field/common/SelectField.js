@@ -107,6 +107,9 @@ class SelectField extends Field {
 		if (el.length > 0) {
 			if (el.prop("tagName") == "SELECT") {
 				var opthtml = "";
+				if (this.blankOption) {
+					opthtml += "<option value=''></option>";
+				}
 				for (var i = 0; i < this.optionList.length; i++) {
 					var opt = this.optionList[i];
 					opthtml += "<option value='" + opt.value + "'>" + opt.name + "</option>";

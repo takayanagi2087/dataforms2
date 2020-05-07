@@ -25,8 +25,9 @@ public class UserAttributeValueField extends EnumOptionSingleSelectField {
 	 * コンストラクタ。
 	 */
 	public UserAttributeValueField() {
-		super(null, null);
-		this.setComment(COMMENT);
+//		super(null, null);
+//		this.setComment(COMMENT);
+		this(null);
 	}
 
 
@@ -37,17 +38,8 @@ public class UserAttributeValueField extends EnumOptionSingleSelectField {
 	public UserAttributeValueField(final String id) {
 		super(id, null);
 		this.setComment(COMMENT);
+		this.setBlankOption(true);
 	}
-
-/*
-	@Override
-	protected void onBind() {
-		Form form = this.getParentForm();
-		if (form instanceof UserEditForm) {
-			this.addValidator(new RequiredValidator());
-		}
-	}*/
-
 
 	/**
 	 * typeに対応した選択肢を取得します。
@@ -66,7 +58,7 @@ public class UserAttributeValueField extends EnumOptionSingleSelectField {
 		} else {
 			list = new ArrayList<Map<String, Object>>();
 		}
-		this.setOptionList(list, true);
+		this.setOptionList(list);
 		JsonResponse result = new JsonResponse(JsonResponse.SUCCESS, this.getOptionList());
 		return result;
 	}

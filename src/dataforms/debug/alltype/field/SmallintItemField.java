@@ -22,8 +22,7 @@ public class SmallintItemField extends SmallintSingleSelectField {
 	 * コンストラクタ。
 	 */
 	public SmallintItemField() {
-		super(null);
-		this.setComment(COMMENT);
+		this(null);
 	}
 	/**
 	 * コンストラクタ。
@@ -32,6 +31,7 @@ public class SmallintItemField extends SmallintSingleSelectField {
 	public SmallintItemField(final String id) {
 		super(id);
 		this.setComment(COMMENT);
+		this.setBlankOption(true);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class SmallintItemField extends SmallintSingleSelectField {
 	@Override
 	public void init() throws Exception {
 		super.init();
-		this.setOptionList(this.queryOptionList(), true);
+		this.setOptionList(this.queryOptionList());
 	}
 
 	/**

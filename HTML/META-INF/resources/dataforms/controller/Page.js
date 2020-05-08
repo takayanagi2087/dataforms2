@@ -160,18 +160,6 @@ class Page extends DataForms {
 
 
 	/**
-	 * 同期サーバメソッドを取得する.
-	 * <pre>
-	 * Page中のWebMethodはメソッド名のみ(WebComponentのidは無い形式)のためオーバーライドしています。
-	 * </pre>
-	 * @param {String} method メソッド名.
-	 * @returns {SyncServerMethod} 同期サーバメソッド.
-	 */
-	getSyncServerMethod(method) {
-		return new SyncServerMethod(method);
-	}
-
-	/**
 	 * mainDivをFrame.htmlに指定されたフレームで囲む。
 	 * @param frame {jQuery} フレームのbodyの内容のjQueryオブジェクト。
 	 * @param frameMainDiv {jQuery}　フレームのmainDivのjQueryオブジェクト。

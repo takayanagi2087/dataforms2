@@ -406,9 +406,7 @@ class Page extends DataForms {
 				}
 			}
 		});
-		$(window).resize(function() {
-			thisPage.onResize();
-		});
+		$(window).resize(() => { this.onResize(); });
 	}
 
 
@@ -416,8 +414,15 @@ class Page extends DataForms {
 	 * リサイズ時の処理を行います。
 	 */
 	onResize() {
-		logger.log("onResize");
 		$(this.convertSelector("div.menuDiv")).css("display", "");
+		let sel = this.convertSelector("#lockLayer");
+		let h = $("body").height();
+		if ($(sel).is(":visible")) {
+			$(sel).css({
+				width: $(document).width(),
+				height: h
+			});
+		}
 	}
 
 
@@ -443,12 +448,6 @@ class Page extends DataForms {
 			width: $(document).width(),
 			height: h
 		});
-		$(window).on("resize", function() {
-			$(sel).css({
-				width: $(document).width(),
-				height: h
-			});
-		});
 	}
 
 	/**
@@ -460,7 +459,6 @@ class Page extends DataForms {
 	unlock() {
 		let sel = this.convertSelector("#lockLayer");
 		 $(sel).css({display: 'none'});
-		 $(window).off("resize");
 	}
 
 

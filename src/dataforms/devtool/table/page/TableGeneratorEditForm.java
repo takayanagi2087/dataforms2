@@ -525,6 +525,7 @@ public class TableGeneratorEditForm extends EditForm {
 		String superClassName = superPackageName + "." + superSimpleClassName;
 		String isDataformsField = (String) m.get("isDataformsField");
 		if (!"1".equals(isDataformsField)) {
+			String webMethod = this.getTemplate("template/webMethod.java.template");
 			fsrc = fsrc.replaceAll("\\$\\{fieldPackageName\\}", fieldPackageName);
 			fsrc = fsrc.replaceAll("\\$\\{superClassName\\}", superClassName);
 			fsrc = fsrc.replaceAll("\\$\\{importList\\}", importList);
@@ -534,6 +535,7 @@ public class TableGeneratorEditForm extends EditForm {
 			fsrc = fsrc.replaceAll("\\$\\{fieldComment\\}", fieldComment);
 			fsrc = fsrc.replaceAll("\\$\\{fieldLength\\}", fieldLength);
 			fsrc = fsrc.replaceAll("\\$\\{validators\\}", validators);
+			fsrc = fsrc.replaceAll("\\$\\{webMethod\\}", webMethod);
 			logger.debug("fsrc=\n" + fsrc);
 		} else {
 			fsrc = null;

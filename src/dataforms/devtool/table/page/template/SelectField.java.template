@@ -67,4 +67,6 @@ ${validators}
 		super.init();
 		this.setOptionList(this.queryOptionList());
 	}
+
+${webMethod}
 }

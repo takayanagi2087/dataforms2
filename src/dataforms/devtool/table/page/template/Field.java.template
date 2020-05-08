@@ -33,4 +33,6 @@ ${constList}
 		super.onBind();
 ${validators}
 	}
+
+${webMethod}
 }

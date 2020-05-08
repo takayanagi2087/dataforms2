@@ -39,4 +39,6 @@ public class ${fieldClassSimpleName} extends ${superSimpleClassName} {
 		super.onBind();
 ${validators}
 	}
+
+${webMethod}
 }

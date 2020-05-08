@@ -48,4 +48,6 @@ public class ${TableClassShortName}Relation extends TableRelation {
 	public String getJoinCondition(final Table joinTable, final String alias) {
 		return super.getJoinCondition(joinTable, alias);
 	}
+
+${webMethod}
 }

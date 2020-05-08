@@ -78,7 +78,7 @@ class WebComponent {
 	/**
 	 * サーバメソッドを取得すします。
 	 * @param {String} method メソッド名。
-	 * @returns {SyncServerMethod} 同期サーバメソッド。
+	 * @returns {ServerMethod} 同期サーバメソッド。
 	 */
 	getServerMethod(method) {
 		return new ServerMethod(this.getUniqId() + "." + method);

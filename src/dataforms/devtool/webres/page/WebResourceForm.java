@@ -1,9 +1,13 @@
 package dataforms.devtool.webres.page;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.login.page.LoginInfoForm;
@@ -35,6 +39,7 @@ import dataforms.servlet.DataFormsServlet;
 import dataforms.util.ClassNameUtil;
 import dataforms.util.FileUtil;
 import dataforms.util.MessagesUtil;
+import dataforms.util.StringUtil;
 import dataforms.validator.ValidationError;
 
 // TODO:validatorの生成の際attachメソッドの生成は不要。
@@ -46,7 +51,7 @@ public class WebResourceForm extends Form {
 	/**
 	 * Log.
 	 */
-	// private static Logger logger = Logger.getLogger(WebResourceForm.class.getName());
+	private static Logger logger = LogManager.getLogger(WebResourceForm.class.getName());
 	/**
 	 * コンストラクタ。
 	 */
@@ -1239,6 +1244,49 @@ public class WebResourceForm extends Form {
 	}
 
 	/**
+	 * テンプレートファイルを取得します。
+	 * @param name リソース名。
+	 * @return テンプレートの内容。
+	 * @throws Exception 例外。
+	 */
+	private String getTemplate(final String name) throws Exception {
+		String ret = "";
+		Class<?> cls = this.getClass();
+		InputStream is = cls.getResourceAsStream(name);
+		if (is != null) {
+			try {
+				ret = new String(FileUtil.readInputStream(is), DataFormsServlet.getEncoding());
+			} finally {
+				is.close();
+			}
+		}
+		return ret;
+	}
+
+	/**
+	 * Javascriptのソーステンプレートを取得します。
+	 * @param cls Javaクラス。
+	 * @return テンプレートの文字列。
+	 * @throws Exception 例外。
+	 */
+	private String getTemplate(final Class<?> cls) throws Exception {
+		String template = null;
+		Class<?> superClass = cls.getSuperclass();
+		while (true) {
+			String classname = superClass.getSimpleName();
+			logger.debug(() -> "template class=" + classname);
+			String src = this.getTemplate("template/" + classname + ".js.template");
+			logger.debug(() -> "src=" + src);
+			if (!StringUtil.isBlank(src)) {
+				template = src;
+				break;
+			}
+			superClass = superClass.getSuperclass();
+		}
+		return template;
+	}
+
+	/**
 	 * javascriptファイルを作成します。
 	 * @param data データ。
 	 * @return 出力されたファイル。
@@ -1253,7 +1301,7 @@ public class WebResourceForm extends Form {
 		cls.getSuperclass().getSimpleName();
 		String superClassName = cls.getSuperclass().getSimpleName(); // (String) data.get("javascriptClass");
 		String className = ClassNameUtil.getSimpleClassName(fullClassName);
-		String src = this.getStringResourse("template/WebComponent.js.template");
+		String src = this.getTemplate(cls); //this.getStringResourse("template/WebComponent.js.template");
 		String gensrc = src.replaceAll("\\$\\{className\\}", className);
 		gensrc = gensrc.replaceAll("\\$\\{superClassName\\}", superClassName);
 		String srcpath = sourcePath + "/" + fullClassName.replaceAll("\\.", "/") + ".js";

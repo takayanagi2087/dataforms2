@@ -30,7 +30,6 @@ import dataforms.util.FileUtil;
 import dataforms.util.StringUtil;
 
 
-// TODO:テーブル中に配置されたWebComponentでgetSyncServerMethodが正常に動作しない問題を解決する。
 /**
  * WEBコンポーネントクラス。
  * <pre>

@@ -1,15 +1,15 @@
 /**
- * @fileOverview {@link MaterialMasterPage}クラスを記述したファイルです。
+ * @fileOverview {@link ${className}}クラスを記述したファイルです。
  */
 
 'use strict';
 
 /**
- * @class MaterialMasterPage
+ * @class ${className}
  *
- * @extends BasePage
+ * @extends ${superClassName}
  */
-class MaterialMasterPage extends BasePage {
+class ${className} extends ${superClassName} {
 	/**
 	 * コンストラクタ。
 	 */

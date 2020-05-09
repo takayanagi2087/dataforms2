@@ -144,8 +144,9 @@ public abstract class SelectField<TYPE> extends Field<TYPE> {
 	@Override
 	public Map<String, Object> getProperties() throws Exception {
 		Map<String, Object> ret = super.getProperties();
-		ArrayList<Map<String, Object>> olist = new ArrayList<Map<String, Object>>();
+		ArrayList<Map<String, Object>> olist = null;
 		if (this.optionList != null) {
+			olist = new ArrayList<Map<String, Object>>();
 			olist.addAll(this.optionList);
 		}
 		ret.put("optionList", olist);

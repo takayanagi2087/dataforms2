@@ -32,10 +32,11 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			new FlagField("sel")
 			, new SortOrderField()
 			, (new FieldIdField()).setReadonly(true)
-			, new FieldFullClassNameField("fieldClassName")
-			, new TableFullClassNameField("selectTableClassName")
-			, new TableClassNameField()
-			, new TextField("comment"));
+			, (new FieldFullClassNameField("fieldClassName")).setReadonly(true)
+			, (new TableFullClassNameField("selectTableClassName")).setReadonly(true)
+			, (new TableClassNameField()).setReadonly(true)
+			, (new TextField("comment")).setReadonly(true)
+		);
 		this.setFieldList(flist);
 	}
 

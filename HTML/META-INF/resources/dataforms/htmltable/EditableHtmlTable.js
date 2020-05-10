@@ -350,17 +350,6 @@ class EditableHtmlTable extends HtmlTable {
 
 		}
 	}
-
-	/**
-	 * 各行の背景色を設定します。
-	 *
-	 */
-	resetBackgroundColor() {
-		super.resetBackgroundColor();
-		this.find('tr:last').removeClass("evenTr");
-		this.find('tr:last').removeClass("oddTr");
-	}
-
 }
 
 

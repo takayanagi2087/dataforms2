@@ -14,7 +14,6 @@ public class TestMultiRecPage extends BasePage {
 	 */
 	public TestMultiRecPage() {
 		this.addForm(new TestMultiRecQueryForm());
-		this.addForm(new TestMultiRecQueryResultForm());
 		this.addForm(new TestMultiRecEditForm());
 
 	}

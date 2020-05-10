@@ -20,45 +20,6 @@
 				<input type="button" id="resetButton" class="largeButton" value="リセット">&nbsp;
 				<input type="button" id="newButton" class="largeButton" value="新規登録">
 			</form>
-			<form id="queryResultForm">
-				<div class="formHeader">検索結果</div>
-				<table class="responsive">
-					<tbody>
-					</tbody>
-				</table>
-				<div class="hScrollDiv">
-					<table id="queryResult">
-						<thead>
-							<tr>
-								<th>
-									No.
-								</th>
-								<th>
-									コード1
-								</th>
-								<th>
-									操作
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<span id="queryResult[0].rowNo"></span>
-								</td>
-								<td>
-									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].code1"></span></a>
-								</td>
-								<td>
-									<input type="button" id="queryResult[0].viewButton" value="表示">
-									<input type="button" id="queryResult[0].referButton" value="参照登録">
-									<input type="button" id="queryResult[0].deleteButton" value="削除">
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</form>
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
 				<input type="hidden" id="saveMode" />

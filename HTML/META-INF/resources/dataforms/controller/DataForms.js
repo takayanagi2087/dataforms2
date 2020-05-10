@@ -131,16 +131,13 @@ class DataForms extends WebComponent {
 			var queryForm = this.getComponent("queryForm");
 			if (queryForm != null) {
 				qf.show();
-				queryForm.toEditMode();
 			}
 			var queryResultForm = this.getComponent("queryResultForm");
 			if (queryResultForm != null) {
 				var rf = this.get("queryResultForm");
 				if (queryResultForm.queryResult != null) {
 					rf.show();
-				} /*else {
-					rf.hide();
-				}*/
+				}
 			}
 			var editForm = this.getComponent("editForm");
 			if (editForm != null) {
@@ -163,16 +160,8 @@ class DataForms extends WebComponent {
 	toEditMode() {
 		var queryForm = this.getComponent("queryForm");
 		if (queryForm != null) {
-			var editForm = this.getComponent("editForm");
-			if (editForm != null && editForm.multiRecord == true) {
-				// TODO:この条件を使う必要があるかどうか検討する。
-				var qf = this.get("queryForm");
-				qf.show();
-				queryForm.toConfirmMode();
-			} else {
-				var qf = this.get("queryForm");
-				qf.hide();
-			}
+			var qf = this.get("queryForm");
+			qf.hide();
 		}
 		var rf = this.get("queryResultForm");
 		rf.hide();

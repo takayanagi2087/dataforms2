@@ -87,31 +87,6 @@ class QueryForm extends Form {
 		}
 	}
 
-	// TODO:必要かどうか検討する。
-
-	/**
-	 * 編集モードに移行します。
-	 *
-	 */
-	toEditMode() {
-		this.lockFields(false);
-		this.get("queryButton").show();
-		this.get("resetButton").show();
-		this.get("newButton").show();
-	}
-
-
-	// TODO:必要かどうか検討する。
-	/**
-	 * 確認モードに移行します。
-	 */
-	toConfirmMode() {
-		this.lockFields(true);
-		this.get("queryButton").hide();
-		this.get("resetButton").hide();
-		this.get("newButton").hide();
-	}
-
 	/**
 	 * 問合せ結果をエクスポートします。
 	 */

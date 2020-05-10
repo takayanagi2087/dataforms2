@@ -261,8 +261,12 @@ public class DaoGeneratorEditForm extends EditForm {
 		Map<String, Object> data = this.convertToServerData(p);
 		String packageName = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
 		String className = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
-		Table table = this.getMainTable(packageName + "." + className);
-		List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(table.getFieldList());
+		FieldList flist = new FieldList();
+		if (!StringUtil.isBlank(className)) {
+			Table table = this.getMainTable(packageName + "." + className);
+			flist.addAll(table.getFieldList());
+		}
+		List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(flist);
 		Response resp = new JsonResponse(JsonResponse.SUCCESS, list);
 		return resp;
 	}
@@ -403,6 +407,7 @@ public class DaoGeneratorEditForm extends EditForm {
 				}
 				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");
 			} else {
+				implist.add(Query.class.getName());
 				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "(Query) null");
 			}
 		}
@@ -435,8 +440,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	 */
 	private String getKeyListSource(final Map<String, Object> data) throws Exception {
 		StringBuilder sb = new StringBuilder();
-		String table = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
-		sb.append("\t\t" + table + " table = new " + table + "();\n");
+		sb.append("\t\tQuery query = this.getMultiRecordQueryList().get(0);\n");
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_KEY_FIELD_LIST);
 		sb.append("\t\tthis.setMultiRecordQueryKeyList(new FieldList(");
@@ -448,8 +452,9 @@ public class DaoGeneratorEditForm extends EditForm {
 					fsb.append(", ");
 				}
 				String fieldId = (String) m.get("fieldId");
-				String fc =  fieldId.substring(0, 1).toUpperCase();
-				fsb.append("table.get" + fc + fieldId.substring(1)+ "Field()");
+				String tbl = (String) m.get("tableClassName");
+				String fld = "query.getFieldList().get(" + tbl + ".Entity.ID_" + StringUtil.camelToSnake(fieldId).toUpperCase() + ")";
+				fsb.append(fld);
 			}
 		}
 		sb.append(fsb.toString());
@@ -470,7 +475,8 @@ public class DaoGeneratorEditForm extends EditForm {
 		String p = (String) data.get(ID_PACKAGE_NAME);
 		String packagename = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
 		String classname = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
-		String src = this.getKeyListSource(data) + "\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(classname) + " = new " + classname + "());\n";
+		String src = "\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(classname) + " = new " + classname + "());\n"
+					+ this.getKeyListSource(data);
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", src);
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
 		if (!p.equals(packagename)) {
@@ -491,8 +497,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * @return javaソーステキスト。
 	 * @throws Exception 例外。
 	 */
-	private String singleRecordEditForm(final Map<String, Object> data, final Set<String> implist, String javasrc)
-			throws Exception {
+	private String singleRecordEditForm(final Map<String, Object> data, final Set<String> implist, String javasrc) throws Exception {
 		String p = (String) data.get(ID_PACKAGE_NAME);
 		{
 			String queryPackage = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);

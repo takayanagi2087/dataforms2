@@ -163,9 +163,9 @@ class DataForms extends WebComponent {
 	toEditMode() {
 		var queryForm = this.getComponent("queryForm");
 		if (queryForm != null) {
-			//constructor.name
 			var editForm = this.getComponent("editForm");
 			if (editForm != null && editForm.multiRecord == true) {
+				// TODO:この条件を使う必要があるかどうか検討する。
 				var qf = this.get("queryForm");
 				qf.show();
 				queryForm.toConfirmMode();

@@ -87,8 +87,11 @@ class QueryForm extends Form {
 		}
 	}
 
+	// TODO:必要かどうか検討する。
+
 	/**
 	 * 編集モードに移行します。
+	 *
 	 */
 	toEditMode() {
 		this.lockFields(false);
@@ -98,6 +101,7 @@ class QueryForm extends Form {
 	}
 
 
+	// TODO:必要かどうか検討する。
 	/**
 	 * 確認モードに移行します。
 	 */

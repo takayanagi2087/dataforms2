@@ -5,9 +5,7 @@ import java.util.Map;
 import dataforms.controller.EditForm;
 import dataforms.dao.Query;
 import dataforms.dao.Table;
-import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
-import dataforms.field.common.FileField;
 import dataforms.htmltable.EditableHtmlTable;
 import sample.dao.MaterialOrderDao;
 
@@ -72,17 +70,9 @@ public class MaterialOrderEditForm extends EditForm {
 	 */
 	@Override
 	protected Map<String, Object> queryReferData(final Map<String, Object> data) throws Exception {
-		MaterialOrderDao dao = new MaterialOrderDao(this);
-		Table table = dao.getMainTable();
 		Map<String, Object> ret = this.queryData(data);
-		for (Field<?> f: table.getPkFieldList()) {
-			ret.remove(f.getId());
-		}
-		for (Field<?> f: table.getFieldList()) {
-			if (f instanceof FileField) {
-				ret.remove(f.getId());
-			}
-		}
+		MaterialOrderDao dao = new MaterialOrderDao(this);
+		this.removeKeyData(dao, ret);
 		return ret;
 	}
 

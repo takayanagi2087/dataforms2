@@ -478,6 +478,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		String src = "\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(classname) + " = new " + classname + "());\n"
 					+ this.getKeyListSource(data);
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", src);
+		implist.add(Query.class.getName());
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
 		if (!p.equals(packagename)) {
 			implist.add(packagename + "." + classname);

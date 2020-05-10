@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import dataforms.annotation.WebMethod;
+import dataforms.dao.Query;
+import dataforms.dao.QuerySetDao;
 import dataforms.dao.Table;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
+import dataforms.field.common.FileField;
+import dataforms.htmltable.EditableHtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
@@ -53,6 +57,26 @@ public abstract class EditForm extends Form {
 		this.addField(new TextField("saveMode")).setHidden(true);
 
 	}
+
+	/**
+	 * QuerySetDaoから適切な編集フォームを作成します。
+	 * @param dao QuerySetDaoのインスタンス。
+	 */
+	public void addFields(final QuerySetDao dao) {
+		if (dao.getSingleRecordQuery() != null) {
+			FieldList flist = dao.getSingleRecordQuery().getFieldList();
+			this.addFieldList(flist);
+		} else if (dao.getMultiRecordQueryKeyList() != null){
+			this.addFieldList(dao.getMultiRecordQueryKeyList());
+		}
+		if (dao.getMultiRecordQueryList() != null) {
+			for (Query q: dao.getMultiRecordQueryList()) {
+				EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
+				this.addHtmlTable(rtable);
+			}
+		}
+	}
+
 
 	/**
 	 * 主キーフィールドリストを取得します。
@@ -178,6 +202,52 @@ public abstract class EditForm extends Form {
 	protected Map<String, Object> queryReferData(final Map<String, Object> data) throws Exception {
 		throw new ApplicationException(this.getPage(), "error.notimplemetmethod");
 	}
+
+	/**
+	 * キーとなる情報を削除します。
+	 * @param dao QuerySetDaoのインスタンス。
+	 * @param data キー情報を削除するマップ。
+	 */
+	protected void removeKeyData(final QuerySetDao dao, final Map<String, Object> data) {
+		// キー項目を削除
+		FieldList flist = dao.getEditFormKeyList();
+		for (Field<?> f: flist) {
+			data.remove(f.getId());
+		}
+
+		// ファイル項目は複写できないので削除
+		Query query = dao.getSingleRecordQuery();
+		if (query != null) {
+			for (Field<?> f: query.getFieldList()) {
+				if (f instanceof FileField) {
+					data.remove(f.getId());
+				}
+			}
+		}
+
+		// 複数レコード編集情報のキー項目、ファイル項目の削除
+		List<Query> qlist = dao.getMultiRecordQueryList();
+		if (qlist != null) {
+			for (Query q: qlist) {
+				Table t = q.getMainTable();
+				String id = q.getListId();
+				@SuppressWarnings("unchecked")
+				List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(id);
+				for (Map<String, Object> m: list) {
+					for (Field<?> f: t.getPkFieldList()) {
+						m.remove(f.getId());
+					}
+					for (Field<?> f: t.getFieldList()) {
+						if (f instanceof FileField) {
+							m.remove(f.getId());
+						}
+					}
+				}
+			}
+		}
+	}
+
+
 
 	/**
 	 * 選択されたデータをコピーした新規データを作成します。

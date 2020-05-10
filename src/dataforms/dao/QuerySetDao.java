@@ -204,6 +204,21 @@ public class QuerySetDao extends Dao {
 
 
 	/**
+	 * 編集フォームのデータ取得時に使用するキーフィールドリストを取得します。
+	 * @return 編集フォームのデータ取得時に使用するキーフィールドリスト。
+	 */
+	public FieldList getEditFormKeyList() {
+		if (this.getSingleRecordQuery() != null) {
+			return this.getSingleRecordQuery().getMainTable().getPkFieldList();
+		} else if (this.getMultiRecordQueryKeyList() != null) {
+			return this.getMultiRecordQueryKeyList();
+		} else {
+			return null;
+		}
+	}
+
+
+	/**
 	 * QueryFormから入力された条件から、テーブルを検索し、指定されたページの情報を返します。
 	 * @param data 条件データ。
 	 * @param flist 条件フィールドリスト。
@@ -216,9 +231,7 @@ public class QuerySetDao extends Dao {
 		query.setConditionData(data);
 		String sortOrder = (String) data.get("sortOrder");
 		FieldList sflist = query.getFieldList().getOrderByFieldList(sortOrder);
-		if (sflist.size() == 0) {
-			query.setOrderByFieldList(query.getMainTable().getPkFieldList());
-		} else {
+		if (sflist.size() != 0) {
 			query.setOrderByFieldList(sflist);
 		}
 		return this.executePageQuery(query);

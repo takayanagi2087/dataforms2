@@ -14,7 +14,6 @@ import dataforms.controller.QueryForm;
 import dataforms.controller.QueryResultForm;
 import dataforms.controller.WebComponent;
 import dataforms.dao.Dao;
-import dataforms.dao.Query;
 import dataforms.dao.QuerySetDao;
 import dataforms.dao.Table;
 import dataforms.devtool.base.page.DeveloperPage;
@@ -31,6 +30,7 @@ import dataforms.devtool.field.QueryResultFormClassNameField;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.Field.MatchType;
+import dataforms.field.base.FieldList;
 import dataforms.field.common.CreateTimestampField;
 import dataforms.field.common.CreateUserIdField;
 import dataforms.field.common.DeleteFlagField;
@@ -297,15 +297,15 @@ public class PageGeneratorEditForm extends EditForm {
 
 	/**
 	 * 問い合わせフォームのフィールドリストソースの作成。
-	 * @param query 問合せ。
+	 * @param flist フィールドリスト。
 	 * @param implist フィールドのインポートリスト。
 	 * @return 問い合わせフォームのフィールドリストソース。
 	 * @throws Exception 例外。
 	 */
-	private String getQueryFieldList(final Query query, final ImportUtil implist) throws Exception {
+	private String getQueryFieldList(final FieldList flist, final ImportUtil implist) throws Exception {
 		implist.add("dataforms.field.base.Field.MatchType");
 		StringBuilder sb = new StringBuilder();
-		for (Field<?> f: query.getFieldList()) {
+		for (Field<?> f: flist) {
 			Table tbl = f.getTable();
 			implist.add(tbl.getClass());
 			String scn = tbl.getClass().getSimpleName();
@@ -335,7 +335,6 @@ public class PageGeneratorEditForm extends EditForm {
 					String cname = f.getClass().getSimpleName();
 					String cmt = f.getComment();
 					sb.append("\t\tthis.addField(new " + cname + "(" + scn + ".Entity.ID_" + StringUtil.camelToUpperCaseSnake(id) + ")).setMatchType(MatchType." + mt + ").setComment(\"" + cmt + "\");\n");
-//					sb.append("\t\tthis.addField(table.get" + StringUtil.firstLetterToUpperCase(id) + "Field()).setMatchType(MatchType." + mt + ");\n");
 				}
 				implist.add(f.getClass());
 			}
@@ -356,14 +355,14 @@ public class PageGeneratorEditForm extends EditForm {
 
 	/**
 	 * 問い合わせ結果フォームのソートカラム指定コードを生成します。
-	 * @param query 問合せ。
+	 * @param flist フィールドリスト。
 	 * @param implist フィールドのインポートリスト。
 	 * @return 生成されたコード。
 	 * @throws Exception 例外。
 	 */
-	private String getQueryResultFieldSetting(final Query query, final ImportUtil implist) throws Exception {
+	private String getQueryResultFieldSetting(final FieldList flist, final ImportUtil implist) throws Exception {
 		StringBuilder sb = new StringBuilder();
-		for (Field<?> f: query.getFieldList()) {
+		for (Field<?> f: flist) {
 			Table tbl = f.getTable();
 			String scn = tbl.getClass().getSimpleName();
 			if (f.isHidden() || f instanceof DeleteFlagField) {
@@ -408,15 +407,21 @@ public class PageGeneratorEditForm extends EditForm {
 				@SuppressWarnings("unchecked")
 				Class<? extends QuerySetDao> daoclass = (Class<? extends QuerySetDao>) Class.forName(daoPackageName + "." + daoClassName);
 				QuerySetDao dao = daoclass.getDeclaredConstructor().newInstance();
+				FieldList flist = new FieldList();
+				if (dao.getListQuery() != null) {
+					flist = dao.getListQuery().getFieldList();
+				} else if (dao.getMultiRecordQueryKeyList() != null) {
+					flist = dao.getMultiRecordQueryKeyList();
+				}
 				{
 					ImportUtil implist0 = new ImportUtil();
-					javasrc = javasrc.replaceAll("\\$\\{queryFormFieldList\\}", this.getQueryFieldList(dao.getListQuery(), implist0));
+					javasrc = javasrc.replaceAll("\\$\\{queryFormFieldList\\}", this.getQueryFieldList(flist, implist0));
 					javasrc = javasrc.replaceAll("\\$\\{queryFormImportList\\}", implist0.getImportText());
 
 				}
 				{
 					ImportUtil implist1 = new ImportUtil();
-					javasrc = javasrc.replaceAll("\\$\\{queryResultFieldSetting\\}", this.getQueryResultFieldSetting(dao.getListQuery(), implist1));
+					javasrc = javasrc.replaceAll("\\$\\{queryResultFieldSetting\\}", this.getQueryResultFieldSetting(flist, implist1));
 					javasrc = javasrc.replaceAll("\\$\\{queryResultFormImportList\\}", implist1.getImportText());
 				}
 			}

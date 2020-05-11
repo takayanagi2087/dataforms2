@@ -2,6 +2,7 @@ package sample.page;
 
 import dataforms.controller.QueryForm;
 import dataforms.field.base.Field.MatchType;
+import dataforms.validator.RequiredValidator;
 import sample.dao.TestMultiRecTable;
 import sample.field.Code1Field;
 
@@ -15,7 +16,11 @@ public class TestMultiRecQueryForm extends QueryForm {
 	 * コンストラクタ。
 	 */
 	public TestMultiRecQueryForm() {
-		this.addField(new Code1Field(TestMultiRecTable.Entity.ID_CODE1)).setMatchType(MatchType.FULL).setComment("コード1");
+		this.addField(new Code1Field(TestMultiRecTable.Entity.ID_CODE1))
+			.setAutocomplete(true)
+			.addValidator(new RequiredValidator())
+			.setMatchType(MatchType.FULL)
+			.setComment("コード1");
 
 	}
 

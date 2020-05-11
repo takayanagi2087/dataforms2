@@ -1,0 +1,15 @@
+	// フォーム単位のバリデーションを行う場合は以下のメソッドを参考にしてください。
+	/**
+	 * フォームのバリデーション。
+	 */
+/*
+	validateForm() {
+		let list = super.validateForm();
+		if (list.length == 0) {
+			if (エラー判定) {
+				list.push(new ValidationError("fieldId", MessagesUtil.getMessage("error.messagekey")));
+			}
+		}
+		return list;
+	}
+*/

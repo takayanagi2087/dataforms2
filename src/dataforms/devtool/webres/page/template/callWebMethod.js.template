@@ -1,0 +1,37 @@
+	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。
+	/**
+	 * Webメソッドの呼び出しサンプル。
+	 *
+	 */
+	// JsonResponseを受け取る場合
+/*
+	callWebMethod() {
+		if (this.validate()) {
+			this.submit("webMethod", (r) {
+				this.parent.resetErrorStatus();
+				if (r.status == ServerMethod.SUCCESS) {
+					// TODO:成功時の処理を記述します。
+					// 応答情報をログ表示
+					logger.dir(r);
+				} else {
+					this.parent.setErrorInfo(this.getValidationResult(r), this);
+				}
+			});
+		}
+	}
+*/
+
+	// BinaryResponseを受け取る場合
+/*
+	callWebMethod() {
+		if (this.validate()) {
+			this.submitForDownload("webMethod", (r) {
+				// バリデーションで問題があった場合、JsonResponseでその内容が帰ってきます。
+				this.parent.resetErrorStatus();
+				if (r.status == ServerMethod.INVALID) {
+					currentPage.setErrorInfo(thisForm.getValidationResult(r), thisForm);
+				}
+			});
+		}
+	}
+*/

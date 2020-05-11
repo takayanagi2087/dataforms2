@@ -1294,16 +1294,28 @@ public class WebResourceForm extends Form {
 	 *
 	 */
 	private String generateJavascriptFile(final Map<String, Object> data) throws Exception {
+
+		String setFormData = this.getTemplate("template/setFormData.js.template");
+		String validateForm = this.getTemplate("template/validateForm.js.template");
+		String buttonHandler = this.getTemplate("template/buttonHandler.js.template");
+		String callWebMethod = this.getTemplate("template/callWebMethod.js.template");
+		String onCalc = this.getTemplate("template/onCalc.js.template");
+
 		String forceOverwrite = (String) data.get("forceOverwrite");
 		String sourcePath = (String) data.get("webSourcePath");
 		String fullClassName = (String) data.get("className");
 		Class<?> cls = Class.forName(fullClassName);
 		cls.getSuperclass().getSimpleName();
-		String superClassName = cls.getSuperclass().getSimpleName(); // (String) data.get("javascriptClass");
+		String superClassName = cls.getSuperclass().getSimpleName();
 		String className = ClassNameUtil.getSimpleClassName(fullClassName);
-		String src = this.getTemplate(cls); //this.getStringResourse("template/WebComponent.js.template");
+		String src = this.getTemplate(cls);
 		String gensrc = src.replaceAll("\\$\\{className\\}", className);
 		gensrc = gensrc.replaceAll("\\$\\{superClassName\\}", superClassName);
+		gensrc = gensrc.replaceAll("\\$\\{setFormData\\}", setFormData);
+		gensrc = gensrc.replaceAll("\\$\\{validateForm\\}", validateForm);
+		gensrc = gensrc.replaceAll("\\$\\{buttonHandler\\}", buttonHandler);
+		gensrc = gensrc.replaceAll("\\$\\{callWebMethod\\}", callWebMethod);
+		gensrc = gensrc.replaceAll("\\$\\{onCalc\\}", onCalc);
 		String srcpath = sourcePath + "/" + fullClassName.replaceAll("\\.", "/") + ".js";
 		File f = new File(srcpath);
 		if ((!f.exists()) || "1".equals(forceOverwrite)) {

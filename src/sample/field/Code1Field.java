@@ -1,7 +1,13 @@
 package sample.field;
 
+import java.util.List;
+import java.util.Map;
+
+import dataforms.dao.Query;
+import dataforms.field.base.FieldList;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.validator.MaxLengthValidator;
+import sample.dao.TestMultiRecTable;
 
 
 /**
@@ -47,36 +53,49 @@ public class Code1Field extends VarcharField {
 	/**
 	 * 関連フィールドリスト。
 	 */
-/*
 	private static final String[] IDLIST = {
 		// このフィールドのIDを指定します
-		MasterTable.Entity.ID_SELF_FIELD_ID
-		// 確定時にフォームに設定するフィールドIDを複数しています。
-		, MasterTable.Entity.ID_RELATION_FIELD01
-		, MasterTable.Entity.ID_RELATION_FIELD01
+		TestMultiRecTable.Entity.ID_CODE1
 	};
-*/
+
+	/**
+	 * Code1の一覧取得問合せ。
+	 *
+	 */
+	private static class Code1Query extends Query {
+		/**
+		 * コンストラクタ。
+		 */
+		public Code1Query() {
+			this.setDistinct(true);
+			TestMultiRecTable table = new TestMultiRecTable();
+			FieldList flist = new FieldList();
+			flist.addField(table.getCode1Field());
+			this.setFieldList(flist);
+			this.setMainTable(table);
+			this.setOrderByFieldList(new FieldList(table.getCode1Field()));
+		}
+	}
+
 	/**
 	 * Autocomplete用の一覧を取得するメソッドを実装します。
 	 * @param data パラメータ。
 	 * @return 関連データのマップ。
 	 * @throws Exception 例外。
 	 */
-/*
 	@Override
 	protected List<Map<String, Object>> queryAutocompleteSourceList(final Map<String, Object> data) throws Exception {
-		SingleTableQuery query = new SingleTableQuery(new MasterTable()); // 一覧を取得する問合せを作成。
+		Code1Query query = new Code1Query(); // 一覧を取得する問合せを作成。
 		List<Map<String, Object>> list = this.queryAutocompleteSourceList(
 			data					// フォームのデータ
 			, query					// 問合せ
 			, (Map<String, Object> map, String ... ids) -> {
-				return (String) map.get(ids[0]) + ":" + (String) map.get(ids[1]);
+				return (String) map.get(ids[0]);
 			}						// ラベルの構築処理を指定します。
 			, IDLIST
 		);
 		return list;
 	}
-*/
 	/**
 	 * 関連データを取得します。
 	 * @param data パラメータ。

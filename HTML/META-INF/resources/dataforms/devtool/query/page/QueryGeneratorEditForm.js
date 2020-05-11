@@ -98,7 +98,7 @@ class QueryGeneratorEditForm extends EditForm {
 	 * @param {jQuery} f 更新されたフィールド。
 	 */
 	onCalc(f) {
-		super.onCalc();
+		super.onCalc(f);
 	}
 
 	/**

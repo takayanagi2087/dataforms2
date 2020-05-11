@@ -421,7 +421,7 @@ class Form extends WebComponent {
 	 * 計算イベントフィールドが更新された場合、このメソッドが呼び出されます。
 	 * データ入力時の自動計算が必要な場合このメソッドをオーバーライドしてください。
 	 * </pre>
-	 * @param {jQuery} element イベントが発生した要素。初期表示等特定フィールドが要因でない場合はnullが設定されます。
+	 * @param {jQuery} element イベントが発生した要素。初期表示の時等特定フィールドが要因でない場合はnullが設定されます。
 	 *
 	 */
 	onCalc(element) {

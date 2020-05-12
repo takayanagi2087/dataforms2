@@ -98,9 +98,9 @@ public class FileObject implements Serializable {
 	public static final String CONTENT_TYPE_SVG = "image/svg+xml";
 
 	/**
-	 * SVGのコンテントタイプ。
+	 * XLSXのコンテントタイプ。
 	 */
-	public static final String CONTENT_TYPE_XLSX = "application/vnd.ms-excel";
+	public static final String CONTENT_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
 
 	/**

@@ -423,7 +423,7 @@
 
 				{"fnPattern": "(?i).*\\.zip$", "contentType": "application/zip"},
 				{"fnPattern": "(?i).*\\.pdf$", "contentType": "application/pdf"},
-				{"fnPattern": "(?i).*\\.xlsx$", "contentType": "application/vnd.ms-excel"},
+				{"fnPattern": "(?i).*\\.xlsx$", "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
 
 				{"fnPattern": "(?i).*\\.png$", "contentType": "image/png"},
 				{"fnPattern": "(?i).*\\.jpg$", "contentType": "image/jpeg"},

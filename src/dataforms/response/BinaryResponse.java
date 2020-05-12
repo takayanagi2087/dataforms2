@@ -180,10 +180,16 @@ public class BinaryResponse extends FileResponse {
 		resp.setContentType(this.getContentType());
 		logger.debug(() -> "content-type:" + resp.getContentType());
 		if (this.getFileName() != null) {
-			resp.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(this.getFileName(), DataFormsServlet.getEncoding()));
+			// このヘッダはjavascripで解析するので、filename*等のパラメータは追加しないでください。
+			final String CONTENT_DISPOSITION_FORMAT = "attachment; filename=%s";
+			String utf8fn =  URLEncoder.encode(this.getFileName(), DataFormsServlet.getEncoding());
+			String h = String.format(CONTENT_DISPOSITION_FORMAT, utf8fn);
+			resp.setHeader("Content-Disposition", h);
 		}
 		HttpRangeInfo p = new HttpRangeInfo(this.getRequest());
 		p.parse(this.inputStream);
+		logger.debug(() -> "filename=" + this.getFileName());
+		logger.debug(() -> "encoding=" + DataFormsServlet.getEncoding());
 		logger.debug(() -> "status=" + p.getStatus());
 		logger.debug(() -> "contentLength=" + p.getContentLength());
 		logger.debug(() -> "contentRange=" + p.getContentRange());

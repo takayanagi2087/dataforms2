@@ -266,7 +266,6 @@ class QueryResultForm extends Form {
 			var id = this.pkFieldList[i];
 			var v = this.queryResult.queryResult[ridx][id];
 			// 処理対象を指定するキーフィールドに値を設定する.
-			// this.find("#" + id).val(v);
 			if (this.selectedQueryString.length > 0) {
 				this.selectedQueryString += "&"
 			}
@@ -281,7 +280,7 @@ class QueryResultForm extends Form {
 
 	/**
 	 * 選択データを設定します。
-	 * @param {jQuery} comp イベントの圧制したコンポーネント。
+	 * @param {jQuery} comp イベントの発生したコンポーネント。
 	 */
 	setSelectedData(comp) {
 		var table = this.getComponent("queryResult");

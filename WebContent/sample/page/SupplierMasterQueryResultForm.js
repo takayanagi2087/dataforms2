@@ -1,15 +1,15 @@
 /**
- * @fileOverview {@link SupplierMasterQueryForm}クラスを記述したファイルです。
+ * @fileOverview {@link SupplierMasterQueryResultForm}クラスを記述したファイルです。
  */
 
 'use strict';
 
 /**
- * @class SupplierMasterQueryForm
+ * @class SupplierMasterQueryResultForm
  *
- * @extends QueryForm
+ * @extends QueryResultForm
  */
-class SupplierMasterQueryForm extends QueryForm {
+class SupplierMasterQueryResultForm extends QueryResultForm {
 	/**
 	 * コンストラクタ。
 	 */
@@ -103,39 +103,33 @@ class SupplierMasterQueryForm extends QueryForm {
 */
 
 
-	// 検索ボタンの押下時に処理を追加する場合は、以下のコードを参考にしてください。
+	// 問い合わせ結果設定時に処理を行う場合、以下の処理を参考にしてください。
 	/**
-	 * 問合せを行います。
+	 * 問い合わせ結果を表示します。
+	 * @param {Object} queryResult 問い合わせ結果。
 	 */
-/*
-	query() {
-		// TODO:問合せの前処理を実装してください。
-		super.query();
+	setQueryResult(queryResult) {
+		// TODO:データ設定の前処理を記述します。
+		super.setQueryResult(queryResult);
+		// TODO:データ設定の後処理を記述します。
+		logger.dir(queryResult);
 	}
-*/
 
-	// リセットボタンの押下時に処理を追加する場合は、以下のコードを参考にしてください。
+	// 問合せ結果リスト中に独自のボタンを追加した場合、以下のメソッドを参考にしてイベント処理を追加してください。
 	/**
-	 * リセットを行います。
+	 * 問合せ結果にデフォルトイベント処理を設定します。
 	 */
-/*
-	reset() {
-		// TODO:リセットの前処理を実装してください。
-		super.reset();
+	setQueryResultEventHandler() {
+		super.setQueryResultEventHandler();
+		var thisForm = this;
+		// リスト中のボタンに対してイベント処理を追加。
+		this.find("[id$='\.hogeButton']").click(function() {
+			// 押されたボタンと同じ行にあるキー情報を選択。
+			if (thisForm.setSelectedKey($(this))) {
+				logger.log("this.selectedQueryString=" + thisForm.selectedQueryString);
+				// thisForm.hogeMethod(); // 選択したに対する処理を実行。
+			}
+		});
 	}
-*/
-
-
-	// エクスポートボタンの押下時に処理を追加する場合は、以下のコードを参考にしてください。
-	/**
-	 * エクスポートを行います。
-	 */
-/*
-	exportData() {
-		// TODO:エクスポートの前処理を実装してください。
-		super.exportData();
-	}
-*/
-
 }
 

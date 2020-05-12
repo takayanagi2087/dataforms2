@@ -43,7 +43,7 @@ public class SupplierMasterQueryForm extends QueryForm {
 		// this.setFormData("fieldId", "初期値");
 	}
 
-		/**
+	/**
 	 * エクスポートデータのフィールドリストを作成します。
 	 * @return フィールドリスト。
 	 */

@@ -40,7 +40,7 @@ class QueryForm extends Form {
 	}
 
 	/**
-	 * クエリの実行を行います。
+	 * 問合せを行います。
 	 */
 	query() {
 		var queryForm = this;

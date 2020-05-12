@@ -1,0 +1,71 @@
+/**
+ * @fileOverview {@link ${className}}クラスを記述したファイルです。
+ */
+
+'use strict';
+
+/**
+ * @class ${className}
+ *
+ * @extends ${superClassName}
+ */
+class ${className} extends ${superClassName} {
+	/**
+	 * コンストラクタ。
+	 */
+	constructor() {
+		super();
+	}
+
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+${buttonHandler}
+	}
+
+${callWebMethod}
+
+${setFormData}
+
+${validateForm}
+
+${onCalc}
+
+	// 検索ボタンの押下時に処理を追加する場合は、以下のコードを参考にしてください。
+	/**
+	 * 問合せを行います。
+	 */
+/*
+	query() {
+		// TODO:問合せの前処理を実装してください。
+		super.query();
+	}
+*/
+
+	// リセットボタンの押下時に処理を追加する場合は、以下のコードを参考にしてください。
+	/**
+	 * リセットを行います。
+	 */
+/*
+	reset() {
+		// TODO:リセットの前処理を実装してください。
+		super.reset();
+	}
+*/
+
+
+	// エクスポートボタンの押下時に処理を追加する場合は、以下のコードを参考にしてください。
+	/**
+	 * エクスポートを行います。
+	 */
+/*
+	exportData() {
+		// TODO:エクスポートの前処理を実装してください。
+		super.exportData();
+	}
+*/
+
+}
+

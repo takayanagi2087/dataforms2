@@ -24,8 +24,25 @@ class ${className} extends ${superClassName} {
 		super.attach();
 	}
 
+	// 独自のWebメソッドを呼び出す場合は、以下のコメントを参考にしてください。
+	/**
+	 * Webメソッドの呼び出しサンプル。
+	 *
+	 */
+/*
+	callWebMethod() {
+		// ページの初期化.
+		var method = new ServerMethod("webMethod");
+		method.execute("p1=v1&p2=v2", (r) => {
+			// TODO:応答情報を適切に処理してください。
+			logger.dir(r);
+		});
+	}
+*/
 
-	// 問合せモードに移行時に独自の処理を行う場合は、以下のメソッドを有効にしてください。
+
+	// フォームの各種動作をカスタマイズするには以下のメソッドをオーバーライドしてください。
+
 	/**
 	 * ページのモードをクエリモードにします。
 	 * <pre>
@@ -42,7 +59,6 @@ class ${className} extends ${superClassName} {
 	}
 */
 
-	// 編集モードに移行時に独自の処理を行う場合は、以下のメソッドを有効にしてください。
 	/**
 	 * ページのモードを編集モードにします。
 	 * <pre>
@@ -59,7 +75,6 @@ class ${className} extends ${superClassName} {
 	}
 */
 
-	// ウインドウリサイズ時に独自の処理を行う場合は、以下のonResizeメソッドを有効にして、処理を記述してください。
 	/**
 	 * ウインドウリサイズ時の処理。
 	 */
@@ -67,22 +82,6 @@ class ${className} extends ${superClassName} {
 	onResize() {
 		super.onResize();
 		// TODO:ウインドウのリサイズ時の処理を記述してください。
-	}
-*/
-
-	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。
-	/**
-	 * Webメソッドの呼び出しサンプル。
-	 *
-	 */
-/*
-	callWebMethod() {
-		// ページの初期化.
-		var method = new ServerMethod("webMethod");
-		method.execute("p1=v1&p2=v2", (r) => {
-			// TODO:応答情報を適切に処理してください。
-			logger.dir(r);
-		});
 	}
 */
 }

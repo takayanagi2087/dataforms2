@@ -9,7 +9,6 @@ a:visited {
 a:hover,
 a:active {
 	color: var(	--anchor-hover-color);
-	font-weight: bold;
 }
 
 

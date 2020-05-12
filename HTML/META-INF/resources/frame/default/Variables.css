@@ -41,7 +41,8 @@
 	--field-base-color: var(--base-color);	/* 青系統 */
 
 	/* フィールド関連の配色 */
-	--field-text-color: hsl(var(--field-base-color),0%);
+	--field-text-color: hsl(var(--field-base-color),10%);
+	--field-active-color: hsl(var(--field-base-color),0%);
 	--field-border-color: hsl(var(--field-base-color),60%);
 	--field-background-color: hsl(var(--field-base-color),100%);
 
@@ -73,7 +74,7 @@
 
 	/* アンカーの色 */
 	--anchor-color: var(--field-text-color);
-	--anchor-hover-color: var(--field-text-color);
+	--anchor-hover-color: red;
 
 	/* ヘッター1 */
 	--header1-color: black;

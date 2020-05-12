@@ -288,7 +288,7 @@ class Form extends WebComponent {
 				let contentDisposition = m.headers.get("Content-Disposition");
 				let filename = "download";
 				if (contentDisposition != null && contentDisposition.length > 0) {
-					filename = contentDisposition.replace("attachment; filename=", "");
+					filename = decodeURIComponent(contentDisposition.replace("attachment; filename=", ""));
 				}
 				logger.log("download blob=" + contentDisposition);
 				const url = (window.URL || window.webkitURL).createObjectURL(data);

@@ -3,7 +3,6 @@
 	 * Webメソッドの呼び出しサンプル。
 	 *
 	 */
-	// JsonResponseを受け取る場合
 /*
 	callWebMethod() {
 		if (this.validate()) {
@@ -15,21 +14,6 @@
 					logger.dir(r);
 				} else {
 					this.parent.setErrorInfo(this.getValidationResult(r), this);
-				}
-			});
-		}
-	}
-*/
-
-	// BinaryResponseを受け取る場合
-/*
-	callWebMethod() {
-		if (this.validate()) {
-			this.submitForDownload("webMethod", (r) {
-				// バリデーションで問題があった場合、JsonResponseでその内容が帰ってきます。
-				this.parent.resetErrorStatus();
-				if (r.status == ServerMethod.INVALID) {
-					currentPage.setErrorInfo(thisForm.getValidationResult(r), thisForm);
 				}
 			});
 		}

@@ -303,6 +303,10 @@ public class PageGeneratorEditForm extends EditForm {
 	 * @throws Exception 例外。
 	 */
 	private String getQueryFieldList(final FieldList flist, final ImportUtil implist) throws Exception {
+		implist.add("java.util.List");
+		implist.add("java.util.Map");
+		implist.add("dataforms.report.ExportDataFile");
+		implist.add("dataforms.field.base.FieldList");
 		implist.add("dataforms.field.base.Field.MatchType");
 		StringBuilder sb = new StringBuilder();
 		for (Field<?> f: flist) {

@@ -1,15 +1,15 @@
 /**
- * @fileOverview {@link MaterialOrderQueryForm}クラスを記述したファイルです。
+ * @fileOverview {@link SupplierMasterQueryForm}クラスを記述したファイルです。
  */
 
 'use strict';
 
 /**
- * @class MaterialOrderQueryForm
+ * @class SupplierMasterQueryForm
  *
  * @extends QueryForm
  */
-class MaterialOrderQueryForm extends QueryForm {
+class SupplierMasterQueryForm extends QueryForm {
 	/**
 	 * コンストラクタ。
 	 */
@@ -38,7 +38,6 @@ class MaterialOrderQueryForm extends QueryForm {
 	 * Webメソッドの呼び出しサンプル。
 	 *
 	 */
-	// JsonResponseを受け取る場合
 /*
 	callWebMethod() {
 		if (this.validate()) {
@@ -55,6 +54,7 @@ class MaterialOrderQueryForm extends QueryForm {
 		}
 	}
 */
+
 
 	// フォームのデータ設定時に処理を行う場合、以下の処理を参考にしてください。
 	/**

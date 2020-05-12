@@ -59,14 +59,14 @@ class AllTypeEditForm extends EditForm {
 	 * 印刷処理を行います。
 	 */
 	print() {
-		this.submitForDownload("print");
+		this.submit("print");
 	}
 
 	/**
 	 * 印刷処理を行います。
 	 */
 	printPdf() {
-		this.submitForDownload("printPdf");
+		this.submit("printPdf");
 	}
 
 	/**

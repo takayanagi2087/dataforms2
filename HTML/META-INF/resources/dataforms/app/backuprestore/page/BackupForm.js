@@ -24,7 +24,7 @@ class BackupForm extends Form {
 	backup() {
 		var thisForm = this;
 		thisForm.parent.resetErrorStatus();
-		this.submitForDownload("backup", function(r) {
+		this.submit("backup", function(r) {
 			thisForm.parent.resetErrorStatus();
 			if (r.status == ServerMethod.INVALID) {
 				currentPage.setErrorInfo(thisForm.getValidationResult(r), thisForm);

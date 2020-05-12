@@ -229,10 +229,16 @@ class Form extends WebComponent {
 	 * @param {Function} func 応答処理 function(data)。
 	 */
 	submit(method, func) {
+		var form = this;
 		var f = this.get();
 		var m = new ServerMethod(this.getUniqId() + "." + method);
 		m.submit(f, function(data) {
-			func(data);
+			if (data instanceof Blob) {
+				// blobが来た場合。
+				form.downloadBlob(m, data);
+			} else {
+				func(data);
+			}
 		});
 	}
 
@@ -250,7 +256,14 @@ class Form extends WebComponent {
 	submitWithoutFile(method, func) {
 		var form = this;
 		var m = new ServerMethod(this.getUniqId() + "." + method);
-		m.submitWithoutFile(form.get(), func);
+		m.submitWithoutFile(form.get(), function(data) {
+			if (data instanceof Blob) {
+				// blobが来た場合。
+				form.downloadBlob(m, data);
+			} else {
+				func(data);
+			}
+		});
 	}
 
 	/**
@@ -265,7 +278,37 @@ class Form extends WebComponent {
 	submitWithFile(method, func) {
 		var form = this;
 		var m = new ServerMethod(this.getUniqId() + "." + method);
-		m.submitWithFile(form.get(), func);
+		m.submitWithFile(form.get(), function(data) {
+			if (data instanceof Blob) {
+				// blobが来た場合。
+				form.downloadBlob(m, data);
+			} else {
+				func(data);
+			}
+		});
+	}
+
+	/**
+	 * blobをダウンロードします。
+	 * @param {ServerMethod} m サーバメソッド。
+	 * @param {Object} data ダウンロードデータ。
+	 */
+	downloadBlob(m, data) {
+		// blobが来た場合。
+		let contentDisposition = m.headers.get("Content-Disposition");
+		let filename = "download";
+		if (contentDisposition != null && contentDisposition.length > 0) {
+			filename = decodeURIComponent(contentDisposition.replace("attachment; filename=", ""));
+		}
+		logger.log("download blob=" + contentDisposition);
+		const url = (window.URL || window.webkitURL).createObjectURL(data);
+		// ダウンロード.
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = filename;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
 	}
 
 
@@ -278,6 +321,7 @@ class Form extends WebComponent {
 	 * </pre>
 	 * @param {String} method メソッド名。
 	 * @param {Function} func 応答処理 function(data)。
+	 * @deprecated submitのみでバイナリデータのダウンロードも可能になりました。(submitForDownloadは互換性維持のためにしばらく残します)
 	 */
 	submitForDownload(method, func) {
 		var form = this;
@@ -285,20 +329,7 @@ class Form extends WebComponent {
 		var rfunc = function(data) {
 			if (data instanceof Blob) {
 				// blobが来た場合。
-				let contentDisposition = m.headers.get("Content-Disposition");
-				let filename = "download";
-				if (contentDisposition != null && contentDisposition.length > 0) {
-					filename = decodeURIComponent(contentDisposition.replace("attachment; filename=", ""));
-				}
-				logger.log("download blob=" + contentDisposition);
-				const url = (window.URL || window.webkitURL).createObjectURL(data);
-				// ダウンロード.
-				const a = document.createElement('a');
-				a.href = url;
-				a.download = filename;
-				document.body.appendChild(a);
-				a.click();
-				document.body.removeChild(a);
+				form.downloadBlob(m, data);
 			} else {
 				// ダウンロードを期待したがJSONが来た場合。
 				if (func == null) {

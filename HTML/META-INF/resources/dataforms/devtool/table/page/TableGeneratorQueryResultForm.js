@@ -63,7 +63,7 @@ class TableGeneratorQueryResultForm extends QueryResultForm {
 	print() {
 		var thisForm = this;
 		thisForm.parent.resetErrorStatus();
-		thisForm.submitForDownload("print");
+		thisForm.submit("print");
 	}
 
 }

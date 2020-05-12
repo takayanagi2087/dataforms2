@@ -96,7 +96,7 @@ class QueryForm extends Form {
 			var sortOrder = this.getSortOrder();
 			logger.log("sortOrder=" + sortOrder);
 			this.setHiddenField("sortOrder", sortOrder);
-			queryForm.submitForDownload("exportData", function(result) {
+			queryForm.submit("exportData", function(result) {
 				queryForm.parent.resetErrorStatus();
 				if (result.status == ServerMethod.INVALID) {
 					queryForm.parent.setErrorInfo(queryForm.getValidationResult(result), queryForm);

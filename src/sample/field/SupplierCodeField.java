@@ -3,8 +3,11 @@ package sample.field;
 import java.util.List;
 import java.util.Map;
 
+import dataforms.annotation.WebMethod;
 import dataforms.dao.SingleTableQuery;
 import dataforms.field.sqltype.CharField;
+import dataforms.response.JsonResponse;
+import dataforms.response.Response;
 import dataforms.validator.MaxLengthValidator;
 import sample.dao.SupplierMasterTable;
 
@@ -91,4 +94,18 @@ public class SupplierCodeField extends CharField {
 		);
 		return ret;
 	}
+
+	/**
+	 * Webメソッドのサンプル。
+	 * @param p 入力パラメータ。
+	 * @return 応答情報。
+	 * @throws Exception 例外。
+	 */
+	@WebMethod
+	public Response webMethod(final Map<String, Object> p) throws Exception {
+		Object obj = p; // TODO:必要な処理を行い、結果オブジェクトを作成してください。
+		Response resp = new JsonResponse(JsonResponse.SUCCESS, obj);
+		return resp;
+	}
+
 }

@@ -3,14 +3,8 @@ package sample.page;
 import java.util.Map;
 
 import dataforms.controller.EditForm;
-import dataforms.dao.Query;
 import dataforms.dao.Table;
-import dataforms.field.base.Field;
-import dataforms.field.base.FieldList;
-import dataforms.field.common.FileField;
-import dataforms.htmltable.EditableHtmlTable;
 import sample.dao.SupplierMasterDao;
-import sample.dao.SupplierMasterTable;
 
 /**
  * 編集フォームクラス。
@@ -21,16 +15,7 @@ public class SupplierMasterEditForm extends EditForm {
 	 */
 	public SupplierMasterEditForm() {
 		SupplierMasterDao dao = new SupplierMasterDao();
-		if (dao.getSingleRecordQuery() != null) {
-			FieldList flist = dao.getSingleRecordQuery().getFieldList();
-			this.addFieldList(flist);
-		}
-		if (dao.getMultiRecordQueryList() != null) {
-			for (Query q: dao.getMultiRecordQueryList()) {
-				EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
-				this.addHtmlTable(rtable);
-			}
-		}
+		this.addFields(dao);
 	}
 
 	/**
@@ -42,16 +27,8 @@ public class SupplierMasterEditForm extends EditForm {
 	@Override
 	public void init() throws Exception {
 		super.init();
-	}
-
-	@Override
-	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
-		Map<String, Object> ret = super.queryNewData(data);
-		SupplierMasterTable.Entity e = new SupplierMasterTable.Entity(ret);
-		SupplierMasterTable table = new SupplierMasterTable();
-		SupplierMasterDao dao = new SupplierMasterDao(this);
-		e.setSupplierCode(dao.queryNextCode(table.getSupplierCodeField()));
-		return ret;
+		// フィールドに初期値を設定する場合は以下の様にしてください。
+		// this.setFormData("fieldId", "初期値");
 	}
 
 	/**
@@ -79,17 +56,9 @@ public class SupplierMasterEditForm extends EditForm {
 	 */
 	@Override
 	protected Map<String, Object> queryReferData(final Map<String, Object> data) throws Exception {
-		SupplierMasterDao dao = new SupplierMasterDao(this);
-		Table table = dao.getMainTable();
 		Map<String, Object> ret = this.queryData(data);
-		for (Field<?> f: table.getPkFieldList()) {
-			ret.remove(f.getId());
-		}
-		for (Field<?> f: table.getFieldList()) {
-			if (f instanceof FileField) {
-				ret.remove(f.getId());
-			}
-		}
+		SupplierMasterDao dao = new SupplierMasterDao(this);
+		removeKeyData(dao, ret);
 		return ret;
 	}
 
@@ -141,4 +110,51 @@ public class SupplierMasterEditForm extends EditForm {
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.delete(data);
 	}
+
+	// フォームの各フィールドの関連チェックを行う場合は、以下のvalidateFormメソッドを実装してください。
+	/**
+	 * フォームのデータをチェックします。
+	 * @param p パラメータ。
+	 * @return 判定結果リスト。
+	 * @throws Exception 例外。
+	 */
+/*
+	@Override
+	protected List<ValidationError> validateForm(final Map<String, Object> data) throws Exception {
+		List<ValidationError> list = super.validateForm(data);
+		if (list.size() == 0) {
+			if ( エラー判定 ) {
+				list.add(new ValidationError(HogeTable.Entity.ID_FIELD_ID, MessagesUtil.getMessage(this.getPage(), "error.messagekey")));
+			}
+		}
+		return list;
+	}
+*/
+
+
+	// 独自のWebメソッドを作成する場合は、以下のコードを参考にしてください。
+	/**
+	 * Webメソッドのサンプル。
+	 * @param p パラメータ。
+	 * @return 応答情報。
+	 * @throws Exception 例外。
+	 */
+/*
+	@WebMethod
+	public Response webMethod(final Map<String, Object> p) throws Exception {
+		Response ret = null;
+		// Formから送信されたデータを確認します。
+		List<ValidationError> list = this.validate(p);
+		if (list.size() == 0) {
+			// Formから送信されたデータをサーバーサイドで処理しやすいデータ型に変換します。
+			Map<String, Object> data = this.convertToServerData(p);
+			ret = null;	// TODO:何らかの処理を行いResponseのインスタンスを作成してください。
+		} else {
+			// 確認で問題があった場合その情報を返信します。
+			ret = new JsonResponse(JsonResponse.INVALID, list);
+		}
+		return ret;
+	}
+*/
+
 }

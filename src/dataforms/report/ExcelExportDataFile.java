@@ -61,7 +61,7 @@ public class ExcelExportDataFile implements ExportDataFile {
 
 	@Override
 	public String getContentType() {
-		return "application/vnd.ms-excel";
+		return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 	}
 
 	/**

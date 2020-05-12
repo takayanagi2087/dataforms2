@@ -54,26 +54,12 @@ class SupplierMasterQueryResultForm extends QueryResultForm {
 */
 
 
-	// フォームのデータ設定時に処理を行う場合、以下の処理を参考にしてください。
-	/**
-	 * 各フィールドにデータを設定します。
-	 * <pre>
-	 * 新規モードの場合、削除ボタンを隠します。
-	 * </pre>
-	 * @param {Object} data フォームデータ.
-	 *
-	 */
-/*
-	setFormData(data) {
-		// TODO:データ設定の前処理を記述します。
-		super.setFormData(data);
-		// TODO:データ設定の後処理を記述します。
-	}
-*/
-
-	// フォーム単位のバリデーションを行う場合は以下のメソッドを参考にしてください。
+	// フォーム単位のバリデーションを行う場合は以下のコメントを参考に実装してください。
 	/**
 	 * フォームのバリデーション。
+	 * <pre>
+	 * フォーム内のフィールド関連チェックを実装します。
+	 * </pre>
 	 */
 /*
 	validateForm() {
@@ -103,19 +89,7 @@ class SupplierMasterQueryResultForm extends QueryResultForm {
 */
 
 
-	// 問い合わせ結果設定時に処理を行う場合、以下の処理を参考にしてください。
-	/**
-	 * 問い合わせ結果を表示します。
-	 * @param {Object} queryResult 問い合わせ結果。
-	 */
-	setQueryResult(queryResult) {
-		// TODO:データ設定の前処理を記述します。
-		super.setQueryResult(queryResult);
-		// TODO:データ設定の後処理を記述します。
-		logger.dir(queryResult);
-	}
-
-	// 問合せ結果リスト中に独自のボタンを追加した場合、以下のメソッドを参考にしてイベント処理を追加してください。
+	// 問合せ結果リスト中に独自のボタンを追加した場合、以下のコメントを参考にしてイベント処理を実装してください。
 	/**
 	 * 問合せ結果にデフォルトイベント処理を設定します。
 	 */
@@ -130,6 +104,99 @@ class SupplierMasterQueryResultForm extends QueryResultForm {
 				// thisForm.hogeMethod(); // 選択したに対する処理を実行。
 			}
 		});
+	}
+
+	// フォームの各種動作をカスタマイズするには以下のメソッドをオーバーライドしてください。
+
+	/**
+	 * 各フィールドにデータを設定します。
+	 * <pre>
+	 * 新規モードの場合、削除ボタンを隠します。
+	 * </pre>
+	 * @param {Object} data フォームデータ.
+	 *
+	 */
+	setFormData(data) {
+		super.setFormData(data);
+	}
+
+	/**
+	 * 問い合わせ結果を表示します。
+	 * @param {Object} queryResult 問い合わせ結果。
+	 */
+	setQueryResult(queryResult) {
+		super.setQueryResult(queryResult);
+	}
+
+	/**
+	 * 先頭ページに遷移します。
+	 */
+	topPage() {
+		super.topPage();
+	}
+
+	/**
+	 * 末尾ページに遷移します。
+	 */
+	bottomPage() {
+		super.bottomPage();
+	}
+
+	/**
+	 * 前ページに遷移します。
+	 */
+	prevPage() {
+		super.prevPage();
+	}
+
+	/**
+	 * 次ページに遷移します。
+	 */
+	nextPage() {
+		super.nextPage();
+	}
+
+	/**
+	 * ページの更新を行います。
+	 */
+	changePage() {
+		super.changePage();
+	}
+
+	/**
+	 * 選択データを更新します。
+	 */
+	updateData() {
+		super.updateData();
+	}
+
+	/**
+	 * 選択データをコピーした新規データを登録します。
+	 */
+	referData() {
+		super.referData();
+	}
+
+	/**
+	 * 選択データの削除を行います。
+	 */
+	deleteData() {
+		super.deleteData();
+	}
+
+	/**
+	 * ページ関連情報を設定します。
+	 * @param {Object} queryResult 問い合わせ結果。
+	 */
+	setPagerInfo(queryResult) {
+		super.setPagerInfo(queryResult);
+	}
+
+	/**
+	 * ページ関連情報を制御します。
+	 */
+	controlPager() {
+		super.controlPager();
 	}
 }
 

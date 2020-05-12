@@ -5,6 +5,7 @@ import java.util.Map;
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
 import sample.dao.SupplierMasterDao;
+import sample.dao.SupplierMasterTable;
 
 /**
  * 編集フォームクラス。
@@ -44,6 +45,17 @@ public class SupplierMasterEditForm extends EditForm {
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
 		SupplierMasterDao dao = new SupplierMasterDao(this);
 		return dao.query(data);
+	}
+
+	@Override
+	protected Map<String, Object> queryNewData(Map<String, Object> data) throws Exception {
+		Map<String, Object> ret = super.queryNewData(data);
+		SupplierMasterTable table = new SupplierMasterTable();
+		SupplierMasterDao dao = new SupplierMasterDao(this);
+		String code = dao.queryNextCode(table.getSupplierCodeField());
+		SupplierMasterTable.Entity e = new SupplierMasterTable.Entity(ret);
+		e.setSupplierCode(code);
+		return ret;
 	}
 
 	/**

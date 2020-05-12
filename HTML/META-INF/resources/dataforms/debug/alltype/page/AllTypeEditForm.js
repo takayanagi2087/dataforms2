@@ -160,6 +160,10 @@ class AllTypeEditForm extends EditForm {
 			logger.dir(this);
 		});
 
+		logger.dir("attachFileTable.getTableData = ");
+		var attachFileTable = this.getComponent("attachFileTable");
+		logger.dir(attachFileTable.getTableData());
+
 		var param = {
 			p1: "aaa"
 			, p2: "bbb"

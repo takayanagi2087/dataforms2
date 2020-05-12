@@ -829,6 +829,23 @@ class HtmlTable extends WebComponent {
 	}
 
 	/**
+	 * テーブルに保存されているデータを取得します。
+	 * @return {Array} テーブルデータ。
+	 */
+	getTableData() {
+		let list = [];
+		for (let r = 0; r < this.getRowCount(); r++) {
+			let m = {};
+			for (let c = 0; c < this.fieldList.length; c++) {
+				let f = this.getRowField(r, this.fieldList[c].id);
+				m[this.fieldList[c].id] = f.getValue();
+			}
+			list.push(m);
+		}
+		return list;
+	}
+
+	/**
 	 * テーブルのバリデーションを行います。
 	 * @returns {Array} バリデーション結果。
 	 */

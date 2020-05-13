@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="mainDiv">
+			<form id="editForm">
+				<div class="formHeader"><span id="editFormTitle"></span></div>
+				<input type="hidden" id="saveMode" />
+				<table class="responsive">
+					<tbody>
+					</tbody>
+				</table>
+				<div class="hScrollDiv">
+					<table id="selectFieldList" class="editableTable">
+						<thead>
+							<tr>
+								<th colspan="2" nowrap>
+									
+								</th>
+								<th nowrap>
+									No.
+								</th>
+								<th>
+									Varchar選択肢
+								</th>
+								<th>
+									整数選択肢
+								</th>
+								<th>
+									列挙型単一選択
+								</th>
+								<th>
+									列挙型複数選択
+								</th>
+								<th>
+									プロパティ単一選択
+								</th>
+								<th>
+									プロパティ複数選択
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="buttonColumn">
+									<input type="button" id="selectFieldList[0].addButton" value="+"/>
+								</td>
+								<td class="buttonColumn">
+									<input type="button" id="selectFieldList[0].deleteButton" value="-"/>
+								</td>
+								<td style="text-align: right;" class="rowno">
+									<span id="selectFieldList[0].no"></span>
+								</td>
+								<td>
+									<select id="selectFieldList[0].varcharSelect"></select>
+									<input type="hidden" id="selectFieldList[0].selectId" />
+									<input type="hidden" id="selectFieldList[0].sortOrder" />
+									<input type="hidden" id="selectFieldList[0].createUserId" />
+									<input type="hidden" id="selectFieldList[0].createTimestamp" />
+									<input type="hidden" id="selectFieldList[0].updateUserId" />
+									<input type="hidden" id="selectFieldList[0].updateTimestamp" />
+								</td>
+								<td>
+									<select id="selectFieldList[0].integerSelect"></select>
+								</td>
+								<td>
+									<select id="selectFieldList[0].enumSingleSelect"></select>
+								</td>
+								<td>
+									<span><input type="checkbox" id="selectFieldList[0].enumMultiSelect[0]" name="selectFieldList[0].enumMultiSelect"/></span>
+								</td>
+								<td>
+									<select id="selectFieldList[0].propSingleSelect"></select>
+								</td>
+								<td>
+									<span><input type="checkbox" id="selectFieldList[0].propMultiSelect[0]" name="selectFieldList[0].propMultiSelect"/></span>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th class="buttonColumn">
+									<input type="button" id="selectFieldList.addButton" value="+"/>
+								</th>
+								<th colspan="8">
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
+				<input type="button" id="saveButton" class="largeButton" value="登録"/>
+				<input type="button" id="resetButton" class="largeButton" value="リセット"/>
+				<input type="button" id="deleteButton" class="largeButton" value="削除"/>
+				<input type="button" id="backButton" class="largeButton" value="戻る"/>
+			</form>
+
+		</div>
+	</body>
+</html>

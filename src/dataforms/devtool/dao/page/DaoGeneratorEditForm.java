@@ -435,14 +435,16 @@ public class DaoGeneratorEditForm extends EditForm {
 	/**
 	 * 選択フィールドリストのソースを作成します。
 	 * @param data フォームデータ。
+	 * @param implist インポートリスト。
 	 * @return 選択フィールドリストのソース。
 	 * @throws Exception 例外。
 	 */
-	private String getKeyListSource(final Map<String, Object> data) throws Exception {
+	private String getKeyListSource(final Map<String, Object> data, final Set<String> implist) throws Exception {
+		int cnt = 0;
 		StringBuilder sb = new StringBuilder();
-		sb.append("\t\tQuery query = this.getMultiRecordQueryList().get(0);\n");
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_KEY_FIELD_LIST);
+		sb.append("\t\tQuery query = this.getMultiRecordQueryList().get(0);\n");
 		sb.append("\t\tthis.setMultiRecordQueryKeyList(new FieldList(");
 		StringBuilder fsb = new StringBuilder();
 		for (Map<String, Object> m: list) {
@@ -455,11 +457,17 @@ public class DaoGeneratorEditForm extends EditForm {
 				String tbl = (String) m.get("tableClassName");
 				String fld = "query.getFieldList().get(" + tbl + ".Entity.ID_" + StringUtil.camelToSnake(fieldId).toUpperCase() + ")";
 				fsb.append(fld);
+				cnt++;
 			}
 		}
 		sb.append(fsb.toString());
 		sb.append("));\n");
-		return sb.toString();
+		if (cnt > 0) {
+			implist.add("dataforms.field.base.FieldList");
+			return sb.toString();
+		} else {
+			return "";
+		}
 	}
 
 	/**
@@ -476,7 +484,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		String packagename = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
 		String classname = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
 		String src = "\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(classname) + " = new " + classname + "());\n"
-					+ this.getKeyListSource(data);
+					+ this.getKeyListSource(data, implist);
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", src);
 		implist.add(Query.class.getName());
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
@@ -486,7 +494,6 @@ public class DaoGeneratorEditForm extends EditForm {
 
 		Table mainTable = this.getMainTable(packagename + "." + classname);
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
-		implist.add("dataforms.field.base.FieldList");
 		return javasrc;
 	}
 

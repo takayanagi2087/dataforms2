@@ -262,8 +262,10 @@ public class QuerySetDao extends Dao {
 	 */
 	protected String setMultiRecordQueryResult(final Query q, final Map<String, Object> data,  final Map<String, Object> ret) throws Exception {
 		//Query query = this.getMainQuery();
-		q.setConditionFieldList(this.getMultiRecordQueryKeyList());
-		q.setConditionData(data);
+		if (this.getMultiRecordQueryKeyList() != null) {
+			q.setConditionFieldList(this.getMultiRecordQueryKeyList());
+			q.setConditionData(data);
+		}
 		String tid = q.getListId();
 		List<Map<String, Object>> list = this.executeQuery(q);
 		ret.put(tid, list);
@@ -331,8 +333,10 @@ public class QuerySetDao extends Dao {
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(id);
 		// 各関連テーブルにPKの値を設定します。
 		for (Map<String, Object> m: list) {
-			for (Field<?> pk: pklist) {
-				m.put(pk.getId(), data.get(pk.getId()));
+			if (pklist != null) {
+				for (Field<?> pk: pklist) {
+					m.put(pk.getId(), data.get(pk.getId()));
+				}
 			}
 		}
 		this.saveTable(table, list, data, pklist);

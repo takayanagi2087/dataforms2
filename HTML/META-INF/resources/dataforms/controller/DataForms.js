@@ -72,6 +72,13 @@ class DataForms extends WebComponent {
 			ef.hide();
 		}
 		super.attach();
+		if (editMode) {
+			// EditFormしか存在しない場合、更新対象データを読み込む。
+			var f = this.getComponent("editForm");
+			if (f != null) {
+				f.updateData();
+			}
+		}
 		// エラーメッセージ領域が無い場合自動的に追加する.
 		if (this.get("errorMessages").length == 0) {
 			var f = this.find("form:first");

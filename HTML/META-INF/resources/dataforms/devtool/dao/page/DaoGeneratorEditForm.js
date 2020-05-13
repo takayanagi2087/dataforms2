@@ -23,11 +23,9 @@ class DaoGeneratorEditForm extends EditForm {
 	attach() {
 		super.attach();
 		let thisForm = this;
-		this.find("[name='queryType']").click(function() {
-			thisForm.onChangeType($(this).val());
-		});
 		this.onChangeType("1");
-		this.find("[name='queryType']").click(function() {
+		this.get("editFormType").click(function() {
+			thisForm.onChangeType($(this).val());
 			thisForm.getKeyFieldList();
 		});
 	}
@@ -72,7 +70,7 @@ class DaoGeneratorEditForm extends EditForm {
 			let pkg = qlist.getRowField(i, "packageName").getValue();
 			sel.selectPackage(pkg);
 		}
-		this.onChangeType(data.queryType);
+		this.onChangeType(data.editFormType);
 	}
 
 	/**
@@ -80,7 +78,7 @@ class DaoGeneratorEditForm extends EditForm {
 	 *
 	 */
 	getKeyFieldList() {
-		let type = this.find("[name='queryType']:checked").val();
+		let type = this.get("editFormType").val();
 		if (type == "2") {
 			this.submit("getKeyList", (r) => {
 				logger.log("getKeyList r=" + JSON.stringify(r));

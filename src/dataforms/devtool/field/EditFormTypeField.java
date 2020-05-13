@@ -3,14 +3,14 @@ package dataforms.devtool.field;
 import dataforms.field.common.PropertiesSingleSelectField;
 
 /**
- * フィールド選択フィールド。
+ * 編集フォームタイプ。
  *
  */
-public class QueryTypeField extends PropertiesSingleSelectField {
+public class EditFormTypeField extends PropertiesSingleSelectField {
 	/**
 	 * コンストラクタ。
 	 */
-	public QueryTypeField() {
+	public EditFormTypeField() {
 		this(null);
 	}
 
@@ -18,9 +18,9 @@ public class QueryTypeField extends PropertiesSingleSelectField {
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public QueryTypeField(final String id) {
-		super(id, 1, "querytype");
-		this.setComment("問合せパターン");
+	public EditFormTypeField(final String id) {
+		super(id, 1, "editformtype");
+		this.setComment("編集フォームタイプ");
 		this.setHtmlFieldType(HtmlFieldType.SELECT);
 	}
 

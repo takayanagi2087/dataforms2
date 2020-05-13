@@ -19,12 +19,12 @@ import dataforms.dao.SingleTableQuery;
 import dataforms.dao.Table;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.DaoClassNameField;
+import dataforms.devtool.field.EditFormTypeField;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.JavaSourcePathField;
 import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryOrTableClassNameField;
-import dataforms.devtool.field.QueryTypeField;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
@@ -46,9 +46,9 @@ public class DaoGeneratorEditForm extends EditForm {
 	private static Logger logger = LogManager.getLogger(DaoGeneratorEditForm.class);
 
 	/**
-	 * 問合せタイプ。
+	 * 編集フォームタイプ。
 	 */
-	private static final String ID_QUERY_TYPE = "queryType";
+	private static final String ID_EDIT_FORM_TYPE = "editFormType";
 
 	/**
 	 * パッケージ名。
@@ -121,7 +121,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	 */
 	public DaoGeneratorEditForm() {
 		this.addField(new JavaSourcePathField());
-		this.addField(new QueryTypeField()).setComment("編集フォーム");
+		this.addField(new EditFormTypeField()).setComment("編集フォーム");
 		this.addField(new OverwriteModeField(ID_OVERWRITE_MODE)).setComment("上書きモード");
 		FunctionSelectField funcField = new FunctionSelectField();
 		funcField.setPackageOption("dao");
@@ -173,14 +173,14 @@ public class DaoGeneratorEditForm extends EditForm {
 	public void init() throws Exception {
 		super.init();
 		this.setFormData(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
-		this.setFormData(ID_QUERY_TYPE, "1");
+		this.setFormData(ID_EDIT_FORM_TYPE, "1");
 		this.setFormData(ID_OVERWRITE_MODE, "error");
 	}
 
 	@Override
 	protected Map<String, Object> queryNewData(final Map<String, Object> data) throws Exception {
 		Map<String, Object> ret = super.queryNewData(data);
-		ret.put(ID_QUERY_TYPE, "1");
+		ret.put(ID_EDIT_FORM_TYPE, "1");
 		ret.put(ID_OVERWRITE_MODE, "error");
 		return ret;
 	}
@@ -220,9 +220,9 @@ public class DaoGeneratorEditForm extends EditForm {
 		}
 
 		if (dao.getSingleRecordQuery() == null && dao.getMultiRecordQueryList() == null) {
-			ret.put(ID_QUERY_TYPE, "0");
+			ret.put(ID_EDIT_FORM_TYPE, "0");
 		} else if (dao.getSingleRecordQuery() != null) {
-			ret.put(ID_QUERY_TYPE, "1");
+			ret.put(ID_EDIT_FORM_TYPE, "1");
 			{
 				Object obj = this.getQueryOrTableClass(dao.getSingleRecordQuery());
 				ret.put(ID_EDIT_FORM_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
@@ -241,7 +241,7 @@ public class DaoGeneratorEditForm extends EditForm {
 				ret.put(ID_MULTI_RECORD_QUERY_LIST, mqlist);
 			}
 		} else {
-			ret.put(ID_QUERY_TYPE, "2");
+			ret.put(ID_EDIT_FORM_TYPE, "2");
 			List<Query> qlist = dao.getMultiRecordQueryList();
 			if (qlist != null && qlist.size() > 0) {
 				Query q = qlist.get(0);

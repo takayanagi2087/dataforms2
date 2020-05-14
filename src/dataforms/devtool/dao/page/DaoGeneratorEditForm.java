@@ -411,10 +411,10 @@ public class DaoGeneratorEditForm extends EditForm {
 				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "(Query) null");
 			}
 		}
-		String queryType = (String) data.get("queryType");
-		if ("0".equals(queryType)) {
+		String editFormType = (String) data.get(ID_EDIT_FORM_TYPE);
+		if ("0".equals(editFormType)) {
 			javasrc = this.noEditForm(javasrc, implist);
-		} else if ("1".equals(queryType)) {
+		} else if ("1".equals(editFormType)) {
 			javasrc = this.singleRecordEditForm(data, implist, javasrc);
 		} else {
 			javasrc = this.multiRecordEditForm(data, implist, javasrc);

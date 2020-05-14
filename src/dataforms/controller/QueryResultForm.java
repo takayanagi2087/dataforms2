@@ -70,8 +70,10 @@ public abstract class QueryResultForm extends Form {
 	 * @param fieldList 主キーフィールドリスト.
 	 */
 	public void addPkFieldList(final FieldList fieldList) {
-		for (Field<?> field: fieldList) {
-			this.addPkField(field);
+		if (fieldList != null) {
+			for (Field<?> field: fieldList) {
+				this.addPkField(field);
+			}
 		}
 	}
 

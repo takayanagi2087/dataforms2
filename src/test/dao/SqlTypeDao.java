@@ -2,7 +2,6 @@ package test.dao;
 
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.QuerySetDao;
-import dataforms.dao.Query;
 
 
 /**
@@ -44,8 +43,8 @@ public class SqlTypeDao extends QuerySetDao {
 	public SqlTypeDao() {
 		this.setComment("SqlTypeテーブルアクセスクラス");
 		this.setListQuery(this.sqlTypeTable = new SqlTypeTable());
-		this.setSingleRecordQuery((Query) null);
-		this.addMultiRecordQueryList(this.sqlTypeTable = new SqlTypeTable());
+		this.setSingleRecordQuery(this.sqlTypeTable = new SqlTypeTable());
+		this.addMultiRecordQueryList(this.sqlTypeListTable = new SqlTypeListTable());
 
 	}
 

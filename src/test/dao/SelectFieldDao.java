@@ -1,8 +1,8 @@
 package test.dao;
 
 import dataforms.dao.JDBCConnectableObject;
-import dataforms.dao.QuerySetDao;
 import dataforms.dao.Query;
+import dataforms.dao.QuerySetDao;
 
 
 /**
@@ -30,7 +30,7 @@ public class SelectFieldDao extends QuerySetDao {
 	 */
 	public SelectFieldDao() {
 		this.setComment("選択肢フィールドテーブルDAO");
-		this.setListQuery(this.selectFieldTable = new SelectFieldTable());
+//		this.setListQuery(this.selectFieldTable = new SelectFieldTable());
 		this.setSingleRecordQuery((Query) null);
 		this.addMultiRecordQueryList(this.selectFieldTable = new SelectFieldTable());
 

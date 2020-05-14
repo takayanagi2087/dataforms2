@@ -247,6 +247,24 @@ public class PageGeneratorEditForm extends EditForm {
 		return false;
 	}
 
+	/**
+	 * DAOクラスのインスタンスを取得します。
+	 * @param data フォームデータ。
+	 * @return DAOクラスのインスタンス。
+	 * @throws Exception 例外。
+	 */
+	private QuerySetDao getDao(final Map<String, Object> data) throws Exception {
+		String daoPackageName = (String) data.get(ID_DAO_PACKAGE_NAME);
+		String daoClassName = (String) data.get(ID_DAO_CLASS_NAME);
+		if (StringUtil.isBlank(daoPackageName) == false && StringUtil.isBlank(daoClassName) == false) {
+			String className = daoPackageName + "." + daoClassName;
+			@SuppressWarnings("unchecked")
+			Class<? extends QuerySetDao> daoclass = (Class<? extends QuerySetDao>) Class.forName(className);
+			return daoclass.getConstructor().newInstance();
+		} else {
+			return null;
+		}
+	}
 
 	@Override
 	public List<ValidationError> validate(final Map<String, Object> param) throws Exception {
@@ -255,10 +273,33 @@ public class PageGeneratorEditForm extends EditForm {
 			Map<String, Object> data = this.convertToServerData(param);
 			String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
 			String packageName = (String) data.get(ID_PACKAGE_NAME);
+
+			QuerySetDao dao = this.getDao(data);
+
 			String queryFormClassName = (String) data.get(ID_QUERY_FORM_CLASS_NAME);
-			// String daoClassName = (String) data.get(ID_DAO_CLASS_NAME);
 			String queryResultFormClassName = (String) data.get(ID_QUERY_RESULT_FORM_CLASS_NAME);
 			String editFormClassName = (String) data.get(ID_EDIT_FORM_CLASS_NAME);
+
+			logger.debug(() -> "dao classname=" + dao.getClass().getName());
+			logger.debug(() -> "getListQuery=" + dao.getListQuery());
+			logger.debug(() -> "getSingleRecordQuery=" + dao.getSingleRecordQuery());
+			logger.debug(() -> "getMultiRecordQueryList=" + dao.getMultiRecordQueryList());
+			if (dao != null) {
+				if (dao.getListQuery() == null) {
+					if (!StringUtil.isBlank(queryFormClassName)) {
+						ret.add(new ValidationError(ID_QUERY_FORM_CLASS_NAME, this.getPage().getMessage("error.listqueryundefined", "{0}", dao.getClass().getSimpleName())));
+					}
+					if (!StringUtil.isBlank(queryResultFormClassName)) {
+						ret.add(new ValidationError(ID_QUERY_RESULT_FORM_CLASS_NAME, this.getPage().getMessage("error.listqueryundefined", "{0}", dao.getClass().getSimpleName())));
+					}
+				}
+				if (dao.getSingleRecordQuery() == null && dao.getMultiRecordQueryList() == null) {
+					if (!StringUtil.isBlank(editFormClassName)) {
+						ret.add(new ValidationError(ID_EDIT_FORM_CLASS_NAME, this.getPage().getMessage("error.editqueryundefined", "{0}", dao.getClass().getSimpleName())));
+					}
+				}
+			}
+
 			String pageClassName = (String) data.get(ID_PAGE_CLASS_NAME);
 			String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");
 			String pageClassOverwriteMode = (String) data.get(ID_PAGE_CLASS_OVERWRITE_MODE);

@@ -72,6 +72,14 @@ class DataForms extends WebComponent {
 			ef.hide();
 		}
 		super.attach();
+		if (qf.length == 0 && rf.length > 0) {
+			// QueryFormが無くQueryResultFormが存在する場合、先頭ページを表示する。
+			var f = this.getComponent("queryResultForm");
+			if (f != null) {
+				f.topPage();
+				rf.show();
+			}
+		}
 		if (editMode) {
 			// EditFormしか存在しない場合、更新対象データを読み込む。
 			var f = this.getComponent("editForm");

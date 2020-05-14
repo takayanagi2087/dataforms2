@@ -577,6 +577,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "");
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", "Table");
+		implist.add("dataforms.dao.Query");
 		return javasrc;
 	}
 

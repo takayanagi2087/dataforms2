@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="mainDiv">
+			<form id="queryResultForm">
+				<div class="formHeader">検索結果</div>
+				<table class="responsive">
+					<tbody>
+					</tbody>
+				</table>
+				<div class="hScrollDiv">
+					<table id="queryResult">
+						<thead>
+							<tr>
+								<th>
+									No.
+								</th>
+								<th>
+									Charフィールド
+								</th>
+								<th>
+									Varcharフィールド
+								</th>
+								<th>
+									Smallintフィールド
+								</th>
+								<th>
+									Integerフィールド
+								</th>
+								<th>
+									Bigintフィールド
+								</th>
+								<th>
+									Doubleフィールド
+								</th>
+								<th>
+									Numericフィールド
+								</th>
+								<th>
+									Dateフィールド
+								</th>
+								<th>
+									Timeフィールド
+								</th>
+								<th>
+									Timestampフィールド
+								</th>
+								<th>
+									Clobフィールド
+								</th>
+								<th>
+									操作
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<span id="queryResult[0].rowNo"></span>
+									<input type="hidden" id="queryResult[0].sqlTypeId" />
+									<input type="hidden" id="queryResult[0].createUserId" />
+									<input type="hidden" id="queryResult[0].createTimestamp" />
+									<input type="hidden" id="queryResult[0].updateUserId" />
+									<input type="hidden" id="queryResult[0].updateTimestamp" />
+								</td>
+								<td>
+									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].sqlChar"></span></a>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlVarchar"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlSmallint"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlInteger"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlBigint"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlDouble"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlNumeric"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlDate"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlTime"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlTimestamp"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlClob"></span>
+								</td>
+								<td>
+									<input type="button" id="queryResult[0].viewButton" value="表示">
+									<input type="button" id="queryResult[0].referButton" value="参照登録">
+									<input type="button" id="queryResult[0].deleteButton" value="削除">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</form>
+			<form id="editForm">
+				<div class="formHeader"><span id="editFormTitle"></span></div>
+				<input type="hidden" id="saveMode" />
+				<input type="hidden" id="sqlTypeId" />
+				<input type="hidden" id="createUserId" />
+				<input type="hidden" id="createTimestamp" />
+				<input type="hidden" id="updateUserId" />
+				<input type="hidden" id="updateTimestamp" />
+				<table class="responsive">
+					<tbody>
+						<tr>
+							<th>Charフィールド</th>
+							<td><input type="text" id="sqlChar" /></td>
+						</tr>
+						<tr>
+							<th>Varcharフィールド</th>
+							<td><input type="text" id="sqlVarchar" /></td>
+						</tr>
+						<tr>
+							<th>Smallintフィールド</th>
+							<td><input type="text" id="sqlSmallint" /></td>
+						</tr>
+						<tr>
+							<th>Integerフィールド</th>
+							<td><input type="text" id="sqlInteger" /></td>
+						</tr>
+						<tr>
+							<th>Bigintフィールド</th>
+							<td><input type="text" id="sqlBigint" /></td>
+						</tr>
+						<tr>
+							<th>Doubleフィールド</th>
+							<td><input type="text" id="sqlDouble" /></td>
+						</tr>
+						<tr>
+							<th>Numericフィールド</th>
+							<td><input type="text" id="sqlNumeric" /></td>
+						</tr>
+						<tr>
+							<th>Dateフィールド</th>
+							<td><input type="text" id="sqlDate" /></td>
+						</tr>
+						<tr>
+							<th>Timeフィールド</th>
+							<td><input type="text" id="sqlTime" /></td>
+						</tr>
+						<tr>
+							<th>Timestampフィールド</th>
+							<td><input type="text" id="sqlTimestamp" /></td>
+						</tr>
+						<tr>
+							<th>Clobフィールド</th>
+							<td><textarea id="sqlClob" rows="20" cols="80"></textarea></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="hScrollDiv">
+					<table id="sqlTypeListList" class="editableTable">
+						<thead>
+							<tr>
+								<th colspan="2" nowrap>
+									
+								</th>
+								<th nowrap>
+									No.
+								</th>
+								<th>
+									Charフィールド
+								</th>
+								<th>
+									Varcharフィールド
+								</th>
+								<th>
+									Smallintフィールド
+								</th>
+								<th>
+									Integerフィールド
+								</th>
+								<th>
+									Bigintフィールド
+								</th>
+								<th>
+									Doubleフィールド
+								</th>
+								<th>
+									Numericフィールド
+								</th>
+								<th>
+									Dateフィールド
+								</th>
+								<th>
+									Timeフィールド
+								</th>
+								<th>
+									Timestampフィールド
+								</th>
+								<th>
+									Clobフィールド
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="buttonColumn">
+									<input type="button" id="sqlTypeListList[0].addButton" value="+"/>
+								</td>
+								<td class="buttonColumn">
+									<input type="button" id="sqlTypeListList[0].deleteButton" value="-"/>
+								</td>
+								<td style="text-align: right;" class="rowno">
+									<span id="sqlTypeListList[0].no"></span>
+								</td>
+								<td>
+									<input type="text" id="sqlTypeListList[0].sqlChar" />
+									<input type="hidden" id="sqlTypeListList[0].sqlTypeListId" />
+									<input type="hidden" id="sqlTypeListList[0].sqlTypeId" />
+									<input type="hidden" id="sqlTypeListList[0].sortOrder" />
+									<input type="hidden" id="sqlTypeListList[0].createUserId" />
+									<input type="hidden" id="sqlTypeListList[0].createTimestamp" />
+									<input type="hidden" id="sqlTypeListList[0].updateUserId" />
+									<input type="hidden" id="sqlTypeListList[0].updateTimestamp" />
+								</td>
+								<td>
+									<input type="text" id="sqlTypeListList[0].sqlVarchar" />
+								</td>
+								<td>
+									<input type="text" id="sqlTypeListList[0].sqlSmallint" />
+								</td>
+								<td>
+									<input type="text" id="sqlTypeListList[0].sqlInteger" />
+								</td>
+								<td>
+									<input type="text" id="sqlTypeListList[0].sqlBigint" />
+								</td>
+								<td>
+									<input type="text" id="sqlTypeListList[0].sqlDouble" />
+								</td>
+								<td>
+									<input type="text" id="sqlTypeListList[0].sqlNumeric" />
+								</td>
+								<td>
+									<input type="text" id="sqlTypeListList[0].sqlDate" />
+								</td>
+								<td>
+									<input type="text" id="sqlTypeListList[0].sqlTime" />
+								</td>
+								<td>
+									<input type="text" id="sqlTypeListList[0].sqlTimestamp" />
+								</td>
+								<td>
+									<textarea id="sqlTypeListList[0].sqlClob" rows="20" cols="80"></textarea>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th class="buttonColumn">
+									<input type="button" id="sqlTypeListList.addButton" value="+"/>
+								</th>
+								<th colspan="13">
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
+				<input type="button" id="saveButton" class="largeButton" value="登録"/>
+				<input type="button" id="resetButton" class="largeButton" value="リセット"/>
+				<input type="button" id="deleteButton" class="largeButton" value="削除"/>
+				<input type="button" id="backButton" class="largeButton" value="戻る"/>
+			</form>
+
+		</div>
+	</body>
+</html>

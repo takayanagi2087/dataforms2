@@ -1,4 +1,4 @@
-package sample.dao;
+package test.dao;
 
 import java.util.List;
 import java.util.ArrayList;

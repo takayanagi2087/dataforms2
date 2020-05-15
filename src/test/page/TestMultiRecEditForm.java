@@ -1,10 +1,10 @@
-package sample.page;
+package test.page;
 
 import java.util.Map;
 
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
-import sample.dao.TestMultiRecDao;
+import test.dao.TestMultiRecDao;
 
 /**
  * 編集フォームクラス。

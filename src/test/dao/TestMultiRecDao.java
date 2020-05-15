@@ -1,4 +1,4 @@
-package sample.dao;
+package test.dao;
 
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.QuerySetDao;

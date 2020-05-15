@@ -1,4 +1,4 @@
-package sample.field;
+package test.field;
 
 import dataforms.field.common.RecordIdField;
 

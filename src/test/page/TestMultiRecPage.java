@@ -1,8 +1,8 @@
-package sample.page;
+package test.page;
 
 import dataforms.app.base.page.BasePage;
 import dataforms.dao.Dao;
-import sample.dao.TestMultiRecDao;
+import test.dao.TestMultiRecDao;
 
 
 /**

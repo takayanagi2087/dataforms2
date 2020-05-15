@@ -1,4 +1,4 @@
-package sample.dao;
+package test.dao;
 
 import dataforms.field.base.FieldList;
 import dataforms.dao.Query;

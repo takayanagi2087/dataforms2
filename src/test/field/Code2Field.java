@@ -1,34 +1,34 @@
-package sample.field;
+package test.field;
 
 import dataforms.field.sqltype.VarcharField;
 import dataforms.validator.MaxLengthValidator;
 
 
 /**
- * ContentsFieldフィールドクラス。
+ * Code2Fieldフィールドクラス。
  *
  */
-public class ContentsField extends VarcharField {
+public class Code2Field extends VarcharField {
 	/**
 	 * フィールド長。
 	 */
-	private static final int LENGTH = 64;
+	private static final int LENGTH = 8;
 
 	/**
 	 * フィールドコメント。
 	 */
-	private static final String COMMENT = "内容";
+	private static final String COMMENT = "コード2";
 	/**
 	 * コンストラクタ。
 	 */
-	public ContentsField() {
+	public Code2Field() {
 		this(null);
 	}
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public ContentsField(final String id) {
+	public Code2Field(final String id) {
 		super(id, LENGTH);
 		this.setComment(COMMENT);
 	}

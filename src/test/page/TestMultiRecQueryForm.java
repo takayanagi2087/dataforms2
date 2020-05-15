@@ -1,10 +1,10 @@
-package sample.page;
+package test.page;
 
 import dataforms.controller.QueryForm;
 import dataforms.field.base.Field.MatchType;
 import dataforms.validator.RequiredValidator;
-import sample.dao.TestMultiRecTable;
-import sample.field.Code1Field;
+import test.dao.TestMultiRecTable;
+import test.field.Code1Field;
 
 
 

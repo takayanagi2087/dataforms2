@@ -1,12 +1,12 @@
-package sample.dao;
+package test.dao;
 
 import java.util.Map;
 import dataforms.dao.Table;
-import sample.field.TestMultiRecIdField;
 import dataforms.field.common.SortOrderField;
-import sample.field.Code1Field;
-import sample.field.Code2Field;
-import sample.field.ContentsField;
+import test.field.Code1Field;
+import test.field.Code2Field;
+import test.field.ContentsField;
+import test.field.TestMultiRecIdField;
 
 
 /**

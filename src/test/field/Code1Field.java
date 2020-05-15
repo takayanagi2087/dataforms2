@@ -1,4 +1,4 @@
-package sample.field;
+package test.field;
 
 import java.util.List;
 import java.util.Map;
@@ -7,7 +7,7 @@ import dataforms.dao.Query;
 import dataforms.field.base.FieldList;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.validator.MaxLengthValidator;
-import sample.dao.TestMultiRecTable;
+import test.dao.TestMultiRecTable;
 
 
 /**

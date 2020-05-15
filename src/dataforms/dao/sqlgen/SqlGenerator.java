@@ -208,10 +208,13 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		ClassFinder finder = new ClassFinder();
 		List<Class<?>> classlist = finder.findClasses("dataforms.dao.sqlgen", SqlGenerator.class);
 		for (Class<?> cls: classlist) {
+			logger.debug(() -> "SqlGenerator=" + cls.getName());
 			SqlGeneratorImpl sga = cls.getAnnotation(SqlGeneratorImpl.class);
-			if (sga.databaseProductName().equals(n)) {
-				ret = cls;
-				break;
+			if (sga != null) {
+				if (sga.databaseProductName().equals(n)) {
+					ret = cls;
+					break;
+				}
 			}
 		}
    		return ret;

@@ -15,9 +15,7 @@
 	<property name="target" value="11"/>
 	<property name="source" value="11"/>
 	<property name="jar.name" value="dataforms2.jar"/>
-	<!--property name="jar.command" value="D:\eclipse\pleiades-e4.7.1\java\8\bin\jar.exe"/-->
 	<property name="javadoc.command" value="${PLEIADES_HOME}/java/11/bin/javadoc.exe"/>
-	<property name="jar.command" value="${PLEIADES_HOME}/java/11/bin/jar.exe" />
 	<property name="jsdoc.command" value="C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd"/>
 	<property name="version.num" value="2.00"/>
 	<property name="user" value="Masahiko Takayanagi"/>
@@ -120,6 +118,7 @@
 		<!-- javadocの出来上がりを待つ。 -->
 		<echo message="javadocの出来上がりを待っています。"/>
 		<sleep milliseconds="30000"/>
+		<!-- manifestの作成 -->
 		<buildnumber/>
 		<manifest file="dataforms.mf">
 			<attribute name="Built-By" value="${user}"/>
@@ -132,6 +131,7 @@
 		<copy file="dataforms.mf" todir="./HTML/META-INF/resources" overwrite="true"/>
 		<copy file="dataforms.mf" todir="./build/classes/META-INF/resources" overwrite="true"/>
 
+		<!-- jarに入れるファイル群をまとめる -->
 		<delete dir="${temp.dir}/classes"/>
 		<copy todir="${temp.dir}/classes" overwrite="true">
 			<fileset dir="build/classes">
@@ -141,24 +141,13 @@
 			<fileset dir="src">
 			</fileset>
 		</copy>
+		<!-- 不要なファイルを削除 -->
 		<delete file="${temp.dir}/classes/log4j2.xml"/>
 		<delete dir="${temp.dir}/classes/sample"/>
 		<delete dir="${temp.dir}/classes/test"/>
 		<delete dir="${temp.dir}/classes/dataforms/debug"/>
 		<delete dir="${temp.dir}/classes/META-INF/resources/dataforms/debug"/>
-		<!--　
-			以下のタスクでjarを作るとなぜかダメ...
-			SqlGeneratorのアノテーション取得でエラーとなる.
-		<jar jarfile="${jar.name}" basedir="build/classes" manifest="dataforms.mf"></jar>
-		-->
-		<!--  直接jdkのjarコマンドを使うとうまく動作するjarができる。-->
-		<exec executable="${jar.command}" dir=".">
-			<arg value="cmf"/>
-			<arg value="dataforms.mf"/>
-			<arg value="${jar.name}"/>
-			<arg value="-C"/>
-			<arg value="${temp.dir}/classes"/>
-			<arg value="."/>
-		</exec>
+		<!-- jarを作成 -->
+		<jar jarfile="${jar.name}" basedir="${temp.dir}/classes" manifest="dataforms.mf"></jar>
 	</target>
 </project>

@@ -23,6 +23,7 @@
 	<property name="user" value="Masahiko Takayanagi"/>
 	<property name="javadoc.dir" value="./HTML/META-INF/resources/doc/javadoc"/>
 	<property name="jsdoc.dir" value="./HTML/META-INF/resources/doc/jsdoc"/>
+	<property name="temp.dir" value="C:/eclipse/buildTemp"/>
 
 	<tstamp>
 		<format property="build.time" pattern="yyyy/MM/dd HH:mm:ss.SSS" />
@@ -116,16 +117,10 @@
 		<echo message="Javadoc終了"/>
 	</target>
 	<target name="jar" depends="javadoc,jsdoc">
-		<buildnumber/>
 		<!-- javadocの出来上がりを待つ。 -->
 		<echo message="javadocの出来上がりを待っています。"/>
-		<sleep milliseconds="20000"/>
-		<delete file="build/classes/log4j.xml"/>
-		<delete file="build/classes/log4j.dtd"/>
-		<delete dir="build/classes/proj"/>
-		<delete dir="build/classes/test"/>
-		<delete dir="build/classes/dataforms/debug"/>
-		<delete dir="build/classes/META-INF/MANIFEST.MF"/>
+		<sleep milliseconds="30000"/>
+		<buildnumber/>
 		<manifest file="dataforms.mf">
 			<attribute name="Built-By" value="${user}"/>
 			<attribute name="Created-By" value="${user}"/>
@@ -136,6 +131,21 @@
 		</manifest>
 		<copy file="dataforms.mf" todir="./HTML/META-INF/resources" overwrite="true"/>
 		<copy file="dataforms.mf" todir="./build/classes/META-INF/resources" overwrite="true"/>
+
+		<delete dir="${temp.dir}/classes"/>
+		<copy todir="${temp.dir}/classes" overwrite="true">
+			<fileset dir="build/classes">
+			</fileset>
+		</copy>
+		<copy todir="${temp.dir}/classes">
+			<fileset dir="src">
+			</fileset>
+		</copy>
+		<delete file="${temp.dir}/classes/log4j2.xml"/>
+		<delete dir="${temp.dir}/classes/sample"/>
+		<delete dir="${temp.dir}/classes/test"/>
+		<delete dir="${temp.dir}/classes/dataforms/debug"/>
+		<delete dir="${temp.dir}/classes/META-INF/resources/dataforms/debug"/>
 		<!--　
 			以下のタスクでjarを作るとなぜかダメ...
 			SqlGeneratorのアノテーション取得でエラーとなる.
@@ -147,15 +157,7 @@
 			<arg value="dataforms.mf"/>
 			<arg value="${jar.name}"/>
 			<arg value="-C"/>
-			<arg value="build/classes"/>
-			<arg value="."/>
-		</exec>
-		<!-- javaソースを追加 -->
-		<exec executable="${jar.command}" dir=".">
-			<arg value="uf"/>
-			<arg value="${jar.name}"/>
-			<arg value="-C"/>
-			<arg value="src"/>
+			<arg value="${temp.dir}/classes"/>
 			<arg value="."/>
 		</exec>
 	</target>

@@ -86,13 +86,12 @@ public class DeveloperEditForm extends EditForm {
 	/**
 	 * {@inheritDoc}
 	 * <pre>
-	 * 実装が必要なので適当に作っておきます。呼ばれることはありません。
+	 * 実装が必要なので適当に作っておきます。
 	 * </pre>
 	 */
 	@Override
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
-		UserDao dao = new UserDao(this);
-		Map<String, Object> ret = dao.getSelectedData(data);
+		Map<String, Object> ret = new HashMap<String, Object>();
 		return ret;
 	}
 

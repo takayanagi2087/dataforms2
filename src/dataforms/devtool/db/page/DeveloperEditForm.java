@@ -92,6 +92,9 @@ public class DeveloperEditForm extends EditForm {
 	@Override
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
 		Map<String, Object> ret = new HashMap<String, Object>();
+		String userLevel = this.getInitializeUserLvel();
+		ret.put("loginId", userLevel);
+		ret.put("userName", userLevel);
 		return ret;
 	}
 

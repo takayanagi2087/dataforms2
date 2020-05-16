@@ -5,13 +5,27 @@
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-Control" content="no-cache">
 		<link type="text/css" href="../css/document.css" rel="stylesheet" />
+		<style type="text/css">
+			table {
+				border-collapse: collapse;
+				border-color: #aaaaaa;
+				border-width: lightgr;
+				border-style: solid;
+			}
+			table th,
+			table td {
+				border-color: #aaaaaa;
+				border-width: 1px;
+				border-style: solid;
+			}
+		</style>
 		<title>概要</title>
 	</head>
 	<body>
 		<h1><span>1.</span>概要</h1>
 		<h2>開発の目的</h2>
 		<p>
-			dataforms.jarはJavaでWebアプリケーションを簡単に作るためフレームワークです。
+			dataforms2.jarはJavaでWebアプリケーションを簡単に作るためフレームワークです。
 		</p>
 		<p>
 			Webアプリケーションの場合、M(Model),V(View),C(Controller)モデルに準拠した作りが良いとされています。
@@ -32,12 +46,12 @@
 		このフレームワークの特徴を以下にまとめます。
 		<h3>1つのjarファイルにまとまっている</h3>
 		<p>
-			このフレームワークの本体は、1つのjarファイル(dataforms.jar)にまとまっています。
-			dataforms.jarには、ライブラリ本体、アプリケーションの基本機能、開発ツールが入っています。
-			Servletクラスもdataforms.jarに入っており、web.xmlに設定を記述しなくても、*.dfというパターンで、DataFormsServletというServletが動作するようになっています。
+			このフレームワークの本体は、1つのjarファイル(dataforms2.jar)にまとまっています。
+			dataforms2.jarには、ライブラリ本体、アプリケーションの基本機能、開発ツールが入っています。
+			Servletクラスもdataforms2.jarに入っており、web.xmlに設定を記述しなくても、*.dfというパターンで、DataFormsServletというServletが動作するようになっています。
 			基本機能や開発ツールなどのページを構成するHTMLやJavascriptも、META-INF/resourcesに入っています。
 			(これらはServlet 3.0でサポートされた機能を使用しています。)
-			基本的にWEB-INF/libにdataforms.jarと幾つかの依存ライブラリをコピーし、web.xmlにJNDIデータソースの設定を記述すれば動作します。
+			基本的にWEB-INF/libにdataforms2.jarと幾つかの依存ライブラリをコピーし、web.xmlにJNDIデータソースの設定を記述すれば動作します。
 		</p>
 		<h3>依存ライブラリが少ない</h3>
 		<p>
@@ -46,72 +60,136 @@
 			この中で一番大きいのがpoiなのですが、Excelレポート出力を使用しないのであれば不要です。
 			依存するライブラリの一覧を以下に示します。
 		</p>
-		<table>
+		<table class="jarlist">
 			<caption>
-			依存ライブラリ一覧
+				依存ライブラリ一覧
 			</caption>
 			<thead>
 				<tr>
-					<th>
-						ライブラリ名称
-					</th>
-					<th>
-						コメント
-					</th>
+					<th style="width: 100px;">グルーブ</th>
+					<th style="width: 300px;">ファイル</th>
+					<th style="width: 400px;">コメント</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>jquery</td><td rowspan="2">定番のJavascriptライブラリです。</td>
+					<td rowspan="2">jQuery</td>
+					<td>jQuery</td>
+					<td rowspan="2">Javascriptライブラリ</td>
 				</tr>
 				<tr>
-					<td>jquery-ui</td>
+					<td>jQuery-ui</td>
 				</tr>
 				<tr>
-					<td>commons-codec</td><td rowspan="6">定番のapache commonsライブラリです。</td>
+					<td rowspan="5">commons</td>
+					<td>commons-fileupload-XXX.jar</td>
+					<td>ファイルのアップロード</td>
 				</tr>
 				<tr>
-					<td>commons-fileupload</td>
+					<td>commons-lang3-XXX.jar</td>
+					<td rowspan="2">実態参照変換</td>
 				</tr>
 				<tr>
-					<td>commons-io</td>
+					<td>commons-text-XXX.jar</td>
 				</tr>
 				<tr>
-					<td>commons-lang</td>
+					<td>commons-validator-XXX.jar</td>
+					<td>入力値のバリデーション</td>
 				</tr>
 				<tr>
-					<td>commons-logging</td>
+					<td>commons-logging-XXX.jar</td>
+					<td>poi,fopが参照</td>
 				</tr>
 				<tr>
-					<td>commons-validator</td>
-				</tr>
-				<tr>
-					<td>jsonic</td><td>Jsonの処理で利用しています。</td>
-				</tr>
-				<tr>
-					<td>log4j</td><td>ログ出力に利用しています</td>
-				</tr>
-				<tr>
-					<td>poi</td>
+					<td rowspan="12">poi</td>
+					<td>poi-XXX.jar</td>
 					<td rowspan="5">
-						Excelレポート出力機能で使用します。<br>
-						Excelレポート出力機能を使用しないのであれば不要です。<br>
+						Excel出力で使用<br/>
+						(Excel出力を使用しない場合は削除できます)
 					</td>
 				</tr>
 				<tr>
-					<td>poi-excelant</td>
+					<td>poi-excelant-XXX.jar</td>
 				</tr>
 				<tr>
-					<td>poi-ooxml</td>
+					<td>poi-ooxml-XXX.jar</td>
 				</tr>
 				<tr>
-					<td>poi-ooxml-schemas</td>
+					<td>poi-ooxml-schemas-XXX.jar</td>
 				</tr>
 				<tr>
-					<td>poi-scratchpad</td>
+					<td>poi-scratchpad-XXX.jar</td>
 				</tr>
 				<tr>
-					<td>xmlbeans</td><td>POIが使用しているようです。</td>
+					<td>commons-codec-XXX.jar</td>
+					<td rowspan="7">
+						POIが参照<br/>
+						(Excel出力を使用しない場合は削除できます)
+					</td>
+				</tr>
+				<tr>
+					<td>commons-collections4-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>commons-compress-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>commons-math3-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>SparseBitSet-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>curvesapi-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>xmlbeans-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>jsonic</td>
+					<td>jsonic-XXX.jar</td>
+					<td>JSON変換</td>
+				</tr>
+				<tr>
+					<td rowspan="2" >log4j2</td>
+					<td>log4j-api-XXX.jar</td>
+					<td rowspan="2">ログ出力</td>
+				</tr>
+				<tr>
+					<td>log4j-core-XXX.jar</td>
+				</tr>
+				<tr>
+					<td rowspan="8" >fop</td>
+					<td>fop.jar</td>
+					<td>
+						PDF出力<br/>
+						(PDF出力を使用しない場合は削除できます)
+					</td>
+				</tr>
+				<tr>
+					<td>batik-all-XXX.jar</td>
+					<td rowspan="7">
+						FOPが参照<br/>
+						(PDF出力を使用しない場合は削除できます)
+					</td>
+				</tr>
+				<tr>
+					<td>commons-io-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>fontbox-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>serializer-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>xalan-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>xercesImpl-XXX.jar</td>
+				</tr>
+				<tr>
+					<td>xmlgraphics-commons-XXX.jar</td>
 				</tr>
 			</tbody>
 		</table>
@@ -135,7 +213,7 @@
 		<p>
 			「詳細設計工程でテーブル定義は確定しています。」という言葉ほど、信用できないものはありません。
 			単体テスト、結合テスト工程は当然のように、総合テストでも数回テーブル変更が発生する様なプロジェクトをよく見かけます。
-			dataforms.jarでは、テーブルJavaクラスの修正を行い、開発ツールでその変更をDBに適用するだけで対応できます。
+			dataforms2.jarでは、テーブルJavaクラスの修正を行い、開発ツールでその変更をDBに適用するだけで対応できます。
 			各DBサーバのマニュアルを調べて、テーブル修正用のスクリプトを作成する作業は不要です。
 			当然テーブル中のデータも保持されます。
 		</p>
@@ -159,7 +237,7 @@
 		<h3>クラス化されたJavascriptライブラリ</h3>
 		<p>
 			Javaのページクラスにはフォームクラスのオブジェクトが配置され、フォームクラスにはフィールドクラスのオブジェクトが配置されています。
-			dataforms.jarでは、これらのJavaクラスに対応するJavascriptのクラスを作成することができます。
+			dataforms2.jarでは、これらのJavaクラスに対応するJavascriptのクラスがES6の文法で記述されています。
 			(Javascriptクラスが存在しなければ、親クラスのJavascriptクラスが自動的に操作します。)
 			Javascriptクラスは、開発ツールで簡単に作成することができます。
 			開発ツールで作成したjavascriptクラスに特殊な処理を記述することにより、独自の機能を追加していくとこができます。
@@ -214,17 +292,16 @@
 		<p>
 			EditFormを省略すれは、問い合わせのみのページになります。
 			また、EditFormのみを配置すれば、ユーザの登録情報の変更ページのように、決まったテーブルのレコードを修正するようなページを作ることもできます。
-			(この場合、EditFormクラスの初期化処理で編集データを取得するように変更する必要があります。)
 		</p>
 		<p>
 			EditFormの入力後確認ボタンを押下すると、EditFormがロックされ、確認画面になります。
-			他のフレームワークでは、これらの確認画面専用のHTMLを用意するケースを見かけますが、dataforms.jarは編集用のフォームの各フィールドをロックすることによって実現しています。
+			他のフレームワークでは、これらの確認画面専用のHTMLを用意するケースを見かけますが、dataforms2.jarは編集用のフォームの各フィールドをロックすることによって実現しています。
 			そのため、確認ページ用のHTMLを用意する必要がありません。
 			確認画面が不要な場合、HTMLから「確認」ボタンを削除してください。
 			これだけで最初から登録ボタンが表示され、確認画面を経由せず保存できるようになります。
 		</p>
 		<p>
-			dataforms.jarでは、HTMLの&lt;table&gt;タグに対応するHtmlTableクラスが用意されています。
+			dataforms2.jarでは、HTMLの&lt;table&gt;タグに対応するHtmlTableクラスが用意されています。
 			HtmlTableクラスのサブクラスには、以下の物があります。
 		</p>
 
@@ -267,9 +344,9 @@
 		</p>
 		<h3>アプリケーションの基本機能を装備</h3>
 		<p>
-			dataforms.jarの中には、開発ツールの他にユーザの管理、ログインログアウトの機能を標準装備しています。
+			dataforms2.jarの中には、開発ツールの他にユーザの管理、ログインログアウトの機能を標準装備しています。
 			これらの機能の実装は単純ですが、システムごとに実装するのも意外と面倒なものです。
-			dataforms.jarを使用すれば、このような手間をなくすことができます。
+			dataforms2.jarを使用すれば、このような手間をなくすことができます。
 		</p>
 		<p>
 			また、これらの機能は必要最小限のものになっています。
@@ -278,7 +355,7 @@
 		<h3>デザイナーさんにお任せできるViewの実現</h3>
 		<p>
 			開発ツールで作成されたHTMLを確認してみるとわかると思いますが、標準的なHTMLのみで、Javascript、onxxxx等のイベント関連アトリビュート、ライブラリが定義する特殊なアトリビュートも存在しません。
-			これが何故動作するのか不思議に思うかもしれませんが、dataforms.jarがこのページの初期化スクリプトを自動的に生成するので、所定のイベント処理が自動的に組み込まれます。
+			これが何故動作するのか不思議に思うかもしれませんが、dataforms2.jarがこのページの初期化スクリプトを自動的に生成するので、所定のイベント処理が自動的に組み込まれます。
 			つまりHTMLは純粋に見た目だけを記述することになり、外見はHTMLやCSSの文法を理解しているデザイナーさんにお任せすることができます。
 		</p>
 		<p>
@@ -286,13 +363,13 @@
 			このような場合、デザイン面の調整に時間を取られ、システムのデバックがほぼ完了した段階でデザインが届き、泣きながらjspに組み込むなんてことが発生します。
 			jspにはJavascriptやScriptletが混在するので、修正すれば一部テストはやり直しになります。
 			その挙句、デザイナーさんから「ここが1ドットずれています。」なんてクレームが来たりします。
-			これがdataforms.jarでjspを採用しなかった理由です。
-			このような開発の場合、dataforms.jarのEclipseプロジェクトを作成して、「このcssとhtmlはお任せします。」とやっています。
+			これがdataforms2.jarでjspを採用しなかった理由です。
+			このような開発の場合、dataforms2.jarのEclipseプロジェクトを作成して、「このcssとhtmlはお任せします。」とやっています。
 		</p>
 		<h3>フレームデザインの共通化</h3>
 		<p>
-			dataforms.jarでは、各ページに共通したフレームデザインが設定されており、それを切り替えることが可能です。
-			dataforms.jarの中には、/frame/defaultというパスにFrameデザインを記録したHTMLやcssが入っています。
+			dataforms2.jarでは、各ページに共通したフレームデザインが設定されており、それを切り替えることが可能です。
+			dataforms2.jarの中には、/frame/defaultというパスにFrameデザインを記録したHTMLやcssが入っています。
 			デザイン性を重視しない場合はこのまま使用してもよいですし、デザインに凝りたい場合、これをカスタマイズすることも可能です。
 		</p>
 		<p>
@@ -303,7 +380,7 @@
 		<p>
 			現在のWebアプリケーションは、PCだけでなく、タブレット、スマートフォンに対応する必要があります。
 			前述のフレームの設定には、Frame.css,FramePC.css,FranmeTB.css,FrameSP.cssのスタイルシートが存在し、それぞれ全デバイス共通スタイル、PC用スタイル、タブレット用スタイル、スマートフォン用スタイルが設定されています。
-			PCのブラウザでdataforms.jarの各ページを表示し、ブラウザのサイズを変更すると、各画面サイズに応じてレイアウトが変化するはずです。
+			PCのブラウザでdataforms2.jarの各ページを表示し、ブラウザのサイズを変更すると、各画面サイズに応じてレイアウトが変化するはずです。
 		</p>
 		<h3>多言語対応</h3>
 		<p>

@@ -13,6 +13,18 @@ table {
 	border : 0px;
 	margin-left: 40px;
 	margin-bottom: 20px;
+
+	border-collapse: collapse;
+	border-color: #aaaaaa;
+	border-width: lightgr;
+	border-style: solid;
+}
+
+table th,
+table td {
+	border-color: #aaaaaa;
+	border-width: 1px;
+	border-style: solid;
 }
 
 .filecaption {

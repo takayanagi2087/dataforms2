@@ -1,6 +1,5 @@
 package dataforms.app.menu.page;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,6 @@ import dataforms.controller.Page;
 import dataforms.menu.Menu;
 import dataforms.response.JsonResponse;
 import dataforms.servlet.DataFormsServlet;
-import dataforms.util.ClassFinder;
 import dataforms.util.MessagesUtil;
 import dataforms.util.SequentialProperties;
 import net.arnx.jsonic.JSON;
@@ -189,7 +187,7 @@ public class MenuForm extends Form {
 				}
 			}
 			// プロパティに存在しないページクラスを追加する.
-	    	String packageName = funcPath.substring(1).replaceAll("/", ".");
+/*	    	String packageName = funcPath.substring(1).replaceAll("/", ".");
 	    	if (packageName != null) {
 	    		if (prop.getKeyList() != null) {
 		    		if (prop.getKeyList().size() > 0) {
@@ -210,7 +208,7 @@ public class MenuForm extends Form {
 				    	}
 		    		}
 	    		}
-	    	}
+	    	}*/
 		}
 		return menuList;
 	}

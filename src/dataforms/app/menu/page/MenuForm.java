@@ -19,6 +19,7 @@ import dataforms.servlet.DataFormsServlet;
 import dataforms.util.ClassFinder;
 import dataforms.util.MessagesUtil;
 import dataforms.util.SequentialProperties;
+import net.arnx.jsonic.JSON;
 
 /**
  * メニューフォームクラス。
@@ -123,28 +124,34 @@ public class MenuForm extends Form {
 			@SuppressWarnings("unchecked")
 			Class<? extends Page> clazz = (Class<? extends Page>) Class.forName(classname);
 			try {
-		    	Page page = clazz.getDeclaredConstructor().newInstance();
-		    	page.setRequest(this.getPage().getRequest());
-		    	if (page.isMenuItem()) {
-			    	if (page.isAuthenticated(new HashMap<String, Object>())) {
-			    		String menuName = (String) m.get("menuName");
-			    		logger.debug(() -> "menuName=" + menuName);
-			    		m.put("menuName", page.decorateMenuName(menuName));
-			    		String menuUrl = page.getMenuUrl();
-			    		if (menuUrl != null) {
-			    			m.put("menuUrl", menuUrl);
-			    		}
-			    		String menuTarget = page.getMenuTarget();
-			    		if (menuTarget != null) {
-			    			m.put("menuTarget", menuTarget);
-			    		}
-			    		mlist.add(m);
-			    	}
-		    	}
+				Page page = clazz.getDeclaredConstructor().newInstance();
+				page.setRequest(this.getPage().getRequest());
+				if (page.isMenuItem()) {
+					if (page.isAuthenticated(new HashMap<String, Object>())) {
+						String menuName = (String) m.get("menuName");
+						logger.debug(() -> "menuName=" + menuName);
+						m.put("menuName", page.decorateMenuName(menuName));
+						String menuUrl = page.getMenuUrl();
+						if (menuUrl != null) {
+							m.put("menuUrl", menuUrl);
+						}
+						String menuTarget = page.getMenuTarget();
+						if (menuTarget != null) {
+							m.put("menuTarget", menuTarget);
+						}
+						mlist.add(m);
+/*						String pageClass = (String) m.get("pageClass");
+						if ("dataforms.devtool.doc.page.DocFramePage".equals(pageClass)
+								|| "dataforms.devtool.version.page.VersionInfoPage".equals(pageClass)) {
+							m.put("menuGroupName", "ドキュメント");
+						}*/
+					}
+				}
 			} catch (Error e) {
 				logger.error(() -> e.getMessage(), e);
 			}
 		}
+		logger.debug(() -> "menuList=" + JSON.encode(mlist, true));
 		return mlist;
 	}
 

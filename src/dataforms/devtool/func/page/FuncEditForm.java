@@ -57,12 +57,12 @@ public class FuncEditForm extends EditForm {
 	public void init() throws Exception {
 		super.init();
 		this.setFormDataMap(this.queryData(null));
-		this.setFormData("webSourcePath", DeveloperPage.getWebSourcePath());
 	}
 
 	@Override
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
 		Map<String, Object> ret = new HashMap<String, Object>();
+		ret.put("webSourcePath", DeveloperPage.getWebSourcePath());
 		FuncInfoDao dao = new FuncInfoDao(this);
 		List<Map<String, Object>> list = dao.queryFuncList(true);
 		for (Map<String, Object> m: list) {

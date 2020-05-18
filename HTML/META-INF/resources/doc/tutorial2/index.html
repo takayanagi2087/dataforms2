@@ -46,7 +46,7 @@
 						機能管理
 					</th>
 					<td>
-						機能の追加、削除を行います。
+						機能(javaのパッケージ)の追加、削除を行います。これはメニューのグループになります。
 					</td>
 				</tr>
 				<tr>
@@ -143,7 +143,7 @@
 				「Webリソース作成」には各コンポーネントに対応したJavascriptファイルの作成機能もあるので、必要に応じてJavascriptファイルを作成します。
 			</li>
 			<li>
-				作成した各ソースを修正して独自の機能を作成します。
+				作成した各Java,Javascriptソースを修正して独自の機能を作成します。
 			</li>
 		</ol>
 		<h2>ページの作成手順</h2>
@@ -160,7 +160,7 @@
 						Javaソースパス
 					</th>
 					<td>
-						c:\pleiades-e4.5\workspace\sample\src
+						C:\eclipse\workspace\sample\src
 					</td>
 				</tr>
 				<tr>
@@ -168,7 +168,7 @@
 						HTML,Javascript等のパス
 					</th>
 					<td>
-						c:\pleiades-e4.5\workspace\sample\WebContent
+						C:\eclipse\workspace\sample\WebContent
 					</td>
 				</tr>
 			</tbody>
@@ -183,44 +183,16 @@
 &lt;!-- &#38283;&#30330;&#12484;&#12540;&#12523;&#12398;java&#12477;&#12540;&#12473;&#20986;&#21147;&#12501;&#12457;&#12523;&#12480;&#12434;&#25351;&#23450;&#12375;&#12414;&#12377;&#12290; --&gt;
 &lt;context-param&gt;
 	&lt;param-name&gt;java-source-path&lt;/param-name&gt;
-	&lt;param-value&gt;/pleiades-e4.5/workspace/sample/src&lt;/param-value&gt;
+	&lt;param-value&gt;/eclipse/workspace/sample/src&lt;/param-value&gt;
 &lt;/context-param&gt;
 &lt;!-- &#38283;&#30330;&#12484;&#12540;&#12523;&#12398;html,javascript&#31561;&#12398;WEB&#12522;&#12477;&#12540;&#12473;&#20986;&#21147;&#12501;&#12457;&#12523;&#12480;&#12434;&#25351;&#23450;&#12375;&#12414;&#12377;&#12290; --&gt;
 &lt;context-param&gt;
 	&lt;param-name&gt;web-source-path&lt;/param-name&gt;
-	&lt;param-value&gt;/pleiades-e4.5/workspace/sample/WebContent&lt;/param-value&gt;
+	&lt;param-value&gt;/eclipse/workspace/sample/WebContent&lt;/param-value&gt;
 &lt;/context-param&gt;
 			</pre>
 		</div>
 		<h3>システム名称設定</h3>
-		<p>
-			dataforms2.jarのMETA-INF/resourcesには、HTML,Javascript等のWebリソースが組み込まれています。
-			Servlet3.0では、jar中のMETA-INF/resources中に配置されたHTMLやJavascriptを、通常のWebリソースとしてアクセスすることができます。
-			sampleプロジェクトのWebContent内には、HTMLもJavascriptも存在しないのですが、以下のURLをアクセスすると、デフォルトレイアウトが表示されます。
-		</p>
-		<div>
-			http://localhost:8080/sample/frame/default/Frame_ja.html
-		</div>
-		<figure>
-			<figcaption>デフォルトレイアウト</figcaption>
-			<img src="layout.png" style="width:50%; height:50%;"/>
-		</figure>
-		<!--
-		<p>
-			dataforms2.jarの中のWEBリソースをカスタマイズするには、これらのファイルを「WEBリソースエクスポート」の機能でWebContent内に展開する必要があります。
-			システム名称を変更するには、メッセージリソースファイルをエクスポートし、それを編集します。
-		</p>
-		<figure>
-			<figcaption>WEBリソースエクスポート</figcaption>
-			<img src="expwebres.png" style="width:50%; height:50%;"/>
-		</figure>
-		<p>
-			dataforms2.jarには/frame/messagesというパスにメッセージリソースが入っています。
-			上の図では、ファイル名に"frame/messages"を指定して検索しています。
-			これらのメッセージリソースをエクスポートし、WebContent/frame/messages/ClientMessages.properties,ClientMessages_ja.properties中の
-			message.systemnameの内容を修正すれば、各ページに表示されるシステム名称を変更することができます。
-		</p>
-		-->
 		<p>
 			システム名称はAppClientMessage*.propertiesというファイルに、message.systemnameというキーで登録されています。
 			以下のようにEclipseのプロパティエディタで編集します。

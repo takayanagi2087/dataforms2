@@ -1,6 +1,5 @@
 package dataforms.app.user.page;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,10 +56,10 @@ public class UserSelfEditForm extends EditForm {
 	public void init() throws Exception {
 		super.init();
 		// 自分自身のユーザ情報を取得.
-		Map<String, Object> userInfo = this.getPage().getUserInfo();
+/*		Map<String, Object> userInfo = this.getPage().getUserInfo();
 		UserDao dao = new UserDao(this);
 		Map<String, Object> data = dao.getSelectedData(userInfo);
-		this.setFormDataMap(data);
+		this.setFormDataMap(data);*/
 	}
 
 
@@ -83,11 +82,11 @@ public class UserSelfEditForm extends EditForm {
 	 * </pre>
 	 */
 	@Override
-	protected Map<String, Object> queryData(final Map<String, Object> data)
-			throws Exception {
-//		UserDao dao = new UserDao(this);
-//		Map<String, Object> ret = dao.getSelectedData(data);
-		return new HashMap<String, Object>();
+	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
+		Map<String, Object> userInfo = this.getPage().getUserInfo();
+		UserDao dao = new UserDao(this);
+		Map<String, Object> ret = dao.getSelectedData(userInfo);
+		return ret;
 	}
 
 	@Override

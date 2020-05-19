@@ -12,6 +12,16 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
+	<!-- 開発ツールのjavaソース出力フォルダを指定します。 -->
+	<context-param>
+		<param-name>java-source-path</param-name>
+		<param-value>/eclipse/workspaceDataforms2/dataforms2/src</param-value>
+	</context-param>
+	<!-- 開発ツールのhtml,javascript等のWEBリソース出力フォルダを指定します。 -->
+	<context-param>
+		<param-name>web-source-path</param-name>
+		<param-value>/eclipse/workspaceDataforms2/dataforms2/WebContent</param-value>
+	</context-param>
 	<!--
 	JNDIデータソースのlookupにはjndi-prefixとdata-sourceを結合した文字列で行います。
 	WebLogicで実行する場合はjndi-prefixには空白文字を指定してください。
@@ -251,7 +261,7 @@
 	 -->
 	<context-param>
 		<param-name>user-enable-page</param-name>
-		<param-value>/dataforms/app/page/user/UserEnablePage</param-value>
+		<param-value>/dataforms/app/user/page/UserEnablePage</param-value>
 	</context-param>
 	<!--
 		パスワードリセットメール送信ページのパス。
@@ -345,16 +355,6 @@
 		<param-value>true</param-value>
 		<param-value>false</param-value>
 		-->
-	</context-param>
-	<!-- 開発ツールのjavaソース出力フォルダを指定します。 -->
-	<context-param>
-		<param-name>java-source-path</param-name>
-		<param-value>/eclipse/workspaceDataforms2/dataforms2/src</param-value>
-	</context-param>
-	<!-- 開発ツールのhtml,javascript等のWEBリソース出力フォルダを指定します。 -->
-	<context-param>
-		<param-name>web-source-path</param-name>
-		<param-value>/eclipse/workspaceDataforms2/dataforms2/WebContent</param-value>
 	</context-param>
 	<!--
 		データベース初期化時に作成するユーザのレベルを指定します。

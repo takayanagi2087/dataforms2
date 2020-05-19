@@ -8,7 +8,7 @@
 		<title></title>
 	</head>
 	<body>
-		<h1><span>4.</span>ページのカスタマイズ</h1>
+		<h1><span>4.</span>カスタマイズ</h1>
 		<h2>カスタマイズの概要</h2>
 		<p>
 			WebComponentのサブクラスには、Page,Form,HtmlTable,Field,FieldValidator等が存在します。
@@ -197,8 +197,8 @@ public class SampleQueryForm extends QueryForm {
 			これは、"sampleText"フィールドを「完全一致で検索する」という設定です。
 			これをsetMatchType(MatchType.PART)に変更すれば、部分一致で検索されるようになります。
 		</p>
-		
-		
+
+
 		<div class="filecaption">"sampleText"の検索方法を変更</div>
 		<div class="wrappre">
 			<pre>
@@ -231,7 +231,7 @@ public class SampleQueryForm extends QueryForm {
 }
 			</pre>
 		</div>
-		
+
 		<h3>検索結果のカラムソートの設定</h3>
 		<p>
 			SampleQueryResultForm.javaは、以下のように生成されています。
@@ -1078,7 +1078,7 @@ SampleEditForm.prototype.print = function() {
 			<figcaption>sample選択肢の登録内容</figcaption>
 			<img src="enum2.png" style="width:50%; height:50%;"/>
 		</figure>
-		
+
 		<p class="topic">
 			列挙型関連テーブルの言語指定は、デフォルト言語(default)と日本語(ja)が指定できるようになっています。
 			これは、web.xmlのsupport-languageパラメータで変更することができます。
@@ -1182,11 +1182,11 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 	&lt;/head&gt;
 	&lt;body&gt;
 		&lt;div id=&quot;mainDiv&quot;&gt;
-		
+
 					&#12539;
 					&#12539;
 					&#12539;
-		
+
 			&lt;form id=&quot;editForm&quot;&gt;
 				&lt;div class=&quot;formHeader&quot;&gt;&lt;span id=&quot;editFormTitle&quot;&gt;&lt;/span&gt;&lt;/div&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;sampleId&quot; /&gt;
@@ -1226,7 +1226,7 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 
 		&lt;/div&gt;
 	&lt;/body&gt;
-&lt;/html&gt;				
+&lt;/html&gt;
 			</pre>
 		</div>
 		<p>
@@ -1237,7 +1237,7 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 			<figcaption>選択項目追加後の新規登録画面</figcaption>
 			<img src="enum7.png" style="width:50%; height:50%;"/>
 		</figure>
-		
+
 		<p>
 			さらに検索結果リストに"sampleSelect"を表示するには、以下のように修正します。
 		</p>

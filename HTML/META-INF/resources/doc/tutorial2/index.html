@@ -8,22 +8,27 @@
 		<title>3.ページの作成</title>
 	</head>
 	<body>
-		<h1><span>3.</span>ページの作成</h1>
+		<h1><span>3.</span>開発ツール</h1>
 		<h2>開発ツールについて</h2>
 		<p>
-			dataforms2.jarでは、Javaクラスの作成から始めます。
-			例えば、データベースのテーブルの場合、dataforms.dao.Tableから派生したテーブルクラスを作成します。
-			そのテーブルクラスを元に、データベース中にテーブルを作成します。
-			またHTMLやJavascriptの場合、フォームを配置したページJavaクラスを作成し、そのJavaクラスを元にHTMLやJavascriptを作成します。
-			これらのJavaクラスの作成やデータベーステーブル、HTML、Javascriptの作成は、全て開発ツールで作成することができます。
+			「2.開発環境構築」で作成したEclipseのsampleプロジェクトには既に「基本機能」と「開発ツール」というメニューが存在しています。
+			「基本機能」にはユーザの管理等アプリケーションの基本的な機能が入っています。
+			これらの機能は大抵のWebアプリケーションに必要になる機能で、アプリケーションを開発するたびに実装するのも面倒ですのであらかじめ実装してあります。
+			「開発ツール」の方はこのWebアプリケーションに新たなページを追加するための機能です。
+			この「開発ツール」を使うと作成したデータベースに新たなテーブルを作成したり、そのテーブルのデータを操作するページを作ることができます。
+		</p>
+		<p>
+			この記事ではデータベース上にテーブルを作成し、そのテーブルのデータを操作するページを作成する手順を説明します。
 		</p>
 		<p class="topic">
 			開発ツール自体も、dataforms2.jarで作成されたWebアプリケーションです。
 			つまり開発ツールに実装されているユーザインターフェースは、dataforms2.jarで標準的にサポートされています。
 		</p>
+		<h2>開発者権限ついて</h2>
 		<p>
 			開発ツールを使うには、「データベースの初期設定」の際に登録した開発者ユーザでログインする必要があります。
 			ユーザのユーザレベルには「開発者」、「管理者」、「ユーザ」等の権限があり、開発ツールを使用できるのは、「開発者」権限を持つユーザのみです。
+			以下に開発者権限をもつユーザのサイトマップを示します。
 		</p>
 		<figure>
 			<figcaption>開発者権限を持つユーザのサイトマップ</figcaption>
@@ -36,79 +41,95 @@
 			そのため、web.xmlの設定で開発ツールの呼び出しを禁止できるようになっています。
 		</p>
 		<p>
-			開発ツールには以下のようなものがあります。
+			開発ツールの一覧を以下に示します。
 		</p>
 		<table>
 			<caption>開発ツール一覧</caption>
+			<thead>
+				<tr>
+					<th style="width: 40px;">No.</th>
+					<th style="width: 200px;">名称</th>
+					<th>備考</th>
+				</tr>
+			</thead>
 			<tbody>
 				<tr>
-					<th>
+					<td style="text-align: right;">1</td>
+					<td>
 						機能管理
-					</th>
+					</td>
 					<td>
 						機能(javaのパッケージ)の追加、削除を行います。これはメニューのグループになります。
 					</td>
 				</tr>
 				<tr>
-					<th>
-						テーブルJavaクラス作成
-					</th>
+					<td style="text-align: right;">2</td>
 					<td>
-						テーブルJavaクラスと、それに属するフィールドJavaクラスを作成します。
+						テーブルJavaクラス作成
+					</td>
+					<td>
+						テーブルJavaクラスと、それに配置するフィールドJavaクラスを作成します。
 					</td>
 				</tr>
 				<tr>
-					<th>
+					<td style="text-align: right;">3</td>
+					<td>
 						問合せJavaクラス作成
-					</th>
+					</td>
 					<td>
 						問合せクラスのJavaソースを作成します。
 					</td>
 				</tr>
 				<tr>
-					<th>
+					<td style="text-align: right;">4</td>
+					<td>
 						DAO Javaクラス作成
-					</th>
+					</td>
 					<td>
 						DAO(Data access object) Javaクラスを作成します。
 					</td>
 				</tr>
 				<tr>
-					<th>
+					<td style="text-align: right;">5</td>
+					<td>
 						ページJavaクラス作成
-					</th>
+					</td>
 					<td>
-						ページJavaクラスとそれに属するフォームJavaクラスを作成します。
+						ページJavaクラスとそれに配置するフォームJavaクラスを作成します。
 					</td>
 				</tr>
 				<tr>
-					<th>
+					<td style="text-align: right;">6</td>
+					<td>
 						Webリソース作成
-					</th>
+					</td>
 					<td>
-						Page,Form,Field等のWebコンポーネントに対応したHTMLまたはJavascriptを作成します。
+						ページ,フォーム,フィールド等のWebコンポーネントに対応したHTMLまたはJavascriptを作成します。
 					</td>
 				</tr>
 				<tr>
-					<th>
+					<td style="text-align: right;">7</td>
+					<td>
 						Webリソースエクスポート
-					</th>
+					</td>
 					<td>
 						dataforms2.jarの中の*.html,*.css,*.js等のファイルをエクスポートします。
 					</td>
 				</tr>
 				<tr>
-					<th>
+					<td style="text-align: right;">8</td>
+					<td>
 						テーブル管理
-					</th>
+					</td>
 					<td>
 						テーブルJavaクラスに対応したテーブルをDB上に作成します。
 					</td>
 				</tr>
 				<tr>
-					<th>
+					<td style="text-align: right;">9</td>
+					<td>
 						問合せ実行
-					</th>
+					</td>
 					<td>
 						問合せを実行します。
 					</td>
@@ -121,7 +142,7 @@
 		</p>
 		<ol>
 			<li>
-				「機能管理」を使用して、Javaのパッケージを登録。
+				「機能管理」を使用して、Javaのパッケージを登録します。
 			</li>
 			<li>
 				「テーブルJavaクラス作成」を使用して、テーブルのレイアウトを作成します。<br/>
@@ -175,7 +196,7 @@
 		</table>
 		<p>
 			先ず、開発ツールにこれらのパスを認識させる必要があります。
-			これらのバスはweb.xmlに記述します。
+			WebContent/WEB-INF/web.xmlに以下の設定を記述してください。
 		</p>
 		<div class="filecaption">web.xmlのソースパス設定</div>
 		<div class="wrappre">
@@ -204,7 +225,7 @@
 		</figure>
 		<p>
 			ここでは上記のように"サンプルシステム"と変更します。
-			変更後クリーンビルドを行い、システムをアクセスすると以下のようにシステム名称が変わります。
+			変更後Tomcatを再起動し、システムをアクセスすると以下のようにシステム名称が変わります。
 		</p>
 		<figure>
 			<figcaption>システム名変更後のログイン画面</figcaption>
@@ -243,20 +264,12 @@
 		<p>
 			登録直後に再度機能管理画面を表示した場合、機能名が表示されません。
 			それは、今作成したFuntion.propertiesがTomcatにデプロイされていないためです。
-			Tomcatを再起動してください。
+			Tomcatを再起動し、アプリケーションをデプロイしてください。
 		</p>
 		<h3>テーブル定義</h3>
 		<p>
-			今回は簡単なテーブルを作成し、それを入力編集するページを作成してみます。
-			まず、入力編集対象のテーブルを作成します。
-			テーブルクラスはdataforms.dao.Tableから派生したクラスで、そのクラスに対しdataforms.field.base.Fieldから派生したフィールドクラスを配置します。
-		</p>
-		<p>
-			テーブルクラスやそれに配置する各フィールドクラスを作成するのは面倒な作業です。
-			そのため、テーブルクラスの作成ツールが用意されています。<br/>
 			「テーブルJavaクラスの作成」を選択し、「新規登録」ボタンを押して、以下のように入力してください。
-			フィールド一覧の「クラス」は、今回作成するフィールドクラスになります。
-			「基本クラス」にdataforms.fieldで用意された適切なフィールドクラスを指定します。
+			テーブルクラスはdataforms.dao.Tableから派生したクラスで、そのクラスに対しdataforms.field.base.Fieldから派生したフィールドクラスを配置します。
 		</p>
 		<figure>
 			<figcaption>SampleTableの定義</figcaption>
@@ -316,7 +329,7 @@
 			この部分に一行追加すれば、フィールドの追加が行われます。
 			SampleTable.javaの内容を見ればわかりますが、フィールドの配置だけでなく、テーブルデータのMapを操作するためのEntityクラスや
 			フィールド取得するためのメソッドが自動展開されます。この部分もコーディングするとなると少々面倒です。
-			そこでTomcatを再起動しデプロイが完了した後「テーブルJavaクラスの作成」フィールドを追加したテーブルを読み込んで、
+			そこでTomcatを再起動しデプロイが完了した後「テーブルJavaクラスの作成」でフィールドを追加したテーブルを読み込んで、
 			SampleTable.javaを上書きしてください。この処理でEntityクラスやフィールド取得メソッドも更新されます。
 		</p>
 		<p>
@@ -327,13 +340,13 @@
 			<caption>作成されたフィールドクラス</caption>
 			<thead>
 				<tr>
-					<th>
-						No
+					<th style="width: 40px;">
+						No.
 					</th>
-					<th>
+					<th style="width: 200px;">
 						作成されたクラス
 					</th>
-					<th>
+					<th style="width: 200px;">
 						スーパークラス
 					</th>
 					<th>
@@ -343,7 +356,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>
+					<td style="text-align: right;">
 						1
 					</td>
 					<td>
@@ -359,7 +372,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td style="text-align: right;">
 						2
 					</td>
 					<td>
@@ -373,8 +386,24 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td style="text-align: right;">
 						3
+					</td>
+					<td>
+						SampleNumericField
+					</td>
+					<td>
+						NumericField
+					</td>
+					<td>
+						NumericFieldはnumeric型のフィールドになります。
+						有効桁数,小数点以下の桁数を指定する必要があります。
+						数値のバリデーションが有効になります。
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">
+						4
 					</td>
 					<td>
 						SampleDateField
@@ -546,11 +575,141 @@
 			<figcaption>HTMLの作成結果</figcaption>
 			<img src="page5.png" style="width:50%; height:50%;"/>
 		</figure>
+
+
+		<h3>作成されたソースファイル</h3>
+		<p>
+			ここまでの作業で作成されたファイルを以下にまとめます。
+			ここまでは開発ツールだけで、Javaソースやhtmlを作成してきました。
+			この段階でsampleテーブルを編集するためのページが出来上がっています。
+		</p>
+		<table style="table-layout: fixed;">
+			<caption>ツールで作成されたファイル</caption>
+			<head>
+				<tr>
+					<th style="width:40px;">No.</th>
+					<th style="width:100px;">ツール</th>
+					<th style="width:200px;">作成場所</th>
+					<th style="width:200px;">ファイル/情報</th>
+					<th >備考</th>
+				</tr>
+			</head>
+			<body>
+				<tr>
+					<td style="text-align: right;">1</td>
+					<td rowspan="3">機能管理</td>
+					<td>func_infoテーブル</td>
+					<td>/sample</td>
+					<td>DB中のfunc_infoテーブルにレコードを追加し、func_pathカラムに"/sample"という文字列を登録します。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">2</td>
+					<td>WebContent</td>
+					<td>/sample</td>
+					<td>プロジェクト中のWebContentフォルダ中に/sampleというサブフォルダを作成します。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">3</td>
+					<td>WebContent/sample</td>
+					<td>Function.properties</td>
+					<td>
+						機能の名称を以下の様な形式で登録します。
+						<div class="wrappre">
+							<pre style="overflow: hidden;">
+sample=サンプル
+							</pre>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">4</td>
+					<td rowspan="6">テーブルJavaクラス作成</td>
+					<td rowspan="2">src/sample/dao</td>
+					<td>SampleTable.java</td>
+					<td>sampleテーブルの構造を定義します。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">5</td>
+					<td>SampleTableRelation.java</td>
+					<td>sampleテーブルと他のテーブル間の関係を定義します。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">6</td>
+					<td rowspan="4">src/sample/field</td>
+					<td>SampleIdField.java</td>
+					<td>レコードIDフィールドのクラスです。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">7</td>
+					<td>SampleTextField.java</td>
+					<td>テキストフィールドのクラスです。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">8</td>
+					<td>SampleNumericField.java</td>
+					<td>数値フィールドのクラスです。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">9</td>
+					<td>SampleDateField.java</td>
+					<td>日付フィールドのクラスです。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">10</td>
+					<td>DAO Javaクラス作成</td>
+					<td>src/sample/dao</td>
+					<td>SampleDao.java</td>
+					<td>smapleテーブルの検索編集を行うDAOクラスです。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">11</td>
+					<td rowspan="5">ページ Javaクラス作成</td>
+					<td rowspan="4">src/sample/page</td>
+					<td>SamplePage.java</td>
+					<td>sampleテーブルを編集するページです。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">12</td>
+					<td>SampleQueryForm.java</td>
+					<td>sampleテーブルの検索条件を入力するフォームです。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">13</td>
+					<td>SampleQueryResultForm.java</td>
+					<td>sampleテーブルの検索結果を表示するフォームです。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">14</td>
+					<td>SampleEditForm.java</td>
+					<td>sampleテーブルのレコードを編集するフォームです。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">15</td>
+					<td>WebContent/sample</td>
+					<td>Function.properties</td>
+					<td>
+						Function.propertiesにページの名称を追加します。
+						形式は以下の様になります。
+						<div class="wrappre">
+							<pre style="overflow: hidden;">
+sample=サンプル
+sample.page.SamplePage=サンプルページ
+							</pre>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">16</td>
+					<td>Webリソース作成</td>
+					<td>WebContent/sample/page</td>
+					<td>SamplePage.html</td>
+					<td>ページの情報を表示するHTMLです。</td>
+				</tr>
+			</body>
+		</table>
 		<h3>アプリケーションの実行</h3>
 		<p>
-			ここまでは開発ツールだけで、Javaソースやhtmlを作成してきました。
-			この段階で、SampleTableを編集するためのページが出来上がっています。
-			プロジェクトをクリーンビルドし、サイトマップを表示してください。
+			Tomcatを再起動してサイトマップを表示してください。
 			以下のように「サンプルページ」へのリンクが追加されているはずです。
 		</p>
 		<figure>
@@ -568,7 +727,7 @@
 			<img src="samplepage2.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
-			新規追加画面には、SampleTableのフィールドが配置されています。
+			新規登録画面には、SampleTableのフィールドが配置されています。
 			日付のフィールドには自動的にDatapickerが設定されます。
 			データを入力し、確認ボタンを押すと次の確認画面に遷移します。
 		</p>
@@ -577,7 +736,8 @@
 			<img src="samplepage3.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
-			既存の開発では、確認画面も1つのページとして実装するケースが多かったのですが、dataforms2.jarでは編集フォームの各フィールドを編集不可にすることで実現しています。
+			以前の開発では、確認画面も1つのページとして実装するケースが多かったのですが、
+			dataforms2.jarでは編集フォームの各フィールドを編集不可にすることで実現しています。
 			そのため、確認画面用のHTMLを作成する必要はありません。
 		</p>
 		<p class="topic">
@@ -630,11 +790,11 @@
 						&lt;/tr&gt;
 						&lt;tr&gt;
 							&lt;th&gt;&#25968;&#20516;(from)&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumFrom&quot; /&gt;&lt;/td&gt;
+							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumericFrom&quot; /&gt;&lt;/td&gt;
 						&lt;/tr&gt;
 						&lt;tr&gt;
 							&lt;th&gt;&#25968;&#20516;(to)&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumTo&quot; /&gt;&lt;/td&gt;
+							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumericTo&quot; /&gt;&lt;/td&gt;
 						&lt;/tr&gt;
 						&lt;tr&gt;
 							&lt;th&gt;&#26085;&#20184;(from)&lt;/th&gt;
@@ -646,13 +806,13 @@
 						&lt;/tr&gt;
 					&lt;/tbody&gt;
 				&lt;/table&gt;
-				&lt;input type=&quot;submit&quot; id=&quot;queryButton&quot; value=&quot;&#26908;&#32034;&quot;&gt;
-				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;&gt;
-				&lt;input type=&quot;button&quot; id=&quot;newButton&quot; value=&quot;&#26032;&#35215;&#30331;&#37682;&quot;&gt;
+				&lt;input type=&quot;submit&quot; id=&quot;queryButton&quot; class=&quot;largeButton&quot; value=&quot;&#26908;&#32034;&quot;&gt;
+				&lt;input type=&quot;button&quot; id=&quot;exportButton&quot; class=&quot;largeButton&quot; value=&quot;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&quot;&gt;
+				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; class=&quot;largeButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;&gt;
+				&lt;input type=&quot;button&quot; id=&quot;newButton&quot; class=&quot;largeButton&quot; value=&quot;&#26032;&#35215;&#30331;&#37682;&quot;&gt;
 			&lt;/form&gt;
 			&lt;form id=&quot;queryResultForm&quot;&gt;
 				&lt;div class=&quot;formHeader&quot;&gt;&#26908;&#32034;&#32080;&#26524;&lt;/div&gt;
-				&lt;input type=&quot;hidden&quot; id=&quot;sampleId&quot; /&gt;
 				&lt;table class=&quot;responsive&quot;&gt;
 					&lt;tbody&gt;
 					&lt;/tbody&gt;
@@ -660,55 +820,56 @@
 				&lt;div class=&quot;hScrollDiv&quot;&gt;
 					&lt;table id=&quot;queryResult&quot;&gt;
 						&lt;thead&gt;
-						&lt;tr&gt;
-							&lt;th&gt;
-								No.
-							&lt;/th&gt;
-							&lt;th&gt;
-								&#12486;&#12461;&#12473;&#12488;
-							&lt;/th&gt;
-							&lt;th&gt;
-								&#25968;&#20516;
-							&lt;/th&gt;
-							&lt;th&gt;
-								&#26085;&#20184;
-							&lt;/th&gt;
-							&lt;th&gt;
-								&#25805;&#20316;
-							&lt;/th&gt;
-						&lt;/tr&gt;
-					&lt;/thead&gt;
+							&lt;tr&gt;
+								&lt;th&gt;
+									No.
+								&lt;/th&gt;
+								&lt;th&gt;
+									&#12486;&#12461;&#12473;&#12488;
+								&lt;/th&gt;
+								&lt;th&gt;
+									&#25968;&#20516;
+								&lt;/th&gt;
+								&lt;th&gt;
+									&#26085;&#20184;
+								&lt;/th&gt;
+								&lt;th&gt;
+									&#25805;&#20316;
+								&lt;/th&gt;
+							&lt;/tr&gt;
+						&lt;/thead&gt;
 						&lt;tbody&gt;
-						&lt;tr&gt;
-							&lt;td&gt;
-								&lt;span id=&quot;queryResult[0].rowNo&quot;&gt;&lt;/span&gt;
-								&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].sampleId&quot; /&gt;
-								&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].createUserId&quot; /&gt;
-								&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].createTimestamp&quot; /&gt;
-								&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateUserId&quot; /&gt;
-								&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateTimestamp&quot; /&gt;
-							&lt;/td&gt;
-							&lt;td&gt;
-								&lt;a id=&quot;queryResult[0].updateButton&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;span id=&quot;queryResult[0].sampleText&quot;&gt;&lt;/span&gt;&lt;/a&gt;
-							&lt;/td&gt;
-							&lt;td&gt;
-								&lt;span id=&quot;queryResult[0].sampleNum&quot;&gt;&lt;/span&gt;
-							&lt;/td&gt;
-							&lt;td&gt;
-								&lt;span id=&quot;queryResult[0].sampleDate&quot;&gt;&lt;/span&gt;
-							&lt;/td&gt;
-							&lt;td&gt;
-								&lt;input type=&quot;button&quot; id=&quot;queryResult[0].viewButton&quot; value=&quot;&#34920;&#31034;&quot;&gt;
-								&lt;input type=&quot;button&quot; id=&quot;queryResult[0].referButton&quot; value=&quot;&#21442;&#29031;&#30331;&#37682;&quot;&gt;
-								&lt;input type=&quot;button&quot; id=&quot;queryResult[0].deleteButton&quot; value=&quot;&#21066;&#38500;&quot;&gt;
-							&lt;/td&gt;
-						&lt;/tr&gt;
-					&lt;/tbody&gt;
-						&lt;/table&gt;
+							&lt;tr&gt;
+								&lt;td&gt;
+									&lt;span id=&quot;queryResult[0].rowNo&quot;&gt;&lt;/span&gt;
+									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].sampleId&quot; /&gt;
+									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].createUserId&quot; /&gt;
+									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].createTimestamp&quot; /&gt;
+									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateUserId&quot; /&gt;
+									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateTimestamp&quot; /&gt;
+								&lt;/td&gt;
+								&lt;td&gt;
+									&lt;a id=&quot;queryResult[0].updateButton&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;span id=&quot;queryResult[0].sampleText&quot;&gt;&lt;/span&gt;&lt;/a&gt;
+								&lt;/td&gt;
+								&lt;td&gt;
+									&lt;span id=&quot;queryResult[0].sampleNumeric&quot;&gt;&lt;/span&gt;
+								&lt;/td&gt;
+								&lt;td&gt;
+									&lt;span id=&quot;queryResult[0].sampleDate&quot;&gt;&lt;/span&gt;
+								&lt;/td&gt;
+								&lt;td&gt;
+									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].viewButton&quot; value=&quot;&#34920;&#31034;&quot;&gt;
+									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].referButton&quot; value=&quot;&#21442;&#29031;&#30331;&#37682;&quot;&gt;
+									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].deleteButton&quot; value=&quot;&#21066;&#38500;&quot;&gt;
+								&lt;/td&gt;
+							&lt;/tr&gt;
+						&lt;/tbody&gt;
+					&lt;/table&gt;
 				&lt;/div&gt;
 			&lt;/form&gt;
 			&lt;form id=&quot;editForm&quot;&gt;
 				&lt;div class=&quot;formHeader&quot;&gt;&lt;span id=&quot;editFormTitle&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+				&lt;input type=&quot;hidden&quot; id=&quot;saveMode&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;sampleId&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;createUserId&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;createTimestamp&quot; /&gt;
@@ -722,7 +883,7 @@
 						&lt;/tr&gt;
 						&lt;tr&gt;
 							&lt;th&gt;&#25968;&#20516;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNum&quot; /&gt;&lt;/td&gt;
+							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/td&gt;
 						&lt;/tr&gt;
 						&lt;tr&gt;
 							&lt;th&gt;&#26085;&#20184;&lt;/th&gt;
@@ -730,11 +891,11 @@
 						&lt;/tr&gt;
 					&lt;/tbody&gt;
 				&lt;/table&gt;
-				&lt;input type=&quot;button&quot; id=&quot;confirmButton&quot; value=&quot;&#30906;&#35469;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;saveButton&quot; value=&quot;&#30331;&#37682;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;deleteButton&quot; value=&quot;&#21066;&#38500;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;backButton&quot; value=&quot;&#25147;&#12427;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;confirmButton&quot; class=&quot;largeButton&quot; value=&quot;&#30906;&#35469;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;saveButton&quot; class=&quot;largeButton&quot; value=&quot;&#30331;&#37682;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; class=&quot;largeButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;deleteButton&quot; class=&quot;largeButton&quot; value=&quot;&#21066;&#38500;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;backButton&quot; class=&quot;largeButton&quot; value=&quot;&#25147;&#12427;&quot;/&gt;
 			&lt;/form&gt;
 
 		&lt;/div&gt;

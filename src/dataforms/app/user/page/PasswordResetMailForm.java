@@ -85,8 +85,7 @@ public class PasswordResetMailForm extends EditForm {
 		HttpServletRequest req = this.getPage().getRequest();
 		String url = req.getRequestURL().toString();
 		String uri = req.getRequestURI();
-		url = url.replaceAll(uri, req.getContextPath()) + PasswordResetMailForm.getPasswordResetPage() +
-				"." + WebComponent.getServlet().getPageExt();
+		url = url.replaceAll(uri, req.getContextPath()) + PasswordResetMailForm.getPasswordResetPage() + "." + WebComponent.getServlet().getPageExt();
 		MailTemplate template = new MailTemplate(text, null);
 		String urllist = "";
 		for (Map<String, Object> u: list) {
@@ -99,9 +98,8 @@ public class PasswordResetMailForm extends EditForm {
 			String json = JSON.encode(m);
 			String key = CryptUtil.encrypt(json, DataFormsServlet.getQueryStringCryptPassword());
 			String enckey = java.net.URLEncoder.encode(key, DataFormsServlet.getEncoding());
-			url += "?key=" + enckey;
 			logger.debug("url={}", url);
-			urllist = url;
+			urllist += (url + "?key=" + enckey + "\n") ;
 		}
 		template.setLink("passwordResetPage", urllist, urllist);
 

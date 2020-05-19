@@ -41,7 +41,8 @@ public class ChangePasswordForm extends EditForm {
 	@Override
 	public void init() throws Exception {
 		super.init();
-		if (this.resetMode) {
+/*
+ 		if (this.resetMode) {
 			@SuppressWarnings("unchecked")
 			Map<String, Object> resetInfo = (Map<String, Object>) this.getPage().getRequest().getSession().getAttribute(PasswordResetPage.PASSWORD_RESET_INFO);
 			UserInfoTable.Entity e = new UserInfoTable.Entity(resetInfo);
@@ -52,6 +53,7 @@ public class ChangePasswordForm extends EditForm {
 				this.setFormData(UserInfoTable.Entity.ID_LOGIN_ID, loginId);
 			}
 		}
+*/
 	}
 
 	@Override
@@ -85,9 +87,20 @@ public class ChangePasswordForm extends EditForm {
 
 
 	@Override
-	protected Map<String, Object> queryData(final Map<String, Object> data)
-			throws Exception {
-		return null;
+	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
+		UserInfoTable.Entity ret = new UserInfoTable.Entity();
+		if (this.resetMode) {
+			@SuppressWarnings("unchecked")
+			Map<String, Object> resetInfo = (Map<String, Object>) this.getPage().getRequest().getSession().getAttribute(PasswordResetPage.PASSWORD_RESET_INFO);
+			UserInfoTable.Entity e = new UserInfoTable.Entity(resetInfo);
+			ret.setLoginId(e.getLoginId());
+		} else {
+			if (this.getPage().getUserInfo() != null) {
+				String loginId = (String) this.getPage().getUserInfo().get(UserInfoTable.Entity.ID_LOGIN_ID);
+				ret.setLoginId(loginId);
+			}
+		}
+		return ret.getMap();
 	}
 
 	@Override

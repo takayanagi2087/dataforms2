@@ -42,7 +42,7 @@ class MaterialOrderQueryForm extends QueryForm {
 /*
 	callWebMethod() {
 		if (this.validate()) {
-			this.submit("webMethod", (r) {
+			this.submit("webMethod", (r) => {
 				this.parent.resetErrorStatus();
 				if (r.status == ServerMethod.SUCCESS) {
 					// TODO:成功時の処理を記述します。

@@ -22,12 +22,14 @@ class DocFramePage extends BasePage {
 			var src = "../../../../doc/" + qs["doc"];
 			this.get("docFrame").attr("src", src);
 		} else {
-			var src = "../../../../doc/introduction";
+			var path = this.get("introduction").data("path");
+			var src = "../../../../doc/" + path;
+			logger.log("src=" + src);
 			this.get("docFrame").attr("src", src);
 		}
 		this.find("a").click(function() {
-			var id = $(this).attr(thisPage.getIdAttribute());
-			var src = "../../../../doc/" + id;
+			var path = $(this).data("path");
+			var src = "../../../../doc/" + path;
 			thisPage.get("docFrame").attr("src", src);
 
 		});

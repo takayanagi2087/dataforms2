@@ -22,8 +22,8 @@
 		<h3>DB初期化データのエクスポート</h3>
 		<p>
 			dataforms.appパッケージには、いくつかのテーブルが定義されています。
-			これらのテーブルは、データベースの構築時に自動的に作成され、初期データも登録されます。
-			初期データもまたdataforms.jarの中に含まれていますが、今回の作業でデータが追加されています。
+			これらのテーブルは、データベースの構築時に自動的に作成され、サンプルの初期データも登録されます。
+			この初期データもまたdataforms2.jarの中に含まれていますが、今回の作業でデータが追加されています。
 		</p>
 		<p>
 			開発の初期段階で機能を追加しましたが、これは、FunctionTableへのデータ追加になります。
@@ -33,6 +33,10 @@
 		<p>
 			「テーブル管理」を使用しdataforms.appパッケージ中のテーブルを検索し、FunctionTableとEnum*Tableをチェックし、
 			「初期化データとしてエクスポート」ボタンを押下します。
+		</p>
+		<p class="topic">
+			開発時にユーザを登録しそれをアプリケーションの初期化データとして使用したい場合は、ユーザ関連のテーブルもエクスポートしてください。
+			warファイル中にユーザ関連の初期化データが存在した場合、DBの初期化時にユーザ情報を使用する・しないを切り替えることができるようになっています。
 		</p>
 		<figure>
 			<figcaption>初期化データのエクスポートの操作</figcaption>
@@ -52,10 +56,10 @@
 		</p>
 		<h3>サーバログの設定</h3>
 		<p>
-			dataforms.jarが出力するサーバログは、log4jを使用しています。
-			プロジェクトのsrcフォルダにはlog4j.xmlがありますので、それを適切に設定してください。
-			開発時のlog4j.xmlには、コンソールにDEBUGログを出力していますので、これを削除しておくことをお勧めします。
-			詳細はlog4jのドキュメントを参照してください。
+			dataforms2.jarが出力するサーバログは、log4j2を使用しています。
+			プロジェクトのsrcフォルダにはlog4j2.xmlがありますので、それを適切に設定してください。
+			開発時のlog4j2.xmlには、コンソールにDEBUGログを出力していますので、これを削除しておくことをお勧めします。
+			詳細はlog4j2のドキュメントを参照してください。
 		</p>
 		<h3>jsonの整形停止</h3>
 		<p>
@@ -74,8 +78,8 @@
 		</div>
 		<h3>クライアントログの設定</h3>
 		<p>
-			dataforms.jarでは、Javascriptのconsoleをラップしたloggerという変数を用意しています。
-			dataforms.jarの*.jsでは、常にloggerを使って、コンソール出力を行っています。
+			dataforms2.jarでは、Javascriptのconsoleをラップしたloggerという変数を用意しています。
+			dataforms2.jarの*.jsでは、常にloggerを使って、コンソール出力を行っています。
 			loggerを使用していれば、以下のweb.xmlの設定でログの出力レベルを調整することができます。
 			デフォルトではdebugになっているので、リリース時にはinfo以上にすることをお勧めします。
 		</p>
@@ -141,7 +145,7 @@
 		&lt;/param-value&gt;
 	&lt;/context-param&gt;
 			</pre>
-		</div>	
+		</div>
 		<h3>初期化時に作成するユーザレベルの設定</h3>
 		<p>
 			データベースの初期化時には、管理者(admin)または開発者(developer)レベルのユーザを1件登録します。
@@ -153,7 +157,7 @@
 		<div class="filecaption">初期化時に作成するユーザレベルの設定(web.xml)</div>
 		<div class="wrappre">
 			<pre>
-	&lt;!-- 
+	&lt;!--
 		データベース初期化時に作成するユーザのレベルを指定します。
 	 --&gt;
 	&lt;context-param&gt;
@@ -165,14 +169,11 @@
 		--&gt;
 	&lt;/context-param&gt;
 			</pre>
-		</div>	
-
-
+		</div>
 		<p class="topic">
-			dataforms.jarの各種設定は、web.xmlにまとまっています。
+			dataforms2.jarの各種設定は、web.xmlにまとまっています。
 			この他の項目は、web.xml中のコメントを参照し、適切に設定してください。
 		</p>
-		
 		<h3>WARファイルの作成</h3>
 		<p>
 			WARファイルは、EclipseのWARエクスポート機能で簡単に作成することができます。
@@ -183,15 +184,19 @@
 			<figcaption>WARファイルのエクスポート</figcaption>
 			<img src="warexp.png" style="width:50%; height:50%;"/>
 		</figure>
-		<h2>デプロイ</h2>
-		<h3>Tomcat8の設定</h3>
 		<p>
-			dataforms.jarで作成されたアプリケーションを動作させるには、Java8とServlet3.0に対応したアプリケーションサーバが必要です。
-			Java8+Tomcat8が稼働したサーバを用意してください。
+			この時ソースファイルのエクスポートにチェックを入れておくと、*.warファイル中にJavaのソースファイルも出力されます。
+			こうしておくと*.warファイルをeclipseにインポートするだけでeclipseのプロジェクトになります。
+		</p>
+		<h2>デプロイ</h2>
+		<h3>Tomcat9の設定</h3>
+		<p>
+			dataforms2.jarで作成されたアプリケーションを動作させるには、Java11とServlet3.0に対応したアプリケーションサーバが必要です。
+			Java11+Tomcat9が稼働したサーバを用意してください。
 		</p>
 		<p>
-			Tomcat8にはApache DerbyのJDBCドライバderby.jarとderbyLocale_ja_JP.jarをインストールしてください。
-			$TOMCAT_HOME/libに、この2つのjarファイルをコピーするだけで完了です。
+			Tomcat9にはApache DerbyのJDBCドライバやJava mailをインストールする必要があります。
+			「2.開発環境構築」の「2.2.データベースを用意する」と「2.3.Java mailのインストール」を参考にインストールを行ってください。
 		</p>
 		<h3>WARファイルのデプロイ</h3>
 		<p>
@@ -208,7 +213,7 @@
 			<img src="initapp1.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
-			初期化の完了後developerでログインすると、以下のように作成された機能を含むサイトマップが表示されます。
+			初期化の完了後adminでログインすると、以下のように作成された機能を含むサイトマップが表示されます。
 		</p>
 		<figure>
 			<figcaption>ログイン後のサイトマップ</figcaption>

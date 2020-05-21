@@ -15,7 +15,7 @@
 		</p>
 		<h2>WebComponentクラス階層</h2>
 		<p>
-			dataforms.jarではWebページを構成する部品クラス(WebComponentクラス)が定義されています。
+			dataforms2.jarではWebページを構成する部品クラス(WebComponentクラス)が定義されています。
 			WebComponentのサブクラスには、Page,Form,HtmlTable,Field,FieldValidator等が存在しています。
 			このWebComponentのクラス階層はJavaとJavascriptで全く同じ構造になっており、
 			Javaのクラスにはサーバの動作が、Javascriptのクラスにはブラウザの動作が記述され、
@@ -354,7 +354,7 @@ public class SampleQueryResultForm extends QueryResultForm {
 		</figure>
 		<h3>フィールドバリデーション</h3>
 		<p>
-			dataforms.jarの各種フィールドクラスには、すでに適切なバリデータが設定されています。
+			dataforms2.jarの各種フィールドクラスには、すでに適切なバリデータが設定されています。
 			新規追加フォームの数値フィールドに英字を、日付フィールドに存在しない日付を入力し
 			「確認」ボタンを押下すると、以下のように適切なバリデータが動作します。
 		</p>
@@ -889,82 +889,12 @@ class SampleEditForm extends EditForm {
 			<figcaption>印刷ボタンの動作</figcaption>
 			<img src="function1.png" style="width:50%; height:50%;"/>
 		</figure>
+
 		<h3>印刷処理の実装</h3>
 		<p>
-			次に、「印刷」ボタンのイベント処理で、サーバのメソッドを呼び出しExcel形式のレポートを出力します。
-			先ずSampleEditForm.javaにサーバ側の処理を記述します。
-		</p>
-		<p>
-			クライアントから直接呼び出せるメソッドは、以下のprintメソッドのようにMap&lt;String, Object&gt;の引数を持ち、Response型の戻り値を返すメソッドです。
-		</p>
-		<p>
-			printメソッドに渡される引数には、editFormから入力された情報が展開されています。
-			各フィールドの入力内容は、たいてい文字列のまま入ってきます。
-			この入力内容をvalidateメソッドでチェックし、問題がなければそれをサーバ形式に変換することができます。
-			メソッドconvertToServerDataで変換すると、文字列形式で渡ってきたsampleNumがBigDecimalに変換され、sampleDateはjava.sql.Dateに変換されます。
-		</p>
-		<p>
-			printメソッドは、バリデーションが成功した場合BinaryResponseでExcelレポートを返します。
-			バリデーションで問題がある場合は、JsonResponseでエラー情報を返します。
-		</p>
-		<p>
-			また、@WebMethodアノテーションを指定しないと、クライアントから呼び出すことはできないようになっています。
-			さらに、メソッドが呼び出される前には必ず、Pageの認証チェックが行われます。
-			つまり、UserPageを継承したページは、Userでログインしていないと呼び出すことはできません。
-		</p>
-		<div class="filecaption">SampleEditForm.javaの修正箇所</div>
-		<div class="wrappre">
-			<pre>
-/**
- * &#32232;&#38598;&#12501;&#12457;&#12540;&#12512;&#12463;&#12521;&#12473;&#12290;
- */
-public class SampleEditForm extends EditForm {
-
-	/**
-	 * Logger.
-	 */
-	private static Logger log = Logger.getLogger(SampleEditForm.class);
-
-	/**
-	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
-	 */
-	public SampleEditForm() {
-		Table table = new SampleTable();
-		this.addTableFields(table);
-		this.getFieldList().get(&quot;sampleText&quot;).addValidator(new RequiredValidator());
-	}
-
-	&#12539;
-	&#12539;
-	&#12539;
-
-	<b>
-	@WebMethod
-	public Response print(final Map&lt;String, Object&gt; param) throws Exception {
-		this.methodStartLog(log, param);
-		List&lt;ValidationError&gt; list = this.validate(param);
-		Response resp = null;
-		if (list.size() == 0) {
-			Map&lt;String, Object&gt; data = this.convertToServerData(param);
-			log.debug(&quot;&#22793;&#25563;&#24460;&#12398;&#12487;&#12540;&#12479;=&quot; + data);
-			String template = SampleEditForm.getServlet().getServletContext().getRealPath(&quot;/exceltemplate/sample.xlsx&quot;);
-			SampleExcelReport rep = new SampleExcelReport(template);
-			BinaryResponse bresp = new BinaryResponse(rep.print(data));
-			bresp.setFileName(&quot;sample.xlsx&quot;);
-			resp = bresp;
-		} else {
-			resp = new JsonResponse(JsonResponse.INVALID, list);
-		}
-		this.methodFinishLog(log, resp);
-		return resp;
-	}
-	</b>
-};
-
-			</pre>
-		</div>
-		<p>
-			Excelレポートのクラスのコンストラクタは、SampleTable中のフィールドを配置しているだけです。
+			sampleテーブルのレコードをExcelに展開するにはExcelReportクラスを使用します。
+			以下のようにExcelReportから派生したSampleExcelReportクラスを作成します。
+			このクラスのコンストラクタで、SampleTable中のフィールドをExcelReportに配置するようにします。
 		</p>
 		<div class="filecaption">SampleExcelReport.javaの内容</div>
 		<div class="wrappre">
@@ -992,67 +922,144 @@ public class SampleExcelReport extends ExcelReport {
 			</pre>
 		</div>
 		<p>
-			次に、Excelのテンプレートとして以下のようなWebContent/exceltemplate/sample.xlsxを用意します。
+			次に、このレポートクラスにで使用するExcelテンプレートを用意します。
+			以下の内容のExcelファイルをWebContent/exceltemplate/sample.xlsxに作成します。
 		</p>
 		<figure>
 			<figcaption>Excelテンプレートの内容</figcaption>
 			<img src="function3.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
-			常にJsonResponseを返すサーバメソッドの場合、submitメソッドを使用しますが、今回呼び出すprintメソッドは、成功した場合BinaryResponseを返します。
-			そのため、以下のようにsubmitForDownloadメソッドを使用します。
+			次に、SampleEditForm.javaに以下のprintメソッドを追加します。
+		</p>
+		<div class="filecaption">SampleEditForm.javaのprintメソッド</div>
+		<div class="wrappre">
+			<pre>
+/**
+ * &#32232;&#38598;&#12501;&#12457;&#12540;&#12512;&#12463;&#12521;&#12473;&#12290;
+ */
+public class SampleEditForm extends EditForm {
+
+
+	&#12539;
+	&#12539;
+	&#12539;
+
+	<b>
+	/**
+	 * &#21360;&#21047;&#12513;&#12477;&#12483;&#12489;&#12398;&#12469;&#12531;&#12503;&#12523;&#12290;
+	 * @param p &#12497;&#12521;&#12513;&#12540;&#12479;&#12290;
+	 * @return &#24540;&#31572;&#24773;&#22577;&#12290;
+	 * @throws Exception &#20363;&#22806;&#12290;
+	 */
+	@WebMethod
+	public Response print(final Map&lt;String, Object&gt; p) throws Exception {
+		Response ret = null;
+		// Form&#12363;&#12425;&#36865;&#20449;&#12373;&#12428;&#12383;&#12487;&#12540;&#12479;&#12434;&#30906;&#35469;&#12375;&#12414;&#12377;&#12290;
+		List&lt;ValidationError&gt; list = this.validate(p);
+		if (list.size() == 0) {
+			// Form&#12363;&#12425;&#36865;&#20449;&#12373;&#12428;&#12383;&#12487;&#12540;&#12479;&#12434;&#12469;&#12540;&#12496;&#12540;&#12469;&#12452;&#12489;&#12391;&#20966;&#29702;&#12375;&#12420;&#12377;&#12356;&#12487;&#12540;&#12479;&#22411;&#12395;&#22793;&#25563;&#12375;&#12414;&#12377;&#12290;
+			Map&lt;String, Object&gt; data = this.convertToServerData(p);
+			String template = SampleEditForm.getServlet().getServletContext().getRealPath(&quot;/exceltemplate/sample.xlsx&quot;);
+			SampleExcelReport rep = new SampleExcelReport(template);
+			BinaryResponse bresp = new BinaryResponse(rep.print(data));
+			bresp.setFileName(&quot;sample.xlsx&quot;);
+			ret = bresp;
+		} else {
+			// &#30906;&#35469;&#12391;&#21839;&#38988;&#12364;&#12354;&#12387;&#12383;&#22580;&#21512;&#12381;&#12398;&#24773;&#22577;&#12434;&#36820;&#20449;&#12375;&#12414;&#12377;&#12290;
+			ret = new JsonResponse(JsonResponse.INVALID, list);
+		}
+		return ret;
+	}
+	</b>
+
+	&#12539;
+	&#12539;
+	&#12539;
+
+}
+
+			</pre>
+		</div>
+		<p>
+			このメソッドはSampleEditForm.jsから呼び出す必要があります。そのため@WebMethodアノテーションが付いています。
+			また、Map&lt;String, Object&gt;の引数を持ち、Response型の戻り値を返すメソッドである必要があります。
+			開発ツールで出力したソースのコメントにはJavascriptから呼び出せるメソッドのテンプレート(webMethod)が入っています。
+			Javascriptから呼び出せるメソッドを作る場合、このテンプレートを参考にして実装してください。
+		</p>
+		<p>
+			printメソッドに渡される引数には、editFormから入力された情報が展開されています。
+			各フィールドの入力内容は、たいてい文字列のまま入ってきます。
+			この入力内容をvalidateメソッドでチェックし、問題がなければそれをサーバ形式に変換することができます。
+			メソッドconvertToServerDataで変換すると、文字列形式で渡ってきたsampleNumericがBigDecimalに変換され、sampleDateはjava.sql.Dateに変換されます。
+		</p>
+		<p>
+			printメソッドは、バリデーションが成功した場合BinaryResponseでExcelレポートを返します。
+			バリデーションで問題がある場合は、JsonResponseでエラー情報を返します。
+		</p>
+		<p>
+			メソッドが呼び出される前には必ず、Pageの認証チェックが行われます。
+			つまり、UserPageを継承したページでは、Userでログインしていないと呼び出すことはできません。
+		</p>
+		<p>
+			SampleEditForm.jsを以下の様に修正し、SampleEditForm.javaのprintメソッドを呼び出すようにします。
 		</p>
 		<div class="filecaption">SampleEditForm.jsの修正箇所</div>
 		<div class="wrappre">
 			<pre>
 /**
- * @fileOverview {@link SampleEditForm}&#12463;&#12521;&#12473;&#12434;&#35352;&#36848;&#12375;&#12383;&#12501;&#12449;&#12452;&#12523;&#12391;&#12377;&#12290;
- */
-
-/**
  * @class SampleEditForm
  *
  * @extends EditForm
  */
-SampleEditForm = createSubclass(&quot;SampleEditForm&quot;, {}, &quot;EditForm&quot;);
+class SampleEditForm extends EditForm {
 
+	&#12539;
+	&#12539;
+	&#12539;
 
-/**
- * HTML&#12456;&#12524;&#12513;&#12531;&#12488;&#12392;&#12398;&#23550;&#24540;&#20184;&#12369;&#12434;&#34892;&#12356;&#12414;&#12377;&#12290;
- */
-SampleEditForm.prototype.attach = function() {
-	EditForm.prototype.attach.call(this);
-	<b>var thisForm = this;</b>
-	this.find(&quot;#printButton&quot;).click(function () {
-		<b>thisForm.print();</b>
-	});
-};
-
-SampleEditForm.prototype.validateForm = function() {
-	var ret = EditForm.prototype.validateForm.call(this);
-	var fv = new FieldValidator();
-	if ((!fv.isBlank(this.find(&quot;#sampleNum&quot;))) &amp;&amp; fv.isBlank(this.find(&quot;#sampleDate&quot;))) {
-		ret.push(new ValidationError(&quot;sampleDate&quot;, MessagesUtil.getMessage(&quot;error.requireddate&quot;)))
-	}
-	return ret;
-};
-
-<b>
-SampleEditForm.prototype.print = function() {
-	var thisForm = this;
-	thisForm.parent.resetErrorStatus();
-	if (thisForm.validate()) {
-		thisForm.submitForDownload(&quot;print&quot;, function(r) {
-			if (r.status == ServerMethod.INVALID) {
-				thisForm.parent.setErrorInfo(thisForm.getValidationResult(r), thisForm);
-			}
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 */
+	attach() {
+		super.attach();
+		this.get("printButton").click(() => {
+			<b>this.print();</b>
+			return false;
 		});
 	}
-};</b>
+
+	<b>
+	/**
+	 * &#12469;&#12540;&#12496;&#12398;&#21360;&#21047;&#20966;&#29702;&#12434;&#21628;&#12403;&#20986;&#12375;&#12414;&#12377;&#12290;
+	 */
+	print() {
+		if (this.validate()) {
+			this.submit(&quot;print&quot;, (r) =&gt; {
+				this.parent.resetErrorStatus();
+				if (r.status == ServerMethod.SUCCESS) {
+					// TODO:&#25104;&#21151;&#26178;&#12398;&#20966;&#29702;&#12434;&#35352;&#36848;&#12375;&#12414;&#12377;&#12290;
+					// &#24540;&#31572;&#24773;&#22577;&#12434;&#12525;&#12464;&#34920;&#31034;
+					logger.dir(r);
+				} else {
+					this.parent.setErrorInfo(this.getValidationResult(r), this);
+				}
+			});
+		}
+	}
+	</b>
+
+	&#12539;
+	&#12539;
+	&#12539;
+
+}
+
 			</pre>
 		</div>
 		<p>
-			これを実行すると、Excelファイルがダウンロードされます。
+			このアプリケーションをデプロイし、SampleEditFormの「印刷」ボタンを押下すると、
+			Excelファイルをダウンロードすることができます。
 		</p>
 		<figure>
 			<figcaption>印刷ボタンを押下した状態</figcaption>
@@ -1069,7 +1076,7 @@ SampleEditForm.prototype.print = function() {
 		<p>
 			&lt;select&gt;タグの選択肢をデータベースから取得し設定する手法は一般的なものです。
 			しかし、これをやろうとすると結構面倒なコーディングが必要になります。
-			dataforms.jarではSelectFieldクラスが用意されており、これから派生したクラスを使用することにより、
+			dataforms2.jarではSelectFieldクラスが用意されており、これから派生したクラスを使用することにより、
 			簡単にテータベースから選択肢を取得することがてきます。
 		</p>
 		<p>
@@ -1138,17 +1145,19 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 	 * &#21015;&#25369;&#21517;&#31216;&#12290;
 	 */
 	private static final String ENUM_TYPE = &quot;<b>sampleSelect</b>&quot;; // &#36969;&#20999;&#12395;&#20462;&#27491;&#12375;&#12390;&#20351;&#29992;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
+
 	/**
 	 * &#12501;&#12451;&#12540;&#12523;&#12489;&#12467;&#12513;&#12531;&#12488;&#12290;
 	 */
 	private static final String COMMENT = &quot;&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&quot;;
+
 	/**
 	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
 	 */
 	public SampleSelectField() {
-		super(null, ENUM_TYPE);
-		this.setComment(COMMENT);
+		this(null);
 	}
+
 	/**
 	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
 	 * @param id &#12501;&#12451;&#12540;&#12523;&#12489;ID&#12290;
@@ -1158,18 +1167,17 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 		this.setComment(COMMENT);
 	}
 
-	@Override
-	protected void onBind() {
-		super.onBind();
+	&#12539;
+	&#12539;
+	&#12539;
 
-	}
 }
 			</pre>
 		</div>
 		<p>
-			プロジェクトをクリーンビルドし、テーブル管理でSampleTableを検索すると、以下のようにSampleTable.javaで定義されたテーブル構造と、
+			Tomcatを再起動しテーブル管理でSampleTableを検索すると、以下のようにSampleTable.javaで定義されたテーブル構造と
 			テータベース中のテーブル構造に差があることが検出されます。
-			ここでSampleTableをチェックし、「更新」ボタンを押下すると、テーブル構造を構成しなおすことができます。
+			ここでSampleTableをチェックし「更新」ボタンを押下すると、テーブル構造を構成しなおすことができます。
 		</p>
 		<figure>
 			<figcaption>テーブル構造の更新</figcaption>
@@ -1185,7 +1193,7 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 		</figure>
 		<h3>ページの修正</h3>
 		<p>
-			テーブルに追加したsampleSelectを入力できるようにするには、以下のように編集フォームに&lt;select&gt;タグを追加するだけで完了です。
+			テーブルに追加したsampleSelectフィールドを一覧表示し入力できるようにするにはSamplePage.htmlを以下の様に編集します。
 		</p>
 		<div class="filecaption">編集フォームにフィールドを追加(SamplePage.html)</div>
 		<div class="wrappre">
@@ -1198,13 +1206,79 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 	&lt;/head&gt;
 	&lt;body&gt;
 		&lt;div id=&quot;mainDiv&quot;&gt;
+			&lt;form id=&quot;queryForm&quot;&gt;
 
-					&#12539;
-					&#12539;
-					&#12539;
+	・
+	・
+	・
 
+			&lt;/form&gt;
+			&lt;form id=&quot;queryResultForm&quot;&gt;
+				&lt;div class=&quot;formHeader&quot;&gt;&#26908;&#32034;&#32080;&#26524;&lt;/div&gt;
+				&lt;table class=&quot;responsive&quot;&gt;
+					&lt;tbody&gt;
+					&lt;/tbody&gt;
+				&lt;/table&gt;
+				&lt;div class=&quot;hScrollDiv&quot;&gt;
+					&lt;table id=&quot;queryResult&quot;&gt;
+						&lt;thead&gt;
+							&lt;tr&gt;
+								&lt;th&gt;
+									No.
+								&lt;/th&gt;
+								&lt;th&gt;
+									&#12486;&#12461;&#12473;&#12488;
+								&lt;/th&gt;
+								&lt;th&gt;
+									&#25968;&#20516;
+								&lt;/th&gt;
+								&lt;th&gt;
+									&#26085;&#20184;
+								&lt;/th&gt;
+								<b>&lt;th&gt;</b>
+									<b>&#36984;&#25246;</b>
+								<b>&lt;/th&gt;</b>
+								&lt;th&gt;
+									&#25805;&#20316;
+								&lt;/th&gt;
+							&lt;/tr&gt;
+						&lt;/thead&gt;
+						&lt;tbody&gt;
+							&lt;tr&gt;
+								&lt;td&gt;
+									&lt;span id=&quot;queryResult[0].rowNo&quot;&gt;&lt;/span&gt;
+									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].sampleId&quot; /&gt;
+									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].createUserId&quot; /&gt;
+									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].createTimestamp&quot; /&gt;
+									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateUserId&quot; /&gt;
+									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateTimestamp&quot; /&gt;
+								&lt;/td&gt;
+								&lt;td&gt;
+									&lt;a id=&quot;queryResult[0].updateButton&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;span id=&quot;queryResult[0].sampleText&quot;&gt;&lt;/span&gt;&lt;/a&gt;
+								&lt;/td&gt;
+								&lt;td&gt;
+									&lt;span id=&quot;queryResult[0].sampleNumeric&quot;&gt;&lt;/span&gt;
+								&lt;/td&gt;
+								&lt;td&gt;
+									&lt;span id=&quot;queryResult[0].sampleDate&quot;&gt;&lt;/span&gt;
+								&lt;/td&gt;
+
+								<b>&lt;td&gt;</b>
+									<b>&lt;span id=&quot;queryResult[0].sampleSelect&quot;&gt;&lt;/span&gt;</b>
+								<b>&lt;/td&gt;</b>
+								&lt;td&gt;
+									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].viewButton&quot; value=&quot;&#34920;&#31034;&quot;&gt;
+									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].referButton&quot; value=&quot;&#21442;&#29031;&#30331;&#37682;&quot;&gt;
+									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].deleteButton&quot; value=&quot;&#21066;&#38500;&quot;&gt;
+								&lt;/td&gt;
+							&lt;/tr&gt;
+						&lt;/tbody&gt;
+					&lt;/table&gt;
+				&lt;/div&gt;
+			&lt;/form&gt;
 			&lt;form id=&quot;editForm&quot;&gt;
 				&lt;div class=&quot;formHeader&quot;&gt;&lt;span id=&quot;editFormTitle&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+				&lt;input type=&quot;hidden&quot; id=&quot;saveMode&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;sampleId&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;createUserId&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;createTimestamp&quot; /&gt;
@@ -1218,26 +1292,24 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 						&lt;/tr&gt;
 						&lt;tr&gt;
 							&lt;th&gt;&#25968;&#20516;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNum&quot; /&gt;&lt;/td&gt;
+							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/td&gt;
 						&lt;/tr&gt;
 						&lt;tr&gt;
 							&lt;th&gt;&#26085;&#20184;&lt;/th&gt;
 							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/td&gt;
 						&lt;/tr&gt;
-						<b>
-						&lt;tr&gt;
-							&lt;th&gt;&#36984;&#25246;&lt;/th&gt;
-							&lt;td&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						</b>
+						<b>&lt;tr&gt;</b>
+							<b>&lt;th&gt;&#36984;&#25246;&lt;/th&gt;</b>
+							<b>&lt;td&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/td&gt;</b>
+						<b>&lt;/tr&gt;</b>
 					&lt;/tbody&gt;
 				&lt;/table&gt;
-				&lt;input type=&quot;button&quot; id=&quot;confirmButton&quot; value=&quot;&#30906;&#35469;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;saveButton&quot; value=&quot;&#30331;&#37682;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;deleteButton&quot; value=&quot;&#21066;&#38500;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;backButton&quot; value=&quot;&#25147;&#12427;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;printButton&quot; value=&quot;&#21360;&#21047;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;confirmButton&quot; class=&quot;largeButton&quot; value=&quot;&#30906;&#35469;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;saveButton&quot; class=&quot;largeButton&quot; value=&quot;&#30331;&#37682;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; class=&quot;largeButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;deleteButton&quot; class=&quot;largeButton&quot; value=&quot;&#21066;&#38500;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;backButton&quot; class=&quot;largeButton&quot; value=&quot;&#25147;&#12427;&quot;/&gt;
+				&lt;input type=&quot;button&quot; id=&quot;printButton&quot; class=&quot;largeButton&quot; value=&quot;&#21360;&#21047;&quot;/&gt;
 			&lt;/form&gt;
 
 		&lt;/div&gt;
@@ -1246,111 +1318,15 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 			</pre>
 		</div>
 		<p>
-			クリーンビルドの後、新規登録フォームを表示すると、以下のように選択肢が自動的に取得されているのがわかります。
+			クリーンビルドの後新規登録フォームを表示すると、以下のように選択肢が自動的に取得されているのがわかります。
 			SampleEditForm.javaでは、SampleTable中のフィールドをすべて配置するようになっているため、この状態でデータの登録も可能になっています。
 		</p>
 		<figure>
 			<figcaption>選択項目追加後の新規登録画面</figcaption>
 			<img src="enum7.png" style="width:50%; height:50%;"/>
 		</figure>
-
 		<p>
-			さらに検索結果リストに"sampleSelect"を表示するには、以下のように修正します。
-		</p>
-		<div class="filecaption">検索結果フォームにフィールドを追加(SampleQueryResultForm.java)</div>
-		<div class="wrappre">
-			<pre>
-	/**
-	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
-	 */
-	public SampleQueryResultForm() {
-		SampleTable table = new SampleTable();
-		this.addPkFieldList(table.getPkFieldList());
-		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, SampleDao.getQueryResultFieldList());
-		htmltable.getFieldList().get(SampleTable.Entity.ID_SAMPLE_TEXT).setSortable(true);
-		htmltable.getFieldList().get(SampleTable.Entity.ID_SAMPLE_NUM).setSortable(true);
-		htmltable.getFieldList().get(SampleTable.Entity.ID_SAMPLE_DATE).setSortable(true, SortOrder.DESC);
-		<b>htmltable.getFieldList().get(SampleTable.Entity.ID_SAMPLE_SELECT).setSortable(true);</b>
-
-		this.addHtmlTable(htmltable);
-	}
-
-			</pre>
-		</div>
-		<div class="filecaption">検索結果フォームにフィールドを追加(SamplePage.html)</div>
-		<div class="wrappre">
-			<pre>
-			&lt;form id=&quot;queryResultForm&quot;&gt;
-				&lt;div class=&quot;formHeader&quot;&gt;&#26908;&#32034;&#32080;&#26524;&lt;/div&gt;
-				&lt;input type=&quot;hidden&quot; id=&quot;sampleId&quot; /&gt;
-				&lt;table class=&quot;responsive&quot;&gt;
-					&lt;tbody&gt;
-					&lt;/tbody&gt;
-				&lt;/table&gt;
-				&lt;div class=&quot;hScrollDiv&quot;&gt;
-					&lt;table id=&quot;queryResult&quot;&gt;
-						&lt;thead&gt;
-						&lt;tr&gt;
-							&lt;th&gt;
-								No.
-							&lt;/th&gt;
-							&lt;th&gt;
-								&#12486;&#12461;&#12473;&#12488;
-							&lt;/th&gt;
-							&lt;th&gt;
-								&#25968;&#20516;
-							&lt;/th&gt;
-							&lt;th&gt;
-								&#26085;&#20184;
-							&lt;/th&gt;
-							<b>
-							&lt;th&gt;
-								&#36984;&#25246;
-							&lt;/th&gt;
-							</b>
-							&lt;th&gt;
-								&#25805;&#20316;
-							&lt;/th&gt;
-						&lt;/tr&gt;
-					&lt;/thead&gt;
-						&lt;tbody&gt;
-						&lt;tr&gt;
-							&lt;td&gt;
-								&lt;span id=&quot;queryResult[0].rowNo&quot;&gt;&lt;/span&gt;
-								&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].sampleId&quot; /&gt;
-								&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].createUserId&quot; /&gt;
-								&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].createTimestamp&quot; /&gt;
-								&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateUserId&quot; /&gt;
-								&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateTimestamp&quot; /&gt;
-							&lt;/td&gt;
-							&lt;td&gt;
-								&lt;a id=&quot;queryResult[0].updateButton&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;span id=&quot;queryResult[0].sampleText&quot;&gt;&lt;/span&gt;&lt;/a&gt;
-							&lt;/td&gt;
-							&lt;td&gt;
-								&lt;span id=&quot;queryResult[0].sampleNum&quot;&gt;&lt;/span&gt;
-							&lt;/td&gt;
-							&lt;td&gt;
-								&lt;span id=&quot;queryResult[0].sampleDate&quot;&gt;&lt;/span&gt;
-							&lt;/td&gt;
-							<b>
-							&lt;td&gt;
-								&lt;span id=&quot;queryResult[0].sampleSelect&quot;&gt;&lt;/span&gt;
-							&lt;/td&gt;
-							</b>
-							&lt;td&gt;
-								&lt;input type=&quot;button&quot; id=&quot;queryResult[0].viewButton&quot; value=&quot;&#34920;&#31034;&quot;&gt;
-								&lt;input type=&quot;button&quot; id=&quot;queryResult[0].referButton&quot; value=&quot;&#21442;&#29031;&#30331;&#37682;&quot;&gt;
-								&lt;input type=&quot;button&quot; id=&quot;queryResult[0].deleteButton&quot; value=&quot;&#21066;&#38500;&quot;&gt;
-							&lt;/td&gt;
-						&lt;/tr&gt;
-					&lt;/tbody&gt;
-						&lt;/table&gt;
-				&lt;/div&gt;
-			&lt;/form&gt;
-			</pre>
-		</div>
-		<p>
-			上記修正で、以下のように検索結果リストにも"sampleSelect"フィールドが表示されます。
+			以下のように検索結果リストにも"sampleSelect"フィールドが表示されます。
 		</p>
 		<figure>
 			<figcaption>選択項目追加後の検索結果画面</figcaption>

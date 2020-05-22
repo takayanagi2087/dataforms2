@@ -2,8 +2,6 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<meta http-equiv="Pragma" content="no-cache">
-		<meta http-equiv="Cache-Control" content="no-cache">
 		<link type="text/css" href="../css/document.css" rel="stylesheet" />
 		<title>開発環境構築</title>
 	</head>
@@ -49,17 +47,17 @@
 			通常Tomcatからデータベースを使うには、サーバソフトを別にセットアップし、それに接続するためのjdbcドライバをTomcatにインストールします。<br/>
 			サーバーソフトの設定はいろいろ面倒なので、ここでは組込み用Apache Derbyを使用します。<br/>
 			<a href="https://db.apache.org/derby/" target="_blank">Apache Derby</a>のサイトよりdb-derby-&lt;version&gt;-bin.zipダウンロードし、
-			その中に含まれているlib/derby*.jarを全てTOMCAT_HOME/lib(今回はC:\eclipse\pleiades202003\tomcat\9\lib)にコピーしてください。
+			その中に含まれているlib/derby*.jarを全て$TOMCAT_HOME/lib(今回はC:\eclipse\pleiades202003\tomcat\9\lib)にコピーしてください。
 			これだけでデータベース(apache derby)が使えるようになります。
 		</p>
 		<h2>Java mailのインストール</h2>
 		<p>
 			外部ユーザ登録機能を使う場合、JavaMailをTomcatにインストールします。
 			<a href="https://github.com/javaee/javamail" target="_blank">https://github.com/javaee/javamail</a>のreleasesからjavax.mail.jarをダウンロードし、
-			TOMCAT_HOME/libにコピーしてください。
+			$TOMCAT_HOME/libにコピーしてください。
 			また、JavaBeans Activation Framework (JAF)も必要になります。
 			<a href="https://github.com/javaee/activation" target="_blank">https://github.com/javaee/activation</a>のreleasesからjavax.activation.jarをダウンロードし、
-			TOMCAT_HOME/libにコピーしてください。
+			$TOMCAT_HOME/libにコピーしてください。
 		</p>
 		<h2>プロジェクトの作成</h2>
 		<p>
@@ -182,109 +180,9 @@
 		</p>
 		<p>
 			「/WebContent/META-INF/context.xml」には、テータベース(組込みdevby用)への接続設定が記載されています。
-			もしPostgreSQL,MySQL,Oracle等のデータベースを使用する場合、Tomcat9に該当のjdbcドライバをインストールしcontext.xmlを書き換えてください。
+			もしPostgreSQL,MySQL(MariaDB),Oracle等のデータベースを使用する場合、Tomcat9に該当のjdbcドライバをインストールしcontext.xmlを書き換えてください。
 			コメントに各種DBサーバの設定例を記述してありますので参考にしてください。
 		</p>
-		<p>
-			Apache derbyのJDBCドライバは制約違反発生時の制約名称を取得するAPIを持っているため、追加設定は必要ありません。
-			しかし、その他のJDBCドライバにはそのようなAPIがないため、エラーメッセージから制約名を取得するようになっています。
-			そのため、duplicateErrorMessageに一意制約時のエラーメッセージのパターン、
-			foreignKeyErrorMessageに外部制約違反時のエラーメッセージのパターンを記述する必要があります。
-			このメッセージはOSの言語設定やDBサーバのバージョンによって異なる可能性があるため、
-			制約名が取得できない場合は適切に変更する必要があります。
-		</p>
-		<div class="filecaption">/WebContent/META-INF/context.xml</div>
-		<div class="wrappre">
-			<pre>
-
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE Context&gt;
-&lt;Context&gt;
-	&lt;!--
-		&#32068;&#12415;&#36796;&#12415;Apache derby&#29992;&#12398;&#25509;&#32154;&#35373;&#23450;
-		Apache derby&#12398;JDBC&#12489;&#12521;&#12452;&#12496;&#12399;&#21046;&#32004;&#21517;&#31216;&#12434;&#21462;&#24471;&#12377;&#12427;API&#12364;&#12354;&#12427;&#12383;&#12417;
-		duplicateErrorMessage&#12392;foreignKeyErrorMessage&#12398;&#35373;&#23450;&#12399;&#19981;&#35201;&#12290;
-	 --&gt;
-	&lt;Resource auth=&quot;Container&quot;
-		driverClassName=&quot;org.apache.derby.jdbc.EmbeddedDriver&quot;
-		name=&quot;jdbc/dfdb&quot; type=&quot;javax.sql.DataSource&quot;
-		url=&quot;jdbc:derby:./javadb/blankdb;create=true&quot;
-		username=&quot;&quot; password=&quot;&quot; /&gt;
-	&lt;!--
-		Apache derby&#12493;&#12483;&#12488;&#12527;&#12540;&#12463;&#12469;&#12540;&#12496;&#29992;&#12398;&#25509;&#32154;&#35373;&#23450;
-		Apache derby&#12398;JDBC&#12489;&#12521;&#12452;&#12496;&#12399;&#21046;&#32004;&#21517;&#31216;&#12434;&#21462;&#24471;&#12377;&#12427;API&#12364;&#12354;&#12427;&#12383;&#12417;
-		duplicateErrorMessage&#12392;foreignKeyErrorMessage&#12398;&#35373;&#23450;&#12399;&#19981;&#35201;&#12290;
-	--&gt;
-	&lt;!--
-	&lt;Resource auth=&quot;Container&quot; driverClassName=&quot;org.apache.derby.jdbc.ClientDriver&quot;
-		maxActive=&quot;8&quot; maxIdle=&quot;4&quot; name=&quot;jdbc/dfdb&quot; type=&quot;javax.sql.DataSource&quot;
-		url=&quot;jdbc:derby://localhost:1527/javadb/blankdb;create=true&quot; username=&quot;APP&quot;
-		password=&quot;password&quot; /&gt;
-	--&gt;
-
-	&lt;!--
-		PostgreSQL&#29992;&#12398;&#25509;&#32154;&#35373;&#23450;
-		&#21046;&#32004;&#36949;&#21453;&#12398;&#22580;&#21512;&#12289;&#21046;&#32004;&#21517;&#12399;&#12456;&#12521;&#12540;&#12513;&#12483;&#12475;&#12540;&#12472;&#12363;&#12425;&#21462;&#24471;&#12377;&#12427;&#12398;&#12391;&#12289;
-		&#19968;&#24847;&#21046;&#32004;&#21517;&#21462;&#24471;&#29992;&#12398;&#27491;&#35215;&#34920;&#29694;&#12434;duplicateErrorMessage&#12289;
-		&#22806;&#37096;&#12461;&#12540;&#21046;&#32004;&#29992;&#21517;&#21462;&#24471;&#29992;&#12398;&#27491;&#35215;&#34920;&#29694;&#12434;foreignKeyErrorMessage&#12395;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
-	 --&gt;
-	&lt;!--
-	&lt;Resource name=&quot;jdbc/dfdb&quot; type=&quot;javax.sql.DataSource&quot;
-		auth=&quot;Container&quot; driverClassName=&quot;org.postgresql.Driver&quot;
-		url=&quot;jdbc:postgresql://192.168.56.102:5432/blankdb&quot; username=&quot;postgres&quot;
-		password=&quot;&quot; /&gt;
-	&lt;Environment name=&quot;duplicateErrorMessage&quot; value=&quot;&#19968;&#24847;&#24615;&#21046;&#32004;&quot;(.+?)&quot;&#12395;&#36949;&#21453;&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
-	&lt;Environment name=&quot;foreignKeyErrorMessage&quot; value=&quot;&#22806;&#37096;&#12461;&#12540;&#21046;&#32004;&quot;(.+?)&quot;&#12395;&#36949;&#21453;&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
-	--&gt;
-
-	&lt;!--
-		MariaDB&#29992;&#25509;&#32154;&#35373;&#23450;
-		MariaDB&#29992;&#12398;jdbc&#12489;&#12521;&#12452;&#12496;&#12540;&#12434;&#20351;&#29992;&#12377;&#12427;&#22580;&#21512;&#12398;&#35373;&#23450;&#12391;&#12377;&#12290;
-		&#21046;&#32004;&#36949;&#21453;&#12398;&#22580;&#21512;&#12289;&#21046;&#32004;&#21517;&#12399;&#12456;&#12521;&#12540;&#12513;&#12483;&#12475;&#12540;&#12472;&#12363;&#12425;&#21462;&#24471;&#12377;&#12427;&#12398;&#12391;&#12289;
-		&#19968;&#24847;&#21046;&#32004;&#21517;&#21462;&#24471;&#29992;&#12398;&#27491;&#35215;&#34920;&#29694;&#12434;duplicateErrorMessage&#12289;
-		&#22806;&#37096;&#12461;&#12540;&#21046;&#32004;&#29992;&#21517;&#21462;&#24471;&#29992;&#12398;&#27491;&#35215;&#34920;&#29694;&#12434;foreignKeyErrorMessage&#12395;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
-	 --&gt;
-	&lt;!--
-	&lt;Resource name=&quot;jdbc/dfdb&quot; auth=&quot;Container&quot; type=&quot;javax.sql.DataSource&quot;
-		username=&quot;dfuser&quot; password=&quot;password&quot; driverClassName=&quot;org.mariadb.jdbc.Driver&quot;
-		url=&quot;jdbc:mysql://192.168.56.102/blankdb?useOldAliasMetadataBehavior=true&quot; /&gt;
-	&lt;Environment name=&quot;duplicateErrorMessage&quot; value=&quot;for key '(.+?)'$&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
-	&lt;Environment name=&quot;foreignKeyErrorMessage&quot; value=&quot;CONSTRAINT `(.+?)` FOREIGN KEY&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
-	--&gt;
-
-	&lt;!--
-		MySQL&#29992;&#25509;&#32154;&#35373;&#23450;
-		MySQL&#29992;&#12398;jdbc&#12489;&#12521;&#12452;&#12496;&#12540;&#12434;&#20351;&#29992;&#12377;&#12427;&#22580;&#21512;&#12398;&#35373;&#23450;&#12391;&#12377;&#12290;
-		&#21046;&#32004;&#36949;&#21453;&#12398;&#22580;&#21512;&#12289;&#21046;&#32004;&#21517;&#12399;&#12456;&#12521;&#12540;&#12513;&#12483;&#12475;&#12540;&#12472;&#12363;&#12425;&#21462;&#24471;&#12377;&#12427;&#12398;&#12391;&#12289;
-		&#19968;&#24847;&#21046;&#32004;&#21517;&#21462;&#24471;&#29992;&#12398;&#27491;&#35215;&#34920;&#29694;&#12434;duplicateErrorMessage&#12289;
-		&#22806;&#37096;&#12461;&#12540;&#21046;&#32004;&#29992;&#21517;&#21462;&#24471;&#29992;&#12398;&#27491;&#35215;&#34920;&#29694;&#12434;foreignKeyErrorMessage&#12395;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
-	--&gt;
-	&lt;!--
-	&lt;Resource name=&quot;jdbc/dfdb&quot; auth=&quot;Container&quot; type=&quot;javax.sql.DataSource&quot;
-		username=&quot;dfuser&quot; password=&quot;password&quot; driverClassName=&quot;com.mysql.jdbc.Driver&quot;
-		url=&quot;jdbc:mysql://192.168.56.102/blankdb?generateSimpleParameterMetadata=true&amp;useInformationSchema=true&amp;useOldAliasMetadataBehavior=true&amp;characterEncoding=utf8&quot; /&gt;
-	&lt;Environment name=&quot;duplicateErrorMessage&quot; value=&quot;for key '(.+?)'$&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
-	&lt;Environment name=&quot;foreignKeyErrorMessage&quot; value=&quot;CONSTRAINT `(.+?)` FOREIGN KEY&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
-	--&gt;
-
-	&lt;!--
-		ORACLE&#29992;&#12398;&#25509;&#32154;&#35373;&#23450;
-		&#21046;&#32004;&#36949;&#21453;&#12398;&#22580;&#21512;&#12289;&#21046;&#32004;&#21517;&#12399;&#12456;&#12521;&#12540;&#12513;&#12483;&#12475;&#12540;&#12472;&#12363;&#12425;&#21462;&#24471;&#12377;&#12427;&#12398;&#12391;&#12289;
-		&#19968;&#24847;&#21046;&#32004;&#21517;&#21462;&#24471;&#29992;&#12398;&#27491;&#35215;&#34920;&#29694;&#12434;duplicateErrorMessage&#12289;
-		&#22806;&#37096;&#12461;&#12540;&#21046;&#32004;&#29992;&#21517;&#21462;&#24471;&#29992;&#12398;&#27491;&#35215;&#34920;&#29694;&#12434;foreignKeyErrorMessage&#12395;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
-	--&gt;
-	&lt;!--
-	&lt;Resource name=&quot;jdbc/dfdb&quot; auth=&quot;Container&quot;
-		type=&quot;javax.sql.DataSource&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot;
-		url=&quot;jdbc:oracle:thin:@192.168.56.102:1521:xe&quot;
-		username=&quot;dfuser&quot; password=&quot;password&quot;/&gt;
-	&lt;Environment name=&quot;duplicateErrorMessage&quot; value=&quot;constraint \(.+?\.(.+?)\) violated&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
-	&lt;Environment name=&quot;foreignKeyErrorMessage&quot; value=&quot;constraint \(.+?\.(.+?)\) violated &quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
-	--&gt;
-&lt;/Context&gt;
-
-			</pre>
-		</div>
 		<p>
 			「/WebContent/WEB-INF/web.xml」にはアプリケーションの各種設定が記録されています。
 			dataforms2.jar固有の設定も、web.xmlに記述するようになっています。

@@ -148,9 +148,264 @@
 			制約名が取得できない場合は適切に変更する必要があります。
 		</p>
 		<h3>web.xmlの設定</h3>
-		
-		<h2>Tableクラスの</h2>
+		<p>
+			context.xmlに記述したJNDIデータソースの名称は"jdbc/dfdb"となっています。
+			これを変更した場合、WebContent/WEB-INF/web.xmlの以下の部分を修正する必要があります。
+		</p>
+		<div class="filecaption">context.xmlの内容</div>
+		<div class="wrappre">
+			<pre>
+	&lt;!--
+	JNDI&#12487;&#12540;&#12479;&#12477;&#12540;&#12473;&#12398;lookup&#12395;&#12399;jndi-prefix&#12392;data-source&#12434;&#32080;&#21512;&#12375;&#12383;&#25991;&#23383;&#21015;&#12391;&#34892;&#12356;&#12414;&#12377;&#12290;
+	WebLogic&#12391;&#23455;&#34892;&#12377;&#12427;&#22580;&#21512;&#12399;jndi-prefix&#12395;&#12399;&#31354;&#30333;&#25991;&#23383;&#12434;&#25351;&#23450;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
+	 --&gt;
+	&lt;!-- JNDI&#12487;&#12540;&#12479;&#12477;&#12540;&#12473;&#12398;&#21069;&#12395;&#12388;&#12369;&#12427;&#25991;&#23383;&#21015; --&gt;
+	&lt;context-param&gt;
+		&lt;param-name&gt;jndi-prefix&lt;/param-name&gt;
+		&lt;param-value&gt;java:/comp/env/&lt;/param-value&gt;
+	&lt;/context-param&gt;
+	&lt;!-- &#20351;&#29992;&#12377;&#12427;JNDI&#12487;&#12540;&#12479;&#12477;&#12540;&#12473;&#12434;&#25351;&#23450;&#12377;&#12427; --&gt;
+	&lt;context-param&gt;
+		&lt;param-name&gt;data-source&lt;/param-name&gt;
+		&lt;param-value&gt;jdbc/dfdb&lt;/param-value&gt;
+	&lt;/context-param&gt;
+			</pre>
+		</div>
+		<h2>Tableクラス</h2>
+		<h3>ツールで生成されたTableクラスの構造</h3>
+		<p>
+			開発ツールで作成されたテーブルクラスを以下に示します。
+		</p>
+		<div class="filecaption">開発ツールで作成したテーブルクラス</div>
+		<div class="wrappre">
+			<pre>
+package sample.dao;
+
+import java.util.Map;
+import dataforms.dao.Table;
+import sample.field.SampleIdField;
+import sample.field.SampleTextField;
+import sample.field.SampleNumericField;
+import sample.field.SampleDateField;
+import sample.field.SampleSelectField;
+
+
+/**
+ * &#12469;&#12531;&#12503;&#12523;&#12486;&#12540;&#12502;&#12523;&#12463;&#12521;&#12473;&#12290;
+ *
+ */
+public class SampleTable extends Table {
+	/**
+	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
+	 */
+	public SampleTable() {
+		this.setAutoIncrementId(true);
+		this.setComment(&quot;&#12469;&#12531;&#12503;&#12523;&#12486;&#12540;&#12502;&#12523;&quot;);
+		this.addPkField(new SampleIdField()); //&#12524;&#12467;&#12540;&#12489;ID
+		this.addField(new SampleTextField()); //&#12486;&#12461;&#12473;&#12488;
+		this.addField(new SampleNumericField()); //&#25968;&#20516;
+		this.addField(new SampleDateField()); //&#26085;&#20184;
+		this.addField(new SampleSelectField()); //&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;
+		this.addUpdateInfoFields();
+	}
+
+	@Override
+	public String getJoinCondition(final Table joinTable, final String alias) {
+		SampleTableRelation r = new SampleTableRelation(this);
+		return r.getJoinCondition(joinTable, alias);
+	}
+
+	/**
+	 * Entity&#25805;&#20316;&#12463;&#12521;&#12473;&#12391;&#12377;&#12290;
+	 */
+	public static class Entity extends dataforms.dao.Entity {
+		/** &#12524;&#12467;&#12540;&#12489;ID&#12398;&#12501;&#12451;&#12540;&#12523;&#12489;ID&#12290; */
+		public static final String ID_SAMPLE_ID = &quot;sampleId&quot;;
+		/** &#12486;&#12461;&#12473;&#12488;&#12398;&#12501;&#12451;&#12540;&#12523;&#12489;ID&#12290; */
+		public static final String ID_SAMPLE_TEXT = &quot;sampleText&quot;;
+		/** &#25968;&#20516;&#12398;&#12501;&#12451;&#12540;&#12523;&#12489;ID&#12290; */
+		public static final String ID_SAMPLE_NUMERIC = &quot;sampleNumeric&quot;;
+		/** &#26085;&#20184;&#12398;&#12501;&#12451;&#12540;&#12523;&#12489;ID&#12290; */
+		public static final String ID_SAMPLE_DATE = &quot;sampleDate&quot;;
+		/** &#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&#12398;&#12501;&#12451;&#12540;&#12523;&#12489;ID&#12290; */
+		public static final String ID_SAMPLE_SELECT = &quot;sampleSelect&quot;;
+
+		/**
+		 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
+		 */
+		public Entity() {
+
+		}
+		/**
+		 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
+		 * @param map &#25805;&#20316;&#23550;&#35937;&#12510;&#12483;&#12503;&#12290;
+		 */
+		public Entity(final Map&lt;String, Object&gt; map) {
+			super(map);
+		}
+		/**
+		 * &#12524;&#12467;&#12540;&#12489;ID&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+		 * @return &#12524;&#12467;&#12540;&#12489;ID&#12290;
+		 */
+		public java.lang.Long getSampleId() {
+			return (java.lang.Long) this.getMap().get(Entity.ID_SAMPLE_ID);
+		}
+
+		/**
+		 * &#12524;&#12467;&#12540;&#12489;ID&#12434;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
+		 * @param sampleId &#12524;&#12467;&#12540;&#12489;ID&#12290;
+		 */
+		public void setSampleId(final java.lang.Long sampleId) {
+			this.getMap().put(Entity.ID_SAMPLE_ID, sampleId);
+		}
+
+		/**
+		 * &#12486;&#12461;&#12473;&#12488;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+		 * @return &#12486;&#12461;&#12473;&#12488;&#12290;
+		 */
+		public java.lang.String getSampleText() {
+			return (java.lang.String) this.getMap().get(Entity.ID_SAMPLE_TEXT);
+		}
+
+		/**
+		 * &#12486;&#12461;&#12473;&#12488;&#12434;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
+		 * @param sampleText &#12486;&#12461;&#12473;&#12488;&#12290;
+		 */
+		public void setSampleText(final java.lang.String sampleText) {
+			this.getMap().put(Entity.ID_SAMPLE_TEXT, sampleText);
+		}
+
+		/**
+		 * &#25968;&#20516;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+		 * @return &#25968;&#20516;&#12290;
+		 */
+		public java.math.BigDecimal getSampleNumeric() {
+			return (java.math.BigDecimal) this.getMap().get(Entity.ID_SAMPLE_NUMERIC);
+		}
+
+		/**
+		 * &#25968;&#20516;&#12434;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
+		 * @param sampleNumeric &#25968;&#20516;&#12290;
+		 */
+		public void setSampleNumeric(final java.math.BigDecimal sampleNumeric) {
+			this.getMap().put(Entity.ID_SAMPLE_NUMERIC, sampleNumeric);
+		}
+
+		/**
+		 * &#26085;&#20184;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+		 * @return &#26085;&#20184;&#12290;
+		 */
+		public java.sql.Date getSampleDate() {
+			return (java.sql.Date) this.getMap().get(Entity.ID_SAMPLE_DATE);
+		}
+
+		/**
+		 * &#26085;&#20184;&#12434;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
+		 * @param sampleDate &#26085;&#20184;&#12290;
+		 */
+		public void setSampleDate(final java.sql.Date sampleDate) {
+			this.getMap().put(Entity.ID_SAMPLE_DATE, sampleDate);
+		}
+
+		/**
+		 * &#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+		 * @return &#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&#12290;
+		 */
+		public java.lang.String getSampleSelect() {
+			return (java.lang.String) this.getMap().get(Entity.ID_SAMPLE_SELECT);
+		}
+
+		/**
+		 * &#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&#12434;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
+		 * @param sampleSelect &#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&#12290;
+		 */
+		public void setSampleSelect(final java.lang.String sampleSelect) {
+			this.getMap().put(Entity.ID_SAMPLE_SELECT, sampleSelect);
+		}
+
+
+	}
+	/**
+	 * &#12524;&#12467;&#12540;&#12489;ID&#12501;&#12451;&#12540;&#12523;&#12489;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+	 * @return &#12524;&#12467;&#12540;&#12489;ID&#12501;&#12451;&#12540;&#12523;&#12489;&#12290;
+	 */
+	public SampleIdField getSampleIdField() {
+		return (SampleIdField) this.getField(Entity.ID_SAMPLE_ID);
+	}
+
+	/**
+	 * &#12486;&#12461;&#12473;&#12488;&#12501;&#12451;&#12540;&#12523;&#12489;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+	 * @return &#12486;&#12461;&#12473;&#12488;&#12501;&#12451;&#12540;&#12523;&#12489;&#12290;
+	 */
+	public SampleTextField getSampleTextField() {
+		return (SampleTextField) this.getField(Entity.ID_SAMPLE_TEXT);
+	}
+
+	/**
+	 * &#25968;&#20516;&#12501;&#12451;&#12540;&#12523;&#12489;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+	 * @return &#25968;&#20516;&#12501;&#12451;&#12540;&#12523;&#12489;&#12290;
+	 */
+	public SampleNumericField getSampleNumericField() {
+		return (SampleNumericField) this.getField(Entity.ID_SAMPLE_NUMERIC);
+	}
+
+	/**
+	 * &#26085;&#20184;&#12501;&#12451;&#12540;&#12523;&#12489;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+	 * @return &#26085;&#20184;&#12501;&#12451;&#12540;&#12523;&#12489;&#12290;
+	 */
+	public SampleDateField getSampleDateField() {
+		return (SampleDateField) this.getField(Entity.ID_SAMPLE_DATE);
+	}
+
+	/**
+	 * &#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&#12501;&#12451;&#12540;&#12523;&#12489;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+	 * @return &#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&#12501;&#12451;&#12540;&#12523;&#12489;&#12290;
+	 */
+	public SampleSelectField getSampleSelectField() {
+		return (SampleSelectField) this.getField(Entity.ID_SAMPLE_SELECT);
+	}
+}
+
+			</pre>
+		</div>
+		<p>
+			テーブルクラスのコンストラクタで、テーブルの構想を定義しています。
+			基本的にdataforms2.jarではRecordIdFieldから派生したクラスをaddPkFieldメソッドで主キーとして設定します。
+			主キー自動生成を設定するとthis.setAutoIncrementId(true);というコードが生成され、
+			レコード追加する際にシーケンス等を使用して自動的に主キーが生成されます。
+			通常のフィールドはaddFieldメソッドを使用してフィールドクラスを追加します。
+		</p>
+		<p>
+			getJoinConditionメソッドは他のテーブルとの結合条件を生成するためのメソッドです。
+			この結合条件の生成処理はXxxTableRelationクラスで行っており、
+			テーブルの結合条件はXxxTableRelationクラスに記述する必要があります。
+			XxxTableRelationクラスはXxxTableクラスが作成されるタイミングで作成されます。
+			その後開発ツールでXxxTableクラスのソースを更新するときには更新されることはありません。
+		</p>
+		<p>
+			テーブルクラスには必ずEntityクラスが定義されています。
+			Daoクラスでテーブルのレコードデータの入れ物としてはMap&lt;String, Object&gt;を使用しています。
+			このEntityクラスはこのMapオブジェクトを操作するため物です。
+			Entityクラスにはテーブルに配置されたフィールド文のゲッター、セッターが定義されています。
+			登録するデータを作成したり、読み込んだーデータを取得する際に使用します。
+			また、EntityクラスにはフィールドIDの定数が定義されています。
+		</p>
+		<p>
+			テーブルにはそのテーブルに配置されたフィールドのインスタンスを取得するメソッドも生成されています。
+			以下のコードではtextField1とtextField2は同じフィールドのインスタンスになります。
+		</p>
+		<div class="filecaption">テーブルからフィールドの取得</div>
+		<div class="wrappre">
+			<pre>
+SampleTable table = new SampleTable();
+SampleTextField textField1 = table.getSampleTextField();
+SampleTextField textField2 = (SampleTextField) this.getField(Entity.ID_SAMPLE_TEXT);
+			</pre>
+		</div>
 		<h2>TableクラスとDaoクラス</h2>
+		<p>
+
+		</p>
 		<h2>問合せクラス</h2>
 		<h2>問合せクラスとDaoクラス</h2>
 		<h2>QuerySetDaoクラス解説</h2>

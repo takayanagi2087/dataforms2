@@ -376,13 +376,6 @@ public class SampleTable extends Table {
 			通常のフィールドはaddFieldメソッドを使用してフィールドクラスを追加します。
 		</p>
 		<p>
-			getJoinConditionメソッドは他のテーブルとの結合条件を生成するためのメソッドです。
-			この結合条件の生成処理はXxxTableRelationクラスで行っており、
-			テーブルの結合条件はXxxTableRelationクラスに記述する必要があります。
-			XxxTableRelationクラスはXxxTableクラスが作成されるタイミングで作成されます。
-			その後開発ツールでXxxTableクラスのソースを更新するときには更新されることはありません。
-		</p>
-		<p>
 			テーブルクラスには必ずEntityクラスが定義されています。
 			Daoクラスでテーブルのレコードデータの入れ物としてはMap&lt;String, Object&gt;を使用しています。
 			このEntityクラスはこのMapオブジェクトを操作するため物です。
@@ -400,6 +393,101 @@ public class SampleTable extends Table {
 SampleTable table = new SampleTable();
 SampleTextField textField1 = table.getSampleTextField();
 SampleTextField textField2 = (SampleTextField) this.getField(Entity.ID_SAMPLE_TEXT);
+			</pre>
+		</div>
+		<p>
+			getJoinConditionメソッドは他のテーブルとの結合条件を生成するためのメソッドです。
+			この結合条件の生成処理はXxxTableRelationクラスで行っており、
+			テーブルの結合条件はXxxTableRelationクラスに記述する必要があります。
+			XxxTableRelationクラスはXxxTableクラスが作成されるタイミングで作成されます。
+			その後開発ツールでXxxTableクラスのソースを更新するときには更新されることはありません。
+		</p>
+		<p>
+			以下に開発ツールで生成したSampleTableRelation.javaを示します。
+			このクラスではSampleTableにHogeTableをjoinした場合の条件式を記述します。
+		</p>
+		<p>
+			joinの際の条件式の設定は外部キーを定義する方法と、
+			外部キーは設定せずに条件式のみ設定する方法があります。
+		</p>
+		<p>
+			static {}でForeignKeyのインスタンスを追加することにより、外部キーを追加することができます。
+			外部キーを追加することにより自動的にjoinの際の条件式も生成されるようになります。
+			外部キーを追加した後、テーブル管理で該当テープを表示すると、構造の差分有と表示されます。
+			テーブル構造の更新を行うと、データベースに外部キーを作成することができます。
+		</p>
+		<p>
+			外部キーを使用しない結合条件を生成したい場合、getJoinConditionメソッドに条件作成処理を記述します。
+			以下の例ではHogeTableとの結合条件を生成する処理がコメントアウトされた状態で入っています。
+			この記述を参考に結合条件式の生成処理を作成してください。
+		</p>
+		<div class="filecaption">テーブル関連定義クラス</div>
+		<div class="wrappre">
+			<pre>
+package sample.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dataforms.dao.ForeignKey;
+import dataforms.dao.Table;
+import dataforms.dao.TableRelation;
+
+/**
+ * SampleTableの関係を定義するクラスです。
+ *
+ */
+public class SampleTableRelation extends TableRelation {
+
+	/**
+	 * 外部キーリスト。
+	 */
+	private static List<ForeignKey> foreignKeyList = null;
+
+	/**
+	 * 外部キーリストの定義。
+	 * <pre>
+	 * この初期化処理で外部キーを定義することにより、自動的に外部キーが設定されます。
+	 * </pre>
+	 */
+	static {
+		foreignKeyList = new ArrayList<ForeignKey>();
+		/*
+		 * 以下の定義を有効にすると外部キーHogeTableに対する外部キーを設定します。
+		 * この設定だけでHogeTableとの結合条件も生成されるようになります。
+		 */
+		// foreignKeyList.add(new ForeignKey("fkSampleTable01", SampleTable.Entity.ID_HOGE_ID, HogeTable.class));
+	}
+
+	@Override
+	public List<ForeignKey> getForeignKeyList() {
+		return foreignKeyList;
+	}
+
+	/**
+	 * コンストラクタ。
+	 * @param table 対象テーブル。
+	 */
+	public SampleTableRelation(final Table table) {
+		super(table);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getJoinCondition(final Table joinTable, final String alias) {
+		/*
+		 * 外部キーを設定せずに結合条件を生成する場合は以下を有効にします。
+		 */
+/*
+		if (joinTable instanceof HogeTable) {
+			return this.getTable().getLinkFieldCondition(HogeTable.Entity.ID_HOGE_ID, joinTable, alias);
+		}
+*/
+		return super.getJoinCondition(joinTable, alias);
+	}
+}
 			</pre>
 		</div>
 		<h2>TableクラスとDaoクラス</h2>

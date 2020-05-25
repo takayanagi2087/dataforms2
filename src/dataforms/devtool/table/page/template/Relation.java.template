@@ -25,6 +25,10 @@ public class ${TableClassShortName}Relation extends TableRelation {
 	 */
 	static {
 		foreignKeyList = new ArrayList<ForeignKey>();
+		/*
+		 * 以下の定義を有効にすると外部キーHogeTableに対する外部キーを設定します。
+		 * この設定だけでHogeTableとの結合条件も生成されるようになります。
+		 */
 		// foreignKeyList.add(new ForeignKey("fk${TableClassShortName}01", ${TableClassShortName}.Entity.ID_HOGE_ID, HogeTable.class));
 	}
 
@@ -46,6 +50,14 @@ public class ${TableClassShortName}Relation extends TableRelation {
 	 */
 	@Override
 	public String getJoinCondition(final Table joinTable, final String alias) {
+		/*
+		 * 外部キーを設定せずに結合条件を生成する場合は以下を有効にします。
+		 */
+/*
+		if (joinTable instanceof HogeTable) {
+			return this.getTable().getLinkFieldCondition(HogeTable.Entity.ID_HOGE_ID, joinTable, alias);
+		}
+*/
 		return super.getJoinCondition(joinTable, alias);
 	}
 }

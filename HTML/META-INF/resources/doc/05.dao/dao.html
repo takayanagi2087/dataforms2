@@ -492,8 +492,68 @@ public class SampleTableRelation extends TableRelation {
 		</div>
 		<h2>TableクラスとDaoクラス</h2>
 		<p>
-
+			テーブルにレコードを追加、更新、削除するには以下の様にします。
 		</p>
+		<div class="filecaption">レコードの追加、更新、削除</div>
+		<div class="wrappre">
+			<pre>
+Dao dao = new Dao(this);
+SampleTable.Entity e = new SampleTable.Entity();
+e.setSampleText("sample-text");
+e.setSampleNumeric(BigDecimal.valueOf(1234.0));
+e.setSampleDate(DateTimeUtil.getCurrentDate());
+e.setSampleSelect("1");
+this.setUserInfo(e.getMap()); // 作成ユーザID,更新ユーザIDを設定。
+dao.executeInsert(new SampleTable(), e.getMap()); // レコードの追加
+logger.debug(() -> "sampleId=" + e.getSampleId()); // 自動生成されたIDを表示
+e.setSampleText("sample-text-update");
+dao.executeUpdate(new SampleTable(), e.getMap()); // レコードの更新
+			</pre>
+		</div>
+		<p>
+			この処理を実行すると以下の様なSQLが実行されます。
+			executeInsertメソットではシーケンスで主キーを生成してからinsert文を実行しています。
+			executeInsertの実行で、map中に生成された主キーの値が設定されます。
+			このコードのexecuteUpdateは主キーで限定してレコードを更新します。
+			executeUpdateは更新対象フィールドを限定したり、更新条件を設定することができる引数構成も存在します。
+			このコードのexecuteDeleteも主キーで限定してレコードを削除します。
+			executeUpdateは更新条件を設定することができる引数構成も存在します。
+			javadocを参照してください。
+		<p>
+		<div class="filecaption">実行されたSQL</div>
+		<div class="wrappre">
+			<pre>
+2020/05/25 20:17:05.722 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser sql=<b>select seq from (values next value for sample_seq) t(seq)</b>
+2020/05/25 20:17:05.771 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser sql=<b>insert into sample (sample_id,sample_text,sample_numeric,sample_date,sample_select,create_user_id,create_timestamp,update_user_id,update_timestamp)
+values (:sample_id,:sample_text,:sample_numeric,:sample_date,:sample_select,:create_user_id,current_timestamp,:update_user_id,current_timestamp)</b>
+2020/05/25 20:17:05.863 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 1 :sample_id=201
+2020/05/25 20:17:05.864 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 2 :sample_text=sample-text
+2020/05/25 20:17:05.864 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 3 :sample_numeric=1234.0
+2020/05/25 20:17:05.864 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 4 :sample_date=2020-05-25
+2020/05/25 20:17:05.864 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 5 :sample_select=1
+2020/05/25 20:17:05.864 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 6 :create_user_id=1
+2020/05/25 20:17:05.864 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 7 :update_user_id=1
+2020/05/25 20:17:05.883 [http-nio-8080-exec-9] DEBUG  sample.page.SampleEditForm sampleId=<b>201</b>
+2020/05/25 20:17:05.884 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser sql=<b>update sample set
+sample_text = :sample_text
+, sample_numeric = :sample_numeric
+, sample_date = :sample_date
+, sample_select = :sample_select
+, update_user_id = :update_user_id
+, update_timestamp = current_timestamp
+where
+sample_id = :sample_id</b>
+
+2020/05/25 20:17:05.970 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 1 :sample_text=sample-text-update
+2020/05/25 20:17:05.970 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 2 :sample_numeric=1234.0
+2020/05/25 20:17:05.970 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 3 :sample_date=2020-05-25
+2020/05/25 20:17:05.971 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 4 :sample_select=1
+2020/05/25 20:17:05.971 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 5 :update_user_id=1
+2020/05/25 20:17:05.971 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 6 :sample_id=201
+2020/05/25 20:17:05.975 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser sql=<b>delete from sample where sample_id = :sample_id</b>
+2020/05/25 20:17:06.021 [http-nio-8080-exec-9] DEBUG  dataforms.dao.sqlgen.SqlParser 1 :sample_id=201
+			</pre>
+		</div>
 		<h2>問合せクラス</h2>
 		<h2>問合せクラスとDaoクラス</h2>
 		<h2>QuerySetDaoクラス解説</h2>

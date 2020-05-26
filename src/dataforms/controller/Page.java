@@ -413,7 +413,11 @@ public class Page extends DataForms implements WebEntryPoint {
 			String jspath = this.getAppropriatePath(js, this.getRequest());
 			if (jspath != null) {
 				String t = this.getLastUpdate(jspath);
-				sb.append("\t\t<script src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
+				if (this.isIE()) {
+					sb.append("\t\t<script type=\"text/babel\" data-presets=\"es2015,stage-2\"  src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
+				} else {
+					sb.append("\t\t<script src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
+				}
 			}
 		}
 		List<String> appScripts = this.getAppScript();
@@ -422,7 +426,11 @@ public class Page extends DataForms implements WebEntryPoint {
 			String jspath = this.getAppropriatePath(js, this.getRequest());
 			if (jspath != null) {
 				String t = this.getLastUpdate(jspath);
-				sb.append("\t\t<script src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
+				if (this.isIE()) {
+					sb.append("\t\t<script type=\"text/babel\" data-presets=\"es2015,stage-2\" src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
+				} else {
+					sb.append("\t\t<script src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
+				}
 			}
 		}
 		return sb.toString();
@@ -700,6 +708,16 @@ public class Page extends DataForms implements WebEntryPoint {
 		return this.getHtml(p);
 	}
 
+	private boolean isIE() {
+		HttpServletRequest req = this.getRequest();
+		String ua = req.getHeader("user-agent");
+		if (ua.indexOf("MSIE") > 0 || ua.indexOf("Trident") > 0 ||  ua.indexOf("rv:11.0") > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
      * ページのHTMLを取得します。
      * @param params パラメータ。
@@ -713,10 +731,15 @@ public class Page extends DataForms implements WebEntryPoint {
 		String context = req.getContextPath();
 		logger.info(() -> "context=" + context + ", uri=" + uri);
 		logger.info(() -> "path=" + req.getServletPath());
+		logger.info(() -> "user-agent=" + req.getHeader("user-agent"));
 
 		String htmltext = this.getHtmlText(req, context);
 
 		String scripts = this.getWebResource(DataFormsServlet.getCssAndScript());
+		if (this.isIE()) {
+			String babel = this.getWebResource("/frame/babel.html");
+			scripts = babel + scripts;
+		}
 		scripts = scripts.replaceAll("\\$\\{context\\}", req.getContextPath());
 
     	HtmlResponse resp = new HtmlResponse(this.editHtml(htmltext, scripts, context));

@@ -20,14 +20,9 @@ class QueryGeneratorEditForm extends EditForm {
 			if (thisForm.mode == "confirm") {
 				return false;
 			}
+			var selectFieldList = thisForm.getComponent("selectFieldList");
 			var ck = $(this).prop("checked");
-			thisForm.find("[id$='sel']").each(function() {
-				$(this).prop("checked", ck);
-			});
-			thisForm.find("[id$='selectTableClass']").each(function() {
-				$(this).prop("checked", ck);
-			});
-			thisForm.getComponent("selectFieldList").disableDuplicate();
+			selectFieldList.checkAll(ck);
 		});
 	}
 
@@ -125,8 +120,6 @@ class QueryGeneratorEditForm extends EditForm {
 		this.setJoinConditionToTable(this.getComponent("leftJoinTableList"), data.leftJoinTableList);
 		this.setJoinConditionToTable(this.getComponent("rightJoinTableList"), data.rightJoinTableList);
 	}
-
-
 }
 
 

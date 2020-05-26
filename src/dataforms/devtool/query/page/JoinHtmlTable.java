@@ -55,5 +55,6 @@ public class JoinHtmlTable extends EditableHtmlTable {
 		);
 		flist.get(ID_TABLE_CLASS_NAME).setAutocomplete(true).setRelationDataAcquisition(true);
 		this.setFieldList(flist);
+		this.setFixedColumns(4);
 	}
 }

@@ -128,144 +128,158 @@
 					</tbody>
 				</table>
 				<h2>JOINするテーブルリスト</h2>
-				<div style="overflow-x:scroll;width:100%">
-					<div class="hScrollDiv">
-						<table id="joinTableList" class="editableTable">
-							<thead>
-								<tr>
-									<th class="buttonColumn" nowrap>
+				<table id="joinTableList" class="editableTable">
+					<thead>
+						<tr>
+							<th class="buttonColumn" nowrap>
 
-									</th>
-									<th class="buttonColumn" nowrap>
+							</th>
+							<th class="buttonColumn" nowrap>
 
-									</th>
-									<th nowrap>
-										No.
-									</th>
-									<th>
-										結合方法
-									</th>
-									<th>
-										機能
-									</th>
-									<th>
-										パッケージ名
-									</th>
-									<th>
-										テーブルクラス名
-									</th>
-									<th>
-										別名
-									</th>
-									<th>
-										結合条件
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td style="width: 21px;">
-										<input type="button" id="joinTableList[0].addButton" value="+"/>
-									</td>
-									<td style="width: 21px;">
-										<input type="button" id="joinTableList[0].deleteButton" value="-"/>
-									</td>
-									<td style="text-align: right;">
-										<span id="joinTableList[0].no"></span>
-									</td>
-									<td>
-										<select id="joinTableList[0].joinType"></select>
-									</td>
-									<td>
-										<select id="joinTableList[0].functionSelect"></select>
-									</td>
-									<td>
-										<input type="text" id="joinTableList[0].packageName" />
-									</td>
-									<td>
-										<input type="text" id="joinTableList[0].tableClassName" />
-									</td>
-									<td>
-										<input type="text" id="joinTableList[0].aliasName" />
-									</td>
-									<td>
-										<span id="joinTableList[0].joinCondition" ></span>
-									</td>
-								</tr>
-							</tbody>
-							<tfoot>
-								<tr>
-									<th style="width: 21px;">
-										<input type="button" id="joinTableList.addButton" value="+"/>
-									</th>
-									<th colspan="8">
-									</th>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
+							</th>
+							<th nowrap>
+								No.
+							</th>
+							<th>
+								結合方法
+							</th>
+							<th>
+								機能
+							</th>
+							<th>
+								パッケージ名
+							</th>
+							<th>
+								テーブルクラス名
+							</th>
+							<th>
+								別名
+							</th>
+							<th>
+								結合条件
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="width: 32px;">
+								<input type="button" id="joinTableList[0].addButton" value="+"/>
+							</td>
+							<td style="width: 32px;">
+								<input type="button" id="joinTableList[0].deleteButton" value="-"/>
+							</td>
+							<td style="text-align: right; width:32px;">
+								<span id="joinTableList[0].no"></span>
+							</td>
+							<td style="width: 100px;">
+								<select id="joinTableList[0].joinType"></select>
+							</td>
+							<td style="width: 100px;">
+								<select id="joinTableList[0].functionSelect"></select>
+							</td>
+							<td style="width: 200px;">
+								<input type="text" id="joinTableList[0].packageName" />
+							</td>
+							<td style="width: 200px;">
+								<input type="text" id="joinTableList[0].tableClassName" />
+							</td>
+							<td style="width: 200px;">
+								<input type="text" id="joinTableList[0].aliasName" />
+							</td>
+							<td style="width: 300px;">
+								<span id="joinTableList[0].joinCondition" ></span>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th style="width: 21px;">
+								<input type="button" id="joinTableList.addButton" value="+"/>
+							</th>
+							<th colspan="8">
+							</th>
+						</tr>
+					</tfoot>
+				</table>
 				<h2>選択フィールドリスト</h2>
-				<div style="overflow-x:scroll;width:100%">
-					<div class="hScrollDiv">
-						<table><tbody><tr><td id="tdtest">
-						<table id="selectFieldList">
-							<thead>
-								<tr>
-									<th>
-										<input type="checkbox" id="selectAll" value="1"/>
-									</th>
-									<th>
-										No.
-									</th>
-									<th>
-										フィールドID
-									</th>
-									<th>
-										フィールドクラス
-									</th>
-									<th>
-										テーブルクラス
-									</th>
-									<th>
-										コメント
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<input type="checkbox" id="selectFieldList[0].sel" value="1">
-										<input type="hidden" id="selectFieldList[0].selectTableClassName" >
-										<input type="hidden" id="selectFieldList[0].sortOrder" >
-									</td>
-									<td style="text-align: right;">
-										<span id="selectFieldList[0].no" ></span>
-									</td>
-									<td style="width: 180px;">
-										<input type="text" id="selectFieldList[0].fieldId"/>
-									</td>
-									<td style="width: 200px;">
-										<span id="selectFieldList[0].fieldClassName" ></span>
-									</td>
-									<td style="width: 200px;">
-										<span id="selectFieldList[0].tableClassName" ></span>
-									</td>
-									<td style="width: 300px;">
-										<span id="selectFieldList[0].comment" ></span>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						</td></tr></tbody></table>
-					</div>
-				</div>
+				<table id="selectFieldList" class="editableTable">
+					<thead>
+						<tr>
+							<th class="buttonColumn" nowrap>
+							</th>
+							<th class="buttonColumn" nowrap>
+							</th>
+							<th>
+								<input type="checkbox" id="selectAll" value="1"/>
+							</th>
+							<th>
+								No.
+							</th>
+							<th>
+								フィールドID
+							</th>
+							<th>
+								フィールドクラス
+							</th>
+							<th>
+								テーブルクラス
+							</th>
+							<th>
+								別名
+							</th>
+							<th>
+								コメント
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="width: 32px;">
+								<button type="button" id="selectFieldList[0].addButton">+</button>
+							</td>
+							<td style="width: 32px;">
+								<button type="button" id="selectFieldList[0].deleteButton">-</button>
+							</td>
+							<td style="width: 100px; text-align: center;">
+								<select id="selectFieldList[0].sel"></select>
+								<input type="hidden" id="selectFieldList[0].selectTableClassName" >
+								<input type="hidden" id="selectFieldList[0].sortOrder" >
+							</td>
+							<td style="text-align: right; width: 32px;">
+								<span id="selectFieldList[0].no" ></span>
+							</td>
+							<td style="width: 180px;">
+								<input type="text" id="selectFieldList[0].fieldId"/>
+							</td>
+							<td style="width: 300px;">
+								<span id="selectFieldList[0].fieldClassName" ></span>
+							</td>
+							<td style="width: 200px;">
+								<span id="selectFieldList[0].tableClassName" ></span>
+							</td>
+							<td style="width: 180px;">
+								<input type="text" id="selectFieldList[0].alias"/>
+							</td>
+							<td style="width: 300px;">
+								<span id="selectFieldList[0].comment" ></span>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th style="width: 21px;">
+								<input type="button" id="selectFieldList.addButton" value="+"/>
+							</th>
+							<th colspan="8">
+							</th>
+						</tr>
+					</tfoot>
+				</table>
 				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
 				<input type="button" id="saveButton" class="largeButton" value="登録"/>
 				<input type="button" id="resetButton" class="largeButton" value="リセット"/>
 				<input type="button" id="backButton" class="largeButton" value="戻る"/>
 			</form>
-
 		</div>
 	</body>
 </html>

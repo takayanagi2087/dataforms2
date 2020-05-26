@@ -7,13 +7,13 @@ import java.util.Map;
 
 import dataforms.dao.Table;
 import dataforms.devtool.field.FieldFullClassNameField;
-import dataforms.devtool.field.FieldIdField;
+import dataforms.devtool.field.QueryFieldIdField;
+import dataforms.devtool.field.SummerySelectField;
 import dataforms.devtool.field.TableClassNameField;
 import dataforms.devtool.field.TableFullClassNameField;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
-import dataforms.field.common.FlagField;
 import dataforms.field.common.SortOrderField;
 import dataforms.htmltable.EditableHtmlTable;
 
@@ -29,15 +29,17 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	public SelectFieldHtmlTable(final String id) {
 		super(id);
 		FieldList flist = new FieldList(
-			new FlagField("sel")
+			new SummerySelectField("sel")
 			, new SortOrderField()
-			, (new FieldIdField()).setReadonly(true)
+			, new QueryFieldIdField("fieldId")
+			, new TextField("alias")
 			, (new FieldFullClassNameField("fieldClassName")).setReadonly(true)
 			, (new TableFullClassNameField("selectTableClassName")).setReadonly(true)
 			, (new TableClassNameField()).setReadonly(true)
 			, (new TextField("comment")).setReadonly(true)
 		);
 		this.setFieldList(flist);
+		this.setFixedColumns(5);
 	}
 
 	/**

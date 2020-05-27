@@ -47,7 +47,14 @@ class Page extends DataForms {
 	 */
 	static get BROWSER_EDGE() {
 		 return "edge";
-	 }
+	}
+
+	/**
+	 * Microsoft Chromium EDGE。
+	 */
+	static get BROWSER_EDG() {
+		 return "edg";
+	}
 
 	/**
 	 *  Microsoft Internet Explorer。
@@ -74,7 +81,7 @@ class Page extends DataForms {
 	 * Firefox。
 	 */
 	static get BROWSER_FIREFOX() {
-		return "firefox"
+		return "firefox";
 	}
 
 
@@ -522,6 +529,8 @@ class Page extends DataForms {
 		logger.log("ua=" + ua);
 		if (ua.indexOf("edge") >= 0) {
 			return Page.BROWSER_EDGE;
+		} else if (ua.indexOf("edg") >= 0) {
+			return Page.BROWSER_EDG;
 		} else if (ua.indexOf("msie") >= 0 || ua.indexOf("trident") >= 0) {
 			return Page.BROWSER_IE;
 		} else if (ua.indexOf(" opr") >= 0) {

@@ -130,7 +130,7 @@ public class CssFilter implements Filter {
 				Matcher vm = vp.matcher(line);
 				if (vm.find()) {
 					logger.debug(() -> "var=" + vm.group(1) + "," + vm.group(2));
-					CssFilter.varMap.put(vm.group(1), vm.group(2));
+					CssFilter.varMap.put(vm.group(1), this.replaceVar(vm.group(2)));
 				}
 			}
 		}
@@ -161,7 +161,9 @@ public class CssFilter implements Filter {
 		if (req instanceof HttpServletRequest) {
 			HttpServletRequest sreq = (HttpServletRequest) req;
 			try {
-				String contents = this.readWebResource(sreq, sreq.getRequestURI().replaceAll("\\.cssx$", ".css"));
+				String fname = sreq.getRequestURI().replaceAll("\\.cssx$", ".css");
+				logger.debug(() -> "filename=" + fname);
+				String contents = this.readWebResource(sreq, fname);
 				this.parseVar(contents);
 				contents = this.replaceVar(contents);
 				resp.setContentType("text/css; charset=utf-8");

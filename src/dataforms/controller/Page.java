@@ -708,15 +708,78 @@ public class Page extends DataForms implements WebEntryPoint {
 		return this.getHtml(p);
 	}
 
-	private boolean isIE() {
+	/**
+	 * IEかどうかを判定します。
+	 * @return IEの場合TRUE。
+	 */
+	public boolean isIE() {
 		HttpServletRequest req = this.getRequest();
+		return Page.BROWSER_IE.equals(Page.getBrowserType(req));
+	}
+
+	/**
+	 * Microsoft EDGE。
+	 */
+	public static String BROWSER_EDGE = "edge";
+	/**
+	 * Microsoft Chromium EDGE。
+	 */
+	public static String BROWSER_EDG = "edg";
+	/**
+	 * Microsoft Internet Explorer。
+	 */
+	public static String BROWSER_IE = "ie";
+	/**
+	 * Google chrome。
+	 */
+	public static String BROWSER_CHOROME = "chrome";
+	/**
+	 * Safari。
+	 */
+	public static String BROWSER_SAFARI = "safari";
+	/**
+	 * Firefox。
+	 */
+	public static String BROWSER_FIREFOX = "firefox";
+	/**
+	 * Opera。
+	 */
+	public static String BROWSER_OPERA = "opera";
+	/**
+	 * 其の他ブラウザ。
+	 */
+	public static String BROWSER_OTHER = "other";
+
+	/**
+	 * ブラウザタイプを取得します。
+	 * @param req HTTP要求情報。
+	 * @return ブラウザタイプ。
+	 */
+	public static String getBrowserType(final HttpServletRequest req) {
 		String ua = req.getHeader("user-agent");
-		if (ua.indexOf("MSIE") > 0 || ua.indexOf("Trident") > 0 ||  ua.indexOf("rv:11.0") > 0) {
-			return true;
+		if (ua != null) {
+			ua = ua.toLowerCase();
+		}
+		logger.debug("ua={}", ua);
+		if (ua.indexOf("edge") >= 0) {
+			return Page.BROWSER_EDGE;
+		} else if (ua.indexOf("edg") >= 0) {
+			return Page.BROWSER_EDG;
+		} else if (ua.indexOf("msie") >= 0 || ua.indexOf("trident") >= 0) {
+			return Page.BROWSER_IE;
+		} else if (ua.indexOf(" opr") >= 0) {
+			return Page.BROWSER_OPERA;
+		} else if (ua.indexOf("chrome") >= 0) {
+			return Page.BROWSER_CHOROME;
+		} else if (ua.indexOf("firefox") >= 0) {
+			return Page.BROWSER_FIREFOX;
+		} else if (ua.indexOf("safari") >= 0) {
+			return Page.BROWSER_SAFARI;
 		} else {
-			return false;
+			return Page.BROWSER_OTHER;
 		}
 	}
+
 
 	/**
      * ページのHTMLを取得します。

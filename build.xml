@@ -15,13 +15,12 @@
 	<property name="target" value="11"/>
 	<property name="source" value="11"/>
 	<property name="jar.name" value="dataforms2.jar"/>
-	<property name="javadoc.command" value="${PLEIADES_HOME}/java/11/bin/javadoc.exe"/>
-	<property name="jsdoc.command" value="C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd"/>
+	<property name="jsdoc.command" value="${env.JSDOC_CMD}"/>
 	<property name="version.num" value="2.00"/>
 	<property name="user" value="Masahiko Takayanagi"/>
 	<property name="javadoc.dir" value="./HTML/META-INF/resources/doc/javadoc"/>
 	<property name="jsdoc.dir" value="./HTML/META-INF/resources/doc/jsdoc"/>
-	<property name="temp.dir" value="C:/eclipse/buildTemp"/>
+	<property name="temp.dir" value="${env.BUILD_TEMP}"/>
 
 	<tstamp>
 		<format property="build.time" pattern="yyyy/MM/dd HH:mm:ss.SSS" />

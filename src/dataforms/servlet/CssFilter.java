@@ -1,10 +1,7 @@
 package dataforms.servlet;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -20,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import dataforms.util.FileUtil;
 
 /**
  * CSSのフィルター。
@@ -52,33 +47,20 @@ public class CssFilter extends DataFormsFilter implements Filter {
 
 
 	/**
-	 * Webリソースを読み込みます。
+	 * スタイルシートを読み込みます。
 	 * @param req 要求情報。
 	 * @param path リソースのパス。
 	 * @return Webリソースの文字列。
 	 * @throws Exception 例外。
 	 */
-	private String readWebResource(final HttpServletRequest req, final String path) throws Exception {
+	private String readCss(final HttpServletRequest req, final String path) throws Exception {
 		logger.debug("readWebResource path={}", path);
 		String css = CssFilter.cssMap.get(path);
 		if (css != null) {
 			return css;
 		}
-		URL url = new URL(getWebResourceUrl(req, path));
-		String ret = "";
-		logger.debug(() -> "webResourceUrl=" + url.toString());
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.connect();
-		try {
-			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				InputStream is = conn.getInputStream();
-				byte[] buf = FileUtil.readInputStream(is);
-				ret = new String(buf, DataFormsServlet.getEncoding());
-				CssFilter.cssMap.put(path, ret);
-			}
-		} finally {
-			conn.disconnect();
-		}
+		String ret = this.readWebResource(req, path);
+		CssFilter.cssMap.put(path, ret);
 		return ret;
 	}
 
@@ -141,7 +123,7 @@ public class CssFilter extends DataFormsFilter implements Filter {
 			try {
 				String fname = sreq.getRequestURI().replaceAll("\\.cssx$", ".css");
 				logger.debug(() -> "filename=" + fname);
-				String contents = this.readWebResource(sreq, fname);
+				String contents = this.readCss(sreq, fname);
 				this.parseVar(contents);
 				contents = this.replaceVar(contents);
 				resp.setContentType("text/css; charset=utf-8");

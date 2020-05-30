@@ -26,6 +26,7 @@ import dataforms.htmltable.HtmlTable;
 import dataforms.menu.Menu;
 import dataforms.response.HtmlResponse;
 import dataforms.response.JsonResponse;
+import dataforms.response.RedirectResponse;
 import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.AutoLoginCookie;
@@ -383,6 +384,30 @@ public class Page extends DataForms implements WebEntryPoint {
 	}
 
 	/**
+	 * Scriptタグを追加します。
+	 * @param context コンテキスト。
+	 * @param js javascriptのパス。
+	 * @param sb 追加する文字列バッファ。
+	 * @throws Exception 例外。
+	 */
+	private void addScriptTag(final String context, final String js, final StringBuilder sb) throws Exception {
+		String jspath = this.getAppropriatePath(js, this.getRequest());
+		if (jspath != null) {
+			String t = this.getLastUpdate(jspath);
+			if (this.isIE()) {
+				if ("standalone".equals(DataFormsServlet.getBabelCommand())) {
+					sb.append("\t\t<script type=\"text/babel\" data-presets=\"es2015,stage-2\"  src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
+				} else {
+					sb.append("\t\t<script src=\"" + context + jspath + "b?t=" + t + "\"></script>\n");
+				}
+			} else {
+				sb.append("\t\t<script src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
+			}
+		}
+	}
+
+
+	/**
 	 * cssとjavascriptのロードタグを取得します。
 	 * @return cssとjavascriptのロードタグ。
 	 * @throws Exception 例外.
@@ -410,32 +435,15 @@ public class Page extends DataForms implements WebEntryPoint {
 		}
 		List<String> basicScripts = this.getBasicJsCache();
 		for (String js : basicScripts) {
-			String jspath = this.getAppropriatePath(js, this.getRequest());
-			if (jspath != null) {
-				String t = this.getLastUpdate(jspath);
-				if (this.isIE()) {
-					sb.append("\t\t<script type=\"text/babel\" data-presets=\"es2015,stage-2\"  src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
-				} else {
-					sb.append("\t\t<script src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
-				}
-			}
+			this.addScriptTag(context, js, sb);
 		}
 		List<String> appScripts = this.getAppScript();
 		appScripts.add(this.getPageFramePath() + "/Frame.js");
 		for (String js: appScripts) {
-			String jspath = this.getAppropriatePath(js, this.getRequest());
-			if (jspath != null) {
-				String t = this.getLastUpdate(jspath);
-				if (this.isIE()) {
-					sb.append("\t\t<script type=\"text/babel\" data-presets=\"es2015,stage-2\" src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
-				} else {
-					sb.append("\t\t<script src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
-				}
-			}
+			this.addScriptTag(context, js, sb);
 		}
 		return sb.toString();
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -780,7 +788,6 @@ public class Page extends DataForms implements WebEntryPoint {
 		}
 	}
 
-
 	/**
      * ページのHTMLを取得します。
      * @param params パラメータ。
@@ -788,8 +795,15 @@ public class Page extends DataForms implements WebEntryPoint {
      * @throws Exception 例外。
      */
 	public Response getHtml(final Map<String, Object> params) throws Exception {
-    	this.processQueryString(params);
 		HttpServletRequest req = this.getRequest();
+		if (!DataFormsServlet.allowIe()) {
+			if (this.isIE()) {
+				String url = this.getAppropriateLangPath("/dataforms/app/errorpage/IeNotSupport.html", req);
+				logger.debug(() -> "url=" + url);
+				return new RedirectResponse(req.getContextPath() + url);
+			}
+		}
+    	this.processQueryString(params);
 		String uri = req.getRequestURI();
 		String context = req.getContextPath();
 		logger.info(() -> "context=" + context + ", uri=" + uri);

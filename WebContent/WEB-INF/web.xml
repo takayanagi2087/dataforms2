@@ -521,6 +521,24 @@
 			true
 		</param-value>
 	</context-param>
+	<!--
+		babelを使用したIE対応。
+	 -->
+	<context-param>
+		<param-name>ie-support</param-name>
+		<param-value>
+			{
+				// IEの許可設定。
+				// true:babelを使用してIEをサポート,false:IEはエラー。
+				"allowIE": true
+				// サーバーサイドでES6->ES5変換を行うコマンドを記述します。
+				, "babelCommand": "C:/Users/takay/AppData/Roaming/npm/babel.cmd --presets C:/Users/takay/AppData/Roaming/npm/node_modules/babel-preset-es2015"
+				// babel-standaloneを使用する場合は以下のように指定します。
+				// サーバーサイドにbabel環境がなくてもIEのテストできる程度のものと考えてください。
+				// , "babelCommand": "standalone"
+			}
+		</param-value>
+	</context-param>
 	<!-- セッションタイムアウト -->
 	<session-config>
 		<session-timeout>30</session-timeout>

@@ -86,6 +86,16 @@ import net.arnx.jsonic.JSON;
 public class DataFormsServlet extends HttpServlet {
 
 	/**
+	 * IE許可のシンボル。
+	 */
+	public static final String ALLOW_IE = "allowIE";
+
+	/**
+	 * BABELコマンドのシンボル。
+	 */
+	public static final String BABEL_COMMAND = "babelCommand";
+
+	/**
 	 * 実行のメソッド名。
 	 */
 	private static final String EXEC_METHOD = "exec";
@@ -427,6 +437,13 @@ public class DataFormsServlet extends HttpServlet {
 		);
 		WebComponent.setUseUniqueId(useUniqueId);
 
+		String ieSupportJson = this.getServletContext().getInitParameter("ie-support");
+		logger.debug(() -> "ieSupport=" + ieSupportJson);
+		if (!StringUtil.isBlank(ieSupportJson)) {
+			@SuppressWarnings("unchecked")
+			Map<String, Object> p = JSON.decode(ieSupportJson, HashMap.class);
+			DataFormsServlet.setIeSupport(p);
+		}
 		this.getUserRegistConf();
 		this.setupServletInstanceBean();
 		super.init();
@@ -438,6 +455,53 @@ public class DataFormsServlet extends HttpServlet {
 		// 制約マップを作成します。
 		this.makeConstraintMap();
 	}
+
+	/**
+	 * IEサポート情報。
+	 */
+	private static Map<String, Object> ieSupport = null;
+
+
+	/**
+	 * IEサポート情報を取得します。
+	 * @return IEサポート情報。
+	 */
+	public static Map<String, Object> getIeSupport() {
+		if (DataFormsServlet.ieSupport == null) {
+			DataFormsServlet.ieSupport = new HashMap<String, Object>();
+			DataFormsServlet.ieSupport.put(ALLOW_IE, false);
+			DataFormsServlet.ieSupport.put(BABEL_COMMAND, "standalone");
+		}
+		return DataFormsServlet.ieSupport;
+	}
+
+	/**
+	 * IE許可フラグを取得します。
+	 * @return IE許可フラグ。
+	 */
+	public static Boolean allowIe() {
+		Boolean ret = (Boolean) DataFormsServlet.getIeSupport().get(ALLOW_IE);
+		return ret;
+	}
+
+	/**
+	 * BABELのコマンドを取得します。
+	 * @return BABELのコマンド。
+	 */
+	public static String getBabelCommand() {
+		String ret = (String) DataFormsServlet.getIeSupport().get(BABEL_COMMAND);
+		return ret;
+	}
+
+
+	/**
+	 * IEサポート情報を設定します。
+	 * @param ieSupport IEサポート設定。
+	 */
+	public static void setIeSupport(final Map<String, Object> ieSupport) {
+		DataFormsServlet.ieSupport = ieSupport;
+	}
+
 
 	/**
 	 * デフォルト設定。

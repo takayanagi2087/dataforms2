@@ -301,14 +301,20 @@ class Form extends WebComponent {
 			filename = decodeURIComponent(contentDisposition.replace("attachment; filename=", ""));
 		}
 		logger.log("download blob=" + contentDisposition);
-		const url = (window.URL || window.webkitURL).createObjectURL(data);
-		// ダウンロード.
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = filename;
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
+		if (window.navigator.msSaveBlob) {
+			// IE,EDGE対応
+			window.navigator.msSaveBlob(data, filename);
+		} else {
+			const url = (window.URL || window.webkitURL).createObjectURL(data);
+			// ダウンロード.
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = filename;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+		}
+
 	}
 
 

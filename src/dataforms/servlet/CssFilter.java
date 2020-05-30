@@ -2,6 +2,7 @@ package dataforms.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -43,7 +44,7 @@ public class CssFilter extends DataFormsFilter implements Filter {
 	/**
 	 * CSS Map.
 	 */
-	private static Map<String, String> cssMap = new HashMap<String, String>();
+	private static Map<String, String> cssMap = Collections.synchronizedMap(new HashMap<String, String>());
 
 
 	/**

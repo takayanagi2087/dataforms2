@@ -96,6 +96,16 @@ public class DataFormsServlet extends HttpServlet {
 	public static final String BABEL_COMMAND = "babelCommand";
 
 	/**
+	 * BABEL standalineのシンボル。
+	 */
+	public static final String BABEL_STANDALONE = "standalone";
+
+	/**
+	 * BABELの作業領域。
+	 */
+	public static final String BABEL_WORK = "babelWork";
+
+	/**
 	 * 実行のメソッド名。
 	 */
 	private static final String EXEC_METHOD = "exec";
@@ -470,7 +480,7 @@ public class DataFormsServlet extends HttpServlet {
 		if (DataFormsServlet.ieSupport == null) {
 			DataFormsServlet.ieSupport = new HashMap<String, Object>();
 			DataFormsServlet.ieSupport.put(ALLOW_IE, false);
-			DataFormsServlet.ieSupport.put(BABEL_COMMAND, "standalone");
+			DataFormsServlet.ieSupport.put(BABEL_COMMAND, BABEL_STANDALONE);
 		}
 		return DataFormsServlet.ieSupport;
 	}
@@ -493,6 +503,15 @@ public class DataFormsServlet extends HttpServlet {
 		return ret;
 	}
 
+
+	/**
+	 * BABELの作業領域を取得します。
+	 * @return BABELの作業領域。
+	 */
+	public static String getBabelWork() {
+		String ret = (String) DataFormsServlet.getIeSupport().get(BABEL_WORK);
+		return ret;
+	}
 
 	/**
 	 * IEサポート情報を設定します。

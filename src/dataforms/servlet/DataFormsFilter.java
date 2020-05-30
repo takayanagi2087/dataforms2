@@ -3,6 +3,9 @@ package dataforms.servlet;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +22,10 @@ public class DataFormsFilter {
 	 */
 	private static Logger logger = LogManager.getLogger(DataFormsFilter.class);
 
+	/**
+	 * Webリソースのタイムスタンプキャッシュ。
+	 */
+	private static Map<String, Long> webResourceTimestampCache = Collections.synchronizedMap(new HashMap<String, Long>());
 
 
 	/**
@@ -61,6 +68,9 @@ public class DataFormsFilter {
 				InputStream is = conn.getInputStream();
 				byte[] buf = FileUtil.readInputStream(is);
 				ret = new String(buf, DataFormsServlet.getEncoding());
+
+				long d = conn.getLastModified();
+				DataFormsFilter.webResourceTimestampCache.put(path, d);
 			}
 		} finally {
 			conn.disconnect();
@@ -68,5 +78,13 @@ public class DataFormsFilter {
 		return ret;
 	}
 
+	/**
+	 * 指定ファイルのタイムスタンプを取得します。
+	 * @param path 取得するファイルのパス。
+	 * @return タイムスタンプ。
+	 */
+	protected Long getLastUpdate(final String path) {
+		return webResourceTimestampCache.get(path);
+	}
 
 }

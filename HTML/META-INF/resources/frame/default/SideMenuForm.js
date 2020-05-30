@@ -1,6 +1,9 @@
 /**
  * メニューフォーム.
  */
+
+'use strict';
+
 class SideMenuForm extends MenuForm {
 	/**
 	 * ページの各エレメントとの対応付け.
@@ -12,4 +15,5 @@ class SideMenuForm extends MenuForm {
 		this.menu.attach();
 	}
 }
+
 

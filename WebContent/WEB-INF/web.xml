@@ -522,7 +522,15 @@
 		</param-value>
 	</context-param>
 	<!--
-		babelを使用したIE対応。
+		Babelを使用したIE対応。
+		IEの使用はお勧めしませんが、どうしてもIEをサポートする必要がある場合、
+		サーバーサイドにBabelをインストールしallowIEをtrueにしてください。
+		さらに、babelCommandパラメータにES6->ES5変換を行うコマンドを指定してください。
+		この設定でIEの初回アクセス時にES6->ES5変換を行います。
+		そのためIEの初回アクセスは遅くなりますが、二回目以降は変換結果をbabelWork保存しているため、ES6->ES5変換は動作しません。
+		babelCommandに"standalone"を指定すると、babel-standaloneを使用してIE側でES6->ES5変換を行うようになります。
+		この場合サーバーサイドにbabelをインストールしなくても動作しますが、実用的なものではありません。
+		babelをインストールしていない開発環境で、IEのテストが必要な場合に使用してください。
 	 -->
 	<context-param>
 		<param-name>ie-support</param-name>
@@ -530,15 +538,12 @@
 			{
 				// IEの許可設定。
 				// true:babelを使用してIEをサポート,false:IEはエラー。
-				"allowIE": true
+				"allowIE": false
 				// BabelがES5のソースを展開するフォルダ
 				, "babelWork": "/tmp/babel"
 				// サーバーサイドでES6->ES5変換を行うコマンドを記述します。
 				, "babelCommand": "C:/Users/takay/AppData/Roaming/npm/babel.cmd --presets C:/Users/takay/AppData/Roaming/npm/node_modules/babel-preset-es2015"
-				// babel-standaloneを使用する場合は以下のように指定します。
-				// サーバーサイドにbabel環境がなくてもIEのテストできる程度のものと考えてください。
 				// , "babelCommand": "standalone"
-
 			}
 		</param-value>
 	</context-param>

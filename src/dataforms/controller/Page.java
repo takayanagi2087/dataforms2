@@ -395,7 +395,7 @@ public class Page extends DataForms implements WebEntryPoint {
 		if (jspath != null) {
 			String t = this.getLastUpdate(jspath);
 			if (this.isIE()) {
-				if ("standalone".equals(DataFormsServlet.getBabelCommand())) {
+				if (DataFormsServlet.BABEL_STANDALONE.equals(DataFormsServlet.getBabelCommand())) {
 					sb.append("\t\t<script type=\"text/babel\" data-presets=\"es2015,stage-2\"  src=\"" + context + jspath + "?t=" + t + "\"></script>\n");
 				} else {
 					sb.append("\t\t<script src=\"" + context + jspath + "b?t=" + t + "\"></script>\n");
@@ -815,7 +815,7 @@ public class Page extends DataForms implements WebEntryPoint {
 		String scripts = this.getWebResource(DataFormsServlet.getCssAndScript());
 		if (this.isIE()) {
 			String babel = this.getWebResource("/frame/babel.html");
-			if ("standalone".equals(DataFormsServlet.getBabelCommand())) {
+			if (DataFormsServlet.BABEL_STANDALONE.equals(DataFormsServlet.getBabelCommand())) {
 				babel = this.getWebResource("/frame/babelStandalone.html") + babel;
 			}
 			scripts = babel + scripts;

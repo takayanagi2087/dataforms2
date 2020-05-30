@@ -22,7 +22,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dataforms.util.FileUtil;
-import dataforms.util.StringUtil;
 
 /**
  * CSSのフィルター。
@@ -40,7 +39,7 @@ import dataforms.util.StringUtil;
  * </pre>
  */
 @WebFilter(filterName="css-filter", urlPatterns = "*.cssx")
-public class CssFilter implements Filter {
+public class CssFilter extends DataFormsFilter implements Filter {
 	/**
 	 * Logger.
 	 */
@@ -50,27 +49,6 @@ public class CssFilter implements Filter {
 	 * CSS Map.
 	 */
 	private static Map<String, String> cssMap = new HashMap<String, String>();
-
-	/**
-	 * WebリソースのURLを取得します。
-	 *
-	 * @param req 要求情報。
-	 * @param path パス。
-	 * @return URL。
-	 * @throws Exception 例外。
-	 */
-	public String getWebResourceUrl(final HttpServletRequest req, final String path) throws Exception {
-		URL accessurl = new URL(req.getRequestURL().toString());
-		String url = null;
-		if (StringUtil.isBlank(DataFormsServlet.getWebResourceUrl())) {
-			url = accessurl.getProtocol() + "://" + req.getServerName() + ":" + req.getServerPort() + path;
-		} else {
-			url = DataFormsServlet.getWebResourceUrl() + path;
-		}
-		logger.debug("getWebResourceUrl:path={}", path);
-		logger.debug("getWebResourceUrl:url={}", url);
-		return url;
-	}
 
 
 	/**

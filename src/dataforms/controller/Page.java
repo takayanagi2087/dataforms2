@@ -815,6 +815,9 @@ public class Page extends DataForms implements WebEntryPoint {
 		String scripts = this.getWebResource(DataFormsServlet.getCssAndScript());
 		if (this.isIE()) {
 			String babel = this.getWebResource("/frame/babel.html");
+			if ("standalone".equals(DataFormsServlet.getBabelCommand())) {
+				babel = this.getWebResource("/frame/babelStandalone.html") + babel;
+			}
 			scripts = babel + scripts;
 		}
 		scripts = scripts.replaceAll("\\$\\{context\\}", req.getContextPath());

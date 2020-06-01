@@ -70,22 +70,31 @@ class SelectFieldHtmlTable extends EditableHtmlTable {
 	 * @param {Boolean} ck チェック。
 	 */
 	checkAll(ck) {
+		logger.log("checkAll ck=" + ck);
 		if (this.tableData != null) {
 			var map = {};
 			for (var i = 0; i < this.tableData.length; i++) {
+				logger.log("checkAll i=" + i);
 				var selid = "selectFieldList[" + i + "].sel";
 				var sel = this.find("#" + this.selectorEscape(selid));
 				var fid = "selectFieldList[" + i + "].fieldId";
 				var f = this.find("#" + this.selectorEscape(fid));
-				if (map[f.val()] == true) {
+
+				var afid = "selectFieldList[" + i + "].alias";
+				var af = this.find("#" + this.selectorEscape(afid));
+				var id = f.val();
+				if (af.val().length > 0) {
+					id = af.val();
+				}
+				if (map[id] == null) {
 					if (ck) {
-						sel.val(1);
+						sel.val("1");
 					} else {
-						sel.val(0);
+						sel.val("0");
 					}
 				}
 				if (sel.val() == "1") {
-					map[f.val()] = true;
+					map[id] = true;
 				}
 			}
 		}

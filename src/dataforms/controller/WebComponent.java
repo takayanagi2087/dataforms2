@@ -81,12 +81,24 @@ public class WebComponent implements JDBCConnectableObject {
 	 * クラス名からデフォルトのフィールドIDを取得します。
 	 * @return デフォルトのフィールドID。
 	 */
-	protected String getDefaultId() {
+	public String getDefaultId() {
 		String name = this.getClass().getSimpleName();
 		StringBuilder sb = new StringBuilder(name.replaceAll("Field$", ""));
 		char c = sb.charAt(0);
 		sb.setCharAt(0, Character.toLowerCase(c));
 		return sb.toString();
+	}
+
+	/**
+	 * 別名が指定されていた場合それを取得します。
+	 * @return 別名。
+	 */
+	public String getAlias() {
+		if (this.id.equals(this.getDefaultId())) {
+			return null;
+		} else {
+			return this.id;
+		}
 	}
 
 

@@ -30,6 +30,8 @@ import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.field.common.FlagField;
+import dataforms.field.sqlfunc.AliasField;
+import dataforms.field.sqlfunc.GroupSummaryField;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.servlet.DataFormsServlet;
@@ -245,20 +247,47 @@ public class QueryGeneratorEditForm extends EditForm {
 		FieldList qfl = q.getFieldList();
 		List<Map<String, Object>> selflist = new ArrayList<Map<String, Object>>();
 		for (Field<?> f: qfl) {
-			String id = f.getId();
 			for (Map<String, Object> m: flist) {
-				if (id.equals((String) m.get("fieldId"))) {
-					Map<String, Object> fmap = new HashMap<String, Object>();
-					fmap.putAll(m);
-					fmap.put("sel", "1");
-					selflist.add(fmap);
-					flist.remove(m);
-					break;
+				String fieldId = (String) m.get("fieldId");
+				if (f instanceof AliasField) {
+					AliasField af = (AliasField) f;
+					String id = af.getTargetField().getId();
+					if (id.equals(fieldId)) {
+						Map<String, Object> fmap = new HashMap<String, Object>();
+						fmap.putAll(m);
+						fmap.put("alias", af.getId());
+						fmap.put("sel", "1");
+						selflist.add(fmap);
+						break;
+					}
+				} else if (f instanceof GroupSummaryField) {
+					GroupSummaryField<?> sf = (GroupSummaryField<?>) f;
+					String id = sf.getTargetField().getId();
+					if (id.equals(fieldId)) {
+						Map<String, Object> fmap = new HashMap<String, Object>();
+						fmap.putAll(m);
+						if (!sf.getId().equals(sf.getTargetField().getId())) {
+							fmap.put("alias", sf.getId());
+						}
+						fmap.put("sel", sf.getClass().getName());
+						selflist.add(fmap);
+						break;
+					}
+				} else {
+					String id = f.getId();
+					if (id.equals(fieldId)) {
+						Map<String, Object> fmap = new HashMap<String, Object>();
+						fmap.putAll(m);
+						fmap.put("sel", "1");
+						selflist.add(fmap);
+						flist.remove(m);
+						break;
+					}
 				}
 			}
 		}
 		for (Map<String, Object> m: flist) {
-			m.put("sel", "0");
+			m.put("sel", "");
 			selflist.add(m);
 		}
 		ret.put(ID_SELECT_FIELD_LIST, selflist);
@@ -701,6 +730,16 @@ public class QueryGeneratorEditForm extends EditForm {
 	}
 
 	/**
+	 * フィールド取得メソッドの文字列を作成します。
+	 * @param fieldId フィールドID。
+	 * @return フィールド取得メソッドの文字列。
+	 */
+	private String getFieldMethod(final String fieldId) {
+		String uFieldId = StringUtil.firstLetterToUpperCase(fieldId);
+		return "get" + uFieldId + "Field()";
+	}
+
+	/**
 	 * 選択フィールド設定ソースを生成します。
 	 * @param data POSTされたデータ。
 	 * @return 選択フィールド設定ソース。
@@ -711,18 +750,39 @@ public class QueryGeneratorEditForm extends EditForm {
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_SELECT_FIELD_LIST);
 		for (Map<String, Object> m: list) {
 			String sel = (String) m.get("sel");
-			if ("1".equals(sel)) {
+			if (!StringUtil.isBlank(sel)) {
 				if (sb.length() > 0) {
-					sb.append("\t\t\t, this.");
+					sb.append("\t\t\t, ");
 				} else {
-					sb.append("\t\t\tthis.");
+					sb.append("\t\t\t");
 				}
-				String tableClassName = (String) m.get("selectTableClassName");
-				logger.debug("tableClassName=" + tableClassName);
-				String fieldId = (String) m.get("fieldId");
-				String uFieldId = StringUtil.firstLetterToUpperCase(fieldId);
-				sb.append(this.getTableVariableName(tableClassName) + ".");
-				sb.append("get" + uFieldId + "Field()\n");
+				if ("0".equals(sel)) {
+					;
+				} else 	if ("1".equals(sel)) {
+					String alias = (String) m.get("alias");
+					logger.debug("alias=" + alias);
+					if (StringUtil.isBlank(alias)) {
+						String tableClassName = (String) m.get("selectTableClassName");
+						String fieldId = (String) m.get("fieldId");
+						sb.append("this." + this.getTableVariableName(tableClassName) + ".");
+						sb.append(this.getFieldMethod(fieldId) + "\n");
+					} else {
+						String tableClassName = (String) m.get("selectTableClassName");
+						String fieldId = (String) m.get("fieldId");
+						sb.append("new AliasField(\"" + alias + "\", ");
+						sb.append(this.getTableVariableName(tableClassName) + ".");
+						sb.append(this.getFieldMethod(fieldId) + "\n");
+					}
+				} else {
+					String tableClassName = (String) m.get("selectTableClassName");
+					String fieldId = (String) m.get("fieldId");
+					String alias = (String) m.get("alias");
+					if (alias.length() > 0) {
+						fieldId = alias;
+					}
+					sb.append("new " + sel + "(\"" + fieldId + "\", this." + this.getTableVariableName(tableClassName) + "." +
+							this.getFieldMethod((String) m.get("fieldId")) + ")\n");
+				}
 			}
 		}
 		return "\t\tthis.setFieldList(new FieldList(\n" + sb.toString() + "\t\t));";

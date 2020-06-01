@@ -538,7 +538,7 @@
 			{
 				// IEの許可設定。
 				// true:babelを使用してIEをサポート,false:IEはエラー。
-				"allowIE": false
+				"allowIE": true
 				// BabelがES5のソースを展開するフォルダ
 				, "babelWork": "/tmp/babel"
 				// サーバーサイドでES6->ES5変換を行うコマンドを記述します。

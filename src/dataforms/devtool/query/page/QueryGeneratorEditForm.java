@@ -107,13 +107,10 @@ public class QueryGeneratorEditForm extends EditForm {
 	 */
 	private static final String ID_SELECT_FIELD_LIST = "selectFieldList";
 
-
 	/**
-	 * テーブルクラス名フィールドID。
+	 * SQLフィールドリストのID。
 	 */
-	// private static final String ID_TABLE_CLASS_NAME = "tableClassName";
-
-
+	private static final String ID_SQL_FIELD_LIST = "sqlFieldList";
 
 	/**
 	 * 結合テーブルリストID。
@@ -156,7 +153,9 @@ public class QueryGeneratorEditForm extends EditForm {
 		SelectFieldHtmlTable slectFieldList = new SelectFieldHtmlTable(ID_SELECT_FIELD_LIST);
 		slectFieldList.setCaption("選択フィールドリスト");
 		this.addHtmlTable(slectFieldList);
-
+		SqlFieldHtmlTable sqlFieldList = new SqlFieldHtmlTable(ID_SQL_FIELD_LIST);
+		sqlFieldList.setCaption("SQLフィールドリスト");
+		this.addHtmlTable(sqlFieldList);
 	}
 
 	@Override
@@ -263,6 +262,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			selflist.add(m);
 		}
 		ret.put(ID_SELECT_FIELD_LIST, selflist);
+		ret.put(ID_SQL_FIELD_LIST, new ArrayList<Map<String, Object>>());
 		return ret;
 	}
 

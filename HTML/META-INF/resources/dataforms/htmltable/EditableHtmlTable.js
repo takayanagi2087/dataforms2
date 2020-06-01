@@ -20,7 +20,9 @@ class EditableHtmlTable extends HtmlTable {
 		var thisTable = this;
 		super.attach();
 		if (!this.readonly) {
+			logger.log("EditableHtmlTable.readonly=" + this.id + "," + this.readonly);
 			this.find("tfoot").find(this.convertSelector("[id$='\\.addButton']")).click(function() {
+				logger.log("addButton");
 				thisTable.addRow(null);
 				return false;
 			});
@@ -264,6 +266,7 @@ class EditableHtmlTable extends HtmlTable {
 	 * </pre>
 	 */
 	addRow(rowinfo) {
+		logger.debug("addRow\n");
 		var thisTable = this;
 		var rowIndex = null;
 		if (rowinfo != null) {

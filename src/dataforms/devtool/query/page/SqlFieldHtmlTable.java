@@ -30,7 +30,7 @@ public class SqlFieldHtmlTable extends EditableHtmlTable {
 			, new TextField("comment")
 		);
 		this.setFieldList(flist);
-		this.setFixedColumns(5);
+		this.setFixedColumns(4);
 	}
 
 	/**

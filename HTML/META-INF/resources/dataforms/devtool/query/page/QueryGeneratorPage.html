@@ -283,9 +283,8 @@
 							<th class="buttonColumn" nowrap></th>
 							<th>No.</th>
 							<th>フィールドID</th>
-							<th>機能</th>
-							<th>パッケージ</th>
 							<th>フィールドクラス</th>
+							<th>長さ</th>
 							<th>SQL</th>
 							<th>コメント</th>
 						</tr>
@@ -304,19 +303,16 @@
 							<td style="width: 180px;">
 								<input type="text" id="sqlFieldList[0].fieldId"/>
 							</td>
-							<td style="width: 100px;">
-								<select id="sqlFieldList[0].functionSelect"></select>
-							</td>
 							<td style="width: 200px;">
-								<input type="text" id="sqlFieldList[0].packageName" />
+								<select id="sqlFieldList[0].fieldClassName"></select>
 							</td>
-							<td style="width: 200px;">
-								<input type="text" id="sqlFieldList[0].fieldClassName" />
+							<td style="width: 54px;">
+								<input type="text"  id="sqlFieldList[0].fieldLength" />
 							</td>
-							<td style="width: 400px;">
+							<td style="width: 500px;">
 								<input type="text" id="sqlFieldList[0].sql" />
 							</td>
-							<td style="width: 200px;">
+							<td style="width: 300px;">
 								<input type="text" id="sqlFieldList[0].comment" />
 							</td>
 						</tr>
@@ -326,7 +322,7 @@
 							<th class="buttonColumn" nowrap>
 								<button type="button" id="sqlFieldList.addButton">+</button>
 							</th>
-							<th colspan="8"></th>
+							<th colspan="7"></th>
 						</tr>
 					</tfoot>
 				</table>

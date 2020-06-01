@@ -3,8 +3,10 @@ package dataforms.devtool.query.page;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -742,23 +744,23 @@ public class QueryGeneratorEditForm extends EditForm {
 	/**
 	 * 選択フィールド設定ソースを生成します。
 	 * @param data POSTされたデータ。
+	 * @param implist インポート必要なクラス。
 	 * @return 選択フィールド設定ソース。
+	 * @throws Exception 例外。
 	 */
-	private String generateSelectFieldList(final Map<String, Object> data) {
+	private String generateSelectFieldList(final Map<String, Object> data, final Set<String> implist) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_SELECT_FIELD_LIST);
 		for (Map<String, Object> m: list) {
 			String sel = (String) m.get("sel");
-			if (!StringUtil.isBlank(sel)) {
+			if (sel != null && (!"0".equals(sel))) {
 				if (sb.length() > 0) {
 					sb.append("\t\t\t, ");
 				} else {
 					sb.append("\t\t\t");
 				}
-				if ("0".equals(sel)) {
-					;
-				} else 	if ("1".equals(sel)) {
+				if ("1".equals(sel)) {
 					String alias = (String) m.get("alias");
 					logger.debug("alias=" + alias);
 					if (StringUtil.isBlank(alias)) {
@@ -769,9 +771,10 @@ public class QueryGeneratorEditForm extends EditForm {
 					} else {
 						String tableClassName = (String) m.get("selectTableClassName");
 						String fieldId = (String) m.get("fieldId");
+						implist.add(AliasField.class.getName());
 						sb.append("new AliasField(\"" + alias + "\", ");
 						sb.append(this.getTableVariableName(tableClassName) + ".");
-						sb.append(this.getFieldMethod(fieldId) + "\n");
+						sb.append(this.getFieldMethod(fieldId) + ")\n");
 					}
 				} else {
 					String tableClassName = (String) m.get("selectTableClassName");
@@ -780,7 +783,9 @@ public class QueryGeneratorEditForm extends EditForm {
 					if (alias.length() > 0) {
 						fieldId = alias;
 					}
-					sb.append("new " + sel + "(\"" + fieldId + "\", this." + this.getTableVariableName(tableClassName) + "." +
+					Class<?> cls = Class.forName(sel);
+					implist.add(cls.getName());
+					sb.append("new " + cls.getSimpleName() + "(\"" + fieldId + "\", this." + this.getTableVariableName(tableClassName) + "." +
 							this.getFieldMethod((String) m.get("fieldId")) + ")\n");
 				}
 			}
@@ -821,7 +826,13 @@ public class QueryGeneratorEditForm extends EditForm {
 		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", this.generateImportTables(data));
 		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.generateProperties(data));
 		javasrc = javasrc.replaceAll("\\$\\{newTables\\}", this.generateNewTables(data));
-		javasrc = javasrc.replaceAll("\\$\\{selectFields\\}", this.generateSelectFieldList(data));
+		Set<String> implist = new HashSet<String>();
+		javasrc = javasrc.replaceAll("\\$\\{selectFields\\}", this.generateSelectFieldList(data, implist));
+		StringBuilder isb = new StringBuilder();
+		for (String s: implist) {
+			isb.append("import " + s + ";\n");
+		}
+		javasrc = javasrc.replaceAll("\\$\\{importList\\}", isb.toString());
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", this.getTableVariableName(mainTableClassName));
 		String distinctFlag = (String) data.get(ID_DISTINCT_FLAG);

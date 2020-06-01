@@ -1,8 +1,7 @@
 package dataforms.devtool.query.page;
 
-import dataforms.devtool.field.FieldClassNameField;
-import dataforms.devtool.field.FunctionSelectField;
-import dataforms.devtool.field.PackageNameField;
+import dataforms.devtool.field.DbColumnSelectField;
+import dataforms.devtool.field.FieldLengthField;
 import dataforms.devtool.field.QueryFieldIdField;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
@@ -23,9 +22,8 @@ public class SqlFieldHtmlTable extends EditableHtmlTable {
 		FieldList flist = new FieldList(
 			new SortOrderField()
 			, new QueryFieldIdField("fieldId")
-			, new FunctionSelectField()
-			, new PackageNameField("packageName")
-			, new FieldClassNameField("fieldClassName")
+			, new DbColumnSelectField("fieldClassName")
+			, new FieldLengthField()
 			, new TextField("sql")
 			, new TextField("comment")
 		);

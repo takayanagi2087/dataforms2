@@ -2,6 +2,7 @@ package ${packageName};
 
 import dataforms.field.base.FieldList;
 import dataforms.dao.Query;
+${importList}
 ${importTables}
 
 

@@ -2,7 +2,6 @@ package dataforms.devtool.table.page;
 
 import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -201,73 +200,6 @@ public class TableGeneratorEditForm extends EditForm {
 	}
 
 	/**
-	 * 引数の数が一番少ないコンストラクタを取得します。
-	 * @param cls フィールドクラス。
-	 * @return 引数の数が一番少ないコンストラクタ。
-	 */
-	private Constructor<?> getDefaultConstructor(final Class<?> cls) {
-		Constructor<?>[] clist = cls.getConstructors();
-		Constructor<?> cns = clist[0];
-		for (Constructor<?> c: clist) {
-			if (cns.getParameterCount() > c.getParameterCount()) {
-				cns = c;
-			}
-		}
-		return cns;
-	}
-
-	/**
-	 * 取り敢えずコンストラクタに渡さすことが可能なパラメータのインスタンスを作成します。
-	 * @param pcls パラメータクラス。
-	 * @return パラメータのインスタンス。
-	 * @throws Exception 例外。
-	 */
-	private Object newParameterInstance(final Class<?> pcls) throws Exception {
-		Object ret = null;
-		String classname = pcls.getName();
-		if ("byte".equals(classname)) {
-			ret = Byte.valueOf((byte) 0x00);
-		} else if ("short".equals(classname)) {
-			ret = Short.valueOf((short) 0x00);
-		} else if ("int".equals(classname)) {
-			ret = Integer.valueOf(0);
-		} else if ("long".equals(classname)) {
-			ret = Long.valueOf(0);
-		} else if ("boolean".equals(classname)) {
-			ret = Boolean.FALSE;
-		} else if ("float".equals(classname)) {
-			ret = Float.valueOf(0);
-		} else if ("double".equals(classname)) {
-			ret = Double.valueOf(0);
-		} else if ("char".equals(classname)) {
-			ret = Double.valueOf(0x00);
-		} else {
-			ret = pcls.getDeclaredConstructor().newInstance();
-		}
-		return ret;
-
-	}
-
-	/**
-	 * 指定されたフィールドクラスのインスタンスを作成する。
-	 * @param cls フィールドクラス。
-	 * @return フィールドクラスのインスタンス。
-	 * @throws Exception 例外。
-	 */
-	private Field<?> newFieldInstance(final Class<?> cls) throws Exception {
-		Constructor<?> cns = getDefaultConstructor(cls);
-		Class<?>[] ptypes = cns.getParameterTypes();
-		Object[] p = new Object[ptypes.length];
-		for (int i = 0; i < p.length; i++) {
-			logger.debug("parameter class = " + ptypes[i].getName());
-			p[i] = this.newParameterInstance(ptypes[i]);
-			logger.debug("parameter value = " + p[i].toString());
-		}
-		return (Field<?>) cns.newInstance(p);
-	}
-
-
-	/**
 	 * 指定されたフィールドクラスの情報を返します。
 	 * @param param パラメータ。
 	 * @return 判定結果。
@@ -280,13 +212,14 @@ public class TableGeneratorEditForm extends EditForm {
 			Map<String, Object> ret = new HashMap<String, Object>();
 			Boolean isDataformsField = Field.isDataformsField(classname);
 			ret.put("isDataformsField", (isDataformsField ? "1" : "0"));
-			Class<?> cls = Class.forName(classname);
+			@SuppressWarnings("unchecked")
+			Class<? extends Field<?>> cls = (Class<? extends Field<?>>) Class.forName(classname);
 			Class<?> scls = cls.getSuperclass();
 			String superClassPackage = scls.getPackage().getName();
 			String superClassSimpleName = scls.getSimpleName();
 			ret.put("superClassPackage", superClassPackage);
 			ret.put("superClassSimpleName", superClassSimpleName);
-			Field<?> field = this.newFieldInstance(cls);
+			Field<?> field = Field.newFieldInstance(cls);
 			// dataforms.jarの提供するFieldクラスを直接指定する場合。
 			ret.put("fieldLength", field.getLengthParameter());
 			ret.put("fieldComment", field.getComment());
@@ -315,8 +248,9 @@ public class TableGeneratorEditForm extends EditForm {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		try {
 			String classname = (String) param.get("superclassname");
-			Class<?> cls = Class.forName(classname);
-			Field<?> field = this.newFieldInstance(cls);
+			@SuppressWarnings("unchecked")
+			Class<? extends Field<?>> cls = (Class<? extends Field<?>>) Class.forName(classname);
+			Field<?> field = Field.newFieldInstance(cls);
 			ret.put("fieldLength", field.getLengthParameter());
 			result = new JsonResponse(JsonResponse.SUCCESS, ret);
 		} catch (Exception ex) {
@@ -377,9 +311,10 @@ public class TableGeneratorEditForm extends EditForm {
 	 */
 	private String getLengthParameterPattern(final String className) throws Exception {
 		String pat = null;
-		Class<?> fcls = Class.forName(className);
+		@SuppressWarnings("unchecked")
+		Class<? extends Field<?>> fcls = (Class<? extends Field<?>>) Class.forName(className);
 		if ((fcls.getModifiers() & Modifier.ABSTRACT) == 0) {
-			Field<?> field = this.newFieldInstance(fcls);
+			Field<?> field = Field.newFieldInstance(fcls);
 			// アプリケーション用のフィールドを更新
 			if (Field.hasLengthParameter(fcls)) {
 				pat = field.getLengthParameterPattern();

@@ -2,7 +2,6 @@ package sample.dao;
 
 import dataforms.field.base.FieldList;
 import dataforms.dao.Query;
-import dataforms.field.sqlfunc.CountField;
 import dataforms.field.sqlfunc.AliasField;
 
 
@@ -37,8 +36,15 @@ public class TestQuery extends Query {
 		this.materialMasterTable.setAlias("m");
 
 		this.setFieldList(new FieldList(
-			new CountField("cnt", this.materialMasterTable.getMaterialIdField())
+			new AliasField("cnt", materialMasterTable.getMaterialIdField())
 			, new AliasField("u", materialMasterTable.getMaterialUnitField())
+			, this.materialMasterTable.getMaterialIdField()
+			, this.materialMasterTable.getMaterialCodeField()
+			, this.materialMasterTable.getMaterialNameField()
+			, this.materialMasterTable.getMaterialUnitField()
+			, this.materialMasterTable.getUnitPriceField()
+			, this.materialMasterTable.getOrderPointField()
+			, this.materialMasterTable.getMemoField()
 		));
 		this.setMainTable(materialMasterTable);
 

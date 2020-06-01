@@ -1576,4 +1576,73 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 			, ids
 		);
 	}
+
+
+	/**
+	 * 引数の数が一番少ないコンストラクタを取得します。
+	 * @param cls フィールドクラス。
+	 * @return 引数の数が一番少ないコンストラクタ。
+	 */
+	private static Constructor<? extends Field<?>> getDefaultConstructor(final Class<? extends Field<?>> cls) {
+		@SuppressWarnings("unchecked")
+		Constructor<? extends Field<?>>[] clist = (Constructor<? extends Field<?>>[]) cls.getConstructors();
+		Constructor<? extends Field<?>> cns = clist[0];
+		for (Constructor<? extends Field<?>> c: clist) {
+			if (cns.getParameterCount() > c.getParameterCount()) {
+				cns = c;
+			}
+		}
+		return cns;
+	}
+
+	/**
+	 * 取り敢えずコンストラクタに渡さすことが可能なパラメータのインスタンスを作成します。
+	 * @param pcls パラメータクラス。
+	 * @return パラメータのインスタンス。
+	 * @throws Exception 例外。
+	 */
+	private static Object newParameterInstance(final Class<?> pcls) throws Exception {
+		Object ret = null;
+		String classname = pcls.getName();
+		if ("byte".equals(classname)) {
+			ret = Byte.valueOf((byte) 0x00);
+		} else if ("short".equals(classname)) {
+			ret = Short.valueOf((short) 0x00);
+		} else if ("int".equals(classname)) {
+			ret = Integer.valueOf(0);
+		} else if ("long".equals(classname)) {
+			ret = Long.valueOf(0);
+		} else if ("boolean".equals(classname)) {
+			ret = Boolean.FALSE;
+		} else if ("float".equals(classname)) {
+			ret = Float.valueOf(0);
+		} else if ("double".equals(classname)) {
+			ret = Double.valueOf(0);
+		} else if ("char".equals(classname)) {
+			ret = Double.valueOf(0x00);
+		} else {
+			ret = pcls.getDeclaredConstructor().newInstance();
+		}
+		return ret;
+	}
+
+	/**
+	 * 指定されたフィールドクラスのインスタンスを作成する。
+	 * @param cls フィールドクラス。
+	 * @return フィールドクラスのインスタンス。
+	 * @throws Exception 例外。
+	 */
+	public static  Field<?> newFieldInstance(final Class<? extends Field<?>> cls) throws Exception {
+		Constructor<?> cns = Field.getDefaultConstructor(cls);
+		Class<?>[] ptypes = cns.getParameterTypes();
+		Object[] p = new Object[ptypes.length];
+		for (int i = 0; i < p.length; i++) {
+			logger.debug("parameter class = " + ptypes[i].getName());
+			p[i] = Field.newParameterInstance(ptypes[i]);
+			logger.debug("parameter value = " + p[i].toString());
+		}
+		return (Field<?>) cns.newInstance(p);
+	}
+
+
 }

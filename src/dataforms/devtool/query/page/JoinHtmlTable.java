@@ -8,6 +8,7 @@ import dataforms.devtool.field.TableClassNameField;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.validator.RequiredValidator;
 
 /**
  * Joinテーブルを編集するためのHTMLテーブルクラスです。
@@ -46,10 +47,10 @@ public class JoinHtmlTable extends EditableHtmlTable {
 	public JoinHtmlTable(final String id) {
 		super(id);
 		FieldList flist = new FieldList(
-			new JoinTypeField(ID_JOIN_TYPE)
+			(new JoinTypeField(ID_JOIN_TYPE)).addValidator(new RequiredValidator())
 			, new FunctionSelectField()
-			, new PackageNameField(ID_PACKAGE_NAME)
-			, new TableClassNameField(ID_TABLE_CLASS_NAME)
+			, (new PackageNameField(ID_PACKAGE_NAME)).addValidator(new RequiredValidator())
+			, (new TableClassNameField(ID_TABLE_CLASS_NAME)).addValidator(new RequiredValidator())
 			, (new AliasNameField(ID_ALIAS_NAME)).setCalcEventField(true)
 			, (new TextField(ID_JOIN_CONDITION)).setReadonly(true)
 		);

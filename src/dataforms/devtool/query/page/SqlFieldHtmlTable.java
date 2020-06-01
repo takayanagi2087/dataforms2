@@ -7,6 +7,7 @@ import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.field.common.SortOrderField;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.validator.RequiredValidator;
 
 /**
  * 選択フィールドHtmlテーブルクラス。
@@ -21,10 +22,10 @@ public class SqlFieldHtmlTable extends EditableHtmlTable {
 		super(id);
 		FieldList flist = new FieldList(
 			new SortOrderField()
-			, new QueryFieldIdField("fieldId")
-			, new DbColumnSelectField("fieldClassName")
-			, new FieldLengthField()
-			, new TextField("sql")
+			, (new QueryFieldIdField("fieldId")).addValidator(new RequiredValidator())
+			, (new DbColumnSelectField("fieldClassName")).addValidator(new RequiredValidator())
+			, (new FieldLengthField())
+			, new TextField("sql").addValidator(new RequiredValidator())
 			, new TextField("comment")
 		);
 		this.setFieldList(flist);

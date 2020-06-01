@@ -16,6 +16,7 @@ import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.field.common.SortOrderField;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.validator.RequiredValidator;
 
 /**
  * 選択フィールドHtmlテーブルクラス。
@@ -31,7 +32,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 		FieldList flist = new FieldList(
 			new SummerySelectField("sel")
 			, new SortOrderField()
-			, new QueryFieldIdField("fieldId")
+			, (new QueryFieldIdField("fieldId")).addValidator(new RequiredValidator())
 			, new TextField("alias")
 			, (new FieldFullClassNameField("fieldClassName")).setReadonly(true)
 			, (new TableFullClassNameField("selectTableClassName")).setReadonly(true)

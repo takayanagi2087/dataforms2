@@ -42,6 +42,8 @@ public class DbColumnSelectField extends VarcharSingleSelectField {
 	public DbColumnSelectField(final String id) {
 		super(id, LENGTH);
 		this.setBlankOption(true);
+		this.setRelationDataAcquisition(true);
+		this.setRelationDataEvent(RelationDataEvent.CHANGE);
 	}
 
 	/**
@@ -68,5 +70,18 @@ public class DbColumnSelectField extends VarcharSingleSelectField {
 		super.init();
 		this.setOptionList(this.queryOptionList());
 	}
+
+	@Override
+	protected Map<String, Object> queryRelationData(final Map<String, Object> p) throws Exception {
+		logger.debug("queryRelationData");
+		String id = (String) p.get(ID_CURRENT_FIELD_ID);
+		String fc = (String) p.get(id);
+		@SuppressWarnings("unchecked")
+		Class<? extends Field<?>> fclass = (Class<? extends Field<?>>) Class.forName(fc);
+		Field<?> field = Field.newFieldInstance(fclass);
+		p.put("fieldLength", field.getLengthParameter());
+		return p;
+	}
+
 
 }

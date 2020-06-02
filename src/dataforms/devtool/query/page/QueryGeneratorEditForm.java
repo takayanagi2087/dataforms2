@@ -28,6 +28,7 @@ import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryClassNameField;
 import dataforms.devtool.field.TableClassNameField;
+import dataforms.devtool.validator.ClassNameValidator;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
@@ -150,7 +151,8 @@ public class QueryGeneratorEditForm extends EditForm {
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true)
 			.setComment("主テーブルクラス名")
-			.addValidator(new RequiredValidator());
+			.addValidator(new RequiredValidator())
+			.removeValidator(ClassNameValidator.class);
 
 		EditableHtmlTable joinTableList = new JoinHtmlTable(ID_JOIN_TABLE_LIST);
 		joinTableList.setCaption("JOINするテーブルリスト");
@@ -743,7 +745,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		Table table = (Table) c.getConstructor().newInstance();
 		String ret = src.replaceAll("\\$\\{className\\}", tableClassName);
 		ret = ret.replaceAll("\\$\\{variableName\\}", this.getTableVariableName(tableClassName));
-		ret = ret.replaceAll("\\$\\{comment\\}", table.getComment());
+		ret = ret.replaceAll("\\$\\{comment\\}", (table.getComment() == null ? "" : table.getComment()));
 		return ret;
 
 	}

@@ -23,4 +23,26 @@ ${selectFields}
 		this.setMainTable(${mainTable});
 ${joinTables}
 	}
+
+	/**
+	 * Entity操作クラスです。
+	 */
+	public static class Entity extends dataforms.dao.Entity {
+${idConstants}
+		/**
+		 * コンストラクタ。
+		 */
+		public Entity() {
+
+		}
+		/**
+		 * コンストラクタ。
+		 * @param map 操作対象マップ。
+		 */
+		public Entity(final Map<String, Object> map) {
+			super(map);
+		}
+${valueGetterSetter}
+	}
+${fieldGetter}
 }

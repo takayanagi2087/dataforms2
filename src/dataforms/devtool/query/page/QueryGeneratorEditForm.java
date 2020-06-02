@@ -349,6 +349,50 @@ public class QueryGeneratorEditForm extends EditForm {
 	}
 
 
+	/**
+	 * フィールドIDの多重登録チェックを行います。
+	 * @param data フォームデータ。
+	 * @return チェック結果。
+	 */
+	private List<ValidationError> validateFieldId(final Map<String, Object> data) {
+		Set<String> set = new HashSet<String>();
+		List<ValidationError> ret = new ArrayList<ValidationError>();
+		{
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> sellist = (List<Map<String, Object>>) data.get(ID_SELECT_FIELD_LIST);
+			for (int i = 0; i < sellist.size(); i++) {
+				Map<String, Object> m = sellist.get(i);
+				String sel = (String) m.get("sel");
+				if (!"0".equals(sel)) {
+					String fieldId = (String) m.get("fieldId");
+					if (!StringUtil.isBlank(m.get("alias"))) {
+						fieldId = (String) m.get("alias");
+					}
+					if (!set.contains(fieldId)) {
+						set.add(fieldId);
+					} else {
+						String fid = ID_SELECT_FIELD_LIST + "[" + i + "].fieldId";
+						ret.add(new ValidationError(fid, MessagesUtil.getMessage(this.getPage(), "error.duplicatefieldid", fieldId)));
+					}
+				}
+			}
+		}
+		{
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> sqllist = (List<Map<String, Object>>) data.get(ID_SQL_FIELD_LIST);
+			for (int i = 0; i < sqllist.size(); i++) {
+				Map<String, Object> m = sqllist.get(i);
+				String fieldId = (String) m.get("fieldId");
+				if (!set.contains(fieldId)) {
+					set.add(fieldId);
+				} else {
+					String fid = ID_SQL_FIELD_LIST + "[" + i + "].fieldId";
+					ret.add(new ValidationError(fid, MessagesUtil.getMessage(this.getPage(), "error.duplicatefieldid", fieldId)));
+				}
+			}
+		}
+		return ret;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -359,7 +403,8 @@ public class QueryGeneratorEditForm extends EditForm {
 			ret.add(new ValidationError(ID_MAIN_TABLE_CLASS_NAME, MessagesUtil.getMessage(this.getPage(), "error.tableclassnotfound", "{0}", mtClass)));
 		}
 		ret.addAll(this.validateJoinTable(ID_JOIN_TABLE_LIST, (List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST)));
-
+		ret.addAll(this.validateFieldId(data));
+		// 問合せソースファイルの存在チェック
 		String packageName = (String) data.get(ID_PACKAGE_NAME);
 		String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
 		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);

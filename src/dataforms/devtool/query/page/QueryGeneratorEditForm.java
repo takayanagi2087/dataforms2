@@ -34,6 +34,7 @@ import dataforms.field.base.TextField;
 import dataforms.field.common.FlagField;
 import dataforms.field.sqlfunc.AliasField;
 import dataforms.field.sqlfunc.GroupSummaryField;
+import dataforms.field.sqlfunc.SqlField;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.servlet.DataFormsServlet;
@@ -79,7 +80,7 @@ public class QueryGeneratorEditForm extends EditForm {
 	/**
 	 * 強制上書きフラグフィールドID。
 	 */
-//	private static final String ID_FORCE_OVERWRITE = "forceOverwrite";
+	//private static final String ID_FORCE_OVERWRITE = "forceOverwrite";
 
 	/**
 	 * 主テーブル機能選択フィールドID。
@@ -245,45 +246,60 @@ public class QueryGeneratorEditForm extends EditForm {
 		ret.put(ID_ALIAS_NAME, q.getMainTable().getAlias());
 		ret.put(ID_JOIN_TABLE_LIST, this.getJoinTableData(q.getJoinInfoList()));
 		List<Map<String, Object>> flist = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> sflist = new ArrayList<Map<String, Object>>();
 		flist.addAll(this.queryTableFieldList(ret));
 		FieldList qfl = q.getFieldList();
 		List<Map<String, Object>> selflist = new ArrayList<Map<String, Object>>();
 		for (Field<?> f: qfl) {
-			for (Map<String, Object> m: flist) {
-				String fieldId = (String) m.get("fieldId");
-				if (f instanceof AliasField) {
-					AliasField af = (AliasField) f;
-					String id = af.getTargetField().getId();
-					if (id.equals(fieldId)) {
-						Map<String, Object> fmap = new HashMap<String, Object>();
-						fmap.putAll(m);
-						fmap.put("alias", af.getId());
-						fmap.put("sel", "1");
-						selflist.add(fmap);
-						break;
-					}
-				} else if (f instanceof GroupSummaryField) {
-					GroupSummaryField<?> sf = (GroupSummaryField<?>) f;
-					String id = sf.getTargetField().getId();
-					if (id.equals(fieldId)) {
-						Map<String, Object> fmap = new HashMap<String, Object>();
-						fmap.putAll(m);
-						if (!sf.getId().equals(sf.getTargetField().getId())) {
-							fmap.put("alias", sf.getId());
+			if (f instanceof SqlField) {
+				SqlField sf = (SqlField) f;
+				Field<?> tf = sf.getTargetField();
+				Map<String, Object> sfmap = new HashMap<String, Object>();
+				sfmap.put("fieldId", tf.getId());
+				sfmap.put("fieldClassName", tf.getClass().getName());
+				if (tf.hasLengthParameter()) {
+					sfmap.put("fieldLength", tf.getLengthParameter());
+				}
+				sfmap.put("sql", sf.getSql());
+				sfmap.put("comment", sf.getComment());
+				sflist.add(sfmap);
+			} else {
+				for (Map<String, Object> m: flist) {
+					String fieldId = (String) m.get("fieldId");
+					if (f instanceof AliasField) {
+						AliasField af = (AliasField) f;
+						String id = af.getTargetField().getId();
+						if (id.equals(fieldId)) {
+							Map<String, Object> fmap = new HashMap<String, Object>();
+							fmap.putAll(m);
+							fmap.put("alias", af.getId());
+							fmap.put("sel", "1");
+							selflist.add(fmap);
+							break;
 						}
-						fmap.put("sel", sf.getClass().getName());
-						selflist.add(fmap);
-						break;
-					}
-				} else {
-					String id = f.getId();
-					if (id.equals(fieldId)) {
-						Map<String, Object> fmap = new HashMap<String, Object>();
-						fmap.putAll(m);
-						fmap.put("sel", "1");
-						selflist.add(fmap);
-						flist.remove(m);
-						break;
+					} else if (f instanceof GroupSummaryField) {
+						GroupSummaryField<?> sf = (GroupSummaryField<?>) f;
+						String id = sf.getTargetField().getId();
+						if (id.equals(fieldId)) {
+							Map<String, Object> fmap = new HashMap<String, Object>();
+							fmap.putAll(m);
+							if (!sf.getId().equals(sf.getTargetField().getId())) {
+								fmap.put("alias", sf.getId());
+							}
+							fmap.put("sel", sf.getClass().getName());
+							selflist.add(fmap);
+							break;
+						}
+					} else {
+						String id = f.getId();
+						if (id.equals(fieldId)) {
+							Map<String, Object> fmap = new HashMap<String, Object>();
+							fmap.putAll(m);
+							fmap.put("sel", "1");
+							selflist.add(fmap);
+							flist.remove(m);
+							break;
+						}
 					}
 				}
 			}
@@ -293,7 +309,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			selflist.add(m);
 		}
 		ret.put(ID_SELECT_FIELD_LIST, selflist);
-		ret.put(ID_SQL_FIELD_LIST, new ArrayList<Map<String, Object>>());
+		ret.put(ID_SQL_FIELD_LIST, sflist);
 		return ret;
 	}
 
@@ -420,10 +436,9 @@ public class QueryGeneratorEditForm extends EditForm {
 	@WebMethod
 	public JsonResponse getFieldList(final Map<String, Object> param) throws Exception {
 		JsonResponse ret = null;
-//		param.put(ID_FORCE_OVERWRITE, "1");
 		Map<String, Object> p = new HashMap<String, Object>();
 		p.putAll(param);
-//		p.put(ID_FORCE_OVERWRITE, "1");
+		p.put(ID_OVERWRITE_MODE, "skip");
 		List<ValidationError> vlist = this.validate(p);
 		if (vlist.size() == 0) {
 			Map<String, Object> data = this.convertToServerData(param);
@@ -575,10 +590,8 @@ public class QueryGeneratorEditForm extends EditForm {
 	@WebMethod
 	public JsonResponse getJoinCondition(final Map<String, Object> param) throws Exception {
 		JsonResponse ret = null;
-//		param.put(ID_FORCE_OVERWRITE, "1");
 		Map<String, Object> p = new HashMap<String, Object>();
 		p.putAll(param);
-//		p.put(ID_FORCE_OVERWRITE, "1");
 		List<ValidationError> vlist = this.validate(p);
 		if (vlist.size() == 0) {
 			Map<String, Object> data = this.convertToServerData(param);
@@ -742,16 +755,13 @@ public class QueryGeneratorEditForm extends EditForm {
 	}
 
 	/**
-	 * 選択フィールド設定ソースを生成します。
-	 * @param data POSTされたデータ。
-	 * @param implist インポート必要なクラス。
-	 * @return 選択フィールド設定ソース。
+	 * フィールドリストの作成します。
+	 * @param list 選択フィールドリスト。
+	 * @param sb ソースを展開する文字列バッファ。
+	 * @param implist インポートリスト。
 	 * @throws Exception 例外。
 	 */
-	private String generateSelectFieldList(final Map<String, Object> data, final Set<String> implist) throws Exception {
-		StringBuilder sb = new StringBuilder();
-		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_SELECT_FIELD_LIST);
+	private void genSelectFieldList(List<Map<String, Object>> list, StringBuilder sb, final Set<String> implist) throws Exception {
 		for (Map<String, Object> m: list) {
 			String sel = (String) m.get("sel");
 			if (sel != null && (!"0".equals(sel))) {
@@ -790,8 +800,57 @@ public class QueryGeneratorEditForm extends EditForm {
 				}
 			}
 		}
+	}
+
+	/**
+	 * SQLフィールドリストを作成します。
+	 * @param sqllist SQLフィールドリスト。
+	 * @param sb ソースを展開する文字列バッファ。
+	 * @param implist インポートリスト。
+	 * @throws Exception 例外。
+	 */
+	private void genSqlFieldList(List<Map<String, Object>> sqllist, StringBuilder sb, final Set<String> implist) throws Exception {
+		for (Map<String, Object> m: sqllist) {
+			implist.add(SqlField.class.getName());
+			if (sb.length() > 0) {
+				sb.append("\t\t\t, ");
+			} else {
+				sb.append("\t\t\t");
+			}
+			String fieldId = (String) m.get("fieldId");
+			String fieldClassName = (String) m.get("fieldClassName");
+			implist.add(fieldClassName);
+			@SuppressWarnings("unchecked")
+			Class<? extends Field<?>> cls = (Class<? extends Field<?>>) Class.forName(fieldClassName);
+			String fieldLength = (String) m.get("fieldLength");
+			String sql = (String) m.get("sql");
+//			String comment = (String) m.get("comment");
+			String len = "";
+			if (!StringUtil.isBlank(fieldLength)) {
+				len = "," + fieldLength;
+			}
+			sb.append("new SqlField(new " + cls.getSimpleName() + "(\"" + fieldId + "\"" + len + "), \"" + sql + "\")\n");
+		}
+	}
+
+	/**
+	 * 選択フィールド設定ソースを生成します。
+	 * @param data POSTされたデータ。
+	 * @param implist インポート必要なクラス。
+	 * @return 選択フィールド設定ソース。
+	 * @throws Exception 例外。
+	 */
+	private String generateSelectFieldList(final Map<String, Object> data, final Set<String> implist) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> sellist = (List<Map<String, Object>>) data.get(ID_SELECT_FIELD_LIST);
+		this.genSelectFieldList(sellist, sb, implist);
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> sqllist = (List<Map<String, Object>>) data.get(ID_SQL_FIELD_LIST);
+		this.genSqlFieldList(sqllist, sb, implist);
 		return "\t\tthis.setFieldList(new FieldList(\n" + sb.toString() + "\t\t));";
 	}
+
 
 	/**
 	 * JOINの設定ソースを生成します。

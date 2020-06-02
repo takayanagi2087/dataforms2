@@ -33,6 +33,14 @@ public class SqlField extends Field<Object> {
 	}
 
 	/**
+	 * 対象フィールドを取得します。
+	 * @return 対象フィールド。
+	 */
+	public Field<?> getTargetField() {
+		return targetField;
+	}
+
+	/**
 	 * SQLを取得します。
 	 * @return SQL。
 	 */

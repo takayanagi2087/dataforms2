@@ -2,7 +2,9 @@ package sample.dao;
 
 import dataforms.field.base.FieldList;
 import dataforms.dao.Query;
+import dataforms.field.sqlfunc.SqlField;
 import dataforms.field.sqlfunc.AliasField;
+import dataforms.field.sqltype.NumericField;
 
 
 
@@ -45,6 +47,7 @@ public class TestQuery extends Query {
 			, this.materialMasterTable.getUnitPriceField()
 			, this.materialMasterTable.getOrderPointField()
 			, this.materialMasterTable.getMemoField()
+			, new SqlField(new NumericField("unitPrice2",10, 2), "m.unit_price * 2")
 		));
 		this.setMainTable(materialMasterTable);
 

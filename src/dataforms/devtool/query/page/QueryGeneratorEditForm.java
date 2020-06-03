@@ -28,6 +28,7 @@ import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryClassNameField;
 import dataforms.devtool.field.TableClassNameField;
+import dataforms.devtool.util.FieldListUtil;
 import dataforms.devtool.validator.ClassNameValidator;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
@@ -806,12 +807,15 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * @param list 選択フィールドリスト。
 	 * @param sb ソースを展開する文字列バッファ。
 	 * @param implist インポートリスト。
+	 * @return フィールドリスト。
 	 * @throws Exception 例外。
 	 */
-	private void genSelectFieldList(List<Map<String, Object>> list, StringBuilder sb, final Set<String> implist) throws Exception {
+	private List<Map<String, Object>> genSelectFieldList(List<Map<String, Object>> list, StringBuilder sb, final Set<String> implist) throws Exception {
+		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
 		for (Map<String, Object> m: list) {
 			String sel = (String) m.get("sel");
 			if (sel != null && (!"0".equals(sel))) {
+				ret.add(m);
 				if (sb.length() > 0) {
 					sb.append("\t\t\t, ");
 				} else {
@@ -847,6 +851,7 @@ public class QueryGeneratorEditForm extends EditForm {
 				}
 			}
 		}
+		return ret;
 	}
 
 	/**
@@ -854,9 +859,10 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * @param sqllist SQLフィールドリスト。
 	 * @param sb ソースを展開する文字列バッファ。
 	 * @param implist インポートリスト。
+	 * @return フィールドリスト。
 	 * @throws Exception 例外。
 	 */
-	private void genSqlFieldList(List<Map<String, Object>> sqllist, StringBuilder sb, final Set<String> implist) throws Exception {
+	private List<Map<String, Object>> genSqlFieldList(List<Map<String, Object>> sqllist, StringBuilder sb, final Set<String> implist) throws Exception {
 		for (Map<String, Object> m: sqllist) {
 			implist.add(SqlField.class.getName());
 			if (sb.length() > 0) {
@@ -878,23 +884,25 @@ public class QueryGeneratorEditForm extends EditForm {
 			}
 			sb.append("new SqlField(new " + cls.getSimpleName() + "(\"" + fieldId + "\"" + len + "), \"" + sql + "\")\n");
 		}
+		return sqllist;
 	}
 
 	/**
 	 * 選択フィールド設定ソースを生成します。
 	 * @param data POSTされたデータ。
 	 * @param implist インポート必要なクラス。
+	 * @param fieldList フィールドリスト。
 	 * @return 選択フィールド設定ソース。
 	 * @throws Exception 例外。
 	 */
-	private String generateSelectFieldList(final Map<String, Object> data, final Set<String> implist) throws Exception {
+	private String generateSelectFieldList(final Map<String, Object> data, final Set<String> implist, final List<Map<String, Object>> fieldList) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> sellist = (List<Map<String, Object>>) data.get(ID_SELECT_FIELD_LIST);
-		this.genSelectFieldList(sellist, sb, implist);
+		fieldList.addAll(this.genSelectFieldList(sellist, sb, implist));
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> sqllist = (List<Map<String, Object>>) data.get(ID_SQL_FIELD_LIST);
-		this.genSqlFieldList(sqllist, sb, implist);
+		fieldList.addAll(this.genSqlFieldList(sqllist, sb, implist));
 		return "\t\tthis.setFieldList(new FieldList(\n" + sb.toString() + "\t\t));";
 	}
 
@@ -922,6 +930,20 @@ public class QueryGeneratorEditForm extends EditForm {
 		return sb.toString();
 	}
 
+	/**
+	 * フィールドIDを取得します。
+	 * @param m フィールドリスト。
+	 * @return フィールドID。
+	 */
+	private String getFieldId(final Map<String, Object> m) {
+		String ret = (String) m.get("fieldId");
+		String alias = (String) m.get("alias");
+		if (!StringUtil.isBlank(alias)) {
+			ret = alias;
+		}
+		return ret;
+	}
+
 	@Override
 	protected void insertData(final Map<String, Object> data) throws Exception {
 		String javasrc = this.getStringResourse("template/Query.java.template");
@@ -933,7 +955,9 @@ public class QueryGeneratorEditForm extends EditForm {
 		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.generateProperties(data));
 		javasrc = javasrc.replaceAll("\\$\\{newTables\\}", this.generateNewTables(data));
 		Set<String> implist = new HashSet<String>();
-		javasrc = javasrc.replaceAll("\\$\\{selectFields\\}", this.generateSelectFieldList(data, implist));
+		implist.add(Map.class.getName());
+		List<Map<String, Object>> fieldList = new ArrayList<Map<String, Object>>();
+		javasrc = javasrc.replaceAll("\\$\\{selectFields\\}", this.generateSelectFieldList(data, implist, fieldList));
 		StringBuilder isb = new StringBuilder();
 		for (String s: implist) {
 			isb.append("import " + s + ";\n");
@@ -949,6 +973,18 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 		javasrc = javasrc.replaceAll("\\$\\{queryComment\\}", (String) data.get("queryComment"));
 		javasrc = javasrc.replaceAll("\\$\\{joinTables\\}", this.generateJoinTables(data));
+
+		javasrc = javasrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList, (Map<String, Object> m) -> {
+			return this.getFieldId(m);
+		}));
+		javasrc = javasrc.replaceAll("\\$\\{valueGetterSetter\\}", FieldListUtil.generateFieldValueGetterSetter(fieldList, (Map<String, Object> m) -> {
+			return this.getFieldId(m);
+		}));
+		javasrc = javasrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList, (Map<String, Object> m) -> {
+			return this.getFieldId(m);
+		}));
+
+
 		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
 		String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");
 		String query = srcPath + "/" + queryClassName + ".java";

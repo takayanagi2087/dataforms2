@@ -46,34 +46,31 @@ public final class FieldListUtil {
 
 	}
 
-
 	/**
-	 * フィールドIDを取得します。
-	 * @param m フィールドリスト。
-	 * @return フィールドID。
+	 * フィールドID取得関数インターフェース。
+	 *
 	 */
-	public static String getFieldId(final Map<String, Object> m) {
-		String fieldId = (String) m.get("fieldId");
-		if (StringUtil.isBlank(fieldId)) {
-			String fclass = (String) m.get("fieldClassName");
-			StringBuilder fsb = new StringBuilder(fclass.replaceAll("Field$", ""));
-			char c = fsb.charAt(0);
-			fsb.setCharAt(0, Character.toLowerCase(c));
-			fieldId = fsb.toString();
-		}
-		return fieldId;
+	@FunctionalInterface
+	public interface GetFieldIdFunctionalInterface {
+		/**
+		 * 指定されたマップからフィールドIDを取得します。
+		 * @param m マップ。
+		 * @return フィールドID。
+		 */
+		String getFieldId(final Map<String, Object> m);
 	}
 
 
 	/**
 	 * フィールドIdの定数を展開します。
 	 * @param list フィールドリスト。
+	 * @param func フィールドID取得関数インターフェース。
 	 * @return フィールドIDの定数値。
 	 */
-	public static String generateFieldIdConstant(final List<Map<String, Object>> list) {
+	public static String generateFieldIdConstant(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func) {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m: list) {
-			String fieldId = getFieldId(m);
+			String fieldId = func.getFieldId(m);
 			String comment = (String) m.get("comment");
 			sb.append("\t\t/** " + comment + "のフィールドID。 */\n");
 			sb.append("\t\tpublic static final String ID_");
@@ -144,17 +141,22 @@ public final class FieldListUtil {
 	/**
 	 * フィールドのgetter/setterを作成します。。
 	 * @param list フィールドリスト。
+	 * @param func フィールドID取得関数インターフェース。
 	 * @return フィールドのgetter/setter。
 	 * @throws Exception 例外。
 	 */
-	public static String generateFieldValueGetterSetter(final List<Map<String, Object>> list) throws Exception {
+	public static String generateFieldValueGetterSetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m: list) {
-			String superPackageName = (String) m.get("superPackageName");
-			String superSimpleClassName = (String) m.get("superSimpleClassName");
-			Class<?> cls = Class.forName(superPackageName + "." + superSimpleClassName);
+			String fieldClassName = (String) m.get("fieldClassName");
+			if (StringUtil.isBlank(fieldClassName)) {
+				String superPackageName = (String) m.get("superPackageName");
+				String superSimpleClassName = (String) m.get("superSimpleClassName");
+				fieldClassName = superPackageName + "." + superSimpleClassName;
+			}
+			Class<?> cls = Class.forName(fieldClassName);
 			Class<?> valueType = FieldListUtil.getFieldValueType(cls);
-			String fieldId = FieldListUtil.getFieldId(m);
+			String fieldId = func.getFieldId(m);
 			String uFieldId = StringUtil.firstLetterToUpperCase(fieldId);
 			String comment = (String) m.get("comment");
 			sb.append("\t\t/**\n");
@@ -178,13 +180,14 @@ public final class FieldListUtil {
 
 	/**
 	 * フィールドIdの定数を展開します。
+	 * @param func フィールドID取得関数インターフェース。
 	 * @param list フィールドリスト。
 	 * @return フィールドIDの定数値。
 	 */
-	public static String generateFieldGetter(final List<Map<String, Object>> list) {
+	public static String generateFieldGetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func) {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m: list) {
-			String fieldId = FieldListUtil.getFieldId(m);
+			String fieldId = func.getFieldId(m);
 			String uFieldId = StringUtil.firstLetterToUpperCase(fieldId);
 			String fieldClassSimpleName = (String) m.get("fieldClassName");
 			String comment = (String) m.get("comment");

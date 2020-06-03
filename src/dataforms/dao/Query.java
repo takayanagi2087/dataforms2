@@ -151,6 +151,14 @@ public class Query {
 		this.fieldList = fieldList;
 	}
 
+	/**
+	 * 指定されたIDに対応するフィールドを取得します。
+	 * @param id フィールドID。
+	 * @return フィールド。
+	 */
+	public Field<?> getField(final String id) {
+		return this.fieldList.get(id);
+	}
 
 	/**
 	 * 結合元のテーブルを取得します。

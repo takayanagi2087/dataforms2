@@ -462,7 +462,7 @@ public class TableGeneratorEditForm extends EditForm {
 	 * @param m フィールドリスト。
 	 * @return フィールドID。
 	 */
-/*	private String getFieldId(final Map<String, Object> m) {
+	private String getFieldId(final Map<String, Object> m) {
 		String fieldId = (String) m.get("fieldId");
 		if (StringUtil.isBlank(fieldId)) {
 			String fclass = (String) m.get("fieldClassName");
@@ -473,7 +473,7 @@ public class TableGeneratorEditForm extends EditForm {
 		}
 		return fieldId;
 	}
-*/
+
 
 	/**
 	 * フィールドIdの定数を展開します。
@@ -572,9 +572,15 @@ public class TableGeneratorEditForm extends EditForm {
 		}
 		tsrc = tsrc.replaceAll("\\$\\{importList\\}", implist.toString());
 		tsrc = tsrc.replaceAll("\\$\\{constructor\\}", constructor.toString());
-		tsrc = tsrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList));
-		tsrc = tsrc.replaceAll("\\$\\{valueGetterSetter\\}", FieldListUtil.generateFieldValueGetterSetter(fieldList));
-		tsrc = tsrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList));
+		tsrc = tsrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList, (Map<String, Object> m) -> {
+			return this.getFieldId(m);
+		}));
+		tsrc = tsrc.replaceAll("\\$\\{valueGetterSetter\\}", FieldListUtil.generateFieldValueGetterSetter(fieldList, (Map<String, Object> m) -> {
+			return this.getFieldId(m);
+		}));
+		tsrc = tsrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList, (Map<String, Object> m) -> {
+			return this.getFieldId(m);
+		}));
 		logger.debug("tsrc=\n{}", tsrc);
 		if (!OverwriteModeField.SKIP.equals(tableOverwriteMode)) {
 			srcmap.put(packageName + "." + tableClassName, tsrc);

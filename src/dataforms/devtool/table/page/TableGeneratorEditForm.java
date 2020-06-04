@@ -575,12 +575,26 @@ public class TableGeneratorEditForm extends EditForm {
 		tsrc = tsrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList, (Map<String, Object> m) -> {
 			return this.getFieldId(m);
 		}));
-		tsrc = tsrc.replaceAll("\\$\\{valueGetterSetter\\}", FieldListUtil.generateFieldValueGetterSetter(fieldList, (Map<String, Object> m) -> {
-			return this.getFieldId(m);
-		}));
-		tsrc = tsrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList, (Map<String, Object> m) -> {
-			return this.getFieldId(m);
-		}));
+		tsrc = tsrc.replaceAll("\\$\\{valueGetterSetter\\}", FieldListUtil.generateFieldValueGetterSetter(fieldList,
+			(Map<String, Object> m) -> {
+				return this.getFieldId(m);
+			}
+			, (Map<String, Object> m) -> {
+				String superPackageName = (String) m.get("superPackageName");
+				String superSimpleClassName = (String) m.get("superSimpleClassName");
+				return superPackageName + "." + superSimpleClassName;
+			}
+		));
+		tsrc = tsrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList,
+			(Map<String, Object> m) -> {
+				return this.getFieldId(m);
+			}
+			, (Map<String, Object> m) -> {
+				String superPackageName = (String) m.get("superPackageName");
+				String superSimpleClassName = (String) m.get("superSimpleClassName");
+				return superPackageName + "." + superSimpleClassName;
+			}
+		));
 		logger.debug("tsrc=\n{}", tsrc);
 		if (!OverwriteModeField.SKIP.equals(tableOverwriteMode)) {
 			srcmap.put(packageName + "." + tableClassName, tsrc);

@@ -17,6 +17,7 @@ import dataforms.dao.sqldatatype.SqlSmallint;
 import dataforms.dao.sqldatatype.SqlTime;
 import dataforms.dao.sqldatatype.SqlTimestamp;
 import dataforms.dao.sqldatatype.SqlVarchar;
+import dataforms.field.base.Field;
 import dataforms.field.common.CharSingleSelectField;
 import dataforms.field.common.FileObjectField;
 import dataforms.field.common.ImageField;
@@ -82,6 +83,23 @@ public final class FieldListUtil {
 		return sb.toString();
 	}
 
+
+	/**
+	 * フィールドID取得関数インターフェース。
+	 *
+	 */
+	@FunctionalInterface
+	public interface GetClassNameFunctionalInterface {
+		/**
+		 * 指定されたマップからフィールドIDを取得します。
+		 * @param m マップ。
+		 * @return フィールドID。
+		 */
+		String getClassName(final Map<String, Object> m);
+	}
+
+
+
 	/**
 	 * フィールドに対応する値の型を返します。
 	 * @param field フィールド。
@@ -142,23 +160,23 @@ public final class FieldListUtil {
 	 * フィールドのgetter/setterを作成します。。
 	 * @param list フィールドリスト。
 	 * @param func フィールドID取得関数インターフェース。
+	 * @param cfunc クラス名取得関数インターフェース。
 	 * @return フィールドのgetter/setter。
 	 * @throws Exception 例外。
 	 */
-	public static String generateFieldValueGetterSetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func) throws Exception {
+	public static String generateFieldValueGetterSetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func, final GetClassNameFunctionalInterface cfunc) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m: list) {
-			String fieldClassName = (String) m.get("fieldClassName");
-			if (StringUtil.isBlank(fieldClassName)) {
-				String superPackageName = (String) m.get("superPackageName");
-				String superSimpleClassName = (String) m.get("superSimpleClassName");
-				fieldClassName = superPackageName + "." + superSimpleClassName;
-			}
-			Class<?> cls = Class.forName(fieldClassName);
+			String fieldClassName = cfunc.getClassName(m);
+			@SuppressWarnings("unchecked")
+			Class<? extends Field<?>> cls = (Class<? extends Field<?>>) Class.forName(fieldClassName);
 			Class<?> valueType = FieldListUtil.getFieldValueType(cls);
 			String fieldId = func.getFieldId(m);
 			String uFieldId = StringUtil.firstLetterToUpperCase(fieldId);
 			String comment = (String) m.get("comment");
+			if (StringUtil.isBlank(comment)) {
+				comment = Field.newFieldInstance(cls).getComment();
+			}
 			sb.append("\t\t/**\n");
 			sb.append("\t\t * " + comment + "を取得します。\n");
 			sb.append("\t\t * @return " + comment + "。\n");
@@ -180,17 +198,24 @@ public final class FieldListUtil {
 
 	/**
 	 * フィールドIdの定数を展開します。
-	 * @param func フィールドID取得関数インターフェース。
 	 * @param list フィールドリスト。
+	 * @param func フィールドID取得関数インターフェース。
+	 * @param cfunc クラス名取得関数インターフェース。
 	 * @return フィールドIDの定数値。
 	 */
-	public static String generateFieldGetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func) {
+	public static String generateFieldGetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func, final GetClassNameFunctionalInterface cfunc) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m: list) {
 			String fieldId = func.getFieldId(m);
 			String uFieldId = StringUtil.firstLetterToUpperCase(fieldId);
-			String fieldClassSimpleName = (String) m.get("fieldClassName");
+			String fieldClassName = cfunc.getClassName(m);
+			@SuppressWarnings("unchecked")
+			Class<? extends Field<?>> cls = (Class<? extends Field<?>>) Class.forName(fieldClassName);
+			String fieldClassSimpleName = cls.getSimpleName();
 			String comment = (String) m.get("comment");
+			if (StringUtil.isBlank(comment)) {
+				comment = Field.newFieldInstance(cls).getComment();
+			}
 			sb.append("\t/**\n");
 			sb.append("\t * " + comment + "フィールドを取得します。\n");
 			sb.append("\t * @return " + comment + "フィールド。\n");

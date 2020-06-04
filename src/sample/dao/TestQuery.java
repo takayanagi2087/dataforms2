@@ -2,7 +2,16 @@ package sample.dao;
 
 import dataforms.field.base.FieldList;
 import dataforms.dao.Query;
+import sample.field.MemoField;
+import sample.field.UnitPriceField;
 import java.util.Map;
+import sample.field.MaterialCodeField;
+import dataforms.field.sqlfunc.SqlField;
+import sample.field.MaterialIdField;
+import sample.field.MaterialUnitField;
+import dataforms.field.sqltype.NumericField;
+import sample.field.OrderPointField;
+import sample.field.MaterialNameField;
 
 
 
@@ -43,6 +52,7 @@ public class TestQuery extends Query {
 			, this.materialMasterTable.getUnitPriceField()
 			, this.materialMasterTable.getOrderPointField()
 			, this.materialMasterTable.getMemoField()
+			, new SqlField(new NumericField("unitPrice2",10,2), "m.unit_price * 2")
 		));
 		this.setMainTable(materialMasterTable);
 
@@ -66,6 +76,8 @@ public class TestQuery extends Query {
 		public static final String ID_ORDER_POINT = "orderPoint";
 		/** nullのフィールドID。 */
 		public static final String ID_MEMO = "memo";
+		/** 単価*2のフィールドID。 */
+		public static final String ID_UNIT_PRICE2 = "unitPrice2";
 
 		/**
 		 * コンストラクタ。
@@ -81,173 +93,197 @@ public class TestQuery extends Query {
 			super(map);
 		}
 		/**
-		 * nullを取得します。
-		 * @return null。
+		 * 資材IDを取得します。
+		 * @return 資材ID。
 		 */
 		public java.lang.Long getMaterialId() {
 			return (java.lang.Long) this.getMap().get(Entity.ID_MATERIAL_ID);
 		}
 
 		/**
-		 * nullを設定します。
-		 * @param materialId null。
+		 * 資材IDを設定します。
+		 * @param materialId 資材ID。
 		 */
 		public void setMaterialId(final java.lang.Long materialId) {
 			this.getMap().put(Entity.ID_MATERIAL_ID, materialId);
 		}
 
 		/**
-		 * nullを取得します。
-		 * @return null。
+		 * 資材コードを取得します。
+		 * @return 資材コード。
 		 */
 		public java.lang.String getMaterialCode() {
 			return (java.lang.String) this.getMap().get(Entity.ID_MATERIAL_CODE);
 		}
 
 		/**
-		 * nullを設定します。
-		 * @param materialCode null。
+		 * 資材コードを設定します。
+		 * @param materialCode 資材コード。
 		 */
 		public void setMaterialCode(final java.lang.String materialCode) {
 			this.getMap().put(Entity.ID_MATERIAL_CODE, materialCode);
 		}
 
 		/**
-		 * nullを取得します。
-		 * @return null。
+		 * 資材名称を取得します。
+		 * @return 資材名称。
 		 */
 		public java.lang.String getMaterialName() {
 			return (java.lang.String) this.getMap().get(Entity.ID_MATERIAL_NAME);
 		}
 
 		/**
-		 * nullを設定します。
-		 * @param materialName null。
+		 * 資材名称を設定します。
+		 * @param materialName 資材名称。
 		 */
 		public void setMaterialName(final java.lang.String materialName) {
 			this.getMap().put(Entity.ID_MATERIAL_NAME, materialName);
 		}
 
 		/**
-		 * nullを取得します。
-		 * @return null。
+		 * 資材在庫単位を取得します。
+		 * @return 資材在庫単位。
 		 */
 		public java.lang.String getMaterialUnit() {
 			return (java.lang.String) this.getMap().get(Entity.ID_MATERIAL_UNIT);
 		}
 
 		/**
-		 * nullを設定します。
-		 * @param materialUnit null。
+		 * 資材在庫単位を設定します。
+		 * @param materialUnit 資材在庫単位。
 		 */
 		public void setMaterialUnit(final java.lang.String materialUnit) {
 			this.getMap().put(Entity.ID_MATERIAL_UNIT, materialUnit);
 		}
 
 		/**
-		 * nullを取得します。
-		 * @return null。
+		 * 単価を取得します。
+		 * @return 単価。
 		 */
 		public java.math.BigDecimal getUnitPrice() {
 			return (java.math.BigDecimal) this.getMap().get(Entity.ID_UNIT_PRICE);
 		}
 
 		/**
-		 * nullを設定します。
-		 * @param unitPrice null。
+		 * 単価を設定します。
+		 * @param unitPrice 単価。
 		 */
 		public void setUnitPrice(final java.math.BigDecimal unitPrice) {
 			this.getMap().put(Entity.ID_UNIT_PRICE, unitPrice);
 		}
 
 		/**
-		 * nullを取得します。
-		 * @return null。
+		 * 発注点を取得します。
+		 * @return 発注点。
 		 */
 		public java.math.BigDecimal getOrderPoint() {
 			return (java.math.BigDecimal) this.getMap().get(Entity.ID_ORDER_POINT);
 		}
 
 		/**
-		 * nullを設定します。
-		 * @param orderPoint null。
+		 * 発注点を設定します。
+		 * @param orderPoint 発注点。
 		 */
 		public void setOrderPoint(final java.math.BigDecimal orderPoint) {
 			this.getMap().put(Entity.ID_ORDER_POINT, orderPoint);
 		}
 
 		/**
-		 * nullを取得します。
-		 * @return null。
+		 * メモを取得します。
+		 * @return メモ。
 		 */
 		public java.lang.String getMemo() {
 			return (java.lang.String) this.getMap().get(Entity.ID_MEMO);
 		}
 
 		/**
-		 * nullを設定します。
-		 * @param memo null。
+		 * メモを設定します。
+		 * @param memo メモ。
 		 */
 		public void setMemo(final java.lang.String memo) {
 			this.getMap().put(Entity.ID_MEMO, memo);
 		}
 
+		/**
+		 * 単価*2を取得します。
+		 * @return 単価*2。
+		 */
+		public java.math.BigDecimal getUnitPrice2() {
+			return (java.math.BigDecimal) this.getMap().get(Entity.ID_UNIT_PRICE2);
+		}
+
+		/**
+		 * 単価*2を設定します。
+		 * @param unitPrice2 単価*2。
+		 */
+		public void setUnitPrice2(final java.math.BigDecimal unitPrice2) {
+			this.getMap().put(Entity.ID_UNIT_PRICE2, unitPrice2);
+		}
+
 
 	}
 	/**
-	 * nullフィールドを取得します。
-	 * @return nullフィールド。
+	 * 資材IDフィールドを取得します。
+	 * @return 資材IDフィールド。
 	 */
-	public sample.field.MaterialIdField getMaterialIdField() {
-		return (sample.field.MaterialIdField) this.getField(Entity.ID_MATERIAL_ID);
+	public MaterialIdField getMaterialIdField() {
+		return (MaterialIdField) this.getField(Entity.ID_MATERIAL_ID);
 	}
 
 	/**
-	 * nullフィールドを取得します。
-	 * @return nullフィールド。
+	 * 資材コードフィールドを取得します。
+	 * @return 資材コードフィールド。
 	 */
-	public sample.field.MaterialCodeField getMaterialCodeField() {
-		return (sample.field.MaterialCodeField) this.getField(Entity.ID_MATERIAL_CODE);
+	public MaterialCodeField getMaterialCodeField() {
+		return (MaterialCodeField) this.getField(Entity.ID_MATERIAL_CODE);
 	}
 
 	/**
-	 * nullフィールドを取得します。
-	 * @return nullフィールド。
+	 * 資材名称フィールドを取得します。
+	 * @return 資材名称フィールド。
 	 */
-	public sample.field.MaterialNameField getMaterialNameField() {
-		return (sample.field.MaterialNameField) this.getField(Entity.ID_MATERIAL_NAME);
+	public MaterialNameField getMaterialNameField() {
+		return (MaterialNameField) this.getField(Entity.ID_MATERIAL_NAME);
 	}
 
 	/**
-	 * nullフィールドを取得します。
-	 * @return nullフィールド。
+	 * 資材在庫単位フィールドを取得します。
+	 * @return 資材在庫単位フィールド。
 	 */
-	public sample.field.MaterialUnitField getMaterialUnitField() {
-		return (sample.field.MaterialUnitField) this.getField(Entity.ID_MATERIAL_UNIT);
+	public MaterialUnitField getMaterialUnitField() {
+		return (MaterialUnitField) this.getField(Entity.ID_MATERIAL_UNIT);
 	}
 
 	/**
-	 * nullフィールドを取得します。
-	 * @return nullフィールド。
+	 * 単価フィールドを取得します。
+	 * @return 単価フィールド。
 	 */
-	public sample.field.UnitPriceField getUnitPriceField() {
-		return (sample.field.UnitPriceField) this.getField(Entity.ID_UNIT_PRICE);
+	public UnitPriceField getUnitPriceField() {
+		return (UnitPriceField) this.getField(Entity.ID_UNIT_PRICE);
 	}
 
 	/**
-	 * nullフィールドを取得します。
-	 * @return nullフィールド。
+	 * 発注点フィールドを取得します。
+	 * @return 発注点フィールド。
 	 */
-	public sample.field.OrderPointField getOrderPointField() {
-		return (sample.field.OrderPointField) this.getField(Entity.ID_ORDER_POINT);
+	public OrderPointField getOrderPointField() {
+		return (OrderPointField) this.getField(Entity.ID_ORDER_POINT);
 	}
 
 	/**
-	 * nullフィールドを取得します。
-	 * @return nullフィールド。
+	 * メモフィールドを取得します。
+	 * @return メモフィールド。
 	 */
-	public sample.field.MemoField getMemoField() {
-		return (sample.field.MemoField) this.getField(Entity.ID_MEMO);
+	public MemoField getMemoField() {
+		return (MemoField) this.getField(Entity.ID_MEMO);
+	}
+
+	/**
+	 * 単価*2フィールドを取得します。
+	 * @return 単価*2フィールド。
+	 */
+	public NumericField getUnitPrice2Field() {
+		return (NumericField) this.getField(Entity.ID_UNIT_PRICE2);
 	}
 
 

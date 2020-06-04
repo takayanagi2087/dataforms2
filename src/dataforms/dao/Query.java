@@ -9,6 +9,7 @@ import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.sqlfunc.AliasField;
 import dataforms.field.sqlfunc.GroupSummaryField;
+import dataforms.field.sqlfunc.SqlField;
 import dataforms.util.StringUtil;
 
 
@@ -157,7 +158,16 @@ public class Query {
 	 * @return フィールド。
 	 */
 	public Field<?> getField(final String id) {
-		return this.fieldList.get(id);
+		Field<?> field = this.fieldList.get(id);
+		if (field instanceof GroupSummaryField) {
+			GroupSummaryField<?> f = (GroupSummaryField<?>) field;
+			return f.getTargetField();
+		} else if (field instanceof SqlField) {
+			SqlField f = (SqlField) field;
+			return f.getTargetField();
+		} else {
+			return field;
+		}
 	}
 
 	/**

@@ -815,6 +815,8 @@ public class QueryGeneratorEditForm extends EditForm {
 		for (Map<String, Object> m: list) {
 			String sel = (String) m.get("sel");
 			if (sel != null && (!"0".equals(sel))) {
+				String fieldClassName = (String) m.get("fieldClassName");
+				implist.add(fieldClassName);
 				ret.add(m);
 				if (sb.length() > 0) {
 					sb.append("\t\t\t, ");
@@ -977,12 +979,22 @@ public class QueryGeneratorEditForm extends EditForm {
 		javasrc = javasrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList, (Map<String, Object> m) -> {
 			return this.getFieldId(m);
 		}));
-		javasrc = javasrc.replaceAll("\\$\\{valueGetterSetter\\}", FieldListUtil.generateFieldValueGetterSetter(fieldList, (Map<String, Object> m) -> {
-			return this.getFieldId(m);
-		}));
-		javasrc = javasrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList, (Map<String, Object> m) -> {
-			return this.getFieldId(m);
-		}));
+		javasrc = javasrc.replaceAll("\\$\\{valueGetterSetter\\}", FieldListUtil.generateFieldValueGetterSetter(fieldList,
+			(Map<String, Object> m) -> {
+				return this.getFieldId(m);
+			}
+			, (Map<String, Object> m) -> {
+				return (String) m.get("fieldClassName");
+			}
+		));
+		javasrc = javasrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList,
+			(Map<String, Object> m) -> {
+				return this.getFieldId(m);
+			}
+			, (Map<String, Object> m) -> {
+				return (String) m.get("fieldClassName");
+			}
+		));
 
 
 		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);

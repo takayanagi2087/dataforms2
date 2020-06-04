@@ -202,6 +202,7 @@ public final class FieldListUtil {
 	 * @param func フィールドID取得関数インターフェース。
 	 * @param cfunc クラス名取得関数インターフェース。
 	 * @return フィールドIDの定数値。
+	 * @throws Exception 例外。
 	 */
 	public static String generateFieldGetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func, final GetClassNameFunctionalInterface cfunc) throws Exception {
 		StringBuilder sb = new StringBuilder();

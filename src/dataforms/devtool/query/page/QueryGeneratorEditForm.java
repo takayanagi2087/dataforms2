@@ -1019,4 +1019,5 @@ public class QueryGeneratorEditForm extends EditForm {
 		//　何もしない。
 	}
 
+
 }

@@ -1,0 +1,24 @@
+package ${packageName};
+
+import dataforms.dao.SubQuery;
+
+/**
+ * ${queryName}の副問合せ。
+ *
+ */
+public class ${subQueryName} extends SubQuery {
+	/**
+	 * コンストラクタ。
+	 */
+	public ${subQueryName}() {
+		super(new ${queryName}());
+	}
+
+	/**
+	 * 問合せを取得します。
+	 * @return 問合せ。
+	 */
+	public ${queryName} get${queryName}() {
+		return (${queryName}) this.getQuery();
+	}
+}

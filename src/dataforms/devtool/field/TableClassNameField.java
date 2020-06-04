@@ -28,11 +28,11 @@ public class TableClassNameField extends SimpleClassNameField {
 		this.addBaseClass(Table.class);
 		this.setComment(COMMENT);
 		this.setAutocomplete(false);
+		this.addValidator(new ClassNameValidator("Table"));
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
-		this.addValidator(new ClassNameValidator("Table"));
 	}
 }

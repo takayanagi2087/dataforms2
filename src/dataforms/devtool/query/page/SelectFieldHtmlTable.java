@@ -11,6 +11,7 @@ import dataforms.devtool.field.QueryFieldIdField;
 import dataforms.devtool.field.SummerySelectField;
 import dataforms.devtool.field.TableClassNameField;
 import dataforms.devtool.field.TableFullClassNameField;
+import dataforms.devtool.validator.ClassNameValidator;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
@@ -36,7 +37,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			, new TextField("alias")
 			, (new FieldFullClassNameField("fieldClassName")).setReadonly(true)
 			, (new TableFullClassNameField("selectTableClassName")).setReadonly(true)
-			, (new TableClassNameField()).setReadonly(true)
+			, (new TableClassNameField()).setReadonly(true).removeValidator(ClassNameValidator.class)
 			, (new TextField("comment")).setReadonly(true)
 		);
 		this.setFieldList(flist);

@@ -52,26 +52,6 @@ public class SubQuery extends Table {
 			Field<?> nf = f.cloneForSubQuery();
 			nf.setTable(this);
 			flist.add(nf);
-/*			if (f instanceof GroupSummaryField) {
-				GroupSummaryField<?> gsf = (GroupSummaryField<?>) f;
-				if (f instanceof SumField || f instanceof AvgField) {
-					Field<?> sf = gsf.getTargetField().clone();
-					sf.setTable(this);
-					flist.add(sf);
-				} else if (f instanceof MinField || f instanceof MaxField) {
-					Field<?> sf = gsf.getTargetField().clone();
-					sf.setTable(this);
-					flist.add(sf);
-				} else if (f instanceof CountField) {
-					Field<?> sf = new BigintField(gsf.getId());
-					sf.setTable(this);
-					flist.add(sf);
-				}
-			} else {
-				Field<?> nf = f.clone();
-				nf.setTable(this);
-				flist.add(nf);
-			}*/
 		}
 		return flist;
 	}

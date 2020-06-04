@@ -10,7 +10,7 @@ import dataforms.validator.RequiredValidator;
  * 問い合わせフォームクラス。
  */
 public class QueryGeneratorQueryForm extends QueryForm {
-	
+
 	/**
 	 * コンストラクタ。
 	 */

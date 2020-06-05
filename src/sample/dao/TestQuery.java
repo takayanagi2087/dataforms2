@@ -39,7 +39,7 @@ public class TestQuery extends Query {
 	 * コンストラクタ.
 	 */
 	public TestQuery() {
-		this.setComment("Test");
+		this.setComment("Test querry comment");
 		this.setDistinct(false);
 		this.materialMasterTable = new MaterialMasterTable();
 		this.materialMasterTable.setAlias("m");
@@ -52,7 +52,7 @@ public class TestQuery extends Query {
 			, this.materialMasterTable.getUnitPriceField()
 			, this.materialMasterTable.getOrderPointField()
 			, this.materialMasterTable.getMemoField()
-			, new SqlField(new NumericField("unitPrice2",10, 2), "m.unit_price * 2")
+			, new SqlField(new NumericField("unitPrice2",10, 2), "m.unit_price * 2").setComment("comment2")
 		));
 		this.setMainTable(materialMasterTable);
 
@@ -76,7 +76,7 @@ public class TestQuery extends Query {
 		public static final String ID_ORDER_POINT = "orderPoint";
 		/** nullのフィールドID。 */
 		public static final String ID_MEMO = "memo";
-		/** のフィールドID。 */
+		/** comment2のフィールドID。 */
 		public static final String ID_UNIT_PRICE2 = "unitPrice2";
 
 		/**
@@ -205,16 +205,16 @@ public class TestQuery extends Query {
 		}
 
 		/**
-		 * nullを取得します。
-		 * @return null。
+		 * comment2を取得します。
+		 * @return comment2。
 		 */
 		public java.math.BigDecimal getUnitPrice2() {
 			return (java.math.BigDecimal) this.getMap().get(Entity.ID_UNIT_PRICE2);
 		}
 
 		/**
-		 * nullを設定します。
-		 * @param unitPrice2 null。
+		 * comment2を設定します。
+		 * @param unitPrice2 comment2。
 		 */
 		public void setUnitPrice2(final java.math.BigDecimal unitPrice2) {
 			this.getMap().put(Entity.ID_UNIT_PRICE2, unitPrice2);
@@ -279,8 +279,8 @@ public class TestQuery extends Query {
 	}
 
 	/**
-	 * nullフィールドを取得します。
-	 * @return nullフィールド。
+	 * comment2フィールドを取得します。
+	 * @return comment2フィールド。
 	 */
 	public NumericField getUnitPrice2Field() {
 		return (NumericField) this.getField(Entity.ID_UNIT_PRICE2);

@@ -15,6 +15,27 @@ import dataforms.validator.RequiredValidator;
  */
 public class SqlFieldHtmlTable extends EditableHtmlTable {
 	/**
+	 * フィールドIDフィールドID。
+	 */
+	public static final String ID_FIELD_ID = "fieldId";
+	/**
+	 * フィールドクラス名フィールドID。。
+	 */
+	public static final String ID_FIELD_CLASS_NAME = "fieldClassName";
+	/**
+	 * フィールド長のフィールドID。
+	 */
+	public static final String ID_FIELD_LENGTH = "fieldLength";
+	/**
+	 * SQLフィールドID。。
+	 */
+	public static final String ID_SQL = "sql";
+	/**
+	 * コメントフィールドID。
+	 */
+	public static final String ID_COMMENT = "comment";
+
+	/**
 	 * コンストラクタ。
 	 * @param id デーブルID。
 	 */
@@ -22,37 +43,13 @@ public class SqlFieldHtmlTable extends EditableHtmlTable {
 		super(id);
 		FieldList flist = new FieldList(
 			new SortOrderField()
-			, (new QueryFieldIdField("fieldId")).addValidator(new RequiredValidator())
-			, (new DbColumnSelectField("fieldClassName")).addValidator(new RequiredValidator())
+			, (new QueryFieldIdField(ID_FIELD_ID)).addValidator(new RequiredValidator())
+			, (new DbColumnSelectField(ID_FIELD_CLASS_NAME)).addValidator(new RequiredValidator())
 			, (new FieldLengthField())
-			, new TextField("sql").addValidator(new RequiredValidator())
-			, new TextField("comment")
+			, new TextField(ID_SQL).addValidator(new RequiredValidator())
+			, new TextField(ID_COMMENT)
 		);
 		this.setFieldList(flist);
 		this.setFixedColumns(4);
 	}
-
-	/**
-	 * fieldListに対応した表示データを作成します。
-	 * @param flist フィールドリスト。
-	 * @return テーブルデータ。
-	 */
-/*	public static List<Map<String, Object>> getTableData(final FieldList flist) {
-		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
-		for (Field<?> f: flist) {
-			Map<String, Object> ent = new HashMap<String, Object>();
-			Table table = f.getTable();
-			ent.put("selectTableClass", table.getClass().getName());
-			ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getName());
-			ent.put("selectTableClassName", table.getClass().getSimpleName());
-			ent.put("sel", "0");
-			ent.put("fieldId", f.getId());
-			ent.put("fieldClassName", f.getClass().getName());
-			ent.put("comment", f.getComment());
-			ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
-			ret.add(ent);
-		}
-		return ret;
-	}
-*/
 }

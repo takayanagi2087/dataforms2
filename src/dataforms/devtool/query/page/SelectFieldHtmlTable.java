@@ -9,9 +9,8 @@ import dataforms.dao.Table;
 import dataforms.devtool.field.FieldFullClassNameField;
 import dataforms.devtool.field.QueryFieldIdField;
 import dataforms.devtool.field.SummerySelectField;
-import dataforms.devtool.field.TableClassNameField;
 import dataforms.devtool.field.TableFullClassNameField;
-import dataforms.devtool.validator.ClassNameValidator;
+import dataforms.devtool.field.TableOrSubQueryClassNameField;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
@@ -25,6 +24,37 @@ import dataforms.validator.RequiredValidator;
  *
  */
 public class SelectFieldHtmlTable extends EditableHtmlTable {
+	/**
+	 * 選択フラグ。
+	 */
+	public static final String ID_SEL = "sel";
+	/**
+	 * テーブルのフルクラス名。
+	 */
+	public static final String ID_TABLE_FULL_CLASS_NAME = "tableFullClassName";
+	/**
+	 * フィールドID。
+	 */
+	public static final String ID_FIELD_ID = "fieldId";
+	/**
+	 * フィールドクラス名。
+	 */
+	public static final String ID_FIELD_CLASS_NAME = "fieldClassName";
+	/**
+	 * テーブルクラス名。
+	 */
+	public static final String ID_TABLE_CLASS_NAME = "tableClassName";
+	/**
+	 * フィールド別名。
+	 */
+	public static final String ID_ALIAS = "alias";
+
+	/**
+	 * コメント。
+	 */
+	public static final String ID_COMMENT = "comment";
+
+
 	/**
 	 * コンストラクタ。
 	 * @param id デーブルID。
@@ -41,14 +71,14 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	public SelectFieldHtmlTable(final String id, final boolean daoflg) {
 		super(id);
 		FieldList flist = new FieldList(
-			(daoflg ? new FlagField("sel"): new SummerySelectField("sel"))
+			(daoflg ? new FlagField(ID_SEL): new SummerySelectField(ID_SEL))
 			, new SortOrderField()
-			, (new QueryFieldIdField("fieldId")).addValidator(new RequiredValidator())
-			, new TextField("alias")
-			, (new FieldFullClassNameField("fieldClassName")).setReadonly(true)
-			, (new TableFullClassNameField("selectTableClassName")).setReadonly(true)
-			, (new TableClassNameField()).setReadonly(true).removeValidator(ClassNameValidator.class)
-			, (new TextField("comment")).setReadonly(true)
+			, (new QueryFieldIdField(ID_FIELD_ID)).addValidator(new RequiredValidator())
+			, new TextField(ID_ALIAS)
+			, (new FieldFullClassNameField(ID_FIELD_CLASS_NAME)).setReadonly(true)
+			, (new TableFullClassNameField(ID_TABLE_FULL_CLASS_NAME)).setReadonly(true)
+			, (new TableOrSubQueryClassNameField(ID_TABLE_CLASS_NAME)).setReadonly(true)
+			, (new TextField(ID_COMMENT)).setReadonly(true)
 		);
 		this.setFieldList(flist);
 		this.setFixedColumns(5);
@@ -64,13 +94,12 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 		for (Field<?> f: flist) {
 			Map<String, Object> ent = new HashMap<String, Object>();
 			Table table = f.getTable();
-			ent.put("selectTableClass", table.getClass().getName());
-			ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getName());
-			ent.put("selectTableClassName", table.getClass().getSimpleName());
-			ent.put("sel", "0");
-			ent.put("fieldId", f.getId());
-			ent.put("fieldClassName", f.getClass().getName());
-			ent.put("comment", f.getComment());
+			ent.put(ID_TABLE_FULL_CLASS_NAME, table.getClass().getName());
+			ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
+			ent.put(ID_SEL, "0");
+			ent.put(ID_FIELD_ID, f.getId());
+			ent.put(ID_FIELD_CLASS_NAME, f.getClass().getName());
+			ent.put(ID_COMMENT, f.getComment());
 			// ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
 			ret.add(ent);
 		}
@@ -91,9 +120,9 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			for (Field<?> f: keyFieldList) {
 				String fid = f.getId();
 				for (Map<String, Object> m: list) {
-					String fieldId = (String) m.get("fieldId");
+					String fieldId = (String) m.get(ID_FIELD_ID);
 					if (fid.equals(fieldId)) {
-						m.put("sel", "1");
+						m.put(ID_SEL, "1");
 					}
 				}
 			}

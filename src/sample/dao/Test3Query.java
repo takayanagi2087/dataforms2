@@ -5,6 +5,7 @@ import dataforms.dao.Query;
 import java.util.Map;
 import sample.field.MaterialIdField;
 import dataforms.field.sqlfunc.CountField;
+import dataforms.field.sqlfunc.AliasField;
 import sample.field.MaterialUnitField;
 
 
@@ -39,8 +40,8 @@ public class Test3Query extends Query {
 		this.testSubQuery.setAlias("m");
 
 		this.setFieldList(new FieldList(
-			this.testSubQuery.getTestQuery().getMaterialUnitField()
-			, new CountField("materialId", this.testSubQuery.getTestQuery().getMaterialIdField())
+			new CountField("materialId", this.testSubQuery.getTestQuery().getMaterialIdField())
+			, new AliasField("u", testSubQuery.getTestQuery().getMaterialUnitField())
 		));
 		this.setMainTable(testSubQuery);
 
@@ -51,9 +52,9 @@ public class Test3Query extends Query {
 	 */
 	public static class Entity extends dataforms.dao.Entity {
 		/** nullのフィールドID。 */
-		public static final String ID_MATERIAL_UNIT = "materialUnit";
-		/** nullのフィールドID。 */
 		public static final String ID_MATERIAL_ID = "materialId";
+		/** nullのフィールドID。 */
+		public static final String ID_U = "u";
 
 		/**
 		 * コンストラクタ。
@@ -68,22 +69,6 @@ public class Test3Query extends Query {
 		public Entity(final Map<String, Object> map) {
 			super(map);
 		}
-		/**
-		 * 資材在庫単位を取得します。
-		 * @return 資材在庫単位。
-		 */
-		public java.lang.String getMaterialUnit() {
-			return (java.lang.String) this.getMap().get(Entity.ID_MATERIAL_UNIT);
-		}
-
-		/**
-		 * 資材在庫単位を設定します。
-		 * @param materialUnit 資材在庫単位。
-		 */
-		public void setMaterialUnit(final java.lang.String materialUnit) {
-			this.getMap().put(Entity.ID_MATERIAL_UNIT, materialUnit);
-		}
-
 		/**
 		 * 資材IDを取得します。
 		 * @return 資材ID。
@@ -100,22 +85,38 @@ public class Test3Query extends Query {
 			this.getMap().put(Entity.ID_MATERIAL_ID, materialId);
 		}
 
+		/**
+		 * 資材在庫単位を取得します。
+		 * @return 資材在庫単位。
+		 */
+		public java.lang.String getU() {
+			return (java.lang.String) this.getMap().get(Entity.ID_U);
+		}
+
+		/**
+		 * 資材在庫単位を設定します。
+		 * @param u 資材在庫単位。
+		 */
+		public void setU(final java.lang.String u) {
+			this.getMap().put(Entity.ID_U, u);
+		}
+
 
 	}
-	/**
-	 * 資材在庫単位フィールドを取得します。
-	 * @return 資材在庫単位フィールド。
-	 */
-	public MaterialUnitField getMaterialUnitField() {
-		return (MaterialUnitField) this.getField(Entity.ID_MATERIAL_UNIT);
-	}
-
 	/**
 	 * 資材IDフィールドを取得します。
 	 * @return 資材IDフィールド。
 	 */
 	public MaterialIdField getMaterialIdField() {
 		return (MaterialIdField) this.getField(Entity.ID_MATERIAL_ID);
+	}
+
+	/**
+	 * 資材在庫単位フィールドを取得します。
+	 * @return 資材在庫単位フィールド。
+	 */
+	public MaterialUnitField getUField() {
+		return (MaterialUnitField) this.getField(Entity.ID_U);
 	}
 
 

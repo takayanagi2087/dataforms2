@@ -7,7 +7,7 @@ import dataforms.devtool.validator.ClassNameValidator;
  * テーブルクラス名フィールドクラス。
  *
  */
-public class TableClassNameField extends SimpleClassNameField {
+public class TableOrSubQueryClassNameField extends SimpleClassNameField {
 	/**
 	 * フィールドコメント。
 	 */
@@ -15,7 +15,7 @@ public class TableClassNameField extends SimpleClassNameField {
 	/**
 	 * コンストラクタ。
 	 */
-	public TableClassNameField() {
+	public TableOrSubQueryClassNameField() {
 		this(null);
 	}
 
@@ -23,7 +23,7 @@ public class TableClassNameField extends SimpleClassNameField {
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public TableClassNameField(final String id) {
+	public TableOrSubQueryClassNameField(final String id) {
 		super(id);
 		this.addBaseClass(Table.class);
 		this.setComment(COMMENT);
@@ -33,6 +33,6 @@ public class TableClassNameField extends SimpleClassNameField {
 	@Override
 	protected void onBind() {
 		super.onBind();
-		this.addValidator(new ClassNameValidator("Table"));
+		this.addValidator(new ClassNameValidator("((Table)|(SubQuery))"));
 	}
 }

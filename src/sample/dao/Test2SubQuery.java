@@ -1,6 +1,7 @@
 package sample.dao;
 
 import dataforms.dao.SubQuery;
+import dataforms.dao.Table;
 
 /**
  * Test2Queryの副問合せ。
@@ -21,5 +22,21 @@ public class Test2SubQuery extends SubQuery {
 	 */
 	public Test2Query getTest2Query() {
 		return (Test2Query) this.getQuery();
+	}
+
+	/**
+	 * 他テーブルとのリンク条件を作成します。
+	 * <pre>
+	 * 他のテーブルとの結合を行う場合を以下のコメント部分を参考に実装してください。
+	 * </pre>
+	 * @param joinTable 結合するテーブルのインスタンス。
+	 * @param alias 結合するテーブルの別名。
+	 */
+	@Override
+	public String getJoinCondition(final Table joinTable, final String alias) {
+		if (joinTable instanceof MaterialMasterTable) {
+			return this.getLinkFieldCondition(Test2Query.Entity.ID_MATERIAL_ID, joinTable, alias, MaterialMasterTable.Entity.ID_MATERIAL_ID);
+		}
+		return super.getJoinCondition(joinTable, alias);
 	}
 }

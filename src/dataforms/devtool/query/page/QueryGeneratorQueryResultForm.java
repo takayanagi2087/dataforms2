@@ -27,6 +27,7 @@ import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.ClassFinder;
 import dataforms.util.FileUtil;
+import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
 
 
@@ -149,9 +150,10 @@ public class QueryGeneratorQueryResultForm extends QueryResultForm {
 	/**
 	 * サブクエリのソースを生成します。
 	 * @param queryClassName 問合せクラス名。
+	 * @return 作成したソースファイル名。
 	 * @throws Exception 例外。
 	 */
-	private void generateSubQuery(final String queryClassName) throws Exception {
+	private String generateSubQuery(final String queryClassName) throws Exception {
 		@SuppressWarnings("unchecked")
 		Class<? extends Query> cls = (Class<? extends Query>) Class.forName(queryClassName);
 		String subQueryClassName = this.getSubQueryClassName(cls);
@@ -164,6 +166,7 @@ public class QueryGeneratorQueryResultForm extends QueryResultForm {
 		javasrc = javasrc.replaceAll("\\$\\{queryName\\}", qname);
 		javasrc = javasrc.replaceAll("\\$\\{subQueryName\\}", sname);
 		FileUtil.writeTextFile(srcfile, javasrc, DataFormsServlet.getEncoding());
+		return srcfile;
 	}
 
 
@@ -176,8 +179,8 @@ public class QueryGeneratorQueryResultForm extends QueryResultForm {
 	@WebMethod
 	public Response generateSubQuery(final Map<String, Object> p) throws Exception {
 		String queryClassName = (String) p.get("queryClass");
-		this.generateSubQuery(queryClassName);
-		Response resp = new JsonResponse(JsonResponse.SUCCESS, "");
+		String filename = this.generateSubQuery(queryClassName);
+		Response resp = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.subquerygenerated", filename));
 		return resp;
 	}
 

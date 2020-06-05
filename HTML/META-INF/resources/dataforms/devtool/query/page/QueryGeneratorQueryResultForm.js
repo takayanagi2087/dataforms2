@@ -111,6 +111,9 @@ class QueryGeneratorQueryResultForm extends QueryResultForm {
 			logger.log("queryClassName=" + queryClassName);
 			var m = thisForm.getServerMethod("generateSubQuery");
 			m.execute("queryClass=" + queryClassName, function(r) {
+				if (r.status == ServerMethod.SUCCESS) {
+					currentPage.alert(null, r.result);
+				}
 				thisForm.changePage();
 			});
 		});

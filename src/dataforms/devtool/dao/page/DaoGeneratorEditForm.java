@@ -163,7 +163,7 @@ public class DaoGeneratorEditForm extends EditForm {
 			this.addHtmlTable(list);
 		}
 		{
-			SelectFieldHtmlTable fieldList = new SelectFieldHtmlTable(ID_KEY_FIELD_LIST);
+			SelectFieldHtmlTable fieldList = new SelectFieldHtmlTable(ID_KEY_FIELD_LIST, true);
 			this.addHtmlTable(fieldList);
 		}
 

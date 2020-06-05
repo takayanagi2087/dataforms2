@@ -52,7 +52,7 @@ public class TestQuery extends Query {
 			, this.materialMasterTable.getUnitPriceField()
 			, this.materialMasterTable.getOrderPointField()
 			, this.materialMasterTable.getMemoField()
-			, new SqlField(new NumericField("unitPrice2",10,2), "m.unit_price * 2")
+			, new SqlField(new NumericField("unitPrice2",10, 2), "m.unit_price * 2")
 		));
 		this.setMainTable(materialMasterTable);
 
@@ -76,7 +76,7 @@ public class TestQuery extends Query {
 		public static final String ID_ORDER_POINT = "orderPoint";
 		/** nullのフィールドID。 */
 		public static final String ID_MEMO = "memo";
-		/** 単価*2のフィールドID。 */
+		/** のフィールドID。 */
 		public static final String ID_UNIT_PRICE2 = "unitPrice2";
 
 		/**
@@ -205,16 +205,16 @@ public class TestQuery extends Query {
 		}
 
 		/**
-		 * 単価*2を取得します。
-		 * @return 単価*2。
+		 * nullを取得します。
+		 * @return null。
 		 */
 		public java.math.BigDecimal getUnitPrice2() {
 			return (java.math.BigDecimal) this.getMap().get(Entity.ID_UNIT_PRICE2);
 		}
 
 		/**
-		 * 単価*2を設定します。
-		 * @param unitPrice2 単価*2。
+		 * nullを設定します。
+		 * @param unitPrice2 null。
 		 */
 		public void setUnitPrice2(final java.math.BigDecimal unitPrice2) {
 			this.getMap().put(Entity.ID_UNIT_PRICE2, unitPrice2);
@@ -279,8 +279,8 @@ public class TestQuery extends Query {
 	}
 
 	/**
-	 * 単価*2フィールドを取得します。
-	 * @return 単価*2フィールド。
+	 * nullフィールドを取得します。
+	 * @return nullフィールド。
 	 */
 	public NumericField getUnitPrice2Field() {
 		return (NumericField) this.getField(Entity.ID_UNIT_PRICE2);

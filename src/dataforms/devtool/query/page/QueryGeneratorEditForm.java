@@ -16,6 +16,7 @@ import dataforms.controller.EditForm;
 import dataforms.dao.Dao;
 import dataforms.dao.Query;
 import dataforms.dao.Query.JoinInfo;
+import dataforms.dao.SubQuery;
 import dataforms.dao.Table;
 import dataforms.dao.TableList;
 import dataforms.dao.sqlgen.SqlGenerator;
@@ -366,16 +367,18 @@ public class QueryGeneratorEditForm extends EditForm {
 			for (int i = 0; i < sellist.size(); i++) {
 				Map<String, Object> m = sellist.get(i);
 				String sel = (String) m.get("sel");
-				if (!"0".equals(sel)) {
-					String fieldId = (String) m.get("fieldId");
-					if (!StringUtil.isBlank(m.get("alias"))) {
-						fieldId = (String) m.get("alias");
-					}
-					if (!set.contains(fieldId)) {
-						set.add(fieldId);
-					} else {
-						String fid = ID_SELECT_FIELD_LIST + "[" + i + "].fieldId";
-						ret.add(new ValidationError(fid, MessagesUtil.getMessage(this.getPage(), "error.duplicatefieldid", fieldId)));
+				if (!StringUtil.isBlank(sel)) {
+					if ((!"0".equals(sel))) {
+						String fieldId = (String) m.get("fieldId");
+						if (!StringUtil.isBlank(m.get("alias"))) {
+							fieldId = (String) m.get("alias");
+						}
+						if (!set.contains(fieldId)) {
+							set.add(fieldId);
+						} else {
+							String fid = ID_SELECT_FIELD_LIST + "[" + i + "].fieldId";
+							ret.add(new ValidationError(fid, MessagesUtil.getMessage(this.getPage(), "error.duplicatefieldid", fieldId)));
+						}
 					}
 				}
 			}
@@ -802,6 +805,19 @@ public class QueryGeneratorEditForm extends EditForm {
 		return "get" + uFieldId + "Field()";
 	}
 
+
+	private String getTableProperty(final String name) throws Exception {
+		@SuppressWarnings("unchecked")
+		Class<? extends Table> cls = (Class<? extends Table>) Class.forName(name);
+		if (SubQuery.class.isAssignableFrom(cls)) {
+			SubQuery sq = (SubQuery) cls.getConstructor().newInstance();
+			Query q = sq.getQuery();
+			return "get" + q.getClass().getSimpleName() + "().";
+		} else {
+			return "";
+		}
+	}
+
 	/**
 	 * フィールドリストの作成します。
 	 * @param list 選択フィールドリスト。
@@ -815,6 +831,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		for (Map<String, Object> m: list) {
 			String sel = (String) m.get("sel");
 			if (sel != null && (!"0".equals(sel))) {
+				String tableClassFullName = (String) m.get("tableClassName");
 				String fieldClassName = (String) m.get("fieldClassName");
 				implist.add(fieldClassName);
 				ret.add(m);
@@ -829,14 +846,14 @@ public class QueryGeneratorEditForm extends EditForm {
 					if (StringUtil.isBlank(alias)) {
 						String tableClassName = (String) m.get("selectTableClassName");
 						String fieldId = (String) m.get("fieldId");
-						sb.append("this." + this.getTableVariableName(tableClassName) + ".");
+						sb.append("this." + this.getTableVariableName(tableClassName) + "." + this.getTableProperty(tableClassFullName));
 						sb.append(this.getFieldMethod(fieldId) + "\n");
 					} else {
 						String tableClassName = (String) m.get("selectTableClassName");
 						String fieldId = (String) m.get("fieldId");
 						implist.add(AliasField.class.getName());
 						sb.append("new AliasField(\"" + alias + "\", ");
-						sb.append(this.getTableVariableName(tableClassName) + ".");
+						sb.append(this.getTableVariableName(tableClassName) + "." + this.getTableProperty(tableClassFullName));
 						sb.append(this.getFieldMethod(fieldId) + ")\n");
 					}
 				} else {
@@ -848,8 +865,9 @@ public class QueryGeneratorEditForm extends EditForm {
 					}
 					Class<?> cls = Class.forName(sel);
 					implist.add(cls.getName());
-					sb.append("new " + cls.getSimpleName() + "(\"" + fieldId + "\", this." + this.getTableVariableName(tableClassName) + "." +
-							this.getFieldMethod((String) m.get("fieldId")) + ")\n");
+					sb.append("new " + cls.getSimpleName() + "(\"" + fieldId + "\", this." + this.getTableVariableName(tableClassName)
+						+ "." + this.getTableProperty(tableClassFullName) +
+						this.getFieldMethod((String) m.get("fieldId")) + ")\n");
 				}
 			}
 		}

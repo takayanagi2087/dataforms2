@@ -15,6 +15,7 @@ import dataforms.devtool.validator.ClassNameValidator;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
+import dataforms.field.common.FlagField;
 import dataforms.field.common.SortOrderField;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.validator.RequiredValidator;
@@ -29,9 +30,18 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	 * @param id デーブルID。
 	 */
 	public SelectFieldHtmlTable(final String id) {
+		this(id, false);
+	}
+
+	/**
+	 * コンストラクタ。
+	 * @param id デーブルID。
+	 * @param daoflg Daoフラグ。
+	 */
+	public SelectFieldHtmlTable(final String id, final boolean daoflg) {
 		super(id);
 		FieldList flist = new FieldList(
-			new SummerySelectField("sel")
+			(daoflg ? new FlagField("sel"): new SummerySelectField("sel"))
 			, new SortOrderField()
 			, (new QueryFieldIdField("fieldId")).addValidator(new RequiredValidator())
 			, new TextField("alias")
@@ -61,7 +71,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			ent.put("fieldId", f.getId());
 			ent.put("fieldClassName", f.getClass().getName());
 			ent.put("comment", f.getComment());
-			ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
+			// ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
 			ret.add(ent);
 		}
 		return ret;

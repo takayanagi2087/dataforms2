@@ -1,7 +1,6 @@
 package dataforms.devtool.field;
 
 import dataforms.controller.Page;
-import dataforms.devtool.validator.ClassNameValidator;
 
 /**
  * ページクラス名フィールドクラス。
@@ -29,9 +28,13 @@ public class PageClassNameField extends SimpleClassNameField {
 	}
 
 	@Override
+	protected String getClassNameSuffix() {
+		return "Page";
+	}
+
+	@Override
 	protected void onBind() {
 		super.onBind();
-		this.addValidator(new ClassNameValidator("Page"));
 	}
 
 }

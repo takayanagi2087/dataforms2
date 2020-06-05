@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import dataforms.devtool.validator.ClassNameValidator;
 import dataforms.field.base.Field;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.util.ClassFinder;
@@ -20,7 +21,7 @@ import dataforms.util.StringUtil;
  * パッケージ名を除いたクラス名フィールドクラス。
  *
  */
-public class SimpleClassNameField extends VarcharField {
+public abstract class SimpleClassNameField extends VarcharField {
 
 	/**
 	 * Logger.
@@ -52,6 +53,11 @@ public class SimpleClassNameField extends VarcharField {
 	 */
 	private List<String> exceptionPatternList = new ArrayList<String>();
 
+	/**
+	 * クラス名サフィックスを取得します。
+	 * @return クラス名サフィックス。
+	 */
+	protected abstract String getClassNameSuffix();
 
 	/**
 	 * コンストラクタ。
@@ -70,6 +76,14 @@ public class SimpleClassNameField extends VarcharField {
 		super(id, LENGTH);
 		this.setComment(COMMENT);
 		this.setAjaxParameter(AjaxParameter.FORM);
+	}
+
+	@Override
+	protected void onBind() {
+		super.onBind();
+		if (this.getClassNameSuffix() != null) {
+			this.addValidator(new ClassNameValidator(this.getClassNameSuffix()));
+		}
 	}
 
 	/**
@@ -221,6 +235,5 @@ public class SimpleClassNameField extends VarcharField {
 		}
 		return ret;
 	}
-
 }
 

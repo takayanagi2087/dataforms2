@@ -1,7 +1,6 @@
 package dataforms.devtool.field;
 
 import dataforms.dao.Table;
-import dataforms.devtool.validator.ClassNameValidator;
 
 /**
  * テーブルクラス名フィールドクラス。
@@ -31,8 +30,12 @@ public class TableOrSubQueryClassNameField extends SimpleClassNameField {
 	}
 
 	@Override
+	protected String getClassNameSuffix() {
+		return "((Table)|(SubQuery))";
+	}
+
+	@Override
 	protected void onBind() {
 		super.onBind();
-		this.addValidator(new ClassNameValidator("((Table)|(SubQuery))"));
 	}
 }

@@ -1,7 +1,6 @@
 package dataforms.devtool.field;
 
 import dataforms.dao.QuerySetDao;
-import dataforms.devtool.validator.ClassNameValidator;
 
 /**
  * テーブルクラス名フィールドクラス。
@@ -30,8 +29,7 @@ public class DaoClassNameField extends SimpleClassNameField {
 	}
 
 	@Override
-	protected void onBind() {
-		super.onBind();
-		this.addValidator(new ClassNameValidator("Dao"));
+	protected String getClassNameSuffix() {
+		return "Dao";
 	}
 }

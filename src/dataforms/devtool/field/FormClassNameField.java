@@ -2,7 +2,6 @@ package dataforms.devtool.field;
 
 
 import dataforms.controller.Form;
-import dataforms.devtool.validator.ClassNameValidator;
 
 /**
  * フォームクラス名フィールド。
@@ -34,9 +33,13 @@ public class FormClassNameField extends SimpleClassNameField {
 	}
 
 	@Override
+	protected String getClassNameSuffix() {
+		return "Form";
+	}
+
+	@Override
 	protected void onBind() {
 		super.onBind();
 		this.setAutocomplete(false);
-		this.addValidator(new ClassNameValidator("Form"));
 	}
 }

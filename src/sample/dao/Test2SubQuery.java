@@ -12,6 +12,7 @@ public class Test2SubQuery extends SubQuery {
 	 */
 	public Test2SubQuery() {
 		super(new Test2Query());
+		this.setComment(this.getQuery().getClass().getSimpleName() + "の副問合せ");
 	}
 
 	/**

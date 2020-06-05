@@ -1,16 +1,16 @@
 package dataforms.devtool.field;
 
-import dataforms.field.base.Field;
+import dataforms.field.base.TextField;
 
 /**
  * フィールドクラス名フィールドクラス。
  *
  */
-public class FieldFullClassNameField extends SimpleClassNameField {
+public class FieldFullClassNameField extends TextField {
 	/**
 	 * autocompleteの例外文字列。
 	 */
-	private static final String EXCEPTION_PATTERN = "dataforms\\.field\\.sqlfunc";
+//	private static final String EXCEPTION_PATTERN = "dataforms\\.field\\.sqlfunc";
 	/**
 	 * フィールドコメント。
 	 */
@@ -27,16 +27,13 @@ public class FieldFullClassNameField extends SimpleClassNameField {
 	 */
 	public FieldFullClassNameField(final String id) {
 		super(id);
-		this.addBaseClass(Field.class);
+//		this.addBaseClass(Field.class);
 		this.setComment(COMMENT);
-		this.addExceptionPattern(EXCEPTION_PATTERN);
+//		this.addExceptionPattern(EXCEPTION_PATTERN);
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
-//		this.addValidator(new ClassNameValidator("Field"));
-//		this.setAutocomplete(true);
-//		this.setRelationDataAcquisition(true);
 	}
 }

@@ -80,11 +80,6 @@ public class QueryGeneratorEditForm extends EditForm {
 	private static final String ID_DISTINCT_FLAG = "distinctFlag";
 
 	/**
-	 * 強制上書きフラグフィールドID。
-	 */
-	//private static final String ID_FORCE_OVERWRITE = "forceOverwrite";
-
-	/**
 	 * 主テーブル機能選択フィールドID。
 	 */
 	private static final String ID_MAIN_TABLE_FUNCTION_SELECT = "mainTableFunctionSelect";
@@ -218,7 +213,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			Dao dao = new Dao(this);
 			dao.getSqlGenerator().generateQuerySql(q);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return q;
 	}
@@ -858,7 +853,7 @@ public class QueryGeneratorEditForm extends EditForm {
 						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
 						implist.add(AliasField.class.getName());
 						sb.append("new AliasField(\"" + alias + "\", ");
-						sb.append(this.getTableVariableName(tableClassName) + "." + this.getTableProperty(tableClassFullName));
+						sb.append("this." + this.getTableVariableName(tableClassName) + "." + this.getTableProperty(tableClassFullName));
 						sb.append(this.getFieldMethod(fieldId) + ")\n");
 					}
 				} else {

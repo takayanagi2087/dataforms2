@@ -1,12 +1,12 @@
 package dataforms.devtool.field;
 
-import dataforms.dao.Table;
+import dataforms.field.base.TextField;
 
 /**
  * テーブルクラス名フィールドクラス。
  *
  */
-public class TableFullClassNameField extends SimpleClassNameField {
+public class TableFullClassNameField extends TextField {
 	/**
 	 * フィールドコメント。
 	 */
@@ -23,9 +23,7 @@ public class TableFullClassNameField extends SimpleClassNameField {
 	 */
 	public TableFullClassNameField(final String id) {
 		super(id);
-		this.addBaseClass(Table.class);
 		this.setComment(COMMENT);
-		this.setAutocomplete(false);
 	}
 
 	@Override

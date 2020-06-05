@@ -73,7 +73,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 		FieldList flist = new FieldList(
 			(daoflg ? new FlagField(ID_SEL): new SummerySelectField(ID_SEL))
 			, new SortOrderField()
-			, new QueryFieldIdField(ID_FIELD_ID).addValidator(new RequiredValidator())
+			, new QueryFieldIdField(ID_FIELD_ID).addValidator(new RequiredValidator()).setReadonly(daoflg)
 			, new TextField(ID_ALIAS)
 			, new FieldFullClassNameField(ID_FIELD_CLASS_NAME).setReadonly(true)
 			, new TableFullClassNameField(ID_TABLE_FULL_CLASS_NAME).setReadonly(true)
@@ -81,7 +81,9 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			, new TextField(ID_COMMENT).setReadonly(true)
 		);
 		this.setFieldList(flist);
-		this.setFixedColumns(5);
+		if (!daoflg) {
+			this.setFixedColumns(5);
+		}
 	}
 
 	/**

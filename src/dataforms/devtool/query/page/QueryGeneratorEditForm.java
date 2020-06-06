@@ -270,6 +270,7 @@ public class QueryGeneratorEditForm extends EditForm {
 							fmap.putAll(m);
 							fmap.put(SelectFieldHtmlTable.ID_ALIAS, af.getId());
 							fmap.put(SelectFieldHtmlTable.ID_SEL, "1");
+							fmap.put(SqlFieldHtmlTable.ID_COMMENT, f.getComment());
 							selflist.add(fmap);
 							break;
 						}
@@ -283,6 +284,7 @@ public class QueryGeneratorEditForm extends EditForm {
 								fmap.put(SelectFieldHtmlTable.ID_ALIAS, sf.getId());
 							}
 							fmap.put(SelectFieldHtmlTable.ID_SEL, sf.getClass().getName());
+							fmap.put(SqlFieldHtmlTable.ID_COMMENT, f.getComment());
 							selflist.add(fmap);
 							break;
 						}
@@ -292,6 +294,7 @@ public class QueryGeneratorEditForm extends EditForm {
 							Map<String, Object> fmap = new HashMap<String, Object>();
 							fmap.putAll(m);
 							fmap.put(SelectFieldHtmlTable.ID_SEL, "1");
+							fmap.put(SqlFieldHtmlTable.ID_COMMENT, f.getComment());
 							selflist.add(fmap);
 							flist.remove(m);
 							break;
@@ -818,6 +821,21 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 	}
 
+	private String getCommentCode(final Map<String, Object> m) throws Exception {
+		String fieldClassName = (String) m.get("fieldClassName");
+		@SuppressWarnings("unchecked")
+		Class<? extends Field<?>> cls = (Class<? extends Field<?>>) Class.forName(fieldClassName);
+		Field<?> f = Field.newFieldInstance(cls);
+		String comment0 = f.getComment();
+		String comment = (String) m.get(SelectFieldHtmlTable.ID_COMMENT);
+		if (!StringUtil.isBlank(comment0)) {
+			if (!comment0.equals(comment)) {
+				return ".setComment(\"" + comment + "\")";
+			}
+		}
+		return "";
+	}
+
 	/**
 	 * フィールドリストの作成します。
 	 * @param list 選択フィールドリスト。
@@ -847,14 +865,14 @@ public class QueryGeneratorEditForm extends EditForm {
 						String tableClassName = (String) m.get(SelectFieldHtmlTable.ID_TABLE_CLASS_NAME);
 						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
 						sb.append("this." + this.getTableVariableName(tableClassName) + "." + this.getTableProperty(tableClassFullName));
-						sb.append(this.getFieldMethod(fieldId) + "\n");
+						sb.append(this.getFieldMethod(fieldId) + this.getCommentCode(m) + "\n");
 					} else {
 						String tableClassName = (String) m.get(SelectFieldHtmlTable.ID_TABLE_CLASS_NAME);
 						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
 						implist.add(AliasField.class.getName());
 						sb.append("new AliasField(\"" + alias + "\", ");
 						sb.append("this." + this.getTableVariableName(tableClassName) + "." + this.getTableProperty(tableClassFullName));
-						sb.append(this.getFieldMethod(fieldId) + ")\n");
+						sb.append(this.getFieldMethod(fieldId) + this.getCommentCode(m) + ")\n");
 					}
 				} else {
 					String tableClassName = (String) m.get(SelectFieldHtmlTable.ID_TABLE_CLASS_NAME);
@@ -867,7 +885,7 @@ public class QueryGeneratorEditForm extends EditForm {
 					implist.add(cls.getName());
 					sb.append("new " + cls.getSimpleName() + "(\"" + fieldId + "\", this." + this.getTableVariableName(tableClassName)
 						+ "." + this.getTableProperty(tableClassFullName) +
-						this.getFieldMethod((String) m.get(SelectFieldHtmlTable.ID_FIELD_ID)) + ")\n");
+						this.getFieldMethod((String) m.get(SelectFieldHtmlTable.ID_FIELD_ID)) + ")" + this.getCommentCode(m) + "\n");
 				}
 			}
 		}

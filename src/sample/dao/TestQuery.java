@@ -8,6 +8,7 @@ import java.util.Map;
 import sample.field.MaterialCodeField;
 import dataforms.field.sqlfunc.SqlField;
 import sample.field.MaterialIdField;
+import dataforms.field.sqlfunc.AliasField;
 import sample.field.MaterialUnitField;
 import dataforms.field.sqltype.NumericField;
 import sample.field.OrderPointField;
@@ -45,13 +46,13 @@ public class TestQuery extends Query {
 		this.materialMasterTable.setAlias("m");
 
 		this.setFieldList(new FieldList(
-			this.materialMasterTable.getMaterialIdField()
-			, this.materialMasterTable.getMaterialCodeField()
+			this.materialMasterTable.getMaterialIdField().setComment("資材IDa")
+			, this.materialMasterTable.getMaterialCodeField().setComment("資材コードa")
 			, this.materialMasterTable.getMaterialNameField()
 			, this.materialMasterTable.getMaterialUnitField()
 			, this.materialMasterTable.getUnitPriceField()
 			, this.materialMasterTable.getOrderPointField()
-			, this.materialMasterTable.getMemoField()
+			, new AliasField("mm", this.materialMasterTable.getMemoField().setComment(""))
 			, new SqlField(new NumericField("unitPrice2",10, 2), "m.unit_price * 2").setComment("comment2")
 		));
 		this.setMainTable(materialMasterTable);
@@ -62,20 +63,20 @@ public class TestQuery extends Query {
 	 * Entity操作クラスです。
 	 */
 	public static class Entity extends dataforms.dao.Entity {
-		/** nullのフィールドID。 */
+		/** 資材IDaのフィールドID。 */
 		public static final String ID_MATERIAL_ID = "materialId";
-		/** nullのフィールドID。 */
+		/** 資材コードaのフィールドID。 */
 		public static final String ID_MATERIAL_CODE = "materialCode";
-		/** nullのフィールドID。 */
+		/** 資材名称のフィールドID。 */
 		public static final String ID_MATERIAL_NAME = "materialName";
-		/** nullのフィールドID。 */
+		/** 資材在庫単位のフィールドID。 */
 		public static final String ID_MATERIAL_UNIT = "materialUnit";
-		/** nullのフィールドID。 */
+		/** 単価のフィールドID。 */
 		public static final String ID_UNIT_PRICE = "unitPrice";
-		/** nullのフィールドID。 */
+		/** 発注点のフィールドID。 */
 		public static final String ID_ORDER_POINT = "orderPoint";
-		/** nullのフィールドID。 */
-		public static final String ID_MEMO = "memo";
+		/** のフィールドID。 */
+		public static final String ID_MM = "mm";
 		/** comment2のフィールドID。 */
 		public static final String ID_UNIT_PRICE2 = "unitPrice2";
 
@@ -93,32 +94,32 @@ public class TestQuery extends Query {
 			super(map);
 		}
 		/**
-		 * 資材IDを取得します。
-		 * @return 資材ID。
+		 * 資材IDaを取得します。
+		 * @return 資材IDa。
 		 */
 		public java.lang.Long getMaterialId() {
 			return (java.lang.Long) this.getMap().get(Entity.ID_MATERIAL_ID);
 		}
 
 		/**
-		 * 資材IDを設定します。
-		 * @param materialId 資材ID。
+		 * 資材IDaを設定します。
+		 * @param materialId 資材IDa。
 		 */
 		public void setMaterialId(final java.lang.Long materialId) {
 			this.getMap().put(Entity.ID_MATERIAL_ID, materialId);
 		}
 
 		/**
-		 * 資材コードを取得します。
-		 * @return 資材コード。
+		 * 資材コードaを取得します。
+		 * @return 資材コードa。
 		 */
 		public java.lang.String getMaterialCode() {
 			return (java.lang.String) this.getMap().get(Entity.ID_MATERIAL_CODE);
 		}
 
 		/**
-		 * 資材コードを設定します。
-		 * @param materialCode 資材コード。
+		 * 資材コードaを設定します。
+		 * @param materialCode 資材コードa。
 		 */
 		public void setMaterialCode(final java.lang.String materialCode) {
 			this.getMap().put(Entity.ID_MATERIAL_CODE, materialCode);
@@ -192,16 +193,16 @@ public class TestQuery extends Query {
 		 * メモを取得します。
 		 * @return メモ。
 		 */
-		public java.lang.String getMemo() {
-			return (java.lang.String) this.getMap().get(Entity.ID_MEMO);
+		public java.lang.String getMm() {
+			return (java.lang.String) this.getMap().get(Entity.ID_MM);
 		}
 
 		/**
 		 * メモを設定します。
-		 * @param memo メモ。
+		 * @param mm メモ。
 		 */
-		public void setMemo(final java.lang.String memo) {
-			this.getMap().put(Entity.ID_MEMO, memo);
+		public void setMm(final java.lang.String mm) {
+			this.getMap().put(Entity.ID_MM, mm);
 		}
 
 		/**
@@ -223,16 +224,16 @@ public class TestQuery extends Query {
 
 	}
 	/**
-	 * 資材IDフィールドを取得します。
-	 * @return 資材IDフィールド。
+	 * 資材IDaフィールドを取得します。
+	 * @return 資材IDaフィールド。
 	 */
 	public MaterialIdField getMaterialIdField() {
 		return (MaterialIdField) this.getField(Entity.ID_MATERIAL_ID);
 	}
 
 	/**
-	 * 資材コードフィールドを取得します。
-	 * @return 資材コードフィールド。
+	 * 資材コードaフィールドを取得します。
+	 * @return 資材コードaフィールド。
 	 */
 	public MaterialCodeField getMaterialCodeField() {
 		return (MaterialCodeField) this.getField(Entity.ID_MATERIAL_CODE);
@@ -274,8 +275,8 @@ public class TestQuery extends Query {
 	 * メモフィールドを取得します。
 	 * @return メモフィールド。
 	 */
-	public MemoField getMemoField() {
-		return (MemoField) this.getField(Entity.ID_MEMO);
+	public MemoField getMmField() {
+		return (MemoField) this.getField(Entity.ID_MM);
 	}
 
 	/**

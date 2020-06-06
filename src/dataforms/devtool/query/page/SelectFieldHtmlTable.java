@@ -78,7 +78,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			, new FieldFullClassNameField(ID_FIELD_CLASS_NAME).setReadonly(true)
 			, new TableFullClassNameField(ID_TABLE_FULL_CLASS_NAME).setReadonly(true)
 			, new TableOrSubQueryClassNameField(ID_TABLE_CLASS_NAME).setReadonly(true)
-			, new TextField(ID_COMMENT).setReadonly(true)
+			, new TextField(ID_COMMENT)
 		);
 		this.setFieldList(flist);
 		if (!daoflg) {

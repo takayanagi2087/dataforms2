@@ -34,9 +34,11 @@ public class Test2SubQuery extends SubQuery {
 	 */
 	@Override
 	public String getJoinCondition(final Table joinTable, final String alias) {
-		if (joinTable instanceof MaterialMasterTable) {
-			return this.getLinkFieldCondition(Test2Query.Entity.ID_MATERIAL_ID, joinTable, alias, MaterialMasterTable.Entity.ID_MATERIAL_ID);
+	/*
+		if (joinTable instanceof HogeTable) {
+			return this.getLinkFieldCondition(TestQuery.Entity.ID_HOGE_ID, joinTable, alias, HogeTable.Entity.ID_HOGE_ID);
 		}
+	*/
 		return super.getJoinCondition(joinTable, alias);
 	}
 }

@@ -505,9 +505,10 @@ e.setSampleDate(DateTimeUtil.getCurrentDate());
 e.setSampleSelect("1");
 this.setUserInfo(e.getMap()); // 作成ユーザID,更新ユーザIDを設定。
 dao.executeInsert(new SampleTable(), e.getMap()); // レコードの追加
-logger.debug(() -> "sampleId=" + e.getSampleId()); // 自動生成されたIDを表示
+logger.debug(() -> "sampleId=" + e.getSampleId());// 自動生成されたIDを表示
 e.setSampleText("sample-text-update");
 dao.executeUpdate(new SampleTable(), e.getMap()); // レコードの更新
+dao.executeDelete(new SampleTable(), e.getMap()); // レコードの削除
 			</pre>
 		</div>
 		<p>
@@ -556,16 +557,167 @@ sample_id = :sample_id</b>
 		<h2>問合せクラス</h2>
 		<h3>単純な問合せ</h3>
 		<p>
-
+			dataforms2.jarではSQLのselect文もJavaのQueryクラスを使用して記述します。
+			SQLのselect文を直接記述することはほとんどありません。
 		</p>
-		<div class="filecaption">シンプルな問合せ</div>
+		<p>
+			以下のようなシンプルなSQLを考えてみます。
+		</p>
+		<div class="filecaption">シンプルなSQL</div>
 		<div class="wrappre">
 			<pre>
-
+select * from sample
 			</pre>
 		</div>
+		<p>
+			このSQLに対応する問合せクラスは以下のようになります。
+		</p>
+		<div class="filecaption">シンプルなQueryクラス</div>
+		<div class="wrappre">
+			<pre>
+package sample.dao;
+
+import dataforms.dao.Query;
+
+/**
+ * &#21336;&#32020;&#12394;&#21839;&#12356;&#21512;&#12431;&#12379;&#12290;
+ *
+ */
+public class SampleQuery extends Query {
+	/**
+	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
+	 */
+	public SampleQuery() {
+		SampleTable table = new SampleTable();
+		this.setFieldList(table.getFieldList());	// select *
+		this.setMainTable(table);			// from sample
+	}
+}
+			</pre>
+		</div>
+		<p>
+			この問合せクラスを実行するには以下のようにDaoクラスを使用します。
+		</p>
+		<div class="filecaption">問合せクラスの実行</div>
+		<div class="wrappre">
+			<pre>
+List&lt;Map&lt;String, Object&gt;&gt; result = dao.executeQuery(new SampleQuery());  // &#21839;&#21512;&#12379;&#12434;&#34892;&#12356;&#12289;&#12381;&#12398;&#32080;&#26524;&#12434;Map&#12398;List&#12391;&#36820;&#12375;&#12414;&#12377;&#12290;
+logger.debug(() -&gt; &quot;result=&quot; + JSON.encode(result, true));		//  問合せ結果をJSON形式でlog出力します。
+for (Map&lt;String, Object&gt; m: result) {
+	SampleTable.Entity e = new SampleTable.Entity(m);
+	logger.debug(&quot;{},{},{},{}\n&quot;, e.getSampleId(), e.getSampleText(), e.getSampleNumeric(), e.getSampleDate());
+}
+			</pre>
+		</div>
+		<p>
+			上記の実行ログを以下に示します。
+		</p>
+		<div class="filecaption">問合せクラスの実行</div>
+		<div class="wrappre">
+			<pre>
+2020/06/06 23:11:47.294 [http-nio-8080-exec-1] DEBUG  dataforms.dao.sqlgen.SqlParser sql=select
+m.sample_id as sample_id
+,m.sample_text as sample_text
+,m.sample_numeric as sample_numeric
+,m.sample_date as sample_date
+,m.sample_select as sample_select
+,m.create_user_id as create_user_id
+,m.create_timestamp as create_timestamp
+,m.update_user_id as update_user_id
+,m.update_timestamp as update_timestamp
+ from sample as  m
+
+2020/06/06 23:11:47.296 [http-nio-8080-exec-1] DEBUG  sample.page.SampleEditForm result=[
+	{
+		&quot;createUserId&quot;: 1,
+		&quot;sampleId&quot;: 101,
+		&quot;sampleSelect&quot;: &quot;1&quot;,
+		&quot;updateUserId&quot;: 1,
+		&quot;sampleDate&quot;: 1590332400000,
+		&quot;sampleNumeric&quot;: 1234.00,
+		&quot;updateTimestamp&quot;: 1590387273264,
+		&quot;sampleText&quot;: &quot;sample-text-update&quot;,
+		&quot;createTimestamp&quot;: 1590387273203
+	}
+]
+2020/06/06 23:11:47.296 [http-nio-8080-exec-1] DEBUG  sample.page.SampleEditForm 101,sample-text-update,1234.00,2020-05-25T00:00:00.000+0900
+			</pre>
+		</div>
+		<p>
+			問合せの結果はMapに入ってきます。
+			SampleTable.Entityクラスを使用すると、このMap中の値を簡単に取得することができます。
+		</p>
 		<h3>条件の設定</h3>
+		<p>
+			where句を指定するには条件の対象になるフィールドリストを指定する方法と、SQLの条件式を直接指定する方法があります。
+			フィールドリストを指定例を以下に示します。
+			setConditionFieldListメソッドで検索条件の対象となるフィールドを指定し、setConditionDataメソッドでその条件の値マップを指定します。
+			この例ではフィールドID"sampleText"の部分一致と"sampleNumeric"の範囲指定を行っています。
+		</p>
+		<div class="filecaption">条件フィールドリストの指定例</div>
+		<div class="wrappre">
+			<pre>
+// &#26465;&#20214;&#24335;&#12434;&#29983;&#25104;&#12377;&#12427;&#12501;&#12451;&#12540;&#12523;&#12489;&#12522;&#12473;&#12488;&#12434;&#20316;&#25104;&#12375;&#12414;&#12377;&#12290;
+FieldList flist = new FieldList();
+flist.addField(new SampleTextField(SampleTable.Entity.ID_SAMPLE_TEXT)).setMatchType(MatchType.PART);
+flist.addField(new SampleNumericField(SampleTable.Entity.ID_SAMPLE_NUMERIC + &quot;From&quot;)).setMatchType(MatchType.RANGE_FROM);
+flist.addField(new SampleNumericField(SampleTable.Entity.ID_SAMPLE_NUMERIC + &quot;To&quot;)).setMatchType(MatchType.RANGE_TO);
+// &#21508;&#12501;&#12451;&#12540;&#12523;&#12489;&#12398;&#20516;&#12434;&#25351;&#23450;&#12375;&#12414;&#12377;&#12290;
+Map&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
+data.put(SampleTable.Entity.ID_SAMPLE_TEXT, &quot;sample&quot;);
+data.put(SampleTable.Entity.ID_SAMPLE_NUMERIC + &quot;From&quot;, 1000);
+// &#26465;&#20214;&#12434;&#25351;&#23450;&#12375;&#12383;&#21839;&#12356;&#21512;&#12431;&#12379;&#12434;&#23455;&#34892;&#12290;
+SampleQuery query = new SampleQuery();
+query.setConditionFieldList(flist);
+query.setConditionData(data);
+List&lt;Map&lt;String, Object&gt;&gt; result = dao.executeQuery(query);	// &#21839;&#21512;&#12379;&#12434;&#34892;&#12356;&#12289;&#12381;&#12398;&#32080;&#26524;&#12434;Map&#12398;List&#12391;&#36820;&#12375;&#12414;&#12377;&#12290;
+logger.debug(() -&gt; &quot;result=&quot; + JSON.encode(result, true));	// &#21839;&#21512;&#12379;&#32080;&#26524;&#12434;JSON&#24418;&#24335;&#12391;log&#20986;&#21147;&#12375;&#12414;&#12377;&#12290;
+			</pre>
+		</div>
+		<p>
+			上記の処理を実行すると以下のログが出力されます。
+			条件フィールドは"sampleText","sampleNumericFrom","sampleNumericTo"の3つのフィールドが指定されていますが、
+			条件値のマップは"sampleText","sampleNumericFrom"2つの値を指定しています。
+			そのため"sampleNumericTo"に対応する条件式は生成されません。
+		</p>
+		<p>
+			QueryResultFormに表示するデータの検索処理は、QueryFormに配置されたフィールドリストをsetConditionFieldListに、
+			入力データのマップをsetConditionDataに指定して問合せを実行するようになっています。
+		</p>
+		<div class="filecaption">条件フィールドリストの指定例</div>
+		<div class="wrappre">
+			<pre>
+2020/06/06 23:35:08.945 [http-nio-8080-exec-7] DEBUG  dataforms.dao.sqlgen.SqlParser sql=select
+m.sample_id as sample_id
+,m.sample_text as sample_text
+,m.sample_numeric as sample_numeric
+,m.sample_date as sample_date
+,m.sample_select as sample_select
+,m.create_user_id as create_user_id
+,m.create_timestamp as create_timestamp
+,m.update_user_id as update_user_id
+,m.update_timestamp as update_timestamp
+ from sample as  m
+ <b>where m.sample_text like :sample_text {escape '\'}  and m.sample_numeric &gt;= :sample_numeric_from</b>
+2020/06/06 23:35:08.965 [http-nio-8080-exec-7] DEBUG  dataforms.dao.sqlgen.SqlParser 1 :<b>sample_text=%sample%</b>
+2020/06/06 23:35:08.965 [http-nio-8080-exec-7] DEBUG  dataforms.dao.sqlgen.SqlParser 2 :<b>sample_numeric_from=1000</b>
+2020/06/06 23:35:08.967 [http-nio-8080-exec-7] DEBUG  sample.page.SampleEditForm result=[
+	{
+		&quot;createUserId&quot;: 1,
+		&quot;sampleId&quot;: 101,
+		&quot;sampleSelect&quot;: &quot;1&quot;,
+		&quot;updateUserId&quot;: 1,
+		&quot;sampleDate&quot;: 1590332400000,
+		&quot;sampleNumeric&quot;: 1234.00,
+		&quot;updateTimestamp&quot;: 1590387273264,
+		&quot;sampleText&quot;: &quot;sample-text-update&quot;,
+		&quot;createTimestamp&quot;: 1590387273203
+	}
+]
+			</pre>
+		</div>
 		<h3>テーブルの結合</h3>
+
 		<h3>副問合せ</h3>
 		<h3>特殊なフィールド</h3>
 		<h2>問合せクラスとDaoクラス</h2>

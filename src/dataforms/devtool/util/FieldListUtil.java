@@ -197,7 +197,7 @@ public final class FieldListUtil {
 	}
 
 	/**
-	 * フィールドIdの定数を展開します。
+	 * フィールドのインスタンスのgetterを展開します。
 	 * @param list フィールドリスト。
 	 * @param func フィールドID取得関数インターフェース。
 	 * @param cfunc クラス名取得関数インターフェース。

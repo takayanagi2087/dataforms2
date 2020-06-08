@@ -15,9 +15,8 @@
 			DaoクラスはTableクラスのレコード追加・更新・削除、Queryクラスで定義した問合せを実行する機能を持っています。
 			dataforms.daoパッケージは複数のデータベースサーバ(Apache derby,PostgreSQL,MySQL,Oracle)に対応しています。
 			各データベースのサーバのSQLには方言があり、直接データベースをアクセスする場合その文法の違いを考慮してSQLを記述する必要がありました。
-			データベースの操作はJavaのクラスのみで行い、SQLを使うことはほとんどありません。
-			そのため選択したデータベースに依存するコードを排除することができます。
-			実際「単体テストまでは環境構築が簡単なApache derbyで作業し、結合テスト以降はPostgreSQLサーバを用意してテスト」という開発を問題なく進めた実績があります。
+			dataforms2.jarでは、これらのJavaクラスを使用することによってデータベースに依存するコードを排除することができます。
+			実際「単体テストまでは環境構築が簡単なApache derbyで作業し、結合テスト以降はPostgreSQLサーバを用意して実行」という開発を問題なく進めた実績があります。
 		</p>
 		<h2>Tomcatのデータベース接続設定</h2>
 		<p>
@@ -369,7 +368,7 @@ public class SampleTable extends Table {
 			</pre>
 		</div>
 		<p>
-			テーブルクラスのコンストラクタで、テーブルの構想を定義しています。
+			テーブルクラスのコンストラクタで、テーブルの構造を定義しています。
 			基本的にdataforms2.jarではRecordIdFieldから派生したクラスをaddPkFieldメソッドで主キーとして設定します。
 			主キー自動生成を設定するとthis.setAutoIncrementId(true);というコードが生成され、
 			レコード追加する際にシーケンス等を使用して自動的に主キーが生成されます。
@@ -490,14 +489,13 @@ public class SampleTableRelation extends TableRelation {
 }
 			</pre>
 		</div>
-		<h2>TableクラスとDaoクラス</h2>
+		<h2>レコードの追加、更新、削除</h2>
 		<p>
-			テーブルにレコードを追加、更新、削除するには以下の様にします。
+			テーブルにレコードを追加、更新、削除するにはDaoクラスを使用します。
 		</p>
 		<div class="filecaption">レコードの追加、更新、削除</div>
 		<div class="wrappre">
 			<pre>
-Dao dao = new Dao(this);
 SampleTable.Entity e = new SampleTable.Entity();
 e.setSampleText("sample-text");
 e.setSampleNumeric(BigDecimal.valueOf(1234.0));
@@ -512,13 +510,13 @@ dao.executeDelete(new SampleTable(), e.getMap()); // レコードの削除
 			</pre>
 		</div>
 		<p>
-			この処理を実行すると以下の様なSQLが実行されます。
+			この処理を実行すると以下の様なSQLが生成されます。
 			executeInsertメソットではシーケンスで主キーを生成してからinsert文を実行しています。
 			executeInsertの実行で、map中に生成された主キーの値が設定されます。
 			このコードのexecuteUpdateは主キーで限定してレコードを更新します。
 			executeUpdateは更新対象フィールドを限定したり、更新条件を設定することができる引数構成も存在します。
 			このコードのexecuteDeleteも主キーで限定してレコードを削除します。
-			executeUpdateは更新条件を設定することができる引数構成も存在します。
+			executeDeleteは更新条件を設定することができる引数構成も存在します。
 			javadocを参照してください。
 		<p>
 		<div class="filecaption">実行されたSQL</div>
@@ -557,7 +555,7 @@ sample_id = :sample_id</b>
 		<h2>問合せクラス</h2>
 		<h3>単純な問合せ</h3>
 		<p>
-			dataforms2.jarではSQLのselect文もJavaのQueryクラスを使用して記述します。
+			SQLのselect文はJavaのQueryクラスを使用して記述します。
 			SQLのselect文を直接記述することはほとんどありません。
 		</p>
 		<p>
@@ -722,7 +720,7 @@ m.sample_id as sample_id
 		<p>
 			SQLの条件式を直接指定する場合は以下のようにQueryクラスのsetConditionDataを使用します。
 			Javaクラスで管理するフィールドIDは"sampleText"の様なキャメル形式ですが、SQLのカラム名は"sample_text"の様にスネーク形式になります。
-			SQLの条件式はスネーク形式で既出する必要があります。
+			SQLの条件式はスネーク形式で記述する必要があります。
 		</p>
 		<div class="filecaption">条件式の直接指定</div>
 		<div class="wrappre">
@@ -776,34 +774,451 @@ m.sample_id as sample_id
 		</p>
 		<h3>テーブルの結合</h3>
 		<p>
-			テーブルの結合の定義するには以下の3つの方法があります。
+			すでに作成したSampleTableと結合する以下のJoinTestTableを作成し、テーブルの結合方法を説明していきます。
+		</p>
+		<div class="filecaption">JoinTestTable.javaの定義</div>
+		<div class="wrappre">
+			<pre>
+/**
+ * Joinテストテーブルクラス。
+ *
+ */
+public class JoinTestTable extends Table {
+	/**
+	 * コンストラクタ。
+	 */
+	public JoinTestTable() {
+		this.setAutoIncrementId(true);
+		this.setComment("Joinテストテーブル");
+		this.addPkField(new JoinTestIdField()); //join テスト ID
+		<b>this.addField(new SampleIdField()); //レコードID(この項目でSampleTableと結合)</b>
+		this.addField(new JoinTestTextField()); //テキスト
+		this.addUpdateInfoFields();
+	}
+
+	・
+	・
+	・
+}
+			</pre>
+		</div>
+		<p>
+			このテーブルの2カラム目にはSampleIdFieldが配置されており、この項目でSampleTableに結合します。
+		</p>
+		<p>
+			複数のテーブルを結合して検索するには、あらかじめテーブル間の関係を定義する必要があります。
+			開発ツールでJoinTestTableを作成すると、JoinTestTableRelation.javaというソースファイルが同時に作成されます。
+			このJoinTestTableRelationクラスでJoinTestTableにJoinするテーブルの結合条件を定義します。
+			JoinTestTableRelationクラスでテーブル間の関係を定義するには以下の2つの方法があります。
 			<ol>
 				<li>
-					TableRelationクラスで外部キーを定義する。
+					JoinTestTableRelationクラスで外部キーを定義。
 				</li>
 				<li>
-					TableRelationクラスのgetJoinConditionで結合条件を定義。
-				</li>
-				<li>
-					Queryクラスのadd((Inner)|(Left)|(Right))Joinメソッドの引数(ラムダ)で結合条件を定義。
+					JoinTestTableRelationクラスのgetJoinConditionで結合条件を定義。
 				</li>
 			</ol>
 		</p>
 		<p>
-			TableRelationクラスで外部キーを定義すると、開発ツールのテーブル管理で外部キーを自動的に生成することが可能です。
-			外部キーは問合せの性能を上げ、データの一貫性を保つ効果がありますが、データベースのメンテナンスで邪魔になるケースが存在します。
-			そのため結局外部キーを定義していないシステムをよく見かけます。
-			テーブル管理はテーブル構造の操作の際、自動的に外部キーを削除してからテーブルの再構築を行い再度外部キーを作成するようになっています。
-			そのため外部キーを操作するSQLを記述する必要はありません。
+			以下にJoinTestTableRelationで外部キーを定義した例を示します。
+			自動生成されたJoinTestTableRelationには、static {}の部分にforeignKeyListにForeignKeyクラスの
+			インスタンスを追加する処理がコメントアウトされた状態で記述されています。
+			このコメントを解除し適切に修正します。
+		</p>
+		<div class="filecaption">JoinTestTableRelationでの外部キーの定義</div>
+		<div class="wrappre">
+			<pre>
+package sample.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dataforms.dao.ForeignKey;
+import dataforms.dao.Table;
+import dataforms.dao.TableRelation;
+
+/**
+ * JoinTestTable&#12398;&#38306;&#20418;&#12434;&#23450;&#32681;&#12377;&#12427;&#12463;&#12521;&#12473;&#12391;&#12377;&#12290;
+ *
+ */
+public class JoinTestTableRelation extends TableRelation {
+
+	/**
+	 * &#22806;&#37096;&#12461;&#12540;&#12522;&#12473;&#12488;&#12290;
+	 */
+	private static List&lt;ForeignKey&gt; foreignKeyList = null;
+
+	/**
+	 * &#22806;&#37096;&#12461;&#12540;&#12522;&#12473;&#12488;&#12398;&#23450;&#32681;&#12290;
+	 * &lt;pre&gt;
+	 * &#12371;&#12398;&#21021;&#26399;&#21270;&#20966;&#29702;&#12391;&#22806;&#37096;&#12461;&#12540;&#12434;&#23450;&#32681;&#12377;&#12427;&#12371;&#12392;&#12395;&#12424;&#12426;&#12289;&#33258;&#21205;&#30340;&#12395;&#22806;&#37096;&#12461;&#12540;&#12364;&#35373;&#23450;&#12373;&#12428;&#12414;&#12377;&#12290;
+	 * &lt;/pre&gt;
+	 */
+	static {
+		foreignKeyList = new ArrayList&lt;ForeignKey&gt;();
+		<b>foreignKeyList.add(new ForeignKey(&quot;fkJoinTestTable01&quot;, JoinTestTable.Entity.ID_SAMPLE_ID, SampleTable.class));</b>
+	}
+
+	@Override
+	public List&lt;ForeignKey&gt; getForeignKeyList() {
+		return foreignKeyList;
+	}
+
+	/**
+	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
+	 * @param table &#23550;&#35937;&#12486;&#12540;&#12502;&#12523;&#12290;
+	 */
+	public JoinTestTableRelation(final Table table) {
+		super(table);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getJoinCondition(final Table joinTable, final String alias) {
+		/*
+		 * &#22806;&#37096;&#12461;&#12540;&#12434;&#35373;&#23450;&#12379;&#12378;&#12395;&#32080;&#21512;&#26465;&#20214;&#12434;&#29983;&#25104;&#12377;&#12427;&#22580;&#21512;&#12399;&#20197;&#19979;&#12434;&#26377;&#21177;&#12395;&#12375;&#12414;&#12377;&#12290;
+		 */
+/*
+		if (joinTable instanceof HogeTable) {
+			return this.getTable().getLinkFieldCondition(HogeTable.Entity.ID_HOGE_ID, joinTable, alias);
+		}
+*/
+		return super.getJoinCondition(joinTable, alias);
+	}
+}
+
+			</pre>
+		</div>
+		<p>
+			TableRelationクラスで外部キーを定義しWebアプリケーションをデプロイした後、
+			開発ツールのテーブル管理で該当するテーブルを表示するとJavaクラスのテーブルとデータベース中のテーブルの差分が表示されます。
+			差分の表示されたテーブルの構造を更新するだけで、外部キーを設定することができます。
 		</p>
 		<p>
-			外部キーでは定義できない結合条件を指定する場合は、TableRelationクラスのgetJoinConditionのコメントを参考にして結合条件式を作成します。
+			外部キーは問合せの性能を上げデータの一貫性を保つ効果がありますが、
+			外部キーの操作に関するSQLを作成する必要があり管理に手間がかかります。
+			これに対しdataforms2.jarではJavaのクラスで外部キーを定義するだけで、
+			外部キーを操作するSQLを記述する必要はありません。
+		</p>
+		<figure>
+			<figcaption>テーブル管理画面の外部キーの適用方法</figcaption>
+			<img src="fkey.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			開発ツールの「問合せJavaクラス作成」を使用すると、JoinTestTableとSampleTableを結合した問合せを簡単に作成することができます。
+			定義された外部キーに対応した結合条件が生成されていることがわかります。
+		</p>
+		<figure>
+			<figcaption>問合せJavaクラス作成</figcaption>
+			<img src="query.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			上記の画面で作成した問合せクラスのソースは以下のようになります。
+		</p>
+		<div class="filecaption">生成された問合せクラス</div>
+		<div class="wrappre">
+			<pre>
+package sample.dao;
+
+import java.util.Map;
+
+import dataforms.dao.Query;
+import dataforms.field.base.FieldList;
+import dataforms.field.common.CreateTimestampField;
+import dataforms.field.common.CreateUserIdField;
+import dataforms.field.common.UpdateTimestampField;
+import dataforms.field.common.UpdateUserIdField;
+import sample.field.JoinTestIdField;
+import sample.field.JoinTestTextField;
+import sample.field.SampleDateField;
+import sample.field.SampleIdField;
+import sample.field.SampleNumericField;
+import sample.field.SampleSelectField;
+import sample.field.SampleTextField;
+
+/**
+ * 問い合わせクラスです。
+ *
+ */
+public class JoinTestQuery extends Query {
+	/**
+	 * Joinテストテーブル。
+	 */
+	private JoinTestTable joinTestTable = null;
+
+	/**
+	 * Joinテストテーブルを取得します。
+	 * @return Joinテストテーブル。
+	 */
+	public JoinTestTable getJoinTestTable() {
+		return this.joinTestTable;
+	}
+
+	/**
+	 * サンプルテーブル。
+	 */
+	private SampleTable sampleTable = null;
+
+	/**
+	 * サンプルテーブルを取得します。
+	 * @return サンプルテーブル。
+	 */
+	public SampleTable getSampleTable() {
+		return this.sampleTable;
+	}
+
+	/**
+	 * コンストラクタ.
+	 */
+	public JoinTestQuery() {
+		this.setComment("Joinのテスト");
+		this.setDistinct(false);
+		this.joinTestTable = new JoinTestTable();
+		this.sampleTable = new SampleTable();
+
+		this.setFieldList(new FieldList(
+			this.joinTestTable.getJoinTestIdField()
+			, this.joinTestTable.getSampleIdField()
+			, this.joinTestTable.getJoinTestTextField()
+			, this.joinTestTable.getCreateUserIdField()
+			, this.joinTestTable.getCreateTimestampField()
+			, this.joinTestTable.getUpdateUserIdField()
+			, this.joinTestTable.getUpdateTimestampField()
+			, this.sampleTable.getSampleTextField()
+			, this.sampleTable.getSampleNumericField()
+			, this.sampleTable.getSampleDateField()
+			, this.sampleTable.getSampleSelectField()
+		));
+		this.setMainTable(joinTestTable);
+		this.addInnerJoin(sampleTable);
+
+	}
+
+	/**
+	 * Entity操作クラスです。
+	 */
+	public static class Entity extends dataforms.dao.Entity {
+
+		・
+		・
+		・
+
+	}
+
+	/**
+	 * join テスト IDフィールドを取得します。
+	 * @return join テスト IDフィールド。
+	 */
+	public JoinTestIdField getJoinTestIdField() {
+		return (JoinTestIdField) this.getField(Entity.ID_JOIN_TEST_ID);
+	}
+
+		・
+		・
+		・
+
+}
+			</pre>
+		</div>
+		<p>
+			この問合せを実行すると以下のようなSQLが生成され実行されます。
+		</p>
+		<div class="filecaption">JoinTestQueryに対応するSQL</div>
+		<div class="wrappre">
+			<pre>
+2020/06/08 02:16:22.722 [http-nio-8080-exec-2] DEBUG  dataforms.dao.sqlgen.SqlParser sql=select
+m.join_test_id as join_test_id
+,m.sample_id as sample_id
+,m.join_test_text as join_test_text
+,m.create_user_id as create_user_id
+,m.create_timestamp as create_timestamp
+,m.update_user_id as update_user_id
+,m.update_timestamp as update_timestamp
+,j0.sample_text as sample_text
+,j0.sample_numeric as sample_numeric
+,j0.sample_date as sample_date
+,j0.sample_select as sample_select
+ from join_test as  m
+  inner join  sample as j0 on m.sample_id=j0.sample_id
+			</pre>
+		</div>
+		<p>
+			外部キーでは定義できない結合条件を指定する場合は、JoinTestTableRelationクラスのgetJoinConditionのコメントを参考にして結合条件式を作成します。
+			外部キーを使用しないで結合条件を定義する場合のコードは以下のようになります。
+		</p>
+		<div class="filecaption">外部キーを使用しない結合条件の定義</div>
+		<div class="wrappre">
+			<pre>
+package sample.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dataforms.dao.ForeignKey;
+import dataforms.dao.Table;
+import dataforms.dao.TableRelation;
+
+/**
+ * JoinTestTable&#12398;&#38306;&#20418;&#12434;&#23450;&#32681;&#12377;&#12427;&#12463;&#12521;&#12473;&#12391;&#12377;&#12290;
+ *
+ */
+public class JoinTestTableRelation extends TableRelation {
+
+	/**
+	 * &#22806;&#37096;&#12461;&#12540;&#12522;&#12473;&#12488;&#12290;
+	 */
+	private static List&lt;ForeignKey&gt; foreignKeyList = null;
+
+	/**
+	 * &#22806;&#37096;&#12461;&#12540;&#12522;&#12473;&#12488;&#12398;&#23450;&#32681;&#12290;
+	 * &lt;pre&gt;
+	 * &#12371;&#12398;&#21021;&#26399;&#21270;&#20966;&#29702;&#12391;&#22806;&#37096;&#12461;&#12540;&#12434;&#23450;&#32681;&#12377;&#12427;&#12371;&#12392;&#12395;&#12424;&#12426;&#12289;&#33258;&#21205;&#30340;&#12395;&#22806;&#37096;&#12461;&#12540;&#12364;&#35373;&#23450;&#12373;&#12428;&#12414;&#12377;&#12290;
+	 * &lt;/pre&gt;
+	 */
+	static {
+		foreignKeyList = new ArrayList&lt;ForeignKey&gt;();
+		/*
+		 * &#20197;&#19979;&#12398;&#23450;&#32681;&#12434;&#26377;&#21177;&#12395;&#12377;&#12427;&#12392;&#22806;&#37096;&#12461;&#12540;HogeTable&#12395;&#23550;&#12377;&#12427;&#22806;&#37096;&#12461;&#12540;&#12434;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
+		 * &#12371;&#12398;&#35373;&#23450;&#12384;&#12369;&#12391;HogeTable&#12392;&#12398;&#32080;&#21512;&#26465;&#20214;&#12418;&#29983;&#25104;&#12373;&#12428;&#12427;&#12424;&#12358;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;
+		 */
+		// foreignKeyList.add(new ForeignKey(&quot;fkJoinTestTable01&quot;, JoinTestTable.Entity.ID_HOGE_ID, HogeTable.class));
+	}
+
+	@Override
+	public List&lt;ForeignKey&gt; getForeignKeyList() {
+		return foreignKeyList;
+	}
+
+	/**
+	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
+	 * @param table &#23550;&#35937;&#12486;&#12540;&#12502;&#12523;&#12290;
+	 */
+	public JoinTestTableRelation(final Table table) {
+		super(table);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getJoinCondition(final Table joinTable, final String alias) {
+		if (joinTable instanceof SampleTable) {
+			return this.getTable().getLinkFieldCondition(JoinTestTable.Entity.ID_SAMPLE_ID, joinTable, alias);
+		}
+		return super.getJoinCondition(joinTable, alias);
+	}
+}
+			</pre>
+		</div>
+		<p>
+			この定義でもJoinTestQueryに対応するSQLは外部キーを使用した場合と変わりませんが、外部キーの作成は行われません。
 		</p>
 		<p>
+			JoinTestTableRelationにテーブルの関連を定義しなくても、add((Inner)|(Left)|(Right))Joinメソッドにラムダ式を渡すことによって、
+			その場で結合条件を設定することも可能です。
 		</p>
-		<h3>開発ツールを使った問合せクラスの作成</h3>
+		<div class="filecaption">ラムダ式での結合条件の指定</div>
+		<div class="wrappre">
+			<pre>
+	/**
+	 * コンストラクタ.
+	 */
+	public JoinTestQuery() {
+		this.setComment("Joinのテスト");
+		this.setDistinct(false);
+		this.joinTestTable = new JoinTestTable();
+		this.sampleTable = new SampleTable();
+
+		this.setFieldList(new FieldList(
+			this.joinTestTable.getJoinTestIdField()
+			, this.joinTestTable.getSampleIdField()
+			, this.joinTestTable.getJoinTestTextField()
+			, this.joinTestTable.getCreateUserIdField()
+			, this.joinTestTable.getCreateTimestampField()
+			, this.joinTestTable.getUpdateUserIdField()
+			, this.joinTestTable.getUpdateTimestampField()
+			, this.sampleTable.getSampleTextField()
+			, this.sampleTable.getSampleNumericField()
+			, this.sampleTable.getSampleDateField()
+			, this.sampleTable.getSampleSelectField()
+		));
+		this.setMainTable(joinTestTable);
+		this.addInnerJoin(sampleTable, (Table table, Table joinTable) -> {
+			return table.getLinkFieldCondition(JoinTestTable.Entity.ID_SAMPLE_ID, joinTable);
+		});
+	}
+			</pre>
+		</div>
 		<h3>副問合せ</h3>
+		<p>
+			dataforms2.jarで副問合せを実現するにはSubQueryクラスを使用します。
+			SubQueryクラスはTableクラスからは派生しているため、QueryクラスでJoinする対象になります。
+			SQLのselect文を()で囲むだけの副問合せに比べてSubQueryクラスのコード量は多くなります。
+			そのため「問合せJavaクラス作成」にSubQueryクラスの生成機能も装備してあります。
+		</p>
+		<figure>
+			<figcaption>副問合せの作成</figcaption>
+			<img src="subquery.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			上記の操作で作成した副問合せクラスは以下のようになります。
+		</p>
+		<div class="filecaption">副問合せクラスの生成結果</div>
+		<div class="wrappre">
+			<pre>
+package sample.dao;
+
+import dataforms.dao.Table;
+import dataforms.dao.SubQuery;
+
+/**
+ * SampleQuery&#12398;&#21103;&#21839;&#21512;&#12379;&#12290;
+ *
+ */
+public class SampleSubQuery extends SubQuery {
+	/**
+	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
+	 */
+	public SampleSubQuery() {
+		super(new SampleQuery());
+		this.setComment(this.getQuery().getClass().getSimpleName() + &quot;&#12398;&#21103;&#21839;&#21512;&#12379;&quot;);
+	}
+
+	/**
+	 * &#21839;&#21512;&#12379;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+	 * @return &#21839;&#21512;&#12379;&#12290;
+	 */
+	public SampleQuery getSampleQuery() {
+		return (SampleQuery) this.getQuery();
+	}
+
+	/**
+	 * &#20182;&#12486;&#12540;&#12502;&#12523;&#12392;&#12398;&#12522;&#12531;&#12463;&#26465;&#20214;&#12434;&#20316;&#25104;&#12375;&#12414;&#12377;&#12290;
+	 * &lt;pre&gt;
+	 * &#20182;&#12398;&#12486;&#12540;&#12502;&#12523;&#12392;&#12398;&#32080;&#21512;&#12434;&#34892;&#12358;&#22580;&#21512;&#12434;&#20197;&#19979;&#12398;&#12467;&#12513;&#12531;&#12488;&#37096;&#20998;&#12434;&#21442;&#32771;&#12395;&#23455;&#35013;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
+	 * &lt;/pre&gt;
+	 * @param joinTable &#32080;&#21512;&#12377;&#12427;&#12486;&#12540;&#12502;&#12523;&#12398;&#12452;&#12531;&#12473;&#12479;&#12531;&#12473;&#12290;
+	 * @param alias &#32080;&#21512;&#12377;&#12427;&#12486;&#12540;&#12502;&#12523;&#12398;&#21029;&#21517;&#12290;
+	 */
+	@Override
+	public String getJoinCondition(final Table joinTable, final String alias) {
+/*
+		if (joinTable instanceof HogeTable) {
+			return this.getLinkFieldCondition(SampleQuery.Entity.ID_HOGE_ID, joinTable, alias, HogeTable.Entity.ID_HOGE_ID);
+		}
+*/
+		return super.getJoinCondition(joinTable, alias);
+	}
+}
+
+			</pre>
+		</div>
 		<h3>特殊なフィールド</h3>
+		<p>
+			
+		</p>
 		<h2>問合せクラスとDaoクラス</h2>
 		<h2>QuerySetDaoクラス解説</h2>
 	</body>

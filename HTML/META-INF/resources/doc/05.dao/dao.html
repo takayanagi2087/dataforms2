@@ -1163,7 +1163,8 @@ public class JoinTestTableRelation extends TableRelation {
 			<img src="subquery.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
-			上記の操作で作成した副問合せクラスは以下のようになります。
+			上記の画面で「副問合せ作成」ボタンを押下すると、対応した問合せの副問合せクラスを作成します。
+			自動生成した副問合せのソースは以下のようになります。
 		</p>
 		<div class="filecaption">副問合せクラスの生成結果</div>
 		<div class="wrappre">
@@ -1215,11 +1216,141 @@ public class SampleSubQuery extends SubQuery {
 
 			</pre>
 		</div>
-		<h3>特殊なフィールド</h3>
+		<h3>フィールドの別名と集計関数</h3>
 		<p>
-			
+			select文でカラムの別名を設定するにはAliasFieldというフィールドクラスを使用します。
+			また集計を行うには以下の集計フィールドを使用します。
 		</p>
-		<h2>問合せクラスとDaoクラス</h2>
-		<h2>QuerySetDaoクラス解説</h2>
+		<table>
+			<caption>
+				集計フィールド一覧
+			</caption>
+			<thead>
+				<tr>
+					<th style="width:40px;">No.</th>
+					<th>集計フィールドクラス</th>
+					<th>機能</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align: right;">1</td>
+					<td>AvgField</td>
+					<td>平均値を求めます。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">2</td>
+					<td>CountField</td>
+					<td>件数をカウントします。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">3</td>
+					<td>MaxField</td>
+					<td>最大値を求めます。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">4</td>
+					<td>MinField</td>
+					<td>最小値を求めます。</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">5</td>
+					<td>SumField</td>
+					<td>合計値を求めます。</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			「問合せJavaクラス作成」でフィールドの別名を設定すると、AliasFieldが生成されます。
+			またプルダウンで集計フィールドを指定すると、対応する集計関数が生成されます。
+			以下に、AliasFieldとCountFieldを生成する例を示します。
+		</p>
+		<figure>
+			<figcaption>別名と集計フィールドの生成</figcaption>
+			<img src="alias.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			上記の設定で生成した問合せクラスは以下のようになります。
+		</p>
+		<div class="filecaption">AliasFieldと集計フィールドの生成例</div>
+		<div class="wrappre">
+			<pre>
+	/**
+	 * コンストラクタ.
+	 */
+	public TestQuery() {
+		this.setComment("別名、集計テスト");
+		this.setDistinct(false);
+		this.sampleTable = new SampleTable();
+
+		this.setFieldList(new FieldList(
+			new CountField("sampleId", this.sampleTable.getSampleIdField())
+			, new AliasField("sel", this.sampleTable.getSampleSelectField())
+		));
+		this.setMainTable(sampleTable);
+
+	}
+			</pre>
+		</div>
+		<p>
+			この問合せクラスのSQLは以下のようになります。
+		</p>
+		<div class="filecaption">上記問合せのSQL生成結果</div>
+		<div class="wrappre">
+			<pre>
+2020/06/08 22:39:20.596 [http-nio-8080-exec-5] DEBUG  dataforms.dao.sqlgen.SqlParser sql=select
+count(m.sample_id) as sample_id
+,m.sample_select as sel
+ from sample as  m
+ group by m.sample_select
+			</pre>
+		</div>
+		<h3>任意のSQLフィールド</h3>
+		<p>
+			任意のSQL式を問合せ結果に含める場合はSqlFieldクラスを使用します。
+			「問合せJavaクラス作成」画面でSqlFieldを作成するには以下の、ようにSQLフィールドリストに項目を追加します。
+		</p>
+		<figure>
+			<figcaption>任意のSQLフィールドの生成</figcaption>
+			<img src="sqlfield.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			SQLフィールドリストにフィールドIDと式のデータ型を示すフィールドクラスとSQL式を指定します。
+			この画面で生成されたソースファイルは以下のようになります。
+		</p>
+		<div class="filecaption">任意のSQLフィールドの生成例</div>
+		<div class="wrappre">
+			<pre>
+	/**
+	 * コンストラクタ.
+	 */
+	public Test2Query() {
+		this.setComment("SQLフィールドテスト");
+		this.setDistinct(false);
+		this.sampleTable = new SampleTable();
+
+		this.setFieldList(new FieldList(
+			this.sampleTable.getSampleIdField()
+			, this.sampleTable.getSampleTextField()
+			, new SqlField(new NumericField("sampleNumeric2",10,2), "m.sample_numeric * 2")
+		));
+		this.setMainTable(sampleTable);
+
+	}
+			</pre>
+		</div>
+		<p>
+			上記の問合せを実行すると以下のSQLが作成されます。
+		</p>
+		<div class="filecaption">上記問合せのSQL生成結果</div>
+		<div class="wrappre">
+			<pre>
+2020/06/09 00:32:34.956 [http-nio-8080-exec-2] DEBUG  dataforms.dao.sqlgen.SqlParser sql=select
+m.sample_id as sample_id
+,m.sample_text as sample_text
+,m.sample_numeric * 2 as sample_numeric2
+ from sample as  m
+			</pre>
+		</div>
 	</body>
 </html>

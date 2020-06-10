@@ -1371,8 +1371,10 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 			csb = this.getWhereCondition(table, condField, data);
 		}
 		sb.append(usb.toString());
-		sb.append("where\n");
-		sb.append(csb);
+		if (csb.length() > 0) {
+			sb.append("where\n");
+			sb.append(csb);
+		}
 		return sb.toString();
 	}
 
@@ -1390,6 +1392,17 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	}
 
 
+	/**
+	 * Where句を追加します。
+	 * @param sb 追加する文字列バッファ。
+	 * @param where 条件式。
+	 */
+	private void addWhere(final StringBuilder sb, final String where) {
+		if (where.length() > 0) {
+			sb.append(" where ");
+			sb.append(where);
+		}
+	}
 
 	/**
 	 * 更新情報を取得するSQLを作成します。
@@ -1399,8 +1412,9 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	public String generateIsUpdatableSql(final Table table) {
 		StringBuilder sb = new StringBuilder("select update_user_id, update_timestamp from ");
 		sb.append(table.getTableName());
-		sb.append(" where ");
-		sb.append(this.getWhereCondition(table.getPkFieldList()));
+//		sb.append(" where ");
+//		sb.append(this.getWhereCondition(table.getPkFieldList()));
+		this.addWhere(sb, this.getWhereCondition(table.getPkFieldList()));
 		return sb.toString();
 	}
 
@@ -1416,8 +1430,9 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	public String generateDeleteSql(final Table table, final FieldList keyFieldList) {
 		StringBuilder sb = new StringBuilder("delete from ");
 		sb.append(table.getTableName());
-		sb.append(" where ");
-		sb.append(this.getWhereCondition(keyFieldList));
+//		sb.append(" where ");
+//		sb.append(this.getWhereCondition(keyFieldList));
+		this.addWhere(sb, this.getWhereCondition(keyFieldList));
 		return sb.toString();
 	}
 
@@ -1435,8 +1450,9 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	public String generateDeleteSql(final Table table, final FieldList keyFieldList, final Map<String, Object> data) {
 		StringBuilder sb = new StringBuilder("delete from ");
 		sb.append(table.getTableName());
-		sb.append(" where ");
-		sb.append(this.getWhereCondition(table, keyFieldList, data));
+//		sb.append(" where ");
+//		sb.append(this.getWhereCondition(table, keyFieldList, data));
+		this.addWhere(sb, this.getWhereCondition(table, keyFieldList, data));
 		return sb.toString();
 	}
 
@@ -1467,8 +1483,9 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		sb.append(" set " + delFlagColumn + "='1'");
 		sb.append(", " + updateTimestamp + "=" + this.generateSysTimestampSql());
 		sb.append(", " + updateUserId + "=:" + updateUserId);
-		sb.append(" where ");
-		sb.append(this.getWhereCondition(keyFieldList));
+//		sb.append(" where ");
+//		sb.append(this.getWhereCondition(keyFieldList));
+		this.addWhere(sb, this.getWhereCondition(keyFieldList));
 		return sb.toString();
 	}
 
@@ -1492,8 +1509,9 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		sb.append(" set " + delFlagColumn + "='1'");
 		sb.append(", " + updateTimestamp + "=" + this.generateSysTimestampSql());
 		sb.append(", " + updateUserId + "=:" + updateUserId);
-		sb.append(" where ");
-		sb.append(this.getWhereCondition(table, keyFieldList, data));
+//		sb.append(" where ");
+//		sb.append(this.getWhereCondition(table, keyFieldList, data));
+		this.addWhere(sb, this.getWhereCondition(table, keyFieldList, data));
 		return sb.toString();
 	}
 

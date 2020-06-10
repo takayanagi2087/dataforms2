@@ -1029,9 +1029,9 @@ public class QueryGeneratorEditForm extends EditForm {
 			(Map<String, Object> m) -> {
 				return this.getFieldId(m);
 			}
-			, (Map<String, Object> m) -> {
+/*			, (Map<String, Object> m) -> {
 				return (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
-			}
+			}*/
 		));
 
 

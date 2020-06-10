@@ -580,20 +580,20 @@ public class TableGeneratorEditForm extends EditForm {
 				return this.getFieldId(m);
 			}
 			, (Map<String, Object> m) -> {
-				String fieldPackageName = (String) m.get("packageName");
-				String fieldClassSimpleName = (String) m.get("fieldClassName");
-				return fieldPackageName + "." + fieldClassSimpleName;
+				String superPackageName = (String) m.get("superPackageName");
+				String superSimpleClassName = (String) m.get("superSimpleClassName");
+				return superPackageName + "." + superSimpleClassName;
 			}
 		));
 		tsrc = tsrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList,
 			(Map<String, Object> m) -> {
 				return this.getFieldId(m);
 			}
-			, (Map<String, Object> m) -> {
+/*			, (Map<String, Object> m) -> {
 				String fieldPackageName = (String) m.get("packageName");
 				String fieldClassSimpleName = (String) m.get("fieldClassName");
 				return fieldPackageName + "." + fieldClassSimpleName;
-			}
+			}*/
 		));
 		logger.debug("tsrc=\n{}", tsrc);
 		if (!OverwriteModeField.SKIP.equals(tableOverwriteMode)) {

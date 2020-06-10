@@ -196,27 +196,37 @@ public final class FieldListUtil {
 		return sb.toString();
 	}
 
+	/*
+	private static Class<? extends Field<?>> getFieldClass(final String fieldClassName) {
+		try {
+			@SuppressWarnings("unchecked")
+			Class<? extends Field<?>> cls = (Class<? extends Field<?>>) Class.forName(fieldClassName);
+			return cls;
+		} catch (Exception ex) {
+			return null;
+		}
+
+	}
+	*/
+
 	/**
 	 * フィールドのインスタンスのgetterを展開します。
 	 * @param list フィールドリスト。
 	 * @param func フィールドID取得関数インターフェース。
-	 * @param cfunc クラス名取得関数インターフェース。
 	 * @return フィールドIDの定数値。
 	 * @throws Exception 例外。
 	 */
-	public static String generateFieldGetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func, final GetClassNameFunctionalInterface cfunc) throws Exception {
+	public static String generateFieldGetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m: list) {
 			String fieldId = func.getFieldId(m);
 			String uFieldId = StringUtil.firstLetterToUpperCase(fieldId);
-			String fieldClassName = cfunc.getClassName(m);
-			@SuppressWarnings("unchecked")
-			Class<? extends Field<?>> cls = (Class<? extends Field<?>>) Class.forName(fieldClassName);
-			String fieldClassSimpleName = cls.getSimpleName();
-			String comment = (String) m.get("comment");
-			if (StringUtil.isBlank(comment)) {
-				comment = Field.newFieldInstance(cls).getComment();
+			String fieldClassSimpleName = (String) m.get("fieldClassName");
+			int idx = fieldClassSimpleName.lastIndexOf(".");
+			if (idx >= 0) {
+				fieldClassSimpleName = fieldClassSimpleName.substring(idx + 1);
 			}
+			String comment = (String) m.get("comment");
 			sb.append("\t/**\n");
 			sb.append("\t * " + comment + "フィールドを取得します。\n");
 			sb.append("\t * @return " + comment + "フィールド。\n");

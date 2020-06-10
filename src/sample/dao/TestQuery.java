@@ -52,7 +52,7 @@ public class TestQuery extends Query {
 			, this.materialMasterTable.getMaterialUnitField()
 			, this.materialMasterTable.getUnitPriceField()
 			, this.materialMasterTable.getOrderPointField()
-			, new AliasField("mm", this.materialMasterTable.getMemoField().setComment(""))
+			, new AliasField("mm", this.materialMasterTable.getMemoField())
 			, new SqlField(new NumericField("unitPrice2",10, 2), "m.unit_price * 2").setComment("comment2")
 		));
 		this.setMainTable(materialMasterTable);
@@ -75,7 +75,7 @@ public class TestQuery extends Query {
 		public static final String ID_UNIT_PRICE = "unitPrice";
 		/** 発注点のフィールドID。 */
 		public static final String ID_ORDER_POINT = "orderPoint";
-		/** のフィールドID。 */
+		/** メモのフィールドID。 */
 		public static final String ID_MM = "mm";
 		/** comment2のフィールドID。 */
 		public static final String ID_UNIT_PRICE2 = "unitPrice2";

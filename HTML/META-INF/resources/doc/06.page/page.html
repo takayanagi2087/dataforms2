@@ -72,7 +72,130 @@
 		</p>
 		<h2>QuerySetDaoの機能</h2>
 		<p>
-			
+			この3種類のフォームのデータベースアクセスを担当するのが、Daoから派生したQuerySetDaoクラスになります。
+			このDaoクラスは開発ツールの「DAO Javaクラス作成」を使用して作成します。
+		</p>
+		<figure>
+			<figcaption>Dao Javaクラス作成</figcaption>
+			<img src="../02.devtool/dao1.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			この画面では一覧取得用問合せと編集フォーム用問合せを指定します。
+			このフィールドには問合せだけでなくテーブルクラスも指定できます。
+			テーブルクラスを指定した場合、自動的にSingleTableQueryという問合せクラスを生成して登録します。
+		</p>
+		<p>
+			QueryResultFormは一覧取得用問合せを使用してデータを取得します。
+			この時、QueryFormに配置されたフィールドのリストと入力されたデータのマップを、
+			指定された問合せのsetConditionFieldList、setConditionDataに設定します。
+		</p>
+		<p>
+			EditFormは編集フォーム用問合せを使用して編集するデータを取得します。
+			編集フォーム用問合せは1レコード編集と複数レコード編集の2パターンがあります。
+		</p>
+		<p>
+			1レコード編集の場合、QueryResultFormから渡された主キーの情報を編集フォーム用問合せに渡して編集データを取得します。
+			このモードでは関連する問合せやテーブルを複数指定することができます。
+			これらの問合せのフィールドには指定された主キーのフィールドを含んだものである必要があります。
+		</p>
+		<p>
+			「6.Table,Query,Dao」で作成したJoinTestTableはSampleIdFielを持っているので、SampleFieldの関連するテーブルといえます。
+			SampleTableとJoinTestTableを同時に編集するページを作る場合、以下のような設定でDaoを作成します。
+		</p>
+		<figure>
+			<figcaption>Dao Javaクラス作成</figcaption>
+			<img src="dao1.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			上記の画面で作成したDaoクラスは以下のようになります。
+			このクラスのコンストラクタでsetSingleRecordQueryメソッドにSampleTableのインスタンスを指定し、
+			addMultiRecordQueryListメソッドでJoinTestTableのインスタンスを追加しています。
+		</p>
+		<div class="filecaption">Sample2Dao.javaの生成結果</div>
+		<div class="wrappre">
+			<pre>
+
+	・
+	・
+	・
+
+public class Sample2Dao extends QuerySetDao {
+
+	・
+	・
+	・
+
+	/**
+	 * &#12469;&#12531;&#12503;&#12523;&#12486;&#12540;&#12502;&#12523;&#12290;
+	 */
+	private SampleTable sampleTable = null;
+
+	/**
+	 * &#12469;&#12531;&#12503;&#12523;&#12486;&#12540;&#12502;&#12523;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+	 * @return &#12469;&#12531;&#12503;&#12523;&#12486;&#12540;&#12502;&#12523;&#12290;
+	 */
+	public SampleTable getSampleTable() {
+		return this.sampleTable;
+	}
+
+	/**
+	 * Join&#12486;&#12473;&#12488;&#12486;&#12540;&#12502;&#12523;&#12290;
+	 */
+	private JoinTestTable joinTestTable = null;
+
+	/**
+	 * Join&#12486;&#12473;&#12488;&#12486;&#12540;&#12502;&#12523;&#12434;&#21462;&#24471;&#12375;&#12414;&#12377;&#12290;
+	 * @return Join&#12486;&#12473;&#12488;&#12486;&#12540;&#12502;&#12523;&#12290;
+	 */
+	public JoinTestTable getJoinTestTable() {
+		return this.joinTestTable;
+	}
+
+
+	/**
+	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
+	 * @throws Exception &#20363;&#22806;&#12290;
+	 */
+	public Sample2Dao() {
+		this.setComment(&quot;&#12469;&#12531;&#12503;&#12523;2&quot;);
+		this.setListQuery(this.sampleTable = new SampleTable());
+		this.setSingleRecordQuery(this.sampleTable = new SampleTable());
+		this.addMultiRecordQueryList(this.joinTestTable = new JoinTestTable());
+
+	}
+
+	・
+	・
+	・
+
+}
+
+			</pre>
+		</div>
+		<p>
+			上記Daoを参照したページを以下のように作成し、「Webリソース作成」を使用してこのページのHTMLを作成します。
+		</p>
+		<figure>
+			<figcaption>Page Javaクラス作成</figcaption>
+			<img src="page1.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			このページを実行し、EditFormを表示すると以下のようになります。
+			SampleTableの1レコードに対してJoinTestTableは複数レコードが対応するため、
+			JoinTestTableの複数レコードを編集するためのテーブルが展開されています。
+			このテーブルはEditableHtmlTableというクラスで実現しているため、行の追加、削除、ドラグによる順序変更をサポートしています。
+		</p>
+		<figure>
+			<figcaption>JoinTestTableも編集できるようにしたページ</figcaption>
+			<img src="page2.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			QuerySetDaoクラスではsetSingleRecordQuery,addMultiRecordQueryListで登録された各問合せの
+			mainTableに対する追加(insertメソッド)・更新(updateメソッド)・削除(deleteメソッド)処理を行う機能を持っています。
+			そのため開発ツールで作成したコードだけで、データのメンテナンス機能が出来上がります。
+		</p>
+		<p>
+			このパターンは見出し部と明細行のある伝票を登録するようなページに応用することができます。
 		</p>
 	</body>
 </html>

@@ -37,7 +37,7 @@ public class TableManagementQueryResultForm extends QueryResultForm {
 	 */
 	public TableManagementQueryResultForm() {
 		this.addField(new VarcharField("className", 256));
-		this.addField(new MultiSelectField<String>("checkedClass", 256));
+		this.addField(new MultiSelectField<String>("checkedClass"));
 		HtmlTable htmltbl = new HtmlTable(Page.ID_QUERY_RESULT
 			, new ClassNameField("checkedClass")
 			, new RowNoField()

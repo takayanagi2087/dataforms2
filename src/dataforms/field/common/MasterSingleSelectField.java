@@ -14,7 +14,7 @@ import dataforms.util.StringUtil;
  * サブクラスでqueryOptionListを実装し、マスタから選択肢を取得するようにしてください。
  * </pre>
  */
-public abstract class MasterSingleSelectField extends SingleSelectField<Long> implements SqlBigint{
+public abstract class MasterSingleSelectField extends SingleSelectField<Long> implements SqlBigint {
 
 	/**
 	 * コンストラクタ。

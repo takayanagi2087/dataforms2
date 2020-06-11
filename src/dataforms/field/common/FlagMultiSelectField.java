@@ -9,16 +9,16 @@ import dataforms.util.MessagesUtil;
 
 /**
  * フラグマルチ選択フィールドクラス(検索条件用)。
- * 
+ *
  *
  */
 public class FlagMultiSelectField extends MultiSelectField<String> {
-	
+
 	/**
 	 * フラグの表示名に対応したしたメッセージキー。
 	 */
 	private String flagKey = "onoroff";
-	
+
 	/**
 	 * フラグの表示名に対応したしたメッセージキーを取得します。
 	 * @return フラグの表示名に対応したしたメッセージキー。
@@ -39,22 +39,22 @@ public class FlagMultiSelectField extends MultiSelectField<String> {
 	 * コンストラクタ。
 	 */
 	public FlagMultiSelectField() {
-		super(null, 1);
+		super(null);
 		this.setMatchType(MatchType.IN);
 		this.setHtmlFieldType(HtmlFieldType.CHECKBOX);
 	}
-	
+
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
 	public FlagMultiSelectField(final String id) {
-		super(id, 1);
+		super(id);
 		this.setMatchType(MatchType.IN);
 		this.setHtmlFieldType(HtmlFieldType.CHECKBOX);
 	}
 
-	
+
 	@Override
 	public void init() throws Exception {
 		super.init();

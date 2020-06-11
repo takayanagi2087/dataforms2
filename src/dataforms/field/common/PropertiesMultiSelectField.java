@@ -3,14 +3,13 @@ package dataforms.field.common;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.dao.sqldatatype.SqlVarchar;
 import dataforms.util.MessagesUtil;
 
 /**
  * *.propertiesの内容を複数選択するフィールド。
  *
  */
-public class PropertiesMultiSelectField extends MultiSelectField<String> implements SqlVarchar {
+public class PropertiesMultiSelectField extends MultiSelectField<String> {
 
 	/**
 	 * propertiesのキー。
@@ -23,7 +22,7 @@ public class PropertiesMultiSelectField extends MultiSelectField<String> impleme
 	 * @param key リソースのkey。
 	 */
 	public PropertiesMultiSelectField(final String id, final String key) {
-		super(id, 1024);
+		super(id);
 		this.key = key;
 	}
 

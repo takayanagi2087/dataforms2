@@ -34,7 +34,7 @@ public class AllTypeQueryForm extends QueryForm {
 		DateField to = new DateField("dateFieldTo");
 		to.setComment("日付範囲(To)");
 		this.addField(to.setMatchType(Field.MatchType.RANGE_TO));
-		MultiSelectField<String> dropdownCondField = new MultiSelectField<String>("dropdownField", 1);
+		MultiSelectField<String> dropdownCondField = new MultiSelectField<String>("dropdownField");
 		dropdownCondField.setOptionList(AllTypeTable.getOptionList());
 		this.addField(dropdownCondField).setMatchType(Field.MatchType.IN);
 

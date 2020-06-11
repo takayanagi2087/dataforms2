@@ -3,8 +3,6 @@ package dataforms.field.common;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.dao.sqldatatype.SqlBigint;
-
 
 /**
  * マスタレコードを複数選択するフィールドクラスです。
@@ -12,7 +10,7 @@ import dataforms.dao.sqldatatype.SqlBigint;
  * サブクラスでqueryOptionListを実装し、マスタから選択肢を取得するようにしてください。
  * </pre>
  */
-public abstract class MasterMultiSelectField extends MultiSelectField<Long> implements SqlBigint{
+public abstract class MasterMultiSelectField extends MultiSelectField<Long> {
 
 	/**
 	 * コンストラクタ。

@@ -1,7 +1,6 @@
 package dataforms.field.common;
 
 import dataforms.app.enumtype.dao.EnumDao;
-import dataforms.dao.sqldatatype.SqlVarchar;
 
 /**
  * 列挙型オプション複数選択フィールドクラス。
@@ -11,7 +10,7 @@ import dataforms.dao.sqldatatype.SqlVarchar;
  * 対応するHTMLのタグは複数選択の&lt;select&gt;や&lt;input type=&quot;checkbox&quot; ...&gt;になります。
  * </pre>
  */
-public class EnumOptionMultiSelectField extends MultiSelectField<String> implements SqlVarchar {
+public class EnumOptionMultiSelectField extends MultiSelectField<String> {
 	/**
 	 * 列挙型コード。
 	 */
@@ -20,28 +19,10 @@ public class EnumOptionMultiSelectField extends MultiSelectField<String> impleme
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
-	 * <pre>
-	 * 対応するDBのフィールドはvarchar(1024)になります。
-	 * </pre>
 	 * @param enumTypeCode 列挙型コード。
 	 */
 	public EnumOptionMultiSelectField(final String id, final String enumTypeCode) {
-		super(id, 1024);
-		this.enumTypeCode = enumTypeCode;
-	}
-
-	/**
-	 * コンストラクタ。
-	 * @param id フィールドID。
-	 * @param length フィールド長。
-	 * <pre>
-	 * 配列はjson形式の文字列に変換してvarchar形式のフィールドに記録するので、
-	 * 十分な長さを指定してください。
-	 * </pre>
-	 * @param enumTypeCode 列挙型コード。
-	 */
-	public EnumOptionMultiSelectField(final String id, final String enumTypeCode, final int length) {
-		super(id, length);
+		super(id);
 		this.enumTypeCode = enumTypeCode;
 	}
 

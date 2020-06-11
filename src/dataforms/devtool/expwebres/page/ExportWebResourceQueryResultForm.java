@@ -46,7 +46,7 @@ public class ExportWebResourceQueryResultForm extends QueryResultForm {
 	public ExportWebResourceQueryResultForm() {
 		this.addField(new WebSourcePathField()).setReadonly(true);
 		this.addField(new FlagField("selAll"));
-		this.addField(new MultiSelectField<String>("sel", 1024));
+		this.addField(new MultiSelectField<String>("sel"));
 		HtmlTable tbl = new HtmlTable(
 				"queryResult"
 				, new RowNoField()

@@ -101,12 +101,12 @@ public class AllTypeTable extends Table {
 		radio.setOptionList(AllTypeTable.getOptionList());
 		this.addField(radio);
 
-		MultiSelectField<String> multiSelectList = new MultiSelectField<String>("multiSelectListField", 2);
+		MultiSelectField<String> multiSelectList = new MultiSelectField<String>("multiSelectListField");
 		multiSelectList.setOptionList(AllTypeTable.getOptionList());
 		multiSelectList.setComment("マルチ選択リストフィールド");
 		multiSelectList.setHtmlFieldType(MultiSelectField.HtmlFieldType.SELECT);
 		this.addField(multiSelectList);
-		MultiSelectField<String> checkbox = new MultiSelectField<String>("checkboxField", 2);
+		MultiSelectField<String> checkbox = new MultiSelectField<String>("checkboxField");
 		checkbox.setOptionList(AllTypeTable.getOptionList());
 		checkbox.setComment("チェックボックスフィールド");
 		checkbox.setHtmlFieldType(MultiSelectField.HtmlFieldType.CHECKBOX);
@@ -117,7 +117,7 @@ public class AllTypeTable extends Table {
 		text.setComment("選択テキストフィールド");
 		this.addField(text);
 
-		MultiSelectField<String> textList = new MultiSelectField<String>("selectTextListField", 2);
+		MultiSelectField<String> textList = new MultiSelectField<String>("selectTextListField");
 		textList.setOptionList(AllTypeTable.getOptionList());
 		textList.setComment("選択テキストリストフィールド");
 		this.addField(textList);

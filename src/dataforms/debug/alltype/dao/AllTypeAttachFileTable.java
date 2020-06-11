@@ -76,11 +76,11 @@ public class AllTypeAttachFileTable extends Table {
 		radio.setOptionList(this.getOptionList());
 		this.addField(radio);
 
-		MultiSelectField<String> multiSelectList = new MultiSelectField<String>("multiSelectListField", 2);
+		MultiSelectField<String> multiSelectList = new MultiSelectField<String>("multiSelectListField");
 		multiSelectList.setOptionList(this.getOptionList());
 		multiSelectList.setComment("マルチ選択リストフィールド");
 		this.addField(multiSelectList);
-		MultiSelectField<String> checkbox = new MultiSelectField<String>("checkboxField", 2);
+		MultiSelectField<String> checkbox = new MultiSelectField<String>("checkboxField");
 		checkbox.setOptionList(this.getOptionList());
 		checkbox.setComment("チェックボックスフィールド");
 		this.addField(checkbox);
@@ -93,7 +93,7 @@ public class AllTypeAttachFileTable extends Table {
 		this.addField(new DeleteFlagField());
 		this.addUpdateInfoFields();
 	}
-	
+
 	@Override
 	public String getJoinCondition(final Table joinTable, final String alias) {
 		AllTypeAttachFileTableRelation r = new AllTypeAttachFileTableRelation(this);

@@ -17,8 +17,48 @@
 					</tbody>
 				</table>
 				<input type="submit" id="queryButton" class="largeButton" value="検索">
+				<input type="button" id="exportButton" class="largeButton" value="エクスポート">
 				<input type="button" id="resetButton" class="largeButton" value="リセット">&nbsp;
 				<input type="button" id="newButton" class="largeButton" value="新規登録">
+			</form>
+			<form id="queryResultForm">
+				<div class="formHeader">検索結果</div>
+				<table class="responsive">
+					<tbody>
+					</tbody>
+				</table>
+				<div class="hScrollDiv">
+					<table id="queryResult">
+						<thead>
+							<tr>
+								<th>
+									No.
+								</th>
+								<th>
+									コード1
+								</th>
+								<th>
+									操作
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<span id="queryResult[0].rowNo"></span>
+								</td>
+								<td>
+									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].code1"></span></a>
+								</td>
+								<td>
+									<input type="button" id="queryResult[0].viewButton" value="表示">
+									<input type="button" id="queryResult[0].referButton" value="参照登録">
+									<input type="button" id="queryResult[0].deleteButton" value="削除">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</form>
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
@@ -36,7 +76,7 @@
 						<thead>
 							<tr>
 								<th colspan="2" nowrap>
-
+									
 								</th>
 								<th nowrap>
 									No.
@@ -61,14 +101,14 @@
 									<span id="testMultiRecList[0].no"></span>
 								</td>
 								<td>
-									<input type="hidden" id="testMultiRecList[0].code1" />
+									<input type="text" id="testMultiRecList[0].code2" />
 									<input type="hidden" id="testMultiRecList[0].testMultiRecId" />
 									<input type="hidden" id="testMultiRecList[0].sortOrder" />
+									<input type="hidden" id="testMultiRecList[0].code1" />
 									<input type="hidden" id="testMultiRecList[0].createUserId" />
 									<input type="hidden" id="testMultiRecList[0].createTimestamp" />
 									<input type="hidden" id="testMultiRecList[0].updateUserId" />
 									<input type="hidden" id="testMultiRecList[0].updateTimestamp" />
-									<input type="text" id="testMultiRecList[0].code2" />
 								</td>
 								<td>
 									<input type="text" id="testMultiRecList[0].contents" />
@@ -80,7 +120,7 @@
 								<th class="buttonColumn">
 									<input type="button" id="testMultiRecList.addButton" value="+"/>
 								</th>
-								<th colspan="5">
+								<th colspan="4">
 								</th>
 							</tr>
 						</tfoot>

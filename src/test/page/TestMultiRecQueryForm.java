@@ -2,10 +2,14 @@ package test.page;
 
 import dataforms.controller.QueryForm;
 import dataforms.field.base.Field.MatchType;
-import dataforms.validator.RequiredValidator;
+import java.util.List;
+import dataforms.field.base.FieldList;
 import test.dao.TestMultiRecTable;
+import java.util.Map;
 import test.field.Code1Field;
+import dataforms.report.ExportDataFile;
 
+import test.dao.TestMultiRecDao;
 
 
 /**
@@ -16,11 +20,7 @@ public class TestMultiRecQueryForm extends QueryForm {
 	 * コンストラクタ。
 	 */
 	public TestMultiRecQueryForm() {
-		this.addField(new Code1Field(TestMultiRecTable.Entity.ID_CODE1))
-			.setAutocomplete(true)
-			.addValidator(new RequiredValidator())
-			.setMatchType(MatchType.FULL)
-			.setComment("コード1");
+		this.addField(new Code1Field(TestMultiRecTable.Entity.ID_CODE1)).setMatchType(MatchType.FULL).setComment("コード1");
 
 	}
 
@@ -30,6 +30,39 @@ public class TestMultiRecQueryForm extends QueryForm {
 		// フィールドに初期値を設定する場合は以下の様にしてください。
 		// this.setFormData("fieldId", "初期値");
 	}
+
+	/**
+	 * エクスポートデータのフィールドリストを作成します。
+	 * @return フィールドリスト。
+	 */
+	@Override
+	protected FieldList getExportDataFieldList(final Map<String, Object> data) throws Exception {
+		TestMultiRecDao dao = new TestMultiRecDao(this);
+		return dao.getListQuery().getFieldList();
+	}
+
+	/**
+	 * エクスポートデータファイルのインスタンスを返します。
+	 * @return エクスポートデータファイルのインスタンス。
+	 */
+	@Override
+	protected ExportDataFile getExportDataFile() {
+		ExportDataFile file = super.getExportDataFile();
+		file.setFileName("export.xlsx");
+		return file;
+	}
+
+	/**
+	 * エクスポートするデータを返します。
+	 * @param data 条件データ。
+	 * @return エクスポートデータ。
+	 */
+	@Override
+	protected List<Map<String, Object>> queryExportData(final Map<String, Object> data) throws Exception {
+		TestMultiRecDao dao = new TestMultiRecDao(this);
+		return dao.query(data, this.getFieldList());
+	}
+
 
 	// フォームの各フィールドの関連チェックを行う場合は、以下のvalidateFormメソッドを実装してください。
 	/**
@@ -68,7 +101,7 @@ public class TestMultiRecQueryForm extends QueryForm {
 		if (list.size() == 0) {
 			// Formから送信されたデータをサーバーサイドで処理しやすいデータ型に変換します。
 			Map<String, Object> data = this.convertToServerData(p);
-			ret = null;	// TODO:何らかの処理を行いResponseのインスタンスを作成してください。
+			ret = new JsonResponse(JsonResponse.SUCCESS, data);	// TODO:何らかの処理を行いResponseのインスタンスを作成してください。
 		} else {
 			// 確認で問題があった場合その情報を返信します。
 			ret = new JsonResponse(JsonResponse.INVALID, list);

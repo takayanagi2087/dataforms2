@@ -384,7 +384,7 @@ public class WebComponent implements JDBCConnectableObject {
 	 * @return WEBエントリーポイント。
 	 */
 	public WebEntryPoint getWebEntryPoint() {
-		return (Page) WebComponent.entryPoint.get();
+		return (WebEntryPoint) WebComponent.entryPoint.get();
 	}
 
 	/**

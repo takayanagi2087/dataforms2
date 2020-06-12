@@ -280,11 +280,11 @@ public class PageGeneratorEditForm extends EditForm {
 			String queryResultFormClassName = (String) data.get(ID_QUERY_RESULT_FORM_CLASS_NAME);
 			String editFormClassName = (String) data.get(ID_EDIT_FORM_CLASS_NAME);
 
-			logger.debug(() -> "dao classname=" + dao.getClass().getName());
-			logger.debug(() -> "getListQuery=" + dao.getListQuery());
-			logger.debug(() -> "getSingleRecordQuery=" + dao.getSingleRecordQuery());
-			logger.debug(() -> "getMultiRecordQueryList=" + dao.getMultiRecordQueryList());
 			if (dao != null) {
+				logger.debug(() -> "dao classname=" + dao.getClass().getName());
+				logger.debug(() -> "getListQuery=" + dao.getListQuery());
+				logger.debug(() -> "getSingleRecordQuery=" + dao.getSingleRecordQuery());
+				logger.debug(() -> "getMultiRecordQueryList=" + dao.getMultiRecordQueryList());
 				if (dao.getListQuery() == null) {
 					if (!StringUtil.isBlank(queryFormClassName)) {
 						ret.add(new ValidationError(ID_QUERY_FORM_CLASS_NAME, this.getPage().getMessage("error.listqueryundefined", "{0}", dao.getClass().getSimpleName())));

@@ -72,19 +72,6 @@ public class MultiSelectField<TYPE> extends SelectField<List<TYPE>> implements S
 	}
 
 
-	/**
-	 * コンストラクタ。
-	 * @param id フィールドID。
-	 * @param len 長さ。
-	 */
-/*	public MultiSelectField(final String id, final int len) {
-		super(id, len);
-		this.setDbDependentType(PgsqlSqlGenerator.DATABASE_PRODUCT_NAME, "text");
-		this.setDbDependentType(MysqlSqlGenerator.DATABASE_PRODUCT_NAME, "longtext");
-	}
-*/
-
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setClientValue(final Object v) {

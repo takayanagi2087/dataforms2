@@ -200,7 +200,20 @@ public class Sample2Dao extends QuerySetDao {
 		</p>
 		<h3>複数レコード編集のページ</h3>
 		<p>
-
+			EditFormでテーブルの複数レコードを一度に編集することもできます。
+			先ず次のようなテーブルを作成します。
 		</p>
+		<figure>
+			<figcaption>複数レコード編集用テーブル</figcaption>
+			<img src="mtable.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			このテーブルのCode1Fieldが同じ複数のレコードをまとめて編集するようにするため、
+			Code1Fieldの毎のレコード件数を取得する問合せを作成します。
+		</p>
+		<figure>
+			<figcaption>Code1Field毎のレコード数を求める問合せ</figcaption>
+			<img src="mquery.png" style="width:50%; height:50%;"/>
+		</figure>
 	</body>
 </html>

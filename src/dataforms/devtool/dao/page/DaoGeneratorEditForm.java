@@ -263,8 +263,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		String className = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
 		FieldList flist = new FieldList();
 		if (!StringUtil.isBlank(className)) {
-			Table table = this.getMainTable(packageName + "." + className);
-			flist.addAll(table.getFieldList());
+			flist = this.getFieldList(packageName + "." + className);
 		}
 		List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(flist);
 		Response resp = new JsonResponse(JsonResponse.SUCCESS, list);
@@ -436,15 +435,23 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * 選択フィールドリストのソースを作成します。
 	 * @param data フォームデータ。
 	 * @param implist インポートリスト。
+	 * @param packagename パッケージ名。
+	 * @param classname クラス名。
 	 * @return 選択フィールドリストのソース。
 	 * @throws Exception 例外。
 	 */
-	private String getKeyListSource(final Map<String, Object> data, final Set<String> implist) throws Exception {
+	private String getKeyListSource(final Map<String, Object> data, final Set<String> implist, final String packagename, final String classname) throws Exception {
 		int cnt = 0;
 		StringBuilder sb = new StringBuilder();
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_KEY_FIELD_LIST);
-		sb.append("\t\tQuery query = this.getMultiRecordQueryList().get(0);\n");
+		Class<?> cls = Class.forName(packagename + "." + classname);
+		if (Table.class.isAssignableFrom(cls)) {
+			sb.append("\t\tQuery query = new SingleTableQuery(new " + classname + "());\n");
+			implist.add(SingleTableQuery.class.getName());
+		} else {
+			sb.append("\t\tQuery query = new " + classname + "();\n");
+		}
 		sb.append("\t\tthis.setMultiRecordQueryKeyList(new FieldList(");
 		StringBuilder fsb = new StringBuilder();
 		for (Map<String, Object> m: list) {
@@ -484,7 +491,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		String packagename = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
 		String classname = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
 		String src = "\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(classname) + " = new " + classname + "());\n"
-					+ this.getKeyListSource(data, implist);
+					+ this.getKeyListSource(data, implist, packagename, classname);
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", src);
 		implist.add(Query.class.getName());
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
@@ -564,6 +571,29 @@ public class DaoGeneratorEditForm extends EditForm {
 			}
 		}
 		return mainTable;
+	}
+
+
+	/**
+	 * Mainテーブルを取得します。
+	 * @param className QueryまたはTableのクラス名。
+	 * @return 主テーブルのインスタンス。
+	 * @throws Exception 例外。
+	 */
+	private FieldList getFieldList(final String className) throws Exception {
+		FieldList fieldList = null;
+		if (!StringUtil.isBlank(className)) {
+			Class<?> qclass = Class.forName(className);
+			Object obj = qclass.getConstructor().newInstance();
+			if (obj instanceof Query) {
+				Query q = (Query) obj;
+				fieldList = q.getFieldList();
+			} else if (obj instanceof Table){
+				Table t = (Table) obj;
+				fieldList = t.getFieldList();
+			}
+		}
+		return fieldList;
 	}
 
 	/**

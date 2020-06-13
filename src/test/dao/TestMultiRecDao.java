@@ -5,6 +5,7 @@ import dataforms.dao.QuerySetDao;
 import dataforms.dao.SingleTableQuery;
 import dataforms.field.base.FieldList;
 import dataforms.dao.Query;
+import test.field.Code1Field;
 
 
 /**
@@ -38,6 +39,19 @@ public class TestMultiRecDao extends QuerySetDao {
 		return this.testMultiRecTable;
 	}
 
+	/**
+	 * コード1フィールド。
+	 */
+	private Code1Field code1Field = null;
+
+	/**
+	 * コード1フィールドを取得します。
+	 * @return コード1フィールド。
+	 */
+	public Code1Field getCode1Field() {
+		return this.code1Field;
+	}
+
 
 	/**
 	 * コンストラクタ。
@@ -49,7 +63,10 @@ public class TestMultiRecDao extends QuerySetDao {
 		this.setSingleRecordQuery((Query) null);
 		this.addMultiRecordQueryList(this.testMultiRecTable = new TestMultiRecTable());
 		Query query = new SingleTableQuery(new TestMultiRecTable());
-		this.setMultiRecordQueryKeyList(new FieldList(query.getFieldList().get(TestMultiRecTable.Entity.ID_CODE1)));
+		this.setMultiRecordQueryKeyList(new FieldList(
+			this.code1Field = (Code1Field) query.getFieldList().get(TestMultiRecTable.Entity.ID_CODE1)
+
+		));
 
 	}
 

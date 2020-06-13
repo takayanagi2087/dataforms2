@@ -4,6 +4,7 @@ import java.util.Map;
 
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
+import dataforms.validator.RequiredValidator;
 import test.dao.TestMultiRecDao;
 
 /**
@@ -15,6 +16,7 @@ public class TestMultiRecEditForm extends EditForm {
 	 */
 	public TestMultiRecEditForm() {
 		TestMultiRecDao dao = new TestMultiRecDao();
+		dao.getCode1Field().addValidator(new RequiredValidator());
 		this.addFields(dao);
 	}
 

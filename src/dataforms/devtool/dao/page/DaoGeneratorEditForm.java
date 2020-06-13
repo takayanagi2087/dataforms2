@@ -26,6 +26,7 @@ import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
+import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.htmltable.EditableHtmlTable;
@@ -297,6 +298,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	}
 
 
+
 	/**
 	 * 問合せに使用するテーブルプロパティ設定ソースを作成します。
 	 * @param packageName パッケージ名。
@@ -306,17 +308,16 @@ public class DaoGeneratorEditForm extends EditForm {
 	 */
 	private String getProperty(final String packageName, final String tableClassName) throws Exception {
 		String src = "	/**\n" +
-					"	 * ${comment}。\n" +
-					"	 */\n" +
-					"	private ${className} ${variableName} = null;\n\n" +
-					"	/**\n" +
-					"	 * ${comment}を取得します。\n" +
-					"	 * @return ${comment}。\n" +
-					"	 */\n" +
-					"	public ${className} get${className}() {\n" +
-					"		return this.${variableName};\n" +
-					"	}\n\n";
-
+				"	 * ${comment}。\n" +
+				"	 */\n" +
+				"	private ${className} ${variableName} = null;\n\n" +
+				"	/**\n" +
+				"	 * ${comment}を取得します。\n" +
+				"	 * @return ${comment}。\n" +
+				"	 */\n" +
+				"	public ${className} get${className}() {\n" +
+				"		return this.${variableName};\n" +
+				"	}\n\n";
 		Class<?> c = Class.forName(packageName + "." + tableClassName);
 		Object obj = (Object) c.getConstructor().newInstance();
 		String comment = "";
@@ -334,14 +335,45 @@ public class DaoGeneratorEditForm extends EditForm {
 
 	}
 
+	/**
+	 * フィールドのプロパティを作成します。
+	 * @param id フィールドID。
+	 * @param fieldClassName フィールドクラス名。
+	 * @return プロパティのソースコード。
+	 * @throws Exception 例外。
+	 */
+	private String getFieldProperty(final String id, final String fieldClassName) throws Exception {
+		String src = "	/**\n" +
+				"	 * ${comment}。\n" +
+				"	 */\n" +
+				"	private ${className} ${variableName} = null;\n\n" +
+				"	/**\n" +
+				"	 * ${comment}を取得します。\n" +
+				"	 * @return ${comment}。\n" +
+				"	 */\n" +
+				"	public ${className} ${getterName}() {\n" +
+				"		return this.${variableName};\n" +
+				"	}\n\n";
+		@SuppressWarnings("unchecked")
+		Class<? extends Field<?>> cls = (Class<? extends Field<?>>) Class.forName(fieldClassName);
+		Field<?> field = Field.newFieldInstance(cls);
+		String comment = field.getComment() + "フィールド";
+		String ret = src.replaceAll("\\$\\{className\\}", cls.getSimpleName());
+		ret = ret.replaceAll("\\$\\{variableName\\}", id + "Field");
+		ret = ret.replaceAll("\\$\\{getterName\\}", "get" + StringUtil.firstLetterToUpperCase(id) + "Field");
+		ret = ret.replaceAll("\\$\\{comment\\}", comment);
+		return ret;
+
+	}
 
 	/**
 	 * テーブルまたは問合せのプロパティコードを作成します。
 	 * @param data データ。
+	 * @param implist インポートリスト。
 	 * @return プロパティのソース。
 	 * @throws Exception 例外。
 	 */
-	private String getProperties(final Map<String, Object> data) throws Exception {
+	private String getProperties(final Map<String, Object> data, final Set<String> implist) throws Exception {
 		Set<String> set = new HashSet<String>();
 		StringBuilder sb = new StringBuilder();
 		{
@@ -366,16 +398,37 @@ public class DaoGeneratorEditForm extends EditForm {
 				}
 			}
 		}
-		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_MULTI_RECORD_QUERY_LIST);
-		for (Map<String, Object> m: list) {
-			String packageName = (String) m.get(ID_PACKAGE_NAME);
-			String className = (String) m.get(ID_QUERY_CLASS_NAME);
-			String fullClassName = packageName + "." + className;
-			if (!StringUtil.isBlank(className)) {
-				if (!set.contains(fullClassName)) {
-					sb.append(this.getProperty(packageName, className));
-					set.add(fullClassName);
+		{
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_MULTI_RECORD_QUERY_LIST);
+			for (Map<String, Object> m: list) {
+				String packageName = (String) m.get(ID_PACKAGE_NAME);
+				String className = (String) m.get(ID_QUERY_CLASS_NAME);
+				String fullClassName = packageName + "." + className;
+				if (!StringUtil.isBlank(className)) {
+					if (!set.contains(fullClassName)) {
+						sb.append(this.getProperty(packageName, className));
+						set.add(fullClassName);
+					}
+				}
+			}
+		}
+		{
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_KEY_FIELD_LIST);
+			for (Map<String, Object> m: list) {
+				String sel = (String) m.get("sel");
+				if ("1".equals(sel)) {
+					String fieldId = (String) m.get("fieldId");
+					String fullClassName = (String) m.get("fieldClassName");
+					int idx = fullClassName.lastIndexOf(".");
+					if (idx >= 0) {
+						if (!set.contains(fullClassName)) {
+							sb.append(this.getFieldProperty(fieldId, fullClassName));
+							set.add(fullClassName);
+							implist.add(fullClassName);
+						}
+					}
 				}
 			}
 		}
@@ -392,7 +445,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		String daoClassName = (String) data.get(ID_DAO_CLASS_NAME);
 		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", packageName);
 		javasrc = javasrc.replaceAll("\\$\\{daoClassName\\}", daoClassName);
-		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.getProperties(data));
+		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.getProperties(data, implist));
 
 		String daoclass = packageName + "." + daoClassName;
 		String comment = (String) data.get(ID_COMMENT);
@@ -452,23 +505,30 @@ public class DaoGeneratorEditForm extends EditForm {
 		} else {
 			sb.append("\t\tQuery query = new " + classname + "();\n");
 		}
-		sb.append("\t\tthis.setMultiRecordQueryKeyList(new FieldList(");
+		sb.append("\t\tthis.setMultiRecordQueryKeyList(new FieldList(\n");
 		StringBuilder fsb = new StringBuilder();
 		for (Map<String, Object> m: list) {
 			String sel = (String) m.get("sel");
 			if ("1".equals(sel)) {
 				if (fsb.length() > 0) {
-					fsb.append(", ");
+					fsb.append("\t\t\t, ");
+				} else {
+					fsb.append("\t\t\t");
 				}
 				String fieldId = (String) m.get("fieldId");
 				String tbl = (String) m.get("tableClassName");
-				String fld = "query.getFieldList().get(" + tbl + ".Entity.ID_" + StringUtil.camelToSnake(fieldId).toUpperCase() + ")";
+				String fieldClassName = (String) m.get("fieldClassName");
+				int idx = fieldClassName.lastIndexOf(".");
+				if (idx >= 0) {
+					fieldClassName = fieldClassName.substring(idx + 1);
+				}
+				String fld = "this." + fieldId + "Field = (" + fieldClassName + ") query.getFieldList().get(" + tbl + ".Entity.ID_" + StringUtil.camelToSnake(fieldId).toUpperCase() + ")\n";
 				fsb.append(fld);
 				cnt++;
 			}
 		}
 		sb.append(fsb.toString());
-		sb.append("));\n");
+		sb.append("\n\t\t));\n");
 		if (cnt > 0) {
 			implist.add("dataforms.field.base.FieldList");
 			return sb.toString();

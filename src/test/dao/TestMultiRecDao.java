@@ -65,9 +65,7 @@ public class TestMultiRecDao extends QuerySetDao {
 		Query query = new SingleTableQuery(new TestMultiRecTable());
 		this.setMultiRecordQueryKeyList(new FieldList(
 			this.code1Field = (Code1Field) query.getFieldList().get(TestMultiRecTable.Entity.ID_CODE1)
-
 		));
-
 	}
 
 	/**

@@ -647,7 +647,18 @@ from multi_test as  m
 &lt;/html&gt;
 			</pre>
 		</div>
-		<h3>作成できるWebリソース</h3>
+		<p>
+			PageのHTMLはページ全体の見た目を定義するため必ず必要になります。
+			FormクラスやDialogクラスはそれぞれのクラス名に対応したHTMLが存在すると、
+			そちらを優先してPageに展開します。
+			つまり、Sample2Page.htmlのeditFormの中に内容を記述しても、
+			Sample2EditForm.htmlが存在すればその内容で上書きされたページが表示されます。
+		</p>
+		<p>
+			したがって、WebComponent以下のクラスで対応するHTMLを作成できるのはPage, Dialog, Formになります。
+			WebComponent以下のクラスは全て対応するJavascriptクラスを作成することができます。
+			このJavascriptクラスを作成し処理を記述することにより、ブラウザ内での独自の動作を規定することができます。
+		</p>
 		<table>
 			<caption>
 				Webリソース作成で作成できるもの
@@ -706,6 +717,22 @@ from multi_test as  m
 			</tbody>
 		</table>
 		<h2>Javascriptクラスのカスタマイズ</h2>
+		<h3>生成されたJavascriptの解説</h3>
+		<p>
+
+		</p>
+		<div class="filecaption">FormのJavascript</div>
+		<div class="wrappre">
+			<pre>
+
+			</pre>
+		</div>
+		<div class="filecaption">FieldのJavascript</div>
+		<div class="wrappre">
+			<pre>
+
+			</pre>
+		</div>
 		<h3>WebComponmentオブジェクトの取得</h3>
 		<h3>jQueryオブジェクトの取得</h3>
 		<h2>HtmlTableクラス</h2>

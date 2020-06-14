@@ -216,17 +216,59 @@ public class Sample2Dao extends QuerySetDao {
 			<img src="mquery.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
-
+			この問合せは以下のSQLを生成し、Code1Field毎のレコード件数求める問合せになります。
+		</p>
+		<div class="filecaption">上記問合せに対応するSQL</div>
+		<div class="wrappre">
+			<pre>
+select
+	m.code1 as code1
+	,count(m.multi_test_id) as multi_test_id
+from multi_test as  m
+	group by m.code1
+			</pre>
+		</div>
+		<p>
+			次の画面でDaoクラスを作成し、一覧取得用問合せに席に作成したMultiTestCode1Queryを指定します。
+		</p>
+		<p>
+			編集フォーム用問合せは、Code1Fieldが同じ複数のレコードを編集するだめ、
+			編集フォームを「複数レコードを編集」に設定し、編集対象にMultiTestTableを指定します。
+			また編集データを限定するためのキーフィールドをチェックします。
+			この場合code1をチェックします。
 		</p>
 		<figure>
 			<figcaption>Daoクラスの作成</figcaption>
 			<img src="mdao.png" style="width:50%; height:50%;"/>
 		</figure>
-
+		<p>
+			「ページJavaクラス作成」をしてようして、このDaoを使用するするページクラスを作成します。
+		</p>
 		<figure>
 			<figcaption>Pageクラスの作成</figcaption>
 			<img src="mpage.png" style="width:50%; height:50%;"/>
 		</figure>
-
+		<p>
+			ページのJavaクラスをデプロイした後、「Webリソース作成」を使用して、このページクラスからHTMLを作成してください。
+			このページで検索を行うと以下のように、コード1毎の件数が表示されます。
+		</p>
+		<figure>
+			<figcaption>複数レコード編集ページのQueryFormとQueryResultFormの表示</figcaption>
+			<img src="mpage1.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			コード1のリンクをクリックすると、コード1の値が同じ複数のレコードをまとめて編集することができます。
+		</p>
+		<figure>
+			<figcaption>複数レコード編集ページのEditFormの表示</figcaption>
+			<img src="mpage2.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			ちなみにmulti_testテーブルのデータは以下のようになっています。
+		</p>
+		<figure>
+			<figcaption>multi_testテーブルのデータ</figcaption>
+			<img src="mdata.png" style="width:50%; height:50%;"/>
+		</figure>
 	</body>
 </html>

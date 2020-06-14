@@ -270,5 +270,39 @@ from multi_test as  m
 			<figcaption>multi_testテーブルのデータ</figcaption>
 			<img src="mdata.png" style="width:50%; height:50%;"/>
 		</figure>
+		<p>
+			この状態ではCode1FieldとCode2Fieldに何も入力しない状態でも登録できてしまうので、
+			MultiTestEditFormのcode1フィールドとcode2フィールドに必須バリデータを登録します。
+		</p>
+		<p>
+			生成したMultiTestDaoにCode1FieldとMultiTestTableのインスタンスを取得するgetterが生成されています。
+			以下のようにCode1FieldとMultiTestTablea中のCode2Fieldに必須バリデータを追加します。
+		</p>
+		<div class="filecaption">編集フォームの調整</div>
+		<div class="wrappre">
+			<pre>
+	/**
+	 * コンストラクタ。
+	 */
+	public MultiTestEditForm() {
+		MultiTestDao dao = new MultiTestDao();
+		<b>dao.getCode1Field().addValidator(new RequiredValidator());</b>
+		<b>dao.getMultiTestTable().getCode2Field().addValidator(new RequiredValidator());</b>
+		this.addFields(dao);
+	}
+			</pre>
+		</div>
+		<p>
+			上記コードを実行すると、以下のようにコード1とコード2で必須チェックが行われるようになります。
+		</p>
+		<figure>
+			<figcaption>必須バリデータを追加したMultiTestEditForm</figcaption>
+			<img src="mpage3.png" style="width:50%; height:50%;"/>
+		</figure>
+		<h2>Javascriptを使用したページのカスタマイズ</h2>
+		<p>
+		</p>
+		<h3>jQueryオブジェクトの取得</h3>
+		<h3>WebComponmentオブジェクトの取得</h3>
 	</body>
 </html>

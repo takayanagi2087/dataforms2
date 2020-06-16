@@ -830,7 +830,7 @@ public class DataFormsServlet extends HttpServlet {
 					TableRelation rel = tbl.getTableRelation();
 					for (ForeignKey fk: rel.getForeignKeyList()) {
 						DataFormsServlet.constraintMap.put(fk.getConstraintName(), fk);
-						logger.debug(() -> "ForeignKey:" + fk.getConstraintName());
+						logger.debug(() -> "ForeignKey:" + fk.getConstraintName() + ":" + fk.getViolationMessageKey());
 					}
 				}
 				// インデックスから一意制約を取り出す。
@@ -840,7 +840,7 @@ public class DataFormsServlet extends HttpServlet {
 					UniqueKey uk = tbl.getUniqueKey();
 					if (uk != null) {
 						DataFormsServlet.constraintMap.put(uk.getConstraintName(), uk);
-						logger.debug(() -> "UniqueKey:" + uk.getConstraintName());
+						logger.debug(() -> "UniqueKey:" + uk.getConstraintName() + ":" + uk.getViolationMessageKey());
 					}
 				}
 			}

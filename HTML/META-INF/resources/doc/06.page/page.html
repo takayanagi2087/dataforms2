@@ -1174,14 +1174,128 @@ S:jq.val()=1234.00,string
 		<p>
 			MultiTestQueryResultFormのフォームのHTMLを見るとわかると思いますが、
 			ヒット件数やスクロールボタンなどのタグが存在しません。
-			しかしテーブルデータの表示結果を見ると、これらの項目が出力されています。
+			しかし、テーブルデータの表示結果を見るとこれらの項目が出力されています。
 			これはPageScrollHtmlTable.jsが/frame/PageController.htmlの内容を自動的に展開するためです。
 		</p>
 		<h3>EditableHtmlTable</h3>
 		<p>
+			List&lt;Map&lt;String, Object&gt;&gt;形式のデータを編集するにはEditableHtmlTableを使用します。
+			MultiTestEditFormのコンストラクタでMultiTestDaoのインスタンスをEditFormのaddFieldsメソットに渡しています。
+			このメソッドでdaoのaddMultiRecordQueryListに登録された内容でEditableHtmlTableを配置するようになっています。
+		</p>
+		<p>
+			MultiTestEditFormにはidが"multiTestList"というEditableTableが配置されています。
+			このFormクラスをもとに生成したtableタグは以下のようになります。
+		</p>
+		<div class="filecaption">EditableTableに対応するHTML</div>
+		<div class="wrappre">
+			<pre>
+			&lt;table id=&quot;multiTestList&quot; class=&quot;editableTable&quot;&gt;
+				&lt;thead&gt;
+					&lt;tr&gt;
+						&lt;th colspan=&quot;2&quot; nowrap&gt;
+						&lt;/th&gt;
+						&lt;th nowrap&gt;
+							No.
+						&lt;/th&gt;
+						&lt;th&gt;
+							&#12467;&#12540;&#12489;2
+						&lt;/th&gt;
+						&lt;th&gt;
+							&#12486;&#12461;&#12473;&#12488;
+						&lt;/th&gt;
+					&lt;/tr&gt;
+				&lt;/thead&gt;
+				&lt;tbody&gt;
+					&lt;tr&gt;
+						&lt;td class=&quot;buttonColumn&quot;&gt;
+							&lt;input type=&quot;button&quot; id=&quot;multiTestList[0].addButton&quot; value=&quot;+&quot;/&gt;
+						&lt;/td&gt;
+						&lt;td class=&quot;buttonColumn&quot;&gt;
+							&lt;input type=&quot;button&quot; id=&quot;multiTestList[0].deleteButton&quot; value=&quot;-&quot;/&gt;
+						&lt;/td&gt;
+						&lt;td style=&quot;text-align: right;&quot; class=&quot;rowno&quot;&gt;
+							&lt;span id=&quot;multiTestList[0].no&quot;&gt;&lt;/span&gt;
+						&lt;/td&gt;
+						&lt;td&gt;
+							&lt;input type=&quot;text&quot; id=&quot;multiTestList[0].code2&quot; /&gt;
+							&lt;input type=&quot;hidden&quot; id=&quot;multiTestList[0].multiTestId&quot; /&gt;
+							&lt;input type=&quot;hidden&quot; id=&quot;multiTestList[0].sortOrder&quot; /&gt;
+							&lt;input type=&quot;hidden&quot; id=&quot;multiTestList[0].code1&quot; /&gt;
+							&lt;input type=&quot;hidden&quot; id=&quot;multiTestList[0].createUserId&quot; /&gt;
+							&lt;input type=&quot;hidden&quot; id=&quot;multiTestList[0].createTimestamp&quot; /&gt;
+							&lt;input type=&quot;hidden&quot; id=&quot;multiTestList[0].updateUserId&quot; /&gt;
+							&lt;input type=&quot;hidden&quot; id=&quot;multiTestList[0].updateTimestamp&quot; /&gt;
+						&lt;/td&gt;
+						&lt;td&gt;
+							&lt;input type=&quot;text&quot; id=&quot;multiTestList[0].multitext&quot; /&gt;
+						&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/tbody&gt;
+				&lt;tfoot&gt;
+					&lt;tr&gt;
+						&lt;th class=&quot;buttonColumn&quot;&gt;
+							&lt;input type=&quot;button&quot; id=&quot;multiTestList.addButton&quot; value=&quot;+&quot;/&gt;
+						&lt;/th&gt;
+						&lt;th colspan=&quot;4&quot;&gt;
+						&lt;/th&gt;
+					&lt;/tr&gt;
+				&lt;/tfoot&gt;
+			&lt;/table&gt;
+			</pre>
+		</div>
+		<p>
+			生成したtableタグの中にはレコードを追加するaddButtonとレコードを削除するdelButtonが生成されています。
+			EditableHtmlTable.jsに、これらの追加、削除の処理が記述されています。
+			また、テーブルの行をドラッグすることによって、レコードの順序変更することができます。
+			この時idが"sortOrder"のフィールドが存在すると、その値が表示順に設定されます。
+			この値をデータベースに保存し読み取り時にソート順を指定して取得することによって、ソート順を保つことができます。
 		</p>
 		<h3>カラム固定テーブル</h3>
 		<p>
+			カラム数の多いテーブルをHtmlTableに表示すると、横スクロールが発生します。
+			この場合先頭の項目がスクロールアウトしてしまうと表が読みつらくなります。
+			Excelなどではこのような場合ウインドウ枠の固定という機能を使い、
+			キーとなる項目を固定カラムに配置し、それに関連する情報をスクロールさせるように設定します。
+			以前のHTMLでこれをやろうとすると、固定部のテーブルとスクロール部のテープを分けてレイアウトし、
+			各カラムを合わせるという非常に面倒な作業が発生していました。
 		</p>
+		<p>
+			最近のCSSでサポートされた"position: sticky;"を使用すると&lt;th&gt;&lt;/th&gt;&lt;td&gt;&lt;/td&gt;を指定した位置に固定させることができます。
+			HtmlTableクラスではこの機能を使用した、カラム固定機能をサポートしています。
+		</p>
+		<p>
+			この機能を使用するにはsetFixedColumnsメソッドを指定して、固定するカラムの数を指定します。
+		</p>
+		<div class="filecaption">Sample2QueryResultForm.javaでラカム固定テーブルを使用した例</div>
+		<div class="wrappre">
+			<pre>
+	/**
+	 * コンストラクタ。
+	 */
+	public Sample2QueryResultForm() {
+		Sample2Dao dao = new Sample2Dao();
+		this.addPkFieldList(dao.getEditFormKeyList());
+		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
+		<b>htmltable.setFixedColumns(2); // 先頭2カラムを固定</b>
+		htmltable.getFieldList().get(SampleTable.Entity.ID_SAMPLE_TEXT).setSortable(true);
+		htmltable.getFieldList().get(SampleTable.Entity.ID_SAMPLE_NUMERIC).setSortable(true);
+		htmltable.getFieldList().get(SampleTable.Entity.ID_SAMPLE_DATE).setSortable(true);
+		htmltable.getFieldList().get(SampleTable.Entity.ID_SAMPLE_SELECT).setSortable(true);
+
+		this.addHtmlTable(htmltable);
+	}
+			</pre>
+		</div>
+		<p>
+			この機能を使う場合、テーブルの各カラムの幅をすべて指定する必要があります。
+			固定カラム数を指定したテーブルクラスを含むフォームのHTMLを生成すると、
+			ヘッダの文字数から適当に絡む幅を指定した&lt;table&gt;タグが出力されます。
+			表示するデータに応じて各カラムの幅を調整してください。
+		</p>
+		<figure>
+			<figcaption>カラム固定されたテーブル</figcaption>
+			<img src="table1.png" style="width:50%; height:50%;"/>
+		</figure>
 	</body>
 </html>

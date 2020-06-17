@@ -151,14 +151,19 @@ class DocFramePage extends BasePage {
 	 * @param {jQuery} docFrame ドキュメントが読み込まれたiframe。
 	 */
 	setFigEvent(docFrame) {
+		var thisPage = this;
 		docFrame.contents().find("img").click(function() {
 			var url = docFrame.attr("src");
+			var idx = url.lastIndexOf('/');
+			if (idx > 0) {
+				url = url.substring(0, idx);
+			}
 			var img = $(this).attr("src");
-			var title = $(this).next("figcaption").text();
-			$(this.convertSelector("#imageViewer")).attr("src", url + "/" + img);
+			var title = $(this).prev("figcaption").text();
+			$("[" + thisPage.getIdAttribute() + "='imageViewer']").attr("src", url + "/" + img);
 			var image = new Image();
 			image.src = url + "/" + img;
-			$(this.convertSelector("#imageDialog")).dialog({
+			$("[" + thisPage.getIdAttribute() + "='imageDialog']").dialog({
 				modal: true
 				,width: image.width + 34
 				,height: image.height + 64

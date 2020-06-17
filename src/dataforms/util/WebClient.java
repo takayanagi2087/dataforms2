@@ -6,7 +6,10 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +21,17 @@ import net.arnx.jsonic.JSON;
  *
  */
 public class WebClient {
+	/**
+	 * ヘッダ名称のキー。
+	 */
+	private static final String HEADER = "header";
+
+	/**
+	 * ヘッダ値のキー。
+	 */
+	private static final String VALUE = "value";
+
+
 	/**
 	 * Logger.
 	 */
@@ -47,6 +61,23 @@ public class WebClient {
 	 * application/x-www-form-urulencoded または application/json
 	 */
 	private String contentType = null;
+
+	/**
+	 * 要求ヘッダのリスト。
+	 */
+	private List<Map<String, String>> requestHeaderList = new ArrayList<Map<String, String>>();
+
+	/**
+	 * 送信ヘッダを追加します。
+	 * @param header ヘッダ名称。
+	 * @param value 値。
+	 */
+	public void addRequestHeader(final String header, final String value) {
+		Map<String, String> h = new HashMap<String, String>();
+		h.put(HEADER, header);
+		h.put(VALUE, value);
+		this.requestHeaderList.add(h);
+	}
 
 	/**
 	 * コンストラクタ。
@@ -165,6 +196,19 @@ public class WebClient {
 	}
 
 	/**
+	 * 応答ヘッダ。
+	 */
+	private Map<String, List<String>> responseHeader = null;
+
+	/**
+	 * 応答ヘッダを取得します。
+	 * @return 応答ヘッダ。
+	 */
+	public Map<String, List<String>> getResponseHeader() {
+		return this.responseHeader;
+	}
+
+	/**
 	 * APIを呼び出します。
 	 * @param p パラメータ。
 	 * @return 応答情報。
@@ -184,9 +228,15 @@ public class WebClient {
 		URL u = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) u.openConnection();
 		conn.setRequestMethod(this.httpMethod);
+		for (Map<String, String> m: this.requestHeaderList) {
+			String header = m.get(HEADER);
+			String value = m.get(VALUE);
+			conn.setRequestProperty(header, value);
+		}
 		this.sendData(conn, senddata);
 		conn.connect();
 		try {
+			this.responseHeader = conn.getHeaderFields();
 			// HTTPレスポンスコード
 			final int status = conn.getResponseCode();
 			if (status == HttpURLConnection.HTTP_OK) {
@@ -196,5 +246,15 @@ public class WebClient {
 			conn.disconnect();
 		}
 		return ret;
+	}
+
+
+	/**
+	 * APIを呼び出します。
+	 * @return 応答情報。
+	 * @throws Exception 例外。
+	 */
+	public Object call() throws Exception {
+		return this.call(null);
 	}
 }

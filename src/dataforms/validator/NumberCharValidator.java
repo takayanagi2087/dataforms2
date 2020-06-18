@@ -4,7 +4,7 @@ package dataforms.validator;
  * 数字バリデータクラス。
  *
  */
-public class NumberCharValidator extends RegexpValidator {
+public final class NumberCharValidator extends RegexpValidator {
 	/**
 	 * コンストラクタ。
 	 */

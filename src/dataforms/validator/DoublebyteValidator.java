@@ -4,7 +4,7 @@ package dataforms.validator;
  * 全角文字バリデータクラス。
  *
  */
-public class DoublebyteValidator extends RegexpValidator {
+public final class DoublebyteValidator extends RegexpValidator {
 	/**
 	 * コンストラクタ。
 	 */

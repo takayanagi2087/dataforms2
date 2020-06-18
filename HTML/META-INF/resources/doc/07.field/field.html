@@ -10,6 +10,11 @@
 		<p>
 			フィールドクラスはデータベースアクセス用のテーブルや問合せクラスに配置され、データベースの保存するデータの型を決定します。
 			また、フォームクラスにも配置し、HTMLの&lt;input ...&gt;や&lt;select ...&gt;...&lt;/select&gt;などのページ中の入力フィールドに対応します。
+			フィールドクラスとこれらのHTMLタグの対応はidアトリビュートで行います。
+		</p>
+		<p>
+			開発ツールで生成したこれらのタグには、idアトリビュートは生成されていますがnameアトリビュートは生成されていません。
+			Field.jsクラスはnameアトリビュートが設定されていない場合、idアトリビュートの値をコピーするようになっています。
 		</p>
 		<p>
 			フィールドクラスの主な役割はバリデーションとデータ変換になります。
@@ -23,7 +28,7 @@
 		</p>
 		<h2>SQLのデータ型に対応したフィールド</h2>
 		<p>
-
+			以下のフィールドはSQLのデータ型に対応したフィールドになります。
 		</p>
 		<table>
 			<caption>
@@ -73,7 +78,12 @@
 
 		<h2>選択フィールド</h2>
 		<p>
-
+			ラジオボタンやプルダウンのように複数の選択肢から1つを選択するフィールドクラスは以下のようなものがあります。
+		</p>
+		<p>
+			これらのフィールドはSingleSelectFieldクラスから派生しており、
+			setHtmlFieldTypeメソッドでラジオボタンかプルダウンかを指定することができます。
+			この設定値はWebリソース作成の時に参照され、生成するタグを決定します。
 		</p>
 		<table>
 			<caption>
@@ -172,6 +182,12 @@
 		</table>
 		<h2>複数選択フィールド</h2>
 		<p>
+			チェックボックスや複数選択リストのように複数の選択肢から1つを選択するフィールドクラスは以下のようなものがあります。
+		</p>
+		<p>
+			これらのフィールドはMultiSelectFieldクラスから派生しており、
+			setHtmlFieldTypeメソッドでチェックボックス複数選択リストかを指定することができます。
+			この設定値はWebリソース作成の時に参照され、生成するタグを決定します。
 		</p>
 		<table>
 			<caption>
@@ -229,6 +245,11 @@
 			</tbody>
 		</table>
 		<h2>ファイルフィールド</h2>
+		<p>
+			dataforms2.jarでは&lt;input type=&quot;file&quot; ...&gt;で指定されたファイルをBLOBに記録する方法と、
+			所定のフォルダに記録しそのパスをVARCHARに記録2種類の方法をサポートしています。
+			また任意のファイルの他に画像、動画、音声ファイルの専用ファイルフィールドも存在します。
+		</p>
 		<table>
 			<caption>
 				フィールド一覧
@@ -323,77 +344,10 @@
 				</tr>
 			</tbody>
 		</table>
-		<h2>その他のフィールド</h2>
-		<p>
-		</p>
-		<table>
-			<caption>
-				フィールド一覧
-			</caption>
-			<thead>
-				<tr>
-					<th style="width:40px;">No.</th><th style="width:200px;">クラス名</th><th style="width:100px;">Java型<br/>SQL型</th><th style="width:300px;">対応するHTML TAG</th><th style="width: 300px;">用途</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td style="text-align: right;">1</td>
-					<td>FlagField</td>
-					<td>java.lang.String<br/>char</td>
-					<td>&lt;input type=&quot;checkbox&quot; value="1""/&gt;</td>
-					<td>
-						フラグフィールド
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: right;">2</td>
-					<td>FolderField</td>
-					<td>java.lang.String<br/>varchar</td>
-					<td>&lt;input type=&quot;text&quot; /&gt;</td>
-					<td>
-						フォルダの入力フィールド
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: right;">3</td>
-					<td>ExistingFolderField</td>
-					<td>java.lang.String<br/>varchar</td>
-					<td>&lt;input type=&quot;text&quot; /&gt;</td>
-					<td>
-						フォルダの入力フィールド(存在チェック機能付き)
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: right;">4</td>
-					<td>MemoField</td>
-					<td>java.lang.String<br/>varchar</td>
-					<td>&lt;input type=&quot;text&quot; /&gt;</td>
-					<td>
-						メモフィールド
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: right;">5</td>
-					<td>ZipCodeField</td>
-					<td>java.lang.String<br/>varchar</td>
-					<td>&lt;input type=&quot;text&quot; /&gt;</td>
-					<td>
-						郵便番号入力フィールド
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: right;">6</td>
-					<td>RowNoField</td>
-					<td>java.lang.String<br/>varchar</td>
-					<td>&lt;span&gt;&lt;/span&gt;</td>
-					<td>
-						検索結果の行番号表示用フィールド
-					</td>
-				</tr>
-			</tbody>
-		</table>
 		<h2>非表示機能フィールド</h2>
 		<p>
+			&lt;input type=&quot;hidden&quot; .../&gt;に展開されるフィールドも存在します。
+			これらのフィールとはそれぞれ特殊な機能を持っています。
 		</p>
 		<table>
 			<caption>
@@ -470,8 +424,79 @@
 				</tr>
 			</tbody>
 		</table>
+		<h2>その他のフィールド</h2>
+		<p>
+			上記以外にも以下のようなフィールドが用意されています。
+		</p>
+		<table>
+			<caption>
+				フィールド一覧
+			</caption>
+			<thead>
+				<tr>
+					<th style="width:40px;">No.</th><th style="width:200px;">クラス名</th><th style="width:100px;">Java型<br/>SQL型</th><th style="width:300px;">対応するHTML TAG</th><th style="width: 300px;">用途</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align: right;">1</td>
+					<td>FlagField</td>
+					<td>java.lang.String<br/>char</td>
+					<td>&lt;input type=&quot;checkbox&quot; value="1""/&gt;</td>
+					<td>
+						フラグフィールド
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">2</td>
+					<td>FolderField</td>
+					<td>java.lang.String<br/>varchar</td>
+					<td>&lt;input type=&quot;text&quot; /&gt;</td>
+					<td>
+						フォルダの入力フィールド
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">3</td>
+					<td>ExistingFolderField</td>
+					<td>java.lang.String<br/>varchar</td>
+					<td>&lt;input type=&quot;text&quot; /&gt;</td>
+					<td>
+						フォルダの入力フィールド(存在チェック機能付き)
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">4</td>
+					<td>MemoField</td>
+					<td>java.lang.String<br/>varchar</td>
+					<td>&lt;input type=&quot;text&quot; /&gt;</td>
+					<td>
+						メモフィールド
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">5</td>
+					<td>ZipCodeField</td>
+					<td>java.lang.String<br/>varchar</td>
+					<td>&lt;input type=&quot;text&quot; /&gt;</td>
+					<td>
+						郵便番号入力フィールド
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">6</td>
+					<td>RowNoField</td>
+					<td>java.lang.String<br/>varchar</td>
+					<td>&lt;span&gt;&lt;/span&gt;</td>
+					<td>
+						検索結果の行番号表示用フィールド
+					</td>
+				</tr>
+			</tbody>
+		</table>
 		<h2>問合せで使用する機能フィールド</h2>
 		<p>
+			以下のフィールドはQueryにのみ配置できるティールドです。
 		</p>
 		<table>
 			<caption>
@@ -487,51 +512,190 @@
 				<tr>
 					<td style="text-align: right;">1</td>
 					<td>AliasField</td>
-					<td colspan="2">
+					<td>
 						カラムの別名を指定するためのフィールドクラス
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;">2</td>
 					<td>AvgField</td>
-					<td colspan="2">
+					<td>
 						平均値を求めるための集計フィールドクラス
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;">3</td>
 					<td>CountField</td>
-					<td colspan="2">
+					<td>
 						個数を求めるための集計フィールドクラス
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;">4</td>
 					<td>MaxField</td>
-					<td colspan="2">
+					<td>
 						最大値を求めるための集計フィールドクラス
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;">5</td>
 					<td>MinField</td>
-					<td colspan="2">
+					<td>
 						最小値を求めるための集計フィールドクラス
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;">6</td>
 					<td>SqlField</td>
-					<td colspan="2">
+					<td>
 						SQLの任意の式フィールドクラス
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;">7</td>
 					<td>SumField</td>
-					<td colspan="2">
+					<td>
 						合計値を求めるための集計フィールドクラス
 					</td>
+				</tr>
+			</tbody>
+		</table>
+		<h2>バリデータ</h2>
+		<p>
+			各種フィールドクラスには適切なバリデータが設定されています。
+			既存のフィールドを使用している場合、必須項目となるフィールドにRequiredValidatorを設定するくらいで済むはずです。
+			バリデータは以下のものが用意されています。
+			新たなフィールドを定義する場合、これらのクラスを参考にして必要なバリデータを実装してください。
+		</p>
+		<table>
+			<caption>
+				フィールド一覧
+			</caption>
+			<thead>
+				<tr>
+					<th style="width:40px;">No.</th><th style="width:200px;">クラス名</th><th style="width: 400px;">用途</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align: right;">1</td>
+					<td>FieldValidator</td>
+					<td>フィールドバリデータの基本クラス</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">2</td>
+					<td>RegexpValidator</td>
+					<td>正規表現バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">3</td>
+					<td>AlphaValidator</td>
+					<td>アルファベットバリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">4</td>
+					<td>AsciiValidator</td>
+					<td>Ascii文字バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">5</td>
+					<td>DoublebyteValidator</td>
+					<td>全角文字バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">6</td>
+					<td>HankakukatakanaValidator</td>
+					<td>半角カタカナバリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">7</td>
+					<td>HiraganaValidator</td>
+					<td>ひらがなバリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">8</td>
+					<td>KatakanaValidator</td>
+					<td>全角カタカナバリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">9</td>
+					<td>MailAddressValidator</td>
+					<td>メールアドレスバリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">10</td>
+					<td>NumberCharValidator</td>
+					<td>数字文字列バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">11</td>
+					<td>ZipCodeValidator</td>
+					<td>郵便番号バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">12</td>
+					<td>DateTimeValidator</td>
+					<td>日付、時刻関連バリデータの基本クラス</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">13</td>
+					<td>DateValidator</td>
+					<td>日付バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">14</td>
+					<td>TimestampValidator</td>
+					<td>日付時刻バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">15</td>
+					<td>TimeValidator</td>
+					<td>時刻バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">16</td>
+					<td>MaxLengthValidator</td>
+					<td>最大長バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">17</td>
+					<td>NumberRangeValidator</td>
+					<td>数値ファイルバリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">18</td>
+					<td>NumberValidator</td>
+					<td>数値バリデータ(Numeric以外)</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">19</td>
+					<td>NumericValidator</td>
+					<td>数値バリデータ(Numeric用)</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">20</td>
+					<td>RequiredValidator</td>
+					<td>必須バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">21</td>
+					<td>DisplayedRequiredValidator</td>
+					<td>表示されているとき必須バリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">22</td>
+					<td>DbMatchValidator</td>
+					<td>DBマッチングバリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">23</td>
+					<td>ExistingFolderValidator</td>
+					<td>フォルダ存在チェックバリデータ</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">24</td>
+					<td>FileSizeValidator</td>
+					<td>ファイルサイズバリデータ</td>
 				</tr>
 			</tbody>
 		</table>

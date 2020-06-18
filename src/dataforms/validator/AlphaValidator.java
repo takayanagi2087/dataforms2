@@ -4,7 +4,7 @@ package dataforms.validator;
  * 半角英字バリデータクラス。
  *
  */
-public class AlphaValidator extends RegexpValidator {
+public final class AlphaValidator extends RegexpValidator {
 	/**
 	 * コンストラクタ。
 	 */

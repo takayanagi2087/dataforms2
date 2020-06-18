@@ -5,8 +5,17 @@
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. -->
 <!DOCTYPE project>
+<!--
+	javadoc, jsdocとdataforms2.jarを作成します。
+
+	このbuild.xmlの実行には以下の環境変数が必要です。
+	環境に合わせて設定してください。
+
+	BUILD_TEMP=C:/eclipse/buildTemp
+	JSDOC_CMD=C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd
+	PLEIADES_HOME=C:/eclipse/pleiades202003
+-->
 <project basedir="." default="jar" name="dataforms">
-	<!-- javadoc, jsdocとdataforms2.jarを作成します。-->
 	<property environment="env"/>
 	<property name="PLEIADES_HOME" value="${env.PLEIADES_HOME}"/>
 	<property name="ECLIPSE_HOME" value="../../eclipse/"/>

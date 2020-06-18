@@ -4,7 +4,7 @@ package dataforms.validator;
  * ひらがなバリデータクラス。
  *
  */
-public class HiraganaValidator extends RegexpValidator {
+public final class HiraganaValidator extends RegexpValidator {
 	/**
 	 * コンストラクタ。
 	 */

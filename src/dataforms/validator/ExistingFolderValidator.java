@@ -8,7 +8,7 @@ import dataforms.util.StringUtil;
  * フォルダ存在チェックパリデータクラス。
  *
  */
-public class ExistingFolderValidator extends FieldValidator {
+public final class ExistingFolderValidator extends FieldValidator {
 	/**
 	 * コンストラクタ。
 	 */

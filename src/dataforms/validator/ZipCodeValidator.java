@@ -4,7 +4,7 @@ package dataforms.validator;
  * 郵便番号バリデータ。
  *
  */
-public class ZipCodeValidator extends RegexpValidator {
+public final class ZipCodeValidator extends RegexpValidator {
 	/**
 	 * コンストラクタ。
 	 */

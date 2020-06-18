@@ -4,7 +4,7 @@ package dataforms.validator;
  * メールアドレスバリデータクラス。
  *
  */
-public class MailAddressValidator extends RegexpValidator {
+public final class MailAddressValidator extends RegexpValidator {
 	/**
 	 * コンストラクタ。
 	 */

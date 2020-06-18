@@ -4,7 +4,7 @@ package dataforms.validator;
  * ASCII文字バリデータクラス。
  *
  */
-public class AsciiValidator extends RegexpValidator {
+public final class AsciiValidator extends RegexpValidator {
 	/**
 	 * コンストラクタ。
 	 */

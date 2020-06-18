@@ -4,7 +4,7 @@ package dataforms.validator;
  * カタカナバリデータクラス。
  *
  */
-public class KatakanaValidator extends RegexpValidator {
+public final class KatakanaValidator extends RegexpValidator {
 	/**
 	 * コンストラクタ。
 	 */

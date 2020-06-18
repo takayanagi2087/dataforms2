@@ -20,5 +20,11 @@ public abstract class DbMatchValidator extends FieldValidator {
 		super(msgkey);
 	}
 
+/*	@Override
+	public boolean validate(Object value) throws Exception {
+		// TODO マスタをアクセスしチェックする処理を実装してください。
+		return false;
+	}
+*/
 }
 

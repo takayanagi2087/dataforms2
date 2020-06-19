@@ -10,46 +10,46 @@
 			<form id="databaseInfoForm">
 			</form>
 			<form id="queryForm">
-				<div class="formHeader">Query contition</div>
+				<div class="formHeader">検索条件</div>
 				<table class="responsive thtdthtdthtd">
 					<thead></thead>
 					<tbody>
 						<tr>
-							<th>Function</th>
+							<th>機能</th>
 							<td><select id="functionSelect"></select></td>
-							<th>Package name</th>
+							<th>パッケージ名</th>
 							<td><input type="text" id="packageName" value=""/></td>
-							<th>Class name</th>
+							<th>クラス名</th>
 							<td><input type="text" id="className" value=""/></td>
 						</tr>
 					</tbody>
 				</table>
-				<input type="submit" id="queryButton" class="largeButton" value="Query">&nbsp;
-				<input type="button" id="resetButton" class="largeButton" value="Reset">&nbsp;
+				<input type="submit" id="queryButton" class="largeButton" value="検索">&nbsp;
+				<input type="button" id="resetButton" class="largeButton" value="リセット">&nbsp;
 			</form>
 			<form id="queryResultForm">
-				<div class="formHeader">Table class list</div>
+				<div class="formHeader">テーブルクラス一覧</div>
 				<input type="hidden" id="datapath" name="datapath" value=""/>
 				<div style="width:100%;" align="left">
-					<input type="button" id="selectAllButton" value="Select all" title="Select all table classes."/>&nbsp;
-					<input type="button" id="selectNothingButton" value="Select not generated" title="Select a table class that does not have a table in DB."/>&nbsp;
-					<input type="button" id="selectDiffButton" value="Select products with different structures" title="Select a table class that has a different structure from the DB table."/>&nbsp;
-					<input type="button" id="unselectAllButton" value="Release all" title="Deselect all table classes."/>&nbsp;
+					<input type="button" id="selectAllButton" value="全選択" title="全てのテーブルクラスを選択します。"/>&nbsp;
+					<input type="button" id="selectNothingButton" value="未作成を選択" title="DB中のテーブルが存在しないテーブルクラスを選択します。"/>&nbsp;
+					<input type="button" id="selectDiffButton" value="構造が異なる物を選択" title="DBのテーブルと構造が異なるテーブルクラスを選択します。"/>&nbsp;
+					<input type="button" id="unselectAllButton" value="全解除" title="全てのテーブルクラスの選択を解除します。"/>&nbsp;
 				</div>
 				<div class="hScrollDiv">
 					<table id="queryResult" style="min-width: 1024px;">
 						<thead>
 							<tr>
 								<th>No.</th>
-								<th>Select</th>
-								<th>Class name</th>
-								<th>Table name</th>
-								<th>Comment</th>
-								<th>Index</th>
-								<th>Table</th>
-								<th>Sequence</th>
-								<th>Difference</th>
-								<th>Records</th>
+								<th>選択</th>
+								<th>クラス名</th>
+								<th>テーブル名</th>
+								<th>コメント</th>
+								<th>インデックス</th>
+								<th>テーブル有無</th>
+								<th>シーケンス生成</th>
+								<th>構造の差分</th>
+								<th>レコード件数</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -91,12 +91,12 @@
 					</table>
 				</div>
 				<div style="width:100%;" align="left">
-					<input type="button" id="updateTableButton" class="largeButton" value="Update"/>&nbsp;
-					<input type="button" id="initTableButton" class="largeButton" value="Initialization"/>&nbsp;
-					<input type="button" id="dropTableButton" class="largeButton" value="Delete"/>&nbsp;
-					<input type="button" id="exportAsInitialDataButton" class="largeButton" value="Export as initialization data"/>&nbsp;
-					<input type="button" id="exportTableButton" class="largeButton" value="Export"/>&nbsp;
-					<input type="button" id="importTableButton" class="largeButton" value="Import"/>&nbsp;
+					<input type="button" id="updateTableButton" class="largeButton" value="更新"/>&nbsp;
+					<input type="button" id="initTableButton" class="largeButton" value="初期化"/>&nbsp;
+					<input type="button" id="dropTableButton" class="largeButton" value="削除"/>&nbsp;
+					<input type="button" id="exportAsInitialDataButton" class="largeButton" value="初期化データとしてエクスポート"/>&nbsp;
+					<input type="button" id="exportTableButton" class="largeButton" value="エクスポート"/>&nbsp;
+					<input type="button" id="importTableButton" class="largeButton" value="インポート"/>&nbsp;
 				</div>
 			</form>
 		</div>

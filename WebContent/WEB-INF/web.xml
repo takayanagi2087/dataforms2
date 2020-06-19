@@ -24,7 +24,6 @@
 	</context-param>
 	<!--
 	JNDIデータソースのlookupにはjndi-prefixとdata-sourceを結合した文字列で行います。
-	WebLogicで実行する場合はjndi-prefixには空白文字を指定してください。
 	 -->
 	<!-- JNDIデータソースの前につける文字列 -->
 	<context-param>
@@ -51,7 +50,7 @@
 	</context-param>
 
 	<!--
-	このライブラリは、サーバ側の処理でdataforms.jar中のWEBリソース(html,css,jsファイル)を
+	このライブラリは、サーバ側の処理でdataforms2.jar中のWEBリソース(html,css,jsファイル)を
 	アクセスしています。dataforms.jarのMETA-INF/resources中のファイルはhttp経由で
 	取得しているため、このパラメータで指定したURLを使用してアクセスします。
 	以下のURLが指定されていない場合、リクエストされたURLをそのまま使用してアクセスします。
@@ -126,7 +125,8 @@
 		<param-name>upload-data-folder</param-name>
 		<param-value>/uploadData</param-value>
 	</context-param>
-	<!-- サポートする言語コードを指定します。
+	<!--
+		サポートする言語コードを指定します。
 		default以外の言語コードを","区切りで指定します。
 		EnumOptionNameTable等、言語ごとに名称を登録するテーブルで使用します。
 	-->

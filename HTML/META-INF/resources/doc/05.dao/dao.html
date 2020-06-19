@@ -13,10 +13,10 @@
 			QueryクラスはSQLのselect文に対応するクラスです。
 			複数のテーブルクラスを結合した問合せクラスを作成することができるようになっています。
 			DaoクラスはTableクラスのレコード追加・更新・削除、Queryクラスで定義した問合せを実行する機能を持っています。
-			dataforms.daoパッケージは複数のデータベースサーバ(Apache derby,PostgreSQL,MySQL,Oracle)に対応しています。
+			dataforms.daoパッケージは複数のデータベースサーバ(Apache Derby,PostgreSQL,MySQL,Oracle)に対応しています。
 			各データベースのサーバのSQLには方言があり、直接データベースをアクセスする場合その文法の違いを考慮してSQLを記述する必要がありました。
 			dataforms2.jarでは、これらのJavaクラスを使用することによってデータベースに依存するコードを排除することができます。
-			実際「単体テストまでは環境構築が簡単なApache derbyで作業し、結合テスト以降はPostgreSQLサーバを用意して実行」という開発を問題なく進めた実績があります。
+			実際「単体テストまでは環境構築が簡単なApache Derbyで作業し、結合テスト以降はPostgreSQLサーバを用意して実行」という開発を問題なく進めた実績があります。
 		</p>
 		<h2>Tomcatのデータベース接続設定</h2>
 		<p>
@@ -151,7 +151,7 @@
 			context.xmlに記述したJNDIデータソースの名称は"jdbc/dfdb"となっています。
 			これを変更した場合、WebContent/WEB-INF/web.xmlの以下の部分を修正する必要があります。
 		</p>
-		<div class="filecaption">context.xmlの内容</div>
+		<div class="filecaption">web.xmlの内容</div>
 		<div class="wrappre">
 			<pre>
 	&lt;!--

@@ -12,29 +12,29 @@
 	<body>
 		<div id="mainDiv">
 			<form id="queryForm">
-				<div class="formHeader">Query contition</div>
+				<div class="formHeader">検索条件</div>
 				<table class="responsive thtd">
 					<tbody>
 						<tr>
-							<th>Function</th>
+							<th>機能</th>
 							<td><select id="functionSelect"></select></td>
 						</tr>
 						<tr>
-							<th>Package name</th>
+							<th>パッケージ名</th>
 							<td><input type="text" id="packageName" /></td>
 						</tr>
 						<tr>
-							<th>Class name</th>
+							<th>問合せクラス名</th>
 							<td><input type="text" id="queryClassName" /></td>
 						</tr>
 					</tbody>
 				</table>
-				<input type="submit" id="queryButton" class="largeButton" value="Query">
-				<input type="button" id="resetButton" class="largeButton" value="Reset">&nbsp;
-				<input type="button" id="newButton" class="largeButton" value="New">
+				<input type="submit" id="queryButton" class="largeButton" value="検索">
+				<input type="button" id="resetButton" class="largeButton" value="リセット">&nbsp;
+				<input type="button" id="newButton" class="largeButton" value="新規登録">
 			</form>
 			<form id="queryResultForm">
-				<div class="formHeader">Query result</div>
+				<div class="formHeader">検索結果</div>
 				<!--
 				<input type="hidden" id="packageName" />
 				<input type="hidden" id="queryClassName" />
@@ -51,13 +51,13 @@
 									No.
 								</th>
 								<th>
-									Query class name
+									問合せクラス名
 								</th>
 								<th>
-									Comment
+									コメント
 								</th>
 								<th>
-									Sub query
+									副問合せ
 								</th>
 							</tr>
 						</thead>
@@ -78,7 +78,7 @@
 								</td>
 								<td>
 									<span id="queryResult[0].subQuery"></span>
-									<button type="button" id="queryResult[0].generateSubQueryButton">Generate sub query</button>
+									<button type="button" id="queryResult[0].generateSubQueryButton">副問合せ作成</button>
 								</td>
 							</tr>
 						</tbody>
@@ -87,25 +87,25 @@
 			</form>
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
-				<h2>Query class to generate</h2>
+				<h2>生成する問合せクラス</h2>
 				<table class="responsive thtdthtdthtd">
 					<tbody>
 						<tr>
-							<th>Java source output destination</th>
+							<th>Javaソース出力先</th>
 							<td><input type="text" id="javaSourcePath"/></td>
-							<th>Function</th>
+							<th>機能</th>
 							<td><select id="functionSelect"></select></td>
-							<th>Package name</th>
+							<th>パッケージ名</th>
 							<td><input type="text" id="packageName" /></td>
 						</tr>
 						<tr>
-							<th>Query class name</th>
+							<th>問合せクラス名</th>
 							<td><input type="text" id="queryClassName" /></td>
-							<th>Comment</th>
+							<th>コメント</th>
 							<td>
 								<input type="text" id="queryComment"/>
 							</td>
-							<th>Overwrite mode</th>
+							<th>上書きモード</th>
 							<td>
 								<select id="overwriteMode"></select>
 							</td>
@@ -117,24 +117,24 @@
 						</tr>
 					</tbody>
 				</table>
-				<h2>Main table to query</h2>
+				<h2>問合せる主テーブル</h2>
 				<table class="responsive thtdthtd">
 					<tbody>
 						<tr>
-							<th>Function</th>
+							<th>機能</th>
 							<td><select id="mainTableFunctionSelect"></select></td>
-							<th>Package</th>
+							<th>パッケージ</th>
 							<td><input type="text" id="mainTablePackageName" /></td>
 						</tr>
 						<tr>
-							<th>Class name</th>
+							<th>クラス名</th>
 							<td><input type="text" id="mainTableClassName" /></td>
-							<th>Alias</th>
+							<th>別名</th>
 							<td><input type="text" id="aliasName" /></td>
 						</tr>
 					</tbody>
 				</table>
-				<h2>List of tables to join</h2>
+				<h2>JOINするテーブルリスト</h2>
 				<table id="joinTableList" class="editableTable">
 					<thead>
 						<tr>
@@ -148,22 +148,22 @@
 								No.
 							</th>
 							<th>
-								Join method
+								結合方法
 							</th>
 							<th>
-								Function
+								機能
 							</th>
 							<th>
-								Package
+								パッケージ名
 							</th>
 							<th>
-								Table class name
+								テーブルクラス名
 							</th>
 							<th>
-								Alias
+								別名
 							</th>
 							<th>
-								Join condition
+								結合条件
 							</th>
 						</tr>
 					</thead>
@@ -208,7 +208,7 @@
 						</tr>
 					</tfoot>
 				</table>
-				<h2>Selection field list</h2>
+				<h2>選択フィールドリスト</h2>
 				<table id="selectFieldList" class="editableTable">
 					<thead>
 						<tr>
@@ -223,19 +223,19 @@
 								No.
 							</th>
 							<th>
-								Field ID.
+								フィールドID
 							</th>
 							<th>
-								Field class
+								フィールドクラス
 							</th>
 							<th>
-								Table class
+								テーブルクラス
 							</th>
 							<th>
-								Alias
+								別名
 							</th>
 							<th>
-								Comment
+								コメント
 							</th>
 						</tr>
 					</thead>
@@ -282,18 +282,18 @@
 						</tr>
 					</tfoot>
 				</table>
-				<h2>SQL field list</h2>
+				<h2>SQLフィールドリスト</h2>
 				<table id="sqlFieldList" class="editableTable">
 					<thead>
 						<tr>
 							<th class="buttonColumn" nowrap></th>
 							<th class="buttonColumn" nowrap></th>
 							<th>No.</th>
-							<th>Field ID.</th>
-							<th>Field class</th>
-							<th>Length</th>
+							<th>フィールドID</th>
+							<th>フィールドクラス</th>
+							<th>長さ</th>
 							<th>SQL</th>
-							<th>Comment</th>
+							<th>コメント</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -334,10 +334,10 @@
 					</tfoot>
 				</table>
 
-				<input type="button" id="confirmButton" class="largeButton" value="Confirm"/>
-				<input type="button" id="saveButton" class="largeButton" value="Save"/>
-				<input type="button" id="resetButton" class="largeButton" value="Reset"/>
-				<input type="button" id="backButton" class="largeButton" value="Back"/>
+				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
+				<input type="button" id="saveButton" class="largeButton" value="登録"/>
+				<input type="button" id="resetButton" class="largeButton" value="リセット"/>
+				<input type="button" id="backButton" class="largeButton" value="戻る"/>
 			</form>
 		</div>
 	</body>

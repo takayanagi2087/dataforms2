@@ -7,29 +7,29 @@
 	<body>
 		<div id="mainDiv">
 			<form id="queryForm">
-				<div class="formHeader">Query contition</div>
+				<div class="formHeader">検索条件</div>
 				<table class="responsive thtd">
 					<tbody>
 						<tr>
-							<th>Function</th>
+							<th>機能</th>
 							<td><select id="functionSelect"></select></td>
 						</tr>
 						<tr>
-							<th>Package name</th>
+							<th>パッケージ名</th>
 							<td><input type="text" id="packageName" /></td>
 						</tr>
 						<tr>
-							<th>Class name</th>
+							<th>クラス名</th>
 							<td><input type="text" id="className" /></td>
 						</tr>
 					</tbody>
 				</table>
-				<input type="submit" id="queryButton" class="largeButton" value="Query">
-				<input type="button" id="resetButton" class="largeButton" value="Reset">&nbsp;
-				<input type="button" id="newButton" class="largeButton" value="New">
+				<input type="submit" id="queryButton" class="largeButton" value="検索">
+				<input type="button" id="resetButton" class="largeButton" value="リセット">&nbsp;
+				<input type="button" id="newButton" class="largeButton" value="新規登録">
 			</form>
 			<form id="queryResultForm">
-				<div class="formHeader">Query result</div>
+				<div class="formHeader">検索結果</div>
 				<div class="hScrollDiv">
 					<table id="queryResult">
 						<thead>
@@ -38,10 +38,10 @@
 									No.
 								</th>
 								<th>
-									Page class name
+									ページクラス名
 								</th>
 								<th>
-									DAO class name
+									DAOクラス名
 								</th>
 							</tr>
 						</thead>
@@ -66,106 +66,106 @@
 				</div>
 			</form>
 			<form id="editForm">
-				In the specified package, create a java source file of the page class and various form classes to be placed in it.
-				<h2>Page class to generate</h2>
+				指定されたパッケージに、ページクラスとその中に配置する各種フォームクラスのjavaソースファイルを作成します。
+				<h2>生成するページクラス</h2>
 				<table class="responsive thtdthtdthtd">
 					<tbody>
 						<tr>
-							<th>Java source output destination</th>
+							<th>Javaソース出力先</th>
 							<td><input type="text" id="javaSourcePath" ></td>
-							<th>Function</th>
+							<th>機能</th>
 							<td><select id="functionSelect"></select></td>
-							<th>Package name</th>
+							<th>パッケージ名</th>
 							<td><input type="text" id="packageName"></td>
 						</tr>
 						<tr>
-							<th>Class name</th>
+							<th>クラス名</th>
 							<td>
 								<input type="text" id="pageClassName" >
 							</td>
-							<th>Comment</th>
+							<th>コメント</th>
 							<td>
 								<input type="text" id="pageName">
 							</td>
-							<th>Overwrite mode</th>
+							<th>上書モード</th>
 							<td>
 								<select id="pageClassOverwriteMode"></select>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<h2>DAO class to use</h2>
+				<h2>使用するDAOクラス</h2>
 				<table class="responsive thtdthtdthtd">
 					<tbody>
 						<tr>
-							<th>Function</th>
+							<th>機能</th>
 							<td>
 								<select id="daoFunctionSelect"></select>
 							</td>
-							<th>Package name</th>
+							<th>パッケージ名</th>
 							<td>
 								<input type="text" id="daoPackageName">
 							</td>
-							<th>DAO class name</th>
+							<th>DAOクラス名</th>
 							<td colspan="5">
 								<input type="text" id="daoClassName">
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<h2>Form class to create</h2>
+				<h2>作成するフォームクラス</h2>
 				<table class="responsive thtdthtdthtd">
 					<tbody>
 						<tr>
-							<th>Query form</th>
+							<th>問い合わせフォーム</th>
 							<td>
 								<input type="text" id="queryFormClassName">
 							</td>
-							<th>Overwrite mode</th>
+							<th>上書モード</th>
 							<td>
 								<select id="queryFormClassOverwriteMode"></select>
 							</td>
 							<td style="width: 25%;">
-								<input type="checkbox" id="queryFormClassFlag" value="1"><label for="queryFormClassFlag">Generate</label>
+								<input type="checkbox" id="queryFormClassFlag" value="1"><label for="queryFormClassFlag">作成する</label>
 							</td>
 						</tr>
 						<tr>
-							<th>Query result form</th>
+							<th>問い合わせ結果フォーム</th>
 							<td>
 								<input type="text" id="queryResultFormClassName">
 							</td>
-							<th>Overwrite mode</th>
+							<th>上書モード</th>
 							<td>
 								<select id="queryResultFormClassOverwriteMode"></select>
 							</td>
 							<td style="width: 25%;">
-								<input type="checkbox" id="queryResultFormClassFlag" value="1"><label for="queryResultFormClassFlag">Generate</label>
+								<input type="checkbox" id="queryResultFormClassFlag" value="1"><label for="queryResultFormClassFlag">作成する</label>
 							</td>
 						</tr>
 						<tr>
-							<th>Edit form</th>
+							<th>編集フォーム</th>
 							<td>
 								<input type="text" id="editFormClassName">
 							</td>
-							<th>Overwrite mode</th>
+							<th>上書モード</th>
 							<td>
 								<select id="editFormClassOverwriteMode"></select>
 							</td>
 							<td style="width: 25%;">
-								<input type="checkbox" id="editFormClassFlag" value="1"><label for="editFormClassFlag">Generate</label>
+								<input type="checkbox" id="editFormClassFlag" value="1"><label for="editFormClassFlag">作成する</label>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<input type="button" id="allErrorButton" class="largeButton" value="All overwrites are errors"/>
-				<input type="button" id="allSkipButton" class="largeButton" value="Do not overwrite all"/>
-				<input type="button" id="allForceOverwriteButton" class="largeButton" value="Force overwrite"/>
-				<input type="button" id="errorSkipButton" class="largeButton" value="Don't overwrite the error"/>
-				<input type="button" id="errorForceButton" class="largeButton" value="Forcibly overwrite the error"/><br/>
-				<input type="button" id="confirmButton" class="largeButton" value="Confirm"/>
-				<input type="button" id="saveButton" class="largeButton" value="Save"/>
-				<input type="button" id="resetButton" class="largeButton" value="Reset"/>
-				<input type="button" id="backButton" class="largeButton" value="Back"/>
+				<input type="button" id="allErrorButton" class="largeButton" value="全て上書きはエラー"/>
+				<input type="button" id="allSkipButton" class="largeButton" value="全て上書きしない"/>
+				<input type="button" id="allForceOverwriteButton" class="largeButton" value="全て強制上書き"/>
+				<input type="button" id="errorSkipButton" class="largeButton" value="エラーしたものは上書きしない"/>
+				<input type="button" id="errorForceButton" class="largeButton" value="エラーしたものも強制上書き"/><br/>
+				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
+				<input type="button" id="saveButton" class="largeButton" value="登録"/>
+				<input type="button" id="resetButton" class="largeButton" value="リセット"/>
+				<input type="button" id="backButton" class="largeButton" value="戻る"/>
 			</form>
 		</div>
 	</body>

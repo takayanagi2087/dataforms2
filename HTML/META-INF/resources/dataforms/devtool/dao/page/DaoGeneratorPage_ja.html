@@ -20,29 +20,29 @@
 	<body>
 		<div id="mainDiv">
 			<form id="queryForm">
-				<div class="formHeader">Query contition</div>
+				<div class="formHeader">検索条件</div>
 				<table class="responsive">
 					<tbody>
 						<tr>
-							<th>Function</th>
+							<th>機能</th>
 							<td><select id="functionSelect"></select></td>
 						</tr>
 						<tr>
-							<th>Package name</th>
+							<th>パッケージ名</th>
 							<td><input type="text" id="packageName" /></td>
 						</tr>
 						<tr>
-							<th>Class name</th>
+							<th>クラス名</th>
 							<td><input type="text" id="className" /></td>
 						</tr>
 					</tbody>
 				</table>
-				<input type="submit" id="queryButton" class="largeButton" value="Query">
-				<input type="button" id="resetButton" class="largeButton" value="Reset">&nbsp;
-				<input type="button" id="newButton" class="largeButton" value="New">
+				<input type="submit" id="queryButton" class="largeButton" value="検索">
+				<input type="button" id="resetButton" class="largeButton" value="リセット">&nbsp;
+				<input type="button" id="newButton" class="largeButton" value="新規登録">
 			</form>
 			<form id="queryResultForm">
-				<div class="formHeader">Query result</div>
+				<div class="formHeader">検索結果</div>
 				<table class="responsive">
 					<tbody>
 					</tbody>
@@ -55,10 +55,10 @@
 									No.
 								</th>
 								<th>
-									Class name
+									クラス名
 								</th>
 								<th>
-									Comment
+									comment
 								</th>
 							</tr>
 						</thead>
@@ -85,51 +85,51 @@
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
 				<input type="hidden" id="saveMode" />
-				<h2>DAO class to create</h2>
+				<h2>作成するDAOクラス</h2>
 				<p>
-					Create the DAO class referenced by the page class.<br/>
-					Specify the query to get the list or the query to get the data to be edited.<br/>
+					ページクラスが参照するDAOクラスを作成します。<br/>
+					一覧の取得用問合せや編集対象のデータを取得する問合せを指定します。<br/>
 				</p>
 				<table class="responsive thtdthtdthtd">
 					<tbody>
 						<tr>
-							<th>Java source output destination</th>
+							<th>Javaソース出力先</th>
 							<td><input type="text" id="javaSourcePath" /></td>
-							<th>Function</th>
+							<th>機能</th>
 							<td><select id="functionSelect"></select></td>
-							<th>Package name</th>
+							<th>パッケージ名</th>
 							<td><input type="text" id="packageName" /></td>
 						</tr>
 						<tr>
-							<th>Class name</th>
+							<th>クラス名</th>
 							<td><input type="text" id="daoClassName" /></td>
-							<th>Comment</th>
+							<th>コメント</th>
 							<td><input type="text" id="comment" /></td>
-							<th>Overwrite mode</th>
+							<th>上書きモード</th>
 							<td><select id="overwriteMode"></select></td>
 						</tr>
 					</tbody>
 				</table>
-				<h2>List query</h2>
+				<h2>一覧取得用問合せ</h2>
 				<p>
-					Specify the query or table to get the list.<br/>
-					When creating a page with only an edit form, specification is not necessary.
+					一覧を取得するための問合せまたはテーブルを指定します。<br/>
+					編集フォームのみのページを作成する場合、指定は不要です。
 				</p>
 				<table class="responsive thtdthtdthtd">
 					<tbody>
 						<tr>
-							<th>Function</th>
+							<th>機能</th>
 							<td><select id="listQueryFunctionSelect"></select></td>
-							<th>Package</th>
+							<th>パッケージ</th>
 							<td><input type="text" id="listQueryPackageName" /></td>
-							<th>Class name</th>
+							<th>クラス名</th>
 							<td><input type="text" id="listQueryClassName" /></td>
 						</tr>
 					</tbody>
 				</table>
-				<h2>Query for edit form</h2>
+				<h2>編集フォーム用問合せ</h2>
 				<p>
-					Specifies the query or table from which the edit form retrieves the data.
+					編集フォームがデータを取得するための問合せまたはテーブルを指定します。
 				</p>
 				<table class="responsive thtdthtdthtd" style="table-layout: fixed;">
 					<tbody>
@@ -142,22 +142,22 @@
 							<td></td>
 						</tr>
 						<tr>
-							<th>Edit form</th>
+							<th>編集フォーム</th>
 							<td colspan="5"><select id="editFormType"/></select></td>
 						</tr>
 						<tr>
-							<th class="editFormQuery">Function</th>
+							<th class="editFormQuery">機能</th>
 							<td class="editFormQuery"><select id="editFormQueryFunctionSelect"></select></td>
-							<th class="editFormQuery">Package</th>
+							<th class="editFormQuery">パッケージ</th>
 							<td class="editFormQuery"><input type="text" id="editFormQueryPackageName" /></td>
-							<th class="editFormQuery">Class name</th>
+							<th class="editFormQuery">クラス名</th>
 							<td class="editFormQuery"><input type="text" id="editFormQueryClassName" /></td>
 						</tr>
 					</tbody>
 				</table>
 				<div class="singleRecord">
 					<p>
-						Specify the relevant query or table.<br/>
+						関連する問合せまたはテーブルを指定します。<br/>
 					</p>
 					<div class="hScrollDiv">
 						<table id="multiRecordQueryList" class="editableTable" style="table-layout: fixed;">
@@ -170,13 +170,13 @@
 										No.
 									</th>
 									<th>
-										Function
+										機能
 									</th>
 									<th>
-										Package name
+										パッケージ名
 									</th>
 									<th>
-										Query class name
+										問合せクラス名
 									</th>
 								</tr>
 							</thead>
@@ -217,8 +217,8 @@
 				<div class="multiRecord">
 					<div class="hScrollDiv">
 						<p>
-							Check the key item that limits the editing target.<br/>
-							Do not check if you want to edit all records in the table with one edit form.
+							編集対象を限定するキー項目をチェックしてください。<br/>
+							1つの編集フォームでテーブル中の全レコードを編集する場合はチェックしないでください。
 						</p>
 						<table id="keyFieldList">
 							<thead>
@@ -230,16 +230,16 @@
 										No.
 									</th>
 									<th>
-										Field ID
+										フィールドID
 									</th>
 									<th>
-										Field class
+										フィールドクラス
 									</th>
 									<th>
-										Table class
+										テーブルクラス
 									</th>
 									<th>
-										comment
+										コメント
 									</th>
 								</tr>
 							</thead>
@@ -270,11 +270,11 @@
 						</table>
 					</div>
 				</div>
-				<input type="button" id="confirmButton" class="largeButton" value="Confirm"/>
-				<input type="button" id="saveButton" class="largeButton" value="Save"/>
-				<input type="button" id="resetButton" class="largeButton" value="Reset"/>
-				<input type="button" id="deleteButton" class="largeButton" value="Delete"/>
-				<input type="button" id="backButton" class="largeButton" value="Back"/>
+				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
+				<input type="button" id="saveButton" class="largeButton" value="登録"/>
+				<input type="button" id="resetButton" class="largeButton" value="リセット"/>
+				<input type="button" id="deleteButton" class="largeButton" value="削除"/>
+				<input type="button" id="backButton" class="largeButton" value="戻る"/>
 			</form>
 
 		</div>

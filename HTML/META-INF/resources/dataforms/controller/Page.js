@@ -246,7 +246,7 @@ class Page extends DataForms {
 	 * トップページに遷移します。
 	 */
 	toTopPage() {
-		window.location.href = this.contextPath + this.topPage;
+		window.location.href = this.contextPath + this.topPage + "." + currentPage.pageExt;
 	}
 
 	/**

@@ -391,6 +391,7 @@ public class DataFormsServlet extends HttpServlet {
 		this.getMessageProperties();
 		String topPage = this.getServletContext().getInitParameter("top-page");
 		if (!StringUtil.isBlank(topPage)) {
+			topPage = topPage.replaceAll("\\.df$", "");
 			Page.setTopPage(topPage);
 		}
 		String backButton = this.getServletContext().getInitParameter("browser-back-button");

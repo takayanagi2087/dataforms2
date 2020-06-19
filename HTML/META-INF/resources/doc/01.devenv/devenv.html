@@ -47,17 +47,17 @@
 			通常Tomcatからデータベースを使うには、サーバソフトを別にセットアップし、それに接続するためのjdbcドライバをTomcatにインストールします。<br/>
 			サーバーソフトの設定はいろいろ面倒なので、ここでは組込み用Apache Derbyを使用します。<br/>
 			<a href="https://db.apache.org/derby/" target="_blank">Apache Derby</a>のサイトよりdb-derby-&lt;version&gt;-bin.zipダウンロードし、
-			その中に含まれているlib/derby*.jarを全て$TOMCAT_HOME/lib(今回はC:\eclipse\pleiades202003\tomcat\9\lib)にコピーしてください。
+			その中に含まれているlib/derby*.jarを全て$CATALINA_HOME/lib(今回はC:\eclipse\pleiades202003\tomcat\9\lib)にコピーしてください。
 			これだけでデータベース(Apache Derby)が使えるようになります。
 		</p>
 		<h2>Java mailのインストール</h2>
 		<p>
 			外部ユーザ登録機能を使う場合、JavaMailをTomcatにインストールします。
 			<a href="https://github.com/javaee/javamail" target="_blank">https://github.com/javaee/javamail</a>のreleasesからjavax.mail.jarをダウンロードし、
-			$TOMCAT_HOME/libにコピーしてください。
+			$CATALINA_HOME/libにコピーしてください。
 			また、JavaBeans Activation Framework (JAF)も必要になります。
 			<a href="https://github.com/javaee/activation" target="_blank">https://github.com/javaee/activation</a>のreleasesからjavax.activation.jarをダウンロードし、
-			$TOMCAT_HOME/libにコピーしてください。
+			$CATALINA_HOME/libにコピーしてください。
 		</p>
 		<h2>プロジェクトの作成</h2>
 		<p>

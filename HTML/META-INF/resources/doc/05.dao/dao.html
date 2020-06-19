@@ -33,12 +33,12 @@
 			WebContent/META-INF/content.xmlを使用します。
 		</p>
 		<p>
-			Tomcat9ではデータベースの接続設定を$TOMCAT_HOME/conf/context.xmlにも記述することができます。
+			Tomcat9ではデータベースの接続設定を$CATALINA_HOME/conf/context.xmlにも記述することができます。
 			(Eclipse上のTomcatの場合"Servers/ローカルホスト の Tomcat9 (Java11)-config/context.xml"がこれに当たります。)
-			WebContent/META-INF/content.xmlデータベースの接続設定を削除し、$TOMCAT_HOME/conf/context.xmlにデータベース接続設定を移動しても同様に動作します。
+			WebContent/META-INF/content.xmlデータベースの接続設定を削除し、$CATALINA_HOME/conf/context.xmlにデータベース接続設定を移動しても同様に動作します。
 			この状態で*.warファイルを作成すると、*.warファイル中に接続設定は存在しないため、Tomcatのデータベース接続設定が使用されます。
 			Eclipse上のTomcatはテスト用のデータベースに接続し、本番用サーバ上のTomcatには本番用データベースに接続するように設定しておきます。
-			こうしておくと、Eclipseで*.warファイルを作成し本番用サーバの$TOMCAT_HOME/webappsにコピーするだけで、本番環境へのデプロイが完了します。
+			こうしておくと、Eclipseで*.warファイルを作成し本番用サーバの$CATALINA_HOME/webappsにコピーするだけで、本番環境へのデプロイが完了します。
 		</p>
 		<h3>データベース接続設定の記述内容</h3>
 		<p>

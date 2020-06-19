@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
-Ant-Version: Apache Ant 1.10.7
+Ant-Version: Apache Ant 1.10.8
 Created-By: Masahiko Takayanagi
 Built-By: Masahiko Takayanagi
 Implementation-Vendor: Masahiko Takayanagi
 Implementation-Title: Dataforms java web application framework
-Implementation-Version: 2.00-b752
-CreatedTime: 2020/06/18 08:38:01.086
+Implementation-Version: 2.00-b753
+CreatedTime: 2020/06/19 13:57:05.228
 

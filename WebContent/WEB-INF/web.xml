@@ -12,75 +12,20 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
+
+	<!--
+		開発ツール関連設定
+	 -->
 	<!-- 開発ツールのjavaソース出力フォルダを指定します。 -->
 	<context-param>
 		<param-name>java-source-path</param-name>
 		<param-value>/eclipse/workspaceDataforms2/dataforms2/src</param-value>
 	</context-param>
+
 	<!-- 開発ツールのhtml,javascript等のWEBリソース出力フォルダを指定します。 -->
 	<context-param>
 		<param-name>web-source-path</param-name>
 		<param-value>/eclipse/workspaceDataforms2/dataforms2/WebContent</param-value>
-	</context-param>
-	<!--
-	JNDIデータソースのlookupにはjndi-prefixとdata-sourceを結合した文字列で行います。
-	 -->
-	<!-- JNDIデータソースの前につける文字列 -->
-	<context-param>
-		<param-name>jndi-prefix</param-name>
-		<param-value>java:/comp/env/</param-value>
-	</context-param>
-	<!-- 使用するJNDIデータソースを指定する -->
-	<context-param>
-		<param-name>data-source</param-name>
-		<param-value>jdbc/dfdb</param-value>
-	</context-param>
-	<!--
-		メールセッション名。
-		メール送信機能を使わない場合は以下の設定をコメントアウトしてください。
-	 -->
-	<context-param>
-		<param-name>mail-session</param-name>
-		<param-value>mail/Session</param-value>
-	</context-param>
-	<!-- メール送信元アドレス。 -->
-	<context-param>
-		<param-name>mail-from</param-name>
-		<param-value>hoge@hogehoge.jp</param-value>
-	</context-param>
-
-	<!--
-	このライブラリは、サーバ側の処理でdataforms2.jar中のWEBリソース(html,css,jsファイル)を
-	アクセスしています。dataforms.jarのMETA-INF/resources中のファイルはhttp経由で
-	取得しているため、このパラメータで指定したURLを使用してアクセスします。
-	以下のURLが指定されていない場合、リクエストされたURLをそのまま使用してアクセスします。
-	そのためSSLを使用した場合、サーバー側のWEBリソースアクセスもSSL経由になってしまい、
-	JavaのHTTPClientのセキュリティ設定を適切に行わないと、セキュリティーエラーになってしまいます。
-	またHTTPClientを適切に設定をしても、SSL経由のため効率は良くありません。
-	SSLを使用する場合はアプリケーションサーバのhttpポートを指定したURLを指定してください。
-	 -->
-	<!--
-	<context-param>
-		<param-name>web-resource-url</param-name>
-		<param-value>http://localhost:8080</param-value>
-	</context-param>
-	-->
-	<!-- 使用する文字コードを指定します。-->
-	<context-param>
-		<param-name>encoding</param-name>
-		<param-value>utf-8</param-value>
-	</context-param>
-
-	<!-- debugログに出力するjsonを整形するかどうかを指定します。-->
-	<context-param>
-		<param-name>json-debug</param-name>
-		<param-value>true</param-value>
-	</context-param>
-
-	<!-- 一時ファイルを置くパスを指定します。 -->
-	<context-param>
-		<param-name>temp-dir</param-name>
-		<param-value>/tmp</param-value>
 	</context-param>
 
 	<!-- 開発ツールでデータをエクスポート/インポートする際に使用するパスを指定します。 -->
@@ -88,23 +33,16 @@
 		<param-name>export-import-dir</param-name>
 		<param-value>/tmp/data</param-value>
 	</context-param>
-	<!-- jqueryなどの標準ライブラリなどを読み込むhtmlを指定します。 -->
-	<context-param>
-		<param-name>css-and-scripts</param-name>
-		<param-value>/frame/jslib.html</param-value>
-	</context-param>
-	<!-- エラーページのパスを指定します。 -->
-	<context-param>
-		<param-name>error-page</param-name>
-		<param-value>/dataforms/app/errorpage/ErrorPage</param-value>
-	</context-param>
+
 	<!--
-		 クライアントバリデーションの有無をしています。
-	 -->
+		開発ツールの無効フラグを設定します。
+		システムリリース時には無効にしたほうが安全です。
+	-->
 	<context-param>
-		<param-name>client-validation</param-name>
-		<param-value>true</param-value>
+		<param-name>disable-developer-tools</param-name>
+		<param-value>false</param-value>
 	</context-param>
+
 	<!--
 		 クライアントログレベルを指定します。
 		 javascriptでのコンソール出力はconsoleではなくloggerを使用してください。
@@ -120,11 +58,48 @@
 		<!-- param-value>error</param-value -->
 		<!-- param-value>none</param-value -->
 	</context-param>
-	<!-- アップロードデータを保存するフォルダを指定します。 -->
+
+	<!--
+		このライブラリはサーバ側の処理でdataforms2.jar中のWEBリソース(html,css,jsファイル)を
+		アクセスしています。dataforms2.jarのMETA-INF/resources中のファイルはhttp経由で
+		取得しているため、このパラメータで指定したURLを使用してアクセスします。
+		以下のURLが指定されていない場合、リクエストされたURLをそのまま使用してアクセスします。
+		そのためSSLを使用した場合、サーバー側のWEBリソースアクセスもSSL経由になってしまい効率は良くありません。
+		SSLを使用する場合はアプリケーションサーバのhttpポートを指定したURLを指定してください。
+	 -->
+	<!--
 	<context-param>
-		<param-name>upload-data-folder</param-name>
-		<param-value>/uploadData</param-value>
+		<param-name>web-resource-url</param-name>
+		<param-value>http://localhost:8080</param-value>
 	</context-param>
+	-->
+
+	<!--
+		データベース初期化時に作成するユーザのレベルを指定します。
+	 -->
+	<context-param>
+		<param-name>initialize-user-level</param-name>
+		<param-value>developer</param-value>
+		<!--
+		<param-value>developer</param-value>
+		<param-value>admin</param-value>
+		-->
+	</context-param>
+
+	<!--
+		データベースの作成時に、初期化するパッケージリストを指定します。
+		パッケージ名は,区切りで複数設定することができます。
+		データベースを作成するときに、このパッケージリストを参照し、
+		このパッケージ中のテーブルクラスに対応するテーブルを作成します。
+		なおdataforms.appパッケージは必ず指定してください。
+	-->
+	<context-param>
+		<param-name>initialize-package-list</param-name>
+		<param-value>
+			dataforms.app
+		</param-value>
+	</context-param>
+
 	<!--
 		サポートする言語コードを指定します。
 		default以外の言語コードを","区切りで指定します。
@@ -142,6 +117,226 @@
 		<param-value>en</param-value>
 	</context-param>
 	 -->
+
+	<!--
+		自動ログインの有効/無効を設定します。
+	 -->
+	<context-param>
+		<param-name>auto-login</param-name>
+		<param-value>enabled</param-value>
+		<!--
+		<param-value>enabled</param-value>
+		<param-value>disabled</param-value>
+		-->
+	</context-param>
+
+	<!--
+		自動ログイン関連クッキーのSecure設定。
+		httpsを使用する場合trueに設定してください。
+	 -->
+	<context-param>
+		<param-name>secure-auto-login-cookie</param-name>
+		<param-value>false</param-value>
+		<!--
+		<param-value>true</param-value>
+		<param-value>false</param-value>
+		-->
+	</context-param>
+
+	<!--
+		Babelを使用したIE対応。
+
+		IEの使用はお勧めしませんが、どうしてもIEをサポートする必要がある場合、
+		サーバーサイドにBabelをインストールしallowIEをtrueにしてください。
+		さらに、babelCommandパラメータにES6->ES5変換を行うコマンドを指定してください。
+		この設定でIEの初回アクセス時にES6->ES5変換を行います。
+		そのためIEの初回アクセスは遅くなりますが、二回目以降は変換結果をbabelWork保存しているため、
+		ES6->ES5変換は動作しません。
+		babelCommandに"standalone"を指定すると、babel-standaloneを使用してIE側でES6->ES5変換を行うようになります。
+		この場合サーバーサイドにbabelをインストールしなくても動作しますが、実用的なものではありません。
+		babelをインストールしていない開発環境で、IEのテストが必要な場合に使用してください。
+	 -->
+	<context-param>
+		<param-name>ie-support</param-name>
+		<param-value>
+			{
+				// IEの許可設定。
+				// true:babelを使用してIEをサポート,false:IEはエラー。
+				"allowIE": true
+				// BabelがES5のソースを展開するフォルダ
+				, "babelWork": "/tmp/babel"
+				// サーバーサイドでES6->ES5変換を行うコマンドを記述します。
+				, "babelCommand": "C:/Users/takay/AppData/Roaming/npm/babel.cmd --presets C:/Users/takay/AppData/Roaming/npm/node_modules/babel-preset-es2015"
+				// , "babelCommand": "standalone"
+			}
+		</param-value>
+	</context-param>
+
+	<!--
+		JNDIデータソースのlookupにはjndi-prefixとdata-sourceを結合した文字列で行います。
+	 -->
+	<!-- JNDIデータソースの前につける文字列 -->
+	<context-param>
+		<param-name>jndi-prefix</param-name>
+		<param-value>java:/comp/env/</param-value>
+	</context-param>
+
+	<!-- 使用するJNDIデータソースを指定する -->
+	<context-param>
+		<param-name>data-source</param-name>
+		<param-value>jdbc/dfdb</param-value>
+	</context-param>
+
+	<!--
+		メールセッション名。
+		メール送信機能を使わない場合は以下の設定をコメントアウトしてください。
+	 -->
+	<context-param>
+		<param-name>mail-session</param-name>
+		<param-value>mail/Session</param-value>
+	</context-param>
+
+	<!-- メール送信元アドレス。 -->
+	<context-param>
+		<param-name>mail-from</param-name>
+		<param-value>hoge@hogehoge.jp</param-value>
+	</context-param>
+
+	<!-- フレームレイアウトのパスを指定します。 -->
+	<context-param>
+		<param-name>frame-path</param-name>
+		<param-value>/frame/default</param-value>
+	</context-param>
+
+	<!--
+		ページのオーバーライドをJSON形式で指定します。
+		既存ページを組み替える場合、新たにページクラスを作成し
+		既存ページクラスを置き換える設定を以下に記述します。
+		またdataforms.app.base.page.HiddenPageに置き換えれば
+		メニューにも表示されず、アクセスできないページになります。
+		つまり既存ページを隠すことができます。
+	 -->
+	<context-param>
+		<param-name>page-override</param-name>
+		<param-value>
+			[
+				// ダミー
+				["", ""]
+				// パスワード変更ページを隠す場合は以下を有効にしてください
+				// , ["dataforms.app.user.page.ChangePasswordPage", "dataforms.app.base.page.HiddenPage"]
+				// ユーザ情報変更ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.UserSelfEditPage", "dataforms.app.base.page.HiddenPage"]
+				//
+				// 外部ユーザ登録関連(外部ユーザ登録機能を無効にするには以下の2ページを無効にしてください)
+				//
+				// ユーザ登録ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.UserRegistPage", "dataforms.app.base.page.HiddenPage"]
+				// ユーザ有効化ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.UserEnablePage", "dataforms.app.base.page.HiddenPage"]
+				//
+				// パスワードリセット機能(パスワードリセット機能を無効にするには以下の2ページを無効にしてください)
+				//
+				// パスワードリセットメール送信ページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.PasswordResetMailPage", "dataforms.app.base.page.HiddenPage"]
+				// パスワードリセットページを隠す場合は以下を有効にしてください。
+				// , ["dataforms.app.user.page.PasswordResetPage", "dataforms.app.base.page.HiddenPage"]
+			]
+		</param-value>
+	</context-param>
+
+	<!--
+		以下のパスはdataforms2.jarで用意してあるパスが指定されています。
+		独自のページを実装した場合切り替えることができます。
+	 -->
+	<!--
+		トップページを指定します。
+		このページはシステムやユーザの状態に応じて、ログイン画面やサイトマップに遷移します。
+	 -->
+	<context-param>
+		<param-name>top-page</param-name>
+		<param-value>/dataforms/app/top/page/TopPage</param-value>
+	</context-param>
+
+	<!--
+		外部ユーザ登録ページのパス。
+	 -->
+	<context-param>
+		<param-name>user-regist-page</param-name>
+		<param-value>/dataforms/app/user/page/UserRegistPage</param-value>
+	</context-param>
+
+	<!--
+		外部ユーザ登録ページ設定情報。
+	 -->
+	<context-param>
+		<param-name>user-regist-page-config</param-name>
+		<param-value>
+			{
+				"loginIdIsMail": true, // メールアドレスをログインIDとする。
+				"mailCheck": true, // メールアドレスのチェックを行う。
+				"sendUserEnableMail": true // ユーザ有効化ページのURLをメールする。
+			}
+		</param-value>
+	</context-param>
+
+	<!--
+		外部ユーザ有効化ページのパス。
+	 -->
+	<context-param>
+		<param-name>user-enable-page</param-name>
+		<param-value>/dataforms/app/user/page/UserEnablePage</param-value>
+	</context-param>
+
+	<!--
+		パスワードリセットメール送信ページのパス。
+		この設定を有効にすると、ログイン画面のパスワードリセットリンクが表示されます。
+	 -->
+	<context-param>
+		<param-name>password-reset-mail-page</param-name>
+		<param-value>/dataforms/app/user/page/PasswordResetMailPage</param-value>
+	</context-param>
+
+	<!--
+		パスワードリセットページのパス。
+	 -->
+	<context-param>
+		<param-name>password-reset-page</param-name>
+		<param-value>/dataforms/app/user/page/PasswordResetPage</param-value>
+	</context-param>
+
+
+	<!-- 一時ファイルを置くパスを指定します。 -->
+	<context-param>
+		<param-name>temp-dir</param-name>
+		<param-value>/tmp</param-value>
+	</context-param>
+
+	<!-- jqueryなどの標準ライブラリなどを読み込むhtmlを指定します。 -->
+	<context-param>
+		<param-name>css-and-scripts</param-name>
+		<param-value>/frame/jslib.html</param-value>
+	</context-param>
+
+	<!-- エラーページのパスを指定します。 -->
+	<context-param>
+		<param-name>error-page</param-name>
+		<param-value>/dataforms/app/errorpage/ErrorPage</param-value>
+	</context-param>
+
+	<!--
+		 クライアントバリデーションの有無をしています。
+	 -->
+	<context-param>
+		<param-name>client-validation</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!-- アップロードデータを保存するフォルダを指定します。 -->
+	<context-param>
+		<param-name>upload-data-folder</param-name>
+		<param-value>/uploadData</param-value>
+	</context-param>
+
 	<!--
 		暗号化設定
 	 -->
@@ -180,6 +375,7 @@
 			}
 		</param-value>
 	</context-param>
+
 	<!--
 		ブラウザがクッキーを許可していることを確認する場合、trueを指定してください。
 	-->
@@ -193,16 +389,19 @@
 		<param-name>client-messages</param-name>
 		<param-value>/frame/messages/ClientMessages</param-value>
 	</context-param>
+
 	<!-- サーバ側で使用するメッセージリソースの名称を指定します。 -->
 	<context-param>
 		<param-name>messages</param-name>
 		<param-value>/frame/messages/Messages</param-value>
 	</context-param>
+
 	<!-- クライアントに送信して使用するメッセージリソースの名称を指定します。 -->
 	<context-param>
 		<param-name>app-client-messages</param-name>
 		<param-value>/frame/messages/AppClientMessages</param-value>
 	</context-param>
+
 	<!-- サーバ側で使用するメッセージリソースの名称を指定します。 -->
 	<context-param>
 		<param-name>app-messages</param-name>
@@ -222,105 +421,8 @@
 		<param-name>client-message-transfer</param-name>
 		<param-value>CLIENT_ONLY</param-value>
 	</context-param>
-	<!-- フレームレイアウトのパスを指定します。 -->
-	<context-param>
-		<param-name>frame-path</param-name>
-		<param-value>/frame/default</param-value>
-	</context-param>
-	<!--
-		トップページを指定します。
-		基本的にTopPage.dfを指定しておきます。
-		このページはシステムやユーザの状態に応じて、ログイン画面やサイトマップに遷移します。
-	 -->
-	<context-param>
-		<param-name>top-page</param-name>
-		<param-value>/dataforms/app/top/page/TopPage.df</param-value>
-	</context-param>
-	<!--
-		外部ユーザ登録ページのパス。
-	 -->
-	<context-param>
-		<param-name>user-regist-page</param-name>
-		<param-value>/dataforms/app/user/page/UserRegistPage</param-value>
-	</context-param>
-	<!--
-		外部ユーザ登録ページ設定情報。
-	 -->
-	<context-param>
-		<param-name>user-regist-page-config</param-name>
-		<param-value>
-			{
-				"loginIdIsMail": true, // メールアドレスをログインIDとする。
-				"mailCheck": true, // メールアドレスのチェックを行う。
-				"sendUserEnableMail": true // ユーザ有効化ページのURLをメールする。
-			}
-		</param-value>
-	</context-param>
-	<!--
-		外部ユーザ有効化ページのパス。
-	 -->
-	<context-param>
-		<param-name>user-enable-page</param-name>
-		<param-value>/dataforms/app/user/page/UserEnablePage</param-value>
-	</context-param>
-	<!--
-		パスワードリセットメール送信ページのパス。
-		この設定を有効にすると、ログイン画面のパスワードリセットリンクが表示されます。
-	 -->
-	<context-param>
-		<param-name>password-reset-mail-page</param-name>
-		<param-value>/dataforms/app/user/page/PasswordResetMailPage</param-value>
-	</context-param>
-	<!--
-		パスワードリセットページのパス。
-	 -->
-	<context-param>
-		<param-name>password-reset-page</param-name>
-		<param-value>/dataforms/app/user/page/PasswordResetPage</param-value>
-	</context-param>
-		<!--
-		ページのオーバーライドをJSON形式で指定します。
-		既存ページを組み替える場合、新たにページクラスを作成し
-		既存ページクラスを置き換える設定を以下に記述します。
-		またdataforms.app.base.page.HiddenPageに置き換えれば
-		メニューにも表示されず、アクセスできないページになります。
-		つまり既存ページを隠すことができます。
-	 -->
-	<context-param>
-		<param-name>page-override</param-name>
-		<param-value>
-			[
-				// ダミー
-				["", ""]
-				// パスワード変更ページを隠す場合は以下を有効にしてください
-				// , ["dataforms.app.user.page.ChangePasswordPage", "dataforms.app.base.page.HiddenPage"]
-				// ユーザ情報変更ページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.UserSelfEditPage", "dataforms.app.base.page.HiddenPage"]
-				//
-				// 外部ユーザ登録関連(外部ユーザ登録機能を無効にするには以下の2ページを無効にしてください)
-				//
-				// ユーザ登録ページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.UserRegistPage", "dataforms.app.base.page.HiddenPage"]
-				// ユーザ有効化ページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.UserEnablePage", "dataforms.app.base.page.HiddenPage"]
-				//
-				// パスワードリセット機能(パスワードリセット機能を無効にするには以下の2ページを無効にしてください)
-				//
-				// パスワードリセットメール送信ページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.PasswordResetMailPage", "dataforms.app.base.page.HiddenPage"]
-				// パスワードリセットページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.PasswordResetPage", "dataforms.app.base.page.HiddenPage"]
-			]
-		</param-value>
-	</context-param>
-	<!--
-		開発ツールの無効フラグを設定します。
-		システムリリース時には無効にしたほうが安全です。
-	-->
-	<context-param>
-		<param-name>disable-developer-tools</param-name>
-		<param-value>false</param-value>
-	</context-param>
+
+
 	<!--
 		ブラウザの戻るボタンの動作を設定します。
 		disabledを指定した場合、戻るボタンが機能しなくなります。
@@ -332,54 +434,6 @@
 		<param-value>enabled</param-value>
 		<param-value>disabled</param-value>
 		-->
-	</context-param>
-	<!--
-		自動ログインの有効/無効を設定します。
-	 -->
-	<context-param>
-		<param-name>auto-login</param-name>
-		<param-value>enabled</param-value>
-		<!--
-		<param-value>enabled</param-value>
-		<param-value>disabled</param-value>
-		-->
-	</context-param>
-	<!--
-		自動ログイン関連クッキーのSecure設定。
-		httpsを使用する場合trueに設定してください。
-	 -->
-	<context-param>
-		<param-name>secure-auto-login-cookie</param-name>
-		<param-value>false</param-value>
-		<!--
-		<param-value>true</param-value>
-		<param-value>false</param-value>
-		-->
-	</context-param>
-	<!--
-		データベース初期化時に作成するユーザのレベルを指定します。
-	 -->
-	<context-param>
-		<param-name>initialize-user-level</param-name>
-		<param-value>developer</param-value>
-		<!--
-		<param-value>developer</param-value>
-		<param-value>admin</param-value>
-		-->
-	</context-param>
-	<!--
-		データベースの作成時に、初期化するパッケージリストを指定します。
-		パッケージ名は,区切りで複数設定することができます。
-		データベースを作成するときに、このパッケージリストを参照し、このパッケージ中のテーブルクラスに対応するテーブルを作成します。
-		なおdataforms.appパッケージは必ず指定してください。
-	-->
-	<context-param>
-		<param-name>initialize-package-list</param-name>
-		<param-value>
-			dataforms.app
-			,dataforms.debug
-			,sample
-		</param-value>
 	</context-param>
 	<!--
 		DataFormsServlet#init,destoryで何らかの処理が必要な場合、ServletInstanceBeanから派生したクラスを作成し
@@ -521,32 +575,23 @@
 			true
 		</param-value>
 	</context-param>
+
 	<!--
-		Babelを使用したIE対応。
-		IEの使用はお勧めしませんが、どうしてもIEをサポートする必要がある場合、
-		サーバーサイドにBabelをインストールしallowIEをtrueにしてください。
-		さらに、babelCommandパラメータにES6->ES5変換を行うコマンドを指定してください。
-		この設定でIEの初回アクセス時にES6->ES5変換を行います。
-		そのためIEの初回アクセスは遅くなりますが、二回目以降は変換結果をbabelWork保存しているため、ES6->ES5変換は動作しません。
-		babelCommandに"standalone"を指定すると、babel-standaloneを使用してIE側でES6->ES5変換を行うようになります。
-		この場合サーバーサイドにbabelをインストールしなくても動作しますが、実用的なものではありません。
-		babelをインストールしていない開発環境で、IEのテストが必要な場合に使用してください。
-	 -->
+		debugログに出力するjsonを整形するかどうかを指定します。
+		trueの場合成形されたjsonをログ出力に出力します。
+	-->
 	<context-param>
-		<param-name>ie-support</param-name>
-		<param-value>
-			{
-				// IEの許可設定。
-				// true:babelを使用してIEをサポート,false:IEはエラー。
-				"allowIE": true
-				// BabelがES5のソースを展開するフォルダ
-				, "babelWork": "/tmp/babel"
-				// サーバーサイドでES6->ES5変換を行うコマンドを記述します。
-				, "babelCommand": "C:/Users/takay/AppData/Roaming/npm/babel.cmd --presets C:/Users/takay/AppData/Roaming/npm/node_modules/babel-preset-es2015"
-				// , "babelCommand": "standalone"
-			}
-		</param-value>
+		<param-name>json-debug</param-name>
+		<param-value>true</param-value>
 	</context-param>
+
+	<!-- 使用する文字コードを指定します。-->
+	<context-param>
+		<param-name>encoding</param-name>
+		<param-value>utf-8</param-value>
+	</context-param>
+
+
 	<!-- セッションタイムアウト -->
 	<session-config>
 		<session-timeout>30</session-timeout>

@@ -61,7 +61,7 @@ class DocFramePage extends BasePage {
 	 * docFrame内に各機ドキュメントが読み込まれた際の処理を行います。
 	 * @param {jQuery} docFrame ドキュメントが読み込まれたiframe。
 	 */
-	onLoadDocFrame = function(docFrame) {
+	onLoadDocFrame(docFrame) {
 		var src = docFrame.attr("src");
 		if (src.indexOf("javadoc") < 0 && src.indexOf("jsdoc") < 0) {
 			this.setH2No(docFrame);
@@ -162,14 +162,17 @@ class DocFramePage extends BasePage {
 			var title = $(this).prev("figcaption").text();
 			$("[" + thisPage.getIdAttribute() + "='imageViewer']").attr("src", url + "/" + img);
 			var image = new Image();
+			image.onload = function() {
+				$("[" + thisPage.getIdAttribute() + "='imageDialog']").dialog({
+					modal: true
+					,width: image.width + 34
+					,height: image.height + 64
+					,title: title
+					,resizable: true
+				});
+			};
 			image.src = url + "/" + img;
-			$("[" + thisPage.getIdAttribute() + "='imageDialog']").dialog({
-				modal: true
-				,width: image.width + 34
-				,height: image.height + 64
-				,title: title
-				,resizable: true
-			});
+			logger.log("image.src=" + image.src);
 		});
 	}
 }

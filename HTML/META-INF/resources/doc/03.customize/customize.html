@@ -6,7 +6,7 @@
 		<title></title>
 	</head>
 	<body>
-		<h1><span>4.</span>カスタマイズ</h1>
+		<h1><span>4.</span>ページのカスタマイズ</h1>
 		<p>
 			開発ツールで作成したコードを見ていただければ、シンプルで可読性の高いものになっていることがわかると思います。
 			この章では、前章で作成したページに機能を追加していくポイントを説明していきます。
@@ -18,7 +18,7 @@
 			このWebComponentのクラス階層はJavaとJavascriptで全く同じ構造になっており、
 			Javaのクラスにはサーバの動作が、Javascriptのクラスにはブラウザの動作が記述され、
 			JavascriptとJavaの同名のクラスがHTTPで連携して動作する構造になっています。
-			各クラスの機能はjavadoc,jsdocを参照してください。
+			各クラスの機能はJavadoc,Jsdocを参照してください。
 		</p>
 		<p>
 			サーバ側の処理をカスタマイズする場合は、開発ツールで作成したJavaクラスを修正していきます。
@@ -31,10 +31,9 @@
 			には、対応するJavasciptクラス"dataforms/dataforms/controller/EditForm.js"が存在します。
 			dataforms.controller.EditFormから派生したXXXEditForm.javaを作成し、それを持つページを実行すると、
 			ページのロード時にEditForm.jsに記載された初期化処理が動作します。
-			開発ツールを使い、JavaクラスXXXEditForm.javaに対応するJavascriptクラスXXXEditForm.js
-			を作成すると、XXXEditForm.jsに記載された初期化処理が動作するようになります。
-			つまり、ブラウザ側の動作を独自に定義したい場合にJavascriptクラスを作成し、
-			必要な機能を追記することができるようになっています。
+			開発ツールを使い、JavaクラスXXXEditForm.javaに対応するJavascriptクラスXXXEditForm.jsを作成すると、
+			XXXEditForm.jsに記載された初期化処理が動作するようになります。
+			ブラウザ側の動作を独自に定義したい場合は、Javascriptクラスを作成し必要な機能を追記してください。
 		</p>
 		<h2>カスタマイズの例</h2>
 		<h3>ページの使用権限の変更</h3>
@@ -218,7 +217,8 @@ public class SampleQueryForm extends QueryForm {
 		<p>
 			SQLのwhere句は、QueryFormに設定されたフィールド情報とQueryFormから入力されたデータから自動的に作成されます。
 			この機能はQueryクラスとDaoクラスで実現しています。
-			Queryクラスは、SQLの問い合わせ(select文)の機能をJavaのクラスで実現したもので、複数のテーブルのjoinの機能もサポートしています。
+			QueryクラスはSQLの問い合わせ(select文)の機能をJavaのクラスで実現したもので、
+			複数のテーブルをjoinする機能をサポートしています。
 		</p>
 		<p>
 			フィールド"sampleText"は、setMatchType(MatchType.FULL)と設定されています。
@@ -398,7 +398,7 @@ public class SampleEditForm extends EditForm {
 		<p>
 			また、SampleTextFieldを英数字のみ許可するようにするには、フィールドクラスにバリデータを追加します。
 			以下のソースでは、SampleTextFieldのonBindメソッドで、バリデータを追加しています。
-			このメソッドは、フィールドがフォームに追加されたタイミングで呼び出されます。
+			このonBindメソッドは、フィールドがフォームに追加されたタイミングで呼び出されます。
 			フィールドにバリデータを追加すれば、そのフィールドを配置したすべてのフォームでバリデータが動作します。
 		</p>
 		<div class="filecaption">フィールドクラスにバリデータを追加</div>
@@ -468,7 +468,7 @@ public class SampleTextField extends VarcharField {
 		</p>
 		<h3>フォームバリデーション(サーバー側)</h3>
 		<p>
-			複数のフィールドの関係をチェックする場合は、すでに存在するフォームバリデーションメソッドをオーバーライドします。
+			複数フィールドの関係をチェックする場合は、すでに存在するフォームバリデーションメソッドをオーバーライドします。
 			フォームクラスのバリデーションメソッドは、全てのフィールドのバリデータを呼び出すようになっています。
 			全てのフィールドバリデータのチェックで問題なければ、validateFormメソッドを呼び出すようになっています。
 			FormクラスのvalidateFormメソッドは何もしないメソッドになっているため、SampleEditFormクラスでオーバーライドし、
@@ -782,7 +782,7 @@ public class SampleEditForm extends EditForm {
 			</pre>
 		</div>
 		<p>
-			サンプルページの編集フォームのテキストに文字を入力すると
+			サンプルページの編集フォームのテキストに文字を入力すると、
 			sampleテーブルの登録データから入力候補の一覧を表示します。
 		</p>
 		<figure>
@@ -843,8 +843,8 @@ public class SampleEditForm extends EditForm {
 		</div>
 		<p>
 			このボタンに処理を割り当てるには、SampleEditFormのattachメソッドでイベント処理を追加します。
-			フォームのfindメソッドはjQueryのセレクタを指定することができます。
-			この処理で、「印刷」ボタンにイベントハンドラを登録しています。
+			フォームのgetメソッドにHTML要素のID.を指定すると、その要素のjQueryオブジェクトを取得することができます。
+			この処理で「印刷」ボタンにイベントハンドラを登録しています。
 		</p>
 		<div class="filecaption">SampleEditForm.jsの修正箇所</div>
 		<div class="wrappre">
@@ -1102,7 +1102,7 @@ class SampleEditForm extends EditForm {
 
 		<p class="topic">
 			列挙型関連テーブルの言語指定は、デフォルト言語(default)と日本語(ja)が指定できるようになっています。
-			これは、web.xmlのsupport-languageパラメータで変更することができます。
+			別の言語を追加したい場合、web.xmlのsupport-languageパラメータに言語コードを追加してください。
 		</p>
 		<h3>テーブル構造の更新</h3>
 		<p>
@@ -1173,7 +1173,7 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 			</pre>
 		</div>
 		<p>
-			Tomcatを再起動しテーブル管理でSampleTableを検索すると、以下のようにSampleTable.javaで定義されたテーブル構造と
+			Tomcatを再起動し「テーブル管理」でSampleTableを検索すると、以下のようにSampleTable.javaで定義されたテーブル構造と
 			テータベース中のテーブル構造に差があることが検出されます。
 			ここでSampleTableをチェックし「更新」ボタンを押下すると、テーブル構造を構成しなおすことができます。
 		</p>
@@ -1191,7 +1191,7 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 		</figure>
 		<h3>ページの修正</h3>
 		<p>
-			テーブルに追加したsampleSelectフィールドを一覧表示し入力できるようにするにはSamplePage.htmlを以下の様に編集します。
+			テーブルに追加したsampleSelectフィールドを有効にするには、SamplePage.htmlを以下の様に編集します。
 		</p>
 		<div class="filecaption">編集フォームにフィールドを追加(SamplePage.html)</div>
 		<div class="wrappre">
@@ -1316,7 +1316,7 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 			</pre>
 		</div>
 		<p>
-			クリーンビルドの後新規登録フォームを表示すると、以下のように選択肢が自動的に取得されているのがわかります。
+			Tomcatを再起動した後、新規登録フォームを表示すると、以下のように選択肢が自動的に取得されているのがわかります。
 			SampleEditForm.javaでは、SampleTable中のフィールドをすべて配置するようになっているため、この状態でデータの登録も可能になっています。
 		</p>
 		<figure>

@@ -524,8 +524,8 @@ from multi_test as  m
 			</pre>
 		</div>
 		<p>
-			このサンプルではこのHTMLで問題なく動作します。
-			しかしSample2EditFormをSample2Page以外のページにも配置したい場合、
+			このサンプルは問題なく動作します。
+			しかし、Sample2EditFormをSample2Page以外のページにも配置したい場合、
 			このフォームを配置した別のページにもフォームのHTMLを作成することになってしまいます。
 		</p>
 		<p>
@@ -736,7 +736,7 @@ from multi_test as  m
 			constructorにはこのクラスのインスタンスの初期化に必要な処理を記述します。
 			attachメソッドはHTMLのタグに対してWebComponentのインスタンスを結びつけるタイミングで呼び出されるメソッドです。
 			この処理で必要に応じでイベントハンドラを登録します。
-			attachメソッドには独自に追加したボタン押下時の処理がコメントアウトされています。
+			Formクラスのattachメソッドには独自に追加したボタン押下時の処理がコメントアウトされています。
 			この処理を参考にして、独自の処理を実装してください。
 		</p>
 		<p>
@@ -983,9 +983,9 @@ class Sample2EditForm extends EditForm {
 		</div>
 		<h3>Form中のフィールドの取得</h3>
 		<p>
-			WebComponentにはIDを指定して所有するWebComponentのインスタンスを取得するgetComponentメソッドが存在します。
-			また、IDを指定して所有するjQueryオブジェクトを取得するgetメソッドが存在します。
-			(getメソットにIDを省略すると、自分自身のjQueryオブジェクトを取得します。)
+			WebComponentにはID.を指定して所有するWebComponentのインスタンスを取得するgetComponentメソッドが存在します。
+			また、ID.を指定して所有するjQueryオブジェクトを取得するgetメソッドが存在します。
+			(getメソットのID.を省略すると、自分自身のjQueryオブジェクトを取得します。)
 			また、jQueryのセレクタを指定してjQueryオブジェクト取得するfindメソッドが存在します。
 		</p>
 		<p>
@@ -1076,6 +1076,7 @@ S:jq.val()=1234.00,string
 					&lt;/tbody&gt;
 				&lt;/table&gt;
 				&lt;div class=&quot;hScrollDiv&quot;&gt;
+					<b>
 					&lt;table id=&quot;queryResult&quot;&gt;
 						&lt;thead&gt;
 							&lt;tr&gt;
@@ -1112,6 +1113,7 @@ S:jq.val()=1234.00,string
 							&lt;/tr&gt;
 						&lt;/tbody&gt;
 					&lt;/table&gt;
+					</b>
 				&lt;/div&gt;
 			&lt;/form&gt;
 
@@ -1132,6 +1134,7 @@ S:jq.val()=1234.00,string
 		"code1": null,
 		"pageNo": "0",
 		"sortOrder": null,
+		<b>
 		"queryResult": [
 			{
 				"rowNo": "1",
@@ -1149,6 +1152,7 @@ S:jq.val()=1234.00,string
 				"multiTestId": 3
 			}
 		]
+		</b>
 	},
 	"status": 0
 }

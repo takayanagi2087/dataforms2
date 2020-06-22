@@ -8,14 +8,14 @@
 	<body>
 		<h1><span>6.</span>Table,Query,Dao</h1>
 		<p>
-			この記事でdataforms.daoパッケージのTable,Query,Daoクラスについて解説していきます。
+			この章ではdataforms.daoパッケージのTable,Query,Daoクラスについて解説していきます。
 			Tableクラスはテータベース中のテーブルの構造を定義します。
 			QueryクラスはSQLのselect文に対応するクラスです。
 			複数のテーブルクラスを結合した問合せクラスを作成することができるようになっています。
 			DaoクラスはTableクラスのレコード追加・更新・削除、Queryクラスで定義した問合せを実行する機能を持っています。
 			dataforms.daoパッケージは複数のデータベースサーバ(Apache Derby,PostgreSQL,MySQL,Oracle)に対応しています。
 			各データベースのサーバのSQLには方言があり、直接データベースをアクセスする場合その文法の違いを考慮してSQLを記述する必要がありました。
-			dataforms2.jarでは、これらのJavaクラスを使用することによってデータベースに依存するコードを排除することができます。
+			dataforms2.jarでは、これらのJavaクラスを使用することによって、データベースに依存するコードを排除することができます。
 			実際「単体テストまでは環境構築が簡単なApache Derbyで作業し、結合テスト以降はPostgreSQLサーバを用意して実行」という開発を問題なく進めた実績があります。
 		</p>
 		<h2>Tomcatのデータベース接続設定</h2>
@@ -517,7 +517,7 @@ dao.executeDelete(new SampleTable(), e.getMap()); // レコードの削除
 			executeUpdateは更新対象フィールドを限定したり、更新条件を設定することができる引数構成も存在します。
 			このコードのexecuteDeleteも主キーで限定してレコードを削除します。
 			executeDeleteは更新条件を設定することができる引数構成も存在します。
-			javadocを参照してください。
+			Javadocを参照してください。
 		<p>
 		<div class="filecaption">実行されたSQL</div>
 		<div class="wrappre">
@@ -893,7 +893,7 @@ public class JoinTestTableRelation extends TableRelation {
 		</div>
 		<p>
 			TableRelationクラスで外部キーを定義しWebアプリケーションをデプロイした後、
-			開発ツールのテーブル管理で該当するテーブルを表示するとJavaクラスのテーブルとデータベース中のテーブルの差分が表示されます。
+			開発ツールの「テーブル管理」で該当するテーブルを表示するとJavaクラスのテーブルとデータベース中のテーブルの差分が表示されます。
 			差分の表示されたテーブルの構造を更新するだけで、外部キーを設定することができます。
 		</p>
 		<p>
@@ -1023,7 +1023,7 @@ public class JoinTestQuery extends Query {
 			</pre>
 		</div>
 		<p>
-			この問合せを実行すると以下のようなSQLが生成され実行されます。
+			この問合せを実行すると、以下のようなSQLが生成され実行されます。
 		</p>
 		<div class="filecaption">JoinTestQueryに対応するSQL</div>
 		<div class="wrappre">

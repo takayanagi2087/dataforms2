@@ -15,6 +15,10 @@ import org.apache.logging.log4j.Logger;
 import dataforms.util.FileUtil;
 import dataforms.util.StringUtil;
 
+/**
+ * dataforms2.jarで定義するフィールターのベースクラス。
+ *
+ */
 public class DataFormsFilter {
 
 	/**

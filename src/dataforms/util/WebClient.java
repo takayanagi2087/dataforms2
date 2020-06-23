@@ -1,9 +1,7 @@
 package dataforms.util;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -176,7 +174,7 @@ public class WebClient {
 	 * @return 応答情報。
 	 * @throws Exception 例外。
 	 */
-	private Object readResponse(HttpURLConnection conn) throws Exception, UnsupportedEncodingException, IOException {
+	private Object readResponse(HttpURLConnection conn) throws Exception {
 		Object ret = null;
 		try (InputStream is = conn.getInputStream()) {
 			String encoding = conn.getContentEncoding();

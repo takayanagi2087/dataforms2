@@ -39,6 +39,10 @@ import dataforms.validator.DisplayedRequiredValidator;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
+/**
+ * DAO生成編集フォームクラス。
+ *
+ */
 public class DaoGeneratorEditForm extends EditForm {
 
 	/**
@@ -257,6 +261,12 @@ public class DaoGeneratorEditForm extends EditForm {
 		return ret;
 	}
 
+	/**
+	 * 編集対象を限定するキー項目のリストを取得します。
+	 * @param p パラメータ。
+	 * @return フィールドリストのJsonResponse。
+	 * @throws Exception 例外。
+	 */
 	@WebMethod
 	public Response getKeyList(final Map<String, Object> p) throws Exception {
 		Map<String, Object> data = this.convertToServerData(p);

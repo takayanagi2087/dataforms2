@@ -2,6 +2,10 @@ package dataforms.util;
 
 import java.util.Calendar;
 
+/**
+ * 日付時刻ユーティリティ。
+ *
+ */
 public class DateTimeUtil {
 	/**
 	 * 現在の日付を取得します。

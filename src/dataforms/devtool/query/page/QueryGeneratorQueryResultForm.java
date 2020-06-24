@@ -26,6 +26,7 @@ import dataforms.response.JsonResponse;
 import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.ClassFinder;
+import dataforms.util.ClassNameUtil;
 import dataforms.util.FileUtil;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
@@ -161,7 +162,7 @@ public class QueryGeneratorQueryResultForm extends QueryResultForm {
 		String javasrc = this.getStringResourse("template/SubQuery.java.template");
 		String qname = cls.getSimpleName();
 		String sname = qname.replaceAll("Query$", "SubQuery");
-		String pname = cls.getPackageName();
+		String pname = ClassNameUtil.getPackageName(cls.getName());
 		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", pname);
 		javasrc = javasrc.replaceAll("\\$\\{queryName\\}", qname);
 		javasrc = javasrc.replaceAll("\\$\\{subQueryName\\}", sname);

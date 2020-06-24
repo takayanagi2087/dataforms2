@@ -33,6 +33,7 @@ import dataforms.htmltable.EditableHtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
+import dataforms.util.ClassNameUtil;
 import dataforms.util.FileUtil;
 import dataforms.util.StringUtil;
 import dataforms.validator.DisplayedRequiredValidator;
@@ -215,12 +216,12 @@ public class DaoGeneratorEditForm extends EditForm {
 
 		ret.put(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
 		ret.put(ID_OVERWRITE_MODE, "error");
-		ret.put(ID_PACKAGE_NAME, daoclass.getPackageName());
+		ret.put(ID_PACKAGE_NAME, ClassNameUtil.getPackageName(daoclass.getName()));
 		ret.put(ID_DAO_CLASS_NAME, daoclass.getSimpleName());
 		ret.put(ID_COMMENT, dao.getComment());
 		if (dao.getListQuery() != null) {
 			Object obj = this.getQueryOrTableClass(dao.getListQuery());
-			ret.put(ID_LIST_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
+			ret.put(ID_LIST_QUERY_PACKAGE_NAME, ClassNameUtil.getPackageName(obj.getClass().getName()));
 			ret.put(ID_LIST_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
 		}
 
@@ -230,7 +231,7 @@ public class DaoGeneratorEditForm extends EditForm {
 			ret.put(ID_EDIT_FORM_TYPE, "1");
 			{
 				Object obj = this.getQueryOrTableClass(dao.getSingleRecordQuery());
-				ret.put(ID_EDIT_FORM_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
+				ret.put(ID_EDIT_FORM_QUERY_PACKAGE_NAME, ClassNameUtil.getPackageName(obj.getClass().getName()));
 				ret.put(ID_EDIT_FORM_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
 			}
 			List<Query> qlist = dao.getMultiRecordQueryList();
@@ -239,7 +240,7 @@ public class DaoGeneratorEditForm extends EditForm {
 				for (Query q: qlist) {
 					Object obj = this.getQueryOrTableClass(q);
 					Map<String, Object> m = new HashMap<String, Object>();
-					m.put(ID_PACKAGE_NAME, obj.getClass().getPackageName());
+					m.put(ID_PACKAGE_NAME, ClassNameUtil.getPackageName(obj.getClass().getName()));
 					m.put(ID_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
 					mqlist.add(m);
 				}
@@ -251,7 +252,7 @@ public class DaoGeneratorEditForm extends EditForm {
 			if (qlist != null && qlist.size() > 0) {
 				Query q = qlist.get(0);
 				Object obj = this.getQueryOrTableClass(q);
-				ret.put(ID_EDIT_FORM_QUERY_PACKAGE_NAME, obj.getClass().getPackageName());
+				ret.put(ID_EDIT_FORM_QUERY_PACKAGE_NAME, ClassNameUtil.getPackageName(obj.getClass().getName()));
 				ret.put(ID_EDIT_FORM_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
 				List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(q.getFieldList());
 				list = SelectFieldHtmlTable.selectKey(list, dao.getMultiRecordQueryKeyList());

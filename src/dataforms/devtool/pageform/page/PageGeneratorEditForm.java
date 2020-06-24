@@ -38,6 +38,7 @@ import dataforms.field.common.FlagField;
 import dataforms.field.common.UpdateTimestampField;
 import dataforms.field.common.UpdateUserIdField;
 import dataforms.servlet.DataFormsServlet;
+import dataforms.util.ClassNameUtil;
 import dataforms.util.FileUtil;
 import dataforms.util.ImportUtil;
 import dataforms.util.MessagesUtil;
@@ -203,7 +204,7 @@ public class PageGeneratorEditForm extends EditForm {
 			ret.put(ID_DAO_PACKAGE_NAME, "");
 			ret.put(ID_DAO_CLASS_NAME, "");
 		} else {
-			ret.put(ID_DAO_PACKAGE_NAME, daocls.getPackageName());
+			ret.put(ID_DAO_PACKAGE_NAME, ClassNameUtil.getPackageName(daocls.getName()));
 			ret.put(ID_DAO_CLASS_NAME, daocls.getSimpleName());
 		}
 		ret.put(ID_PAGE_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);

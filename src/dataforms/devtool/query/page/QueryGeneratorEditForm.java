@@ -40,6 +40,7 @@ import dataforms.field.sqlfunc.SqlField;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.servlet.DataFormsServlet;
+import dataforms.util.ClassNameUtil;
 import dataforms.util.FileUtil;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
@@ -184,7 +185,7 @@ public class QueryGeneratorEditForm extends EditForm {
 				} else if (JoinInfo.RIGHT_JOIN.equals(jinfo.getJoinType())) {
 					m.put(JoinHtmlTable.ID_JOIN_TYPE, JoinTypeField.RIGHT_JOIN);
 				}
-				m.put(ID_PACKAGE_NAME, t.getClass().getPackageName());
+				m.put(ID_PACKAGE_NAME, ClassNameUtil.getPackageName(t.getClass().getName()));
 				m.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, t.getClass().getSimpleName());
 				m.put(JoinHtmlTable.ID_ALIAS_NAME, t.getAlias());
 				m.put(JoinHtmlTable.ID_JOIN_CONDITION, jinfo.getGeneratedCondition());

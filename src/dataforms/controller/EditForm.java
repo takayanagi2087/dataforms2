@@ -60,10 +60,10 @@ public abstract class EditForm extends Form {
 	}
 
 	/**
-	 * 問合せに対応したHtmlTableクラスのインスタンスを作成します。
+	 * 問合せに対応したEditableHtmlTableクラスのインスタンスを作成します。
 	 * <pre>
 	 * 指定されたaddFieldsに指定されたQuerySetDaoにmultiRecordQueryListが登録されていた場合、
-	 * このメソッドで問合せに対応するHtmlTableを作成します。
+	 * このメソッドで各問合せに対応するEditableHtmlTableを作成します。
 	 * 特殊なテーブルクラスを生成したい場合、このメソッドをオーバーライドしてください。
 	 * </pre>
 	 * @param q 問合せ。
@@ -79,6 +79,8 @@ public abstract class EditForm extends Form {
 	 * <pre>
 	 * 指定されたaddFieldsに指定されたQuerySetDaoにmultiRecordQueryListが登録されていた場合、
 	 * それに対応するEditableHtmlTableが作成されます。
+	 * 各問合せに対応するEditableHtmlTableのインスタンスの作成は、createHtmlTableメソッドで作成します。
+	 * 特殊なHtmlTableを作成したい場合は、createHtmlTableメソットをオーバーライドしてください。
 	 * </pre>
 	 * @param dao QuerySetDaoのインスタンス。
 	 */

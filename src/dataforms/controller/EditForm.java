@@ -14,6 +14,7 @@ import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.field.common.FileField;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.htmltable.HtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
@@ -59,7 +60,26 @@ public abstract class EditForm extends Form {
 	}
 
 	/**
+	 * 問合せに対応したHtmlTableクラスのインスタンスを作成します。
+	 * <pre>
+	 * 指定されたaddFieldsに指定されたQuerySetDaoにmultiRecordQueryListが登録されていた場合、
+	 * このメソッドで問合せに対応するHtmlTableを作成します。
+	 * 特殊なテーブルクラスを生成したい場合、このメソッドをオーバーライドしてください。
+	 * </pre>
+	 * @param q 問合せ。
+	 * @return HtmlTableクラスのインスタンス。
+	 */
+	protected HtmlTable createHtmlTable(final Query q) {
+		EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
+		return rtable;
+	}
+
+	/**
 	 * QuerySetDaoから適切な編集フォームを作成します。
+	 * <pre>
+	 * 指定されたaddFieldsに指定されたQuerySetDaoにmultiRecordQueryListが登録されていた場合、
+	 * それに対応するEditableHtmlTableが作成されます。
+	 * </pre>
 	 * @param dao QuerySetDaoのインスタンス。
 	 */
 	public void addFields(final QuerySetDao dao) {
@@ -71,7 +91,7 @@ public abstract class EditForm extends Form {
 		}
 		if (dao.getMultiRecordQueryList() != null) {
 			for (Query q: dao.getMultiRecordQueryList()) {
-				EditableHtmlTable rtable = new EditableHtmlTable(q.getListId(), q.getFieldList());
+				HtmlTable rtable = this.createHtmlTable(q);
 				this.addHtmlTable(rtable);
 			}
 		}

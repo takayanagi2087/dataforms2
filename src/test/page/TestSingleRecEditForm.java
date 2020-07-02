@@ -4,17 +4,17 @@ import java.util.Map;
 
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
-import test.dao.TestMultiRecDao;
+import test.dao.TestSingleRecDao;
 
 /**
  * 編集フォームクラス。
  */
-public class TestMultiRecEditForm extends EditForm {
+public class TestSingleRecEditForm extends EditForm {
 	/**
 	 * コンストラクタ。
 	 */
-	public TestMultiRecEditForm() {
-		TestMultiRecDao dao = new TestMultiRecDao();
+	public TestSingleRecEditForm() {
+		TestSingleRecDao dao = new TestSingleRecDao();
 		this.addFields(dao);
 	}
 
@@ -42,7 +42,7 @@ public class TestMultiRecEditForm extends EditForm {
 	 */
 	@Override
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
-		TestMultiRecDao dao = new TestMultiRecDao(this);
+		TestSingleRecDao dao = new TestSingleRecDao(this);
 		return dao.query(data);
 	}
 
@@ -57,7 +57,7 @@ public class TestMultiRecEditForm extends EditForm {
 	@Override
 	protected Map<String, Object> queryReferData(final Map<String, Object> data) throws Exception {
 		Map<String, Object> ret = this.queryData(data);
-		TestMultiRecDao dao = new TestMultiRecDao(this);
+		TestSingleRecDao dao = new TestSingleRecDao(this);
 		removeKeyData(dao, ret);
 		return ret;
 	}
@@ -72,7 +72,7 @@ public class TestMultiRecEditForm extends EditForm {
 	 */
 	@Override
 	protected boolean isUpdate(final Map<String, Object> data) throws Exception {
-		TestMultiRecDao dao = new TestMultiRecDao(this);
+		TestSingleRecDao dao = new TestSingleRecDao(this);
 		Table table = dao.getMainTable();
 		boolean ret = this.isUpdate(table, data);
 		return ret;
@@ -84,7 +84,7 @@ public class TestMultiRecEditForm extends EditForm {
 	 */
 	@Override
 	protected void insertData(final Map<String, Object> data) throws Exception {
-		TestMultiRecDao dao = new TestMultiRecDao(this);
+		TestSingleRecDao dao = new TestSingleRecDao(this);
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.insert(data);
 	}
@@ -95,7 +95,7 @@ public class TestMultiRecEditForm extends EditForm {
 	 */
 	@Override
 	protected void updateData(final Map<String, Object> data) throws Exception {
-		TestMultiRecDao dao = new TestMultiRecDao(this);
+		TestSingleRecDao dao = new TestSingleRecDao(this);
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.update(data);
 	}
@@ -106,7 +106,7 @@ public class TestMultiRecEditForm extends EditForm {
 	 */
 	@Override
 	public void deleteData(final Map<String, Object> data) throws Exception {
-		TestMultiRecDao dao = new TestMultiRecDao(this);
+		TestSingleRecDao dao = new TestSingleRecDao(this);
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.delete(data);
 	}

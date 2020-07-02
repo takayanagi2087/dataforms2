@@ -4,23 +4,30 @@ import dataforms.controller.QueryForm;
 import dataforms.field.base.Field.MatchType;
 import java.util.List;
 import dataforms.field.base.FieldList;
-import test.dao.TestCode1Query;
+import test.dao.TestMultiRecTable;
+import test.field.Code2Field;
 import java.util.Map;
+import dataforms.field.common.SortOrderField;
 import test.field.Code1Field;
+import test.field.ContentsField;
 import dataforms.report.ExportDataFile;
 
-import test.dao.TestMultiRecDao;
+import test.dao.TestSingleRecDao;
 
 
 /**
  * 問い合わせフォームクラス。
  */
-public class TestMultiRecQueryForm extends QueryForm {
+public class TestSingleRecQueryForm extends QueryForm {
 	/**
 	 * コンストラクタ。
 	 */
-	public TestMultiRecQueryForm() {
-		this.addField(new Code1Field(TestCode1Query.Entity.ID_CODE1)).setMatchType(MatchType.FULL).setComment("コード1");
+	public TestSingleRecQueryForm() {
+		this.addField(new SortOrderField(TestMultiRecTable.Entity.ID_SORT_ORDER + "From")).setMatchType(MatchType.RANGE_FROM).setComment("ソート順(from)");
+		this.addField(new SortOrderField(TestMultiRecTable.Entity.ID_SORT_ORDER + "To")).setMatchType(MatchType.RANGE_TO).setComment("ソート順(to)");
+		this.addField(new Code1Field(TestMultiRecTable.Entity.ID_CODE1)).setMatchType(MatchType.FULL).setComment("コード1");
+		this.addField(new Code2Field(TestMultiRecTable.Entity.ID_CODE2)).setMatchType(MatchType.FULL).setComment("コード2");
+		this.addField(new ContentsField(TestMultiRecTable.Entity.ID_CONTENTS)).setMatchType(MatchType.FULL).setComment("内容");
 
 	}
 
@@ -37,7 +44,7 @@ public class TestMultiRecQueryForm extends QueryForm {
 	 */
 	@Override
 	protected FieldList getExportDataFieldList(final Map<String, Object> data) throws Exception {
-		TestMultiRecDao dao = new TestMultiRecDao(this);
+		TestSingleRecDao dao = new TestSingleRecDao(this);
 		return dao.getListQuery().getFieldList();
 	}
 
@@ -59,7 +66,7 @@ public class TestMultiRecQueryForm extends QueryForm {
 	 */
 	@Override
 	protected List<Map<String, Object>> queryExportData(final Map<String, Object> data) throws Exception {
-		TestMultiRecDao dao = new TestMultiRecDao(this);
+		TestSingleRecDao dao = new TestSingleRecDao(this);
 		return dao.query(data, this.getFieldList());
 	}
 

@@ -14,7 +14,9 @@ import dataforms.controller.QueryForm;
 import dataforms.controller.QueryResultForm;
 import dataforms.controller.WebComponent;
 import dataforms.dao.Dao;
+import dataforms.dao.Query;
 import dataforms.dao.QuerySetDao;
+import dataforms.dao.SingleTableQuery;
 import dataforms.dao.Table;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.DaoClassNameField;
@@ -339,22 +341,39 @@ public class PageGeneratorEditForm extends EditForm {
 
 	/**
 	 * 問い合わせフォームのフィールドリストソースの作成。
-	 * @param flist フィールドリスト。
+	 * @param dao DAO。
 	 * @param implist フィールドのインポートリスト。
 	 * @return 問い合わせフォームのフィールドリストソース。
 	 * @throws Exception 例外。
 	 */
-	private String getQueryFieldList(final FieldList flist, final ImportUtil implist) throws Exception {
+	private String getQueryFieldList(final QuerySetDao dao, final ImportUtil implist) throws Exception {
+		String qscn = null;
+		FieldList flist = null;
+		if (dao.getListQuery() != null) {
+			flist = dao.getListQuery().getFieldList();
+			Query listQuery = dao.getListQuery();
+			if (!(listQuery instanceof SingleTableQuery)) {
+				qscn = listQuery.getClass().getSimpleName();
+				implist.add(listQuery.getClass().getName());
+			}
+		} else if (dao.getMultiRecordQueryKeyList() != null) {
+			flist = dao.getMultiRecordQueryKeyList();
+		}
 		implist.add("java.util.List");
 		implist.add("java.util.Map");
 		implist.add("dataforms.report.ExportDataFile");
 		implist.add("dataforms.field.base.FieldList");
 		implist.add("dataforms.field.base.Field.MatchType");
+
 		StringBuilder sb = new StringBuilder();
 		for (Field<?> f: flist) {
 			Table tbl = f.getTable();
-			implist.add(tbl.getClass());
 			String scn = tbl.getClass().getSimpleName();
+			if (qscn != null) {
+				scn = qscn;
+			} else {
+				implist.add(tbl.getClass());
+			}
 			if (tbl.getPkFieldList().get(f.getId()) != null) {
 				continue;
 			}
@@ -375,14 +394,15 @@ public class PageGeneratorEditForm extends EditForm {
 					String cmt = f.getComment();
 					sb.append("\t\tthis.addField(new " + cname + "(" + scn + ".Entity.ID_" + StringUtil.camelToUpperCaseSnake(id) + " + \"From\")).setMatchType(MatchType.RANGE_FROM).setComment(\"" + cmt + "(from)\");\n");
 					sb.append("\t\tthis.addField(new " + cname + "(" + scn + ".Entity.ID_" + StringUtil.camelToUpperCaseSnake(id) + " + \"To\")).setMatchType(MatchType.RANGE_TO).setComment(\"" + cmt + "(to)\");\n");
+					implist.add(f.getClass());
 				} else {
 					String id = f.getId();
 					String mt = dt.name();
 					String cname = f.getClass().getSimpleName();
 					String cmt = f.getComment();
 					sb.append("\t\tthis.addField(new " + cname + "(" + scn + ".Entity.ID_" + StringUtil.camelToUpperCaseSnake(id) + ")).setMatchType(MatchType." + mt + ").setComment(\"" + cmt + "\");\n");
+					implist.add(f.getClass());
 				}
-				implist.add(f.getClass());
 			}
 		}
 		return sb.toString();
@@ -401,20 +421,38 @@ public class PageGeneratorEditForm extends EditForm {
 
 	/**
 	 * 問い合わせ結果フォームのソートカラム指定コードを生成します。
-	 * @param flist フィールドリスト。
+	 * @param dao フィールドリスト。
 	 * @param implist フィールドのインポートリスト。
 	 * @return 生成されたコード。
 	 * @throws Exception 例外。
 	 */
-	private String getQueryResultFieldSetting(final FieldList flist, final ImportUtil implist) throws Exception {
+	private String getQueryResultFieldSetting(final QuerySetDao dao, final ImportUtil implist) throws Exception {
+		String qscn = null;
+		FieldList flist = new FieldList();
+		if (dao.getListQuery() != null) {
+			flist = dao.getListQuery().getFieldList();
+			Query listQuery = dao.getListQuery();
+			if (!(listQuery instanceof SingleTableQuery)) {
+				qscn = listQuery.getClass().getSimpleName();
+				implist.add(listQuery.getClass().getName());
+			}
+		} else if (dao.getMultiRecordQueryKeyList() != null) {
+			flist = dao.getMultiRecordQueryKeyList();
+		}
+
 		StringBuilder sb = new StringBuilder();
 		for (Field<?> f: flist) {
 			Table tbl = f.getTable();
 			String scn = tbl.getClass().getSimpleName();
+			if (qscn != null) {
+				scn = qscn;
+			} else {
+				implist.add(tbl.getClass());
+			}
 			if (f.isHidden() || f instanceof DeleteFlagField) {
 				continue;
 			}
-			implist.add(tbl.getClass());
+//			implist.add(tbl.getClass());
 			sb.append("\t\thtmltable.getFieldList().get(" + scn + ".Entity.ID_" + StringUtil.camelToUpperCaseSnake(f.getId()) + ").setSortable(true);\n");
 		}
 		return sb.toString();
@@ -453,21 +491,21 @@ public class PageGeneratorEditForm extends EditForm {
 				@SuppressWarnings("unchecked")
 				Class<? extends QuerySetDao> daoclass = (Class<? extends QuerySetDao>) Class.forName(daoPackageName + "." + daoClassName);
 				QuerySetDao dao = daoclass.getDeclaredConstructor().newInstance();
-				FieldList flist = new FieldList();
+/*				FieldList flist = new FieldList();
 				if (dao.getListQuery() != null) {
 					flist = dao.getListQuery().getFieldList();
 				} else if (dao.getMultiRecordQueryKeyList() != null) {
 					flist = dao.getMultiRecordQueryKeyList();
-				}
+				}*/
 				{
 					ImportUtil implist0 = new ImportUtil();
-					javasrc = javasrc.replaceAll("\\$\\{queryFormFieldList\\}", this.getQueryFieldList(flist, implist0));
+					javasrc = javasrc.replaceAll("\\$\\{queryFormFieldList\\}", this.getQueryFieldList(dao, implist0));
 					javasrc = javasrc.replaceAll("\\$\\{queryFormImportList\\}", implist0.getImportText());
 
 				}
 				{
 					ImportUtil implist1 = new ImportUtil();
-					javasrc = javasrc.replaceAll("\\$\\{queryResultFieldSetting\\}", this.getQueryResultFieldSetting(flist, implist1));
+					javasrc = javasrc.replaceAll("\\$\\{queryResultFieldSetting\\}", this.getQueryResultFieldSetting(dao, implist1));
 					javasrc = javasrc.replaceAll("\\$\\{queryResultFormImportList\\}", implist1.getImportText());
 				}
 			}

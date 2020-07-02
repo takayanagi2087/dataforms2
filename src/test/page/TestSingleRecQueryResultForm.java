@@ -5,24 +5,25 @@ import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
-import test.dao.TestMultiRecDao;
-import test.dao.TestCode1Query;
+import test.dao.TestSingleRecDao;
+import test.dao.TestMultiRecTable;
 
 
 
 /**
  * 問い合わせ結果フォームクラス。
  */
-public class TestMultiRecQueryResultForm extends QueryResultForm {
+public class TestSingleRecQueryResultForm extends QueryResultForm {
 	/**
 	 * コンストラクタ。
 	 */
-	public TestMultiRecQueryResultForm() {
-		TestMultiRecDao dao = new TestMultiRecDao();
+	public TestSingleRecQueryResultForm() {
+		TestSingleRecDao dao = new TestSingleRecDao();
 		this.addPkFieldList(dao.getEditFormKeyList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
-		htmltable.getFieldList().get(TestCode1Query.Entity.ID_CODE1).setSortable(true);
-		htmltable.getFieldList().get(TestCode1Query.Entity.ID_CNT).setSortable(true);
+		htmltable.getFieldList().get(TestMultiRecTable.Entity.ID_CODE1).setSortable(true);
+		htmltable.getFieldList().get(TestMultiRecTable.Entity.ID_CODE2).setSortable(true);
+		htmltable.getFieldList().get(TestMultiRecTable.Entity.ID_CONTENTS).setSortable(true);
 
 		this.addHtmlTable(htmltable);
 	}
@@ -37,7 +38,7 @@ public class TestMultiRecQueryResultForm extends QueryResultForm {
 	 */
 	@Override
 	protected Map<String, Object> queryPage(final Map<String, Object> data, final FieldList queryFormFieldList) throws Exception {
-		TestMultiRecDao dao = new TestMultiRecDao(this);
+		TestSingleRecDao dao = new TestSingleRecDao(this);
 		return dao.queryPage(data, queryFormFieldList);
 	}
 
@@ -51,7 +52,7 @@ public class TestMultiRecQueryResultForm extends QueryResultForm {
 	 */
 	@Override
 	protected void deleteData(final Map<String, Object> data) throws Exception {
-		TestMultiRecDao dao = new TestMultiRecDao(this);
+		TestSingleRecDao dao = new TestSingleRecDao(this);
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.delete(data);
 	}

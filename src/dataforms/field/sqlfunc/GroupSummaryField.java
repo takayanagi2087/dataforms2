@@ -68,4 +68,14 @@ public abstract class GroupSummaryField<TYPE> extends Field<TYPE> {
 		sf.setId(this.getId());
 		return sf;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return MatchType.NONEを返します。
+	 */
+	@Override
+	public MatchType getDefaultMatchType() {
+		return MatchType.NONE;
+	}
 }

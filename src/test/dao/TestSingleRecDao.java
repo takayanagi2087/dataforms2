@@ -2,30 +2,13 @@ package test.dao;
 
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.QuerySetDao;
-import dataforms.dao.SingleTableQuery;
-import dataforms.field.base.FieldList;
-import dataforms.dao.Query;
-import test.field.Code1Field;
 
 
 /**
  * Daoクラスです。
  *
  */
-public class TestMultiRecDao extends QuerySetDao {
-	/**
-	 * code1一覧の問合せ。
-	 */
-	private TestCode1Query testCode1Query = null;
-
-	/**
-	 * code1一覧の問合せを取得します。
-	 * @return code1一覧の問合せ。
-	 */
-	public TestCode1Query getTestCode1Query() {
-		return this.testCode1Query;
-	}
-
+public class TestSingleRecDao extends QuerySetDao {
 	/**
 	 * 複数レコード編集テストテーブル。
 	 */
@@ -39,34 +22,15 @@ public class TestMultiRecDao extends QuerySetDao {
 		return this.testMultiRecTable;
 	}
 
-	/**
-	 * コード1フィールド。
-	 */
-	private Code1Field code1Field = null;
-
-	/**
-	 * コード1フィールドを取得します。
-	 * @return コード1フィールド。
-	 */
-	public Code1Field getCode1Field() {
-		return this.code1Field;
-	}
-
 
 	/**
 	 * コンストラクタ。
 	 * @throws Exception 例外。
 	 */
-	public TestMultiRecDao() {
-		this.setComment("複数レコード編集用DAO");
-		this.setListQuery(this.testCode1Query = new TestCode1Query());
-		this.setSingleRecordQuery((Query) null);
-		this.addMultiRecordQueryList(this.testMultiRecTable = new TestMultiRecTable());
-		Query query = new SingleTableQuery(new TestMultiRecTable());
-		this.setMultiRecordQueryKeyList(new FieldList(
-			this.code1Field = (Code1Field) query.getFieldList().get(TestMultiRecTable.Entity.ID_CODE1)
-
-		));
+	public TestSingleRecDao() {
+		this.setComment("1レコード編集ページ");
+		this.setListQuery(this.testMultiRecTable = new TestMultiRecTable());
+		this.setSingleRecordQuery(this.testMultiRecTable = new TestMultiRecTable());
 
 	}
 
@@ -75,7 +39,7 @@ public class TestMultiRecDao extends QuerySetDao {
 	 * @param cobj JDBC接続可能Object。
 	 * @throws Exception 例外。
 	 */
-	public TestMultiRecDao(final JDBCConnectableObject cobj) throws Exception {
+	public TestSingleRecDao(final JDBCConnectableObject cobj) throws Exception {
 		this();
 		this.init(cobj);
 	}

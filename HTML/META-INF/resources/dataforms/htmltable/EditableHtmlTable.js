@@ -352,10 +352,3 @@ class EditableHtmlTable extends HtmlTable {
 	}
 }
 
-
-
-
-
-
-
-

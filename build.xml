@@ -123,6 +123,9 @@
 		<echo message="Javadoc終了"/>
 	</target>
 	<target name="jar" depends="javadoc,jsdoc">
+		<!-- javadocの出来上がりを待つ。 -->
+		<echo message="javadocの出来上がりを待っています。"/>
+		<sleep milliseconds="30000"/>
 		<!-- manifestの作成 -->
 		<buildnumber/>
 		<manifest file="dataforms.mf">

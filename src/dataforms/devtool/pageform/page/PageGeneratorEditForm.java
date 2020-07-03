@@ -36,6 +36,7 @@ import dataforms.field.base.FieldList;
 import dataforms.field.common.CreateTimestampField;
 import dataforms.field.common.CreateUserIdField;
 import dataforms.field.common.DeleteFlagField;
+import dataforms.field.common.FileField;
 import dataforms.field.common.FlagField;
 import dataforms.field.common.UpdateTimestampField;
 import dataforms.field.common.UpdateUserIdField;
@@ -382,6 +383,7 @@ public class PageGeneratorEditForm extends EditForm {
 				|| f instanceof CreateTimestampField
 				|| f instanceof UpdateUserIdField
 				|| f instanceof UpdateTimestampField
+				|| f instanceof FileField
 				) {
 				;
 			} else {

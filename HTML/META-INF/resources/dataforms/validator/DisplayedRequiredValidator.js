@@ -25,8 +25,7 @@ class DisplayedRequiredValidator extends RequiredValidator {
 	 */
 	validate(v) {
 		var f = this.getParentForm();
-		var vflg = f.find("#" + this.selectorEscape(this.fieldId)).is(":visible");
-		logger.log("vflg=" + vflg);
+		var vflg = f.get(this.parent.id).is(":visible");
 		if (vflg) {
 			return (this.isBlank(v) == false);
 		} else {

@@ -78,4 +78,11 @@ public abstract class GroupSummaryField<TYPE> extends Field<TYPE> {
 	public MatchType getDefaultMatchType() {
 		return MatchType.NONE;
 	}
+
+	@Override
+	public Field<?> setComment(final String comment) {
+		Field<?> field = this.getTargetField();
+		field.setComment(comment);
+		return super.setComment(comment);
+	}
 }

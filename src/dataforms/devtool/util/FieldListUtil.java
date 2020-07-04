@@ -225,6 +225,11 @@ public final class FieldListUtil {
 			int idx = fieldClassSimpleName.lastIndexOf(".");
 			if (idx >= 0) {
 				fieldClassSimpleName = fieldClassSimpleName.substring(idx + 1);
+				String fsel = (String) m.get("sel");
+				if ("dataforms.field.sqlfunc.CountField".equals(fsel)) {
+					BigintField bifld = new BigintField(fieldId);
+					fieldClassSimpleName = bifld.getClass().getName();
+				}
 			}
 			String comment = (String) m.get("comment");
 			sb.append("\t/**\n");

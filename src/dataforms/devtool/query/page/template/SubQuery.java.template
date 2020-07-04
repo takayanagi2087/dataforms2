@@ -2,6 +2,7 @@ package ${packageName};
 
 import dataforms.dao.Table;
 import dataforms.dao.SubQuery;
+${importList}
 
 /**
  * ${queryName}の副問合せ。
@@ -41,4 +42,5 @@ public class ${subQueryName} extends SubQuery {
 */
 		return super.getJoinCondition(joinTable, alias);
 	}
+${fieldGetter}
 }

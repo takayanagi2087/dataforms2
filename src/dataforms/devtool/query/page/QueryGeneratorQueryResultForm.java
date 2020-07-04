@@ -14,10 +14,12 @@ import dataforms.annotation.WebMethod;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.dao.Query;
+import dataforms.dao.SubQuery;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.ClassNameField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryClassNameField;
+import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.field.common.RowNoField;
@@ -28,6 +30,7 @@ import dataforms.servlet.DataFormsServlet;
 import dataforms.util.ClassFinder;
 import dataforms.util.ClassNameUtil;
 import dataforms.util.FileUtil;
+import dataforms.util.ImportUtil;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
 
@@ -149,16 +152,48 @@ public class QueryGeneratorQueryResultForm extends QueryResultForm {
 	}
 
 	/**
+	 * フィールドのGetterを取得します。
+	 * @param cls 問合せクラス。
+	 * @param implist インポートリスト。
+	 * @return フィールドのGetterメソッドソース。
+	 * @throws Exception 例外。
+	 */
+	private String generateFieldGetter(final Class<? extends Query> cls, final ImportUtil implist) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Query q = cls.getConstructor().newInstance();
+		SubQuery sq = new SubQuery(q);
+		FieldList flist = q.getFieldList();
+		for (Field<?> ff: flist) {
+			String fieldId = ff.getId();
+			String comment = ff.getComment();
+			Field<?> f = sq.getField(ff.getId());
+			String fieldClassSimpleName = f.getClass().getSimpleName();
+			implist.add(f.getClass().getName());
+			String uFieldId = StringUtil.firstLetterToUpperCase(fieldId);
+			sb.append("\t/**\n");
+			sb.append("\t * " + comment + "フィールドを取得します。\n");
+			sb.append("\t * @return " + comment + "フィールド。\n");
+			sb.append("\t */\n");
+			sb.append("\tpublic " + fieldClassSimpleName + " get" + uFieldId + "Field() {\n");
+			sb.append("\t\treturn (" + fieldClassSimpleName + ") this.getField(" + cls.getSimpleName() + ".Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + ");\n");
+			sb.append("\t}\n\n");
+		}
+		return sb.toString();
+	}
+
+	/**
 	 * サブクエリのソースを生成します。
 	 * @param queryClassName 問合せクラス名。
 	 * @return 作成したソースファイル名。
 	 * @throws Exception 例外。
 	 */
 	private String generateSubQuery(final String queryClassName) throws Exception {
+		ImportUtil implist = new ImportUtil();
 		@SuppressWarnings("unchecked")
 		Class<? extends Query> cls = (Class<? extends Query>) Class.forName(queryClassName);
 		String subQueryClassName = this.getSubQueryClassName(cls);
 		String srcfile = this.getSubQuerySourceFile(subQueryClassName);
+		String fget = this.generateFieldGetter(cls, implist);
 		String javasrc = this.getStringResourse("template/SubQuery.java.template");
 		String qname = cls.getSimpleName();
 		String sname = qname.replaceAll("Query$", "SubQuery");
@@ -166,7 +201,9 @@ public class QueryGeneratorQueryResultForm extends QueryResultForm {
 		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", pname);
 		javasrc = javasrc.replaceAll("\\$\\{queryName\\}", qname);
 		javasrc = javasrc.replaceAll("\\$\\{subQueryName\\}", sname);
-		FileUtil.writeTextFile(srcfile, javasrc, DataFormsServlet.getEncoding());
+		javasrc = javasrc.replaceAll("\\$\\{fieldGetter\\}", fget);
+		javasrc = javasrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
+		FileUtil.writeTextFileWithBackup(srcfile, javasrc, DataFormsServlet.getEncoding());
 		return srcfile;
 	}
 

@@ -16,7 +16,6 @@ import dataforms.controller.EditForm;
 import dataforms.dao.Dao;
 import dataforms.dao.Query;
 import dataforms.dao.Query.JoinInfo;
-import dataforms.dao.SubQuery;
 import dataforms.dao.Table;
 import dataforms.dao.TableList;
 import dataforms.dao.sqlgen.SqlGenerator;
@@ -42,6 +41,7 @@ import dataforms.response.JsonResponse;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.ClassNameUtil;
 import dataforms.util.FileUtil;
+import dataforms.util.ImportUtil;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
@@ -263,6 +263,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			} else {
 				for (Map<String, Object> m: flist) {
 					String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+					logger.debug("fieldId=" + fieldId + ", f=" + f.getClass().getName());
 					if (f instanceof AliasField) {
 						AliasField af = (AliasField) f;
 						String id = af.getTargetField().getId();
@@ -801,26 +802,6 @@ public class QueryGeneratorEditForm extends EditForm {
 		return "get" + uFieldId + "Field()";
 	}
 
-	/**
-	 * SubQueryを指定した場合の対応。
-	 * <pre>
-	 * SubQueryクラスを指定した場合、問合せクラス取得するように生成コードを調整します。
-	 * </pre>
-	 * @param name テーブルクラス名。
-	 * @return フィールド取得メソッドを取得できるGetterを生成。
-	 * @throws Exception 例外。
-	 */
-	private String getTableProperty(final String name) throws Exception {
-		@SuppressWarnings("unchecked")
-		Class<? extends Table> cls = (Class<? extends Table>) Class.forName(name);
-		if (SubQuery.class.isAssignableFrom(cls)) {
-			SubQuery sq = (SubQuery) cls.getConstructor().newInstance();
-			Query q = sq.getQuery();
-			return "get" + q.getClass().getSimpleName() + "().";
-		} else {
-			return "";
-		}
-	}
 
 	private String getCommentCode(final Map<String, Object> m) throws Exception {
 		String fieldClassName = (String) m.get("fieldClassName");
@@ -845,14 +826,15 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * @return フィールドリスト。
 	 * @throws Exception 例外。
 	 */
-	private List<Map<String, Object>> genSelectFieldList(List<Map<String, Object>> list, StringBuilder sb, final Set<String> implist) throws Exception {
+	private List<Map<String, Object>> genSelectFieldList(List<Map<String, Object>> list, StringBuilder sb, final ImportUtil implist) throws Exception {
 		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
 		for (Map<String, Object> m: list) {
 			String sel = (String) m.get(SelectFieldHtmlTable.ID_SEL);
 			if (sel != null && (!"0".equals(sel))) {
-				String tableClassFullName = (String) m.get(SelectFieldHtmlTable.ID_TABLE_FULL_CLASS_NAME);
 				String fieldClassName = (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
-				implist.add(fieldClassName);
+				if (sel.length() <= 1) {
+					implist.add(fieldClassName);
+				}
 				ret.add(m);
 				if (sb.length() > 0) {
 					sb.append("\t\t\t, ");
@@ -865,14 +847,14 @@ public class QueryGeneratorEditForm extends EditForm {
 					if (StringUtil.isBlank(alias)) {
 						String tableClassName = (String) m.get(SelectFieldHtmlTable.ID_TABLE_CLASS_NAME);
 						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
-						sb.append("this." + this.getTableVariableName(tableClassName) + "." + this.getTableProperty(tableClassFullName));
+						sb.append("this." + this.getTableVariableName(tableClassName) + ".");
 						sb.append(this.getFieldMethod(fieldId) + this.getCommentCode(m) + "\n");
 					} else {
 						String tableClassName = (String) m.get(SelectFieldHtmlTable.ID_TABLE_CLASS_NAME);
 						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
 						implist.add(AliasField.class.getName());
 						sb.append("new AliasField(\"" + alias + "\", ");
-						sb.append("this." + this.getTableVariableName(tableClassName) + "." + this.getTableProperty(tableClassFullName));
+						sb.append("this." + this.getTableVariableName(tableClassName) + ".");
 						sb.append(this.getFieldMethod(fieldId) + this.getCommentCode(m) + ")\n");
 					}
 				} else {
@@ -885,7 +867,7 @@ public class QueryGeneratorEditForm extends EditForm {
 					Class<?> cls = Class.forName(sel);
 					implist.add(cls.getName());
 					sb.append("new " + cls.getSimpleName() + "(\"" + fieldId + "\", this." + this.getTableVariableName(tableClassName)
-						+ "." + this.getTableProperty(tableClassFullName) +
+						+ "." +
 						this.getFieldMethod((String) m.get(SelectFieldHtmlTable.ID_FIELD_ID)) + ")" + this.getCommentCode(m) + "\n");
 				}
 			}
@@ -901,7 +883,7 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * @return フィールドリスト。
 	 * @throws Exception 例外。
 	 */
-	private List<Map<String, Object>> genSqlFieldList(List<Map<String, Object>> sqllist, StringBuilder sb, final Set<String> implist) throws Exception {
+	private List<Map<String, Object>> genSqlFieldList(List<Map<String, Object>> sqllist, StringBuilder sb, final ImportUtil implist) throws Exception {
 		for (Map<String, Object> m: sqllist) {
 			implist.add(SqlField.class.getName());
 			if (sb.length() > 0) {
@@ -936,7 +918,7 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * @return 選択フィールド設定ソース。
 	 * @throws Exception 例外。
 	 */
-	private String generateSelectFieldList(final Map<String, Object> data, final Set<String> implist, final List<Map<String, Object>> fieldList) throws Exception {
+	private String generateSelectFieldList(final Map<String, Object> data, final ImportUtil implist, final List<Map<String, Object>> fieldList) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> sellist = (List<Map<String, Object>>) data.get(ID_SELECT_FIELD_LIST);
@@ -995,15 +977,11 @@ public class QueryGeneratorEditForm extends EditForm {
 		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", this.generateImportTables(data));
 		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.generateProperties(data));
 		javasrc = javasrc.replaceAll("\\$\\{newTables\\}", this.generateNewTables(data));
-		Set<String> implist = new HashSet<String>();
+		ImportUtil implist = new ImportUtil();
 		implist.add(Map.class.getName());
 		List<Map<String, Object>> fieldList = new ArrayList<Map<String, Object>>();
 		javasrc = javasrc.replaceAll("\\$\\{selectFields\\}", this.generateSelectFieldList(data, implist, fieldList));
-		StringBuilder isb = new StringBuilder();
-		for (String s: implist) {
-			isb.append("import " + s + ";\n");
-		}
-		javasrc = javasrc.replaceAll("\\$\\{importList\\}", isb.toString());
+		javasrc = javasrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", this.getTableVariableName(mainTableClassName));
 		String distinctFlag = (String) data.get(ID_DISTINCT_FLAG);
@@ -1023,16 +1001,20 @@ public class QueryGeneratorEditForm extends EditForm {
 				return this.getFieldId(m);
 			}
 			, (Map<String, Object> m) -> {
-				return (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
+
+				String fcls =  (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
+				String sel = (String) m.get(SelectFieldHtmlTable.ID_SEL);
+				if ("dataforms.field.sqlfunc.CountField".equals(sel)) {
+					fcls = "dataforms.field.sqltype.BigintField";
+				}
+				logger.debug("fcls=" + fcls);
+				return fcls;
 			}
 		));
 		javasrc = javasrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList,
 			(Map<String, Object> m) -> {
 				return this.getFieldId(m);
 			}
-/*			, (Map<String, Object> m) -> {
-				return (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
-			}*/
 		));
 
 

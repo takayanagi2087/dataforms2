@@ -23,8 +23,19 @@ public class CountField extends GroupSummaryField<Long> {
 	 * @param field 集計対象フィールド.
 	 */
 	public CountField(final String id, final Field<?> field) {
-		super(id, field);
-		this.distinct = false;
+		this(id, field, false);
+	}
+
+	/**
+	 * CountFieldの結果はBigintFieldをターゲットにする。
+	 * @param field 元のフィールドクラス。
+	 * @return BigintFieldのインスタンス。
+	 */
+	private static BigintField getBigintField(final Field<?> field) {
+		BigintField f = new BigintField(field.getId());
+		f.setTable(field.getTable());
+		f.setComment(field.getComment());
+		return f;
 	}
 
 	/**
@@ -34,7 +45,7 @@ public class CountField extends GroupSummaryField<Long> {
 	 * @param field 集計対象フィールド.
 	 */
 	public CountField(final String id, final Field<?> field, final boolean distinct) {
-		super(id, field);
+		super(id, CountField.getBigintField(field));
 		this.distinct = distinct;
 	}
 
@@ -62,6 +73,8 @@ public class CountField extends GroupSummaryField<Long> {
 	@Override
 	public Field<?> cloneForSubQuery() {
 		Field<?> ret = new BigintField(this.getId());
+		ret.setTable(this.getTargetField().getTable());
+		ret.setComment(this.getTargetField().getComment());
 		return ret;
 	}
 }

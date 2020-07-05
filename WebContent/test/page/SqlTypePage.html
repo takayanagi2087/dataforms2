@@ -86,6 +86,14 @@
 							<th>Clobフィールド</th>
 							<td><textarea id="sqlClob" rows="20" cols="80"></textarea></td>
 						</tr>
+						<tr>
+							<th>郵便番号</th>
+							<td><input type="text" id="zipCode" /></td>
+						</tr>
+						<tr>
+							<th>住所</th>
+							<td><input type="text" id="address" /></td>
+						</tr>
 					</tbody>
 				</table>
 				<input type="submit" id="queryButton" class="largeButton" value="検索">
@@ -140,6 +148,12 @@
 									Clobフィールド
 								</th>
 								<th>
+									郵便番号
+								</th>
+								<th>
+									住所
+								</th>
+								<th>
 									操作
 								</th>
 							</tr>
@@ -186,6 +200,12 @@
 								</td>
 								<td>
 									<span id="queryResult[0].sqlClob"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].zipCode"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].address"></span>
 								</td>
 								<td>
 									<input type="button" id="queryResult[0].viewButton" value="表示">
@@ -251,117 +271,15 @@
 							<th>Clobフィールド</th>
 							<td><textarea id="sqlClob" rows="20" cols="80"></textarea></td>
 						</tr>
+						<tr>
+							<th>郵便番号</th>
+							<td>
+								<input type="text" id="zipCode"/>
+								<input type="text" id="address" />
+							</td>
+						</tr>
 					</tbody>
 				</table>
-				<div class="hScrollDiv">
-					<table id="sqlTypeListList" class="editableTable">
-						<thead>
-							<tr>
-								<th colspan="2" nowrap>
-									
-								</th>
-								<th nowrap>
-									No.
-								</th>
-								<th>
-									Charフィールド
-								</th>
-								<th>
-									Varcharフィールド
-								</th>
-								<th>
-									Smallintフィールド
-								</th>
-								<th>
-									Integerフィールド
-								</th>
-								<th>
-									Bigintフィールド
-								</th>
-								<th>
-									Doubleフィールド
-								</th>
-								<th>
-									Numericフィールド
-								</th>
-								<th>
-									Dateフィールド
-								</th>
-								<th>
-									Timeフィールド
-								</th>
-								<th>
-									Timestampフィールド
-								</th>
-								<th>
-									Clobフィールド
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="buttonColumn">
-									<input type="button" id="sqlTypeListList[0].addButton" value="+"/>
-								</td>
-								<td class="buttonColumn">
-									<input type="button" id="sqlTypeListList[0].deleteButton" value="-"/>
-								</td>
-								<td style="text-align: right;" class="rowno">
-									<span id="sqlTypeListList[0].no"></span>
-								</td>
-								<td>
-									<input type="text" id="sqlTypeListList[0].sqlChar" />
-									<input type="hidden" id="sqlTypeListList[0].sqlTypeListId" />
-									<input type="hidden" id="sqlTypeListList[0].sqlTypeId" />
-									<input type="hidden" id="sqlTypeListList[0].sortOrder" />
-									<input type="hidden" id="sqlTypeListList[0].createUserId" />
-									<input type="hidden" id="sqlTypeListList[0].createTimestamp" />
-									<input type="hidden" id="sqlTypeListList[0].updateUserId" />
-									<input type="hidden" id="sqlTypeListList[0].updateTimestamp" />
-								</td>
-								<td>
-									<input type="text" id="sqlTypeListList[0].sqlVarchar" />
-								</td>
-								<td>
-									<input type="text" id="sqlTypeListList[0].sqlSmallint" />
-								</td>
-								<td>
-									<input type="text" id="sqlTypeListList[0].sqlInteger" />
-								</td>
-								<td>
-									<input type="text" id="sqlTypeListList[0].sqlBigint" />
-								</td>
-								<td>
-									<input type="text" id="sqlTypeListList[0].sqlDouble" />
-								</td>
-								<td>
-									<input type="text" id="sqlTypeListList[0].sqlNumeric" />
-								</td>
-								<td>
-									<input type="text" id="sqlTypeListList[0].sqlDate" />
-								</td>
-								<td>
-									<input type="text" id="sqlTypeListList[0].sqlTime" />
-								</td>
-								<td>
-									<input type="text" id="sqlTypeListList[0].sqlTimestamp" />
-								</td>
-								<td>
-									<textarea id="sqlTypeListList[0].sqlClob" rows="20" cols="80"></textarea>
-								</td>
-							</tr>
-						</tbody>
-						<tfoot>
-							<tr>
-								<th class="buttonColumn">
-									<input type="button" id="sqlTypeListList.addButton" value="+"/>
-								</th>
-								<th colspan="13">
-								</th>
-							</tr>
-						</tfoot>
-					</table>
-				</div>
 				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
 				<input type="button" id="saveButton" class="largeButton" value="登録"/>
 				<input type="button" id="resetButton" class="largeButton" value="リセット"/>

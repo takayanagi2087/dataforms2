@@ -2,18 +2,21 @@ package test.dao;
 
 import java.util.Map;
 import dataforms.dao.Table;
-import test.field.SqlTypeIdField;
-import test.field.SqlCharField;
-import test.field.SqlVarcharField;
-import test.field.SqlSmallintField;
-import test.field.SqlIntegerField;
 import test.field.SqlBigintField;
-import test.field.SqlDoubleField;
+import test.field.SqlVarcharField;
 import test.field.SqlNumericField;
-import test.field.SqlDateField;
-import test.field.SqlTimeField;
-import test.field.SqlTimestampField;
 import test.field.SqlClobField;
+import test.field.SqlTimestampField;
+import test.field.SqlDoubleField;
+import test.field.SqlTypeIdField;
+import test.field.SqlIntegerField;
+import test.field.SqlTimeField;
+import test.field.SqlCharField;
+import dataforms.util.NumberUtil;
+import test.field.SqlDateField;
+import test.field.AddressField;
+import dataforms.field.common.ZipCodeField;
+import test.field.SqlSmallintField;
 
 
 /**
@@ -39,6 +42,8 @@ public class SqlTypeTable extends Table {
 		this.addField(new SqlTimeField()); //Timeフィールド
 		this.addField(new SqlTimestampField()); //Timestampフィールド
 		this.addField(new SqlClobField()); //Clobフィールド
+		this.addField(new ZipCodeField()); //郵便番号
+		this.addField(new AddressField()); //住所
 		this.addUpdateInfoFields();
 	}
 
@@ -76,6 +81,10 @@ public class SqlTypeTable extends Table {
 		public static final String ID_SQL_TIMESTAMP = "sqlTimestamp";
 		/** ClobフィールドのフィールドID。 */
 		public static final String ID_SQL_CLOB = "sqlClob";
+		/** 郵便番号のフィールドID。 */
+		public static final String ID_ZIP_CODE = "zipCode";
+		/** 住所のフィールドID。 */
+		public static final String ID_ADDRESS = "address";
 
 		/**
 		 * コンストラクタ。
@@ -95,7 +104,7 @@ public class SqlTypeTable extends Table {
 		 * @return レコードID。
 		 */
 		public java.lang.Long getSqlTypeId() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_SQL_TYPE_ID);
+			return NumberUtil.longValue(this.getMap().get(Entity.ID_SQL_TYPE_ID));
 		}
 
 		/**
@@ -143,7 +152,7 @@ public class SqlTypeTable extends Table {
 		 * @return Smallintフィールド。
 		 */
 		public java.lang.Short getSqlSmallint() {
-			return (java.lang.Short) this.getMap().get(Entity.ID_SQL_SMALLINT);
+			return NumberUtil.shortValue(this.getMap().get(Entity.ID_SQL_SMALLINT));
 		}
 
 		/**
@@ -159,7 +168,7 @@ public class SqlTypeTable extends Table {
 		 * @return Integerフィールド。
 		 */
 		public java.lang.Integer getSqlInteger() {
-			return (java.lang.Integer) this.getMap().get(Entity.ID_SQL_INTEGER);
+			return NumberUtil.intValue(this.getMap().get(Entity.ID_SQL_INTEGER));
 		}
 
 		/**
@@ -175,7 +184,7 @@ public class SqlTypeTable extends Table {
 		 * @return Bigintフィールド。
 		 */
 		public java.lang.Long getSqlBigint() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_SQL_BIGINT);
+			return NumberUtil.longValue(this.getMap().get(Entity.ID_SQL_BIGINT));
 		}
 
 		/**
@@ -282,6 +291,38 @@ public class SqlTypeTable extends Table {
 			this.getMap().put(Entity.ID_SQL_CLOB, sqlClob);
 		}
 
+		/**
+		 * 郵便番号を取得します。
+		 * @return 郵便番号。
+		 */
+		public java.lang.String getZipCode() {
+			return (java.lang.String) this.getMap().get(Entity.ID_ZIP_CODE);
+		}
+
+		/**
+		 * 郵便番号を設定します。
+		 * @param zipCode 郵便番号。
+		 */
+		public void setZipCode(final java.lang.String zipCode) {
+			this.getMap().put(Entity.ID_ZIP_CODE, zipCode);
+		}
+
+		/**
+		 * 住所を取得します。
+		 * @return 住所。
+		 */
+		public java.lang.String getAddress() {
+			return (java.lang.String) this.getMap().get(Entity.ID_ADDRESS);
+		}
+
+		/**
+		 * 住所を設定します。
+		 * @param address 住所。
+		 */
+		public void setAddress(final java.lang.String address) {
+			this.getMap().put(Entity.ID_ADDRESS, address);
+		}
+
 
 	}
 	/**
@@ -378,6 +419,22 @@ public class SqlTypeTable extends Table {
 	 */
 	public SqlClobField getSqlClobField() {
 		return (SqlClobField) this.getField(Entity.ID_SQL_CLOB);
+	}
+
+	/**
+	 * 郵便番号フィールドを取得します。
+	 * @return 郵便番号フィールド。
+	 */
+	public ZipCodeField getZipCodeField() {
+		return (ZipCodeField) this.getField(Entity.ID_ZIP_CODE);
+	}
+
+	/**
+	 * 住所フィールドを取得します。
+	 * @return 住所フィールド。
+	 */
+	public AddressField getAddressField() {
+		return (AddressField) this.getField(Entity.ID_ADDRESS);
 	}
 
 

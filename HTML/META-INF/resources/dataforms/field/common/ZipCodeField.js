@@ -57,11 +57,11 @@ class ZipCodeField extends CharField {
 			}
 			if ("AjaxZip3" in window) {
 				if (address2 == null && address3 == null) {
-					AjaxZip3.zip2addr(thisField.id, "", address, address);
+					AjaxZip3.zip2addr(comp.get()[0], "", address, address);
 				} else if (address2 != null && address3 == null) {
-					AjaxZip3.zip2addr(thisField.id, "", address, address2);
+					AjaxZip3.zip2addr(comp.get()[0], "", address, address2);
 				} else if (address2 != null && address3 != null) {
-					AjaxZip3.zip2addr(thisField.id, "", address, address2, address3);
+					AjaxZip3.zip2addr(comp.get()[0], "", address, address2, address3);
 				}
 			}
 		}

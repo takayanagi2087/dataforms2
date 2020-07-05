@@ -22,19 +22,6 @@ public class SqlTypeDao extends QuerySetDao {
 		return this.sqlTypeTable;
 	}
 
-	/**
-	 * SQLデータ型テストテーブル。
-	 */
-	private SqlTypeListTable sqlTypeListTable = null;
-
-	/**
-	 * SQLデータ型テストテーブルを取得します。
-	 * @return SQLデータ型テストテーブル。
-	 */
-	public SqlTypeListTable getSqlTypeListTable() {
-		return this.sqlTypeListTable;
-	}
-
 
 	/**
 	 * コンストラクタ。
@@ -44,7 +31,6 @@ public class SqlTypeDao extends QuerySetDao {
 		this.setComment("SqlTypeテーブルアクセスクラス");
 		this.setListQuery(this.sqlTypeTable = new SqlTypeTable());
 		this.setSingleRecordQuery(this.sqlTypeTable = new SqlTypeTable());
-		this.addMultiRecordQueryList(this.sqlTypeListTable = new SqlTypeListTable());
 
 	}
 
@@ -60,7 +46,7 @@ public class SqlTypeDao extends QuerySetDao {
 
 	/**
 	 * 主テーブルを取得します。
-	 * @return 主テーブル>
+	 * @return 主テーブル。
 	 */
 	public SqlTypeTable getMainTable() {
 		if (this.getSingleRecordQuery() != null) {

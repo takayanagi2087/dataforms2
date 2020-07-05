@@ -15,6 +15,7 @@ public class SqlTypeEditForm extends EditForm {
 	 */
 	public SqlTypeEditForm() {
 		SqlTypeDao dao = new SqlTypeDao();
+		dao.getSqlTypeTable().getZipCodeField().setAddressFieldId("address");
 		this.addFields(dao);
 	}
 

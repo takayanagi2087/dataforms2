@@ -32,6 +32,8 @@ public class SqlTypeQueryResultForm extends QueryResultForm {
 		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_TIME).setSortable(true);
 		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_TIMESTAMP).setSortable(true);
 		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_CLOB).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_ZIP_CODE).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_ADDRESS).setSortable(true);
 
 		this.addHtmlTable(htmltable);
 	}

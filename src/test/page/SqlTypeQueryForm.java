@@ -15,7 +15,9 @@ import test.field.SqlCharField;
 import java.util.List;
 import dataforms.field.base.FieldList;
 import test.field.SqlDateField;
+import test.field.AddressField;
 import java.util.Map;
+import dataforms.field.common.ZipCodeField;
 import test.field.SqlSmallintField;
 import dataforms.report.ExportDataFile;
 
@@ -49,6 +51,8 @@ public class SqlTypeQueryForm extends QueryForm {
 		this.addField(new SqlTimestampField(SqlTypeTable.Entity.ID_SQL_TIMESTAMP + "From")).setMatchType(MatchType.RANGE_FROM).setComment("Timestampフィールド(from)");
 		this.addField(new SqlTimestampField(SqlTypeTable.Entity.ID_SQL_TIMESTAMP + "To")).setMatchType(MatchType.RANGE_TO).setComment("Timestampフィールド(to)");
 		this.addField(new SqlClobField(SqlTypeTable.Entity.ID_SQL_CLOB)).setMatchType(MatchType.FULL).setComment("Clobフィールド");
+		this.addField(new ZipCodeField(SqlTypeTable.Entity.ID_ZIP_CODE)).setMatchType(MatchType.FULL).setComment("郵便番号");
+		this.addField(new AddressField(SqlTypeTable.Entity.ID_ADDRESS)).setMatchType(MatchType.FULL).setComment("住所");
 
 	}
 

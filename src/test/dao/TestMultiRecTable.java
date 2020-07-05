@@ -2,11 +2,17 @@ package test.dao;
 
 import java.util.Map;
 import dataforms.dao.Table;
+import test.field.TestDoubleField;
+import test.field.TestMultiRecIdField;
+import test.field.Code2Field;
+import dataforms.util.NumberUtil;
 import dataforms.field.common.SortOrderField;
 import test.field.Code1Field;
-import test.field.Code2Field;
+import test.field.TestNumericField;
+import test.field.TestBigintField;
 import test.field.ContentsField;
-import test.field.TestMultiRecIdField;
+import test.field.TestSmallintField;
+import test.field.TestIntegerField;
 
 
 /**
@@ -25,6 +31,11 @@ public class TestMultiRecTable extends Table {
 		this.addField(new Code1Field()); //コード1
 		this.addField(new Code2Field()); //コード2
 		this.addField(new ContentsField()); //内容
+		this.addField(new TestSmallintField()); //2バイト整数
+		this.addField(new TestIntegerField()); //4バイト整数
+		this.addField(new TestBigintField()); //8バイト整数
+		this.addField(new TestDoubleField()); //不動小数点実数
+		this.addField(new TestNumericField()); //10進数
 		this.addUpdateInfoFields();
 	}
 
@@ -48,6 +59,16 @@ public class TestMultiRecTable extends Table {
 		public static final String ID_CODE2 = "code2";
 		/** 内容のフィールドID。 */
 		public static final String ID_CONTENTS = "contents";
+		/** 2バイト整数のフィールドID。 */
+		public static final String ID_TEST_SMALLINT = "testSmallint";
+		/** 4バイト整数のフィールドID。 */
+		public static final String ID_TEST_INTEGER = "testInteger";
+		/** 8バイト整数のフィールドID。 */
+		public static final String ID_TEST_BIGINT = "testBigint";
+		/** 不動小数点実数のフィールドID。 */
+		public static final String ID_TEST_DOUBLE = "testDouble";
+		/** 10進数のフィールドID。 */
+		public static final String ID_TEST_NUMERIC = "testNumeric";
 
 		/**
 		 * コンストラクタ。
@@ -67,7 +88,7 @@ public class TestMultiRecTable extends Table {
 		 * @return レコードID。
 		 */
 		public java.lang.Long getTestMultiRecId() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_TEST_MULTI_REC_ID);
+			return NumberUtil.longValue(this.getMap().get(Entity.ID_TEST_MULTI_REC_ID));
 		}
 
 		/**
@@ -83,7 +104,7 @@ public class TestMultiRecTable extends Table {
 		 * @return ソート順。
 		 */
 		public java.lang.Short getSortOrder() {
-			return (java.lang.Short) this.getMap().get(Entity.ID_SORT_ORDER);
+			return NumberUtil.shortValue(this.getMap().get(Entity.ID_SORT_ORDER));
 		}
 
 		/**
@@ -142,6 +163,86 @@ public class TestMultiRecTable extends Table {
 			this.getMap().put(Entity.ID_CONTENTS, contents);
 		}
 
+		/**
+		 * 2バイト整数を取得します。
+		 * @return 2バイト整数。
+		 */
+		public java.lang.Short getTestSmallint() {
+			return NumberUtil.shortValue(this.getMap().get(Entity.ID_TEST_SMALLINT));
+		}
+
+		/**
+		 * 2バイト整数を設定します。
+		 * @param testSmallint 2バイト整数。
+		 */
+		public void setTestSmallint(final java.lang.Short testSmallint) {
+			this.getMap().put(Entity.ID_TEST_SMALLINT, testSmallint);
+		}
+
+		/**
+		 * 4バイト整数を取得します。
+		 * @return 4バイト整数。
+		 */
+		public java.lang.Integer getTestInteger() {
+			return NumberUtil.intValue(this.getMap().get(Entity.ID_TEST_INTEGER));
+		}
+
+		/**
+		 * 4バイト整数を設定します。
+		 * @param testInteger 4バイト整数。
+		 */
+		public void setTestInteger(final java.lang.Integer testInteger) {
+			this.getMap().put(Entity.ID_TEST_INTEGER, testInteger);
+		}
+
+		/**
+		 * 8バイト整数を取得します。
+		 * @return 8バイト整数。
+		 */
+		public java.lang.Long getTestBigint() {
+			return NumberUtil.longValue(this.getMap().get(Entity.ID_TEST_BIGINT));
+		}
+
+		/**
+		 * 8バイト整数を設定します。
+		 * @param testBigint 8バイト整数。
+		 */
+		public void setTestBigint(final java.lang.Long testBigint) {
+			this.getMap().put(Entity.ID_TEST_BIGINT, testBigint);
+		}
+
+		/**
+		 * 不動小数点実数を取得します。
+		 * @return 不動小数点実数。
+		 */
+		public java.lang.Double getTestDouble() {
+			return (java.lang.Double) this.getMap().get(Entity.ID_TEST_DOUBLE);
+		}
+
+		/**
+		 * 不動小数点実数を設定します。
+		 * @param testDouble 不動小数点実数。
+		 */
+		public void setTestDouble(final java.lang.Double testDouble) {
+			this.getMap().put(Entity.ID_TEST_DOUBLE, testDouble);
+		}
+
+		/**
+		 * 10進数を取得します。
+		 * @return 10進数。
+		 */
+		public java.math.BigDecimal getTestNumeric() {
+			return (java.math.BigDecimal) this.getMap().get(Entity.ID_TEST_NUMERIC);
+		}
+
+		/**
+		 * 10進数を設定します。
+		 * @param testNumeric 10進数。
+		 */
+		public void setTestNumeric(final java.math.BigDecimal testNumeric) {
+			this.getMap().put(Entity.ID_TEST_NUMERIC, testNumeric);
+		}
+
 
 	}
 	/**
@@ -182,6 +283,46 @@ public class TestMultiRecTable extends Table {
 	 */
 	public ContentsField getContentsField() {
 		return (ContentsField) this.getField(Entity.ID_CONTENTS);
+	}
+
+	/**
+	 * 2バイト整数フィールドを取得します。
+	 * @return 2バイト整数フィールド。
+	 */
+	public TestSmallintField getTestSmallintField() {
+		return (TestSmallintField) this.getField(Entity.ID_TEST_SMALLINT);
+	}
+
+	/**
+	 * 4バイト整数フィールドを取得します。
+	 * @return 4バイト整数フィールド。
+	 */
+	public TestIntegerField getTestIntegerField() {
+		return (TestIntegerField) this.getField(Entity.ID_TEST_INTEGER);
+	}
+
+	/**
+	 * 8バイト整数フィールドを取得します。
+	 * @return 8バイト整数フィールド。
+	 */
+	public TestBigintField getTestBigintField() {
+		return (TestBigintField) this.getField(Entity.ID_TEST_BIGINT);
+	}
+
+	/**
+	 * 不動小数点実数フィールドを取得します。
+	 * @return 不動小数点実数フィールド。
+	 */
+	public TestDoubleField getTestDoubleField() {
+		return (TestDoubleField) this.getField(Entity.ID_TEST_DOUBLE);
+	}
+
+	/**
+	 * 10進数フィールドを取得します。
+	 * @return 10進数フィールド。
+	 */
+	public TestNumericField getTestNumericField() {
+		return (TestNumericField) this.getField(Entity.ID_TEST_NUMERIC);
 	}
 
 

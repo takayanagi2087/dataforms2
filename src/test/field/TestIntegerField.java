@@ -1,29 +1,29 @@
 package test.field;
 
-import dataforms.field.common.RecordIdField;
+import dataforms.field.sqltype.IntegerField;
 
 
 /**
- * TestMultiRecIdFieldフィールドクラス。
+ * TestIntegerFieldフィールドクラス。
  *
  */
-public class TestMultiRecIdField extends RecordIdField {
+public class TestIntegerField extends IntegerField {
 
 	/**
 	 * フィールドコメント。
 	 */
-	private static final String COMMENT = "レコードID";
+	private static final String COMMENT = "4バイト整数";
 	/**
 	 * コンストラクタ。
 	 */
-	public TestMultiRecIdField() {
+	public TestIntegerField() {
 		this(null);
 	}
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public TestMultiRecIdField(final String id) {
+	public TestIntegerField(final String id) {
 		super(id);
 		this.setComment(COMMENT);
 	}

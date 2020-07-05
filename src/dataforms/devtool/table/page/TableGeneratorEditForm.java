@@ -5,10 +5,8 @@ import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
@@ -42,6 +40,7 @@ import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.ClassNameUtil;
 import dataforms.util.FileUtil;
+import dataforms.util.ImportUtil;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
@@ -513,7 +512,7 @@ public class TableGeneratorEditForm extends EditForm {
 		tsrc = tsrc.replaceAll("\\$\\{packageName\\}", packageName);
 		tsrc = tsrc.replaceAll("\\$\\{tableComment\\}", tableComment);
 		tsrc = tsrc.replaceAll("\\$\\{TableClassShortName\\}", tableClassName);
-		StringBuilder implist = new StringBuilder();
+		ImportUtil implist = new ImportUtil();
 		StringBuilder constructor = new StringBuilder();
 		if ("1".equals(autoIncrementId)) {
 			constructor.append("\t\tthis.setAutoIncrementId(true);\n");
@@ -522,7 +521,6 @@ public class TableGeneratorEditForm extends EditForm {
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> fieldList = (List<Map<String, Object>>) data.get("fieldList");
 		Map<String, String> srcmap = new HashMap<String, String>();
-		Set<String> fieldSet = new HashSet<String>();
 		for (Map<String, Object> m: fieldList) {
 			String isDataformsField = (String) m.get("isDataformsField");
 			if (!"1".equals(isDataformsField)) {
@@ -539,14 +537,7 @@ public class TableGeneratorEditForm extends EditForm {
 			String pkFlag = (String) m.get("pkFlag");
 			String fieldId = (String) m.get("fieldId");
 			String fieldLength = (String) m.get("fieldLength");
-			if (!fieldSet.contains(fpackage + "." + fclass)) {
-				implist.append("import ");
-				implist.append(fpackage);
-				implist.append(".");
-				implist.append(fclass);
-				implist.append(";\n");
-				fieldSet.add(fpackage + "." + fclass);
-			}
+			implist.add(fpackage + "." + fclass);
 			if ("1".equals(pkFlag)) {
 				constructor.append("\t\tthis.addPkField(new ");
 			} else {
@@ -570,7 +561,6 @@ public class TableGeneratorEditForm extends EditForm {
 		if ("1".equals(flg)) {
 			constructor.append("\t\tthis.addUpdateInfoFields();");
 		}
-		tsrc = tsrc.replaceAll("\\$\\{importList\\}", implist.toString());
 		tsrc = tsrc.replaceAll("\\$\\{constructor\\}", constructor.toString());
 		tsrc = tsrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList, (Map<String, Object> m) -> {
 			return this.getFieldId(m);
@@ -584,17 +574,14 @@ public class TableGeneratorEditForm extends EditForm {
 				String superSimpleClassName = (String) m.get("superSimpleClassName");
 				return superPackageName + "." + superSimpleClassName;
 			}
+			, implist
 		));
 		tsrc = tsrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList,
 			(Map<String, Object> m) -> {
 				return this.getFieldId(m);
 			}
-/*			, (Map<String, Object> m) -> {
-				String fieldPackageName = (String) m.get("packageName");
-				String fieldClassSimpleName = (String) m.get("fieldClassName");
-				return fieldPackageName + "." + fieldClassSimpleName;
-			}*/
 		));
+		tsrc = tsrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
 		logger.debug("tsrc=\n{}", tsrc);
 		if (!OverwriteModeField.SKIP.equals(tableOverwriteMode)) {
 			srcmap.put(packageName + "." + tableClassName, tsrc);

@@ -1,29 +1,29 @@
 package test.field;
 
-import dataforms.field.common.RecordIdField;
+import dataforms.field.sqltype.BigintField;
 
 
 /**
- * TestMultiRecIdFieldフィールドクラス。
+ * TestBigintFieldフィールドクラス。
  *
  */
-public class TestMultiRecIdField extends RecordIdField {
+public class TestBigintField extends BigintField {
 
 	/**
 	 * フィールドコメント。
 	 */
-	private static final String COMMENT = "レコードID";
+	private static final String COMMENT = "8バイト整数";
 	/**
 	 * コンストラクタ。
 	 */
-	public TestMultiRecIdField() {
+	public TestBigintField() {
 		this(null);
 	}
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public TestMultiRecIdField(final String id) {
+	public TestBigintField(final String id) {
 		super(id);
 		this.setComment(COMMENT);
 	}

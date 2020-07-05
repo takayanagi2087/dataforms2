@@ -1,12 +1,18 @@
 package test.page;
 
+
+import java.util.List;
 import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
-import test.dao.TestMultiRecDao;
 import test.dao.TestCode1Query;
+import test.dao.TestMultiRecDao;
 
 
 
@@ -14,6 +20,11 @@ import test.dao.TestCode1Query;
  * 問い合わせ結果フォームクラス。
  */
 public class TestMultiRecQueryResultForm extends QueryResultForm {
+	/**
+	 * Logger。
+	 */
+	private static Logger logger = LogManager.getLogger(TestMultiRecQueryResultForm.class);
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -38,7 +49,28 @@ public class TestMultiRecQueryResultForm extends QueryResultForm {
 	@Override
 	protected Map<String, Object> queryPage(final Map<String, Object> data, final FieldList queryFormFieldList) throws Exception {
 		TestMultiRecDao dao = new TestMultiRecDao(this);
-		return dao.queryPage(data, queryFormFieldList);
+		TestCode1Query q = dao.getTestCode1Query();
+		logger.debug(q.getCntField());
+		logger.debug("getTestSmallintField=" + q.getTestSmallintField().getClass().getName());
+		logger.debug("getTestIntegerField=" + q.getTestIntegerField().getClass().getName());
+		logger.debug("getTestBigintField=" + q.getTestBigintField().getClass().getName());
+		logger.debug("getTestDoubleField=" + q.getTestDoubleField().getClass().getName());
+		logger.debug("getTestNumericField=" + q.getTestNumericField().getClass().getName());
+
+		Map<String, Object> ret = dao.queryPage(data, queryFormFieldList);
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> list = (List<Map<String, Object>>) ret.get("queryResult");
+		for (Map<String, Object> m: list) {
+			TestCode1Query.Entity e = new TestCode1Query.Entity(m);
+			logger.debug("---------------------");
+			logger.debug("cnt=" +  e.getCnt());
+			logger.debug("testSmallint=" +  e.getTestSmallint());
+			logger.debug("testInteger=" +  e.getTestInteger());
+			logger.debug("testBigint=" +  e.getTestBigint());
+			logger.debug("testDouble=" +  e.getTestDouble());
+			logger.debug("testNumeric=" +  e.getTestNumeric());
+		}
+		return ret;
 	}
 
 	/**

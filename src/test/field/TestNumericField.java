@@ -1,30 +1,30 @@
 package test.field;
 
-import dataforms.field.common.RecordIdField;
+import dataforms.field.sqltype.NumericField;
 
 
 /**
- * TestMultiRecIdFieldフィールドクラス。
+ * TestNumericFieldフィールドクラス。
  *
  */
-public class TestMultiRecIdField extends RecordIdField {
+public class TestNumericField extends NumericField {
 
 	/**
 	 * フィールドコメント。
 	 */
-	private static final String COMMENT = "レコードID";
+	private static final String COMMENT = "10進数";
 	/**
 	 * コンストラクタ。
 	 */
-	public TestMultiRecIdField() {
+	public TestNumericField() {
 		this(null);
 	}
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public TestMultiRecIdField(final String id) {
-		super(id);
+	public TestNumericField(final String id) {
+		super(id, 10, 2);
 		this.setComment(COMMENT);
 	}
 

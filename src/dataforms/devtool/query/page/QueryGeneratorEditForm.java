@@ -981,7 +981,6 @@ public class QueryGeneratorEditForm extends EditForm {
 		implist.add(Map.class.getName());
 		List<Map<String, Object>> fieldList = new ArrayList<Map<String, Object>>();
 		javasrc = javasrc.replaceAll("\\$\\{selectFields\\}", this.generateSelectFieldList(data, implist, fieldList));
-		javasrc = javasrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", this.getTableVariableName(mainTableClassName));
 		String distinctFlag = (String) data.get(ID_DISTINCT_FLAG);
@@ -1010,13 +1009,15 @@ public class QueryGeneratorEditForm extends EditForm {
 				logger.debug("fcls=" + fcls);
 				return fcls;
 			}
+			, implist
 		));
 		javasrc = javasrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList,
 			(Map<String, Object> m) -> {
 				return this.getFieldId(m);
-			}
+			},
+			implist
 		));
-
+		javasrc = javasrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
 
 		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
 		String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");

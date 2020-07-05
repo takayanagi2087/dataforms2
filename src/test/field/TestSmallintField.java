@@ -1,29 +1,29 @@
 package test.field;
 
-import dataforms.field.common.RecordIdField;
+import dataforms.field.sqltype.SmallintField;
 
 
 /**
- * TestMultiRecIdFieldフィールドクラス。
+ * TestSmallintFieldフィールドクラス。
  *
  */
-public class TestMultiRecIdField extends RecordIdField {
+public class TestSmallintField extends SmallintField {
 
 	/**
 	 * フィールドコメント。
 	 */
-	private static final String COMMENT = "レコードID";
+	private static final String COMMENT = "2バイト整数";
 	/**
 	 * コンストラクタ。
 	 */
-	public TestMultiRecIdField() {
+	public TestSmallintField() {
 		this(null);
 	}
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public TestMultiRecIdField(final String id) {
+	public TestSmallintField(final String id) {
 		super(id);
 		this.setComment(COMMENT);
 	}

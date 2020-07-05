@@ -2,10 +2,20 @@ package test.dao;
 
 import dataforms.field.base.FieldList;
 import dataforms.dao.Query;
-import test.field.TestMultiRecIdField;
-import java.util.Map;
+import dataforms.field.sqlfunc.SumField;
+import dataforms.field.sqltype.BigintField;
+import dataforms.field.sqlfunc.MaxField;
 import test.field.Code1Field;
 import dataforms.field.sqlfunc.CountField;
+import test.field.TestBigintField;
+import dataforms.field.sqlfunc.MinField;
+import test.field.TestSmallintField;
+import test.field.TestIntegerField;
+import test.field.TestDoubleField;
+import dataforms.util.NumberUtil;
+import java.util.Map;
+import test.field.TestNumericField;
+import dataforms.field.sqlfunc.AvgField;
 
 
 
@@ -41,6 +51,11 @@ public class TestCode1Query extends Query {
 		this.setFieldList(new FieldList(
 			this.testMultiRecTable.getCode1Field()
 			, new CountField("cnt", this.testMultiRecTable.getTestMultiRecIdField()).setComment("件数")
+			, new AvgField("testSmallint", this.testMultiRecTable.getTestSmallintField()).setComment("Smallint平均")
+			, new MaxField("testInteger", this.testMultiRecTable.getTestIntegerField()).setComment("int最大値")
+			, new MinField("testBigint", this.testMultiRecTable.getTestBigintField()).setComment("long最小値")
+			, new SumField("testDouble", this.testMultiRecTable.getTestDoubleField()).setComment("double合計")
+			, new AvgField("testNumeric", this.testMultiRecTable.getTestNumericField()).setComment("Numeric平均")
 		));
 		this.setMainTable(testMultiRecTable);
 
@@ -54,6 +69,16 @@ public class TestCode1Query extends Query {
 		public static final String ID_CODE1 = "code1";
 		/** 件数のフィールドID。 */
 		public static final String ID_CNT = "cnt";
+		/** Smallint平均のフィールドID。 */
+		public static final String ID_TEST_SMALLINT = "testSmallint";
+		/** int最大値のフィールドID。 */
+		public static final String ID_TEST_INTEGER = "testInteger";
+		/** long最小値のフィールドID。 */
+		public static final String ID_TEST_BIGINT = "testBigint";
+		/** double合計のフィールドID。 */
+		public static final String ID_TEST_DOUBLE = "testDouble";
+		/** Numeric平均のフィールドID。 */
+		public static final String ID_TEST_NUMERIC = "testNumeric";
 
 		/**
 		 * コンストラクタ。
@@ -89,7 +114,7 @@ public class TestCode1Query extends Query {
 		 * @return 件数。
 		 */
 		public java.lang.Long getCnt() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_CNT);
+			return NumberUtil.longValue(this.getMap().get(Entity.ID_CNT));
 		}
 
 		/**
@@ -100,8 +125,89 @@ public class TestCode1Query extends Query {
 			this.getMap().put(Entity.ID_CNT, cnt);
 		}
 
+		/**
+		 * Smallint平均を取得します。
+		 * @return Smallint平均。
+		 */
+		public java.lang.Short getTestSmallint() {
+			return NumberUtil.shortValue(this.getMap().get(Entity.ID_TEST_SMALLINT));
+		}
+
+		/**
+		 * Smallint平均を設定します。
+		 * @param testSmallint Smallint平均。
+		 */
+		public void setTestSmallint(final java.lang.Short testSmallint) {
+			this.getMap().put(Entity.ID_TEST_SMALLINT, testSmallint);
+		}
+
+		/**
+		 * int最大値を取得します。
+		 * @return int最大値。
+		 */
+		public java.lang.Integer getTestInteger() {
+			return NumberUtil.intValue(this.getMap().get(Entity.ID_TEST_INTEGER));
+		}
+
+		/**
+		 * int最大値を設定します。
+		 * @param testInteger int最大値。
+		 */
+		public void setTestInteger(final java.lang.Integer testInteger) {
+			this.getMap().put(Entity.ID_TEST_INTEGER, testInteger);
+		}
+
+		/**
+		 * long最小値を取得します。
+		 * @return long最小値。
+		 */
+		public java.lang.Long getTestBigint() {
+			return NumberUtil.longValue(this.getMap().get(Entity.ID_TEST_BIGINT));
+		}
+
+		/**
+		 * long最小値を設定します。
+		 * @param testBigint long最小値。
+		 */
+		public void setTestBigint(final java.lang.Long testBigint) {
+			this.getMap().put(Entity.ID_TEST_BIGINT, testBigint);
+		}
+
+		/**
+		 * double合計を取得します。
+		 * @return double合計。
+		 */
+		public java.lang.Double getTestDouble() {
+			return (java.lang.Double) this.getMap().get(Entity.ID_TEST_DOUBLE);
+		}
+
+		/**
+		 * double合計を設定します。
+		 * @param testDouble double合計。
+		 */
+		public void setTestDouble(final java.lang.Double testDouble) {
+			this.getMap().put(Entity.ID_TEST_DOUBLE, testDouble);
+		}
+
+		/**
+		 * Numeric平均を取得します。
+		 * @return Numeric平均。
+		 */
+		public java.math.BigDecimal getTestNumeric() {
+			return (java.math.BigDecimal) this.getMap().get(Entity.ID_TEST_NUMERIC);
+		}
+
+		/**
+		 * Numeric平均を設定します。
+		 * @param testNumeric Numeric平均。
+		 */
+		public void setTestNumeric(final java.math.BigDecimal testNumeric) {
+			this.getMap().put(Entity.ID_TEST_NUMERIC, testNumeric);
+		}
+
 
 	}
+
 	/**
 	 * コード1フィールドを取得します。
 	 * @return コード1フィールド。
@@ -114,8 +220,48 @@ public class TestCode1Query extends Query {
 	 * 件数フィールドを取得します。
 	 * @return 件数フィールド。
 	 */
-	public TestMultiRecIdField getCntField() {
-		return (TestMultiRecIdField) this.getField(Entity.ID_CNT);
+	public BigintField getCntField() {
+		return (BigintField) this.getField(Entity.ID_CNT);
+	}
+
+	/**
+	 * Smallint平均フィールドを取得します。
+	 * @return Smallint平均フィールド。
+	 */
+	public TestSmallintField getTestSmallintField() {
+		return (TestSmallintField) this.getField(Entity.ID_TEST_SMALLINT);
+	}
+
+	/**
+	 * int最大値フィールドを取得します。
+	 * @return int最大値フィールド。
+	 */
+	public TestIntegerField getTestIntegerField() {
+		return (TestIntegerField) this.getField(Entity.ID_TEST_INTEGER);
+	}
+
+	/**
+	 * long最小値フィールドを取得します。
+	 * @return long最小値フィールド。
+	 */
+	public TestBigintField getTestBigintField() {
+		return (TestBigintField) this.getField(Entity.ID_TEST_BIGINT);
+	}
+
+	/**
+	 * double合計フィールドを取得します。
+	 * @return double合計フィールド。
+	 */
+	public TestDoubleField getTestDoubleField() {
+		return (TestDoubleField) this.getField(Entity.ID_TEST_DOUBLE);
+	}
+
+	/**
+	 * Numeric平均フィールドを取得します。
+	 * @return Numeric平均フィールド。
+	 */
+	public TestNumericField getTestNumericField() {
+		return (TestNumericField) this.getField(Entity.ID_TEST_NUMERIC);
 	}
 
 

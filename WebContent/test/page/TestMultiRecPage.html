@@ -41,6 +41,21 @@
 									件数
 								</th>
 								<th>
+									Smallint平均
+								</th>
+								<th>
+									int最大値
+								</th>
+								<th>
+									long最小値
+								</th>
+								<th>
+									double合計
+								</th>
+								<th>
+									Numeric平均
+								</th>
+								<th>
 									操作
 								</th>
 							</tr>
@@ -55,6 +70,21 @@
 								</td>
 								<td>
 									<span id="queryResult[0].cnt"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].testSmallint"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].testInteger"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].testBigint"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].testDouble"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].testNumeric"></span>
 								</td>
 								<td>
 									<input type="button" id="queryResult[0].viewButton" value="表示">
@@ -93,6 +123,21 @@
 								<th>
 									内容
 								</th>
+								<th>
+									2バイト整数
+								</th>
+								<th>
+									4バイト整数
+								</th>
+								<th>
+									8バイト整数
+								</th>
+								<th>
+									不動小数点実数
+								</th>
+								<th>
+									10進数
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -119,6 +164,21 @@
 								<td>
 									<input type="text" id="testMultiRecList[0].contents" />
 								</td>
+								<td>
+									<input type="text" id="testMultiRecList[0].testSmallint" />
+								</td>
+								<td>
+									<input type="text" id="testMultiRecList[0].testInteger" />
+								</td>
+								<td>
+									<input type="text" id="testMultiRecList[0].testBigint" />
+								</td>
+								<td>
+									<input type="text" id="testMultiRecList[0].testDouble" />
+								</td>
+								<td>
+									<input type="text" id="testMultiRecList[0].testNumeric" />
+								</td>
 							</tr>
 						</tbody>
 						<tfoot>
@@ -126,7 +186,7 @@
 								<th class="buttonColumn">
 									<input type="button" id="testMultiRecList.addButton" value="+"/>
 								</th>
-								<th colspan="4">
+								<th colspan="9">
 								</th>
 							</tr>
 						</tfoot>

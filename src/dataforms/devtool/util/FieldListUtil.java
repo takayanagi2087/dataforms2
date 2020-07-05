@@ -33,6 +33,7 @@ import dataforms.field.sqltype.SmallintField;
 import dataforms.field.sqltype.TimeField;
 import dataforms.field.sqltype.TimestampField;
 import dataforms.field.sqltype.VarcharField;
+import dataforms.util.ImportUtil;
 import dataforms.util.StringUtil;
 
 /**
@@ -161,10 +162,11 @@ public final class FieldListUtil {
 	 * @param list フィールドリスト。
 	 * @param func フィールドID取得関数インターフェース。
 	 * @param cfunc クラス名取得関数インターフェース。
+	 * @param implist インポートリストユーティリティ。
 	 * @return フィールドのgetter/setter。
 	 * @throws Exception 例外。
 	 */
-	public static String generateFieldValueGetterSetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func, final GetClassNameFunctionalInterface cfunc) throws Exception {
+	public static String generateFieldValueGetterSetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func, final GetClassNameFunctionalInterface cfunc, final ImportUtil implist) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m: list) {
 			String fieldClassName = cfunc.getClassName(m);
@@ -182,7 +184,18 @@ public final class FieldListUtil {
 			sb.append("\t\t * @return " + comment + "。\n");
 			sb.append("\t\t */\n");
 			sb.append("\t\tpublic " + valueType.getName() + " get" + uFieldId+ "() {\n");
-			sb.append("\t\t\treturn (" + valueType.getName() + ") this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + ");\n");
+			if ("java.lang.Short".equals(valueType.getName())) {
+				implist.add("dataforms.util.NumberUtil");
+				sb.append("\t\t\treturn NumberUtil.shortValue(this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + "));\n");
+			} else if ("java.lang.Integer".equals(valueType.getName())) {
+				implist.add("dataforms.util.NumberUtil");
+				sb.append("\t\t\treturn NumberUtil.intValue(this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + "));\n");
+			} else if ("java.lang.Long".equals(valueType.getName())) {
+				implist.add("dataforms.util.NumberUtil");
+				sb.append("\t\t\treturn NumberUtil.longValue(this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + "));\n");
+			} else {
+				sb.append("\t\t\treturn (" + valueType.getName() + ") this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + ");\n");
+			}
 			sb.append("\t\t}\n\n");
 
 			sb.append("\t\t/**\n");
@@ -217,19 +230,35 @@ public final class FieldListUtil {
 	 * @throws Exception 例外。
 	 */
 	public static String generateFieldGetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func) throws Exception {
+		return FieldListUtil.generateFieldGetter(list, func, null);
+	}
+
+	/**
+	 * フィールドのインスタンスのgetterを展開します。
+	 * @param list フィールドリスト。
+	 * @param func フィールドID取得関数インターフェース。
+	 * @param implist インポートリスト。
+	 * @return フィールドIDの定数値。
+	 * @throws Exception 例外。
+	 */
+	public static String generateFieldGetter(final List<Map<String, Object>> list, final GetFieldIdFunctionalInterface func, final ImportUtil implist) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m: list) {
 			String fieldId = func.getFieldId(m);
 			String uFieldId = StringUtil.firstLetterToUpperCase(fieldId);
-			String fieldClassSimpleName = (String) m.get("fieldClassName");
+			String fieldClassName = (String) m.get("fieldClassName");
+			String fsel = (String) m.get("sel");
+			if ("dataforms.field.sqlfunc.CountField".equals(fsel)) {
+				BigintField bifld = new BigintField(fieldId);
+				fieldClassName = bifld.getClass().getName();
+			}
+			if (implist != null) {
+				implist.add(fieldClassName);
+			}
+			String fieldClassSimpleName = fieldClassName;
 			int idx = fieldClassSimpleName.lastIndexOf(".");
 			if (idx >= 0) {
 				fieldClassSimpleName = fieldClassSimpleName.substring(idx + 1);
-				String fsel = (String) m.get("sel");
-				if ("dataforms.field.sqlfunc.CountField".equals(fsel)) {
-					BigintField bifld = new BigintField(fieldId);
-					fieldClassSimpleName = bifld.getClass().getName();
-				}
 			}
 			String comment = (String) m.get("comment");
 			sb.append("\t/**\n");

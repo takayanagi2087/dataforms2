@@ -88,6 +88,22 @@ class QueryGeneratorQueryResultForm extends QueryResultForm {
 	}
 */
 
+	/**
+	 * SubQueryの生成を行います。
+	 * @param {jQuery} btn ボタン。
+	 */
+	generateSubQuery(btn) {
+		var queryResult = this.getComponent("queryResult");
+		var queryClassName = queryResult.getSameRowField(btn, "fullClassName").text();
+		logger.log("queryClassName=" + queryClassName);
+		var m = this.getServerMethod("generateSubQuery");
+		m.execute("queryClass=" + queryClassName, (r) => {
+			if (r.status == ServerMethod.SUCCESS) {
+				currentPage.alert(null, r.result);
+			}
+			this.changePage();
+		});
+	}
 
 	// 問合せ結果リスト中に独自のボタンを追加した場合、以下のコメントを参考にしてイベント処理を実装してください。
 	/**
@@ -95,27 +111,19 @@ class QueryGeneratorQueryResultForm extends QueryResultForm {
 	 */
 	setQueryResultEventHandler() {
 		super.setQueryResultEventHandler();
-		var queryResult = this.getComponent("queryResult");
-		for (var i = 0; i < this.formData.queryResult.length; i++) {
-			var subQuery = this.formData.queryResult[i].subQuery;
-			if (subQuery != null && subQuery.length > 0) {
-				this.get("queryResult[" + i + "].generateSubQueryButton").hide();
-			} else {
-				this.get("queryResult[" + i + "].generateSubQueryButton").show();
-			}
-		}
 		var thisForm = this;
+		var queryResult = this.getComponent("queryResult");
 		// リスト中のボタンに対してイベント処理を追加。
 		this.find("[id$='\.generateSubQueryButton']").click(function() {
-			var queryClassName = queryResult.getSameRowField($(this), "fullClassName").text();
-			logger.log("queryClassName=" + queryClassName);
-			var m = thisForm.getServerMethod("generateSubQuery");
-			m.execute("queryClass=" + queryClassName, function(r) {
-				if (r.status == ServerMethod.SUCCESS) {
-					currentPage.alert(null, r.result);
-				}
-				thisForm.changePage();
-			});
+			var sq = queryResult.getSameRowField($(this), "subQuery").text();
+			if (sq.length > 0) {
+				var msg = MessagesUtil.getMessage("message.confirmsubquery");
+				currentPage.confirm(null, msg, () => {
+					thisForm.generateSubQuery($(this));
+				});
+			} else {
+				thisForm.generateSubQuery($(this));
+			}
 		});
 	}
 

@@ -72,6 +72,17 @@ class EditForm extends Form {
 	}
 
 	/**
+	 * queryForm, queryResultFormが存在しない場合の初期化処理。
+     * <pre>
+     * 基本的にデータ編集モードに移行します。
+     * </pre>
+	 */
+	intitWithoutQuery() {
+		logger.log("intitWithoutQuery");
+		this.updateData();
+	}
+
+	/**
 	 * 戻るボタンのイベント処理を行います。
 	 */
 	back() {

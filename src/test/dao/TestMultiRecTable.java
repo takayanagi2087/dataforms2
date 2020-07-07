@@ -88,7 +88,7 @@ public class TestMultiRecTable extends Table {
 		 * @return レコードID。
 		 */
 		public java.lang.Long getTestMultiRecId() {
-			return NumberUtil.longValue(this.getMap().get(Entity.ID_TEST_MULTI_REC_ID));
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_TEST_MULTI_REC_ID));
 		}
 
 		/**
@@ -104,7 +104,7 @@ public class TestMultiRecTable extends Table {
 		 * @return ソート順。
 		 */
 		public java.lang.Short getSortOrder() {
-			return NumberUtil.shortValue(this.getMap().get(Entity.ID_SORT_ORDER));
+			return NumberUtil.shortValueObject(this.getMap().get(Entity.ID_SORT_ORDER));
 		}
 
 		/**
@@ -168,7 +168,7 @@ public class TestMultiRecTable extends Table {
 		 * @return 2バイト整数。
 		 */
 		public java.lang.Short getTestSmallint() {
-			return NumberUtil.shortValue(this.getMap().get(Entity.ID_TEST_SMALLINT));
+			return NumberUtil.shortValueObject(this.getMap().get(Entity.ID_TEST_SMALLINT));
 		}
 
 		/**
@@ -184,7 +184,7 @@ public class TestMultiRecTable extends Table {
 		 * @return 4バイト整数。
 		 */
 		public java.lang.Integer getTestInteger() {
-			return NumberUtil.intValue(this.getMap().get(Entity.ID_TEST_INTEGER));
+			return NumberUtil.integerValueObject(this.getMap().get(Entity.ID_TEST_INTEGER));
 		}
 
 		/**
@@ -200,7 +200,7 @@ public class TestMultiRecTable extends Table {
 		 * @return 8バイト整数。
 		 */
 		public java.lang.Long getTestBigint() {
-			return NumberUtil.longValue(this.getMap().get(Entity.ID_TEST_BIGINT));
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_TEST_BIGINT));
 		}
 
 		/**

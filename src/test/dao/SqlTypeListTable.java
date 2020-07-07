@@ -2,20 +2,21 @@ package test.dao;
 
 import java.util.Map;
 import dataforms.dao.Table;
+import test.field.SqlBigintField;
+import test.field.SqlVarcharField;
+import test.field.SqlNumericField;
+import test.field.SqlClobField;
+import test.field.SqlTimestampField;
+import test.field.SqlDoubleField;
 import test.field.SqlTypeListIdField;
 import test.field.SqlTypeIdField;
-import dataforms.field.common.SortOrderField;
-import test.field.SqlCharField;
-import test.field.SqlVarcharField;
-import test.field.SqlSmallintField;
 import test.field.SqlIntegerField;
-import test.field.SqlBigintField;
-import test.field.SqlDoubleField;
-import test.field.SqlNumericField;
-import test.field.SqlDateField;
 import test.field.SqlTimeField;
-import test.field.SqlTimestampField;
-import test.field.SqlClobField;
+import test.field.SqlCharField;
+import dataforms.util.NumberUtil;
+import test.field.SqlDateField;
+import dataforms.field.common.SortOrderField;
+import test.field.SqlSmallintField;
 
 
 /**
@@ -103,7 +104,7 @@ public class SqlTypeListTable extends Table {
 		 * @return レコードID。
 		 */
 		public java.lang.Long getSqlTypeListId() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_SQL_TYPE_LIST_ID);
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_SQL_TYPE_LIST_ID));
 		}
 
 		/**
@@ -119,7 +120,7 @@ public class SqlTypeListTable extends Table {
 		 * @return レコードID。
 		 */
 		public java.lang.Long getSqlTypeId() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_SQL_TYPE_ID);
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_SQL_TYPE_ID));
 		}
 
 		/**
@@ -135,7 +136,7 @@ public class SqlTypeListTable extends Table {
 		 * @return ソート順。
 		 */
 		public java.lang.Short getSortOrder() {
-			return (java.lang.Short) this.getMap().get(Entity.ID_SORT_ORDER);
+			return NumberUtil.shortValueObject(this.getMap().get(Entity.ID_SORT_ORDER));
 		}
 
 		/**
@@ -183,7 +184,7 @@ public class SqlTypeListTable extends Table {
 		 * @return Smallintフィールド。
 		 */
 		public java.lang.Short getSqlSmallint() {
-			return (java.lang.Short) this.getMap().get(Entity.ID_SQL_SMALLINT);
+			return NumberUtil.shortValueObject(this.getMap().get(Entity.ID_SQL_SMALLINT));
 		}
 
 		/**
@@ -199,7 +200,7 @@ public class SqlTypeListTable extends Table {
 		 * @return Integerフィールド。
 		 */
 		public java.lang.Integer getSqlInteger() {
-			return (java.lang.Integer) this.getMap().get(Entity.ID_SQL_INTEGER);
+			return NumberUtil.integerValueObject(this.getMap().get(Entity.ID_SQL_INTEGER));
 		}
 
 		/**
@@ -215,7 +216,7 @@ public class SqlTypeListTable extends Table {
 		 * @return Bigintフィールド。
 		 */
 		public java.lang.Long getSqlBigint() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_SQL_BIGINT);
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_SQL_BIGINT));
 		}
 
 		/**

@@ -46,7 +46,7 @@ public class TestSingleRecDao extends QuerySetDao {
 
 	/**
 	 * 主テーブルを取得します。
-	 * @return 主テーブル>
+	 * @return 主テーブル。
 	 */
 	public TestMultiRecTable getMainTable() {
 		if (this.getSingleRecordQuery() != null) {

@@ -114,7 +114,7 @@ public class TestCode1Query extends Query {
 		 * @return 件数。
 		 */
 		public java.lang.Long getCnt() {
-			return NumberUtil.longValue(this.getMap().get(Entity.ID_CNT));
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_CNT));
 		}
 
 		/**
@@ -130,7 +130,7 @@ public class TestCode1Query extends Query {
 		 * @return Smallint平均。
 		 */
 		public java.lang.Short getTestSmallint() {
-			return NumberUtil.shortValue(this.getMap().get(Entity.ID_TEST_SMALLINT));
+			return NumberUtil.shortValueObject(this.getMap().get(Entity.ID_TEST_SMALLINT));
 		}
 
 		/**
@@ -146,7 +146,7 @@ public class TestCode1Query extends Query {
 		 * @return int最大値。
 		 */
 		public java.lang.Integer getTestInteger() {
-			return NumberUtil.intValue(this.getMap().get(Entity.ID_TEST_INTEGER));
+			return NumberUtil.integerValueObject(this.getMap().get(Entity.ID_TEST_INTEGER));
 		}
 
 		/**
@@ -162,7 +162,7 @@ public class TestCode1Query extends Query {
 		 * @return long最小値。
 		 */
 		public java.lang.Long getTestBigint() {
-			return NumberUtil.longValue(this.getMap().get(Entity.ID_TEST_BIGINT));
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_TEST_BIGINT));
 		}
 
 		/**

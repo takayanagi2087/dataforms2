@@ -35,6 +35,7 @@ import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.ClassNameUtil;
 import dataforms.util.FileUtil;
+import dataforms.util.ImportUtil;
 import dataforms.util.StringUtil;
 import dataforms.validator.DisplayedRequiredValidator;
 import dataforms.validator.RequiredValidator;
@@ -384,7 +385,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * @return プロパティのソース。
 	 * @throws Exception 例外。
 	 */
-	private String getProperties(final Map<String, Object> data, final Set<String> implist) throws Exception {
+	private String getProperties(final Map<String, Object> data, final ImportUtil implist) throws Exception {
 		Set<String> set = new HashSet<String>();
 		StringBuilder sb = new StringBuilder();
 		{
@@ -438,6 +439,7 @@ public class DaoGeneratorEditForm extends EditForm {
 							sb.append(this.getFieldProperty(fieldId, fullClassName));
 							set.add(fullClassName);
 							implist.add(fullClassName);
+							// implist.add(fullClassName);
 						}
 					}
 				}
@@ -446,10 +448,9 @@ public class DaoGeneratorEditForm extends EditForm {
 		return sb.toString();
 	}
 
-
 	@Override
 	protected void insertData(final Map<String, Object> data) throws Exception {
-		Set<String> implist = new HashSet<String>();
+		ImportUtil implist = new ImportUtil();
 		String javasrc = this.getStringResourse("template/QuerySetDao.java.template");
 		//logger.debug("template=" + javasrc);
 		String packageName = (String) data.get(ID_PACKAGE_NAME);
@@ -466,7 +467,8 @@ public class DaoGeneratorEditForm extends EditForm {
 			String queryClass = (String) data.get("listQueryClassName");
 			if (!StringUtil.isBlank(queryClass)) {
 				if (!packageName.equals(queryPackage)) {
-					implist.add(queryPackage + "." + queryClass);
+					String qc = queryPackage + "." + queryClass;
+					implist.add(qc);
 				}
 				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");
 			} else {
@@ -482,11 +484,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		} else {
 			javasrc = this.multiRecordEditForm(data, implist, javasrc);
 		}
-		StringBuilder isb = new StringBuilder();
-		for (String s: implist) {
-			isb.append("import " + s + ";\n");
-		}
-		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", isb.toString());
+		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", implist.getImportText());
 		logger.debug("javasrc={}", javasrc);
 
 		String path = (String) data.get(ID_JAVA_SOURCE_PATH);
@@ -504,7 +502,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * @return 選択フィールドリストのソース。
 	 * @throws Exception 例外。
 	 */
-	private String getKeyListSource(final Map<String, Object> data, final Set<String> implist, final String packagename, final String classname) throws Exception {
+	private String getKeyListSource(final Map<String, Object> data, final ImportUtil implist, final String packagename, final String classname) throws Exception {
 		int cnt = 0;
 		StringBuilder sb = new StringBuilder();
 		@SuppressWarnings("unchecked")
@@ -512,7 +510,6 @@ public class DaoGeneratorEditForm extends EditForm {
 		Class<?> cls = Class.forName(packagename + "." + classname);
 		if (Table.class.isAssignableFrom(cls)) {
 			sb.append("\t\tQuery query = new SingleTableQuery(new " + classname + "());\n");
-			implist.add(SingleTableQuery.class.getName());
 		} else {
 			sb.append("\t\tQuery query = new " + classname + "();\n");
 		}
@@ -541,6 +538,9 @@ public class DaoGeneratorEditForm extends EditForm {
 		sb.append(fsb.toString());
 		sb.append("\n\t\t));\n");
 		if (cnt > 0) {
+			if (Table.class.isAssignableFrom(cls)) {
+				implist.add(SingleTableQuery.class);
+			}
 			implist.add("dataforms.field.base.FieldList");
 			return sb.toString();
 		} else {
@@ -557,7 +557,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * @return javaソーステキスト。
 	 * @throws Exception 例外。
 	 */
-	private String multiRecordEditForm(final Map<String, Object> data, final Set<String> implist, String javasrc) throws Exception {
+	private String multiRecordEditForm(final Map<String, Object> data, final ImportUtil implist, String javasrc) throws Exception {
 		String p = (String) data.get(ID_PACKAGE_NAME);
 		String packagename = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
 		String classname = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
@@ -583,7 +583,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * @return javaソーステキスト。
 	 * @throws Exception 例外。
 	 */
-	private String singleRecordEditForm(final Map<String, Object> data, final Set<String> implist, String javasrc) throws Exception {
+	private String singleRecordEditForm(final Map<String, Object> data, final ImportUtil implist, String javasrc) throws Exception {
 		String p = (String) data.get(ID_PACKAGE_NAME);
 		{
 			String queryPackage = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
@@ -673,7 +673,7 @@ public class DaoGeneratorEditForm extends EditForm {
 	 * @param implist インポートリスト。
 	 * @return javaソース文字列。
 	 */
-	private String noEditForm(String javasrc, final Set<String> implist) {
+	private String noEditForm(String javasrc, final ImportUtil implist) {
 		implist.add(Table.class.getName());
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "");

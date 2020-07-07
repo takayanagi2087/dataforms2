@@ -104,7 +104,7 @@ public class SqlTypeTable extends Table {
 		 * @return レコードID。
 		 */
 		public java.lang.Long getSqlTypeId() {
-			return NumberUtil.longValue(this.getMap().get(Entity.ID_SQL_TYPE_ID));
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_SQL_TYPE_ID));
 		}
 
 		/**
@@ -152,7 +152,7 @@ public class SqlTypeTable extends Table {
 		 * @return Smallintフィールド。
 		 */
 		public java.lang.Short getSqlSmallint() {
-			return NumberUtil.shortValue(this.getMap().get(Entity.ID_SQL_SMALLINT));
+			return NumberUtil.shortValueObject(this.getMap().get(Entity.ID_SQL_SMALLINT));
 		}
 
 		/**
@@ -168,7 +168,7 @@ public class SqlTypeTable extends Table {
 		 * @return Integerフィールド。
 		 */
 		public java.lang.Integer getSqlInteger() {
-			return NumberUtil.intValue(this.getMap().get(Entity.ID_SQL_INTEGER));
+			return NumberUtil.integerValueObject(this.getMap().get(Entity.ID_SQL_INTEGER));
 		}
 
 		/**
@@ -184,7 +184,7 @@ public class SqlTypeTable extends Table {
 		 * @return Bigintフィールド。
 		 */
 		public java.lang.Long getSqlBigint() {
-			return NumberUtil.longValue(this.getMap().get(Entity.ID_SQL_BIGINT));
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_SQL_BIGINT));
 		}
 
 		/**

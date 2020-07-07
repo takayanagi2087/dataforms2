@@ -3,16 +3,17 @@ package test.dao;
 import java.util.Map;
 import dataforms.dao.Table;
 import test.field.FileIdField;
-import dataforms.field.common.SortOrderField;
-import test.field.MemoField;
-import test.field.BlobFileField;
-import test.field.BlobImageField;
-import test.field.BlobVideoField;
-import test.field.BlobAudioField;
-import test.field.FolderFileField;
 import test.field.FolderImageField;
 import test.field.FolderVideoField;
+import test.field.BlobImageField;
+import test.field.BlobVideoField;
+import dataforms.util.NumberUtil;
+import test.field.BlobAudioField;
+import dataforms.field.common.SortOrderField;
 import test.field.FolderAudioField;
+import test.field.BlobFileField;
+import test.field.MemoField;
+import test.field.FolderFileField;
 
 
 /**
@@ -91,7 +92,7 @@ public class FileTable extends Table {
 		 * @return ファイルID。
 		 */
 		public java.lang.Long getFileId() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_FILE_ID);
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_FILE_ID));
 		}
 
 		/**
@@ -107,7 +108,7 @@ public class FileTable extends Table {
 		 * @return ソート順。
 		 */
 		public java.lang.Short getSortOrder() {
-			return (java.lang.Short) this.getMap().get(Entity.ID_SORT_ORDER);
+			return NumberUtil.shortValueObject(this.getMap().get(Entity.ID_SORT_ORDER));
 		}
 
 		/**

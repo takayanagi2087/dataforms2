@@ -2,13 +2,14 @@ package test.dao;
 
 import java.util.Map;
 import dataforms.dao.Table;
+import test.field.EnumMultiSelectField;
 import test.field.SelectIdField;
+import dataforms.util.NumberUtil;
 import dataforms.field.common.SortOrderField;
 import test.field.VarcharSelectField;
 import test.field.IntegerSelectField;
-import test.field.EnumSingleSelectField;
-import test.field.EnumMultiSelectField;
 import test.field.PropSingleSelectField;
+import test.field.EnumSingleSelectField;
 import test.field.PropMultiSelectField;
 
 
@@ -79,7 +80,7 @@ public class SelectFieldTable extends Table {
 		 * @return 選択肢レコードID。
 		 */
 		public java.lang.Long getSelectId() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_SELECT_ID);
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_SELECT_ID));
 		}
 
 		/**
@@ -95,7 +96,7 @@ public class SelectFieldTable extends Table {
 		 * @return ソート順。
 		 */
 		public java.lang.Short getSortOrder() {
-			return (java.lang.Short) this.getMap().get(Entity.ID_SORT_ORDER);
+			return NumberUtil.shortValueObject(this.getMap().get(Entity.ID_SORT_ORDER));
 		}
 
 		/**
@@ -127,7 +128,7 @@ public class SelectFieldTable extends Table {
 		 * @return 整数選択肢。
 		 */
 		public java.lang.Integer getIntegerSelect() {
-			return (java.lang.Integer) this.getMap().get(Entity.ID_INTEGER_SELECT);
+			return NumberUtil.integerValueObject(this.getMap().get(Entity.ID_INTEGER_SELECT));
 		}
 
 		/**
@@ -158,15 +159,15 @@ public class SelectFieldTable extends Table {
 		 * 列挙型複数選択を取得します。
 		 * @return 列挙型複数選択。
 		 */
-		public java.lang.String getEnumMultiSelect() {
-			return (java.lang.String) this.getMap().get(Entity.ID_ENUM_MULTI_SELECT);
+		public java.util.List<?> getEnumMultiSelect() {
+			return (java.util.List<?>) this.getMap().get(Entity.ID_ENUM_MULTI_SELECT);
 		}
 
 		/**
 		 * 列挙型複数選択を設定します。
 		 * @param enumMultiSelect 列挙型複数選択。
 		 */
-		public void setEnumMultiSelect(final java.lang.String enumMultiSelect) {
+		public void setEnumMultiSelect(final java.util.List<?> enumMultiSelect) {
 			this.getMap().put(Entity.ID_ENUM_MULTI_SELECT, enumMultiSelect);
 		}
 
@@ -190,15 +191,15 @@ public class SelectFieldTable extends Table {
 		 * プロパティ複数選択を取得します。
 		 * @return プロパティ複数選択。
 		 */
-		public java.lang.String getPropMultiSelect() {
-			return (java.lang.String) this.getMap().get(Entity.ID_PROP_MULTI_SELECT);
+		public java.util.List<?> getPropMultiSelect() {
+			return (java.util.List<?>) this.getMap().get(Entity.ID_PROP_MULTI_SELECT);
 		}
 
 		/**
 		 * プロパティ複数選択を設定します。
 		 * @param propMultiSelect プロパティ複数選択。
 		 */
-		public void setPropMultiSelect(final java.lang.String propMultiSelect) {
+		public void setPropMultiSelect(final java.util.List<?> propMultiSelect) {
 			this.getMap().put(Entity.ID_PROP_MULTI_SELECT, propMultiSelect);
 		}
 

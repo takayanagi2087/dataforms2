@@ -179,22 +179,26 @@ public final class FieldListUtil {
 			if (StringUtil.isBlank(comment)) {
 				comment = Field.newFieldInstance(cls).getComment();
 			}
+			String vtype = valueType.getName();
+			if ("java.util.List".equals(vtype)) {
+				vtype = "java.util.List<?>";
+			}
 			sb.append("\t\t/**\n");
 			sb.append("\t\t * " + comment + "を取得します。\n");
 			sb.append("\t\t * @return " + comment + "。\n");
 			sb.append("\t\t */\n");
-			sb.append("\t\tpublic " + valueType.getName() + " get" + uFieldId+ "() {\n");
+			sb.append("\t\tpublic " + vtype + " get" + uFieldId+ "() {\n");
 			if ("java.lang.Short".equals(valueType.getName())) {
 				implist.add("dataforms.util.NumberUtil");
-				sb.append("\t\t\treturn NumberUtil.shortValue(this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + "));\n");
+				sb.append("\t\t\treturn NumberUtil.shortValueObject(this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + "));\n");
 			} else if ("java.lang.Integer".equals(valueType.getName())) {
 				implist.add("dataforms.util.NumberUtil");
-				sb.append("\t\t\treturn NumberUtil.intValue(this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + "));\n");
+				sb.append("\t\t\treturn NumberUtil.integerValueObject(this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + "));\n");
 			} else if ("java.lang.Long".equals(valueType.getName())) {
 				implist.add("dataforms.util.NumberUtil");
-				sb.append("\t\t\treturn NumberUtil.longValue(this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + "));\n");
+				sb.append("\t\t\treturn NumberUtil.longValueObject(this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + "));\n");
 			} else {
-				sb.append("\t\t\treturn (" + valueType.getName() + ") this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + ");\n");
+				sb.append("\t\t\treturn (" + vtype + ") this.getMap().get(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + ");\n");
 			}
 			sb.append("\t\t}\n\n");
 
@@ -202,7 +206,7 @@ public final class FieldListUtil {
 			sb.append("\t\t * " + comment + "を設定します。\n");
 			sb.append("\t\t * @param " + fieldId + " " + comment + "。\n");
 			sb.append("\t\t */\n");
-			sb.append("\t\tpublic void set" + uFieldId+ "(final " + valueType.getName() + " " + fieldId + ") {\n");
+			sb.append("\t\tpublic void set" + uFieldId+ "(final " + vtype + " " + fieldId + ") {\n");
 			sb.append("\t\t\tthis.getMap().put(Entity.ID_" + StringUtil.camelToUpperCaseSnake(fieldId) + ", " + fieldId + ");\n");
 			sb.append("\t\t}\n\n");
 		}

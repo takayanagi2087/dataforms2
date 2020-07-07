@@ -77,7 +77,7 @@ class EditForm extends Form {
      * 基本的にデータ編集モードに移行します。
      * </pre>
 	 */
-	intitWithoutQuery() {
+	initWithoutQuery() {
 		logger.log("intitWithoutQuery");
 		this.updateData();
 	}

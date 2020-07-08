@@ -1,21 +1,36 @@
 package test.page;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import dataforms.annotation.WebMethod;
 import dataforms.controller.QueryForm;
 import dataforms.field.base.Field.MatchType;
-import java.util.List;
 import dataforms.field.base.FieldList;
-import test.dao.TestCode1Query;
-import java.util.Map;
-import test.field.Code1Field;
 import dataforms.report.ExportDataFile;
-
+import dataforms.response.BinaryResponse;
+import dataforms.response.JsonResponse;
+import dataforms.response.Response;
+import dataforms.util.WebClient;
+import dataforms.util.WebClient.Convert;
+import dataforms.validator.ValidationError;
+import test.dao.TestCode1Query;
 import test.dao.TestMultiRecDao;
+import test.field.Code1Field;
 
 
 /**
  * 問い合わせフォームクラス。
  */
 public class TestMultiRecQueryForm extends QueryForm {
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LogManager.getLogger(TestMultiRecQueryForm.class);
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -109,5 +124,34 @@ public class TestMultiRecQueryForm extends QueryForm {
 		return ret;
 	}
 */
+
+
+	// 独自のWebメソッドを作成する場合は、以下のコードを参考にしてください。
+	/**
+	 * Webメソッドのサンプル。
+	 * @param p パラメータ。
+	 * @return 応答情報。
+	 * @throws Exception 例外。
+	 */
+	@WebMethod
+	public Response testApi(final Map<String, Object> p) throws Exception {
+		Response ret = null;
+		// Formから送信されたデータを確認します。
+		List<ValidationError> list = this.validate(p);
+		if (list.size() == 0) {
+			// Formから送信されたデータをサーバーサイドで処理しやすいデータ型に変換します。
+			WebClient wc = new WebClient("http://localhost:11080/dataforms2/test/page/TestApi.df");
+//			Object r = wc.call(null, Convert.TEXT);
+//			logger.debug(() -> "object=" + r.getClass().getName());
+//			ret = new JsonResponse(JsonResponse.SUCCESS, r);
+			Object r = wc.call(null, Convert.BINARY);
+			logger.debug(() -> "object=" + r.getClass().getName());
+			ret = new BinaryResponse((byte[]) r);
+		} else {
+			// 確認で問題があった場合その情報を返信します。
+			ret = new JsonResponse(JsonResponse.INVALID, list);
+		}
+		return ret;
+	}
 
 }

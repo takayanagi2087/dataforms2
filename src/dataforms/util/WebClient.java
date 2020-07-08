@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -169,31 +170,6 @@ public class WebClient {
 	}
 
 	/**
-	 * 応答情報を読み込みます。
-	 * @param conn URLConnection。
-	 * @return 応答情報。
-	 * @throws Exception 例外。
-	 */
-	private Object readResponse(HttpURLConnection conn) throws Exception {
-		Object ret = null;
-		try (InputStream is = conn.getInputStream()) {
-			String encoding = conn.getContentEncoding();
-			if (null == encoding) {
-				encoding = "utf-8";
-			}
-			byte[] buf = FileUtil.readInputStream(is);
-			ret = new String(buf, encoding);
-			String contentType = conn.getContentType().toLowerCase();
-			if (contentType != null) {
-				if (contentType.indexOf("application/json") >= 0) {
-					ret = JSON.decode((String) ret, HashMap.class);
-				}
-			}
-		}
-		return ret;
-	}
-
-	/**
 	 * 応答ヘッダ。
 	 */
 	private Map<String, List<String>> responseHeader = null;
@@ -206,13 +182,175 @@ public class WebClient {
 		return this.responseHeader;
 	}
 
+
 	/**
-	 * APIを呼び出します。
-	 * @param p パラメータ。
+	 * HTTP応答ステータスコード。
+	 */
+	private int httpStatus = 0;
+
+	/**
+	 * HTTP応答ステータスコードを取得します。
+	 * @return HTTP応答ステータスコード。
+	 */
+	public int getHttpStatus() {
+		return httpStatus;
+	}
+
+	/**
+	 * 応答データのcontent-type。
+	 */
+	private String responseContentType = null;
+
+	/**
+	 * 応答データのcontent-typeを取得します。
+	 * @return 応答データのcontent-type。
+	 */
+	public String getResponseContentType() {
+		return responseContentType;
+	}
+
+	/**
+	 * 文字コード。
+	 */
+	private String contentEncoding = "utf-8";
+
+	/**
+	 * 文字コードを取得します。
+	 * @return 文字コード。
+	 */
+	public String getContentEncoding() {
+		return contentEncoding;
+	}
+
+	/**
+	 * 変換モード。
+	 *
+	 */
+	public enum Convert {
+		/** 受信したバイナリデータをそのまま返します。 */
+		BINARY,
+		/** 可能であれば文字列に変換します。 */
+		TEXT,
+		/** 可能であればMap等のJavaオブジェクトに変換します。 */
+		OBJECT
+	}
+
+	/**
+	 * 応答情報を読み込みます。
+	 * @param conn URLConnection。
+	 * @param convert 変換モード。
 	 * @return 応答情報。
 	 * @throws Exception 例外。
 	 */
-	public Object call(final Object p) throws Exception {
+	private Object readResponse(final HttpURLConnection conn, final Convert convert) throws Exception {
+		Object ret = null;
+		try (InputStream is = conn.getInputStream()) {
+			this.contentEncoding = conn.getContentEncoding();
+			if (null == this.contentEncoding) {
+				this.contentEncoding = "utf-8";
+			}
+			byte[] buf = FileUtil.readInputStream(is);
+			this.responseContentType = conn.getContentType().toLowerCase();
+			ret = this.convert(buf, convert, this.responseContentType, this.contentEncoding);
+		}
+		return ret;
+	}
+
+	/**
+	 * テキストのコンテントタイプ。
+	 */
+	private static final String[] TEXT_CONTENT_TYPE_PATTERN = {
+		"application/json"
+		, "image/svg+xml"
+		, "application/xml"
+	};
+
+	/**
+	 * テキストに変換できるcontent-typeを判定します。
+	 * @param contentType content-type。
+	 * @return テキストに変換できるcontentTypeの場合true。
+	 */
+	protected Boolean isTextContentType(final String contentType) {
+		Boolean ret = Boolean.FALSE;
+		if (Pattern.matches("text/.+", contentType)) {
+			ret = Boolean.TRUE;
+		} else {
+			for (String ct: TEXT_CONTENT_TYPE_PATTERN) {
+				if (contentType.indexOf(ct) >= 0) {
+					ret = Boolean.TRUE;
+				}
+			}
+		}
+		return ret;
+	}
+
+	/**
+	 * テキストに変換できるオブジェクトの場合テキストに変換します。
+	 * @param buf バッファ。
+	 * @param contentType conetnt-type。
+	 * @param encoding 文字コード。
+	 * @return 変換結果。
+	 * @throws Exception 例外。
+	 */
+	protected Object convertToText(final byte[] buf, final String contentType, final String encoding) throws Exception {
+		Object ret = buf;
+		if (this.isTextContentType(contentType)) {
+			ret = new String(buf, encoding);
+		}
+		return ret;
+	}
+
+	/**
+	 * 応答情報を適切に変換します。
+	 * @param buf 受信データ。
+	 * @param convert 変換モード。
+	 * @param contentType content-type。
+	 * @param encoding テキストの場合の文字コード。
+	 * @return 変換結果。
+	 * @throws Exception 例外。
+	 */
+	protected Object convert(final byte[] buf, final Convert convert, final String contentType, final String encoding) throws Exception {
+		Object ret = buf;
+		if (convert == Convert.BINARY) {
+			return ret;
+		} else {
+			if (convert == Convert.TEXT) {
+				ret = this.convertToText(buf, contentType, encoding);
+				return ret;
+			} else {
+				ret = this.convertToObject(buf, contentType, encoding);
+				return ret;
+			}
+		}
+	}
+
+	/**
+	 * 応答情報を適切に変換します。
+	 * @param buf 受信データ。
+	 * @param contentType content-type。
+	 * @param encoding 文字コード。
+	 * @return 変換結果。
+	 * @throws Exception 例外。
+	 */
+	protected Object convertToObject(final byte[] buf, final String contentType, final String encoding) throws Exception {
+		Object ret = this.convertToText(buf, contentType, encoding);
+		if (contentType != null) {
+			if (contentType.indexOf("application/json") >= 0) {
+				ret = JSON.decode((String) ret, HashMap.class);
+			}
+		}
+		return ret;
+	}
+
+
+	/**
+	 * APIを呼び出します。
+	 * @param p パラメータ。
+	 * @param convert 変換モード。
+	 * @return 応答情報。
+	 * @throws Exception 例外。
+	 */
+	public Object call(final Object p, final Convert convert) throws Exception {
 		Object ret = null;
 		String senddata = this.parseSendData(p);
 		String url = this.url;
@@ -236,16 +374,23 @@ public class WebClient {
 		try {
 			this.responseHeader = conn.getHeaderFields();
 			// HTTPレスポンスコード
-			final int status = conn.getResponseCode();
-			if (status == HttpURLConnection.HTTP_OK) {
-				ret = this.readResponse(conn);
-			}
+			this.httpStatus = conn.getResponseCode();
+			ret = this.readResponse(conn, convert);
 		} finally {
 			conn.disconnect();
 		}
 		return ret;
 	}
 
+	/**
+	 * APIを呼び出します。
+	 * @param p パラメータ。
+	 * @return 応答情報。
+	 * @throws Exception 例外。
+	 */
+	public Object call(final Object p) throws Exception {
+		return this.call(p, Convert.OBJECT);
+	}
 
 	/**
 	 * APIを呼び出します。
@@ -253,6 +398,6 @@ public class WebClient {
 	 * @throws Exception 例外。
 	 */
 	public Object call() throws Exception {
-		return this.call(null);
+		return this.call(null, Convert.OBJECT);
 	}
 }

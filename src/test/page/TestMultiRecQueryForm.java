@@ -11,7 +11,6 @@ import dataforms.controller.QueryForm;
 import dataforms.field.base.Field.MatchType;
 import dataforms.field.base.FieldList;
 import dataforms.report.ExportDataFile;
-import dataforms.response.BinaryResponse;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
 import dataforms.util.WebClient;
@@ -140,13 +139,16 @@ public class TestMultiRecQueryForm extends QueryForm {
 		List<ValidationError> list = this.validate(p);
 		if (list.size() == 0) {
 			// Formから送信されたデータをサーバーサイドで処理しやすいデータ型に変換します。
-			WebClient wc = new WebClient("http://localhost:11080/dataforms2/test/page/TestApi.df");
-//			Object r = wc.call(null, Convert.TEXT);
-//			logger.debug(() -> "object=" + r.getClass().getName());
-//			ret = new JsonResponse(JsonResponse.SUCCESS, r);
-			Object r = wc.call(null, Convert.BINARY);
+			WebClient wc = new WebClient("http://localhost:11080/dataforms2/test/page/TestApi.df", WebClient.METHOD_GET);
+			Object r = wc.call(null, /*"err=1", */Convert.TEXT);
+			logger.debug(() -> "status=" + wc.getHttpStatus());
+			logger.debug(() -> "content-type=" + wc.getResponseContentType());
 			logger.debug(() -> "object=" + r.getClass().getName());
-			ret = new BinaryResponse((byte[]) r);
+			logger.debug(() -> "text=" + r.toString());
+			ret = new JsonResponse(JsonResponse.SUCCESS, r);
+//			Object r = wc.call(null, Convert.BINARY);
+//			logger.debug(() -> "object=" + r.getClass().getName());
+//			ret = new BinaryResponse((byte[]) r);
 		} else {
 			// 確認で問題があった場合その情報を返信します。
 			ret = new JsonResponse(JsonResponse.INVALID, list);

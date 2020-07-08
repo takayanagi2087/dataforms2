@@ -235,6 +235,17 @@ public class WebClient {
 		OBJECT
 	}
 
+
+	private InputStream getInputStream(final HttpURLConnection conn) {
+		try {
+			InputStream is = conn.getInputStream();
+			return is;
+		} catch (Exception e) {
+			InputStream is = conn.getErrorStream();
+			return is;
+		}
+	}
+
 	/**
 	 * 応答情報を読み込みます。
 	 * @param conn URLConnection。
@@ -244,7 +255,7 @@ public class WebClient {
 	 */
 	private Object readResponse(final HttpURLConnection conn, final Convert convert) throws Exception {
 		Object ret = null;
-		try (InputStream is = conn.getInputStream()) {
+		try (InputStream is = this.getInputStream(conn)) {
 			this.contentEncoding = conn.getContentEncoding();
 			if (null == this.contentEncoding) {
 				this.contentEncoding = "utf-8";

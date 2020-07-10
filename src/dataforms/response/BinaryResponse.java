@@ -64,6 +64,38 @@ public class BinaryResponse extends FileResponse {
 	}
 
 	/**
+	 * Content-Dispositionの種類。
+	 *
+	 */
+	public enum Disposition {
+		/** Content-Disposition: inlineを指定し、ブラウザのインライン表示を促します。 */
+		INLINE,
+		/** Content-Disposition: ATTACHMENTを指定し、ブラウザのファイルダウンロードを促します。 */
+		ATTACHMENT
+	}
+
+	/**
+	 * Content-Displitionのinline, attachの区分。
+	 */
+	private Disposition contentDisposition = Disposition.ATTACHMENT;
+
+	/**
+	 * Content-Displitionのinline, attachの区分を取得します。
+	 * @return Content-Displitionのinline, attachの区分。
+	 */
+	public Disposition getContentDisposition() {
+		return contentDisposition;
+	}
+
+	/**
+	 * Content-Displitionのinline, attachの区分を設定します。
+	 * @param contentDisposition Content-Displitionのinline, attachの区分。
+	 */
+	public void setContentDisposition(Disposition contentDisposition) {
+		this.contentDisposition = contentDisposition;
+	}
+
+	/**
 	 * コンストラクタ。
 	 * @param result 実行結果。
 	 */
@@ -181,9 +213,10 @@ public class BinaryResponse extends FileResponse {
 		logger.debug(() -> "content-type:" + resp.getContentType());
 		if (this.getFileName() != null) {
 			// このヘッダはjavascripで解析するので、filename*等のパラメータは追加しないでください。
-			final String CONTENT_DISPOSITION_FORMAT = "attachment; filename=%s";
+			final String CONTENT_DISPOSITION_FORMAT = "%s; filename=%s";
 			String utf8fn =  URLEncoder.encode(this.getFileName(), DataFormsServlet.getEncoding());
-			String h = String.format(CONTENT_DISPOSITION_FORMAT, utf8fn);
+			String h = String.format(CONTENT_DISPOSITION_FORMAT, this.getContentDisposition().name().toLowerCase(),  utf8fn);
+			logger.debug(() -> "Content-Disposition:" + h);
 			resp.setHeader("Content-Disposition", h);
 		}
 		HttpRangeInfo p = new HttpRangeInfo(this.getRequest());

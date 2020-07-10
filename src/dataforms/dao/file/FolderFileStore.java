@@ -14,7 +14,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dataforms.controller.Page;
+import dataforms.controller.WebEntryPoint;
 import dataforms.field.common.FileField;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;
@@ -83,7 +83,7 @@ public class FolderFileStore extends FileStore {
 	 */
 	public FolderFileStore(final FileField<? extends FileObject> field) {
 		this.uploadDataForlder = DataFormsServlet.getUploadDataFolder();
-		Page p = field.getPage();
+		WebEntryPoint p = field.getWebEntryPoint();
 		this.userId = p.getUserId();
 		if (field.getTable() != null) {
 			this.tableName = field.getTable().getClass().getSimpleName();

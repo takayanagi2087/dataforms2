@@ -946,7 +946,7 @@ public class ExcelReport extends Report {
 			this.workbook.getSheetAt(i).getPrintSetup().setPaperSize(printSetting.getPaperSize());
 		}
 		for (int i = 0; i < this.workbook.getNumberOfSheets(); i++) {
-			this.workbook.getSheetAt(i).getFooter().setRight("dataforms.jar " + Page.getDataformsVersion());
+			this.workbook.getSheetAt(i).getFooter().setRight("dataforms2.jar " + Page.getDataformsVersion());
 		}
 	}
 

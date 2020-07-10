@@ -1075,9 +1075,9 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 
 
 	/**
-	 * dataforms.jarが提供するフィールドかどうかを判定します。
+	 * dataforms2.jarが提供するフィールドかどうかを判定します。
 	 * @param classname フィールドの完全クラス名。
-	 * @return dataforms.jarが提供するフィールドクラスの場合true.
+	 * @return dataforms2.jarが提供するフィールドクラスの場合true.
 	 */
 	public static boolean isDataformsField(final String classname) {
 		boolean ret = false;

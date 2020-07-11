@@ -236,7 +236,7 @@ public class AllTypeEditForm extends EditForm {
 		PrinterJob pj = PrinterJob.getPrinterJob();
 		pj.setPrintService(PrintDevices.getPrintService("Microsoft Print to PDF"));
 //		pj.setPrintService(PrintDevices.getPrintService("PX-M5041F"));
-//		pj.setPrintService(PrintDevices.getPrintService("MG6300"));
+//		pj.setPrintService(PrintDevices.getPrintService("Canon MG6300 series Printer"));
 //		pj.setPrintService(PrintDevices.getPrintService("EPSON PX-M5041F"));
 		rep.print(data, pj);
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, "");

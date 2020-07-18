@@ -359,6 +359,8 @@ public class PageGeneratorEditForm extends EditForm {
 			}
 		} else if (dao.getMultiRecordQueryKeyList() != null) {
 			flist = dao.getMultiRecordQueryKeyList();
+		} else {
+			flist = new FieldList();
 		}
 		implist.add("java.util.List");
 		implist.add("java.util.Map");

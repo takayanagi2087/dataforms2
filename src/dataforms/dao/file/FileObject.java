@@ -165,6 +165,27 @@ public class FileObject implements Serializable {
 	}
 
 	/**
+	 * コンストラクタ。
+	 * @param fileName ファイル名。
+	 */
+	public FileObject(final String fileName) {
+		this();
+		this.setFileName(fileName);
+	}
+
+	/**
+	 * コンストラクタ。
+	 * @param fileName ファイル名。
+	 * @param contents ファイルの内容。
+	 */
+	public FileObject(final String fileName, final byte[] contents) {
+		this();
+		this.setFileName(fileName);
+		this.setContents(contents);
+	}
+
+
+	/**
 	 * Content-typeを取得します。
 	 * @return Content-type。
 	 */

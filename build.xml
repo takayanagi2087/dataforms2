@@ -13,7 +13,7 @@
 
 	BUILD_TEMP=C:/eclipse/buildTemp
 	JSDOC_CMD=C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd
-	PLEIADES_HOME=C:/eclipse/pleiades202003
+	PLEIADES_HOME=C:/eclipse/pleiades
 -->
 <project basedir="." default="jar" name="dataforms">
 	<property environment="env"/>

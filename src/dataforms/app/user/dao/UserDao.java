@@ -396,7 +396,7 @@ public class UserDao extends Dao {
 			List<Map<String, Object>> attTable = this.executeQuery(new GetUserAttributeQuery(data));
 			rec.put("attTable", attTable);
 		} else {
-			throw new ApplicationException(this.getPage(), "error.invaliduserid");
+			throw new ApplicationException(this.getWebEntryPoint(), "error.invaliduserid");
 		}
 		return rec;
 	}

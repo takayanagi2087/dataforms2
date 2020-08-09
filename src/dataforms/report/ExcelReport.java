@@ -3,6 +3,7 @@ package dataforms.report;
 import java.awt.Dimension;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,12 +35,15 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.Units;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFObjectData;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import dataforms.controller.Page;
+import dataforms.dao.file.FileObject;
 import dataforms.dao.file.ImageData;
 import dataforms.field.base.Field;
+import dataforms.util.FileUtil;
 import dataforms.util.MapUtil;
 import dataforms.util.StringUtil;
 import net.arnx.jsonic.JSON;
@@ -54,7 +58,7 @@ public class ExcelReport extends Report {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = LogManager.getLogger(ExcelReport.class);
+	private static Logger logger = LogManager.getLogger(ExcelReport.class);
 
 	/**
 	 * テンプレートファイルのパス。
@@ -614,7 +618,7 @@ public class ExcelReport extends Report {
 			String[] sp = value.substring(1).split("[\\{\\}]");
 			ret = sp[0].trim();
 		}
-		log.debug("fieldId=" + ret);
+		logger.debug("fieldId=" + ret);
 		return ret;
 	}
 
@@ -644,11 +648,11 @@ public class ExcelReport extends Report {
 								if (Pattern.matches("^\\$(.+?)\\{.+\\}$", value)
 									|| Pattern.matches("^\\$\\{(.+?)\\}\\{.+\\}$", value)) {
 									for (String s: sp) {
-										log.debug("s=" + s);
+										logger.debug("s=" + s);
 									}
 									@SuppressWarnings("unchecked")
 									Map<String, Object> opt = (Map<String, Object>) JSON.decode(sp[sp.length - 1], Map.class);
-									log.debug("opt=" + opt.toString());
+									logger.debug("opt=" + opt.toString());
 									if (opt.containsKey("aspect")) {
 										p.setAspect((String) opt.get("aspect"));
 									}
@@ -736,8 +740,9 @@ public class ExcelReport extends Report {
 	 * @param c セル。
 	 * @param value 値。
 	 * @param p セル位置情報。
+	 * @throws Exception 例外。
 	 */
-	protected void setCellValue(final Cell c, final Object value, final CellPosition p) {
+	protected void setCellValue(final Cell c, final Object value, final CellPosition p) throws Exception {
 		if (value != null) {
 			if (value instanceof Number) {
 				Number n = (Number) value;
@@ -759,6 +764,8 @@ public class ExcelReport extends Report {
 				c.setCellValue(date);
 			} else if (value instanceof ImageData) {
 				this.setImage(c, value, p);
+			} else if (value instanceof FileObject) {
+				this.setFile(c, value, p);
 			} else {
 				c.setCellValue(value.toString());
 			}
@@ -768,13 +775,12 @@ public class ExcelReport extends Report {
 	}
 
 	/**
-	 * セルに対し画像を設定します。
+	 * アンカーを取得します。
 	 * @param c セル。
-	 * @param value 値。
-	 * @param p セル位置情報。
+	 * @param p セルの位置指定。
+	 * @return アンカー。
 	 */
-	private void setImage(final Cell c, final Object value, final CellPosition p) {
-		ImageData img = (ImageData) value;
+	private ClientAnchor getAnchor(final Cell c, final CellPosition p) {
 		int cidx = c.getColumnIndex();
 		int ridx = c.getRowIndex();
 		ClientAnchor anchor = new XSSFClientAnchor();
@@ -787,16 +793,72 @@ public class ExcelReport extends Report {
 		anchor.setDx2(Units.EMU_PER_PIXEL * p.getDx2());
 		anchor.setDy2(Units.EMU_PER_PIXEL * p.getDy2());
 		anchor.setAnchorType(ClientAnchor.AnchorType.MOVE_AND_RESIZE);
+		return anchor;
+	}
+
+	/**
+	 * セルに対し画像を設定します。
+	 * @param c セル。
+	 * @param value 値。
+	 * @param p セル位置情報。
+	 */
+	private void setImage(final Cell c, final Object value, final CellPosition p) throws Exception {
+		FileObject img = (FileObject) value;
+		ClientAnchor anchor = this.getAnchor(c, p);
 		int imgtype = XSSFWorkbook.PICTURE_TYPE_PNG;
 		if (ImageData.CONTENT_TYPE_JPEG.equals(img.getContentType())) {
 			imgtype = XSSFWorkbook.PICTURE_TYPE_JPEG;
 		} else if (ImageData.CONTENT_TYPE_GIF.equals(img.getContentType())) {
 			imgtype = XSSFWorkbook.PICTURE_TYPE_GIF;
 		}
-		int pidx = this.workbook.addPicture(img.getContents(), imgtype);
+		int pidx = this.workbook.addPicture(img.readContents(), imgtype);
 		Picture pic = this.drawing.createPicture(anchor, pidx);
 		this.resizeImage(c, pic, p);
 	}
+
+	/**
+	 * 添付ファイルアイコンイメージを取得します。
+	 * @return 添付ファイルアイコンイメージ。
+	 * @throws Exception 例外。
+	 */
+	private byte[] getAttachFileIcon() throws Exception {
+		byte[] ret = null;
+		Class<?> cls = this.getClass();
+		try (InputStream is = cls.getResourceAsStream("/dataforms/report/resource/attachFile.png")) {
+			ret = FileUtil.readInputStream(is);
+		}
+		return ret;
+	}
+
+	/**
+	 * セルに対しファイルを設定します。
+	 * @param c セル。
+	 * @param value 値。
+	 * @param p セル位置情報。
+	 */
+	private void setFile(final Cell c, final Object value, final CellPosition p) throws Exception {
+		FileObject fobj = (FileObject) value;
+		if (fobj.getFileName() != null) {
+			String contentType = fobj.getContentType();
+			logger.debug("FileObject fileName=" + fobj.getFileName());
+			logger.debug("FileObject contentType=" + contentType);
+			if (contentType.indexOf("image") >= 0) {
+				this.setImage(c, value, p);
+			} else {
+				byte[] icon = this.getAttachFileIcon();
+				final int iconId = this.workbook.addPicture(icon, XSSFWorkbook.PICTURE_TYPE_PNG);
+				ClientAnchor anchor = this.getAnchor(c, p);
+				String filename = fobj.getFileName();
+				byte[] buf = filename.getBytes("Windows-31J");
+				filename = new String(buf, "ISO-8859-1"); // MS932に変換しないとファイル名が化ける。
+				final int oleIdx = this.workbook.addOlePackage(fobj.readContents(), filename, filename, filename);
+				final Drawing<?> pat = sheet.createDrawingPatriarch();
+				final XSSFObjectData objectData = (XSSFObjectData) pat.createObjectData(anchor, oleIdx, iconId);
+				objectData.getCTShape().getNvSpPr().getCNvPr().setHidden(false);
+			}
+		}
+	}
+
 
 	/**
 	 * 画像貼り付けアンカーの幅を取得します。
@@ -837,8 +899,8 @@ public class ExcelReport extends Report {
 			double w = this.getAnchorWidth(p) - (p.getDx1() - p.getDx2());
 			double h = this.getAnchorHeight(p) - (p.getDy1() - p.getDy2());
 			Dimension d = pic.getImageDimension();
-			log.debug("w,h=" + w + "," + h);
-			log.debug("iw,ih=" + d.getWidth() + "," + d.getHeight());
+			logger.debug("w,h=" + w + "," + h);
+			logger.debug("iw,ih=" + d.getWidth() + "," + d.getHeight());
 			if (w > h) {
 				double cw = w / h;
 				double iw = d.getWidth() / d.getHeight();
@@ -937,7 +999,7 @@ public class ExcelReport extends Report {
 	protected void addSheets(final int sheets) throws Exception {
 		this.workbook = this.getTamplate();
 		for (int i = 0; i < sheets; i++) {
-			log.debug("wb = " + i);
+			logger.debug("wb = " + i);
 			this.workbook.cloneSheet(1);
 		}
 		PrintSetup printSetting = this.workbook.getSheetAt(1).getPrintSetup();

@@ -395,7 +395,7 @@ public class ExcelReport extends Report {
 	 */
 	public void buildList(final String listId, final int startRow, final int rows) throws Exception {
 		Workbook wb = this.getTamplate();
-		Sheet sh = wb.getSheetAt(0);
+		Sheet sh = wb.getSheetAt(this.getSheetIndex());
 		for (int i = 1; i < rows; i++) {
 			int torow = startRow + i;
 			this.copyRow(sh, startRow, sh, torow);

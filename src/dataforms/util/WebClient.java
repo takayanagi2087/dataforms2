@@ -98,6 +98,22 @@ public class WebClient {
 	}
 
 	/**
+	 * URLを取得します。
+	 * @return URL。
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * URLを設定します。
+	 * @param url URL。
+	 */
+	public void setUrl(final String url) {
+		this.url = url;
+	}
+
+	/**
 	 * HTTPのメソッドを取得します。
 	 * @return HTTPのメソッド。
 	 */

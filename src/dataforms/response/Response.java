@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 応答情報クラスです。
+ * TODO:http statusの指定機能を追加するべき。
  */
 public abstract class Response {
 

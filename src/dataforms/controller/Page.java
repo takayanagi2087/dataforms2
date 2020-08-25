@@ -1,6 +1,7 @@
 package dataforms.controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -531,13 +532,7 @@ public class Page extends DataForms implements WebEntryPoint {
 			sb.append("\t\t<script type=\"text/javascript\" src=\"" + context + "/" + scriptPath + "\"></script>\n");
 		}*/
 		String csrfToken = this.getCsrfToken();
-		sb.append(INIT_SCRIPT0);
-		sb.append("\t\t\tvar page = new " + pageclass + "();\n");
-		if (csrfToken != null) {
-			sb.append("\t\t\tpage.csrfToken=\"" + java.net.URLEncoder.encode(csrfToken, DataFormsServlet.getEncoding()) + "\";\n");
-		}
-		sb.append(INIT_SCRIPT1);
-
+		this.buildInitScript(sb, pageclass, csrfToken);
 		String s = sb.toString();
 //		log.info("scriptPath=" + scriptPath);
 		Pattern pat = Pattern.compile("</head>");
@@ -552,6 +547,22 @@ public class Page extends DataForms implements WebEntryPoint {
 			htmlbuffer.append(html.substring(end));
 		}
 		return htmlbuffer.toString();
+	}
+
+	/**
+	 * ページの初期化スクリプトを出力します。
+	 * @param sb 出力する文字列バッファ。
+	 * @param pageclass ページクラス。
+	 * @param csrfToken CSFR対策TOKEN。
+	 * @throws UnsupportedEncodingException 例外。
+	 */
+	protected void buildInitScript(final StringBuilder sb, final String pageclass, final String csrfToken) throws Exception {
+		sb.append(INIT_SCRIPT0);
+		sb.append("\t\t\tvar page = new " + pageclass + "();\n");
+		if (csrfToken != null) {
+			sb.append("\t\t\tpage.csrfToken=\"" + java.net.URLEncoder.encode(csrfToken, DataFormsServlet.getEncoding()) + "\";\n");
+		}
+		sb.append(INIT_SCRIPT1);
 	}
 
 

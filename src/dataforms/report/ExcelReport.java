@@ -821,13 +821,24 @@ public class ExcelReport extends Report {
 	 * @return 添付ファイルアイコンイメージ。
 	 * @throws Exception 例外。
 	 */
-	private byte[] getAttachFileIcon() throws Exception {
+	protected byte[] getAttachFileIcon() throws Exception {
 		byte[] ret = null;
 		Class<?> cls = this.getClass();
 		try (InputStream is = cls.getResourceAsStream("/dataforms/report/resource/attachFile.png")) {
 			ret = FileUtil.readInputStream(is);
 		}
 		return ret;
+	}
+
+	/**
+	 * 添付ファイルアイコンIDを取得します。
+	 * @return 添付ファイルアイコンID。
+	 * @throws Exception 例外。
+	 */
+	protected int getAttachFileIconId() throws Exception {
+		byte[] icon = this.getAttachFileIcon();
+		final int iconId = this.workbook.addPicture(icon, XSSFWorkbook.PICTURE_TYPE_PNG);
+		return iconId;
 	}
 
 	/**
@@ -845,8 +856,7 @@ public class ExcelReport extends Report {
 			if (contentType.indexOf("image") >= 0) {
 				this.setImage(c, value, p);
 			} else {
-				byte[] icon = this.getAttachFileIcon();
-				final int iconId = this.workbook.addPicture(icon, XSSFWorkbook.PICTURE_TYPE_PNG);
+				final int iconId = this.getAttachFileIconId();
 				ClientAnchor anchor = this.getAnchor(c, p);
 				String filename = fobj.getFileName();
 				byte[] buf = filename.getBytes("Windows-31J");
@@ -858,7 +868,6 @@ public class ExcelReport extends Report {
 			}
 		}
 	}
-
 
 	/**
 	 * 画像貼り付けアンカーの幅を取得します。

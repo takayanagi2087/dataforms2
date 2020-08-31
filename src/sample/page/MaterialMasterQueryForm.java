@@ -3,12 +3,12 @@ package sample.page;
 import dataforms.controller.QueryForm;
 import dataforms.field.base.Field.MatchType;
 import sample.dao.MaterialMasterTable;
-import sample.field.MemoField;
-import sample.field.UnitPriceField;
 import sample.field.MaterialCodeField;
-import sample.field.MaterialUnitField;
-import sample.field.OrderPointField;
 import sample.field.MaterialNameField;
+import sample.field.MaterialUnitField;
+import sample.field.MemoField;
+import sample.field.OrderPointField;
+import sample.field.UnitPriceField;
 
 
 
@@ -75,7 +75,7 @@ public class MaterialMasterQueryForm extends QueryForm {
 		if (list.size() == 0) {
 			// Formから送信されたデータをサーバーサイドで処理しやすいデータ型に変換します。
 			Map<String, Object> data = this.convertToServerData(p);
-			ret = null;	// TODO:何らかの処理を行いResponseのインスタンスを作成してください。
+			ret = null;
 		} else {
 			// 確認で問題があった場合その情報を返信します。
 			ret = new JsonResponse(JsonResponse.INVALID, list);

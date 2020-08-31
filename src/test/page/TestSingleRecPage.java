@@ -51,7 +51,6 @@ public class TestSingleRecPage extends BasePage {
 /*
 	@WebMethod
 	public Response webMethod(final Map<String, Object> p) throws Exception {
-		// TODO:何らかの処理を行い、応答情報を作成します。
 		Object obj = p; // 作成したオブジェクト
 		Response ret = new JsonResponse(JsonResponse.SUCCESS, obj);
 		return ret;

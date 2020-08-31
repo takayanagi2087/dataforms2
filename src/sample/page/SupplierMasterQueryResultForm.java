@@ -1,6 +1,7 @@
 package sample.page;
 
 import java.util.Map;
+
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
@@ -77,7 +78,7 @@ public class SupplierMasterQueryResultForm extends QueryResultForm {
 		if (list.size() == 0) {
 			// Formから送信されたデータをサーバーサイドで処理しやすいデータ型に変換します。
 			Map<String, Object> data = this.convertToServerData(p);
-			ret = null;	// TODO:何らかの処理を行いResponseのインスタンスを作成してください。
+			ret = null;
 		} else {
 			// 確認で問題があった場合その情報を返信します。
 			ret = new JsonResponse(JsonResponse.INVALID, list);

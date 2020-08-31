@@ -1,27 +1,27 @@
 package test.page;
 
-import dataforms.controller.QueryForm;
-import test.field.SqlBigintField;
-import test.field.SqlVarcharField;
-import test.field.SqlNumericField;
-import test.field.SqlClobField;
-import test.field.SqlTimestampField;
-import test.field.SqlDoubleField;
-import test.dao.SqlTypeTable;
-import dataforms.field.base.Field.MatchType;
-import test.field.SqlIntegerField;
-import test.field.SqlTimeField;
-import test.field.SqlCharField;
 import java.util.List;
-import dataforms.field.base.FieldList;
-import test.field.SqlDateField;
-import test.field.AddressField;
 import java.util.Map;
-import dataforms.field.common.ZipCodeField;
-import test.field.SqlSmallintField;
-import dataforms.report.ExportDataFile;
 
+import dataforms.controller.QueryForm;
+import dataforms.field.base.Field.MatchType;
+import dataforms.field.base.FieldList;
+import dataforms.field.common.ZipCodeField;
+import dataforms.report.ExportDataFile;
 import test.dao.SqlTypeDao;
+import test.dao.SqlTypeTable;
+import test.field.AddressField;
+import test.field.SqlBigintField;
+import test.field.SqlCharField;
+import test.field.SqlClobField;
+import test.field.SqlDateField;
+import test.field.SqlDoubleField;
+import test.field.SqlIntegerField;
+import test.field.SqlNumericField;
+import test.field.SqlSmallintField;
+import test.field.SqlTimeField;
+import test.field.SqlTimestampField;
+import test.field.SqlVarcharField;
 
 
 /**
@@ -133,7 +133,7 @@ public class SqlTypeQueryForm extends QueryForm {
 		if (list.size() == 0) {
 			// Formから送信されたデータをサーバーサイドで処理しやすいデータ型に変換します。
 			Map<String, Object> data = this.convertToServerData(p);
-			ret = new JsonResponse(JsonResponse.SUCCESS, data);	// TODO:何らかの処理を行いResponseのインスタンスを作成してください。
+			ret = new JsonResponse(JsonResponse.SUCCESS, data);
 		} else {
 			// 確認で問題があった場合その情報を返信します。
 			ret = new JsonResponse(JsonResponse.INVALID, list);

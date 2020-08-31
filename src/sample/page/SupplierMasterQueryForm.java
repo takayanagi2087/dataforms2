@@ -1,21 +1,21 @@
 package sample.page;
 
-import dataforms.controller.QueryForm;
-import sample.field.SupplierKanaNameField;
-import sample.field.SupplierCodeField;
-import sample.field.SupplierNameField;
-import dataforms.field.base.Field.MatchType;
 import java.util.List;
-import dataforms.field.base.FieldList;
-import sample.dao.SupplierMasterTable;
 import java.util.Map;
-import sample.field.FaxNoField;
-import sample.field.AddressField;
-import dataforms.field.common.ZipCodeField;
-import sample.field.PhoneNoField;
-import dataforms.report.ExportDataFile;
 
+import dataforms.controller.QueryForm;
+import dataforms.field.base.Field.MatchType;
+import dataforms.field.base.FieldList;
+import dataforms.field.common.ZipCodeField;
+import dataforms.report.ExportDataFile;
 import sample.dao.SupplierMasterDao;
+import sample.dao.SupplierMasterTable;
+import sample.field.AddressField;
+import sample.field.FaxNoField;
+import sample.field.PhoneNoField;
+import sample.field.SupplierCodeField;
+import sample.field.SupplierKanaNameField;
+import sample.field.SupplierNameField;
 
 
 /**
@@ -113,7 +113,7 @@ public class SupplierMasterQueryForm extends QueryForm {
 		if (list.size() == 0) {
 			// Formから送信されたデータをサーバーサイドで処理しやすいデータ型に変換します。
 			Map<String, Object> data = this.convertToServerData(p);
-			ret = null;	// TODO:何らかの処理を行いResponseのインスタンスを作成してください。
+			ret = null;
 		} else {
 			// 確認で問題があった場合その情報を返信します。
 			ret = new JsonResponse(JsonResponse.INVALID, list);

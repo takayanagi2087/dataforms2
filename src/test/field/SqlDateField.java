@@ -44,7 +44,7 @@ public class SqlDateField extends DateField {
 /*
 	@WebMethod
 	public Response webMethod(final Map<String, Object> p) throws Exception {
-		Object obj = p; // TODO:必要な処理を行い、結果オブジェクトを作成してください。
+		Object obj = p;
 		Response resp = new JsonResponse(JsonResponse.SUCCESS, obj);
 		return resp;
 	}

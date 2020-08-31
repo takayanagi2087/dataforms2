@@ -1,12 +1,13 @@
 package test.page;
 
 import java.util.Map;
+
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
-import test.dao.TestSingleRecDao;
 import test.dao.TestMultiRecTable;
+import test.dao.TestSingleRecDao;
 
 
 
@@ -73,7 +74,7 @@ public class TestSingleRecQueryResultForm extends QueryResultForm {
 		if (list.size() == 0) {
 			// Formから送信されたデータをサーバーサイドで処理しやすいデータ型に変換します。
 			Map<String, Object> data = this.convertToServerData(p);
-			ret = new JsonResponse(JsonResponse.SUCCESS, data);	// TODO:何らかの処理を行いResponseのインスタンスを作成してください。
+			ret = new JsonResponse(JsonResponse.SUCCESS, data);
 		} else {
 			// 確認で問題があった場合その情報を返信します。
 			ret = new JsonResponse(JsonResponse.INVALID, list);

@@ -125,7 +125,7 @@ public class Code1Field extends VarcharField {
 /*
 	@WebMethod
 	public Response webMethod(final Map<String, Object> p) throws Exception {
-		Object obj = null; // TODO:必要な処理を行い、結果オブジェクトを作成してください。
+		Object obj = null;
 		Response resp = new JsonResponse(JsonResponse.SUCCESS, obj);
 		return resp;
 	}

@@ -456,7 +456,6 @@ public class EnumDao extends Dao {
 		}
 	}
 
-	// TODO:要テスト
 	/**
 	 * EnumTypeCodeのオートコンプリート用の問合せを実行します。
 	 * @param text 入力テキスト。
@@ -490,7 +489,6 @@ public class EnumDao extends Dao {
 		return e.getEnumId();
 	}
 
-	// TODO:要テスト
 	/**
 	 * 列挙型の情報を取得します。
 	 *

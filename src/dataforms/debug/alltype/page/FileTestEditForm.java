@@ -105,7 +105,7 @@ public class FileTestEditForm extends EditForm {
 			Map<String, Object> data = this.convertToServerData(p);
 			byte[] excel = this.printReport(data);
 			FileObject fobj = new FileObject("download.xlsx", excel);
-			ret = new BinaryResponse(fobj);	// TODO:何らかの処理を行いResponseのインスタンスを作成してください。
+			ret = new BinaryResponse(fobj);
 		} else {
 			// 確認で問題があった場合その情報を返信します。
 			ret = new JsonResponse(JsonResponse.INVALID, list);

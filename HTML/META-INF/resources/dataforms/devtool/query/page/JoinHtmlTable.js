@@ -16,5 +16,26 @@ class JoinHtmlTable extends EditableHtmlTable {
 	attach() {
 		super.attach();
 	}
+
+	/**
+	 * 各行のid中のインデックスを整列する.
+	 */
+	resetIdIndex() {
+		super.resetIdIndex();
+		for (var i = 0; i < this.getRowCount(); i++) {
+			var af = this.getRowField(i, "aliasName");
+			var alias = af.getValue();
+			if (alias.match(/j[0-9]+/)) {
+				af.setValue("");
+			}
+		}
+		for (var i = 0; i < this.getRowCount(); i++) {
+			var af = this.getRowField(i, "aliasName");
+			var alias = af.getValue();
+			if (alias == null || alias.length == 0) {
+				af.setValue("j" + i);
+			}
+		}
+	}
 }
 

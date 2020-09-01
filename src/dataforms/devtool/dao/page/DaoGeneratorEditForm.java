@@ -255,7 +255,7 @@ public class DaoGeneratorEditForm extends EditForm {
 				Object obj = this.getQueryOrTableClass(q);
 				ret.put(ID_EDIT_FORM_QUERY_PACKAGE_NAME, ClassNameUtil.getPackageName(obj.getClass().getName()));
 				ret.put(ID_EDIT_FORM_QUERY_CLASS_NAME, obj.getClass().getSimpleName());
-				List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(q.getFieldList());
+				List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(q.getFieldList(), "");
 				list = SelectFieldHtmlTable.selectKey(list, dao.getMultiRecordQueryKeyList());
 				ret.put(ID_KEY_FIELD_LIST, list);
 			}
@@ -278,7 +278,7 @@ public class DaoGeneratorEditForm extends EditForm {
 		if (!StringUtil.isBlank(className)) {
 			flist = this.getFieldList(packageName + "." + className);
 		}
-		List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(flist);
+		List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(flist, "");
 		Response resp = new JsonResponse(JsonResponse.SUCCESS, list);
 		return resp;
 	}

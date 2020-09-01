@@ -229,10 +229,13 @@
 								Field class
 							</th>
 							<th>
+								Field alias
+							</th>
+							<th>
 								Table class
 							</th>
 							<th>
-								Alias
+								Table alias
 							</th>
 							<th>
 								Comment
@@ -261,11 +264,14 @@
 							<td style="width: 300px;">
 								<input type="text" id="selectFieldList[0].fieldClassName" />
 							</td>
-							<td style="width: 300px;">
+							<td style="width: 100px;">
+								<input type="text" id="selectFieldList[0].alias"/>
+							</td>
+							<td style="width: 200px;">
 								<input type="text" id="selectFieldList[0].tableClassName" />
 							</td>
-							<td style="width: 180px;">
-								<input type="text" id="selectFieldList[0].alias"/>
+							<td style="width: 100px;">
+								<input type="text" id="selectFieldList[0].tableAlias" />
 							</td>
 							<td style="width: 300px;">
 								<input type="text"  id="selectFieldList[0].comment" />
@@ -277,7 +283,7 @@
 							<th class="buttonColumn" nowrap>
 								<button type="button" id="selectFieldList.addButton">+</button>
 							</th>
-							<th colspan="8">
+							<th colspan="9">
 							</th>
 						</tr>
 					</tfoot>
@@ -338,6 +344,7 @@
 				<input type="button" id="saveButton" class="largeButton" value="Save"/>
 				<input type="button" id="resetButton" class="largeButton" value="Reset"/>
 				<input type="button" id="backButton" class="largeButton" value="Back"/>
+
 			</form>
 		</div>
 	</body>

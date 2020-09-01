@@ -28,26 +28,36 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	 * 選択フラグ。
 	 */
 	public static final String ID_SEL = "sel";
+
 	/**
 	 * テーブルのフルクラス名。
 	 */
 	public static final String ID_TABLE_FULL_CLASS_NAME = "tableFullClassName";
+
 	/**
 	 * フィールドID。
 	 */
 	public static final String ID_FIELD_ID = "fieldId";
+
 	/**
 	 * フィールドクラス名。
 	 */
 	public static final String ID_FIELD_CLASS_NAME = "fieldClassName";
+
 	/**
 	 * テーブルクラス名。
 	 */
 	public static final String ID_TABLE_CLASS_NAME = "tableClassName";
+
 	/**
 	 * フィールド別名。
 	 */
 	public static final String ID_ALIAS = "alias";
+
+	/**
+	 * テーブル別名。
+	 */
+	public static final String ID_TABLE_ALIAS = "tableAlias";
 
 	/**
 	 * コメント。
@@ -78,6 +88,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			, new FieldFullClassNameField(ID_FIELD_CLASS_NAME).setReadonly(true)
 			, new TableFullClassNameField(ID_TABLE_FULL_CLASS_NAME).setReadonly(true)
 			, new TableOrSubQueryClassNameField(ID_TABLE_CLASS_NAME).setReadonly(true)
+			, new TextField(ID_TABLE_ALIAS ).setReadonly(true)
 			, new TextField(ID_COMMENT)
 		);
 		this.setFieldList(flist);
@@ -89,9 +100,10 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	/**
 	 * fieldListに対応した表示データを作成します。
 	 * @param flist フィールドリスト。
+	 * @param alias 別名。
 	 * @return テーブルデータ。
 	 */
-	public static List<Map<String, Object>> getTableData(final FieldList flist) {
+	public static List<Map<String, Object>> getTableData(final FieldList flist, final String alias) {
 		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
 		for (Field<?> f: flist) {
 			Map<String, Object> ent = new HashMap<String, Object>();
@@ -101,6 +113,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			ent.put(ID_SEL, "0");
 			ent.put(ID_FIELD_ID, f.getId());
 			ent.put(ID_FIELD_CLASS_NAME, f.getClass().getName());
+			ent.put(ID_TABLE_ALIAS, alias);
 			ent.put(ID_COMMENT, f.getComment());
 			// ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
 			ret.add(ent);

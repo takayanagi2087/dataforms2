@@ -229,10 +229,13 @@
 								フィールドクラス
 							</th>
 							<th>
+								フィールド別名
+							</th>
+							<th>
 								テーブルクラス
 							</th>
 							<th>
-								別名
+								テーブル別名
 							</th>
 							<th>
 								コメント
@@ -261,11 +264,14 @@
 							<td style="width: 300px;">
 								<input type="text" id="selectFieldList[0].fieldClassName" />
 							</td>
-							<td style="width: 300px;">
+							<td style="width: 100px;">
+								<input type="text" id="selectFieldList[0].alias"/>
+							</td>
+							<td style="width: 200px;">
 								<input type="text" id="selectFieldList[0].tableClassName" />
 							</td>
-							<td style="width: 180px;">
-								<input type="text" id="selectFieldList[0].alias"/>
+							<td style="width: 100px;">
+								<input type="text" id="selectFieldList[0].tableAlias" />
 							</td>
 							<td style="width: 300px;">
 								<input type="text"  id="selectFieldList[0].comment" />
@@ -277,7 +283,7 @@
 							<th class="buttonColumn" nowrap>
 								<button type="button" id="selectFieldList.addButton">+</button>
 							</th>
-							<th colspan="8">
+							<th colspan="9">
 							</th>
 						</tr>
 					</tfoot>

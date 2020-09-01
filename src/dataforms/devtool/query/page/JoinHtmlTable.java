@@ -51,7 +51,7 @@ public class JoinHtmlTable extends EditableHtmlTable {
 			, new FunctionSelectField()
 			, (new PackageNameField(ID_PACKAGE_NAME)).addValidator(new RequiredValidator())
 			, (new TableOrSubQueryClassNameField(ID_TABLE_CLASS_NAME)).addValidator(new RequiredValidator())
-			, (new AliasNameField(ID_ALIAS_NAME)).setCalcEventField(true)
+			, (new AliasNameField(ID_ALIAS_NAME)).setCalcEventField(true).addValidator(new RequiredValidator())
 			, (new TextField(ID_JOIN_CONDITION)).setReadonly(true)
 		);
 		flist.get(ID_TABLE_CLASS_NAME).setAutocomplete(true).setRelationDataAcquisition(true);

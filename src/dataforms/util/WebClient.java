@@ -269,7 +269,7 @@ public class WebClient {
 	 * @return 応答情報。
 	 * @throws Exception 例外。
 	 */
-	private Object readResponse(final HttpURLConnection conn, final Convert convert) throws Exception {
+	protected Object readResponse(final HttpURLConnection conn, final Convert convert) throws Exception {
 		Object ret = null;
 		try (InputStream is = this.getInputStream(conn)) {
 			this.contentEncoding = conn.getContentEncoding();
@@ -277,10 +277,24 @@ public class WebClient {
 				this.contentEncoding = "utf-8";
 			}
 			byte[] buf = FileUtil.readInputStream(is);
-			this.responseContentType = conn.getContentType().toLowerCase();
+			this.responseContentType = this.getContentType(conn);
 			ret = this.convert(buf, convert, this.responseContentType, this.contentEncoding);
 		}
 		return ret;
+	}
+
+	/**
+	 * Content-Typeを取得します。
+	 * @param conn 接続情報。
+	 * @return Content-type。
+	 */
+	protected String getContentType(final HttpURLConnection conn) {
+		String ret = conn.getContentType();
+		if (ret != null) {
+			return conn.getContentType().toLowerCase();
+		} else {
+			return "application/json";
+		}
 	}
 
 	/**

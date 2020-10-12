@@ -112,6 +112,16 @@ public interface WebEntryPoint {
     }
 
 	/**
+	 * エラーページのURLを取得します。
+	 * @return エラーページ。
+	 */
+	default String getErrorPage() {
+		return DataFormsServlet.getErrorPage();
+	}
+
+
+
+	/**
 	 * 該当するユーザ属性を持つかをチェックします。
 	 * @param t ユーザ属性。
 	 * @param v ユーザ属性値。

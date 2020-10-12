@@ -1304,7 +1304,7 @@ public class DataFormsServlet extends HttpServlet {
 					JsonResponse r = new JsonResponse(JsonResponse.APPLICATION_EXCEPTION, einfo);
 					r.send(resp);
 				} else {
-					this.redirectErrorPage((Page) epoint, req, resp, e.getMessage());
+					this.redirectErrorPage((WebEntryPoint) epoint, req, resp, e.getMessage());
 				}
 			}
 		} catch (Exception e) {
@@ -1439,7 +1439,7 @@ public class DataFormsServlet extends HttpServlet {
 	 * @param message メッセージ。
 	 * @throws Exception 例外。
 	 */
-	private void redirectErrorPage(final Page page, final HttpServletRequest req, final HttpServletResponse resp, final String message) throws Exception {
+	private void redirectErrorPage(final WebEntryPoint page, final HttpServletRequest req, final HttpServletResponse resp, final String message) throws Exception {
 		String context = req.getContextPath();
 		String errorPage = DataFormsServlet.errorPage;
 		if (page != null) {

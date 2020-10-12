@@ -407,13 +407,10 @@ public class Page extends DataForms implements WebEntryPoint {
 		}
 	}
 
-
 	/**
-	 * cssとjavascriptのロードタグを取得します。
-	 * @return cssとjavascriptのロードタグ。
-	 * @throws Exception 例外.
+	 * ページに必要なスタイルシートの一覧を作成します。
 	 */
-	public String getPreloadTags() throws Exception {
+	protected void buildCssList() {
 		this.addPreloadCss(this.getPageFramePath() + "/Variables.cssx");
 		this.addPreloadCss(this.getPageFramePath() + "/Frame.cssx");
 		this.addPreloadCss(this.getPageFramePath() + "/Menu.cssx");
@@ -425,6 +422,15 @@ public class Page extends DataForms implements WebEntryPoint {
 		this.addPreloadCss(this.getPageFramePath() + "/AppForm.cssx");
 		this.addPreloadCss(this.getPageFramePath() + "/AppField.cssx");
 		this.addPreloadCss(this.getPageFramePath() + "/AppHtmlTable.cssx");
+	}
+
+	/**
+	 * cssとjavascriptのロードタグを取得します。
+	 * @return cssとjavascriptのロードタグ。
+	 * @throws Exception 例外.
+	 */
+	public String getPreloadTags() throws Exception {
+		this.buildCssList();
 		String context = this.getRequest().getContextPath();
 		StringBuilder sb = new StringBuilder();
 		for (String css : this.preloadCssList) {
@@ -948,14 +954,6 @@ public class Page extends DataForms implements WebEntryPoint {
 	 */
 	public Boolean getCookieCheck() {
 		return DataFormsServlet.isCookieCheck();
-	}
-
-	/**
-	 * エラーページのURLを取得します。
-	 * @return エラーページ。
-	 */
-	public String getErrorPage() {
-		return DataFormsServlet.getErrorPage();
 	}
 
 	@Override

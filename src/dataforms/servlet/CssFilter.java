@@ -15,6 +15,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -121,13 +122,15 @@ public class CssFilter extends DataFormsFilter implements Filter {
 	public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain chain) throws IOException, ServletException {
 		if (req instanceof HttpServletRequest) {
 			HttpServletRequest sreq = (HttpServletRequest) req;
+			HttpServletResponse sresp = (HttpServletResponse) resp;
 			try {
 				String fname = sreq.getRequestURI().replaceAll("\\.cssx$", ".css");
 				logger.debug(() -> "filename=" + fname);
 				String contents = this.readCss(sreq, fname);
 				this.parseVar(contents);
 				contents = this.replaceVar(contents);
-				resp.setContentType("text/css; charset=utf-8");
+				sresp.setContentType("text/css; charset=utf-8");
+				sresp.setDateHeader("Last-Modified", DataFormsFilter.getWebResourceTimestampCache().get(fname));
 				try (PrintWriter out = resp.getWriter()) {
 					out.print(contents);
 				}

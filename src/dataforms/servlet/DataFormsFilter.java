@@ -31,6 +31,13 @@ public class DataFormsFilter {
 	 */
 	private static Map<String, Long> webResourceTimestampCache = Collections.synchronizedMap(new HashMap<String, Long>());
 
+	/**
+	 * タイムスタンプキャッシュを取得します。
+	 * @return タイムスタンプキャッシュ。
+	 */
+	public static Map<String, Long> getWebResourceTimestampCache() {
+		return webResourceTimestampCache;
+	}
 
 	/**
 	 * WebリソースのURLを取得します。

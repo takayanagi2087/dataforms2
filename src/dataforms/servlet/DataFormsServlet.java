@@ -38,6 +38,7 @@ import dataforms.app.login.page.LoginForm;
 import dataforms.app.login.page.LoginInfoForm;
 import dataforms.app.user.dao.UserInfoTable;
 import dataforms.app.user.page.PasswordResetMailForm;
+import dataforms.app.user.page.UserEditForm;
 import dataforms.app.user.page.UserRegistForm;
 import dataforms.controller.Page;
 import dataforms.controller.WebComponent;
@@ -455,6 +456,7 @@ public class DataFormsServlet extends HttpServlet {
 			Map<String, Object> p = JSON.decode(ieSupportJson, HashMap.class);
 			DataFormsServlet.setIeSupport(p);
 		}
+		this.getUserEditFormConf();
 		this.getUserRegistConf();
 		this.setupServletInstanceBean();
 		super.init();
@@ -585,6 +587,17 @@ public class DataFormsServlet extends HttpServlet {
 	}
 
 
+	/**
+	 * ユーザ情報編集フォームの設定情報を取得します。
+	 */
+	public void getUserEditFormConf() {
+		String conf = this.getServletContext().getInitParameter("user-edit-form-config");
+		if (conf == null) {
+			conf = "{\"requiredMailAddress\": true}";
+		}
+		Map<String, Object> m = JSON.decode(conf);
+		UserEditForm.setConfig(m);
+	}
 
 	/**
 	 * ユーザ登録関連設定を取得します。

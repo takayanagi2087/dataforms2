@@ -33,6 +33,26 @@ public class UserEditForm extends EditForm {
      */
     private boolean admin = false;
 
+    /**
+     * 設定情報。
+     */
+    private static Map<String, Object> config = null;
+
+    /**
+     * 設定情報を設定します。
+     * @param conf 設定情報。
+     */
+    public static void setConfig(final Map<String, Object> conf) {
+    	UserEditForm.config = conf;
+    }
+
+    /**
+     * 設定情報を取得します。
+     * @return 設定情報。
+     */
+    public static Map<String, Object> getConfig() {
+    	return UserEditForm.config;
+    }
 	/**
 	 * コンストラクタ。
 	 * <pre>
@@ -46,7 +66,11 @@ public class UserEditForm extends EditForm {
 		table.getLoginIdField().addValidator(new RequiredValidator());
 		table.getPasswordField().addValidator(new RequiredValidator());
 		table.getUserNameField().addValidator(new RequiredValidator());
-		table.getMailAddressField().addValidator(new RequiredValidator());
+
+		Boolean reqEmail = (Boolean) getConfig().get("requiredMailAddress");
+		if (reqEmail) {
+			table.getMailAddressField().addValidator(new RequiredValidator());
+		}
 		this.addTableFields(table);
 		PasswordField pwck = new PasswordField("passwordCheck");
 		this.insertFieldAfter(pwck, "password").addValidator(new RequiredValidator());

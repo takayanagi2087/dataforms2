@@ -70,7 +70,7 @@ public class DataFormsFilter {
 	protected String readWebResource(final HttpServletRequest req, final String path) throws Exception {
 		logger.debug("readWebResource path={}", path);
 		URL url = new URL(getWebResourceUrl(req, path));
-		String ret = "";
+		String ret = null;
 		logger.debug(() -> "webResourceUrl=" + url.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.connect();

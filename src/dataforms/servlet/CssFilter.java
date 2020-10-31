@@ -2,6 +2,7 @@ package dataforms.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,12 +128,17 @@ public class CssFilter extends DataFormsFilter implements Filter {
 				String fname = sreq.getRequestURI().replaceAll("\\.cssx$", ".css");
 				logger.debug(() -> "filename=" + fname);
 				String contents = this.readCss(sreq, fname);
-				this.parseVar(contents);
-				contents = this.replaceVar(contents);
-				sresp.setContentType("text/css; charset=utf-8");
-				sresp.setDateHeader("Last-Modified", DataFormsFilter.getWebResourceTimestampCache().get(fname));
-				try (PrintWriter out = resp.getWriter()) {
-					out.print(contents);
+				if (contents != null) {
+					this.parseVar(contents);
+					contents = this.replaceVar(contents);
+					sresp.setContentType("text/css; charset=utf-8");
+					Long ts = DataFormsFilter.getWebResourceTimestampCache().get(fname);
+					sresp.setDateHeader("Last-Modified", ts);
+					try (PrintWriter out = resp.getWriter()) {
+						out.print(contents);
+					}
+				} else {
+					sresp.setStatus(HttpURLConnection.HTTP_NOT_FOUND);
 				}
 			} catch (Exception e) {
 				logger.error(() -> e.getMessage(), e);

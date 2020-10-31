@@ -266,6 +266,20 @@
 		<param-value>/dataforms/app/user/page/UserRegistPage</param-value>
 	</context-param>
 
+
+	<!--
+		ユーザ情報編集フォームの設定
+	 -->
+	<context-param>
+		<param-name>user-edit-form-config</param-name>
+		<param-value>
+			{
+				"requiredMailAddress": false // メールアドレスを必須とする。
+			}
+		</param-value>
+	</context-param>
+
+
 	<!--
 		外部ユーザ登録ページ設定情報。
 	 -->

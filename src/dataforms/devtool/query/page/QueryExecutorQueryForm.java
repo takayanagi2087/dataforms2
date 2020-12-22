@@ -1,5 +1,7 @@
 package dataforms.devtool.query.page;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +15,8 @@ import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryClassNameField;
+import dataforms.field.base.Field;
+import dataforms.field.base.FieldList;
 import dataforms.field.sqltype.ClobField;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
@@ -77,4 +81,32 @@ public class QueryExecutorQueryForm extends QueryForm {
 		Response resp = new JsonResponse(JsonResponse.SUCCESS, sql);
 		return resp;
 	}
+
+	/**
+	 * エクスポートデータのフィールドリスト。
+	 */
+	private FieldList exportFieldList = null;
+
+
+	@Override
+	protected List<Map<String, Object>> queryExportData(final Map<String, Object> data) throws Exception {
+		Dao dao = new Dao(this);
+		String sql = (String) data.get("sql");
+		List<Map<String, Object>> list = dao.executeQuery(sql, new HashMap<String, Object>());
+		//
+		FieldList flist = dao.getResultSetFieldList();
+		for (Field<?> f: flist) {
+			f.init();
+		}
+		this.exportFieldList = flist;
+		logger.info("*this.exportFieldList=" + this.exportFieldList);
+		return list;
+	}
+
+	@Override
+	protected FieldList getExportDataFieldList(final Map<String, Object> data) throws Exception {
+		logger.info("this.exportFieldList=" + this.exportFieldList);
+		return this.exportFieldList;
+	}
+
 }

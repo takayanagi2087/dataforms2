@@ -135,13 +135,13 @@ public abstract class QueryForm extends Form {
         	logger.debug(() -> "sortOrder=" + sortOrder);
     		Map<String, Object> data = this.convertToServerData(p);
     		data.put("sortOrder", sortOrder);
-    		FieldList flist = this.getExportDataFieldList(data);
     		List<Map<String, Object>> list = this.queryExportData(data);
     		int no = 0;
     		for (Map<String, Object> m: list) {
     			m.put("rowNo", Integer.valueOf(++no));
     		}
     		ExportDataFile exdata = this.getExportDataFile();
+    		FieldList flist = this.getExportDataFieldList(data);
     		byte[] exceldata = exdata.getExportData(list, flist);
     		result = new BinaryResponse(exceldata, exdata.getContentType(), exdata.getFileName());
     	}

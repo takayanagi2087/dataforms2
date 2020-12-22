@@ -397,8 +397,10 @@ public class Dao implements JDBCConnectableObject {
 				ret = new ClobField(this.getId());
 			} else if (this.getType() == Types.DATE) {
 				ret = new DateField(this.getId());
-			} else if (this.getType() == Types.DOUBLE) {
-				ret = new DoubleField(this.getId());
+			} else if (this.getType() == Types.DOUBLE || this.getType() == Types.REAL) {
+				DoubleField df = new DoubleField(this.getId());
+				df.setScale(5);
+				ret = df;
 			} else if (this.getType() == Types.INTEGER) {
 				ret = new IntegerField(this.getId());
 			} else if (this.getType() == Types.NUMERIC) {

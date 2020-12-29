@@ -155,7 +155,7 @@ public abstract class SelectField<TYPE> extends Field<TYPE> {
 	}
 
 	/**
-	 * オプションの名称を取得します。
+	 * オプションの値から名称を取得します。
 	 * @param value 値。
 	 * @return 名称。
 	 */
@@ -171,4 +171,23 @@ public abstract class SelectField<TYPE> extends Field<TYPE> {
 		}
 		return ret;
 	}
+
+	/**
+	 * オプションの名前から値を取得します。
+	 * @param name 名前。
+	 * @return 名称。
+	 */
+	public String getOptionValue(final String name) {
+		String ret = null;
+		if (this.optionList != null) {
+			for (Map<String, Object> m: this.optionList) {
+				SelectField.OptionEntity e = new SelectField.OptionEntity(m);
+				if (name.equals(e.getName())) {
+					ret = e.getValue();
+				}
+			}
+		}
+		return ret;
+	}
+
 }

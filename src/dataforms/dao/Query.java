@@ -794,4 +794,40 @@ public class Query {
 	public void setEffectivenessOfDeleteFlag(final boolean effectivenessOfDeleteFlag) {
 		this.effectivenessOfDeleteFlag = effectivenessOfDeleteFlag;
 	}
+
+	/**
+	 * 副問合せに指定された条件フィールドリストを追加します。。
+	 *
+	 * @param flist 追加先のフィールドリスト。
+	 * @param query 問合せ。
+	 */
+	protected void margeConditionFieldList(final FieldList flist, final Query query) {
+		FieldList cflist = query.getConditionFieldList();
+		if (cflist != null) {
+			flist.marge(cflist);
+		}
+		if (query.getMainTable() instanceof SubQuery) {
+			Query sq = ((SubQuery) query.getMainTable()).getQuery();
+			this.margeConditionFieldList(flist, sq);
+		}
+		List<Query.JoinInfo> jlist = query.getJoinInfoList();
+		if (jlist != null) {
+			for (Query.JoinInfo ji: query.getJoinInfoList()) {
+				if (ji.getJoinTable() instanceof SubQuery) {
+					Query sq = ((SubQuery) ji.getJoinTable()).getQuery();
+					this.margeConditionFieldList(flist, sq);
+				}
+			}
+		}
+	}
+
+	/**
+	 * 副問合せに指定された条件フィールドリストを取得します。
+	 * @return 副問合せに指定された条件フィールドリスト。
+	 */
+	public FieldList getSubQueryConditionFieldList() {
+		FieldList flist = new FieldList();
+		this.margeConditionFieldList(flist, this);
+		return flist;
+	}
 }

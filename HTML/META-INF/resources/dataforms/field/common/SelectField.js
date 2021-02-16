@@ -59,6 +59,26 @@ class SelectField extends Field {
 		return el;
 	}
 
+	/**
+	 * 値に対応する選択肢の名称を取得します。
+	 * @param {String} value 値。
+	 * @return 名称。
+	 */
+	getOptionName(value) {
+		let ret = "";
+		if (value != null && this.optionList != null) {
+			for (var i = 0; i < this.optionList.length; i++) {
+				var opt = this.optionList[i];
+				var ov = (opt.value == null ? "" : opt.value.toString());
+				var v = value.toString();
+				if (ov == v) {
+					ret = opt.name;
+					break;
+				}
+			}
+		}
+		return ret;
+	}
 
 	/**
 	 * SPAN等の表示用タグへ値を設定します。

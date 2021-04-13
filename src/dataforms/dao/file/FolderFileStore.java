@@ -166,6 +166,7 @@ public class FolderFileStore extends FileStore {
 				FileUtil.copyStream(is, os);
 			} finally {
 				is.close();
+				fileItem.delete();
 			}
 		} finally {
 			os.close();

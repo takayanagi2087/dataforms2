@@ -196,8 +196,8 @@ tr.oddTr button:hover {
 		width: calc(100% - 2px);
 	}
 	textarea {
-		width: calc(100% - 2px);
-		height: calc(100% - 2px);
+		width: calc(100% - 6px);
+		height: calc(100% - 6px);
 	}
 
 	select {
@@ -223,12 +223,12 @@ tr.oddTr button:hover {
 	/* 入力フィールドの高さ */
 	input[type="text"], input[type="email"], input[type="search"], input[type="password"], input[type="file"] {
 		height: 32px;
-		width: calc(100% - 2px);
+		width: calc(100% - 6px);
 	}
 
 	textarea {
-		width: calc(100% - 2px);
-		height: calc(100% - 2px);
+		width: calc(100% - 6px);
+		height: calc(100% - 6px);
 	}
 
 	select {

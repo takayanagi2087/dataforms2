@@ -1,18 +1,19 @@
 package dataforms.app.backuprestore.page;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.fileupload.FileItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.controller.Form;
+import dataforms.dao.file.FileObject;
 import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.field.common.FlagField;
 import dataforms.field.common.FolderStoreFileField;
@@ -51,12 +52,12 @@ public class RestoreForm extends Form {
 
 	/**
 	 * バックアップファイルを解凍します。
-	 * @param fileItem バックアップファイル。
+	 * @param fileObject バックアップファイル。
 	 * @return 展開されたディレクトリのパス。
 	 * @throws Exception 例外。
 	 */
-	public String unpackRestoreFile(final FileItem fileItem) throws Exception {
-		InputStream is = fileItem.getInputStream();
+	public String unpackRestoreFile(final FileObject fileObject) throws Exception {
+		InputStream is = new FileInputStream(fileObject.getTempFile());
 		String ret = null;
 		try {
 			File bkdir = new File(DataFormsServlet.getTempDir() + "/restore");
@@ -68,6 +69,7 @@ public class RestoreForm extends Form {
 			ret = backup.toString();
 		} finally {
 			is.close();
+			fileObject.getTempFile().delete();
 		}
 		return ret;
 	}
@@ -83,24 +85,35 @@ public class RestoreForm extends Form {
 		Response resp = null;
 		List<ValidationError> list = this.validate(p);
 		if (list.size() == 0) {
-			String deleteDataFlag = (String) p.get("deleteDataFlag");
-			FileItem fi = (FileItem) p.get("backupFile");
-			String path = this.unpackRestoreFile(fi);
-			TableManagerDao dao = new TableManagerDao(this);
-			dao.dropAllForeignKeys(); // 全外部キーの削除
-			List<String> flist = FileUtil.getFileList(path);
-			for (String fn: flist) {
-				if (Pattern.matches(".*\\.data\\.json$", fn)) {
-					logger.debug(() -> "fn=" + fn);
-					String classname = fn.substring(path.length() + 1).replaceAll("[\\\\/]", ".").replaceAll("\\.data\\.json$", "");
-					logger.debug(() -> "classname=" + classname);
-					if ("1".equals(deleteDataFlag)) {
-						dao.deleteTableData(classname);
+			Map<String, Object> data = this.convertToServerData(p);
+			String deleteDataFlag = (String) data.get("deleteDataFlag");
+			FileObject fo = (FileObject) data.get("backupFile");
+			logger.debug("fo.class=" + fo.getClass().getName());
+			logger.debug("fo.fileName=" + fo.getFileName());
+			logger.debug("fo.length=" + fo.getLength());
+			String path = this.unpackRestoreFile(fo);
+			try {
+				TableManagerDao dao = new TableManagerDao(this);
+				dao.dropAllForeignKeys(); // 全外部キーの削除
+				List<String> flist = FileUtil.getFileList(path);
+				for (String fn: flist) {
+					if (Pattern.matches(".*\\.data\\.json$", fn)) {
+						logger.debug(() -> "fn=" + fn);
+						String classname = fn.substring(path.length() + 1).replaceAll("[\\\\/]", ".").replaceAll("\\.data\\.json$", "");
+						logger.debug(() -> "classname=" + classname);
+						if ("1".equals(deleteDataFlag)) {
+							dao.deleteTableData(classname);
+						}
+						dao.importData(classname, path);
 					}
-					dao.importData(classname, path);
+				}
+				dao.createAllForeignKeys(); // 全外部キーの作成
+			} finally {
+				logger.debug(() -> "delete:" + path.toString());
+				if (path.indexOf("restore") >= 0) {
+					FileUtil.deleteDirectory(path);
 				}
 			}
-			dao.createAllForeignKeys(); // 全外部キーの作成
 			resp = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.restored"));
 		} else {
 			resp = new JsonResponse(JsonResponse.INVALID, list);

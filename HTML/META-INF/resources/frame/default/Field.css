@@ -86,6 +86,21 @@ textarea {
 	outline: none;
 }
 
+input[type='text']:disabled,
+input[type='password']:disabled,
+input[type='number']:disabled,
+input[type='email']:disabled,
+select:disabled,
+textarea:disabled {
+    color: hsl( 207,51%,10%);
+    background-color: rgb(200,200,200);
+    border-color: rgb(128,128,128);
+    border-width: 1px;
+    border-style: solid;
+    outline: none;
+    opacity: 0.7;
+}
+
 input[type='radio'] + label,
 input[type='checkbox'] + label {
 	color: var(--textbox-color);

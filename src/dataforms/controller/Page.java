@@ -967,6 +967,7 @@ public class Page extends DataForms implements WebEntryPoint {
 			String htmlpath = this.getAppropriatePath(this.getPage().getPageFramePath() + "/Frame.html", this.getPage().getRequest());
 			String htmltext = this.getWebResource(htmlpath);
 			if (htmltext != null) {
+				htmltext = htmltext.replaceAll("\\$\\{context\\}", this.getPage().getRequest().getContextPath());
 				String frameHead = this.getHtmlHead(htmltext);
 				map.put("frameHead", frameHead);
 				String frameBody = this.convertIdAttribute(this.getHtmlBody(htmltext));

@@ -826,6 +826,26 @@ public class Dao implements JDBCConnectableObject {
 		return ret;
 	}
 
+	/**
+	 * 指定されたテーブルに対して、データを挿入します。
+	 * <pre>
+	 * dataはフィールドの機能で変換(Value→DBValue)した後保存します。
+	 * ID自動生成フラグがtrueの場合、シーケンスまたはauto_Incrementカラム属性で
+	 * IDを自動生成し、data中にidフィールドの値が設定されます。
+	 * </pre>
+	 * @param table テーブル。
+	 * @param data データ。
+	 * @return 処理結果。
+	 * @throws Exception 例外。
+	 */
+	public int executeInsert0(final Table table, final Map<String, Object> data) throws Exception {
+		SqlGenerator gen = this.getSqlGenerator();
+		String sql = gen.generateInsertSql0(table);
+		this.setNewSequenceValue(table, data);
+		int ret = this.executeUpdate(sql, this.convertToDBValue(table.getFieldList(), data));
+		this.getAutoIncrementValue(table, data);
+		return ret;
+	}
 
 
 	/**
@@ -915,6 +935,28 @@ public class Dao implements JDBCConnectableObject {
 		return ret;
 	}
 
+	/**
+	 * 指定テーブル更新を行います。
+	 * <pre>
+	 * テーブルに対応した、適切なupdate文を作成し実行します。
+	 * Where句はテーブルの全PKがマッチするように作成します。
+	 * dataはフィールドの機能で変換(Value→DBValue)した後保存します。
+	 * テーブル中にFolderStoreFileFieldが存在し、そのフィールドが更新された場合、
+	 * 既に記録されていたファイルは削除されます。
+	 * </pre>
+	 * @param table テーブル。
+	 * @param data 更新データ。
+	 * @return 更新結果。
+	 * @throws Exception 例外。
+	 */
+	public int executeUpdate0(final Table table, final Map<String, Object> data) throws Exception {
+		String sql = this.getSqlGenerator().generateUpdateSql0(table);
+		Map<String, Object> dbdata = this.convertToDBValue(table.getFieldList(), data);
+		List<String> dellist = this.getOldFileList(table, dbdata, false);
+		int ret = this.executeUpdate(sql, dbdata);
+		this.deleteOldFile(dellist);
+		return ret;
+	}
 	/**
 	 * 指定テーブルの更新を行ないます。
 	 * <pre>

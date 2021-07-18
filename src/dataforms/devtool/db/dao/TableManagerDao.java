@@ -539,9 +539,9 @@ public class TableManagerDao extends Dao {
 						Map<String, Object> data = tbl.convertImportData(m);
 						this.setUserIdValue(data);
 						if (this.existRecord(tbl, data)) {
-							this.executeUpdate(tbl, data);
+							this.executeUpdate0(tbl, data);
 						} else {
-							this.executeInsert(tbl, data);
+							this.executeInsert0(tbl, data);
 						}
 					}
 				}

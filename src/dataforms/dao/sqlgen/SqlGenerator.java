@@ -709,6 +709,52 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		return sb.toString();
 	}
 
+	/**
+	 * 指定したテーブルのInsert文を作成します。
+	 * @param table テーブル。
+	 * @return insert文。
+	 */
+	public String generateInsertSql0(final Table table) {
+		String pkid = "";
+/*		if (!this.isSequenceSupported()) {
+			if (table.isAutoIncrementId()) {
+				pkid = table.getPkFieldList().get(0).getId();
+			}
+		}*/
+		StringBuilder sb = new StringBuilder();
+		sb.append("insert into ");
+		sb.append(table.getTableName());
+		sb.append(" (");
+		boolean first = true;
+		for (int i = 0; i < table.getFieldList().size(); i++) {
+			Field<?> f = table.getFieldList().get(i);
+			if (pkid.equals(f.getId())) {
+				continue;
+			}
+			if (!first) {
+				sb.append(",");
+			}
+			first = false;
+			sb.append(StringUtil.camelToSnake(f.getId()));
+		}
+		sb.append(") values (");
+		first = true;
+		for (int i = 0; i < table.getFieldList().size(); i++) {
+			Field<?> f = table.getFieldList().get(i);
+			if (pkid.equals(f.getId())) {
+				continue;
+			}
+			if (!first) {
+				sb.append(",");
+			}
+			first = false;
+			sb.append(":");
+			sb.append(StringUtil.camelToSnake(f.getId()));
+		}
+		sb.append(")");
+
+		return sb.toString();
+	}
 
 	/**
 	 * 元テーブルのカラム存在チェックを行います。
@@ -1378,6 +1424,59 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		return sb.toString();
 	}
 
+	/**
+	 * テーブル更新SQLを作成します。
+	 * @param table テーブル。
+	 * @param updateField 更新フィールドリスト。
+	 * @param condField 条件フィールドリスト。
+	 * @param data 条件作成データ。
+	 * <pre>
+	 * dataがnullの場合condFieldに指定されたフィールドに完全一致する条件式が作成されます。
+	 * dataかnot nullの場合、generateQuerySqlと同様にcondFieldに対応するデータが存在するフィールド条件のみ作成されます。
+	 * </pre>
+	 * @return sql。
+	 */
+	public String generateUpdateSql0(final Table table, final FieldList updateField, final FieldList condField, final Map<String, Object> data) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("update " + table.getTableName() + " set \n");
+		StringBuilder usb = new StringBuilder();
+		for (Field<?> f : updateField) {
+			if (f instanceof DoNotUpdateField) {
+				continue;
+			}
+			if (usb.length() > 0) {
+				usb.append(", ");
+			}
+/*			if (f instanceof UpdateTimestampField) {
+				usb.append(StringUtil.camelToSnake(f.getId()));
+				usb.append(" = ");
+				usb.append(this.generateSysTimestampSql());
+				usb.append("\n");
+			} else*/ if (f instanceof FileField) {
+				usb.append(StringUtil.camelToSnake(f.getId()));
+				usb.append(" = ");
+				usb.append(this.generateUpdateFileFieldSql(f.getId()));
+				usb.append("\n");
+			} else {
+				usb.append(StringUtil.camelToSnake(f.getId()));
+				usb.append(" = :");
+				usb.append(StringUtil.camelToSnake(f.getId()));
+				usb.append("\n");
+			}
+		}
+		String csb = null;
+		if (data == null) {
+			csb = this.getWhereCondition(condField);
+		} else {
+			csb = this.getWhereCondition(table, condField, data);
+		}
+		sb.append(usb.toString());
+		if (csb.length() > 0) {
+			sb.append("where\n");
+			sb.append(csb);
+		}
+		return sb.toString();
+	}
 
 	/**
 	 * 標準的な更新SQLを取得します。
@@ -1391,6 +1490,18 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		return this.generateUpdateSql(table, updateField, condField);
 	}
 
+
+	/**
+	 * 標準的な更新SQLを取得します。
+	 * @param table テーブル。
+	 * @return sql。
+	 */
+	public String generateUpdateSql0(final Table table) {
+		FieldList condField = new FieldList();
+		condField.addAll(table.getPkFieldList());
+		FieldList updateField = table.getUpdateFieldList();
+		return this.generateUpdateSql0(table, updateField, condField, null);
+	}
 
 	/**
 	 * Where句を追加します。

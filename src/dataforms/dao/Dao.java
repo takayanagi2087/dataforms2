@@ -719,7 +719,7 @@ public class Dao implements JDBCConnectableObject {
 		SqlGenerator gen = this.getSqlGenerator();
 		String cn = gen.getConstraintViolationException(e);
 		if (cn != null) {
-			return new ConstraintViolationException(this.getPage(), cn);
+			return new ConstraintViolationException(this.getWebEntryPoint(), cn);
 		}
 		return null;
 	}

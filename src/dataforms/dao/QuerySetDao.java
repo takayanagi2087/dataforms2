@@ -370,7 +370,7 @@ public class QuerySetDao extends Dao {
 			Table table = this.getSingleRecordQuery().getMainTable();
 			boolean ret = this.isUpdatable(table, data);
 			if (!ret) {
-				throw new ApplicationException(this.getPage(), "error.notupdatable");
+				throw new ApplicationException(this.getWebEntryPoint(), "error.notupdatable");
 			}
 			// データ更新
 			this.executeUpdate(table, data);

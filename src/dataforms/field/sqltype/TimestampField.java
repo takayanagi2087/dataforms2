@@ -48,7 +48,7 @@ public class TimestampField extends DateTimeField<Timestamp> implements SqlTimes
 			this.setValue(null);
 			return;
 		}
-		SimpleDateFormat fmt = new SimpleDateFormat(MessagesUtil.getMessage(this.getPage(), this.getDateFormat()));
+		SimpleDateFormat fmt = new SimpleDateFormat(MessagesUtil.getMessage(this.getWebEntryPoint(), this.getDateFormat()));
 		try {
 			Timestamp t = new Timestamp(fmt.parse((String) v).getTime());
 			this.setValue(t);
@@ -69,7 +69,7 @@ public class TimestampField extends DateTimeField<Timestamp> implements SqlTimes
 		if (this.getValue() == null) {
 			return null;
 		}
-		SimpleDateFormat fmt = new SimpleDateFormat(MessagesUtil.getMessage(this.getPage(), this.getDateFormat()));
+		SimpleDateFormat fmt = new SimpleDateFormat(MessagesUtil.getMessage(this.getWebEntryPoint(), this.getDateFormat()));
 		return fmt.format(this.getValue());
 	}
 }

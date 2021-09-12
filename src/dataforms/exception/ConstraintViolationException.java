@@ -1,6 +1,6 @@
 package dataforms.exception;
 
-import dataforms.controller.Page;
+import dataforms.controller.WebEntryPoint;
 import dataforms.dao.Constraint;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.StringUtil;
@@ -24,7 +24,7 @@ public class ConstraintViolationException extends ApplicationException {
 	 * @param page ページ。
 	 * @param constraintName 制約名。
 	 */
-	public ConstraintViolationException(final Page page, final String constraintName) {
+	public ConstraintViolationException(final WebEntryPoint page, final String constraintName) {
 		super(page, ConstraintViolationException.getMessageKey(constraintName), constraintName);
 		this.constraintName = StringUtil.snakeToCamel(constraintName);
 	}

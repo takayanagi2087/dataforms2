@@ -205,13 +205,27 @@ class EditableHtmlTable extends HtmlTable {
 			{
 				var c = $(trlist.get(i)).find(this.convertSelector("[id^='" + thisTable.id + "\\[']"));
 				c.each(function() {
-					var id = $(this).attr(thisTable.getIdAttribute());
-					var newid = id.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]")
-					$(this).attr(thisTable.getIdAttribute(), newid);
-					var name = $(this).attr("name");
-					if (name != null) {
-						var newname = name.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]")
-						$(this).attr("name", newname);
+					{
+						var id = $(this).attr(thisTable.getIdAttribute());
+						var newid = id.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]");
+						$(this).attr(thisTable.getIdAttribute(), newid);
+					}
+					{
+						if ("id" != thisTable.getIdAttribute()) {
+							var id = $(this).attr("id");
+							logger.info("id=" + id);
+							if (id != null) {
+								var newid = id.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]");
+								$(this).attr("id", newid);
+							}
+						}
+					}
+					{
+						var name = $(this).attr("name");
+						if (name != null) {
+							var newname = name.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]");
+							$(this).attr("name", newname);
+						}
 					}
 				});
 			}

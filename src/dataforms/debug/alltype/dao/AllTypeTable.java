@@ -30,7 +30,6 @@ import dataforms.field.sqltype.TimeField;
 import dataforms.field.sqltype.TimestampField;
 import dataforms.field.sqltype.VarcharField;
 import dataforms.validator.MaxLengthValidator;
-import dataforms.validator.RequiredValidator;
 
 /**
  * 全項目タイプテーブルクラス。
@@ -122,7 +121,7 @@ public class AllTypeTable extends Table {
 		textList.setComment("選択テキストリストフィールド");
 		this.addField(textList);
 		//
-		this.addField(new BlobStoreFileField("uploadBlobData")).setComment("添付ファイル").addValidator(new RequiredValidator());
+		this.addField(new BlobStoreFileField("uploadBlobData")).setComment("添付ファイル")/*.addValidator(new RequiredValidator())*/;
 		this.addField(new FolderStoreFileField("uploadFileData")).setComment("添付ファイル");
 
 		this.addField(new ClobField("clobField")).setComment("CLOB");

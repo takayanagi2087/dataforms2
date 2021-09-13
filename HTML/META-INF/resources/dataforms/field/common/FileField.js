@@ -25,25 +25,25 @@ class FileField extends Field {
 		super.attach();
 		var thisComp = this;
 		var selid = this.id + "_sel"; // 選択ボタンID.
-		var selfileid = this.id + "_selfile"; // 選択ボタンID.
-		var linkid = this.id + "_link"; // ダウンロードリンク.
-		var fnid = this.id + "_fn"; // ファイル名のリンク.
 		var delid = this.id + "_del"; // ファイル削除のチェックボックス.
-		var ckid = this.id + "_ck"; // ファイル削除のチェックボックス.
-		var selfile = this.parent.get(selfileid);
-		var fnlink = this.parent.get(linkid);
-		var fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
 		this.parent.get(selid).click(function() {
-			comp.click();
+			let inpid = $(this).attr(thisComp.getIdAttribute()).replace("_sel", "")
+			thisComp.id = inpid;
+			thisComp.parent.get(inpid).click();
 		});
 		this.parent.get(delid).click(function() {
+			let ckid = $(this).attr(thisComp.getIdAttribute()).replace("_del", "_ck");
+			thisComp.id = $(this).attr(thisComp.getIdAttribute()).replace("_del", "");
 			thisComp.parent.get(ckid).click();
 			$(this).hide();
 		});
+		var ckid = this.id + "_ck"; // ファイル削除のチェックボックス.
 		this.parent.get(ckid).click(function() {
+			thisComp.id = $(this).attr(thisComp.getIdAttribute()).replace("_ck", "");
 			thisComp.delFile($(this));
 		});
 		comp.change(function() {
+			thisComp.id = $(this).attr(thisComp.getIdAttribute());
 			thisComp.selectFile($(this));
 		});
 		if (this.readonly) {
@@ -89,7 +89,9 @@ class FileField extends Field {
 	 * 削除チェックボックスの処理を行います。
 	 */
 	delFile(ck) {
-		var comp = this.get();
+//		var comp = this.get();
+		var comp = this.parent.get(this.id);
+
 		var linkid = this.id + "_link"; // ダウンロードリンク.
 		var selfileid = this.id + "_selfile"; // 選択ボタンID.
 		var fnid = this.id + "_fn"; // ファイル名のリンク.

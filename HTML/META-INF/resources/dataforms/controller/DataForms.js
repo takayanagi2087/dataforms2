@@ -127,7 +127,14 @@ class DataForms extends WebComponent {
 		this.resetErrorStatus();
 		for (var i = 0; i < errors.length; i++) {
 			area.append(errors[i].message + "<br/>");
-			form.get(this.selectorEscape(errors[i].fieldId)).addClass("errorField");
+			var comp = form.get(this.selectorEscape(errors[i].fieldId));
+			comp.addClass("errorField");
+			var tag = comp.prop("tagName");
+			var type = comp.prop("type");
+			logger.info("tag=" + tag + ",type=" + type);
+			if ("INPUT" == tag && type == "file") {
+				form.get(this.selectorEscape(errors[i].fieldId + "_sel")).addClass("errorField");
+			}
 		}
 	}
 

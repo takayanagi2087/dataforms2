@@ -43,7 +43,7 @@ class FileField extends Field {
 			thisComp.delFile($(this));
 		});
 		comp.change(function() {
-			thisComp.id = $(this).attr(thisComp.getIdAttribute());
+			thisComp.adjustIdIndex($(this));
 			thisComp.selectFile($(this));
 		});
 		if (this.readonly) {

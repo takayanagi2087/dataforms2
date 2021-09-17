@@ -43,12 +43,12 @@ class Field extends WebComponent {
 		if (this.relationDataAcquisition) {
 			if (this.relationDataEvent == "BLUR") {
 				comp.blur(function() {
-					thisField.id = $(this).attr(thisField.getIdAttribute())
+					thisField.adjustIdIndex($(this));
 					thisField.getRelationData();
 				});
 			} else {
 				comp.change(function() {
-					thisField.id = $(this).attr(thisField.getIdAttribute())
+					thisField.adjustIdIndex($(this));
 					thisField.getRelationData();
 				});
 			}
@@ -64,6 +64,17 @@ class Field extends WebComponent {
 		}
 		if (this.readonly) {
 			this.lock(true);
+		}
+	}
+
+	/**
+	 * テーブルに配置されたフィールドidのインデックスを調整します。
+	 * @param {jQuery} jq 調整するフィールドのjQueryオブジェクト。
+	 */
+	adjustIdIndex(jq) {
+		this.id = jq.attr(this.getIdAttribute())
+		if (currentPage.useUniqueId) {
+			this.realId = jq.attr("id");
 		}
 	}
 
@@ -95,6 +106,7 @@ class Field extends WebComponent {
 	 * @returns {String} サーバに送信するQueryString形式のパラメータ。
 	 */
 	getAjaxParameter() {
+		logger.info("id=" + this.id + ",realId=" + this.realId);
 		if (this.ajaxParameter == "FORM") {
 			return this.getParentForm().get().serialize() + "&currentFieldId=" + this.id;
 		} else {
@@ -534,10 +546,10 @@ class Field extends WebComponent {
 		var thisField = this;
 		this.get().autocomplete({
 			search:function(event, ui) {
-				thisField.id = $(this).attr(thisField.getIdAttribute());
+				thisField.adjustIdIndex($(this));
 			},
 			source:function(req, res) {
-				var list = thisField.getSource(res);
+				thisField.getSource(res);
 			},
 			select: function(event, ui) {
 				for (var k in ui.item) {

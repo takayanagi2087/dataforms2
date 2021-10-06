@@ -1,6 +1,10 @@
 package dataforms.exception;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import dataforms.controller.WebEntryPoint;
+import dataforms.response.JsonResponse;
 import dataforms.util.MessagesUtil;
 
 /**
@@ -59,4 +63,16 @@ public class ApplicationException extends Exception {
 		this.messageKey = messageKey;
 	}
 
+	/**
+	 * 例外の情報を持ったJsonResponseを取得します。
+	 * @return JsonResponseのインスタンス。
+	 */
+	public JsonResponse getJsonResponse() {
+		Map<String, Object> einfo = new HashMap<String, Object>();
+		einfo.put("key", this.getMessageKey());
+		einfo.put("message", this.getMessage());
+		JsonResponse ret = new JsonResponse(JsonResponse.APPLICATION_EXCEPTION, einfo);
+		return ret;
+
+	}
 }

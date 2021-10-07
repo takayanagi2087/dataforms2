@@ -531,6 +531,16 @@ public class Dao implements JDBCConnectableObject {
 		}
 	}
 
+	/**
+	 * 条件フィールドリストに対応する条件式を取得します。
+	 * @param query 問合せ。
+	 * @param cflist 条件フィールドリスト。
+	 * @param p 条件パラメータ。
+	 * @return 条件式。
+	 */
+	public String getWhereCondition(final Query query, final FieldList cflist, final Map<String, Object> p) {
+		return this.getSqlGenerator().getWhereCondition(query, cflist, p);
+	}
 
 	/**
 	 * BLOBフィールドの読み込みを行います。
@@ -1816,9 +1826,7 @@ public class Dao implements JDBCConnectableObject {
 	 * @param flist フィールドリスト。
 	 * @param data フォームデータ。
 	 * @param forUpdate 更新用の存在チェックの場合true。
-	 * <pre>
 	 * 更新用の場合、更新対象以外のレコードに同一値があるかどうかをチェック。
-	 * </pre>
 	 * @return 存在する場合true。
 	 * @throws Exception 例外。
 	 */

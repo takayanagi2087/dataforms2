@@ -25,6 +25,10 @@ import dataforms.dao.Query.JoinInfo;
 import dataforms.dao.QueryPager;
 import dataforms.dao.SubQuery;
 import dataforms.dao.Table;
+import dataforms.dao.condition.ConditionExpression;
+import dataforms.dao.condition.ConditionExpressionList;
+import dataforms.dao.condition.ConditionExpressionList.Operator;
+import dataforms.dao.condition.FieldConditionExpression;
 import dataforms.dao.sqldatatype.SqlBigint;
 import dataforms.dao.sqldatatype.SqlBlob;
 import dataforms.dao.sqldatatype.SqlChar;
@@ -1052,75 +1056,14 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		if (query.getCondition() != null) {
 			sb.append(query.getCondition());
 		}
-		if (query.getConditionFieldList() != null) {
-			for (Field<?> f: query.getConditionFieldList()) {
-				String id = f.getId();
-
-				Object v = p.get(id);
-				if (v == null) {
-					continue;
-				}
-				String sv = v.toString();
-				if (StringUtil.isBlank(sv)) {
-					continue;
-				}
-				String ex = null;
-				if (f.getMatchType() == MatchType.FULL) {
-					String colname = query.getMatchFieldSql(f);
-					if (colname != null) {
-						if (!f.isCaseInsensitive()) {
-							ex = colname + " = :" + StringUtil.camelToSnake(id);
-						} else {
-							String lower = this.getLowerMethod();
-							ex = lower + "(" + colname + ") = " + lower + "(:" + StringUtil.camelToSnake(id) + ")";
-						}
-					}
-				} else if (f.getMatchType() == MatchType.BEGIN
-						|| f.getMatchType() == MatchType.END
-						|| f.getMatchType() == MatchType.PART) {
-					String colname = query.getMatchFieldSql(f);
-					if (colname != null) {
-						if (!f.isCaseInsensitive()) {
-							ex = colname + " like :" + StringUtil.camelToSnake(id) + this.getLikeEscape();
-						} else {
-							String lower = this.getLowerMethod();
-							ex = lower + "(" + colname + ") like " + lower + "(:" +StringUtil.camelToSnake(id) + ")" +  this.getLikeEscape();
-						}
-					}
-				} else if (f.getMatchType() == MatchType.RANGE_FROM) {
-					String colname = query.getMatchFieldSql(f);
-					if (colname != null) {
-						ex = colname + " >= :" + StringUtil.camelToSnake(id);
-					}
-				} else if (f.getMatchType() == MatchType.RANGE_TO) {
-					String colname = query.getMatchFieldSql(f);
-					if (colname != null) {
-						ex = colname + " <= :" + StringUtil.camelToSnake(id);
-					}
-				} else if (f.getMatchType() == MatchType.IN) {
-					String colname = query.getMatchFieldSql(f);
-					if (colname != null) {
-						if (v instanceof List) {
-							@SuppressWarnings("rawtypes")
-							List l = (List) v;
-							if (l.size() > 0) {
-								StringBuilder ary = new StringBuilder();
-								for (int i = 0; i < l.size(); i++) {
-									if (ary.length() > 0) {
-										ary.append(",");
-									}
-									ary.append(":" + StringUtil.camelToSnake(id) + "[" + i + "]");
-								}
-								ex = colname + " in (" + ary.toString() + ")";
-							}
-						}
-					}
-				}
-				if (ex != null) {
-					if (sb.length() > 0) {
-						sb.append(" and ");
-					}
-					sb.append(ex);
+		if (query.isAutoFieldCondition()) {
+			ConditionExpression ce = query.getConditionExpression();
+			if (ce != null) {
+				this.addWhereCondition(sb, query, ce, p);
+			} else {
+				FieldList cflist = query.getConditionFieldList();
+				if (cflist != null) {
+					this.addWhereCondition(sb, query, cflist, p);
 				}
 			}
 		}
@@ -1138,7 +1081,170 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		return sb.toString();
 	}
 
+	/**
+	 * フィールド単位の条件式を取得します。
+	 * @param query 問い合わせ。
+	 * @param f フィールド。
+	 * @param p パラメータ。
+	 * @return 条件式。
+	 */
+	private String getFieldCondition(Query query, Field<?> f, Map<String, Object> p) {
+		String ex = null;
+		String id = f.getId();
+		Object v = p.get(id);
+		if (v == null) {
+			return ex;
+		}
+		String sv = v.toString();
+		if (StringUtil.isBlank(sv)) {
+			return ex;
+		}
+		//logger.debug("field id=" + id + ",matchType=" + f.getMatchType() + ",v=" + v.toString());
+		if (f.getMatchType() == MatchType.FULL) {
+			String colname = query.getMatchFieldSql(f);
+			if (colname != null) {
+				if (!f.isCaseInsensitive()) {
+					ex = colname + " = :" + StringUtil.camelToSnake(id);
+				} else {
+					String lower = this.getLowerMethod();
+					ex = lower + "(" + colname + ") = " + lower + "(:" + StringUtil.camelToSnake(id) + ")";
+				}
+			}
+		} else if (f.getMatchType() == MatchType.BEGIN
+				|| f.getMatchType() == MatchType.END
+				|| f.getMatchType() == MatchType.PART) {
+			String colname = query.getMatchFieldSql(f);
+			if (colname != null) {
+				if (!f.isCaseInsensitive()) {
+					ex = colname + " like :" + StringUtil.camelToSnake(id) + this.getLikeEscape();
+				} else {
+					String lower = this.getLowerMethod();
+					ex = lower + "(" + colname + ") like " + lower + "(:" +StringUtil.camelToSnake(id) + ")" +  this.getLikeEscape();
+				}
+			}
+		} else if (f.getMatchType() == MatchType.RANGE_FROM) {
+			String colname = query.getMatchFieldSql(f);
+			if (colname != null) {
+				ex = colname + " >= :" + StringUtil.camelToSnake(id);
+			}
+		} else if (f.getMatchType() == MatchType.RANGE_TO) {
+			String colname = query.getMatchFieldSql(f);
+			if (colname != null) {
+				ex = colname + " <= :" + StringUtil.camelToSnake(id);
+			}
+		} else if (f.getMatchType() == MatchType.IN) {
+			String colname = query.getMatchFieldSql(f);
+			if (colname != null) {
+				if (v instanceof List) {
+					@SuppressWarnings("rawtypes")
+					List l = (List) v;
+					if (l.size() > 0) {
+						StringBuilder ary = new StringBuilder();
+						for (int i = 0; i < l.size(); i++) {
+							if (ary.length() > 0) {
+								ary.append(",");
+							}
+							ary.append(":" + StringUtil.camelToSnake(id) + "[" + i + "]");
+						}
+						ex = colname + " in (" + ary.toString() + ")";
+					}
+				}
+			}
+		}
+		return ex;
+	}
 
+	/**
+	 * 文字列バッファにフィールドリストの条件式を追加します。
+	 * @param sb 追加する文字列バッファ。
+	 * @param query 問合せ。
+	 * @param cflist フィールドリスト。
+	 * @param p パラメータ。
+	 */
+	private void addWhereCondition(final StringBuilder sb, final Query query, final FieldList cflist, final Map<String, Object> p) {
+		if (cflist != null) {
+			//logger.debug("p=" + p);
+			for (Field<?> f: cflist) {
+				String ex = this.getFieldCondition(query, f, p);
+				if (ex != null) {
+					if (sb.length() > 0) {
+						sb.append(" and ");
+					}
+					sb.append(ex);
+				}
+			}
+		}
+//		logger.debug("sb=" + sb.toString());
+	}
+
+	/**
+	 * Where条件式を取得します。
+	 * @param query 問い合わせ。
+	 * @param cond 条件式。
+	 * @param p パラメータ。
+	 * @return Where条件式。
+	 */
+	private String getWhereCondition(final Query query, final ConditionExpression cond, final Map<String, Object> p) {
+		if (cond instanceof ConditionExpressionList) {
+			StringBuilder sb = new StringBuilder();
+			ConditionExpressionList clist = (ConditionExpressionList) cond;
+			Operator ope = clist.getOperator();
+			for (ConditionExpression ce: clist) {
+				String sql = this.getWhereCondition(query, ce, p);
+				if (sql != null) {
+					if (sb.length() > 0) {
+						if (ope == Operator.AND) {
+							sb.append(" and ");
+						} else {
+							sb.append(" or ");
+						}
+					}
+					sb.append(sql);
+				}
+			}
+			if (sb.length() > 0) {
+				return "(" + sb.toString() + ")";
+			} else {
+				return "";
+			}
+		} else {
+			FieldConditionExpression fce = (FieldConditionExpression) cond;
+			Field<?> f = fce.getField();
+			String sql = this.getFieldCondition(query, f, p);
+			return sql;
+		}
+	}
+
+	/**
+	 * 文字列バッファにフィールドリストの条件式を追加します。
+	 * @param sb 追加する文字列バッファ。
+	 * @param query 問合せ。
+	 * @param cond 条件式。
+	 * @param p パラメータ。
+	 */
+	private void addWhereCondition(final StringBuilder sb, final Query query, final ConditionExpression cond, final Map<String, Object> p) {
+		String sql = this.getWhereCondition(query, cond, p);
+		if (!StringUtil.isBlank(sql)) {
+			if (sb.length() > 0) {
+				sb.append(" and ");
+			}
+			sb.append(sql);
+		}
+	}
+
+	/**
+	 * 条件フィールドリストに対応する条件式を取得します。
+	 * @param query 問合せ。
+	 * @param cflist 条件フィールドリスト。
+	 * @param p 条件パラメータ。
+	 * @return 条件式。
+	 */
+	public String getWhereCondition(final Query query, final FieldList cflist, final Map<String, Object> p) {
+		StringBuilder sb = new StringBuilder();
+		this.generateJoinTableSql(query);
+		this.addWhereCondition(sb, query, cflist, p);
+		return sb.toString();
+	}
 
 	/**
 	 * 標準的なselectの対象のフィールド式を作成します。

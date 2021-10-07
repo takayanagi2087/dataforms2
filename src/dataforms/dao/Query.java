@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dataforms.dao.condition.ConditionExpression;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.sqlfunc.AliasField;
@@ -25,7 +26,7 @@ public class Query {
     /**
      * Logger.
      */
-//    private static Logger log = Logger.getLogger(Query.class.getName());
+ //   private static Logger logger = LogManager.getLogger(Query.class);
 
 	/**
 	 * フィールドリスト。
@@ -65,10 +66,24 @@ public class Query {
 	 *
 	 */
 	private FieldList conditionFieldList = null;
+
+	/**
+	 * 検索条件式。
+	 */
+	private ConditionExpression conditionExpression = null;
+
 	/**
 	 * 問い合わせフォームの入力データ。
 	 */
 	private Map<String, Object> conditionData = null;
+
+	/**
+	 * 条件式の自動作成フラグ。
+	 * <pre>
+	 * trueの場合問い合わせフォームの情報から自動的に条件式を生成します。
+	 * </pre>
+	 */
+	private boolean autoFieldCondition = true;
 
 	/**
 	 * ソートフィールドリスト。
@@ -599,6 +614,29 @@ public class Query {
 
 
 	/**
+	 * 検索の条件式を設定します。
+	 * <pre>
+	 * conditonFieldListでは全てのフィールド条件はANDで処理されますが、
+	 * conditionExpressionは複数の条件のAND ORの設定が可能になっています。
+	 * conditonFieldListとconditionExpressionは排他利用です。
+	 * </pre>
+	 * @param conditionExpression 検索の条件式。
+	 */
+	public void setConditionExpression(final ConditionExpression conditionExpression) {
+		this.conditionExpression = conditionExpression;
+		this.conditionFieldList = conditionExpression.getFieldList();
+	}
+
+
+	/**
+	 * 検索の条件式を取得します。
+	 * @return 検索の条件式。
+	 */
+	public ConditionExpression getConditionExpression() {
+		return conditionExpression;
+	}
+
+	/**
 	 * 条件データを取得します。
 	 * @return 問い合わせフォームの入力データ。
 	 */
@@ -632,6 +670,22 @@ public class Query {
 	@Deprecated
 	public void setQueryFormData(final Map<String, Object> queryFormData) {
 		this.conditionData = queryFormData;
+	}
+
+	/**
+	 * 条件式の自動作成フラグを取得します。
+	 * @return 条件式の自動作成フラグ。
+	 */
+	public boolean isAutoFieldCondition() {
+		return autoFieldCondition;
+	}
+
+	/**
+	 * 条件式の自動作成フラグを設定します。
+	 * @param autoFieldCondition 条件式の自動作成フラグ。
+	 */
+	public void setAutoFieldCondition(boolean autoFieldCondition) {
+		this.autoFieldCondition = autoFieldCondition;
 	}
 
 	/**
@@ -830,4 +884,17 @@ public class Query {
 		this.margeConditionFieldList(flist, this);
 		return flist;
 	}
+
+
+	/**
+	 * 条件フィールドリストに対応する条件式を取得します。
+	 * @param dao DAO。
+	 * @param flist 条件フィールドリスト。
+	 * @param p 条件パラメータ。
+	 * @return 条件式。
+	 */
+	public String getWhereCondition(final Dao dao, final FieldList flist, final Map<String, Object> p) {
+		return dao.getWhereCondition(this, flist, p);
+	}
+
 }

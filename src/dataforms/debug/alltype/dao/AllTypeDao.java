@@ -12,6 +12,8 @@ import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.JoinConditionInterface;
 import dataforms.dao.Query;
 import dataforms.dao.SubQuery;
+import dataforms.dao.condition.ConditionExpressionList;
+import dataforms.dao.condition.ConditionExpressionList.Operator;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
@@ -105,15 +107,31 @@ public class AllTypeDao extends Dao {
 	public Map<String, Object> getQueryResult(final Map<String, Object> data, final FieldList flist) throws Exception {
 		AllTypeTable tbl = new AllTypeTable();
 		Query query = new Query();
-		query.setFieldList(new FieldList(
+
+
+		FieldList cflist = new FieldList(
 				tbl.getField("recordIdField")
 				, tbl.getField("charField")
 				, tbl.getField("varcharField")
 				, tbl.getField("numericField")
 				, new SqlField(new NumericField("sqlField", 10, 3), "numeric_field * 100")
-				));
+				);
+		query.setFieldList(cflist);
 		query.setMainTable(tbl);
-		query.setConditionFieldList(flist);
+
+
+		String whereCondition = this.getWhereCondition(query, flist, data);
+		logger.debug(() -> "whereCondition=" + whereCondition);
+//		query.setConditionFieldList(flist);
+		Field<?> nfield = flist.get("numericField");
+		flist.remove("numericField");
+		ConditionExpressionList cond1 = new ConditionExpressionList(Operator.AND, flist);
+		ConditionExpressionList cond2 = new ConditionExpressionList(Operator.AND);
+		cond2.addField(nfield);
+		ConditionExpressionList cond = new ConditionExpressionList(Operator.OR);
+		cond.add(cond1);
+		cond.add(cond2);
+		query.setConditionExpression(cond);
 		query.setConditionData(data);
 
 		String sortOrder = (String) data.get("sortOrder");

@@ -414,8 +414,48 @@ class Page extends DataForms {
 			}
 		});
 		$(window).resize(() => { this.onResize(); });
+		this.resolveIdAttr();
 	}
 
+	/**
+	 * 指定したコンポーネント以下の要素にrealIdを設定します。
+	 * @param {WebComponent} cmp 親コンポーネント。
+	 * @param {Function} func コンポーネント判定関数。
+	 */
+	setRealIdToElement(cmp, func) {
+		if (this.useUniqueId) {
+			for (let key in cmp.componentMap) {
+				let ch = cmp.componentMap[key];
+				if (func(ch)) {
+					ch.find("[data-id]").each(function() {
+						let id = $(this).attr("id");
+						if (id == null) {
+							let realId = ch.realId + "." + $(this).attr("data-id");
+							logger.log("realId=" + realId);
+							$(this).attr("id", realId);
+						}
+					});
+				} else {
+					this.setRealIdToElement(ch, func);
+				}
+			}
+		}
+	}
+
+	/**
+	 * id属性の設定漏れを解決します。
+	 */
+	resolveIdAttr() {
+		this.setRealIdToElement(this, (cmp) => { return (cmp instanceof Form);});
+		this.setRealIdToElement(this, (cmp) => { return (cmp instanceof Dialog);});
+		$("[data-id]").each(function() {
+			let id = $(this).attr("id");
+			if (id == null) {
+				logger.log("data-id=" + $(this).attr("data-id"));
+				$(this).attr("id", $(this).attr("data-id"));
+			}
+		});
+	}
 
 	/**
 	 * リサイズ時の処理を行います。

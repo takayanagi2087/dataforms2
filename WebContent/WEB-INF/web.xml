@@ -206,7 +206,10 @@
 	<!-- フレームレイアウトのパスを指定します。 -->
 	<context-param>
 		<param-name>frame-path</param-name>
+		<!--
 		<param-value>/frame/default</param-value>
+		 -->
+		<param-value>/frame/flex</param-value>
 	</context-param>
 
 	<!--

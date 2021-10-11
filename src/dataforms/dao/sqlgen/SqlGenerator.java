@@ -1104,10 +1104,18 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 			String colname = query.getMatchFieldSql(f);
 			if (colname != null) {
 				if (!f.isCaseInsensitive()) {
-					ex = colname + " = :" + StringUtil.camelToSnake(id);
+					if (!f.isNotConditon()) {
+						ex = colname + " = :" + StringUtil.camelToSnake(id);
+					} else {
+						ex = colname + " <> :" + StringUtil.camelToSnake(id);
+					}
 				} else {
 					String lower = this.getLowerMethod();
-					ex = lower + "(" + colname + ") = " + lower + "(:" + StringUtil.camelToSnake(id) + ")";
+					if (!f.isNotConditon()) {
+						ex = lower + "(" + colname + ") = " + lower + "(:" + StringUtil.camelToSnake(id) + ")";
+					} else {
+						ex = lower + "(" + colname + ") <> " + lower + "(:" + StringUtil.camelToSnake(id) + ")";
+					}
 				}
 			}
 		} else if (f.getMatchType() == MatchType.BEGIN
@@ -1116,10 +1124,18 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 			String colname = query.getMatchFieldSql(f);
 			if (colname != null) {
 				if (!f.isCaseInsensitive()) {
-					ex = colname + " like :" + StringUtil.camelToSnake(id) + this.getLikeEscape();
+					if (!f.isNotConditon()) {
+						ex = colname + " like :" + StringUtil.camelToSnake(id) + this.getLikeEscape();
+					} else {
+						ex = colname + " not like :" + StringUtil.camelToSnake(id) + this.getLikeEscape();
+					}
 				} else {
 					String lower = this.getLowerMethod();
-					ex = lower + "(" + colname + ") like " + lower + "(:" +StringUtil.camelToSnake(id) + ")" +  this.getLikeEscape();
+					if (!f.isNotConditon()) {
+						ex = lower + "(" + colname + ") like " + lower + "(:" +StringUtil.camelToSnake(id) + ")" +  this.getLikeEscape();
+					} else {
+						ex = lower + "(" + colname + ") not like " + lower + "(:" +StringUtil.camelToSnake(id) + ")" +  this.getLikeEscape();
+					}
 				}
 			}
 		} else if (f.getMatchType() == MatchType.RANGE_FROM) {
@@ -1146,7 +1162,11 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 							}
 							ary.append(":" + StringUtil.camelToSnake(id) + "[" + i + "]");
 						}
-						ex = colname + " in (" + ary.toString() + ")";
+						if (!f.isNotConditon()) {
+							ex = colname + " in (" + ary.toString() + ")";
+						} else {
+							ex = colname + " not in (" + ary.toString() + ")";
+						}
 					}
 				}
 			}
@@ -1191,7 +1211,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 			Operator ope = clist.getOperator();
 			for (ConditionExpression ce: clist) {
 				String sql = this.getWhereCondition(query, ce, p);
-				if (sql != null) {
+				if (sql != null && sql.length() > 0) {
 					if (sb.length() > 0) {
 						if (ope == Operator.AND) {
 							sb.append(" and ");

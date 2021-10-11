@@ -106,13 +106,13 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		 */
 		RANGE_TO,
 		/**
-		 * 配列の一部一致。
+		 * 配列のIN。
 		 * <pre>
 		 * 以下の様な条件式を生成します。
 		 * hoge IN ('0','1',...'n');
 		 * </pre>
 		 */
-		IN
+		IN,
 	}
 
 
@@ -150,7 +150,16 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	 */
 	private SortOrder sortOrder = Field.SortOrder.ASC;
 
+	/**
+	 * 問い合わせフィールドID。
+	 */
+	private String queryFieldId = null;
 
+
+	/**
+	 * Not条件フラグ。
+	 */
+	private boolean notConditon = false;
 
 	/**
 	 * テーブル内のフィールドの場合、テーブルへの参照を保持します。
@@ -216,7 +225,44 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	 */
 	private boolean sortable = false;
 
+	/**
+	 * 問い合わせ対象のフィールドIDを取得します。
+	 * @return 問い合わせ対象のフィールドID。
+	 */
+	public String getQueryFieldId() {
+		return queryFieldId;
+	}
 
+	/**
+	 * 問い合わせ対象のフィールドIDを設定します。
+	 * <pre>
+	 * 問い合わせ対象のフィールドIDが異なる場合設定します。
+	 * </pre>
+	 * @param queryFieldId 問い合わせ対象のフィールドID。
+	 * @return 設定したフィールド。
+	 */
+	public Field<?> setQueryFieldId(final String queryFieldId) {
+		this.queryFieldId = queryFieldId;
+		return this;
+	}
+
+	/**
+	 * 問合せ時のNot条件フラグを取得します。
+	 * @return 問合せ時のNot条件フラグ。
+	 */
+	public boolean isNotConditon() {
+		return notConditon;
+	}
+
+	/**
+	 * 問合せ時のNot条件フラグを取得します。
+	 * @param notConditon 問合せ時のNot条件フラグ。
+	 * @return 設定したフィールド。
+	 */
+	public Field<?> setNotConditon(boolean notConditon) {
+		this.notConditon = notConditon;
+		return this;
+	}
 
 	/**
 	 * 読み取り専用フラグを取得します。
@@ -711,6 +757,9 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	 */
 	public String getMatchFieldId() {
 		String id = this.getId();
+		if (this.getQueryFieldId() != null) {
+			id = this.getQueryFieldId();
+		}
 		if (this.getMatchType() == MatchType.RANGE_FROM) {
 			id = id.replaceAll("From$", "");
 		} else if (this.getMatchType() == MatchType.RANGE_TO) {

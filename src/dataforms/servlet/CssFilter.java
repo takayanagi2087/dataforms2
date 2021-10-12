@@ -70,21 +70,29 @@ public class CssFilter extends DataFormsFilter implements Filter {
 	/**
 	 * 変数マップ。
 	 */
-	private static Map<String, String> varMap = null;
+	private static Map<String, Map<String, String>> varMap = new HashMap<String, Map<String, String>>();
+
+	private String getParentPath(final String path) {
+		int idx = path.lastIndexOf('/');
+		return path.substring(0, idx);
+	}
 
 	/**
 	 * css内の:rootのカスタムプロパティを取得します。
+	 * @param path CSSのファイル名。
 	 * @param css CSSの文字列。
 	 */
-	private void parseVar(final String css) {
-		logger.debug("parseVar");
-		if (CssFilter.varMap != null) {
+	private void parseVar(final String path, final String css) {
+		String key = this.getParentPath(path);
+		logger.debug("parseVar=" + path + "," + key);
+		if (CssFilter.varMap.get(key) != null) {
 			return;
 		}
 		Pattern p = Pattern.compile(":root[\\s\\S]\\{([\\s\\S]*?)\\}", Pattern.MULTILINE);
 		Matcher m = p.matcher(css);
 		if (m.find()) {
-			CssFilter.varMap = new HashMap<String, String>();
+			Map<String, String> varMap = new HashMap<String, String>();
+			CssFilter.varMap.put(key, varMap);
 			String g = m.group(1);
 			String[] lines = g.split("[\r\n]");
 			Pattern vp = Pattern.compile("(--.*):(.*);");
@@ -93,7 +101,7 @@ public class CssFilter extends DataFormsFilter implements Filter {
 				Matcher vm = vp.matcher(line);
 				if (vm.find()) {
 					logger.debug(() -> "var=" + vm.group(1) + "," + vm.group(2));
-					CssFilter.varMap.put(vm.group(1), this.replaceVar(vm.group(2)));
+					varMap.put(vm.group(1), this.replaceVar(path, vm.group(2)));
 				}
 			}
 		}
@@ -101,15 +109,18 @@ public class CssFilter extends DataFormsFilter implements Filter {
 
 	/**
 	 * 変数の置き換えを行います。
+	 * @param path CSSのファイル名。
 	 * @param css スタイルシートのテキスト。
 	 * @return 変数を置き換えたcss。
 	 */
-	private String replaceVar(final String css) {
-		if (CssFilter.varMap != null) {
+	private String replaceVar(final String path, final String css) {
+		String ppath = this.getParentPath(path);
+		Map<String, String> map = CssFilter.varMap.get(ppath);
+		if (map != null) {
 			String ret = css;
-			for (String key: CssFilter.varMap.keySet()) {
+			for (String key: map.keySet()) {
 				String p = "var\\s*\\(\\s*?" + key + "\\s*?\\)";
-				String v = CssFilter.varMap.get(key);
+				String v = map.get(key);
 				ret = ret.replaceAll(p, v);
 			}
 			return ret;
@@ -129,8 +140,8 @@ public class CssFilter extends DataFormsFilter implements Filter {
 				logger.debug(() -> "filename=" + fname);
 				String contents = this.readCss(sreq, fname);
 				if (contents != null) {
-					this.parseVar(contents);
-					contents = this.replaceVar(contents);
+					this.parseVar(fname, contents);
+					contents = this.replaceVar(fname, contents);
 					sresp.setContentType("text/css; charset=utf-8");
 					Long ts = DataFormsFilter.getWebResourceTimestampCache().get(fname);
 					sresp.setDateHeader("Last-Modified", ts);

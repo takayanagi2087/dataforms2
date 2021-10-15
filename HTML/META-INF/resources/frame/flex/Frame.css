@@ -52,6 +52,13 @@ h3 {
 	background-color: var(--header1-background-color);
 	vertical-align: middle;
 }
+/* システム名称フィールド */
+.headerDiv #systemName {
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+	height: 100%;
+}
 
 /* ページ名ブロック */
 .headerDiv .pageName {

@@ -25,7 +25,7 @@
 	<property name="source" value="11"/>
 	<property name="jar.name" value="dataforms2.jar"/>
 	<property name="jsdoc.command" value="${env.JSDOC_CMD}"/>
-	<property name="version.num" value="2.02"/>
+	<property name="version.num" value="2.10"/>
 	<property name="user" value="Masahiko Takayanagi"/>
 	<property name="javadoc.dir" value="./HTML/META-INF/resources/doc/javadoc"/>
 	<property name="jsdoc.dir" value="./HTML/META-INF/resources/doc/jsdoc"/>

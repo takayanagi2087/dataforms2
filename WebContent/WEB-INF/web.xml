@@ -3,7 +3,6 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
-	<display-name>dataforms2</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
@@ -206,9 +205,11 @@
 	<!-- フレームレイアウトのパスを指定します。 -->
 	<context-param>
 		<param-name>frame-path</param-name>
+		<!-- tableタグを使ったレイアウト(旧バージョンの互換性あるレイアウト) -->
 		<!--
 		<param-value>/frame/default</param-value>
 		 -->
+		<!-- display:flexを使用したレイアウト(今後はこちらの仕様を推奨します) -->
 		<param-value>/frame/flex</param-value>
 	</context-param>
 

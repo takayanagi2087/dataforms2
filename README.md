@@ -33,7 +33,7 @@ IE11はデフォルトでは動作しない設定になっていますが、
 * Tomcat9(Java11)にインポートしたプロジェクトを追加し、プロジェクトをビルドした後Tomcat9を起動。
 * ブラウザからアプリをアクセスし、開発者ユーザを登録。
 
-詳細は[ドキュメント](http://woontai.dip.jp/dfblank/dataforms/devtool/doc/page/DocFramePage.df)の「2.開発環境構築」を参照してください。
+詳細は[ドキュメント](http://www.takayanagi-syslab.net/dfblank/dataforms/devtool/doc/page/DocFramePage.df)の「2.開発環境構築」を参照してください。
 
 
 ## Requirement

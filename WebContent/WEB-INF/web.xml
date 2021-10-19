@@ -18,13 +18,13 @@
 	<!-- 開発ツールのjavaソース出力フォルダを指定します。 -->
 	<context-param>
 		<param-name>java-source-path</param-name>
-		<param-value>/eclipse/workspaceDataforms2/dataforms2/src</param-value>
+		<param-value>/eclipse/workspaceGithub/dataforms2/src</param-value>
 	</context-param>
 
 	<!-- 開発ツールのhtml,javascript等のWEBリソース出力フォルダを指定します。 -->
 	<context-param>
 		<param-name>web-source-path</param-name>
-		<param-value>/eclipse/workspaceDataforms2/dataforms2/WebContent</param-value>
+		<param-value>/eclipse/workspaceGithub/dataforms2/WebContent</param-value>
 	</context-param>
 
 	<!-- 開発ツールでデータをエクスポート/インポートする際に使用するパスを指定します。 -->

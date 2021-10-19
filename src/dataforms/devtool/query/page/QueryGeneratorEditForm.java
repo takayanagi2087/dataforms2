@@ -671,15 +671,20 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * 各JOINリストのインポート文を作成します。
 	 * @param queryPackageName テーブルのパッケージ名。
 	 * @param list JOINテーブルリスト。
+	 * @param tableSet テーブルセット。
 	 * @return インポート文。
 	 */
-	private String generateImportTableList(final String queryPackageName, final List<Map<String, Object>> list) {
+	private String generateImportTableList(final String queryPackageName, final List<Map<String, Object>> list, final Set<String> tableSet) {
 		StringBuilder sb = new StringBuilder();
 		for (Map<String, Object> m:list) {
 			String packageName = (String) m.get(ID_PACKAGE_NAME);
 			String tableClassName = (String) m.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
+			String fullClassName = packageName + "." + tableClassName;
 			if (!queryPackageName.equals(packageName)) {
-				sb.append("import " + packageName + "." + tableClassName + ";\n");
+				if (!tableSet.contains(fullClassName)) {
+					sb.append("import " + fullClassName + ";\n");
+					tableSet.add(fullClassName);
+				}
 			}
 		}
 		return sb.toString();
@@ -692,14 +697,17 @@ public class QueryGeneratorEditForm extends EditForm {
 	 */
 	@SuppressWarnings("unchecked")
 	private String generateImportTables(final Map<String, Object> data) {
+		Set<String> tableSet = new HashSet<String>();
 		StringBuilder sb = new StringBuilder();
 		String queryPackageName = (String) data.get(ID_PACKAGE_NAME);
 		String packageName = (String) data.get(ID_MAIN_TABLE_PACKAGE_NAME);
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
 		if (!queryPackageName.equals(packageName)) {
-			sb.append("import " + packageName + "." + mainTableClassName + ";\n");
+			String fullClassName = packageName + "." + mainTableClassName;
+			sb.append("import " + fullClassName + ";\n");
+			tableSet.add(fullClassName);
 		}
-		sb.append(this.generateImportTableList(queryPackageName, (List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST)));
+		sb.append(this.generateImportTableList(queryPackageName, (List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST), tableSet));
 		return sb.toString();
 	}
 

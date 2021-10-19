@@ -41,6 +41,8 @@ import dataforms.validator.DisplayedRequiredValidator;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
+// TODO:一覧用と編集用問合せを同じクラスを指定した場合のプロパティを共有しないようにする仕様を検討。
+
 /**
  * DAO生成編集フォームクラス。
  *

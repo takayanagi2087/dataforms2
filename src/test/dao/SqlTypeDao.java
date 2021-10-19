@@ -30,7 +30,7 @@ public class SqlTypeDao extends QuerySetDao {
 	public SqlTypeDao() {
 		this.setComment("SqlTypeテーブルアクセスクラス");
 		this.setListQuery(this.sqlTypeTable = new SqlTypeTable());
-		this.setSingleRecordQuery(this.sqlTypeTable = new SqlTypeTable());
+		this.setSingleRecordQuery(this.sqlTypeTable);
 
 	}
 

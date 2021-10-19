@@ -41,8 +41,6 @@ import dataforms.validator.DisplayedRequiredValidator;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
-// TODO:一覧用と編集用問合せを同じクラスを指定した場合のプロパティを共有しないようにする仕様を検討。
-
 /**
  * DAO生成編集フォームクラス。
  *
@@ -588,6 +586,8 @@ public class DaoGeneratorEditForm extends EditForm {
 	private String singleRecordEditForm(final Map<String, Object> data, final ImportUtil implist, String javasrc) throws Exception {
 		String p = (String) data.get(ID_PACKAGE_NAME);
 		{
+			String listQueryPackage = (String) data.get(ID_LIST_QUERY_PACKAGE_NAME);
+			String listQueryClass = (String) data.get(ID_LIST_QUERY_CLASS_NAME);
 			String queryPackage = (String) data.get(ID_EDIT_FORM_QUERY_PACKAGE_NAME);
 			String queryClass = (String) data.get(ID_EDIT_FORM_QUERY_CLASS_NAME);
 			if (!StringUtil.isBlank(queryClass)) {
@@ -595,7 +595,11 @@ public class DaoGeneratorEditForm extends EditForm {
 					if (!p.equals(queryPackage)) {
 						implist.add(queryPackage + "." + queryClass);
 					}
-					javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");
+					if (listQueryPackage.equals(queryPackage) && queryClass.equals(listQueryClass)) {
+						javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass));
+					} else {
+						javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");
+					}
 				} else {
 					implist.add(Query.class.getName());
 					javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");

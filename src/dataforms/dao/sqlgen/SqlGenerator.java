@@ -20,6 +20,7 @@ import dataforms.dao.ForeignKey;
 import dataforms.dao.Index;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.JoinConditionInterface;
+import dataforms.dao.JoinConditionInterface1;
 import dataforms.dao.Query;
 import dataforms.dao.Query.JoinInfo;
 import dataforms.dao.QueryPager;
@@ -67,6 +68,7 @@ import dataforms.util.StringUtil;
  * </pre>
  *
  */
+@SuppressWarnings("deprecation")
 public abstract class SqlGenerator implements JDBCConnectableObject {
     /**
      * Logger。
@@ -918,11 +920,16 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @return 結合条件。
 	 */
 	private String getJoinCondition(final Table table, final JoinInfo joinInfo) {
-		JoinConditionInterface jci = joinInfo.getJoinCondition();
-		if (jci != null) {
-			return jci.getJoinCondition(table, joinInfo.getJoinTable());
+		JoinConditionInterface1 jci1 = joinInfo.getJoinCondition1();
+		if (jci1 != null) {
+			return jci1.getJoinCondition(joinInfo.getJoinTable());
 		} else {
-			return table.getJoinCondition(joinInfo.getJoinTable(), joinInfo.getJoinTable().getAlias());
+			JoinConditionInterface jci = joinInfo.getJoinCondition();
+			if (jci != null) {
+				return jci.getJoinCondition(table, joinInfo.getJoinTable());
+			} else {
+				return table.getJoinCondition(joinInfo.getJoinTable(), joinInfo.getJoinTable().getAlias());
+			}
 		}
 	}
 
@@ -959,7 +966,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 				logger.debug("getJoinConditionOtherThamMainTable");
 //				TableList tlist = new TableList();
 				List<JoinInfo> tlist = new ArrayList<JoinInfo>();
-				tlist.add(new JoinInfo(null, query.getMainTable(), null));
+				tlist.add(new JoinInfo(null, query.getMainTable(), (JoinConditionInterface1) null));
 				if (list != null) {
 					for (JoinInfo ji: list) {
 						tlist.add(ji);

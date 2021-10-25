@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import dataforms.annotation.WebMethod;
 import dataforms.controller.EditForm;
 import dataforms.dao.Dao;
+import dataforms.dao.JoinConditionInterface1;
 import dataforms.dao.Query;
 import dataforms.dao.Query.JoinInfo;
 import dataforms.dao.Table;
@@ -546,7 +547,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			if (StringUtil.isBlank(joinCondition)) {
 				Dao dao = new Dao(this);
 				SqlGenerator gen = dao.getSqlGenerator();
-				joinCondition = gen.getJoinConditionOtherThamMainTable(tlist, new Query.JoinInfo(Query.JoinInfo.INNER_JOIN, t, null));
+				joinCondition = gen.getJoinConditionOtherThamMainTable(tlist, new Query.JoinInfo(Query.JoinInfo.INNER_JOIN, t, (JoinConditionInterface1) null));
 				if (StringUtil.isBlank(joinCondition)) {
 					joinCondition = this.getJoinCondition(query, t);
 					if (joinCondition == null) {
@@ -614,7 +615,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		list.addAll(this.getJoinTableList(join, "j"));
 		List<Query.JoinInfo> ret = new ArrayList<Query.JoinInfo>();
 		for (Table t: list) {
-			ret.add(new Query.JoinInfo(Query.JoinInfo.INNER_JOIN, t, null));
+			ret.add(new Query.JoinInfo(Query.JoinInfo.INNER_JOIN, t, (JoinConditionInterface1) null));
 		}
 		return ret;
 	}

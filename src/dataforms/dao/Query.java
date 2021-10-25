@@ -291,7 +291,13 @@ public class Query {
 		/**
 		 * 結合条件関数インターフェース。
 		 */
+		@Deprecated
 		private JoinConditionInterface joinCondition = null;
+
+		/**
+		 * 結合条件関数インターフェース。
+		 */
+		private JoinConditionInterface1 joinCondition1 = null;
 
 		/**
 		 * 生成された結合条件式。
@@ -305,11 +311,25 @@ public class Query {
 		 * @param joinTable 結合するテーブル。
 		 * @param joinCondition 結合条件関数インターフェース。
 		 */
+		@Deprecated
 		public JoinInfo(final String joinType, final Table joinTable, final JoinConditionInterface joinCondition) {
 			this.joinType = joinType;
 			this.joinTable = joinTable;
 			this.joinCondition = joinCondition;
 		}
+
+		/**
+		 * コンストラクタ。
+		 * @param joinType 結合タイプ。
+		 * @param joinTable 結合するテーブル。
+		 * @param joinCondition 結合条件関数インターフェース。
+		 */
+		public JoinInfo(final String joinType, final Table joinTable, final JoinConditionInterface1 joinCondition) {
+			this.joinType = joinType;
+			this.joinTable = joinTable;
+			this.joinCondition1 = joinCondition;
+		}
+
 		/**
 		 * 結合タイプを取得します。
 		 * @return 結合タイプ。
@@ -330,8 +350,18 @@ public class Query {
 		 * 結合条件関数インターフェースを取得します。
 		 * @return 結合条件関数インターフェース。
 		 */
+		@Deprecated
 		public JoinConditionInterface getJoinCondition() {
 			return joinCondition;
+		}
+
+
+		/**
+		 * 結合条件関数インターフェースを取得します。
+		 * @return 結合条件関数インターフェース。
+		 */
+		public JoinConditionInterface1 getJoinCondition1() {
+			return joinCondition1;
 		}
 
 
@@ -371,7 +401,22 @@ public class Query {
 	 * @param alias 別名。
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
+	@Deprecated
 	public void addInnerJoin(final Table table, final String alias, final JoinConditionInterface joinCondition) {
+		if (alias != null) {
+			table.setAlias(alias);
+		}
+		this.addJoinInfo(new JoinInfo(JoinInfo.INNER_JOIN, table, joinCondition));
+	}
+
+
+	/**
+	 * 内部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param alias 別名。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addInnerJoin(final Table table, final String alias, final JoinConditionInterface1 joinCondition) {
 		if (alias != null) {
 			table.setAlias(alias);
 		}
@@ -383,7 +428,17 @@ public class Query {
 	 * @param table 結合するテーブル。
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
+	@Deprecated
 	public void addInnerJoin(final Table table, final JoinConditionInterface joinCondition) {
+		this.addInnerJoin(table, null, joinCondition);
+	}
+
+	/**
+	 * 内部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addInnerJoin(final Table table, final JoinConditionInterface1 joinCondition) {
 		this.addInnerJoin(table, null, joinCondition);
 	}
 
@@ -393,7 +448,7 @@ public class Query {
 	 * @param alias 別名。
 	 */
 	public void addInnerJoin(final Table table, final String alias) {
-		this.addInnerJoin(table, alias, null);
+		this.addInnerJoin(table, alias, (JoinConditionInterface1) null);
 	}
 
 	/**
@@ -401,7 +456,7 @@ public class Query {
 	 * @param table 結合するテーブル。
 	 */
 	public void addInnerJoin(final Table table) {
-		this.addInnerJoin(table, null, null);
+		this.addInnerJoin(table, null, (JoinConditionInterface1) null);
 	}
 
 	/**
@@ -410,7 +465,21 @@ public class Query {
 	 * @param alias 別名。
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
+	@Deprecated
 	public void addLeftJoin(final Table table, final String alias, final JoinConditionInterface joinCondition) {
+		if (alias != null) {
+			table.setAlias(alias);
+		}
+		this.addJoinInfo(new JoinInfo(JoinInfo.LEFT_JOIN, table, joinCondition));
+	}
+
+	/**
+	 * 左外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param alias 別名。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addLeftJoin(final Table table, final String alias, final JoinConditionInterface1 joinCondition) {
 		if (alias != null) {
 			table.setAlias(alias);
 		}
@@ -422,7 +491,17 @@ public class Query {
 	 * @param table 結合するテーブル。
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
+	@Deprecated
 	public void addLeftJoin(final Table table, final JoinConditionInterface joinCondition) {
+		this.addLeftJoin(table, null, joinCondition);
+	}
+
+	/**
+	 * 左外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addLeftJoin(final Table table, final JoinConditionInterface1 joinCondition) {
 		this.addLeftJoin(table, null, joinCondition);
 	}
 
@@ -432,7 +511,7 @@ public class Query {
 	 * @param alias 別名。
 	 */
 	public void addLeftJoin(final Table table, final String alias) {
-		this.addLeftJoin(table, alias, null);
+		this.addLeftJoin(table, alias, (JoinConditionInterface1) null);
 	}
 
 	/**
@@ -440,7 +519,7 @@ public class Query {
 	 * @param table 結合するテーブル。
 	 */
 	public void addLeftJoin(final Table table) {
-		this.addLeftJoin(table, null, null);
+		this.addLeftJoin(table, null, (JoinConditionInterface1) null);
 	}
 
 
@@ -450,6 +529,7 @@ public class Query {
 	 * @param alias 別名。
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
+	@Deprecated
 	public void addRightJoin(final Table table, final String alias, final JoinConditionInterface joinCondition) {
 		if (alias != null) {
 			table.setAlias(alias);
@@ -457,13 +537,35 @@ public class Query {
 		this.addJoinInfo(new JoinInfo(JoinInfo.RIGHT_JOIN, table, joinCondition));
 	}
 
+	/**
+	 * 右外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param alias 別名。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addRightJoin(final Table table, final String alias, final JoinConditionInterface1 joinCondition) {
+		if (alias != null) {
+			table.setAlias(alias);
+		}
+		this.addJoinInfo(new JoinInfo(JoinInfo.RIGHT_JOIN, table, joinCondition));
+	}
 
 	/**
 	 * 右外部結合を追加します。
 	 * @param table 結合するテーブル。
 	 * @param joinCondition 結合条件関数インターフェース。
 	 */
+	@Deprecated
 	public void addRightJoin(final Table table, final JoinConditionInterface joinCondition) {
+		this.addRightJoin(table, null, joinCondition);
+	}
+
+	/**
+	 * 右外部結合を追加します。
+	 * @param table 結合するテーブル。
+	 * @param joinCondition 結合条件関数インターフェース。
+	 */
+	public void addRightJoin(final Table table, final JoinConditionInterface1 joinCondition) {
 		this.addRightJoin(table, null, joinCondition);
 	}
 
@@ -473,7 +575,7 @@ public class Query {
 	 * @param alias 別名。
 	 */
 	public void addRightJoin(final Table table, final String alias) {
-		this.addRightJoin(table, alias, null);
+		this.addRightJoin(table, alias, (JoinConditionInterface1) null);
 	}
 
 
@@ -482,7 +584,7 @@ public class Query {
 	 * @param table 結合するテーブル。
 	 */
 	public void addRightJoin(final Table table) {
-		this.addRightJoin(table, null, null);
+		this.addRightJoin(table, null, (JoinConditionInterface1) null);
 	}
 
 	/**
@@ -493,7 +595,7 @@ public class Query {
 	private void addJoinTableList(final String type, final TableList tlist) {
 		if (tlist != null) {
 			for (Table t: tlist) {
-				this.addJoinInfo(new JoinInfo(type, t, null));
+				this.addJoinInfo(new JoinInfo(type, t, (JoinConditionInterface1) null));
 			}
 		}
 	}

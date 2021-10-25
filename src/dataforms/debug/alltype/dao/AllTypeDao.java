@@ -32,6 +32,7 @@ import net.arnx.jsonic.JSON;
  * 全データタイプデータアクセスオブジェクトクラス。
  *
  */
+@SuppressWarnings("deprecation")
 public class AllTypeDao extends Dao {
 
     /**
@@ -398,6 +399,7 @@ public class AllTypeDao extends Dao {
 	 * テスト問い合わせ。
 	 *
 	 */
+
 	private static class TestQuery extends Query {
 		/**
 		 * コンストラクタ。

@@ -1,22 +1,26 @@
 package test.dao;
 
-import dataforms.field.base.FieldList;
-import dataforms.dao.Query;
-import dataforms.app.enumtype.field.EnumIdField;
-import dataforms.field.common.CreateTimestampField;
-import dataforms.app.enumtype.field.ParentIdField;
-import dataforms.field.common.UpdateUserIdField;
-import dataforms.field.common.CreateUserIdField;
-import dataforms.app.enumtype.field.EnumGroupCodeField;
-import dataforms.util.NumberUtil;
 import java.util.Map;
-import dataforms.field.common.SortOrderField;
-import dataforms.app.enumtype.field.EnumCodeField;
-import dataforms.app.enumtype.field.MemoField;
-import dataforms.field.sqlfunc.AliasField;
-import dataforms.field.common.UpdateTimestampField;
 
+import dataforms.app.enumtype.dao.EnumNameTable;
 import dataforms.app.enumtype.dao.EnumTable;
+import dataforms.app.enumtype.field.EnumCodeField;
+import dataforms.app.enumtype.field.EnumGroupCodeField;
+import dataforms.app.enumtype.field.EnumIdField;
+import dataforms.app.enumtype.field.EnumNameField;
+import dataforms.app.enumtype.field.MemoField;
+import dataforms.app.enumtype.field.ParentIdField;
+import dataforms.dao.Query;
+import dataforms.dao.Table;
+import dataforms.field.base.FieldList;
+import dataforms.field.common.CreateTimestampField;
+import dataforms.field.common.CreateUserIdField;
+import dataforms.field.common.LangCodeField;
+import dataforms.field.common.SortOrderField;
+import dataforms.field.common.UpdateTimestampField;
+import dataforms.field.common.UpdateUserIdField;
+import dataforms.field.sqlfunc.AliasField;
+import dataforms.util.NumberUtil;
 
 
 
@@ -25,6 +29,12 @@ import dataforms.app.enumtype.dao.EnumTable;
  *
  */
 public class EnumQuery extends Query {
+
+	/**
+	 * Logger.
+	 */
+//	private Logger logger = LogManager.getLogger(EnumQuery.class);
+
 	/**
 	 * 列挙型テーブル。
 	 */
@@ -41,14 +51,40 @@ public class EnumQuery extends Query {
 	/**
 	 * 列挙型テーブル。
 	 */
-	private EnumTable enumTableJ0 = null;
+	private EnumTable enumTablePe = null;
 
 	/**
 	 * 列挙型テーブルを取得します。
 	 * @return 列挙型テーブル。
 	 */
-	public EnumTable getEnumTableJ0() {
-		return this.enumTableJ0;
+	public EnumTable getEnumTablePe() {
+		return this.enumTablePe;
+	}
+
+	/**
+	 * 列挙型名称テーブル。
+	 */
+	private EnumNameTable enumNameTableNm = null;
+
+	/**
+	 * 列挙型名称テーブルを取得します。
+	 * @return 列挙型名称テーブル。
+	 */
+	public EnumNameTable getEnumNameTableNm() {
+		return this.enumNameTableNm;
+	}
+
+	/**
+	 * 列挙型名称テーブル。
+	 */
+	private EnumNameTable enumNameTablePnm = null;
+
+	/**
+	 * 列挙型名称テーブルを取得します。
+	 * @return 列挙型名称テーブル。
+	 */
+	public EnumNameTable getEnumNameTablePnm() {
+		return this.enumNameTablePnm;
 	}
 
 
@@ -60,8 +96,12 @@ public class EnumQuery extends Query {
 		this.setDistinct(false);
 		this.enumTable = new EnumTable();
 		this.enumTable.setAlias("m");
-		this.enumTableJ0 = new EnumTable();
-		this.enumTableJ0.setAlias("j0");
+		this.enumTablePe = new EnumTable();
+		this.enumTablePe.setAlias("pe");
+		this.enumNameTableNm = new EnumNameTable();
+		this.enumNameTableNm.setAlias("nm");
+		this.enumNameTablePnm = new EnumNameTable();
+		this.enumNameTablePnm.setAlias("pnm");
 
 		this.setFieldList(new FieldList(
 			this.enumTable.getEnumIdField()
@@ -74,10 +114,19 @@ public class EnumQuery extends Query {
 			, this.enumTable.getCreateTimestampField()
 			, this.enumTable.getUpdateUserIdField()
 			, this.enumTable.getUpdateTimestampField()
-			, new AliasField("parentCode", this.enumTableJ0.getEnumCodeField())
+			, this.enumNameTableNm.getLangCodeField()
+			, this.enumNameTableNm.getEnumNameField()
+			, new AliasField("parentLangCode", this.enumNameTablePnm.getLangCodeField().setComment(""))
+			, new AliasField("parentName", this.enumNameTablePnm.getEnumNameField().setComment(""))
+			, new AliasField("pid", this.enumTablePe.getParentIdField())
+			, new AliasField("parentCode", this.enumTablePe.getEnumCodeField())
 		));
 		this.setMainTable(enumTable);
-		this.addInnerJoin(enumTableJ0);
+		this.addInnerJoin(enumTablePe);
+		this.addInnerJoin(enumNameTableNm);
+		this.addInnerJoin(enumNameTablePnm, (final Table joinTable) -> {
+			return this.enumTablePe.getLinkFieldCondition(EnumTable.Entity.ID_ENUM_ID, joinTable);
+		});
 
 	}
 
@@ -105,6 +154,16 @@ public class EnumQuery extends Query {
 		public static final String ID_UPDATE_USER_ID = "updateUserId";
 		/** 更新日時のフィールドID。 */
 		public static final String ID_UPDATE_TIMESTAMP = "updateTimestamp";
+		/** 言語コードのフィールドID。 */
+		public static final String ID_LANG_CODE = "langCode";
+		/** 列挙型名称のフィールドID。 */
+		public static final String ID_ENUM_NAME = "enumName";
+		/** のフィールドID。 */
+		public static final String ID_PARENT_LANG_CODE = "parentLangCode";
+		/** のフィールドID。 */
+		public static final String ID_PARENT_NAME = "parentName";
+		/** 親IDフィールドのフィールドID。 */
+		public static final String ID_PID = "pid";
 		/** 列挙型コードのフィールドID。 */
 		public static final String ID_PARENT_CODE = "parentCode";
 
@@ -282,6 +341,86 @@ public class EnumQuery extends Query {
 		}
 
 		/**
+		 * 言語コードを取得します。
+		 * @return 言語コード。
+		 */
+		public java.lang.String getLangCode() {
+			return (java.lang.String) this.getMap().get(Entity.ID_LANG_CODE);
+		}
+
+		/**
+		 * 言語コードを設定します。
+		 * @param langCode 言語コード。
+		 */
+		public void setLangCode(final java.lang.String langCode) {
+			this.getMap().put(Entity.ID_LANG_CODE, langCode);
+		}
+
+		/**
+		 * 列挙型名称を取得します。
+		 * @return 列挙型名称。
+		 */
+		public java.lang.String getEnumName() {
+			return (java.lang.String) this.getMap().get(Entity.ID_ENUM_NAME);
+		}
+
+		/**
+		 * 列挙型名称を設定します。
+		 * @param enumName 列挙型名称。
+		 */
+		public void setEnumName(final java.lang.String enumName) {
+			this.getMap().put(Entity.ID_ENUM_NAME, enumName);
+		}
+
+		/**
+		 * 言語コードを取得します。
+		 * @return 言語コード。
+		 */
+		public java.lang.String getParentLangCode() {
+			return (java.lang.String) this.getMap().get(Entity.ID_PARENT_LANG_CODE);
+		}
+
+		/**
+		 * 言語コードを設定します。
+		 * @param parentLangCode 言語コード。
+		 */
+		public void setParentLangCode(final java.lang.String parentLangCode) {
+			this.getMap().put(Entity.ID_PARENT_LANG_CODE, parentLangCode);
+		}
+
+		/**
+		 * 列挙型名称を取得します。
+		 * @return 列挙型名称。
+		 */
+		public java.lang.String getParentName() {
+			return (java.lang.String) this.getMap().get(Entity.ID_PARENT_NAME);
+		}
+
+		/**
+		 * 列挙型名称を設定します。
+		 * @param parentName 列挙型名称。
+		 */
+		public void setParentName(final java.lang.String parentName) {
+			this.getMap().put(Entity.ID_PARENT_NAME, parentName);
+		}
+
+		/**
+		 * 親IDフィールドを取得します。
+		 * @return 親IDフィールド。
+		 */
+		public java.lang.Long getPid() {
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_PID));
+		}
+
+		/**
+		 * 親IDフィールドを設定します。
+		 * @param pid 親IDフィールド。
+		 */
+		public void setPid(final java.lang.Long pid) {
+			this.getMap().put(Entity.ID_PID, pid);
+		}
+
+		/**
 		 * 列挙型コードを取得します。
 		 * @return 列挙型コード。
 		 */
@@ -378,6 +517,46 @@ public class EnumQuery extends Query {
 	 */
 	public UpdateTimestampField getUpdateTimestampField() {
 		return (UpdateTimestampField) this.getField(Entity.ID_UPDATE_TIMESTAMP);
+	}
+
+	/**
+	 * 言語コードフィールドを取得します。
+	 * @return 言語コードフィールド。
+	 */
+	public LangCodeField getLangCodeField() {
+		return (LangCodeField) this.getField(Entity.ID_LANG_CODE);
+	}
+
+	/**
+	 * 列挙型名称フィールドを取得します。
+	 * @return 列挙型名称フィールド。
+	 */
+	public EnumNameField getEnumNameField() {
+		return (EnumNameField) this.getField(Entity.ID_ENUM_NAME);
+	}
+
+	/**
+	 * フィールドを取得します。
+	 * @return フィールド。
+	 */
+	public LangCodeField getParentLangCodeField() {
+		return (LangCodeField) this.getField(Entity.ID_PARENT_LANG_CODE);
+	}
+
+	/**
+	 * フィールドを取得します。
+	 * @return フィールド。
+	 */
+	public EnumNameField getParentNameField() {
+		return (EnumNameField) this.getField(Entity.ID_PARENT_NAME);
+	}
+
+	/**
+	 * 親IDフィールドフィールドを取得します。
+	 * @return 親IDフィールドフィールド。
+	 */
+	public ParentIdField getPidField() {
+		return (ParentIdField) this.getField(Entity.ID_PID);
 	}
 
 	/**

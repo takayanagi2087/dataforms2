@@ -13,4 +13,10 @@ public class DocFramePage extends BasePage {
 	public DocFramePage() {
 
 	}
+
+	@Override
+	protected void buildCssList() {
+		super.buildCssList();
+		this.addPreloadCss("/doc/css/docFrame.cssx");
+	}
 }

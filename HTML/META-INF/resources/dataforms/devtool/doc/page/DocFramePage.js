@@ -41,6 +41,13 @@ class DocFramePage extends BasePage {
 			thisPage.onResize();
 		});
 		thisPage.onResize();
+
+
+		$('.dropdwn li').hover(function(){
+			$("ul:not(:animated)", this).slideDown();
+		}, function(){
+			$("ul.dropdwn_menu",this).slideUp();
+		});
 	}
 	/**
 	 * Windowサイズ変更の際のiframeのサイズを調整します。

@@ -74,6 +74,7 @@ class QueryGeneratorEditForm extends EditForm {
 		this.submit("getFieldList", function(r) {
 			currentPage.resetErrorStatus();
 			if (r.status == ServerMethod.SUCCESS) {
+				thisForm.get("selectAll").prop("checked", false);
 				logger.log("field list=" + JSON.stringify(r.result));
 				var ftbl = thisForm.getComponent("selectFieldList");
 				ftbl.setTableData(r.result);
@@ -95,6 +96,10 @@ class QueryGeneratorEditForm extends EditForm {
 	 */
 	onCalc(f) {
 		super.onCalc(f);
+		if (f != null) {
+			logger.log("onCalc=" + f.attr("id"));
+			this.getFieldList();
+		}
 	}
 
 	/**

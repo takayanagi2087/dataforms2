@@ -38,7 +38,7 @@ table caption {
 }
 
 tr {height: 20px; border : 0px;}
-th {background-color: #E0E0FF; text-align:center; font-weight:normal; border : 0px;}
+th {background-color: hsl(207,51%,75.0%); text-align:center; font-weight:normal; border : 0px;}
 td {border:0px;}
 
 /* 番号付きリストのタイトルに使用 */

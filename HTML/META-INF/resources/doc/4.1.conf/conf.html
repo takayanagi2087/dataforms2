@@ -19,7 +19,7 @@
 	</head>
 	<body>
 		<h1><span>4.1.</span>設定</h1>
-		<h2>WEB-INF/web.xml</h2>
+		<h2>web.xmlの主な設定項目</h2>
 		<p>
 			dataforms2.jarの各種設定はWEB-INF/web.xmlにまとまっています。
 			各種設定項目のコメントを参照し、適切に設定してください。
@@ -29,20 +29,20 @@
 		</p>
 		<h3>開発ツール関係</h3>
 		<p>
-			java-source-path,web-source-pathパラメータは開発ツールのJavaソースとHTMLやJavascriptソースを出力するパスを指定します。
+			<a href="#java-source-path">java-source-path</a>,<a href="#web-source-path">web-source-path</a>パラメータは開発ツールのJavaソースとHTMLやJavascriptソースを出力するパスを指定します。
 			Eclipseのプロジェクトを作成したタイミングで、適切に設定してください。
 		</p>
 		<p>
 			開発が完了したら開発ツールは不要になります。
-			disable-developer-toolsをtrueに設定すれば、開発ツールを無効にすることができます。
+			<a href="#disable-developer-tools">disable-developer-tools</a>をtrueに設定すれば、開発ツールを無効にすることができます。
 			開発が完了しインターネットにシステムを公開する場合、開発ツールを無効にしておくことをお勧めします。
 		</p>
 		<h3>ブラウザのコンソールログ出力レベル</h3>
 		<p>
 			Javascriptのデバッグ時にconsole.log等を使用しデバック情報をブラウザのコンソールに出力するケースがあります。
 			dataforms2.jarではこのconsoleの代わりにloggerを使用します。
-			loggerの使い方はconsoleと同じですが、client-log-levelパラメータでログレベルを指定することができます。
-			logger.logを大量に記述したコードでも、client-log-levelをinfo以上にすることによって、
+			loggerの使い方はconsoleと同じですが、<a href="#client-log-level">client-log-level</a>パラメータでログレベルを指定することができます。
+			logger.logを大量に記述したコードでも、<a href="#client-log-level">client-log-level</a>をinfo以上にすることによって、
 			ログの出力を抑制することができます。
 		</p>
 		<p>
@@ -61,7 +61,7 @@
 		<p>
 			Tomcat等のWebアプリケーションサーバではテスト用のhttpサービスが公開されています。
 			Webリソースファイルの取得でこのhttpサービスを使用すれば効率化が図れます。
-			Tomcatの場合web-resource-urlの設定を有効にします。
+			Tomcatの場合<a href="#web-resource-url">web-resource-url</a>の設定を有効にします。
 			この設定で、サーバーサイドの処理ではhttp://localhost:8080/hoge/XXXPage.htmlをアクセスするようになります。
 		</p>
 		<h3>データベース初期化時のユーザレベル</h3>
@@ -71,7 +71,7 @@
 			開発が終了したWebアプリケーションを公開する場合、最初に登録するユーザは管理者レベルでよくなります。
 		</p>
 		<p>
-			initialize-user-levelにadminを指定すると、初期化時に管理者レベルのユーザが登録されるようになります。
+			<a href="#initialize-user-level">initialize-user-level</a>にadminを指定すると、初期化時に管理者レベルのユーザが登録されるようになります。
 		</p>
 		<h3>データベース初期化を行うパッケージリスト</h3>
 		<p>
@@ -82,7 +82,7 @@
 			その初期化処理で新たに追加されたテーブルを初期化するようにする必要があります。
 		</p>
 		<p>
-			initialize-package-listパラメータにはTableクラスを含むパッケージのリストを","区切りで指定します。
+			<a href="#initialize-package-list">initialize-package-list</a>パラメータにはTableクラスを含むパッケージのリストを","区切りで指定します。
 			データベースの初期化処理は、このリストに指定されたパッケージ中のテーブルクラスに対応したテーブルを作成します。
 		</p>
 		<p>
@@ -106,17 +106,17 @@
 			この機能で選択肢も英語と日本語の登録が可能になっています。
 		</p>
 		<p>
-			英語と日本語以外の言語に対応する場合、support-languageパラメータに言語コードを","区切りて追加します。
+			英語と日本語以外の言語に対応する場合、<a href="#support-language">support-language</a>パラメータに言語コードを","区切りて追加します。
 			この設定を行うと列挙型管理に追加された言語の設定欄が表示されます。
 		</p>
 		<p>
 			全て英語のシステムを作成しても、日本語設定のブラウザでアクセスするとdataforms2.jar内のページは日本語で表示されてしまいます。
-			このようなページも英語表示させたい場合は、fixed-languageパラメータにenを設定します。
+			このようなページも英語表示させたい場合は、<a href="#fixed-language">fixed-language</a>パラメータにenを設定します。
 			この設定を行うと、すべて英語ページが表示されます。
 		</p>
 		<h3>自動ログイン機能</h3>
 		<p>
-			auto-loginにenableを設定するとログイン画面に「ログインしたままにする。」というチェックボックスが表示されます。
+			<a href="#auto-login">auto-login</a>にenableを設定するとログイン画面に「ログインしたままにする。」というチェックボックスが表示されます。
 			これをチェックした状態でログインすると、ログイン状態が維持されます。
 		</p>
 		<h3>IE11対応</h3>
@@ -126,7 +126,7 @@
 		</p>
 		<p>
 			どうしてもIE11で動作させたい場合は、Balelを使用して自動的にES6のスクリプトをES5に変換して実行させます。
-			TomcatをインストールしたサーバにBabelをインストールし、ie-supportパラメータを適切に設定してください。
+			TomcatをインストールしたサーバにBabelをインストールし、<a href="#ie-support">ie-support</a>パラメータを適切に設定してください。
 		</p>
 		<p>
 			この設定でIEの初回アクセスで、ES6のスクリプトをES5に変換します。
@@ -137,21 +137,21 @@
 			context.xmlに設定されたデータソースの名前は"jdbc/dfdb"になっています。
 			この名前が競合する環境では、この名前を変更する必要ができます。
 			data-sourceパラメータを修正してください。
-			jndi-prefixとdata-sourceパラメータの値を結合した文字列でJNDIデータソースを検索します。
+			<a href="#jndi-prefix">jndi-prefix</a>と<a href="#data-source">data-source</a>パラメータの値を結合した文字列でJNDIデータソースを検索します。
 		</p>
 		<h3>メール送信設定</h3>
 		<p>
 			メールセッションの名称は"mail/Session"となっています。
-			この名前が競合する場合mail-sessionパラメータで変更することができます。
+			この名前が競合する場合<a href="#mail-session">mail-session</a>パラメータで変更することができます。
 		</p>
 		<p>
 			外部ユーザ登録等でメールを送信する場合があります。
-			そのメールのfromはmail-fromパラメータで指定することができます。
+			そのメールのfromは<a href="#mail-from">mail-from</a>パラメータで指定することができます。
 		</p>
 		<h3>デザイン切替</h3>
 		<p>
-			ページのフレームデザインは"/frame/default"中の*.htmlと*.cssで指定しています。
-			このパスはframe-pathパラメータに設定されています。
+			ページのフレームデザインは"/frame/flex"中の*.htmlと*.cssで指定しています。
+			このパスは<a href="#frame-path">frame-path</a>パラメータに設定されています。
 			フレームのデザインを複数用意すると、サーバによってシステムのデザインを切り替えることができます。
 		</p>
 		<h3>既存ページの置き換え</h3>
@@ -161,7 +161,7 @@
 			この場合、既存の機能と新たに作ったページを置き換える必要が出てきます。
 		</p>
 		<p>
-			page-overrideパラメータにページクラスの置き換えルールをJSON形式で指定することができます。
+			<a href="#page-override">page-override</a>パラメータにページクラスの置き換えルールをJSON形式で指定することができます。
 			この機能を使用して既存のページをdataforms.app.base.page.HiddenPageに置き換えると、
 			対象のページを隠すことができます。
 		</p>
@@ -173,36 +173,28 @@
 			<table class="webxmlTable">
 				<thead>
 					<tr>
-						<th style="width: 80px;">コメント<br/>アウト</th>
-						<th style="width: 144px;">項目名</th>
-						<th style="width: 400px;">デフォルト値</th>
-						<th style="width: 400px;">内容</th>
+						<th style="width: 70px;">コメント<br/>アウト</th>
+						<th style="width: 120px;">項目名</th>
+						<th style="width: 250px;">デフォルト値</th>
+						<th style="width: 560px;">内容</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td class="commentOut">*</td>
-						<td>java-source-path</td>
+						<td><a id="java-source-path">java-source-path</a></td>
 						<td>/eclipse/workspace/project/src</td>
 						<td>開発ツールのjavaソース出力フォルダを指定します。</td>
 					</tr>
 					<tr>
 						<td class="commentOut">*</td>
-						<td>web-source-path</td>
+						<td><a id="web-source-path">web-source-path</a></td>
 						<td>/eclipse/workspace/project/WebContent</td>
 						<td>開発ツールのhtml,javascript等のWEBリソース出力フォルダを指定します。</td>
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>export-import-dir</td>
-						<td>/tmp/data</td>
-						<td>
-							開発ツールのテーブル管理ページでデータをエクスポート/インポートする際に使用するフォルダを指定します。
-						</td>
-					</tr>
-					<tr>
-						<td class="commentOut"></td>
-						<td>disable-developer-tools</td>
+						<td><a id="disable-developer-tools">disable-developer-tools</a></td>
 						<td>false</td>
 						<td>
 							開発ツールの無効フラグを設定します。
@@ -212,7 +204,7 @@
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>client-log-level</td>
+						<td><a id="client-log-level">client-log-level</a></td>
 						<td>debug</td>
 						<td>
 							 クライアントログレベルを指定します。
@@ -247,7 +239,7 @@
 					</tr>
 					<tr>
 						<td class="commentOut">*</td>
-						<td>web-resource-url</td>
+						<td><a id="web-resource-url">web-resource-url</a></td>
 						<td>http://localhost:8080</td>
 						<td>
 							このライブラリはサーバ側の処理でdataforms2.jar中のWEBリソース(html,css,jsファイル)をアクセスしています。
@@ -259,7 +251,7 @@
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>initialize-user-level</td>
+						<td><a id="initialize-user-level">initialize-user-level</a></td>
 						<td>developer</td>
 						<td>
 							データベース初期化時に作成するユーザのレベル(developerまたはadmin)を指定します。
@@ -269,7 +261,7 @@
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>initialize-package-list</td>
+						<td><a id="initialize-package-list">initialize-package-list</a></td>
 						<td>dataforms.app</td>
 						<td>
 							データベースの作成時に、初期化するパッケージリストを指定します。
@@ -281,7 +273,7 @@
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>support-language</td>
+						<td><a id="support-language">support-language</a></td>
 						<td>ja</td>
 						<td>
 							サポートする言語コードを指定します。
@@ -291,7 +283,7 @@
 					</tr>
 					<tr>
 						<td class="commentOut">*</td>
-						<td>fixed-language</td>
+						<td><a id="fixed-language">fixed-language</a></td>
 						<td>en</td>
 						<td>
 							ブラウザの言語設定を無視し、言語を固定する場合はこの設定を有効にします。
@@ -302,7 +294,7 @@
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>auto-login</td>
+						<td><a id="auto-login">auto-login</a></td>
 						<td>enabled</td>
 						<td>
 							自動ログインの有効/無効を設定します。
@@ -321,7 +313,7 @@
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>ie-support</td>
+						<td><a id="ie-support">ie-support</a></td>
 						<td style="width: 200px;">
 							<div style="width:100%;">
 								<code>
@@ -351,7 +343,7 @@
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>jndi-prefix</td>
+						<td><a id="jndi-prefix">jndi-prefix</a></td>
 						<td>java:/comp/env/</td>
 						<td>
 							JNDIデータソースの前につける文字列を指定します。
@@ -359,7 +351,7 @@
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>data-source</td>
+						<td><a id="data-source">data-source</a></td>
 						<td>jdbc/dfdb</td>
 						<td>
 							context.xmlに設定したJNDIデータソースを指定します。
@@ -372,7 +364,7 @@ dataSource = initContext.lookup("java:/comp/env/jdbc/dfdb");<br/>
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>mail-session</td>
+						<td><a id="mail-session">mail-session</a></td>
 						<td>mail/Session</td>
 						<td>
 							context.xmlに設定したメールセッション名を指定します。
@@ -380,7 +372,7 @@ dataSource = initContext.lookup("java:/comp/env/jdbc/dfdb");<br/>
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>mail-from</td>
+						<td><a id="mail-from">mail-from</a></td>
 						<td>hoge@hogehoge.jp</td>
 						<td>
 							システムがメールを送信際に使用するFromを指定します。
@@ -388,7 +380,7 @@ dataSource = initContext.lookup("java:/comp/env/jdbc/dfdb");<br/>
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>frame-path</td>
+						<td><a id="frame-path">frame-path</a></td>
 						<td>/frame/flex</td>
 						<td>
 							フレームレイアウトのパスを指定します。
@@ -398,7 +390,7 @@ dataSource = initContext.lookup("java:/comp/env/jdbc/dfdb");<br/>
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
-						<td>page-override</td>
+						<td><a id="page-override">page-override</a></td>
 						<td>
 							<code>
 [<br/>
@@ -431,6 +423,14 @@ dataSource = initContext.lookup("java:/comp/env/jdbc/dfdb");<br/>
 							またdataforms.app.base.page.HiddenPageに置き換えれば
 							メニューにも表示されず、アクセスできないページになります。
 							つまり既存ページを隠すことができます。
+						</td>
+					</tr>
+					<tr>
+						<td class="commentOut"></td>
+						<td>export-import-dir</td>
+						<td>/tmp/data</td>
+						<td>
+							開発ツールのテーブル管理ページでデータをエクスポート/インポートする際に使用するフォルダを指定します。
 						</td>
 					</tr>
 					<tr>

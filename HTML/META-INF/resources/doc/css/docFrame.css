@@ -1,53 +1,56 @@
 @charset "UTF-8";
 
-.dropdwn{
-    max-width: 1200px;
-    display: flex;
+.dropdwn {
+	max-width: 1200px;
+	display: flex;
 }
 
-ul{
-    text-align: left;
-    list-style-type: none;
-    padding: 0;
-    color: #000;
-}
-li{
-    max-width: calc(1200px/5);
-    position: relative;
-    padding: 5px;
-    display: block;
-    cursor: pointer;
+ul {
+	text-align: left;
+	list-style-type: none;
+	padding: 0;
+	color: #000;
 }
 
-.dropdwn>li{
-    width: 1200px;
-    margin: 1px;
-    background: var(--menu-level1-background-color);
-    display: inline;
+li {
+	max-width: calc(1200px/ 5);
+	position: relative;
+	padding: 5px;
+	display: block;
+	cursor: pointer;
 }
 
-.dropdwn_menu{
-    width: 100%;
-    display: none;
-    position: absolute;
-    margin-left: -5px;
-    margin-top: 5px;
-    padding: 0;
-    background: var(--menu-level2-background-color);
+.dropdwn>li {
+	width: 1200px;
+	margin: 1px;
+	background: var(--menu-level1-background-color);
+	display: inline;
 }
 
-.dropdwn_menu li{
-    width: 100%;
+.dropdwn_menu {
+	width: 100%;
+	display: none;
+	position: absolute;
+	margin-left: -5px;
+	margin-top: 5px;
+	padding: 0;
+	background: var(--menu-level2-background-color);
 }
 
-.dropdwn_menu li a{
-    padding: 5px 0;
-    margin: -5px 5px -5px -5px;
-    display: block;
-    color: #000;
+.dropdwn_menu li {
+	padding-left: 10px;
+	padding-right: 10px;
+	width: 100%;
 }
 
-li a:hover{
-    background: #b3d7ff;
-    color: rgb(65, 65, 65);
+.dropdwn_menu li a {
+	padding: 5px 0;
+	margin: -5px 5px -5px -5px;
+	display: block;
+	color: #000;
+}
+
+li a:hover {
+	background: #b3d7ff;
+	color: rgb(65, 65, 65);
 }

@@ -13,10 +13,10 @@ import dataforms.app.user.dao.UserDao;
 import dataforms.app.user.dao.UserInfoTable;
 import dataforms.controller.Page;
 import dataforms.devtool.db.dao.TableManagerDao;
+import dataforms.exception.ApplicationException;
 import dataforms.servlet.DataFormsServlet;
 import net.arnx.jsonic.JSON;
 
-// TODO:autoLoginに失敗した場合の対応を考える必要がある。
 /**
  * 自動ログイン制御クラス。
  *
@@ -123,9 +123,13 @@ public final class AutoLoginCookie {
 							String password = pe.getPassword();
 							password = CryptUtil.decrypt(password);
 							pe.setPassword(password);
-							Map<String, Object> userInfo = dao.login(pe.getMap());
-							HttpSession session = page.getRequest().getSession();
-							session.setAttribute("userInfo", userInfo);
+							try {
+								Map<String, Object> userInfo = dao.login(pe.getMap());
+								HttpSession session = page.getRequest().getSession();
+								session.setAttribute("userInfo", userInfo);
+							} catch (ApplicationException ex) {
+								;
+							}
 						}
 					}
 				}

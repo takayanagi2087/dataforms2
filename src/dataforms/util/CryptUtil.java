@@ -52,11 +52,6 @@ public final class CryptUtil {
 	public static final String AES_INITIAL_VECTOR = "aesInitialVector";
 
 	/**
-	 * AESのキー。
-	 */
-	public static final String AES_IKEY = "aesInitialVector";
-
-	/**
 	 * デフォルトパスワード。
 	 */
 	public static final String DEFAULT_PASSWORD = "defaultPassword";

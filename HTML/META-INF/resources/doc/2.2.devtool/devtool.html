@@ -190,7 +190,7 @@
 						Javaソースパス
 					</th>
 					<td>
-						C:\eclipse\workspace\sample\src
+						C:\eclipse\workspace\sample\src\main\java
 					</td>
 				</tr>
 				<tr>
@@ -198,13 +198,13 @@
 						HTML,Javascript等のパス
 					</th>
 					<td>
-						C:\eclipse\workspace\sample\WebContent
+						C:\eclipse\workspace\sample\src\main\webapp
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		<p>
-			WebContent/WEB-INF/web.xmlに以下の設定を記述してください。
+			src/main/webapp/WEB-INF/web.xmlに以下の設定を記述してください。
 			web.xmlにはサンプルの設定がコメントアウトされていますので、
 			コメントを外して適切に修正してください。
 		</p>
@@ -214,18 +214,23 @@
 &lt;!-- &#38283;&#30330;&#12484;&#12540;&#12523;&#12398;java&#12477;&#12540;&#12473;&#20986;&#21147;&#12501;&#12457;&#12523;&#12480;&#12434;&#25351;&#23450;&#12375;&#12414;&#12377;&#12290; --&gt;
 &lt;context-param&gt;
 	&lt;param-name&gt;java-source-path&lt;/param-name&gt;
-	&lt;param-value&gt;/eclipse/workspace/sample/src&lt;/param-value&gt;
+	&lt;param-value&gt;/eclipse/workspace/sample/src/main/java&lt;/param-value&gt;
 &lt;/context-param&gt;
 &lt;!-- &#38283;&#30330;&#12484;&#12540;&#12523;&#12398;html,javascript&#31561;&#12398;WEB&#12522;&#12477;&#12540;&#12473;&#20986;&#21147;&#12501;&#12457;&#12523;&#12480;&#12434;&#25351;&#23450;&#12375;&#12414;&#12377;&#12290; --&gt;
 &lt;context-param&gt;
 	&lt;param-name&gt;web-source-path&lt;/param-name&gt;
-	&lt;param-value&gt;/eclipse/workspace/sample/WebContent&lt;/param-value&gt;
+	&lt;param-value&gt;/eclipse/workspace/sample/src/main/webapp&lt;/param-value&gt;
 &lt;/context-param&gt;
 			</pre>
 		</div>
+		<p class="topic">
+			以前のeclipseのWebアプリケーションのフォルダ構成は、Javaソース"&lt;Eclipseのワークスペース&gt;/project/src"、
+			HTMLやJavascripは"&lt;Eclipseのワークスペース&gt;/project/WebContent"になっていました。
+			しかし202109ではそれぞれ"&lt;Eclipseのワークスペース&gt;/project/src/main/java","&lt;Eclipseのワークスペース&gt;/project/src/main/webapp"に変わっていました。
+		</p>
 		<h3>システム名称設定</h3>
 		<p>
-			システム名称はWebContent/frame/messages/AppClientMessage*.propertiesというファイルに、message.systemnameというキーで登録されています。
+			システム名称は"src/main/webapp/frame/messages/AppClientMessage*.properties"というファイルに、message.systemnameというキーで登録されています。
 			以下のようにEclipseのプロパティエディタで編集します。
 			なお、アプリケーション独自のメッセージは、AppClientMessage*.propertiesやAppMessage*.propertiesに登録していきます。
 		</p>

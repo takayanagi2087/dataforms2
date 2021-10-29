@@ -487,10 +487,31 @@
 			複数テーブルが関連するページの場合、この機能を使用して問合せを作成します。
 			問合せクラスは「Table,Query,Dao」の章で解説します。
 		</p>
-		<h3>DAOクラスの作成</h3>
+		<h3>DAOクラス、Pageクラスの作成</h3>
+		<p>
+			dataforms2.jarでは一般的なWebページの動作を以下のように想定しています。
+		</p>
+		<ol>
+			<li>テータベースの問合せ条件を入力し、問合せを実行(QueryForm)</li>
+			<li>問合せ結果を一覧として表示(QueryResultForm)</li>
+			<li>一覧の中の1件を選択し、その内容を編集し保存(EditForm)</li>
+		</ol>
+		<p>
+			上記リストの機能は括弧内のFormクラス名で実装されており、これらのFormクラスをページクラスに配置します。
+			この3種類のフォームクラスを全てページに配置すると、データベース中のテーブルをメンテナンスするページを簡単に作成することができます。
+		</p>
+		<p>
+			全てのページがこのような動作をするわけではありませんが、大抵のページはこの3種類のどれかが無いというパターンに分類されます。
+			データベースを検索し一覧を出力するだけのページであれば、QueryFormとQeuryResultFormを配置しEditFormを省略することで作成することができます。
+			システムの設定画面のページであればEditFormだけを配置したページで作成することができます。
+		</p>
+		<p>
+			当然この3種類以外の独自のFormクラスを作成しページに配置することも可能ですが、
+			大抵この3種類のフォームを使った方が簡単にシステムを作成することができるはずです。
+		</p>
 		<p>
 			ページクラスを作成する前にページクラスが使用するDAO(Data access object)クラスを作成します。
-			dataforms.dao.Daoクラスはテーブルへのレコード追加、更新、削除や問合せの実行を行うクラスです。
+			dataforms.dao.Daoクラスはテーブルへのレコード追加、更新、削除や問合せを行うクラスです。
 			「DAO Javaクラス作成」はdataforms.dao.Daoから派生したdataforms.dao.QuerySetDaoのサブクラスを作成します。
 			dataforms.dao.QuerySetDaoクラスは、問合せ時に実行する問合せクラスと編集するデータを取得する問合せを指定し、
 			ページから使用するデータの検索、更新機能を提供します。
@@ -509,16 +530,20 @@
 			単一のテーブルを編集するだけのページの場合、「一覧取得用問合せ」、「編集フォーム用問合せ」に対象のテーブルクラスを指定してください。
 		</p>
 		<p>
+			QuerySetDaoクラスには基本的なレコード追加(insert)、更新(update)、削除(delete)のメソッドが実装されています。
+			1つのテーブルの操作だけであれば、Daoクラスのメソッドで問題なく動作します。
+			複雑な保存処理が必要であれば、これらのメソットをオーバーライドして書き換えることで対応することができます。
+		</p>
+		<p>
 			この操作で以下のようにSampleDao.javaが作成されます。ソースの生成を確認したら、ビルドを行った後Tomcatを再起動してください。
 		</p>
 		<figure>
 			<figcaption>Dao Javaクラス作成結果</figcaption>
 			<img src="dao2.png" style="width:50%; height:50%;"/>
 		</figure>
-		<h3>ページJavaクラスの作成</h3>
 		<p>
 			次に、開発ツールの「ページJavaクラス作成」を使用し、作成したSampleTableを編集するページJavaクラスを作成します。
-			「ページJavaクラス作成」ではページに対して以下の3種類のフォームを配置することができます。
+			「ページJavaクラス作成」ではページに対して先に述べた3種類のフォームを配置することができます。
 		</p>
 		<table>
 			<caption>
@@ -571,9 +596,10 @@
 			<figcaption>ページJavaクラス作成結果</figcaption>
 			<img src="page2.png" style="width:50%; height:50%;"/>
 		</figure>
+		<!--
 		<p class="topic">
 			PageとDialogはDataFormsクラスから派生しています。
-			DataFormsクラスは、これらのフォームが配置された場合、これらのフォームのイベント処理を適切に設定します。
+			DataFormsクラスは、この三種類のフォームが配置された場合、これらのフォームのイベント処理を適切に設定します。
 			そのためこのフォームを配置するだけで、「問い合わせフォーム→問い合わせ結果表示フォーム→データ編集フォーム」の流れで動作するようになっています。
 		</p>
 		<p class="topic">
@@ -585,6 +611,7 @@
 			Formクラスから派生した上記三種類以外のフォームも、PageやDialogに配置することができます。
 			この場合、ページクラスやフォームクラスのコーディングが必要になります。
 		</p>
+		 -->
 		<h3>Webリソースの作成</h3>
 		<p>
 			開発ツールの「Webリソース作成」を使用し、ページJavaクラスを元にHTMLを作成します。
@@ -642,13 +669,13 @@
 				</tr>
 				<tr>
 					<td style="text-align: right;">2</td>
-					<td>WebContent</td>
+					<td>/src/main/webapp</td>
 					<td>/sample</td>
 					<td>プロジェクト中のWebContentフォルダ中に/sampleというサブフォルダを作成します。</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;">3</td>
-					<td>WebContent/sample</td>
+					<td>/src/main/webapp/sample</td>
 					<td>Function.properties</td>
 					<td>
 						機能の名称を以下の様な形式で登録します。
@@ -662,7 +689,7 @@ sample=サンプル
 				<tr>
 					<td style="text-align: right;">4</td>
 					<td rowspan="6">テーブルJavaクラス作成</td>
-					<td rowspan="2">src/sample/dao</td>
+					<td rowspan="2">/src/main/java/sample/dao</td>
 					<td>SampleTable.java</td>
 					<td>sampleテーブルの構造を定義します。</td>
 				</tr>
@@ -673,7 +700,7 @@ sample=サンプル
 				</tr>
 				<tr>
 					<td style="text-align: right;">6</td>
-					<td rowspan="4">src/sample/field</td>
+					<td rowspan="4">/src/main/java/sample/field</td>
 					<td>SampleIdField.java</td>
 					<td>レコードIDフィールドのクラスです。</td>
 				</tr>
@@ -695,14 +722,14 @@ sample=サンプル
 				<tr>
 					<td style="text-align: right;">10</td>
 					<td>DAO Javaクラス作成</td>
-					<td>src/sample/dao</td>
+					<td>/src/main/java/sample/dao</td>
 					<td>SampleDao.java</td>
 					<td>smapleテーブルの検索編集を行うDAOクラスです。</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;">11</td>
 					<td rowspan="5">ページ Javaクラス作成</td>
-					<td rowspan="4">src/sample/page</td>
+					<td rowspan="4">/src/main/java/sample/page</td>
 					<td>SamplePage.java</td>
 					<td>sampleテーブルを編集するページです。</td>
 				</tr>
@@ -723,7 +750,7 @@ sample=サンプル
 				</tr>
 				<tr>
 					<td style="text-align: right;">15</td>
-					<td>WebContent/sample</td>
+					<td>/src/main/webapp/sample</td>
 					<td>Function.properties</td>
 					<td>
 						Function.propertiesにページの名称を追加します。
@@ -739,7 +766,7 @@ sample.page.SamplePage=サンプルページ
 				<tr>
 					<td style="text-align: right;">16</td>
 					<td>Webリソース作成</td>
-					<td>WebContent/sample/page</td>
+					<td>/src/main/webapp/sample/page</td>
 					<td>SamplePage.html</td>
 					<td>ページの情報を表示するHTMLです。</td>
 				</tr>

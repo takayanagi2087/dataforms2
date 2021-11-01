@@ -2,15 +2,194 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>問合せのクラスの作成</title>
+		<link type="text/css" href="../css/document.css" rel="stylesheet" />
+		<title>問合せクラスの作成</title>
 	</head>
 	<body>
-		<h1><span>2.5.</span>問合せのクラスの作成</h1>
+		<h1><span>2.5.</span>問合せクラスの作成</h1>
 		<p>
 			<a href="../2.2.devtool/devtool.html">2.2.開発ツール</a>では単純なサンプルとするために、1テーブルのみの操作としました。
 			そのため問合せクラスを作る必要がなく、その手順を飛ばしました。
 			そこで、この章では問合せクラスの作成手順を解説します。
 		</p>
-		<h2></h2>
+		<h2>今回使用するテーブルの構造</h2>
+		<p>
+			dataforms2.jar中で定義されている列挙型関連テーブルを使用して、複数のテーブルを結合した問合せを試してみます。
+			列挙型は列挙型テーブル(enum)と列挙型名称テーブル(enum_name)で構成しており、以下の構造をしています。
+		</p>
+		<table>
+			<caption>列挙型テーブル(enum)</caption>
+			<thead>
+				<tr>
+					<th>
+						カラム名
+					</th>
+					<th>
+						PK
+					</th>
+					<th>
+						データ型
+					</th>
+					<th>
+						コメント
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>enum_id</td>
+					<td style="text-align: center;">*</td>
+					<td>bigint not null</td>
+					<td>列挙型ID</td>
+				</tr>
+				<tr>
+					<td>parent_id</td>
+					<td></td>
+					<td>bigint</td>
+					<td>親ID(親項目の場合はnull、子項目の場合は親項目enum.enum_idと結合)</td>
+				</tr>
+				<tr>
+					<td>sort_order</td>
+					<td></td>
+					<td>smallint</td>
+					<td>ソート順</td>
+				</tr>
+				<tr>
+					<td>enum_code</td>
+					<td></td>
+					<td>varchar(64)</td>
+					<td>列挙型コード</td>
+				</tr>
+				<tr>
+					<td>enum_group_code</td>
+					<td></td>
+					<td>varchar(64)</td>
+					<td>列挙型グループコード</td>
+				</tr>
+				<tr>
+					<td>memo</td>
+					<td></td>
+					<td>varchar(1024)</td>
+					<td>メモ</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			列挙型テーブル(enum)で列挙型のコードとその中に含む選択肢のコードを定義します。
+			列挙型コードを定義するレコードは親ID(parant_id)がnullになったもので、
+			その中の選択肢は親ID(parant_id)に列挙型コードのIDを保持します。
+			データの具体例を以下に示します。
+		</p>
+		<table>
+			<caption>列挙型テーブル(enum)のデータ例</caption>
+			<thead>
+				<tr>
+					<th>enum_id</th><th>parent_id</th><th>sort_order</th><th>enum_code</th><th>enum_group_code</th><th>memo</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>415</td><td></td><td></td><td>userLevel</td><td>userAttribute_001</td><td>ユーザの権限レベル</td>
+				</tr>
+				<tr>
+					<td>416</td><td>415</td><td>0</td><td>developer</td><td>userAttribute_001</td><td></td>
+				</tr>
+				<tr>
+					<td>417</td><td>415</td><td>1</td><td>admin</td><td>userAttribute_001</td><td></td>
+				</tr>
+				<tr>
+					<td>418</td><td>415</td><td>2</td><td>user</td><td>userAttribute_001</td><td></td>
+				</tr>
+				<tr>
+					<td>419</td><td>415</td><td>3</td><td>guest</td><td>userAttribute_001</td><td></td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			列挙型名称テーブル(enum_name)は列挙型とその中の選択肢の名称を記録します。
+			このテーブルの主キーには言語コードを含み、各言語毎の名称を記録します。
+		</p>
+		<table>
+			<caption>列挙型名称テーブル(enum_name)</caption>
+			<thead>
+				<tr>
+					<th>
+						カラム名
+					</th>
+					<th>
+						PK
+					</th>
+					<th>
+						データ型
+					</th>
+					<th>
+						コメント
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>enum_id</td>
+					<td style="text-align: center;">*</td>
+					<td>bigint not null</td>
+					<td>列挙型ID(enum.enum_idと結合)</td>
+				</tr>
+				<tr>
+					<td>lang_code</td>
+					<td style="text-align: center;">*</td>
+					<td>bigint</td>
+					<td>言語コード</td>
+				</tr>
+				<tr>
+					<td>enum_name</td>
+					<td></td>
+					<td>varchar(128)</td>
+					<td>列挙型名称</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			データは以下のようになっています。
+		</p>
+		<table>
+			<caption>列挙型名称テーブル(enum_name)のデータ例</caption>
+			<thead>
+				<tr>
+					<th>enum_id</th><th>lang_code</th><th style="width:300px;">enum_name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>415</td><td>default</td><td>User level</td>
+				</tr>
+				<tr>
+					<td>415</td><td>ja</td><td>ユーザレベル</td>
+				</tr>
+				<tr>
+					<td>416</td><td>default</td><td>Developer</td>
+				</tr>
+				<tr>
+					<td>416</td><td>ja</td><td>開発者</td>
+				</tr>
+				<tr>
+					<td>417</td><td>default</td><td>Admin</td>
+				</tr>
+				<tr>
+					<td>417</td><td>ja</td><td>管理者</td>
+				</tr>
+				<tr>
+					<td>418</td><td>default</td><td>User</td>
+				</tr>
+				<tr>
+					<td>418</td><td>ja</td><td>ユーザ</td>
+				</tr>
+				<tr>
+					<td>419</td><td>default</td><td>guest</td>
+				</tr>
+				<tr>
+					<td>419</td><td>ja</td><td>ゲスト</td>
+				</tr>
+			</tbody>
+		</table>
 	</body>
 </html>

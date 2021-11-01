@@ -1110,13 +1110,14 @@ class SampleEditForm extends EditForm {
 			最後の行にEnumOptionSingleSelectFieldから派生したSampleSelectFieldというクラスを割り当てます。
 			このまま保存しようとすると、テーブルクラスと既存のフィールドクラスが存在するので、上書きできないというエラーになります。
 			そこでテーブルクラスは上書きし、既存のフィールドクラスは上書きしないように設定して保存します。
+			「エラーしたものは上書きしない」ボタンを押下すると、上書きできずにエラーたなった既存フィールドを「上書きしない」に設定します。
 		</p>
 		<figure>
 			<figcaption>テーブルにフィールドを追加</figcaption>
 			<img src="enum3.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
-			その結果、以下のようにソースファイルが作成されます。
+			その結果、SampleSelectField.javaというソースが作成され、SampleTable.javaクラスにSampleSelectFieldのインスタンスが追加されます。
 		</p>
 		<figure>
 			<figcaption>更新されたテーブルと新規作成されたフィールドクラス</figcaption>

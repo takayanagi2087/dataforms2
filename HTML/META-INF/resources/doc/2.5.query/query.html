@@ -795,9 +795,142 @@ m.enum_id as enum_id
 		</p>
 		<h2>複雑な結合</h2>
 		<p>
+			列挙型テーブル(enum)は列挙型の名称とその選択肢を1つのテーブルで管理し、
+			子である選択肢のレコードはparent_idで親である列挙型名称のレコードにリンクする構造になっています。
+			列挙型テーブル(enum)どうしを結合し子(選択肢)と親(列挙型)の関係を作成し、
+			列挙型名称テーブル(enum_name)から子と親の名称を取得する問合せを作成します。
 		</p>
-		<h2>集計問合せ</h2>
 		<p>
+			以下の画面では選択肢を取得するEnumTable(別名"m")、親である列挙型を取得するEnumTable(別名"p")、
+			選択肢の名称を取得するEnumNameTable(別名"nm")、列挙型の名称を取得するEnumNameTable(別名"pnm")を結合しています。
+		</p>
+		<figure>
+			<figcaption>複雑な結合の問合せ</figcaption>
+			<img src="complexquery.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			この画面から作成されるQueryクラスは以下のようになります。
+		</p>
+		<div class="wrappre">
+			<pre>
+/**
+ * 問い合わせクラスです。
+ *
+ */
+public class Enum02Query extends Query {
+
+	・
+	・
+	・
+
+
+	/**
+	 * コンストラクタ.
+	 */
+	public Enum02Query() {
+		this.setComment("複雑な問合せ");
+		this.setDistinct(false);
+		this.enumTable = new EnumTable();
+		this.enumTable.setAlias("m");
+		this.enumTableP = new EnumTable();
+		this.enumTableP.setAlias("p");
+		this.enumNameTableMn = new EnumNameTable();
+		this.enumNameTableMn.setAlias("mn");
+		this.enumNameTablePnm = new EnumNameTable();
+		this.enumNameTablePnm.setAlias("pnm");
+
+		this.setFieldList(new FieldList(
+			this.enumTable.getEnumIdField()
+			, this.enumTable.getParentIdField()
+			, this.enumTable.getSortOrderField()
+			, this.enumTable.getEnumCodeField()
+			, this.enumTable.getEnumGroupCodeField()
+			, this.enumTable.getMemoField()
+			, this.enumTable.getCreateUserIdField()
+			, this.enumTable.getCreateTimestampField()
+			, this.enumTable.getUpdateUserIdField()
+			, this.enumTable.getUpdateTimestampField()
+			, new AliasField("parentCode", this.enumTableP.getEnumCodeField())
+			, this.enumNameTableMn.getEnumNameField()
+			, new AliasField("parentName", this.enumNameTablePnm.getEnumNameField())
+		));
+		this.setMainTable(enumTable);
+		this.addInnerJoin(enumTableP);
+		this.addInnerJoin(enumNameTableMn);
+		this.addInnerJoin(enumNameTablePnm);
+	}
+
+	・
+	・
+	・
+
+}
+			</pre>
+		</div>
+		<p>
+			この画面で作った問い合わせには問題が残っています。
+			列挙型の名称を取得するEnumNameTable(別名"pnm")の結合条件が"m.enum_id=pnm.enum_id"となっており、
+			選択肢を取得するEnumTable(別名"m")と結合となってしまっています。
+			正しくはEnumTable(別名"p")への結合です。
+		</p>
+		<p>
+			この問題を解決するには、ツールで作成したソースを以下のように修正します。
+			QueryクラスのaddXXXJoinメソッドに結合条件を生成するための関数インターフェースを指定することができます。
+			この修正でEnumNameTable(別名"pnm")はEnumTable(別名"p")へ結合するようになります。
+		</p>
+		<div class="wrappre">
+			<pre>
+	/**
+	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;.
+	 */
+	public Enum02Query() {
+		this.setComment(&quot;&#35079;&#38609;&#12394;&#21839;&#21512;&#12379;&quot;);
+		this.setDistinct(false);
+		this.enumTable = new EnumTable();
+		this.enumTable.setAlias(&quot;m&quot;);
+		this.enumTableP = new EnumTable();
+		this.enumTableP.setAlias(&quot;p&quot;);
+		this.enumNameTableMn = new EnumNameTable();
+		this.enumNameTableMn.setAlias(&quot;mn&quot;);
+		this.enumNameTablePnm = new EnumNameTable();
+		this.enumNameTablePnm.setAlias(&quot;pnm&quot;);
+
+		this.setFieldList(new FieldList(
+			this.enumTable.getEnumIdField()
+			, this.enumTable.getParentIdField()
+			, this.enumTable.getSortOrderField()
+			, this.enumTable.getEnumCodeField()
+			, this.enumTable.getEnumGroupCodeField()
+			, this.enumTable.getMemoField()
+			, this.enumTable.getCreateUserIdField()
+			, this.enumTable.getCreateTimestampField()
+			, this.enumTable.getUpdateUserIdField()
+			, this.enumTable.getUpdateTimestampField()
+			, new AliasField(&quot;parentCode&quot;, this.enumTableP.getEnumCodeField())
+			, this.enumNameTableMn.getEnumNameField()
+			, new AliasField(&quot;parentName&quot;, this.enumNameTablePnm.getEnumNameField())
+		));
+		this.setMainTable(enumTable);
+		this.addInnerJoin(enumTableP);
+		this.addInnerJoin(enumNameTableMn);
+		<b>this.addInnerJoin(enumNameTablePnm, (Table table) -&gt; {</b>
+			<b>return this.enumTableP.getLinkFieldCondition(EnumTable.Entity.ID_ENUM_ID, table);</b>
+		<b>});</b>
+	}
+			</pre>
+		</div>
+		<p>
+			この問合せを実行すると以下のようになります。
+		</p>
+		<figure>
+			<figcaption> Enum02Queryせの実行</figcaption>
+			<img src="queryExec2.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			DBの設計時に決まる一般的なテーブル結合の定義はXXXTableRelationクラスにまとめておきます。
+			このようにすると、問合せ作成時にER図を参照しながら結合条件を記述するようなことはなくなります。
+			しかし今回の問合せのような特殊な結合も必要になるケースがあります。
+			この場合addXXXJoinのタイミングで特殊な結合条件を指定することができるようになっています。
 		</p>
 	</body>
 </html>

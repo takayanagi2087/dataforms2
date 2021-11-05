@@ -55,9 +55,11 @@ public class ConditionExpressionList extends ArrayList<ConditionExpression> impl
 	/**
 	 * フィールドを追加します。
 	 * @param field フィールド。
+	 * @return 追加したフィールド。
 	 */
-	public void addField(final Field<?> field) {
+	public Field<?> addField(final Field<?> field) {
 		this.add(new FieldConditionExpression(field));
+		return field;
 	}
 
 	/**

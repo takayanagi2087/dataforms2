@@ -37,21 +37,58 @@ public class JsonResponse extends Response {
 	 */
 	private int status = SUCCESS;
 
+	/**
+	 * JSONの送信モード。
+	 *
+	 */
+	private enum Mode {
+		/**
+		 * 処理のSTATUS情報を送る。
+		 */
+		WITH_STATUS,
+		/**
+		 * 結果のみを送る。
+		 */
+		RESULT_ONLY
+	};
+
+	/**
+	 * 送信モード。
+	 */
+	private Mode mode = Mode.WITH_STATUS;
 
 	/**
 	 * コンストラクタ。
 	 * <pre>
-	 * content-typeがapplication/jsonだとiframeで受けた場合、IEはダウンロードの動作になってしまうので
-	 * text/plainを設定しておきます。
+	 * 以下のような形式のJSONを作成し応答します。
+	 * {
+	 * 	status: <status>,
+	 *  result: <resultのJSON展開>
+	 * }
 	 * </pre>
 	 * @param status 処理の状態。
-	 * @param result 実行結果。
+	 * @param result 処理結果。
 	 */
 	public JsonResponse(final int status, final Object result) {
+		this.mode = Mode.WITH_STATUS;
 		this.setStatus(status);
 		this.setResult(result);
 		this.setContentType("application/json; charset=" + DataFormsServlet.getEncoding());
 	}
+
+	/**
+	 * コンストラクタ。
+	 * <pre>
+	 * resultの内容をJSONに展開し、そのまま応答します。
+	 * </pre>
+	 * @param result 処理結果。
+	 */
+	public JsonResponse(final Object result) {
+		this.mode = Mode.RESULT_ONLY;
+		this.setResult(result);
+		this.setContentType("application/json; charset=" + DataFormsServlet.getEncoding());
+	}
+
 
 	/**
 	 * {@inheritDoc}
@@ -63,6 +100,9 @@ public class JsonResponse extends Response {
 	public void send(final HttpServletResponse resp) throws Exception {
 		resp.setContentType(this.getContentType());
 		Object obj = this;
+		if (mode == Mode.RESULT_ONLY) {
+			obj = this.getResult();
+		}
 		PrintWriter out = resp.getWriter();
 		try {
 			if (obj != null) {

@@ -7,7 +7,88 @@
 	<body>
 		<h1><span>3.5.</span>WebApi</h1>
 		<p>
-
+			
 		</p>
+		<div class="wrappre">
+			<pre>
+package sample.api;
+
+import java.util.List;
+import java.util.Map;
+
+import dataforms.annotation.WebMethod;
+import dataforms.controller.WebApi;
+import dataforms.dao.Dao;
+import dataforms.response.JsonResponse;
+import dataforms.response.Response;
+import sample.dao.Enum01Query;
+
+/**
+ * Test API.
+ *
+ */
+public class TestApi extends WebApi {
+
+	/**
+	 * &#35469;&#35388;&#20966;&#29702;&#12290;
+	 */
+	@Override
+	public boolean isAuthenticated(Map&lt;String, Object&gt; params) throws Exception {
+		return true;
+	}
+
+	/**
+	 * API&#12398;&#20966;&#29702;&#12290;
+	 */
+	@WebMethod
+	@Override
+	public Response exec(Map&lt;String, Object&gt; p) throws Exception {
+		// DAO&#12398;&#12452;&#12531;&#12473;&#12479;&#12531;&#12473;&#12434;&#20316;&#25104;
+		Dao dao = new Dao(this);
+		// &#21839;&#21512;&#12379;&#12398;&#12452;&#12531;&#12473;&#12479;&#12531;&#12473;&#12434;&#20316;&#25104;
+		Enum01Query query = new Enum01Query();
+		// where&#21477;&#12398;&#26465;&#20214;&#12395;&#12394;&#12426;&#12358;&#12427;&#12501;&#12451;&#12540;&#12523;&#12489;&#12522;&#12473;&#12488;&#12434;&#35373;&#23450;
+		query.setConditionFieldList(query.getFieldList());
+		// where&#21477;&#12398;&#26465;&#20214;&#12487;&#12540;&#12479;&#12398;&#12510;&#12483;&#12503;&#12434;&#35373;&#23450;
+		Enum01Query.Entity cd = new Enum01Query.Entity();
+		cd.setEnumCode(&quot;userLevel&quot;);
+		cd.setLangCode(&quot;ja&quot;);
+		query.setConditionData(cd.getMap());
+		// &#21839;&#21512;&#12379;&#12434;&#23455;&#34892;
+		List&lt;Map&lt;String, Object&gt;&gt; result = (List&lt;Map&lt;String, Object&gt;&gt;) dao.executeQuery(query);
+		return new JsonResponse(JsonResponse.SUCCESS, result);
+	}
+
+}
+			</pre>
+		</div>
+		<figure>
+			<figcaption>APIの呼び出し</figcaption>
+			<img src="testApi.png" style="width:50%; height:50%;"/>
+		</figure>
+
+		<div class="wrappre">
+			<pre>
+{
+	"contentType":"application/json; charset=utf-8",
+	"result":[
+		{
+			"enumId":415,
+			"createUserId":0,
+			"enumCode":"userLevel",
+			"updateUserId":0,
+			"langCode":"ja",
+			"memo":"ユーザの権限レベル",
+			"parentId":null,
+			"updateTimestamp":1589788957349,
+			"createTimestamp":1589788957349,
+			"sortOrder":null,
+			"enumGroupCode":"userAttribute_001",
+			"enumName":"ユーザレベル"
+		}
+	],"status":0
+}
+			</pre>
+		</div>
 	</body>
 </html>

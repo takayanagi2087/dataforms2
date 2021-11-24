@@ -7,7 +7,9 @@
 	<body>
 		<h1><span>3.6.</span>BatchProcess</h1>
 		<p>
-
+			バッチ処理を実装するには以下のようにdataforms.controller.BatchProcessクラスから派生したバッチ処理クラスを作成します。
+			このクラスのrunメソッドにバッチ処理を実装します。
+			以下の例ではEnum01Queryの結果をJSONに変換し/tmp/test.jsonに出力しています。
 		</p>
 		<div class="wrappre">
 			<pre>
@@ -56,14 +58,23 @@ public class TestBatch extends BatchProcess {
 	}
 
 }
-
 			</pre>
 		</div>
+		<p>
+			このバッチ処理もhttp経由で起動しします。
+			wgetやcurlでバッチ処理のURLをアクセスしバッチ処理を起動することができます。
+			ただしBatchProcessのisAuthenticatedメソッドでサーバ自身からのアクセスでないと、動作しないようになっています。
+			dataforms2.jarの中にdataforms.cmd.RunBatchというバッチ起動用のクラスが入っています。
+			以下のコマンドでTestBatchが動作します。
+		</p>
 		<div class="wrappre">
 			<pre>
 C:\eclipse\workspace\sample\src\main\webapp\WEB-INF\lib&gt;java -cp dataforms2.jar dataforms.cmd.RunBatch http://localhost:8080/sample/sample/batch/TestBatch.df
 			</pre>
 		</div>
+		<p>
+			上記のコマンドを実行すると/tmp/test.jsonに以下のjsonが出力されます。
+		</p>
 		<div class="wrappre">
 			<pre>
 [

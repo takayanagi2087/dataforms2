@@ -6,7 +6,7 @@
 		<title>3.ページの作成</title>
 	</head>
 	<body>
-		<h1><span>2.2.</span>開発ツール</h1>
+		<h1><span>2.2.</span>開発ツールでページを作成</h1>
 		<p>
 			この章では、dataforms2.jarの持つ開発ツールを使用して、データベース上の1つのテーブルを操作するページを作成していきます。
 			一度この手順を試してみれば、開発ツールの機能を把握できると思います。
@@ -16,7 +16,7 @@
 		<p>
 			「2.開発環境構築」で作成したEclipseのsampleプロジェクトには既に「基本機能」と
 			「開発ツール」というメニューが存在しています。
-			「基本機能」にはユーザ管理等のアプリケーションの基本的な機能が入っています。
+			「基本機能」には「ユーザ管理」等アプリケーションの基本的な機能が入っています。
 			「開発ツール」はこのWebアプリケーションに新たなページを追加するための機能です。
 			この「開発ツール」を使うと作成したデータベースに新たなテーブルを作成し、
 			そのテーブルのデータを操作するページを作ることができます。
@@ -28,9 +28,8 @@
 		<h2>開発者権限について</h2>
 		<p>
 			開発ツールを使うには「データベースの初期設定」の際に登録した開発者ユーザでログインする必要があります。
-			ユーザのユーザレベルには「開発者」、「管理者」、「ユーザ」等の権限があり、
-			開発ツールを使用できるのは「開発者」権限を持つユーザのみです。
-			以下に開発者権限をもつユーザのサイトマップを示します。
+			ユーザのユーザレベルには「開発者」、「管理者」、「ユーザ」等があり、開発ツールを使用できるのは「開発者」のみです。
+			以下に開発者ユーザのサイトマップを示します。
 		</p>
 		<figure>
 			<figcaption>開発者権限を持つユーザのサイトマップ</figcaption>
@@ -155,6 +154,9 @@
 				dataforms.dao.Tableから派生したテーブルクラスのソースが作成されます。
 			</li>
 			<li>
+				「テーブル管理」を使用して、テーブルJavaクラスに対応したテーブルをデータベースに作成します。<br/>
+			</li>
+			<li>
 				必要に応じて「問合せJavaクラス作成」を使用して、問合せクラスを作成します。<br/>
 				問合せクラスはdataforms.dao.Queryから派生したクラスで、複数のテーブルを結合した問合せを作成することができます。
 			</li>
@@ -175,7 +177,7 @@
 		</ol>
 		<h2>ページの作成手順</h2>
 		<p>
-			データベース中に簡単なテーブルを作成し、そのデータを編集するページを作成する手順を説明します。
+			この章では、データベース中に簡単なテーブルを作成し、そのデータを編集するページを作成する手順を説明します。
 		</p>
 		<h3>ソースパスの設定</h3>
 		<p>
@@ -190,7 +192,7 @@
 						Javaソースパス
 					</th>
 					<td>
-						C:\eclipse\workspace\sample\src
+						C:\eclipse\workspace\sample\src\main\java
 					</td>
 				</tr>
 				<tr>
@@ -198,13 +200,13 @@
 						HTML,Javascript等のパス
 					</th>
 					<td>
-						C:\eclipse\workspace\sample\WebContent
+						C:\eclipse\workspace\sample\src\main\webapp
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		<p>
-			WebContent/WEB-INF/web.xmlに以下の設定を記述してください。
+			src/main/webapp/WEB-INF/web.xmlに以下の設定を記述してください。
 			web.xmlにはサンプルの設定がコメントアウトされていますので、
 			コメントを外して適切に修正してください。
 		</p>
@@ -214,18 +216,23 @@
 &lt;!-- &#38283;&#30330;&#12484;&#12540;&#12523;&#12398;java&#12477;&#12540;&#12473;&#20986;&#21147;&#12501;&#12457;&#12523;&#12480;&#12434;&#25351;&#23450;&#12375;&#12414;&#12377;&#12290; --&gt;
 &lt;context-param&gt;
 	&lt;param-name&gt;java-source-path&lt;/param-name&gt;
-	&lt;param-value&gt;/eclipse/workspace/sample/src&lt;/param-value&gt;
+	&lt;param-value&gt;/eclipse/workspace/sample/src/main/java&lt;/param-value&gt;
 &lt;/context-param&gt;
 &lt;!-- &#38283;&#30330;&#12484;&#12540;&#12523;&#12398;html,javascript&#31561;&#12398;WEB&#12522;&#12477;&#12540;&#12473;&#20986;&#21147;&#12501;&#12457;&#12523;&#12480;&#12434;&#25351;&#23450;&#12375;&#12414;&#12377;&#12290; --&gt;
 &lt;context-param&gt;
 	&lt;param-name&gt;web-source-path&lt;/param-name&gt;
-	&lt;param-value&gt;/eclipse/workspace/sample/WebContent&lt;/param-value&gt;
+	&lt;param-value&gt;/eclipse/workspace/sample/src/main/webapp&lt;/param-value&gt;
 &lt;/context-param&gt;
 			</pre>
 		</div>
+		<p class="topic">
+			以前のeclipseのWebアプリケーションのフォルダ構成は、Javaソース"&lt;Eclipseのワークスペース&gt;/project/src"、
+			HTMLやJavascripは"&lt;Eclipseのワークスペース&gt;/project/WebContent"になっていました。
+			しかし202109ではそれぞれ"&lt;Eclipseのワークスペース&gt;/project/src/main/java","&lt;Eclipseのワークスペース&gt;/project/src/main/webapp"に変わっていました。
+		</p>
 		<h3>システム名称設定</h3>
 		<p>
-			システム名称はWebContent/frame/messages/AppClientMessage*.propertiesというファイルに、message.systemnameというキーで登録されています。
+			システム名称は"src/main/webapp/frame/messages/AppClientMessage*.properties"というファイルに、message.systemnameというキーで登録されています。
 			以下のようにEclipseのプロパティエディタで編集します。
 			なお、アプリケーション独自のメッセージは、AppClientMessage*.propertiesやAppMessage*.propertiesに登録していきます。
 		</p>
@@ -319,14 +326,13 @@
 			<img src="table3.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p class="topic">
-			Webアプリケーションは、開発ツールでソースファイルが生成された段階でそのクラスの存在を認識していません。
-			ソースをコンパイルした後、Tomcatを再起動しWebアプリケーションをデプロイしてください。
-			デプロイが完了した後、各種開発ツールで作成されたクラスが検索できるようになります。
+			Webアプリケーションは、開発ツールでソースファイルが生成された段階でそのクラスの存在を認識することはできません。
+			ソースをコンパイルした後、Tomcatを再起動しWebアプリケーションを再度デプロイしてください。
 		</p>
 		<p>
 			sample.daoパッケージにはSampleTable.javaとSampleTableRelation.javaの2つのソースファイルが作成されています。
 			SampleTable.javaはテーブルにフィールドを配置する処理が記述され、テーブルの構造を定義します。
-			SampleTableRelation.javaはSampleTable.javaとほかのテーブルを結合する際に使用する条件を定義するクラスです。
+			SampleTableRelation.javaはSampleTable.javaと他のテーブルを結合する際に使用する条件を定義するクラスです。
 			SampleTableRelation.javaは必用に応じて条件をEclipseのエディタでコーデインクしていく必要があります。
 			「テーブルJavaクラスの作成」は既存のテーブルクラスの編集も可能です。
 			その場合コーデインクされた結合条件を失わないようにするため、SampleTableRelation.javaの上書きは行わないようになっています。
@@ -480,15 +486,38 @@
 		<p>
 			今回は1つのテーブルを操作する単純なサンプルですので、この手順は飛ばします。
 			複数テーブルが関連するページの場合、この機能を使用して問合せを作成します。
-			問合せクラスは「Table,Query,Dao」の章で解説します。
+			詳細は<a href="../2.5.query/query.html">問合せクラスの作成</a>参照してください。
 		</p>
-		<h3>DAOクラスの作成</h3>
+		<h3>DAOクラス、Pageクラスの作成</h3>
+		<p>
+			dataforms2.jarでは一般的なWebページの動作を以下のように想定しています。
+		</p>
+		<ol>
+			<li>テータベースの問合せ条件を入力し、問合せを実行(QueryForm)</li>
+			<li>問合せ結果を一覧として表示(QueryResultForm)</li>
+			<li>一覧の中の1件を選択し、その内容を編集し保存(EditForm)</li>
+		</ol>
+		<p>
+			上記リストの機能は括弧内のFormクラス名で実装されており、これらのFormクラスをページクラスに配置します。
+			この3種類のフォームクラスを全てページに配置すると、データベース中のテーブルをメンテナンスするページを簡単に作成することができます。
+		</p>
+		<p>
+			全てのページがこのような動作をするわけではありませんが、大抵のページはこの3種類のどれかが無いというパターンに分類されます。
+			データベースを検索し一覧を出力するだけのページであれば、QueryFormとQeuryResultFormを配置しEditFormを省略することで作成することができます。
+			システムの設定情報のメンテナンス画面であればEditFormだけを配置したページになると思います。
+		</p>
+		<p>
+			この3種類以外の独自のFormクラスを作成しページに配置することも可能ですが、
+			大抵のページはこの3種類のフォームの混み合わせで作成することができるはずです。
+		</p>
 		<p>
 			ページクラスを作成する前にページクラスが使用するDAO(Data access object)クラスを作成します。
-			dataforms.dao.Daoクラスはテーブルへのレコード追加、更新、削除や問合せの実行を行うクラスです。
+			dataforms.dao.Daoクラスはテーブルへのレコード追加、更新、削除や問合せを行うクラスです。
 			「DAO Javaクラス作成」はdataforms.dao.Daoから派生したdataforms.dao.QuerySetDaoのサブクラスを作成します。
-			dataforms.dao.QuerySetDaoクラスは、問合せ時に実行する問合せクラスと編集するデータを取得する問合せを指定し、
-			ページから使用するデータの検索、更新機能を提供します。
+			dataforms.dao.QuerySetDaoクラスの作成時には、一覧取得に使用する問合せクラス(一覧取得用問合せ)と編集するデータを取得する問合せクラス(編集フォーム用問合せ)を指定します。
+			QuerySetDaoクラスには基本的なレコード追加(insert)、更新(update)、削除(delete)のメソッドが実装されており、更新対象のテーブルは編集フォーム用問合せのメインテーブルになります。
+			1つのテーブルの更新操作だけであれば、このメソッドで問題なく動作します。
+			関連するテーブルも操作する必要がある場合はこれらのメソットをオーバーライドして処理を追加してください。
 		</p>
 		<p>
 			「DAO Javaクラス作成」ページで「新規登録」ボタンを押下し、以下の様に入力します。
@@ -504,52 +533,18 @@
 			単一のテーブルを編集するだけのページの場合、「一覧取得用問合せ」、「編集フォーム用問合せ」に対象のテーブルクラスを指定してください。
 		</p>
 		<p>
+		</p>
+		<p>
 			この操作で以下のようにSampleDao.javaが作成されます。ソースの生成を確認したら、ビルドを行った後Tomcatを再起動してください。
 		</p>
 		<figure>
 			<figcaption>Dao Javaクラス作成結果</figcaption>
 			<img src="dao2.png" style="width:50%; height:50%;"/>
 		</figure>
-		<h3>ページJavaクラスの作成</h3>
 		<p>
 			次に、開発ツールの「ページJavaクラス作成」を使用し、作成したSampleTableを編集するページJavaクラスを作成します。
-			「ページJavaクラス作成」ではページに対して以下の3種類のフォームを配置することができます。
+			「ページJavaクラス作成」ではページに対して先に説明した3種類のフォームを全て配置します。
 		</p>
-		<table>
-			<caption>
-				フォームクラスの種類
-			</caption>
-			<thead>
-				<tr>
-					<th>
-						フォームクラス名
-					</th>
-					<th>
-						説明
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>QueryForm</td>
-					<td>
-						問い合わせのための条件を入力し、問い合わせを実行するフォームです。
-					</td>
-				</tr>
-				<tr>
-					<td>QueryResultForm</td>
-					<td>
-						QueryFormで入力した条件を元に問い合わせを行い、その結果を表示するフォームです。
-					</td>
-				</tr>
-				<tr>
-					<td>EditForm</td>
-					<td>
-						指定されたデータの入力、編集を行うためのフォームです。
-					</td>
-				</tr>
-			</tbody>
-		</table>
 		<p>
 			今回は、この三種類のフォームをすべて配置し、問い合わせフォーム→問い合わせ結果フォーム→データ編集フォームの流れでデータ編集するページを作成します。
 			「ページJavaクラス作成」の新規登録フォームで以下のように入力し、ページJavaクラスを作成します。
@@ -566,9 +561,65 @@
 			<figcaption>ページJavaクラス作成結果</figcaption>
 			<img src="page2.png" style="width:50%; height:50%;"/>
 		</figure>
+		<p>
+			このツールでは以下の4つのクラスを作成し、sampleテーブルを編集するためのページを作成します。
+		</p>
+		<table>
+			<caption>
+				フォームクラスの種類
+			</caption>
+			<thead>
+				<tr>
+					<th>
+						作成したクラス
+					</th>
+					<th>
+						基本クラス
+					</th>
+					<th>
+						説明
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>SampleQueryForm</td>
+					<td>QueryForm</td>
+					<td>
+						問い合わせのための条件を入力し、問い合わせを実行するフォームです。
+						SampleQueryFormにはsampleテーブルの主なフィールドが配置されます。
+					</td>
+				</tr>
+				<tr>
+					<td>SampleQueryResultForm</td>
+					<td>QueryResultForm</td>
+					<td>
+						QueryFormで入力した条件を元に問い合わせを行い、その結果を表示するフォームです。
+						SampleQueryResultFormにはsampleテーブルの内容を一覧表示するためのHtmlTableクラスが配置されます。
+					</td>
+				</tr>
+				<tr>
+					<td>SampleEditForm</td>
+					<td>EditForm</td>
+					<td>
+						指定されたデータの入力、編集を行うためのフォームです。
+						SampleEditFormにはsampleテーブルの内容を編集するためのフィールドクラスが配置されます。
+					</td>
+				</tr>
+				<tr>
+					<td>SamplePage</td>
+					<td>BasePage</td>
+					<td>
+						上記3種類のフォームを配置したページクラスです。
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!--
 		<p class="topic">
 			PageとDialogはDataFormsクラスから派生しています。
-			DataFormsクラスは、これらのフォームが配置された場合、これらのフォームのイベント処理を適切に設定します。
+			DataFormsクラスは、この三種類のフォームが配置された場合、これらのフォームのイベント処理を適切に設定します。
 			そのためこのフォームを配置するだけで、「問い合わせフォーム→問い合わせ結果表示フォーム→データ編集フォーム」の流れで動作するようになっています。
 		</p>
 		<p class="topic">
@@ -580,6 +631,7 @@
 			Formクラスから派生した上記三種類以外のフォームも、PageやDialogに配置することができます。
 			この場合、ページクラスやフォームクラスのコーディングが必要になります。
 		</p>
+		 -->
 		<h3>Webリソースの作成</h3>
 		<p>
 			開発ツールの「Webリソース作成」を使用し、ページJavaクラスを元にHTMLを作成します。
@@ -637,13 +689,13 @@
 				</tr>
 				<tr>
 					<td style="text-align: right;">2</td>
-					<td>WebContent</td>
+					<td>/src/main/webapp</td>
 					<td>/sample</td>
 					<td>プロジェクト中のWebContentフォルダ中に/sampleというサブフォルダを作成します。</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;">3</td>
-					<td>WebContent/sample</td>
+					<td>/src/main/webapp/sample</td>
 					<td>Function.properties</td>
 					<td>
 						機能の名称を以下の様な形式で登録します。
@@ -657,7 +709,7 @@ sample=サンプル
 				<tr>
 					<td style="text-align: right;">4</td>
 					<td rowspan="6">テーブルJavaクラス作成</td>
-					<td rowspan="2">src/sample/dao</td>
+					<td rowspan="2">/src/main/java/sample/dao</td>
 					<td>SampleTable.java</td>
 					<td>sampleテーブルの構造を定義します。</td>
 				</tr>
@@ -668,7 +720,7 @@ sample=サンプル
 				</tr>
 				<tr>
 					<td style="text-align: right;">6</td>
-					<td rowspan="4">src/sample/field</td>
+					<td rowspan="4">/src/main/java/sample/field</td>
 					<td>SampleIdField.java</td>
 					<td>レコードIDフィールドのクラスです。</td>
 				</tr>
@@ -690,14 +742,14 @@ sample=サンプル
 				<tr>
 					<td style="text-align: right;">10</td>
 					<td>DAO Javaクラス作成</td>
-					<td>src/sample/dao</td>
+					<td>/src/main/java/sample/dao</td>
 					<td>SampleDao.java</td>
 					<td>smapleテーブルの検索編集を行うDAOクラスです。</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;">11</td>
 					<td rowspan="5">ページ Javaクラス作成</td>
-					<td rowspan="4">src/sample/page</td>
+					<td rowspan="4">/src/main/java/sample/page</td>
 					<td>SamplePage.java</td>
 					<td>sampleテーブルを編集するページです。</td>
 				</tr>
@@ -718,7 +770,7 @@ sample=サンプル
 				</tr>
 				<tr>
 					<td style="text-align: right;">15</td>
-					<td>WebContent/sample</td>
+					<td>/src/main/webapp/sample</td>
 					<td>Function.properties</td>
 					<td>
 						Function.propertiesにページの名称を追加します。
@@ -734,7 +786,7 @@ sample.page.SamplePage=サンプルページ
 				<tr>
 					<td style="text-align: right;">16</td>
 					<td>Webリソース作成</td>
-					<td>WebContent/sample/page</td>
+					<td>/src/main/webapp/sample/page</td>
 					<td>SamplePage.html</td>
 					<td>ページの情報を表示するHTMLです。</td>
 				</tr>

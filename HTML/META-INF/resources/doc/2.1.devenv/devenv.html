@@ -6,7 +6,7 @@
 		<title>開発環境構築</title>
 	</head>
 	<body>
-		<h1><span>2.1.</span>開発環境構築</h1>
+		<h1><span>2.1.</span>開発環境の構築</h1>
 		<p>
 			この記事ではdataforms2.jarの開発環境を構築する手順を説明していきます。
 		</p>
@@ -74,7 +74,7 @@
 			その中に含まれているlib/derby*.jarを全て$CATALINA_HOME/lib(今回はC:\eclipse\pleiades\tomcat\9\lib)にコピーしてください。
 			これだけでデータベース(Apache Derby)が使えるようになります。
 		</p>
-		<h2>Java mailのインストール</h2>
+		<h2>JavaMailのインストール</h2>
 		<p>
 			dataforms2.jarはJavaMailを使用したメールの送信機能を持っています。
 			そのためJavaMailをTomcatにインストールする必要があります。
@@ -282,6 +282,21 @@
 		<figure>
 			<figcaption>サイトマップ</figcaption>
 			<img src="eclipse_proj10.png" style="width:50%; height:50%;"/>
+		</figure>
+		<h2>コンパイラのバージョン調整</h2>
+		<p>
+			pleiades-2021-09ではLTSリリースであるJava 17が含まれています。
+			そのためデフォルトのコンパイラバージョンとプロジェクト・ファセットのJavaのバージョンが17に設定されています。
+			今回はJava11でTomcatを起動しているため、新たに作成するJavaクラスはバージョン11でコンパイルする必要があります。
+			そのため「プロジェクト→プロパティ」メニューを選択し、「Javaコンパイラー」と「プロジェクト・ファセット」のJavaのバージョンを11に変更します。
+		</p>
+		<figure>
+			<figcaption>コンパイラのバージョン設定</figcaption>
+			<img src="projprop01.png" style="width:50%; height:50%;"/>
+		</figure>
+		<figure>
+			<figcaption>プロジェクト・ファセットの設定</figcaption>
+			<img src="projprop01.png" style="width:50%; height:50%;"/>
 		</figure>
 		<hr/>
 	</body>

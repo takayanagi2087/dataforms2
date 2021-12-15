@@ -397,8 +397,12 @@
 		<h3>フレームデザインの共通化</h3>
 		<p>
 			dataforms2.jarでは、各ページに共通したフレームデザインが設定されており、それを切り替えることが可能です。
-			dataforms2.jarの中には、/frame/defaultというパスにFrameデザインを記録したHTMLやcssが入っています。
+			dataforms2.jarの中には、/frame/flexというパスにFrameデザインを記録したHTMLやcssが入っています。
 			デザイン性を重視しない場合はこのまま使用してもよいですし、デザインに凝りたい場合、これをカスタマイズすることも可能です。
+		</p>
+		<p class="topic">
+			dataforms2.jarの中には旧バージョンの互換性を維持するため/frame/defaultというフレームデザインも残っています。
+			これはtableタグを利用してページのレイアウトを設定しています。
 		</p>
 		<p>
 			各ページのHTMLは、body直下に"mainDiv"というIDのdivが存在し、そのmainDivの中にページ固有の内容が記述されています。

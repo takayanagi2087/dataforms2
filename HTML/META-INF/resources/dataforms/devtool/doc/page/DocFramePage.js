@@ -31,7 +31,7 @@ class DocFramePage extends BasePage {
 			var path = $(this).data("path");
 			var src = "../../../../doc/" + path;
 			thisPage.get("docFrame").attr("src", src);
-
+			$("ul.dropdwn_menu").slideUp();
 		});
 		thisPage.get("docFrame").on('load', function() {
 			thisPage.onLoadDocFrame($(this));

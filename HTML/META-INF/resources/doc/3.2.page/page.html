@@ -75,10 +75,12 @@
 			この3種類のフォームのデータベースアクセスを担当するのが、Daoから派生したQuerySetDaoクラスになります。
 			このDaoクラスは開発ツールの「DAO Javaクラス作成」を使用して作成します。
 		</p>
+		<!--
 		<figure>
 			<figcaption>Dao Javaクラス作成</figcaption>
-			<img src="../02.devtool/dao1.png" style="width:50%; height:50%;"/>
+			<img src="../3.2.page/dao1.png" style="width:50%; height:50%;"/>
 		</figure>
+		-->
 		<p>
 			この画面では一覧取得用問合せと編集フォーム用問合せを指定します。
 			このフィールドには問合せだけでなくテーブルクラスも指定できます。
@@ -160,7 +162,7 @@ public class Sample2Dao extends QuerySetDao {
 	public Sample2Dao() {
 		this.setComment(&quot;&#12469;&#12531;&#12503;&#12523;2&quot;);
 		this.setListQuery(this.sampleTable = new SampleTable());
-		this.setSingleRecordQuery(this.sampleTable = new SampleTable());
+		this.setSingleRecordQuery(this.sampleTable);
 		this.addMultiRecordQueryList(this.joinTestTable = new JoinTestTable());
 
 	}
@@ -224,9 +226,11 @@ public class Sample2Dao extends QuerySetDao {
 select
 	m.code1 as code1
 	,count(m.multi_test_id) as multi_test_id
-from multi_test as  m
-	group by m.code1
-			</pre>
+from
+	multi_test as  m
+group by
+	m.code1
+ 			</pre>
 		</div>
 		<p>
 			次の画面でDaoクラスを作成し、一覧取得用問合せに席に作成したMultiTestCode1Queryを指定します。
@@ -242,7 +246,7 @@ from multi_test as  m
 			<img src="mdao.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
-			「ページJavaクラス作成」をしてようして、このDaoを使用するするページクラスを作成します。
+			「ページJavaクラス作成」を使用して、このDaoを使用するするページクラスを作成します。
 		</p>
 		<figure>
 			<figcaption>Pageクラスの作成</figcaption>
@@ -329,7 +333,6 @@ from multi_test as  m
 		<div class="filecaption">Sample2Page.htmlの内容</div>
 		<div class="wrappre">
 			<pre>
-
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
 	&lt;head&gt;
@@ -561,7 +564,7 @@ from multi_test as  m
 		&lt;/div&gt;
 	&lt;/body&gt;
 &lt;/html&gt;
-			</pre>
+		</pre>
 		</div>
 		<div class="filecaption">Sample2EditForm.htmlの内容</div>
 		<div class="wrappre">
@@ -1130,29 +1133,22 @@ S:jq.val()=1234.00,string
 	"contentType": "application/json; charset=utf-8",
 	"result": {
 		"linesPerPage": "10",
-		"hitCount": "3",
+		"hitCount": "2",
 		"code1": null,
 		"pageNo": "0",
 		"sortOrder": null,
-		<b>
-		"queryResult": [
+		<b>"queryResult": [
 			{
 				"rowNo": "1",
 				"code1": "aaa",
-				"multiTestId": 2
+				"multiTestId": 3
 			},
 			{
 				"rowNo": "2",
 				"code1": "bbb",
 				"multiTestId": 2
-			},
-			{
-				"rowNo": "3",
-				"code1": "ccc",
-				"multiTestId": 3
 			}
-		]
-		</b>
+		]</b>
 	},
 	"status": 0
 }
@@ -1292,11 +1288,70 @@ S:jq.val()=1234.00,string
 			</pre>
 		</div>
 		<p>
-			この機能を使う場合、テーブルの各カラムの幅をすべて指定する必要があります。
+			この機能を使う場合、以下のようにテーブルの各カラムの幅をすべて指定する必要があります。
 			固定カラム数を指定したテーブルクラスを含むフォームのHTMLを生成すると、
 			ヘッダの文字数から適当に絡む幅を指定した&lt;table&gt;タグが出力されます。
 			表示するデータに応じて各カラムの幅を調整してください。
 		</p>
+		<div class="filecaption">カラム幅を指定したテーブル</div>
+		<div class="wrappre">
+			<pre>
+&lt;table id=&quot;queryResult&quot;&gt;
+	&lt;thead&gt;
+		&lt;tr&gt;
+			&lt;th&gt;
+				No.
+			&lt;/th&gt;
+			&lt;th&gt;
+				&#12486;&#12461;&#12473;&#12488;
+			&lt;/th&gt;
+			&lt;th&gt;
+				&#25968;&#20516;
+			&lt;/th&gt;
+			&lt;th&gt;
+				&#26085;&#20184;
+			&lt;/th&gt;
+			&lt;th&gt;
+				&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;
+			&lt;/th&gt;
+			&lt;th&gt;
+				&#25805;&#20316;
+			&lt;/th&gt;
+		&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+		&lt;tr&gt;
+			&lt;td class=&quot;rowno&quot;&gt;
+				&lt;span id=&quot;queryResult[0].rowNo&quot;&gt;&lt;/span&gt;
+				&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].sampleId&quot; /&gt;
+				&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].createUserId&quot; /&gt;
+				&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].createTimestamp&quot; /&gt;
+				&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateUserId&quot; /&gt;
+				&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateTimestamp&quot; /&gt;
+			&lt;/td&gt;
+			&lt;td style=&quot;width: 300px;&quot;&gt;
+				&lt;a id=&quot;queryResult[0].updateButton&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;span id=&quot;queryResult[0].sampleText&quot;&gt;&lt;/span&gt;&lt;/a&gt;
+			&lt;/td&gt;
+			&lt;td style=&quot;width: 100px;&quot;&gt;
+				&lt;span id=&quot;queryResult[0].sampleNumeric&quot;&gt;&lt;/span&gt;
+			&lt;/td&gt;
+			&lt;td style=&quot;width: 110px;&quot;&gt;
+				&lt;span id=&quot;queryResult[0].sampleDate&quot;&gt;&lt;/span&gt;
+			&lt;/td&gt;
+			&lt;td style=&quot;width: 126px;&quot;&gt;
+				&lt;span id=&quot;queryResult[0].sampleSelect&quot;&gt;&lt;/span&gt;
+			&lt;/td&gt;
+			&lt;td style=&quot;width: 164px;&quot;&gt;
+				&lt;input type=&quot;button&quot; id=&quot;queryResult[0].viewButton&quot; value=&quot;&#34920;&#31034;&quot;&gt;
+				&lt;input type=&quot;button&quot; id=&quot;queryResult[0].referButton&quot; value=&quot;&#21442;&#29031;&#30331;&#37682;&quot;&gt;
+				&lt;input type=&quot;button&quot; id=&quot;queryResult[0].deleteButton&quot; value=&quot;&#21066;&#38500;&quot;&gt;
+			&lt;/td&gt;
+		&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+
+			</pre>
+		</div>
 		<figure>
 			<figcaption>カラム固定されたテーブル</figcaption>
 			<img src="table1.png" style="width:50%; height:50%;"/>

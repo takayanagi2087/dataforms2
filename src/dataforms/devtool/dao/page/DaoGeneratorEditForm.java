@@ -595,7 +595,9 @@ public class DaoGeneratorEditForm extends EditForm {
 					if (!p.equals(queryPackage)) {
 						implist.add(queryPackage + "." + queryClass);
 					}
-					if (listQueryPackage.equals(queryPackage) && queryClass.equals(listQueryClass)) {
+					logger.debug("listQuery=" + listQueryPackage + "," + listQueryClass);
+					logger.debug("editQuery=" + queryPackage + "," + queryClass);
+					if (listQueryPackage.equals(queryPackage) && listQueryClass.equals(queryClass)) {
 						javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass));
 					} else {
 						javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");

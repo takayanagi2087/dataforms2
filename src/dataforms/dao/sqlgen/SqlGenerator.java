@@ -908,6 +908,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 			if (table instanceof SubQuery) {
 				SubQuery sq = (SubQuery) table;
 				String sql = this.generateQuerySql(sq.getQuery(), false);
+				sql = sql.replaceAll("\n", "");
 				sq.setSql(sql);
 			}
 		}
@@ -944,9 +945,9 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		for (JoinInfo joinInfo: list) {
 			Table table = joinInfo.getJoinTable();
 			this.generateSubQuerySql(table);
-			sb.append(" ");
+//			sb.append(" ");
 			sb.append(joinInfo.getJoinType());
-			sb.append(" ");
+//			sb.append(" ");
 			sb.append(table.getTableName());
 			sb.append(this.getAsAliasSql());
 			sb.append(table.getAlias());

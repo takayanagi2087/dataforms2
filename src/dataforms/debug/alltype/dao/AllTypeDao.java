@@ -9,9 +9,10 @@ import org.apache.logging.log4j.Logger;
 import dataforms.dao.Dao;
 import dataforms.dao.Index;
 import dataforms.dao.JDBCConnectableObject;
-import dataforms.dao.JoinConditionInterface;
+import dataforms.dao.JoinConditionInterface1;
 import dataforms.dao.Query;
 import dataforms.dao.SubQuery;
+import dataforms.dao.Table;
 import dataforms.dao.condition.ConditionExpressionList;
 import dataforms.dao.condition.ConditionExpressionList.Operator;
 import dataforms.dao.sqlgen.SqlGenerator;
@@ -32,7 +33,6 @@ import net.arnx.jsonic.JSON;
  * 全データタイプデータアクセスオブジェクトクラス。
  *
  */
-@SuppressWarnings("deprecation")
 public class AllTypeDao extends Dao {
 
     /**
@@ -405,9 +405,9 @@ public class AllTypeDao extends Dao {
 		 * コンストラクタ。
 		 */
 		public TestQuery() {
-			SubQuery aliasSq = new SubQuery(new AliasQuery());
-			aliasSq.setAlias("msub");
-			SubQuery sumSq = new SubQuery(new SumQuery());
+//			AliasQuery aliasQuery = new AliasQuery();
+			SubQuery aliasSq = new AliasQuery().createSubQuery("msub");
+			SubQuery sumSq = new SumQuery().createSubQuery();
 			SubQuery countSq = new SubQuery(new CountQuery());
 			SubQuery minMaxSq = new SubQuery(new MinMaxQuery());
 			AllTypeAttachFileTable atable = new AllTypeAttachFileTable();
@@ -422,26 +422,25 @@ public class AllTypeDao extends Dao {
 			this.setFieldList(flist);
 			this.setMainTable(aliasSq);
 //			this.setLeftJoinTableList(new TableList(sumSq, countSq, minMaxSq, sqlSq));
-			JoinConditionInterface jci = (table, joinTable) -> {
-				// 無条件に結合条件を返すと、mainTableとの結合になる。
-				return table.getLinkFieldCondition("recordIdField", joinTable, joinTable.getAlias(), "recordIdField");
+			JoinConditionInterface1 jci = (joinTable) -> {
+				return aliasSq.getLinkFieldCondition("recordIdField", joinTable, joinTable.getAlias(), "recordIdField");
 			};
 			this.addLeftJoin(sumSq, "sumsq", jci);
 			this.addLeftJoin(countSq, "countsq", jci);
-			this.addRightJoin(minMaxSq, "minmaxsq", (table, joinTable) -> {
-				// mainTable以外との結合をしたい場合、以下の様に特定のテーブルのときのみ結合条件式を返す。
-				if ("countsq".equals(table.getAlias())) {
-					return table.getLinkFieldCondition("recordIdField", joinTable, joinTable.getAlias(), "recordIdField");
-				}
-				return null;
+			this.addRightJoin(minMaxSq, "minmaxsq", (joinTable) -> {
+				return countSq.getLinkFieldCondition("recordIdField", joinTable, joinTable.getAlias(), "recordIdField");
 			});
-			this.addInnerJoin(sqlSq, "sqlslsq", (table, joinTable) -> {
-				// mainTable以外との結合をしたい場合、以下の様に特定のテーブルのときのみ結合条件式を返す。
-				if ("minmaxsq".equals(table.getAlias())) {
-					return table.getLinkFieldCondition("recordIdField", joinTable, joinTable.getAlias(), "recordIdField");
-				}
-				return null;
+			this.addInnerJoin(sqlSq, "sqlslsq", (joinTable) -> {
+				return minMaxSq.getLinkFieldCondition("recordIdField", joinTable, joinTable.getAlias(), "recordIdField");
 			});
+		}
+	}
+
+	private static class TestQuery1 extends Query {
+		public TestQuery1() {
+			Table tbl = new TestQuery().createSubQuery();
+			this.setFieldList(tbl.getFieldList());
+			this.setMainTable(tbl);
 		}
 	}
 
@@ -450,9 +449,19 @@ public class AllTypeDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void subQueryTest() throws Exception {
-		TestQuery query = new TestQuery();
-		List<Map<String, Object>> list = this.executeQuery(query);
-		String json = JSON.encode(list, true);
-		logger.debug(() -> "testQueryResult=" + json);
+		{
+			TestQuery query = new TestQuery();
+			List<Map<String, Object>> list = this.executeQuery(query);
+			String json = JSON.encode(list, true);
+			logger.debug(() -> "testQueryResult=" + json);
+		}
+
+		{
+			TestQuery1 query = new TestQuery1();
+			List<Map<String, Object>> list = this.executeQuery(query);
+			String json = JSON.encode(list, true);
+			logger.debug(() -> "testQuery1Result=" + json);
+		}
+
 	}
 }

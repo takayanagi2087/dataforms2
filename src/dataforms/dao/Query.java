@@ -999,4 +999,25 @@ public class Query {
 		return dao.getWhereCondition(this, flist, p);
 	}
 
+
+	/**
+	 * サブクエリを作成します。
+	 * @param alias 別名。
+	 * @return サブクエリ。
+	 */
+	public SubQuery createSubQuery(final String alias) {
+		SubQuery ret = new SubQuery(this);
+		if (alias != null) {
+			ret.setAlias(alias);
+		}
+		return ret;
+	}
+
+	/**
+	 * サブクエリを作成します。
+	 * @return サブクエリ。
+	 */
+	public SubQuery createSubQuery() {
+		return this.createSubQuery(null);
+	}
 }

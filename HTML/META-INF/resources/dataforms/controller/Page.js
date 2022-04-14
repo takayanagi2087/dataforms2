@@ -524,7 +524,7 @@ class Page extends DataForms {
 	 * @param {String} msg ダイアログメッセージ。
 	 * @param {Functuion} func OKボタンが押された際の処理。
 	 */
-	alert(title, msg, func) {
+	async alert(title, msg, func) {
 		var dlg = this.getComponent("alertDialog");
 		if (title == null) {
 			dlg.title = MessagesUtil.getMessage("message.systemname");
@@ -532,10 +532,20 @@ class Page extends DataForms {
 			dlg.title = title;
 		}
 		dlg.message = msg;
-		dlg.okFunc = func;
-		dlg.showModal({
-			minHeight: 100
-		});
+		if (func != null) {
+			dlg.okFunc = func;
+			dlg.showModal({
+				minHeight: 100
+			});
+		} else {
+			let ret = new Promise((resolv) => {
+				dlg.okFunc = () => { resolv(true); };
+				dlg.showModal({
+					minHeight: 100
+				});
+			});
+			return ret;
+		}
 	}
 
 
@@ -546,19 +556,31 @@ class Page extends DataForms {
 	 * @param {Function} okFunc OKボタンのダイアログ。
 	 * @param {Function} cancelFunc キャンセルボタンのダイアログ。
 	 */
-	confirm(title, msg, okFunc, cancelFunc) {
+	async confirm(title, msg, okFunc, cancelFunc) {
 		var dlg = this.getComponent("confirmDialog");
 		if (title == null) {
 			dlg.title = MessagesUtil.getMessage("message.systemname");
 		} else {
 			dlg.title = title;
 		}
-		dlg.message = msg;
-		dlg.okFunc = okFunc;
-		dlg.cancelFunc = cancelFunc;
-		dlg.showModal({
-			minHeight: 100
-		});
+		if (okFunc == null && cancelFunc == null) {
+			let ret = new Promise((resolv) => {
+				dlg.message = msg;
+				dlg.okFunc = () => { resolv(true); };
+				dlg.cancelFunc = () => { resolv(false); };
+				dlg.showModal({
+					minHeight: 100
+				});
+			});
+			return ret;
+		} else {
+			dlg.message = msg;
+			dlg.okFunc = okFunc;
+			dlg.cancelFunc = cancelFunc;
+			dlg.showModal({
+				minHeight: 100
+			});
+		}
 	}
 
 	/**

@@ -134,6 +134,23 @@ class WebMethodForm extends Form {
 		}
 	}
 
+	/**
+	 * alertのasync/await対応テスト。
+	 */
+	async alertTest() {
+		logger.log("alertTest start");
+		let flg = await currentPage.alert(null, "Alert test");
+		logger.log("alertTest=" + flg);
+	}
+
+	/**
+	 * confirmのasync/await対応テスト。
+	 */
+	async confirmTest() {
+		logger.log("confirmTest start");
+		let flg = await currentPage.confirm(null, "Confirm test");
+		logger.log("confirmTest=" + flg);
+	}
 
 	/**
 	 * HTMLエレメントとの対応付けを行います。
@@ -168,6 +185,12 @@ class WebMethodForm extends Form {
 			this.callSubmitWithoutFileDownload();
 		});
 
+		this.get("alertTestButton").click(() => {
+			this.alertTest();
+		});
+		this.get("confirmTestButton").click(() => {
+			this.confirmTest();
+		});
 	}
 
 	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。

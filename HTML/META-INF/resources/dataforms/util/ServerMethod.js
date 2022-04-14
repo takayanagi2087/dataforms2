@@ -195,6 +195,10 @@ class ServerMethod {
 			logger.log("r.contentType=" + r.headers.get("Content-Type"));
 			this.contentType = r.headers.get("Content-Type");
 			this.headers = r.headers;
+			if (r.redirected) {
+				window.location.href = r.url;
+				return null;
+			}
 			if (r.ok) {
 				if (this.contentType != null) {
 					if (this.contentType.indexOf("application/json") >= 0) {

@@ -241,6 +241,7 @@ public class Page extends DataForms implements WebEntryPoint {
 			basicJsCache.add("/dataforms/util/StringUtil.js");
 			basicJsCache.add("/dataforms/util/NumberUtil.js");
 			basicJsCache.add("/dataforms/util/ServerMethod.js");
+			basicJsCache.add("/dataforms/util/WebMethod.js");
 			basicJsCache.add("/dataforms/util/SimpleDateFormat.js");
 
 			basicJsCache.addAll(this.findJsClassTree("dataforms.controller", WebComponent.class));

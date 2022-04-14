@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="mainDiv">
+			<form id="webMethodForm">
+				<div class="formHeader">WebMethodテストフォーム</div>
+				<table class="responsive">
+					<tbody>
+						<tr>
+							<th>text</th>
+							<td><input type="text" id="text" /></td>
+						</tr>
+						<tr>
+							<th>integer</th>
+							<td><input type="text" id="intValue" /></td>
+						</tr>
+						<tr>
+							<th>file</th>
+							<td><input type="file" id="file"/></td>
+						</tr>
+					</tbody>
+				</table>
+				<button id="serverMethodErrorButton" type="button">ServerMethod呼出エラー</button>
+				<button id="webMethodErrorButton" type="button">WebMethod呼出エラー</button>
+
+				<button id="executeJsonButton" type="button">execute jsonMethod</button>
+				<button id="executeDownloadButton" type="button">execute downloadFile</button>
+
+				<button id="submitJsonButton" type="button">submit jsonMethod</button>
+				<button id="submitDownloadButton" type="button">submit downloadFile</button>
+
+				<button id="submitWithoutFileJsonButton" type="button">submitWithoutFile jsonMethod</button>
+				<button id="submitWithoutFileDownloadButton" type="button">submitWithoutFile downloadFile</button>
+			</form>
+		</div>
+	</body>
+</html>

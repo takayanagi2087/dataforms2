@@ -76,12 +76,24 @@ class WebComponent {
 	}
 
 	/**
-	 * サーバメソッドを取得すします。
+	 * ServerMethodのインスタンスを取得します。
 	 * @param {String} method メソッド名。
-	 * @returns {ServerMethod} 同期サーバメソッド。
+	 * @returns {ServerMethod} ServerMethodのインスタンス。
 	 */
 	getServerMethod(method) {
 		return new ServerMethod(this.getUniqId() + "." + method);
+	}
+
+	/**
+	 * WebMethodを取得します。
+	 * <pre>
+	 * WebMethodはServerMethodのasync,await対応版です。
+	 * </pre>
+	 * @param {String} method メソッド名。
+	 * @returns {WebMethod} WebMethodのインスタンス。
+	 */
+	getWebMethod(method) {
+		return new WebMethod(this.getUniqId() + "." + method);
 	}
 
 	/**

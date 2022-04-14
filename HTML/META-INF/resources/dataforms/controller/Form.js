@@ -228,18 +228,31 @@ class Form extends WebComponent {
 	 * @param {String} method 送信先のメソッド.
 	 * @param {Function} func 応答処理 function(data)。
 	 */
-	submit(method, func) {
-		var form = this;
-		var f = this.get();
-		var m = new ServerMethod(this.getUniqId() + "." + method);
-		m.submit(f, function(data) {
+	async submit(method, func) {
+		let form = this;
+		let f = this.get();
+		if (func != null) {
+			let m = new ServerMethod(this.getUniqId() + "." + method);
+			m.submit(f, function(data) {
+				if (data instanceof Blob) {
+					// blobが来た場合。
+					form.downloadBlob(m, data);
+				} else {
+					func(data);
+				}
+			});
+			return null;
+		} else {
+			let m = this.getWebMethod(method);
+			let data = await m.submit(f);
 			if (data instanceof Blob) {
 				// blobが来た場合。
 				form.downloadBlob(m, data);
+				return null;
 			} else {
-				func(data);
+				return data;
 			}
-		});
+		}
 	}
 
 	/**
@@ -253,17 +266,30 @@ class Form extends WebComponent {
 	 * @param {String} method メソッド名。
 	 * @param {Function} func 応答処理 function(data)。
 	 */
-	submitWithoutFile(method, func) {
-		var form = this;
-		var m = new ServerMethod(this.getUniqId() + "." + method);
-		m.submitWithoutFile(form.get(), function(data) {
+	async submitWithoutFile(method, func) {
+		let form = this;
+		if (func != null) {
+			let m = new ServerMethod(this.getUniqId() + "." + method);
+			m.submitWithoutFile(form.get(), function(data) {
+				if (data instanceof Blob) {
+					// blobが来た場合。
+					form.downloadBlob(m, data);
+				} else {
+					func(data);
+				}
+			});
+			return null;
+		} else {
+			let m = this.getWebMethod(method);
+			let data = await m.submitWithoutFile(form.get());
 			if (data instanceof Blob) {
 				// blobが来た場合。
 				form.downloadBlob(m, data);
+				return null;
 			} else {
-				func(data);
+				return data;
 			}
-		});
+		}
 	}
 
 	/**
@@ -275,17 +301,29 @@ class Form extends WebComponent {
 	 * @param {String} method メソッド。
 	 * @param {Function} func 応答処理 function(data)。
 	 */
-	submitWithFile(method, func) {
-		var form = this;
-		var m = new ServerMethod(this.getUniqId() + "." + method);
-		m.submitWithFile(form.get(), function(data) {
+	async submitWithFile(method, func) {
+		let form = this;
+		if (func != null) {
+			let m = new ServerMethod(this.getUniqId() + "." + method);
+			m.submitWithFile(form.get(), function(data) {
+				if (data instanceof Blob) {
+					// blobが来た場合。
+					form.downloadBlob(m, data);
+				} else {
+					func(data);
+				}
+			});
+		} else {
+			let m = this.getWebMethod(method);
+			let data = await m.submitWithFile(form.get());
 			if (data instanceof Blob) {
 				// blobが来た場合。
 				form.downloadBlob(m, data);
+				return null;
 			} else {
-				func(data);
+				return data;
 			}
-		});
+		}
 	}
 
 	/**

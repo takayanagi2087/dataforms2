@@ -45,19 +45,18 @@ class PasswordRecenryptForm extends Form {
 	/**
 	 * 再暗号化処理。
 	 */
-	reencrypt() {
+	async reencrypt() {
 		if (this.validate()) {
 			this.parent.resetErrorStatus();
-			currentPage.confirm(null, MessagesUtil.getMessage("message.confirmreencrypted"), () => {
-				this.submit("reencrypt", (r) => {
-					this.parent.resetErrorStatus();
-					if (r.status == ServerMethod.INVALID) {
-						currentPage.setErrorInfo(this.getValidationResult(r), this);
-					} else {
-						currentPage.alert(null, r.result);
-					}
-				});
-			});
+			if (await currentPage.confirm(null, MessagesUtil.getMessage("message.confirmreencrypted"))) {
+				let r = await this.submit("reencrypt");
+				this.parent.resetErrorStatus();
+				if (r.status == ServerMethod.INVALID) {
+					currentPage.setErrorInfo(this.getValidationResult(r), this);
+				} else {
+					currentPage.alert(null, r.result);
+				}
+			}
 		}
 	}
 }

@@ -23,13 +23,11 @@ class FuncEditForm extends EditForm {
 	/**
 	 * データのエクスポートを行います。
 	 */
-	exportInitData() {
-		var thisForm = this;
-		currentPage.confirm(null, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"), function() {
-			thisForm.submit("export", function(data) {
-				currentPage.alert(null, data.result);
-			});
-		});
+	async exportInitData() {
+		if (await currentPage.confirm(null, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"))) {
+			let data = await this.submit("export");
+			currentPage.alert(null, data.result);
+		}
 	}
 
 
@@ -38,14 +36,13 @@ class FuncEditForm extends EditForm {
 	 */
 	toEditMode() {
 		super.toEditMode();
-		var thisForm = this;
-		var table = this.getComponent("funcTable");
-		this.find("[id$='\\.funcPath']").each(function() {
-			var f = thisForm.getComponent($(this).attr(thisForm.getIdAttribute()));
-			logger.log("id=" + f.id + ":" + $(this).val());
-			if ($(this).val().indexOf("/dataforms") == 0) {
-				var field = table.getSameRowField($(this), "funcName");
-				var namef = thisForm.getComponent(field.attr(thisForm.getIdAttribute()));
+		let table = this.getComponent("funcTable");
+		this.find("[id$='\\.funcPath']").each((_, tx) => {
+			let f = this.getComponent($(tx).attr(this.getIdAttribute()));
+			logger.log("id=" + f.id + ":" + $(tx).val());
+			if ($(tx).val().indexOf("/dataforms") == 0) {
+				let field = table.getSameRowField($(tx), "funcName");
+				let namef = this.getComponent(field.attr(this.getIdAttribute()));
 				f.lock(true);
 				namef.lock(true);
 			}

@@ -287,11 +287,6 @@ class WebMethod {
 	 * 指定したformをメソッドに対してPostします。
 	 * <pre>
 	 * 指定されたformの内容をサーバーメソッドに対してpostします。
-	 * サーバーメソッドの応答内容は、通常json形式です。
-	 * 通常はフォームの内容をform.serialize()メソッドで$.ajax()メソッドに渡します。
-	 * フォーム中に&lt;input type=&quot;file&quot; ...&gt;が存在する場合、
-	 * formのenctype,action,methodを適切に設定し、targetを非表示の&lt;iframe&gt;にして
-	 * submitを行うことにより、ファイル送信を実現しています。
 	 * </pre>
 	 *
 	 * @param {jQuery} form FROM。
@@ -304,9 +299,7 @@ class WebMethod {
 	/**
 	 * 指定したformを指定したメソッドに対してPostします、ファイルは送信されません。
 	 * <pre>
-	 * 指定されたformの内容をサーバーメソッドに対してpostします。
-	 * サーバーメソッドの応答内容は、通常json形式です。
-	 * フォームの内容をform.serialize()メソッドで取得しfetch APIに渡します。
+	 * 指定されたformの内容をサーバーメソッドに対してx-www-form-urlencoded形式でpostします。
 	 * </pre>
 	 * @param {jQuery} form FROM。
 	 * @returns {Promise} Promiseオブジェクト。
@@ -327,10 +320,7 @@ class WebMethod {
 	/**
 	 * 指定したformを指定したメソッドに対してPostします、ファイルは送信されません。
 	 * <pre>
-	 * 指定されたformの内容をサーバーメソッドに対してpostします。
-	 * サーバーメソッドの応答内容は、通常json形式です。
-	 * formのenctype,action,methodを適切に設定し、targetを非表示の&lt;iframe&gt;にして
-	 * submitを行うことにより、ファイル送信を実現しています。
+	 * 指定されたformの内容をサーバーメソッドに対してFormData形式でpostします。
 	 * </pre>
 	 * @param {jQuery} form FROM。
 	 * @returns {Promise} Promiseオブジェクト。

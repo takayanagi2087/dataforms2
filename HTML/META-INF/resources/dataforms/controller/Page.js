@@ -523,6 +523,7 @@ class Page extends DataForms {
 	 * @param {String} title ダイアログタイトル(nullの場合システム名称)。
 	 * @param {String} msg ダイアログメッセージ。
 	 * @param {Functuion} func OKボタンが押された際の処理。
+	 * @returns {Promise} funcがnullだった場合、trueのPromiseを返します。
 	 */
 	async alert(title, msg, func) {
 		var dlg = this.getComponent("alertDialog");
@@ -555,6 +556,7 @@ class Page extends DataForms {
 	 * @param {String} msg メッセージ。
 	 * @param {Function} okFunc OKボタンのダイアログ。
 	 * @param {Function} cancelFunc キャンセルボタンのダイアログ。
+	 * @returns {Promise} okFunc,calselFuncの両方がnullだった場合、true/falseのPromiseを返します。
 	 */
 	async confirm(title, msg, okFunc, cancelFunc) {
 		var dlg = this.getComponent("confirmDialog");

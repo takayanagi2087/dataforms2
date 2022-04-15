@@ -359,24 +359,21 @@ class EditForm extends Form {
 	 * 対応するEditFormのdeleteメソッドを呼び出し、保存処理を行います。
 	 * </pre>
 	 */
-	del() {
-		var systemName = MessagesUtil.getMessage("message.systemname");
-		var msg = MessagesUtil.getMessage("message.deleteconfirm");
-		var form = this;
-		currentPage.confirm(systemName, msg, function() {
-			form.submit("delete", function(result) {
-				form.parent.resetErrorStatus();
-				if (result.status == ServerMethod.SUCCESS) {
-					if (result.result != null && result.result.length > 0) {
-						currentPage.alert(null, result.result, function() {
-							form.changeStateForAfterUpdate();
-						});
-					} else {
-						form.changeStateForAfterUpdate();
-					}
+	async del() {
+		let systemName = MessagesUtil.getMessage("message.systemname");
+		let msg = MessagesUtil.getMessage("message.deleteconfirm");
+		if (await currentPage.confirm(systemName, msg)) {
+			let result = await this.submit("delete");
+			this.parent.resetErrorStatus();
+			if (result.status == ServerMethod.SUCCESS) {
+				if (result.result != null && result.result.length > 0) {
+					await currentPage.alert(null, result.result);
+					this.changeStateForAfterUpdate();
+				} else {
+					this.changeStateForAfterUpdate();
 				}
-			});
-		});
+			}
+		}
 	}
 }
 

@@ -179,22 +179,20 @@ class QueryResultForm extends Form {
 	/**
 	 * 選択データの削除を行います。
 	 */
-	deleteData() {
-		var systemName = MessagesUtil.getMessage("message.systemname");
-		var msg = MessagesUtil.getMessage("message.deleteconfirm");
-		var queryResultForm = this;
-		currentPage.confirm(systemName, msg, function() {
-			logger.log("selectedQueryString=" + queryResultForm.selectedQueryString);
-			var method = queryResultForm.getServerMethod("delete");
-			method.execute(queryResultForm.selectedQueryString, function(result) {
-				queryResultForm.parent.resetErrorStatus();
-				if (result.status == ServerMethod.SUCCESS) {
-					queryResultForm.changePage();
-				} else {
-					queryResultForm.parent.setErrorInfo(queryResultForm.getValidationResult(result), queryResultForm);
-				}
-			});
-		});
+	async deleteData() {
+		let systemName = MessagesUtil.getMessage("message.systemname");
+		let msg = MessagesUtil.getMessage("message.deleteconfirm");
+		if (await currentPage.confirm(systemName, msg)) {
+			logger.log("selectedQueryString=" + this.selectedQueryString);
+			let method = this.getWebMethod("delete");
+			let result = await method.execute(this.selectedQueryString);
+			this.parent.resetErrorStatus();
+			if (result.status == ServerMethod.SUCCESS) {
+				this.changePage();
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
+		}
 	}
 
 	/**

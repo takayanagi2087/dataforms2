@@ -30,9 +30,9 @@ class DataForms extends WebComponent {
 	 * @param {Object} formMap フォームマップ.
 	 */
 	initForm(formMap) {
-		for (var key in formMap) {
-			var f = formMap[key];
-			var form = this.newInstance(f);
+		for (let key in formMap) {
+			let f = formMap[key];
+			let form = this.newInstance(f);
 			form.init();
 		}
 	}
@@ -52,18 +52,18 @@ class DataForms extends WebComponent {
 	 * </pre>
 	 */
 	attach() {
-		var editMode = true;
-		var qf = this.get("queryForm");
+		let editMode = true;
+		let qf = this.get("queryForm");
 		if (qf.length > 0) {
 			qf.show();
 			editMode = false;
 		}
-		var rf = this.get("queryResultForm");
+		let rf = this.get("queryResultForm");
 		if (rf.length > 0) {
 			rf.hide();
 			editMode = false;
 		}
-		var ef = this.get("editForm");
+		let ef = this.get("editForm");
 		if (editMode) {
 			this.replaceState("editMode", "editMode", location.href);
 			ef.show();
@@ -74,7 +74,7 @@ class DataForms extends WebComponent {
 		super.attach();
 		if (qf.length == 0 && rf.length > 0) {
 			// QueryFormが無くQueryResultFormが存在する場合、先頭ページを表示する。
-			var f = this.getComponent("queryResultForm");
+			let f = this.getComponent("queryResultForm");
 			if (f != null) {
 				f.topPage();
 				rf.show();
@@ -82,14 +82,14 @@ class DataForms extends WebComponent {
 		}
 		if (editMode) {
 			// EditFormしか存在しない場合、更新対象データを読み込む。
-			var f = this.getComponent("editForm");
+			let f = this.getComponent("editForm");
 			if (f != null) {
 				f.initWithoutQuery();
 			}
 		}
 		// エラーメッセージ領域が無い場合自動的に追加する.
 		if (this.get("errorMessages").length == 0) {
-			var f = this.find("form:first");
+			let f = this.find("form:first");
 			f.before('<div class="errorMessages" ' + this.getIdAttribute() + '="errorMessages"><!--エラーメッセージ領域--></div>');
 		}
 		if (ef.length == 0) {
@@ -102,11 +102,11 @@ class DataForms extends WebComponent {
 	 * エラー状態をリセットする.
 	 */
 	resetErrorStatus() {
-		var area = this.get("errorMessages");
+		let area = this.get("errorMessages");
 		area.html("");
-		var ef = this.find('.errorField');
-		ef.each(function() {
-			$(this).removeClass('errorField');
+		let ef = this.find('.errorField');
+		ef.each((_, el) => {
+			$(el).removeClass('errorField');
 		});
 	}
 
@@ -123,14 +123,14 @@ class DataForms extends WebComponent {
 	 * @param {Form} form エラーの発生したフォーム。
 	 */
 	setErrorInfo(errors, form) {
-		var area = this.get("errorMessages");
+		let area = this.get("errorMessages");
 		this.resetErrorStatus();
-		for (var i = 0; i < errors.length; i++) {
+		for (let i = 0; i < errors.length; i++) {
 			area.append(errors[i].message + "<br/>");
-			var comp = form.get(this.selectorEscape(errors[i].fieldId));
+			let comp = form.get(this.selectorEscape(errors[i].fieldId));
 			comp.addClass("errorField");
-			var tag = comp.prop("tagName");
-			var type = comp.prop("type");
+			let tag = comp.prop("tagName");
+			let type = comp.prop("type");
 			logger.info("tag=" + tag + ",type=" + type);
 			if ("INPUT" == tag && type == "file") {
 				form.get(this.selectorEscape(errors[i].fieldId + "_sel")).addClass("errorField");
@@ -147,23 +147,23 @@ class DataForms extends WebComponent {
 	 * @reutrns {Boolean} QueryFormが存在しない場合falseを返します。
 	 */
 	toQueryMode() {
-		var qf = this.get("queryForm");
-		var qrf = this.get("queryResultForm");
+		let qf = this.get("queryForm");
+		let qrf = this.get("queryResultForm");
 		if (qf.length > 0 || qrf.length > 0) {
-			var queryForm = this.getComponent("queryForm");
+			let queryForm = this.getComponent("queryForm");
 			if (queryForm != null) {
 				qf.show();
 			}
-			var queryResultForm = this.getComponent("queryResultForm");
+			let queryResultForm = this.getComponent("queryResultForm");
 			if (queryResultForm != null) {
-				var rf = this.get("queryResultForm");
+				let rf = this.get("queryResultForm");
 				if (queryResultForm.queryResult != null) {
 					rf.show();
 				}
 			}
-			var editForm = this.getComponent("editForm");
+			let editForm = this.getComponent("editForm");
 			if (editForm != null) {
-				var ef = this.get("editForm");
+				let ef = this.get("editForm");
 				ef.hide();
 			}
 			return true;
@@ -180,14 +180,14 @@ class DataForms extends WebComponent {
 	 * @reutrns {Boolean} EditFormが存在しない場合falseを返します。
 	 */
 	toEditMode() {
-		var queryForm = this.getComponent("queryForm");
+		let queryForm = this.getComponent("queryForm");
 		if (queryForm != null) {
-			var qf = this.get("queryForm");
+			let qf = this.get("queryForm");
 			qf.hide();
 		}
-		var rf = this.get("queryResultForm");
+		let rf = this.get("queryResultForm");
 		rf.hide();
-		var ef = this.get("editForm");
+		let ef = this.get("editForm");
 		ef.show();
 		return (ef.length > 0);
 	}
@@ -244,13 +244,3 @@ class DataForms extends WebComponent {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-

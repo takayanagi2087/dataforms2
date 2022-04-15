@@ -1310,7 +1310,6 @@ public class DataFormsServlet extends HttpServlet {
 					((WebComponent) epoint).releaseWebEntryPoint();
 				}
 			} catch (ApplicationException e) {
-				// TODO:JsonResponseを戻り値にしないと、csrfエラーメッセージが表示されな問題を対策する必要がある。
 				logger.error(() -> e.getMessageKey() + ":" + e.getMessage(), e);
 				if (e.getResponseMode() == ResponseMode.JSON) {
 					// JsonResponseを返すメソッドで発生した場合、JsonResponseでエラー情報を返す。

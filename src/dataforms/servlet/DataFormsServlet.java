@@ -57,6 +57,7 @@ import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.exception.ApplicationException;
 import dataforms.exception.ApplicationException.ResponseMode;
+import dataforms.exception.AuthoricationException;
 import dataforms.mail.MailSender;
 import dataforms.menu.SideMenu;
 import dataforms.response.JsonResponse;
@@ -1281,7 +1282,7 @@ public class DataFormsServlet extends HttpServlet {
 						}
 						if (!wma.everyone()) {
 							if (!epoint.isAuthenticated(param)) {
-								throw new ApplicationException(epoint, "error.auth");
+								throw new AuthoricationException(epoint);
 							}
 						}
 						epoint.setRequest(req);

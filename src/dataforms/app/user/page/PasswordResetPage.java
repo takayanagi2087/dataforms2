@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.base.page.BasePage;
-import dataforms.exception.ApplicationException;
+import dataforms.exception.AuthoricationException;
 import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.CryptUtil;
@@ -52,10 +52,10 @@ public class PasswordResetPage extends BasePage {
 				logger.debug(() -> "userInfo=" + userInfo);
 				this.getPage().getRequest().getSession().setAttribute(PASSWORD_RESET_INFO, userInfo);
 			} catch (java.lang.IllegalArgumentException e) {
-				throw new ApplicationException(this.getPage(), "error.auth");
+				throw new AuthoricationException(this.getWebEntryPoint());
 			}
 		} else {
-			throw new ApplicationException(this.getPage(), "error.auth");
+			throw new AuthoricationException(this.getWebEntryPoint());
 		}
 		return super.getHtml(p);
 	}

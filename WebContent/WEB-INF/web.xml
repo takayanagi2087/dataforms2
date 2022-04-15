@@ -97,7 +97,9 @@
 		<param-name>initialize-package-list</param-name>
 		<param-value>
 			dataforms.app
+			,dataforms.debug
 			,test
+			,sample
 		</param-value>
 	</context-param>
 

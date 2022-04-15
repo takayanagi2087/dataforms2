@@ -51,67 +51,61 @@ class TableInfoForm extends Form {
 	 * @param {Object} result クラス情報。
 	 */
 	updateTableInfo(result) {
-		var page = this.parent.parent;
-		var resultForm = page.getComponent("queryResultForm");
+		let page = this.parent.parent;
+		let resultForm = page.getComponent("queryResultForm");
 		resultForm.updateTableInfo(result);
 	}
 
 	/**
 	 * DBテーブルの初期化を行います。
 	 */
-	initTable() {
-		var thisForm = this;
-		var systemName = MessagesUtil.getMessage("message.systemname");
-		currentPage.confirm(systemName, MessagesUtil.getMessage("message.initTableConfirm"), function() {
-			var clsname = thisForm.get("className").html();
-			var p = "className=" + clsname;
-			var method = thisForm.getServerMethod("initTable");
-			method.execute(p, function(result) {
-				if (result.status == ServerMethod.SUCCESS) {
-					thisForm.setFormData(result.result);
-					thisForm.updateTableInfo(result.result);
-				}
-			});
-		});
+	async initTable() {
+		let systemName = MessagesUtil.getMessage("message.systemname");
+		if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.initTableConfirm"))) {
+			let clsname = this.get("className").html();
+			let p = "className=" + clsname;
+			let method = this.getWebMethod("initTable");
+			let result = method.execute(p);
+			if (result.status == JsonResponse.SUCCESS) {
+				this.setFormData(result.result);
+				this.updateTableInfo(result.result);
+			}
+		}
 	}
 
 
 	/**
 	 * DBテーブルの削除を行います。
 	 */
-	dropTable() {
-		var thisForm = this;
-		var systemName = MessagesUtil.getMessage("message.systemname");
-		currentPage.confirm(systemName, MessagesUtil.getMessage("message.dropTableConfirm"), function() {
-			var clsname = thisForm.get("className").html();
-			var p = "className=" + clsname;
-			var method = thisForm.getServerMethod("dropTable");
-			method.execute(p, function(result) {
-				if (result.status == ServerMethod.SUCCESS) {
-					thisForm.setFormData(result.result);
-					thisForm.updateTableInfo(result.result);
-				}
-			});
-		});
+	async dropTable() {
+		let systemName = MessagesUtil.getMessage("message.systemname");
+		if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.dropTableConfirm"))) {
+			let clsname = this.get("className").html();
+			let p = "className=" + clsname;
+			let method = this.getWebMethod("dropTable");
+			let result = method.execute(p);
+			if (result.status == JsonResponse.SUCCESS) {
+				this.setFormData(result.result);
+				this.updateTableInfo(result.result);
+			}
+		}
 	}
 
 	/**
 	 * DBテーブルの再構築を行います。
 	 */
-	updateTable() {
-		var thisForm = this;
-		var systemName = MessagesUtil.getMessage("message.systemname");
-		currentPage.confirm(systemName, MessagesUtil.getMessage("message.updateTableConfirm"), function() {
-			var clsname = thisForm.get("className").html();
-			var p = "className=" + clsname;
-			var method = thisForm.getServerMethod("updateTable");
-			method.execute(p, function(result) {
-				if (result.status == ServerMethod.SUCCESS) {
-					thisForm.setFormData(result.result);
-					thisForm.updateTableInfo(result.result);
-				}
-			});
-		});
+	async updateTable() {
+		let systemName = MessagesUtil.getMessage("message.systemname");
+		if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.updateTableConfirm"))) {
+			let clsname = this.get("className").html();
+			let p = "className=" + clsname;
+			let method = this.getWebMethod("updateTable");
+			let result = await method.execute(p);
+			if (result.status == JsonResponse.SUCCESS) {
+				this.setFormData(result.result);
+				this.updateTableInfo(result.result);
+			}
+		}
 	}
 
 }

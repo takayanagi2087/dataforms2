@@ -56,6 +56,7 @@ import dataforms.dao.file.FileObject;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.exception.ApplicationException;
+import dataforms.exception.ApplicationException.ResponseMode;
 import dataforms.mail.MailSender;
 import dataforms.menu.SideMenu;
 import dataforms.response.JsonResponse;
@@ -1213,7 +1214,7 @@ public class DataFormsServlet extends HttpServlet {
 	 */
 	protected void doProcess(final HttpServletRequest req, final HttpServletResponse resp)
 			throws ServletException, IOException {
-		boolean isJsonResponse = false;
+//		boolean isJsonResponse = false;
 		req.setCharacterEncoding(encoding);
 		WebEntryPoint epoint = null;
 		try {
@@ -1253,11 +1254,11 @@ public class DataFormsServlet extends HttpServlet {
 						}
 						m = obj.getClass().getMethod(sp[sp.length - 1], Map.class);
 					}
-					Class<?> mt = m.getReturnType();
+/*					Class<?> mt = m.getReturnType();
 					if (JsonResponse.class.getName().equals(mt.getName())) {
 						isJsonResponse = true;
 					}
-
+*/
 					if (!EXEC_METHOD.equals(method)) {
 						if (!epoint.isValidRequest(param)) {
 							throw new ApplicationException(epoint, "error.csrftoken");
@@ -1310,13 +1311,11 @@ public class DataFormsServlet extends HttpServlet {
 			} catch (ApplicationException e) {
 				// TODO:JsonResponseを戻り値にしないと、csrfエラーメッセージが表示されな問題を対策する必要がある。
 				logger.error(() -> e.getMessageKey() + ":" + e.getMessage(), e);
-				if (isJsonResponse) {
-					Map<String, Object> einfo = new HashMap<String, Object>();
-					einfo.put("key", e.getMessageKey());
-					einfo.put("message", e.getMessage());
-					JsonResponse r = new JsonResponse(JsonResponse.APPLICATION_EXCEPTION, einfo);
-					r.send(resp);
+				if (e.getResponseMode() == ResponseMode.JSON) {
+					// JsonResponseを返すメソッドで発生した場合、JsonResponseでエラー情報を返す。
+					this.sendApplicationExceptionJson(resp, e);
 				} else {
+					// JsonResponse以外を返すメソッドの場合、エラーページにリダイレクションする。
 					this.redirectErrorPage((WebEntryPoint) epoint, req, resp, e.getMessage());
 				}
 			}
@@ -1324,7 +1323,22 @@ public class DataFormsServlet extends HttpServlet {
 			logger.error(() -> e.getMessage(), e);
 			resp.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);
 		}
+	}
 
+
+	/**
+	 * ApplicationErrorの内容をJSONで返す。
+	 * @param resp 応答情報。
+	 * @param e 発生した例外。
+	 * @throws Exception 例外。
+	 */
+	private void sendApplicationExceptionJson(final HttpServletResponse resp, final ApplicationException e) throws Exception {
+/*		Map<String, Object> einfo = new HashMap<String, Object>();
+		einfo.put("key", e.getMessageKey());
+		einfo.put("message", e.getMessage());
+		JsonResponse r = new JsonResponse(JsonResponse.APPLICATION_EXCEPTION, einfo);*/
+		JsonResponse r = e.getJsonResponse();
+		r.send(resp);
 	}
 
 

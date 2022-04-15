@@ -34,13 +34,12 @@ class EnumQueryForm extends QueryForm {
 	/**
 	 * データのエクスポートを行います。
 	 */
-	exportInitData() {
-		currentPage.confirm(null, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"), () => {
-			this.submit("export", (data) => {
-				currentPage.alert(null, data.result);
-			});
-		});
+	async exportInitData() {
+		let ret = await currentPage.confirm(null, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"));
+		if (ret) {
+			let data = await this.submit("export");
+			currentPage.alert(null, data.result);
+		}
 	}
-
 }
 

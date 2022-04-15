@@ -25,13 +25,12 @@ class UserQueryForm extends QueryForm {
 	/**
 	 * データのエクスポートを行います。
 	 */
-	exportInitData() {
-		var thisForm = this;
-		currentPage.confirm(null, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"), function() {
-			thisForm.submit("export", function(data) {
-				currentPage.alert(null, data.result);
-			});
-		});
+	async exportInitData() {
+		let ret = await currentPage.confirm(null, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"));
+		if (ret) {
+			let data = await this.submit("export");
+			await currentPage.alert(null, data.result);
+		}
 	}
 }
 

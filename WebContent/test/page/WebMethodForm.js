@@ -74,7 +74,7 @@ class WebMethodForm extends Form {
 			logger.log("result=");
 			logger.dir(result);
 			this.parent.resetErrorStatus();
-			if (result.status == WebMethod.SUCCESS) {
+			if (result.status == JsonResponse.SUCCESS) {
 				alert("OK");
 			} else {
 				this.parent.setErrorInfo(this.getValidationResult(result), this);
@@ -91,7 +91,7 @@ class WebMethodForm extends Form {
 			logger.log("result=");
 			logger.dir(result);
 			this.parent.resetErrorStatus();
-			if (result.status == WebMethod.SUCCESS) {
+			if (result.status == JsonResponse.SUCCESS) {
 				alert("OK");
 			} else {
 				this.parent.setErrorInfo(this.getValidationResult(result), this);
@@ -109,7 +109,7 @@ class WebMethodForm extends Form {
 			logger.log("result=");
 			logger.dir(result);
 			this.parent.resetErrorStatus();
-			if (result.status == WebMethod.SUCCESS) {
+			if (result.status == JsonResponse.SUCCESS) {
 				alert("OK");
 			} else {
 				this.parent.setErrorInfo(this.getValidationResult(result), this);
@@ -126,7 +126,7 @@ class WebMethodForm extends Form {
 			logger.log("result=");
 			logger.dir(result);
 			this.parent.resetErrorStatus();
-			if (result.status == WebMethod.SUCCESS) {
+			if (result.status == JsonResponse.SUCCESS) {
 				alert("OK");
 			} else {
 				this.parent.setErrorInfo(this.getValidationResult(result), this);

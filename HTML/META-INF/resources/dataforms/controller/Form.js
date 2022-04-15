@@ -217,16 +217,10 @@ class Form extends WebComponent {
 
 	/**
 	 * フォームのサブミットを行います。
-	 * <pre>
-	 * 通常、フォームのserialize()で得られたパラメータを$.ajax()に渡して、
-	 * 指定されたサーバメソッドを呼び出し、その結果を取得します。
-	 * フォーム中に&lt;input type=&quot;file&quot; ...&gt;が存在する場合、
-	 * 自動的にenctypeをmultipart/form-dataに設定してPOSTします。結果は非表示の
-	 * &lt;iframe&gt;に受け取り、jsonを解析後、funcに渡します。
-	 * </pre>
 	 *
 	 * @param {String} method 送信先のメソッド.
 	 * @param {Function} func 応答処理 function(data)。
+	 * @return {Promise} funcが指定されなかった場合、Promiseを返す。
 	 */
 	async submit(method, func) {
 		let form = this;
@@ -260,11 +254,12 @@ class Form extends WebComponent {
 	 * <pre>
 	 * 時間のかかるファイルPOSTを回避する目的で使用します。
 	 * サーバメソッドではファイルの処理はできません。
-	 * フォームのserialize()で得られたパラメータを$.ajax()に渡して、
-	 * 指定されたサーバメソッドを呼び出し、その結果を取得します。
+	 * フォームのserialize()で得られたパラメータをfetchに渡して、
+	 * 指定されたサーバメソッドを呼び出しその結果を取得します。
 	 * </pre>
 	 * @param {String} method メソッド名。
 	 * @param {Function} func 応答処理 function(data)。
+	 * @return {Promise} funcが指定されなかった場合、Promiseを返す。
 	 */
 	async submitWithoutFile(method, func) {
 		let form = this;
@@ -294,12 +289,10 @@ class Form extends WebComponent {
 
 	/**
 	 * ファイルフィールドも含めてsubmitします。
-	 * <pre>
-	 * 自動的にenctypeをmultipart/form-dataに設定してPOSTします。結果は非表示の
-	 * &lt;iframe&gt;に受け取り、jsonを解析後、funcに渡します。
-	 * </pre>
+	 *
 	 * @param {String} method メソッド。
 	 * @param {Function} func 応答処理 function(data)。
+	 * @return {Promise} funcが指定されなかった場合、Promiseを返す。
 	 */
 	async submitWithFile(method, func) {
 		let form = this;

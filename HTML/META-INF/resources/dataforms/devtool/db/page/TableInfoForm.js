@@ -65,7 +65,7 @@ class TableInfoForm extends Form {
 			let clsname = this.get("className").html();
 			let p = "className=" + clsname;
 			let method = this.getWebMethod("initTable");
-			let result = method.execute(p);
+			let result = await method.execute(p);
 			if (result.status == JsonResponse.SUCCESS) {
 				this.setFormData(result.result);
 				this.updateTableInfo(result.result);
@@ -83,7 +83,7 @@ class TableInfoForm extends Form {
 			let clsname = this.get("className").html();
 			let p = "className=" + clsname;
 			let method = this.getWebMethod("dropTable");
-			let result = method.execute(p);
+			let result = await method.execute(p);
 			if (result.status == JsonResponse.SUCCESS) {
 				this.setFormData(result.result);
 				this.updateTableInfo(result.result);

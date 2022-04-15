@@ -50,32 +50,6 @@ class WebMethod {
 	}
 
 	/**
-	 * Ajax呼び出しの成功を示します。
-	 * @constant WebMethod.SUCCESS
-	 */
-	static get SUCCESS() {
-		return 0;
-	}
-
-
-	/**
-	 * Ajax呼び出しのバリデーションエラーを示します。
-	 * @constant WebMethod.INVALID
-	 */
-	static get INVALID() {
-		return 1;
-	}
-
-
-	/**
-	 * アプリケーション例外を示します。
-	 * @constant WebMethod.APPLICATION_EXCEPTION
-	 */
-	static get APPLICATION_EXCEPTION() {
-		return 2;
-	}
-
-	/**
 	 * コンストラクタ。
 	 *
 	 * @param {String} m メソッド名。
@@ -100,12 +74,11 @@ class WebMethod {
 	 * <pre>
 	 * dataは以下の形式のオブジェクトです。
 	 * {
-	 *   status:サーバの処理結果(WebMethod.APPLICATION_EXCEPTION).
+	 *   status:サーバの処理結果(JsonResponse.APPLICATION_EXCEPTION).
 	 *   result:例外に対応したメッセージ。
 	 * }
 	 * </pre>
 	 * @param {Object} data 返却されたオブジェクト.
-	 * @param {Object} type 返却されたオブジェクトタイプ.
 	 */
 	onCatchApplicationException(data) {
 		// logger.log("onCatchApplicationException data=" + JSON.stringify(data));
@@ -224,7 +197,7 @@ class WebMethod {
 			let data = await r.json();
 			if (data.status != null) {
 				// JSONが帰ってきた場合はstatusを判定する。
-				if (data.status == WebMethod.SUCCESS || data.status == WebMethod.INVALID) {
+				if (data.status == JsonResponse.SUCCESS || data.status == JsonResponse.INVALID) {
 					return data;
 				} else {
 					this.onCatchApplicationException(data);

@@ -33,9 +33,9 @@ class Form extends WebComponent {
 	 * @param {Array} fieldList フィールドリスト。
 	 */
 	initField(fieldList) {
-		for (var i = 0; i < fieldList.length; i++) {
-			var f = fieldList[i];
-			var field = this.newInstance(f);
+		for (let i = 0; i < fieldList.length; i++) {
+			let f = fieldList[i];
+			let field = this.newInstance(f);
 			field.init();
 			this.fields[i] = field;
 		}
@@ -46,9 +46,9 @@ class Form extends WebComponent {
 	 * @param {Array} htmlTableList HTMLテーブルリスト.
 	 */
 	initHtmlTable(htmlTableList) {
-		for (var i = 0; i < htmlTableList.length; i++) {
-			var t = htmlTableList[i];
-			var tbl = this.newInstance(t);
+		for (let i = 0; i < htmlTableList.length; i++) {
+			let t = htmlTableList[i];
+			let tbl = this.newInstance(t);
 			tbl.init(this.formData);
 			this.htmlTables[i] = tbl;
 		}
@@ -62,18 +62,18 @@ class Form extends WebComponent {
 	 * </pre>
 	 */
 	setRequiredMark() {
-		for (var i = 0; i <this.fields.length; i++) {
-			var f = this.fields[i];
-//			var o = this.find('#' + this.selectorEscape(f.id));
-			var o = f.get();
+		for (let i = 0; i <this.fields.length; i++) {
+			let f = this.fields[i];
+//			let o = this.find('#' + this.selectorEscape(f.id));
+			let o = f.get();
 			if (o.length > 0) {
 				if (f.isRequired()) {
-					var e = f.getLabelElement();
+					let e = f.getLabelElement();
 					e.addClass("requiredFieldLabel");
 				}
 			}
 		}
-		for (var i = 0; i < this.htmlTables.length; i++) {
+		for (let i = 0; i < this.htmlTables.length; i++) {
 			this.htmlTables[i].setRequiredMark();
 		}
 	}
@@ -84,13 +84,13 @@ class Form extends WebComponent {
 	 */
 	setFormData(formData) {
 		this.formData = formData;
-		for (var i = 0; i < this.htmlTables.length; i++) {
-			var tbl = this.htmlTables[i];
+		for (let i = 0; i < this.htmlTables.length; i++) {
+			let tbl = this.htmlTables[i];
 			tbl.clear();
 			tbl.setFormData(formData);
 		}
-		for (var i = 0; i <this.fields.length; i++) {
-			var field = this.fields[i];
+		for (let i = 0; i <this.fields.length; i++) {
+			let field = this.fields[i];
 			field.setValue(formData[field.id]);
 		}
 		this.onCalc(null);
@@ -103,18 +103,18 @@ class Form extends WebComponent {
 	 */
 	setFieldValue(fid, value) {
 		if (this.isHtmlTableElementId(fid)) {
-			var tblid = this.getHtmlTableId(fid);
-			var colid = this.getHtmlTableColumnId(fid);
-			var table = this.getComponent(tblid);
-			var field = table.getComponent(colid);
+			let tblid = this.getHtmlTableId(fid);
+			let colid = this.getHtmlTableColumnId(fid);
+			let table = this.getComponent(tblid);
+			let field = table.getComponent(colid);
 			if (field != null) {
-				var f = new field.constructor();
+				let f = new field.constructor();
 				Object.assign(f, field);
 				f.id = fid;
 				f.setValue(value);
 			}
 		} else {
-			var field = this.getComponent(fid);
+			let field = this.getComponent(fid);
 			if (field != null) {
 				field.setValue(value);
 			}
@@ -126,20 +126,20 @@ class Form extends WebComponent {
 	 * @param {String} fid フィールドID。
 	 */
 	getFieldValue(fid) {
-		var ret = null;
+		let ret = null;
 		if (this.isHtmlTableElementId(fid)) {
-			var tblid = this.getHtmlTableId(fid);
-			var colid = this.getHtmlTableColumnId(fid);
-			var table = this.getComponent(tblid);
-			var field = table.getComponent(colid);
+			let tblid = this.getHtmlTableId(fid);
+			let colid = this.getHtmlTableColumnId(fid);
+			let table = this.getComponent(tblid);
+			let field = table.getComponent(colid);
 			if (field != null) {
-				var f = new field.constructor();
+				let f = new field.constructor();
 				Object.assign(f, field);
 				f.id = fid;
 				ret = f.getValue();
 			}
 		} else {
-			var field = this.getComponent(fid);
+			let field = this.getComponent(fid);
 			if (field != null) {
 				ret = field.getValue();
 			}
@@ -178,8 +178,8 @@ class Form extends WebComponent {
 	 */
 	attach() {
 		if (this.htmlPath != null) {
-			var fhtml = $("<div>" + this.additionalHtmlText + "</div>").find("form").html();
-			var obj = this.get();
+			let fhtml = $("<div>" + this.additionalHtmlText + "</div>").find("form").html();
+			let obj = this.get();
 			if (obj.length != 0) {
 				obj.html(fhtml);
 			} else {
@@ -188,16 +188,15 @@ class Form extends WebComponent {
 				this.parentDivId = obj.parents("div[" + this.getIdAttribute() +"]:first").attr(this.getIdAttribute());
 			}
 		} else {
-			var obj = $(this.convertSelector("#" + this.selectorEscape(this.id)));
+			let obj = $(this.convertSelector("#" + this.selectorEscape(this.id)));
 			this.parentDivId = obj.parents("div[" + this.getIdAttribute() +"]:first").attr(this.getIdAttribute());
 		}
 		this.remodelHtml();
 		super.attach();
 		this.get().addClass(this.id);
-		var thisForm = this;
 		this.get("newButton").prop("disabled" , false);
-		this.get("newButton").click(function() {
-			thisForm.newData();
+		this.get("newButton").click(() => {
+			this.newData();
 			return false;
 		});
 		this.setRequiredMark();
@@ -361,9 +360,9 @@ class Form extends WebComponent {
 	 * @deprecated submitのみでバイナリデータのダウンロードも可能になりました。(submitForDownloadは互換性維持のためにしばらく残します)
 	 */
 	submitForDownload(method, func) {
-		var form = this;
-		var m = new ServerMethod(this.getUniqId() + "." + method);
-		var rfunc = function(data) {
+		let form = this;
+		let m = new ServerMethod(this.getUniqId() + "." + method);
+		let rfunc = function(data) {
 			if (data instanceof Blob) {
 				// blobが来た場合。
 				form.downloadBlob(m, data);
@@ -371,7 +370,7 @@ class Form extends WebComponent {
 				// ダウンロードを期待したがJSONが来た場合。
 				if (func == null) {
 					func = function(ret) {
-						var systemName = MessagesUtil.getMessage("message.systemname");
+						let systemName = MessagesUtil.getMessage("message.systemname");
 						currentPage.alert(systemName, ret.result);
 					}
 				}
@@ -386,17 +385,17 @@ class Form extends WebComponent {
 	 * @returns {Array} 検証結果リスト。
 	 */
 	validateFields() {
-		var result = [];
-		for (var i = 0; i < this.fields.length; i++) {
-			var field = this.fields[i];
-			var e = field.validate();
+		let result = [];
+		for (let i = 0; i < this.fields.length; i++) {
+			let field = this.fields[i];
+			let e = field.validate();
 			if (e != null) {
 				result.push(e);
 			}
 		}
-		for (var i = 0; i < this.htmlTables.length; i++) {
-			var r = this.htmlTables[i].validate();
-			for (var n = 0; n < r.length; n++) {
+		for (let i = 0; i < this.htmlTables.length; i++) {
+			let r = this.htmlTables[i].validate();
+			for (let n = 0; n < r.length; n++) {
 				result.push(r[n]);
 			}
 		}
@@ -411,7 +410,7 @@ class Form extends WebComponent {
 	 * @returns {Array} バリデーションの結果。
 	 */
 	validateForm() {
-		var ret = [];
+		let ret = [];
 		return ret;
 	}
 
@@ -426,7 +425,7 @@ class Form extends WebComponent {
 		if (!this.clientValidation) {
 			return true;
 		}
-		var result = this.validateFields();
+		let result = this.validateFields();
 		if (result.length == 0) {
 			result = this.validateForm();
 		}
@@ -450,10 +449,10 @@ class Form extends WebComponent {
 	 * @returns {Array} バリデーション結果。
 	 */
 	getValidationResult(result) {
-		var errors = [];
-		for (var i = 0; i < result.result.length; i++) {
-			var comp = this.getComponent(result.result[i].fieldId);
-			var msg = result.result[i].message.replace("{0}", comp.label);
+		let errors = [];
+		for (let i = 0; i < result.result.length; i++) {
+			let comp = this.getComponent(result.result[i].fieldId);
+			let msg = result.result[i].message.replace("{0}", comp.label);
 			errors.push(new ValidationError(result.result[i].fieldId, msg));
 		}
 		return errors;
@@ -464,12 +463,11 @@ class Form extends WebComponent {
 	 * @param {Boolean} lk ロックする場合true.
 	 */
 	lockFields(lk) {
-		var result = [];
-		for (var i = 0; i < this.fields.length; i++) {
-			var field = this.fields[i];
+		for (let i = 0; i < this.fields.length; i++) {
+			let field = this.fields[i];
 			field.lock(lk);
 		}
-		for (var i = 0; i < this.htmlTables.length; i++) {
+		for (let i = 0; i < this.htmlTables.length; i++) {
 			this.htmlTables[i].lockFields(lk);
 		}
 	}
@@ -479,7 +477,7 @@ class Form extends WebComponent {
 	 */
 	newData() {
 		this.parent.toEditMode();
-		var editForm = this.parent.getComponent("editForm");
+		let editForm = this.parent.getComponent("editForm");
 		editForm.newData();
 	}
 
@@ -499,9 +497,9 @@ class Form extends WebComponent {
 	 * フォーム中のデータをクリアします。
 	 */
 	clearData() {
-		var data = {};
-		for (var i = 0; i < this.htmlTables.length; i++) {
-			var tbl = this.htmlTables[i];
+		let data = {};
+		for (let i = 0; i < this.htmlTables.length; i++) {
+			let tbl = this.htmlTables[i];
 			data[tbl.id] = [];
 		}
 		this.setFormData(data);
@@ -513,7 +511,7 @@ class Form extends WebComponent {
 	 * @param {String} val 値。
 	 */
 	setHiddenField(field, val) {
-		var hid = this.find('#' + field);
+		let hid = this.find('#' + field);
 		if (hid.length == 0) {
 			this.get().append("<input type='hidden' " + this.getIdAttribute() + "='" + field + "' name='" + field + "' value='" + val + "'>");
 			hid = this.find('#' + field);

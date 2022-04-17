@@ -7,7 +7,7 @@
 /**
  * 現在のページインスタンスです。
  */
-var currentPage = null;
+let currentPage = null;
 
 /**
  * consoleのコピーです。
@@ -16,7 +16,7 @@ var currentPage = null;
  * loggerを使用すると、web.xmlのclient-log-levelの設定で、ログレベルの変更が可能です。
  * </pre>
  */
-var logger = null;
+let logger = null;
 
 
 /**
@@ -173,18 +173,18 @@ class Page extends DataForms {
 	 * @param mainDiv {jQuery} ページのmainDivのjQueryオブジェクト。
 	 */
 	wrapFrame(frame, frameMainDiv, mainDiv) {
-		var p = mainDiv.parent();
-		var div = mainDiv;
-		frameMainDiv.prevAll().each(function() {
-			div.before($(this));
-			div = $(this);
+		let p = mainDiv.parent();
+		let div = mainDiv;
+		frameMainDiv.prevAll().each((_, el) => {
+			div.before($(el));
+			div = $(el);
 		});
 		div = mainDiv;
-		frameMainDiv.nextAll().each(function() {
-			div.after($(this));
-			div = $(this);
+		frameMainDiv.nextAll().each((_, el) => {
+			div.after($(el));
+			div = $(el);
 		});
-		var fparent = frameMainDiv.parent();
+		let fparent = frameMainDiv.parent();
 		logger.log(this.getIdAttribute() + "=" + fparent.attr(this.getIdAttribute()));
 		if (fparent.attr(this.getIdAttribute()) != "rootDiv") {
 			logger.log("parent.length=" + fparent.length);
@@ -204,16 +204,17 @@ class Page extends DataForms {
 	 */
 	layout() {
 		// logger.log("this.frameBody=" + this.frameBody);
-		var frame = $("<div " + this.getIdAttribute() + "=\"rootDiv\">" + this.frameBody + "</div>");
+		let frame = $("<div " + this.getIdAttribute() + "=\"rootDiv\">" + this.frameBody + "</div>");
 		this.wrapFrame(frame, frame.find(this.convertSelector("#mainDiv")), $(this.convertSelector("#mainDiv")));
-		var head = $("<div>" + this.frameHead + "</div>");
-		// /frame/のパス調整。
-		head.find("link[rel='stylesheet'][href*='/frame/']").each(function() {
-			var href = $(this).attr("href");
-			$(this).attr("href", href.replace(/^.*\/frame\//, currentPage.contextPath + "/frame/"));
+		let head = $("<div>" + this.frameHead + "</div>");
+		// Frame.htmlのcssパス調整
+		head.find("link[rel='stylesheet'][href*='/frame/']").each((_, el) => {
+			let href = $(el).attr("href");
+			$(el).attr("href", href.replace(/^.*\/frame\//, currentPage.contextPath + "/frame/"));
+			logger.log("frame css href=" + href + "->" + $(this).attr("el"));
 		});
 		$("head").append(head.html());
-		var systemName = MessagesUtil.getMessage("message.systemname");
+		let systemName = MessagesUtil.getMessage("message.systemname");
 		if (systemName != null) {
 			$(this.convertSelector('#systemName')).html(systemName);
 		}
@@ -233,9 +234,9 @@ class Page extends DataForms {
 	 */
 	initDialog(dialogList) {
 		// ダイアログの初期化.
-		for (var key in dialogList) {
-			var dlgclass = dialogList[key];
-			var dlg = this.newInstance(dlgclass);
+		for (let key in dialogList) {
+			let dlgclass = dialogList[key];
+			let dlg = this.newInstance(dlgclass);
 			dlg.htmlPath = dlgclass.path + ".html";
 			dlg.init();
 		}
@@ -314,7 +315,7 @@ class Page extends DataForms {
 	onBackButton(event) {
 		logger.log("popstate=" + event.originalEvent.state);
 		if (event.originalEvent.state) {
-			var editForm = this.getComponent("editForm");
+			let editForm = this.getComponent("editForm");
 			if (editForm != null) {
 				if (editForm.get().is(":visible")) {
 					editForm.back();
@@ -328,18 +329,17 @@ class Page extends DataForms {
 	 * ブラウザの戻るボタンの設定を行います。
 	 */
 	configureBrowserBackButton() {
-		var thisPage = this;
 		logger.log("browserBackButton=" + this.browserBackButton);
 		if (this.browserBackButton == "disabled") {
 			history.pushState("disableBack", "disableBack", location.href);
-			$(window).on("popstate", function(event){
+			$(window).on("popstate", (event) => {
 				if (!event.originalEvent.state){
-					thisPage.onDisabledBackButton(event);
+					this.onDisabledBackButton(event);
 				}
 			});
 		} else {
-			$(window).on("popstate", function(event){
-				thisPage.onBackButton(event);
+			$(window).on("popstate", (event) => {
+				this.onBackButton(event);
 			});
 		}
 	}
@@ -347,57 +347,54 @@ class Page extends DataForms {
 	/**
 	 * ページの初期化処理を行います。
 	 */
-	init() {
+	async init() {
 		super.init();
 		this.configureLogger();
 		logger.debug("queryString=" + window.location.search);
 		logger.info("language=" + this.getLanguage());
 		$.datepicker.setDefaults($.datepicker.regional[this.getLanguage()]);
-		var thisPage = this;
 		// ページの初期化.
-		var method = new ServerMethod("getPageInfo");
-		method.execute("", function(result) {
-			for (var key in result.result) {
-				thisPage[key] = result.result[key];
+		let method = new WebMethod("getPageInfo");
+		let result = await method.execute("");
+		for (let key in result.result) {
+			this[key] = result.result[key];
+		}
+		this.configureLogLevel();
+		this.configureBrowserBackButton();
+		//メッセージユーティリティの初期化.
+		MessagesUtil.init(this.messageMap);
+		if (!this.noFrame) {
+			this.layout();
+		}
+		// 各フォームの初期化
+		this.initForm(this.formMap);
+		// ダイアログの初期化
+		this.initDialog(this.dialogMap);
+		// バージョン情報などを表示。
+		$(this.convertSelector("#dataformsVersion")).html(this.dataformsVersion);
+		// クッキーチェック
+		if (this.cookieCheck) {
+			this.setCookie("cookiecheck", "true");
+			let cookiecheck = this.getCookie("cookiecheck");
+			logger.log("cookiecheck=" + cookiecheck);
+			if (cookiecheck != "true") {
+				alert(MessagesUtil.getMessage("error.cookienotsupport"));
 			}
-			thisPage.configureLogLevel();
-			thisPage.configureBrowserBackButton();
-			//メッセージユーティリティの初期化.
-			MessagesUtil.init(thisPage.messageMap);
-
-			if (!thisPage.noFrame) {
-				thisPage.layout();
-			}
-			// 各フォームの初期化
-			thisPage.initForm(thisPage.formMap);
-			// ダイアログの初期化
-			thisPage.initDialog(thisPage.dialogMap);
-			// バージョン情報などを表示。
-			$(thisPage.convertSelector("#dataformsVersion")).html(thisPage.dataformsVersion);
-			// クッキーチェック
-			if (thisPage.cookieCheck) {
-				thisPage.setCookie("cookiecheck", "true");
-				var cookiecheck = thisPage.getCookie("cookiecheck");
-				logger.log("cookiecheck=" + cookiecheck);
-				if (cookiecheck != "true") {
-					alert(MessagesUtil.getMessage("error.cookienotsupport"));
-				}
-				thisPage.setCookie("cookiecheck", "");
-			}
-			//
-			thisPage.attach();
-			$(thisPage.convertSelector("#mainDiv")).addClass("mainDiv");
-		});
+			this.setCookie("cookiecheck", "");
+		}
+		//
+		this.attach();
+		$(this.convertSelector("#mainDiv")).addClass("mainDiv");
 	}
 
 	/**
 	 * エレメントとの対応付けを行います。
 	 */
 	attach() {
-		var thisPage = this;
+		let thisPage = this;
 		super.attach();
-		$(this.convertSelector("#showMenuButton")).click(function() {
-			var menu = $(thisPage.convertSelector("#menuDiv"));
+		$(this.convertSelector("#showMenuButton")).click(() => {
+			let menu = $(thisPage.convertSelector("#menuDiv"));
 			if (menu.length == 0) {
 				;
 			} else {
@@ -405,9 +402,9 @@ class Page extends DataForms {
 			}
 			return false;
 		});
-		$("body").click(function() {
+		$("body").click(() => {
 			if ($(thisPage.convertSelector("#showMenuButton")).is(":visible")) {
-				var menu = $(thisPage.convertSelector("#menuDiv"));
+				let menu = $(thisPage.convertSelector("#menuDiv"));
 				if (menu.is(":visible")) {
 					menu.toggle("blind");
 				}
@@ -427,12 +424,12 @@ class Page extends DataForms {
 			for (let key in cmp.componentMap) {
 				let ch = cmp.componentMap[key];
 				if (func(ch)) {
-					ch.find("[data-id]").each(function() {
-						let id = $(this).attr("id");
+					ch.find("[data-id]").each((_, el) => {
+						let id = $(el).attr("id");
 						if (id == null) {
-							let realId = ch.realId + "." + $(this).attr("data-id");
+							let realId = ch.realId + "." + $(el).attr("data-id");
 							logger.log("realId=" + realId);
-							$(this).attr("id", realId);
+							$(el).attr("id", realId);
 						}
 					});
 				} else {
@@ -448,11 +445,11 @@ class Page extends DataForms {
 	resolveIdAttr() {
 		this.setRealIdToElement(this, (cmp) => { return (cmp instanceof Form);});
 		this.setRealIdToElement(this, (cmp) => { return (cmp instanceof Dialog);});
-		$("[data-id]").each(function() {
-			let id = $(this).attr("id");
+		$("[data-id]").each((_, el) => {
+			let id = $(el).attr("id");
 			if (id == null) {
-				logger.log("data-id=" + $(this).attr("data-id"));
-				$(this).attr("id", $(this).attr("data-id"));
+				logger.log("data-id=" + $(el).attr("data-id"));
+				$(el).attr("id", $(el).attr("data-id"));
 			}
 		});
 	}
@@ -477,7 +474,7 @@ class Page extends DataForms {
 	 * ログインダイアログを表示します。
 	 */
 	showLoginDialog() {
-		var dlg = this.getComponent("loginDialog");
+		let dlg = this.getComponent("loginDialog");
 		dlg.showModal();
 	}
 
@@ -526,7 +523,7 @@ class Page extends DataForms {
 	 * @returns {Promise} funcがnullだった場合、trueのPromiseを返します。
 	 */
 	async alert(title, msg, func) {
-		var dlg = this.getComponent("alertDialog");
+		let dlg = this.getComponent("alertDialog");
 		if (title == null) {
 			dlg.title = MessagesUtil.getMessage("message.systemname");
 		} else {
@@ -559,7 +556,7 @@ class Page extends DataForms {
 	 * @returns {Promise} okFunc,calselFuncの両方がnullだった場合、true/falseのPromiseを返します。
 	 */
 	async confirm(title, msg, okFunc, cancelFunc) {
-		var dlg = this.getComponent("confirmDialog");
+		let dlg = this.getComponent("confirmDialog");
 		if (title == null) {
 			dlg.title = MessagesUtil.getMessage("message.systemname");
 		} else {
@@ -589,7 +586,7 @@ class Page extends DataForms {
 	 * ブラウザタイプを取得します。
 	 */
 	getBrowserType() {
-		var ua = window.navigator.userAgent.toLowerCase();
+		let ua = window.navigator.userAgent.toLowerCase();
 		logger.log("ua=" + ua);
 		if (ua.indexOf("edge") >= 0) {
 			return Page.BROWSER_EDGE;

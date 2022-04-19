@@ -11,7 +11,7 @@
  * <pre>
  * HTML中の各要素の情報を保持するオブジェクトの基本クラスです。
  * ID、親の要素へのポインタと子要素のマップを持ちます。
- * var 1.xxでは複数のFormクラスにを1ページにまとめると
+ * ver 1.xxでは複数のFormクラスにを1ページにまとめると
  * ページ内でIDが重複してしまうという問題がありました。
  * WebComponent.js以下のクラスではコンポーネントの階層を判定して
  * IDの重複があっても動作に問題発生しないようにしてあります。
@@ -47,7 +47,7 @@ class WebComponent {
 	 * @returns {Form} 親フォーム。
 	 */
 	getParentForm() {
-		var f = this;
+		let f = this;
 		while (!(f instanceof Form)) {
 			f = f.parent;
 		}
@@ -60,7 +60,7 @@ class WebComponent {
 	 * @returns {DataForms} 親となるページまたはダイアログ。
 	 */
 	getParentDataForms() {
-		var f = this;
+		let f = this;
 		while (!(f instanceof DataForms)) {
 			f = f.parent;
 		}
@@ -79,6 +79,7 @@ class WebComponent {
 	 * ServerMethodのインスタンスを取得します。
 	 * @param {String} method メソッド名。
 	 * @returns {ServerMethod} ServerMethodのインスタンス。
+	 * @deprecated async/awaitに対応した、getWebMethodを使用してください。
 	 */
 	getServerMethod(method) {
 		return new ServerMethod(this.getUniqId() + "." + method);
@@ -118,7 +119,7 @@ class WebComponent {
 	 */
 	convertSelector(q) {
 		if (currentPage.useUniqueId) {
-			var r = q.replace(/#([0-9A-Za-z\-_:.\\[\]]+)/g, "[data-id='$1']");
+			let r = q.replace(/#([0-9A-Za-z\-_:.\\[\]]+)/g, "[data-id='$1']");
 			r = r.replace(/\[id([\$\~\!\*\^]?)=['"](.*)['"]\]/g, "[data-id$1='$2']");
 			return r;
 		} else {
@@ -151,10 +152,10 @@ class WebComponent {
 	 * @returns {jQuery} jQueryオブジェクト。
 	 */
 	get(id) {
-		var ret = null;
+		let ret = null;
 		if (this.parent == null) {
 			// ページトップの場合の検索
-			var sel = "#" + this.selectorEscape(this.id);
+			let sel = "#" + this.selectorEscape(this.id);
 			if (id != null) {
 				sel = sel + " #" + id;
 			}
@@ -164,7 +165,7 @@ class WebComponent {
 		} else {
 			if (currentPage.useUniqueId && this.idPrepared) {
 				// ユニークIDが有効でidアトリビュート設定済
-				var sel = "#" + this.selectorEscape(this.realId);
+				let sel = "#" + this.selectorEscape(this.realId);
 				if (id != null) {
 					sel += " " + this.convertSelector("#" + id);
 				}
@@ -172,7 +173,7 @@ class WebComponent {
 //				logger.log("B:" + this.id + ":get(" + id + ") sel=" + sel + ",sel.length=" + ret.length);
 			} else {
 				// ユニークIDが無効またはdアトリビュート設定前
-				var sel = this.getUniqSelector();
+				let sel = this.getUniqSelector();
 				if (id != null) {
 					sel += " #" + id;
 				}
@@ -190,8 +191,8 @@ class WebComponent {
 	 * @returns {WebComponent} 作成されたインスタンス。
 	 */
 	newInstance(clazz) {
-		var classname = clazz.jsClass;
-		var obj = eval("new " + classname + "()");
+		let classname = clazz.jsClass;
+		let obj = eval("new " + classname + "()");
 		Object.assign(obj, clazz);
 		obj.parent = this;
 		this.componentMap[obj.id] = obj;
@@ -204,7 +205,7 @@ class WebComponent {
 	 * @returns {Boolean} HtmlTable中の要素の場合true.
 	 */
 	isHtmlTableElementId(id) {
-		var ret = false;
+		let ret = false;
 		if (id.match(/^[A-Za-z0-9]+\[[0-9]+\]\.[A-Za-z0-9]+$/)) {
 			ret = true;
 		}
@@ -218,7 +219,7 @@ class WebComponent {
 	 */
 	getHtmlTableId(id) {
 		if (this.isHtmlTableElementId(id)) {
-			var sp = id.split(/[\[\]\.]/);
+			let sp = id.split(/[\[\]\.]/);
 			return sp[0];
 		} else {
 			return null;
@@ -232,8 +233,8 @@ class WebComponent {
 	 */
 	getHtmlTableColumnId(id) {
 		if (this.isHtmlTableElementId(id)) {
-			var sp = id.split(/[\[\]\.]/);
-			var lidx = sp.length - 1;
+			let sp = id.split(/[\[\]\.]/);
+			let lidx = sp.length - 1;
 			if (lidx >= 0) {
 				return sp[lidx];
 			} else {
@@ -250,13 +251,13 @@ class WebComponent {
 	 * @returns {WebComponent} 所有オブジェクトのインスタンス。
 	 */
 	getComponent(id) {
-		var tblid = this.getHtmlTableId(id);
+		let tblid = this.getHtmlTableId(id);
 		if (tblid != null) {
-			var colid = this.getHtmlTableColumnId(id);
-			var tbl = this.componentMap[tblid];
-			for (var i = 0; i <  tbl.fields.length; i++) {
+			let colid = this.getHtmlTableColumnId(id);
+			let tbl = this.componentMap[tblid];
+			for (let i = 0; i <  tbl.fields.length; i++) {
 				if (tbl.fields[i].id == colid) {
-					var tblfield = new tbl.fields[i].constructor();
+					let tblfield = new tbl.fields[i].constructor();
 					Object.assign(tblfield, tbl.fields[i]);
 					tblfield.id = id;
 					return tblfield;
@@ -284,8 +285,8 @@ class WebComponent {
 	 * @returns {String} インデント文字列。
 	 */
 	getIndent() {
-		var t = "";
-		var p = this;
+		let t = "";
+		let p = this;
 		while (p != null) {
 			t += "\t";
 			p = p.parent;
@@ -310,11 +311,11 @@ class WebComponent {
 				let arg = this.id.match(/\[\d\]/);
 				this.realId = this.realId.replace(/\[0\]/, arg);
 			}
-			var jq = null;
+			let jq = null;
 			if (this.parent == null) {
 				jq = $(this.convertSelector('#' + this.selectorEscape(this.id)));
 			} else {
-				var sel = this.getUniqSelector();
+				let sel = this.getUniqSelector();
 				jq = $(this.convertSelector(sel));
 			}
 			jq.attr("id", this.realId);
@@ -330,7 +331,7 @@ class WebComponent {
 	 */
 	attach() {
 		this.setRealId();
-		for (var id in this.componentMap) {
+		for (let id in this.componentMap) {
 			this.componentMap[id].attach();
 		}
 	}
@@ -341,13 +342,13 @@ class WebComponent {
 	 * @returns {String} Cookie値。
 	 */
 	getCookie(name) {
-	    var result = null;
-	    var cookieName = name + '=';
-	    var allcookies = document.cookie;
+	    let result = null;
+	    let cookieName = name + '=';
+	    let allcookies = document.cookie;
 		logger.log("getCookie():allcookies = " + allcookies);
-	    var sp = allcookies.split(";");
-	    for (var i = 0; i < sp.length; i++) {
-	        var c = sp[i].trim();
+	    let sp = allcookies.split(";");
+	    for (let i = 0; i < sp.length; i++) {
+	        let c = sp[i].trim();
 	    	if (c.indexOf(cookieName) == 0) {
 	    		result = c.substring(cookieName.length);
 	    		break;
@@ -362,10 +363,10 @@ class WebComponent {
 	 * @param {String} val Cookie値。
 	 */
 	setCookie(name, val) {
-		var now = new Date();
-		var expires = new Date();
+		let now = new Date();
+		let expires = new Date();
 		expires.setTime(now.getTime() + 365*24*60*60*1000);
-		var x = name + "=" + encodeURIComponent(val) + "; expires=" + expires.toGMTString() + "; path=" + currentPage.contextPath + ";";
+		let x = name + "=" + encodeURIComponent(val) + "; expires=" + expires.toGMTString() + "; path=" + currentPage.contextPath + ";";
 		logger.log("setCookie():cookie x = " + x);
 		document.cookie = x;
 		logger.log("setCookie():document.cookie=" + document.cookie);
@@ -379,8 +380,8 @@ class WebComponent {
 	 * @returns {String} jQueryセレクタ。
 	 */
 	getUniqSelector() {
-		var t = this;
-		var sel = "";
+		let t = this;
+		let sel = "";
 		while (!(t instanceof DataForms)) {
 			sel = "#" + this.selectorEscape(t.id) + " " + sel;
 			if (t instanceof Form) {
@@ -392,8 +393,8 @@ class WebComponent {
 			t = t.parent;
 		}
 		sel = "#" + this.selectorEscape(t.id) + " " + sel;
-//		var ret = sel.trim();
-		var ret = $.trim(sel);
+//		let ret = sel.trim();
+		let ret = $.trim(sel);
 		return ret;
 	}
 
@@ -406,8 +407,8 @@ class WebComponent {
 	 *  * @returns {String} 一意なID。
 	 */
 	getUniqId() {
-		var t = this;
-		var sel = "";
+		let t = this;
+		let sel = "";
 		if (t instanceof HtmlTable) {
 			while (!(t instanceof DataForms)) {
 				if (sel.length > 0) {

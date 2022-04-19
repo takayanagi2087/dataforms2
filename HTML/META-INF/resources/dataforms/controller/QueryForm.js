@@ -24,17 +24,16 @@ class QueryForm extends Form {
 	 */
 	attach() {
 		super.attach();
-		var queryForm = this;
-		this.get("queryButton").click(function() {
-			queryForm.query();
+		this.get("queryButton").click(() => {
+			this.query();
 			return false;
 		});
-		this.get("resetButton").click(function() {
-			queryForm.reset();
+		this.get("resetButton").click(() => {
+			this.reset();
 			return false;
 		});
-		this.get("exportButton").click(function() {
-			queryForm.exportData();
+		this.get("exportButton").click(() => {
+			this.exportData();
 			return false;
 		});
 	}
@@ -42,32 +41,30 @@ class QueryForm extends Form {
 	/**
 	 * 問合せを行います。
 	 */
-	query() {
-		var queryForm = this;
-		if (queryForm.validate()) {
-			queryForm.submit("query", function(result) {
-				queryForm.parent.resetErrorStatus();
-				if (result.status == ServerMethod.SUCCESS) {
-					var resultForm = queryForm.parent.componentMap["queryResultForm"];
-					if (resultForm != null) {
-						queryForm.showQueryResultForm();
-					} else {
-						queryForm.showEditForm();
-					}
+	async query() {
+		if (this.validate()) {
+			let result = await this.submit("query");
+			this.parent.resetErrorStatus();
+			if (result.status == ServerMethod.SUCCESS) {
+				let resultForm = this.parent.componentMap["queryResultForm"];
+				if (resultForm != null) {
+					this.showQueryResultForm();
 				} else {
-					queryForm.parent.setErrorInfo(queryForm.getValidationResult(result), queryForm);
+					this.showEditForm();
 				}
-			});
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
 		}
 	}
 	/**
 	 * 問い合わせ結果フォームに入力された検索条件を設定し、検索を行い結果を表示します。
 	 */
 	showQueryResultForm() {
-		var resultForm = this.parent.componentMap["queryResultForm"];
+		let resultForm = this.parent.componentMap["queryResultForm"];
 		if (resultForm != null) {
 			this.parent.get("queryResultForm").show();
-			var condition = this.get().serialize();
+			let condition = this.get().serialize();
 			resultForm.condition = condition;
 			resultForm.changePage();
 		}
@@ -77,7 +74,7 @@ class QueryForm extends Form {
 	 * 編集フォームに入力された検索条件を設定し、対象データを編集します。
 	 */
 	showEditForm() {
-		var editForm = this.parent.componentMap["editForm"];
+		let editForm = this.parent.componentMap["editForm"];
 		if (editForm != null) {
 			for (let i = 0; i < this.fields.length; i++) {
 				let f = editForm.getComponent(this.fields[i].id);
@@ -90,18 +87,19 @@ class QueryForm extends Form {
 	/**
 	 * 問合せ結果をエクスポートします。
 	 */
-	exportData() {
-		var queryForm = this;
-		if (queryForm.validate()) {
-			var sortOrder = this.getSortOrder();
+	async exportData() {
+		if (this.validate()) {
+			let sortOrder = this.getSortOrder();
 			logger.log("sortOrder=" + sortOrder);
 			this.setHiddenField("sortOrder", sortOrder);
-			queryForm.submit("exportData", function(result) {
-				queryForm.parent.resetErrorStatus();
+			let result = await this.submit("exportData");
+			this.parent.resetErrorStatus();
+			if (result != null) {
 				if (result.status == ServerMethod.INVALID) {
-					queryForm.parent.setErrorInfo(queryForm.getValidationResult(result), queryForm);
+					this.parent.setErrorInfo(this.getValidationResult(result), this);
 				}
-			});
+			}
+			logger.log("remove sortOrder");
 			this.get("sortOrder").remove();
 		}
 	}
@@ -111,10 +109,10 @@ class QueryForm extends Form {
 	 * QueryResultFormのソート順を取得します。
 	 */
 	getSortOrder() {
-		var ret = null;
-		var qrf = currentPage.getComponent("queryResultForm");
+		let ret = null;
+		let qrf = currentPage.getComponent("queryResultForm");
 		if (qrf != null) {
-			var list = qrf.getComponent("queryResult");
+			let list = qrf.getComponent("queryResult");
 			if (list != null) {
 				ret = list.sortOrder;
 			}

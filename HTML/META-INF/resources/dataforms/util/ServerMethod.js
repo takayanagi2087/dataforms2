@@ -25,6 +25,7 @@
  * }
  * </pre>
  * @prop {String} contentType 応答のcontent-type。
+ * @deprecated async/awaitに対応したWebMethodを使用してください。
  */
 class ServerMethod {
 

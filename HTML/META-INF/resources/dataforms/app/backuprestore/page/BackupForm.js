@@ -25,11 +25,13 @@ class BackupForm extends Form {
 		this.parent.resetErrorStatus();
 		let r = await this.submit("backup");
 		this.parent.resetErrorStatus();
-		if (r.status == ServerMethod.INVALID) {
-			currentPage.setErrorInfo(this.getValidationResult(r), this);
-		} else {
-			let systemname = MessagesUtil.getMessage("message.systemname");
-			currentPage.alert(systemname, r.result);
+		if (r != null) {
+			if (r.status == JsonResponse.INVALID) {
+				currentPage.setErrorInfo(this.getValidationResult(r), this);
+			} else {
+				let systemname = MessagesUtil.getMessage("message.systemname");
+				currentPage.alert(systemname, r.result);
+			}
 		}
 	}
 }

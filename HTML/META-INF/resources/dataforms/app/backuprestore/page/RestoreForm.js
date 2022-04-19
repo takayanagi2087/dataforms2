@@ -28,7 +28,7 @@ class RestoreForm extends Form {
 			if (await currentPage.confirm(systemname, msg)) {
 				let r = await this.submit("restore");
 				this.parent.resetErrorStatus();
-				if (r.status == ServerMethod.INVALID) {
+				if (r.status == JsonResponse.INVALID) {
 					currentPage.setErrorInfo(this.getValidationResult(r), this);
 				} else {
 					currentPage.alert(systemname, r.result);

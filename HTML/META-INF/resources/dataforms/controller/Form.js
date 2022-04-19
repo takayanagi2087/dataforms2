@@ -320,7 +320,7 @@ class Form extends WebComponent {
 
 	/**
 	 * blobをダウンロードします。
-	 * @param {ServerMethod} m サーバメソッド。
+	 * @param {Object} m WebMethodまたはServerMethodのオブジェクト。
 	 * @param {Object} data ダウンロードデータ。
 	 */
 	downloadBlob(m, data) {

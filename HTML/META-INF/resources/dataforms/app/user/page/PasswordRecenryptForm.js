@@ -51,7 +51,7 @@ class PasswordRecenryptForm extends Form {
 			if (await currentPage.confirm(null, MessagesUtil.getMessage("message.confirmreencrypted"))) {
 				let r = await this.submit("reencrypt");
 				this.parent.resetErrorStatus();
-				if (r.status == ServerMethod.INVALID) {
+				if (r.status == JsonResponse.INVALID) {
 					currentPage.setErrorInfo(this.getValidationResult(r), this);
 				} else {
 					currentPage.alert(null, r.result);

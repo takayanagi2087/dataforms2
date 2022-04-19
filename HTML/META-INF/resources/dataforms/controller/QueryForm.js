@@ -45,7 +45,7 @@ class QueryForm extends Form {
 		if (this.validate()) {
 			let result = await this.submit("query");
 			this.parent.resetErrorStatus();
-			if (result.status == ServerMethod.SUCCESS) {
+			if (result.status == JsonResponse.SUCCESS) {
 				let resultForm = this.parent.componentMap["queryResultForm"];
 				if (resultForm != null) {
 					this.showQueryResultForm();
@@ -95,7 +95,7 @@ class QueryForm extends Form {
 			let result = await this.submit("exportData");
 			this.parent.resetErrorStatus();
 			if (result != null) {
-				if (result.status == ServerMethod.INVALID) {
+				if (result.status == JsonResponse.INVALID) {
 					this.parent.setErrorInfo(this.getValidationResult(result), this);
 				}
 			}

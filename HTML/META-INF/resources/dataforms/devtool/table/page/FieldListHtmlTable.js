@@ -25,10 +25,10 @@ class FieldListHtmlTable extends EditableHtmlTable {
 	onAddTr(rowid) {
 		super.onAddTr(rowid);
 		logger.log("rowid=" + rowid);
-		var form = this.parent;
-		var tpkgname = form.get("packageName").val();
-		var pkg = this.get(rowid + ".packageName");
-		var spkg = this.get(rowid + ".superPackageName");
+		let form = this.parent;
+		let tpkgname = form.get("packageName").val();
+		let pkg = this.get(rowid + ".packageName");
+		let spkg = this.get(rowid + ".superPackageName");
 		if (pkg.val().length == 0) {
 			pkg.val(tpkgname.replace(".dao", ".field"));
 		}

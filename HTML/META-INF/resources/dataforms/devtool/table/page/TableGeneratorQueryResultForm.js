@@ -15,24 +15,23 @@ class TableGeneratorQueryResultForm extends QueryResultForm {
 	 */
 	attach() {
 		super.attach();
-		var thisForm = this;
-		this.get("printButton").click(function() {
-			thisForm.print();
+		this.get("printButton").click(() => {
+			this.print();
 		});
-		var tbl = this.getComponent("queryResult");
+		let tbl = this.getComponent("queryResult");
 		// ソート結果の行番号を修正。
-		tbl.getSortedList = function() {
-			var list = HtmlTable.prototype.getSortedList.call(this);
-			for (var i = 0; i < list.length; i++) {
+		tbl.getSortedList = () => {
+			let list = HtmlTable.prototype.getSortedList.call(tbl);
+			for (let i = 0; i < list.length; i++) {
 				list[i].rowNo = (i + 1);
 			}
 			return list;
 		};
 		// ソート時のイベントハンドラ設定。
-		tbl.sortTable = function(col) {
+		tbl.sortTable = (col) => {
 			logger.log("sort");
-			thisForm.queryResult.queryResult = HtmlTable.prototype.sortTable.call(this, col);
-			this.parent.setQueryResultEventHandler();
+			this.queryResult.queryResult = HtmlTable.prototype.sortTable.call(tbl, col);
+			this.setQueryResultEventHandler();
 		};
 	}
 
@@ -42,10 +41,9 @@ class TableGeneratorQueryResultForm extends QueryResultForm {
 	 */
 	setFormData(result) {
 		super.setFormData(result);
-		var thisForm = this;
-		var queryResult = result.queryResult;
+		let queryResult = result.queryResult;
 		if (queryResult != null) {
-			for (var i = 0; i < queryResult.length; i++) {
+			for (let i = 0; i < queryResult.length; i++) {
 				logger.log("statusVal=" + queryResult[i].statusVal + ",differenceVal=" + queryResult[0].differenceVal);
 				if (queryResult[i].differenceVal == "1") {
 					this.find("#queryResult tbody tr:eq(" + i + ")").addClass("warnTr");
@@ -61,9 +59,8 @@ class TableGeneratorQueryResultForm extends QueryResultForm {
 	 * テーブル定義書を印刷します。
 	 */
 	print() {
-		var thisForm = this;
-		thisForm.parent.resetErrorStatus();
-		thisForm.submit("print");
+		this.parent.resetErrorStatus();
+		this.submit("print");
 	}
 
 }

@@ -14,39 +14,39 @@ class DocFramePage extends BasePage {
 	 * HTMLエレメントとの対応付けを行います。
 	 */
 	attach() {
-		var thisPage = this;
+//		let thisPage = this;
 		super.attach();
-		var qs = this.getQueryString();
+		let qs = this.getQueryString();
 		logger.log("doc=" + qs["doc"])
 		if (qs["doc"] != null) {
-			var src = "../../../../doc/" + qs["doc"];
+			let src = "../../../../doc/" + qs["doc"];
 			this.get("docFrame").attr("src", src);
 		} else {
-			var path = this.get("introduction").data("path");
-			var src = "../../../../doc/" + path;
+			let path = this.get("introduction").data("path");
+			let src = "../../../../doc/" + path;
 			logger.log("src=" + src);
 			this.get("docFrame").attr("src", src);
 		}
-		this.find("a").click(function() {
-			var path = $(this).data("path");
-			var src = "../../../../doc/" + path;
-			thisPage.get("docFrame").attr("src", src);
+		this.find("a").click((ev) => {
+			let path = $(ev.target).data("path");
+			let src = "../../../../doc/" + path;
+			this.get("docFrame").attr("src", src);
 			$("ul.dropdwn_menu").slideUp();
 		});
-		thisPage.get("docFrame").on('load', function() {
-			thisPage.onLoadDocFrame($(this));
+		this.get("docFrame").on('load', (ev) => {
+			this.onLoadDocFrame($(ev.target));
 		});
 
-		$(window).resize(function() {
-			thisPage.onResize();
+		$(window).resize(() => {
+			this.onResize();
 		});
-		thisPage.onResize();
+		this.onResize();
 
 
-		$('.dropdwn li').hover(function(){
-			$("ul:not(:animated)", this).slideDown();
-		}, function(){
-			$("ul.dropdwn_menu",this).slideUp();
+		$('.dropdwn li').hover((ev) =>{
+			$("ul:not(:animated)", ev.target).slideDown();
+		}, (ev) => {
+			$("ul.dropdwn_menu", ev.target).slideUp();
 		});
 	}
 	/**
@@ -60,7 +60,7 @@ class DocFramePage extends BasePage {
 	 * ドキュメント表示用のiframeの高さを調整します。
 	 */
 	adjustDocFrameHeight() {
-		var docFrame = this.get("docFrame");
+		let docFrame = this.get("docFrame");
 		docFrame.height(docFrame.contents().find("body").height() + 72);
 	}
 
@@ -69,7 +69,7 @@ class DocFramePage extends BasePage {
 	 * @param {jQuery} docFrame ドキュメントが読み込まれたiframe。
 	 */
 	onLoadDocFrame(docFrame) {
-		var src = docFrame.attr("src");
+		let src = docFrame.attr("src");
 		if (src.indexOf("javadoc") < 0 && src.indexOf("jsdoc") < 0) {
 			this.setH2No(docFrame);
 			this.setH3No(docFrame);
@@ -86,12 +86,12 @@ class DocFramePage extends BasePage {
 	 * @param {jQuery} docFrame ドキュメントが読み込まれたiframe。
 	 */
 	setH2No(docFrame) {
-		var n = docFrame.contents().find("h1 > span").text();
-		var no = 1;
-		docFrame.contents().find("h2").each(function() {
-			var text = $(this).html();
-			var caption = "<span>" + n + (no++) + ".</span>" + text;
-			$(this).html(caption);
+		let n = docFrame.contents().find("h1 > span").text();
+		let no = 1;
+		docFrame.contents().find("h2").each((_, el) => {
+			let text = $(el).html();
+			let caption = "<span>" + n + (no++) + ".</span>" + text;
+			$(el).html(caption);
 		});
 	}
 
@@ -100,17 +100,17 @@ class DocFramePage extends BasePage {
 	 * @param {jQuery} docFrame ドキュメントが読み込まれたiframe。
 	 */
 	setH3No(docFrame) {
-		var no = 1;
-		var baseno = "";
-		docFrame.contents().find("h3").each(function() {
-			var n = $(this).prevAll("h2:first").find("span").text();
+		let no = 1;
+		let baseno = "";
+		docFrame.contents().find("h3").each((_, el) => {
+			let n = $(el).prevAll("h2:first").find("span").text();
 			if (baseno != n) {
 				no = 1;
 				baseno = n;
 			}
-			var text = $(this).html();
-			var caption = "<span>" + n + (no++) + ".</span>" + text;
-			$(this).html(caption);
+			let text = $(el).html();
+			let caption = "<span>" + n + (no++) + ".</span>" + text;
+			$(el).html(caption);
 		});
 	}
 
@@ -119,11 +119,11 @@ class DocFramePage extends BasePage {
 	 * @param {jQuery} docFrame ドキュメントが読み込まれたiframe。
 	 */
 	setFigNo(docFrame) {
-		var no = 1;
-		docFrame.contents().find("figure > figcaption").each(function() {
-			var text = $(this).html();
-			var caption = "図 " + (no++) + "." + text;
-			$(this).html(caption);
+		let no = 1;
+		docFrame.contents().find("figure > figcaption").each((_, el) => {
+			let text = $(el).html();
+			let caption = "図 " + (no++) + "." + text;
+			$(el).html(caption);
 		});
 	}
 
@@ -132,11 +132,11 @@ class DocFramePage extends BasePage {
 	 * @param {jQuery} docFrame ドキュメントが読み込まれたiframe。
 	 */
 	setTableNo(docFrame) {
-		var no = 1;
-		docFrame.contents().find("table caption").each(function() {
-			var text = $(this).html();
-			var caption = "表 " + (no++) + "." + text;
-			$(this).html(caption);
+		let no = 1;
+		docFrame.contents().find("table caption").each((_, el) => {
+			let text = $(el).html();
+			let caption = "表 " + (no++) + "." + text;
+			$(el).html(caption);
 		});
 	}
 
@@ -145,11 +145,11 @@ class DocFramePage extends BasePage {
 	 * @param {jQuery} docFrame ドキュメントが読み込まれたiframe。
 	 */
 	setFileNo(docFrame) {
-		var no = 1;
-		docFrame.contents().find("div.filecaption").each(function() {
-			var text = $(this).html();
-			var caption = "ファイル " + (no++) + "." + text;
-			$(this).html(caption);
+		let no = 1;
+		docFrame.contents().find("div.filecaption").each((_, el) => {
+			let text = $(el).html();
+			let caption = "ファイル " + (no++) + "." + text;
+			$(el).html(caption);
 		});
 	}
 
@@ -158,19 +158,18 @@ class DocFramePage extends BasePage {
 	 * @param {jQuery} docFrame ドキュメントが読み込まれたiframe。
 	 */
 	setFigEvent(docFrame) {
-		var thisPage = this;
-		docFrame.contents().find("img").click(function() {
-			var url = docFrame.attr("src");
-			var idx = url.lastIndexOf('/');
+		docFrame.contents().find("img").click((ev) => {
+			let url = docFrame.attr("src");
+			let idx = url.lastIndexOf('/');
 			if (idx > 0) {
 				url = url.substring(0, idx);
 			}
-			var img = $(this).attr("src");
-			var title = $(this).prev("figcaption").text();
-			$("[" + thisPage.getIdAttribute() + "='imageViewer']").attr("src", url + "/" + img);
-			var image = new Image();
-			image.onload = function() {
-				$("[" + thisPage.getIdAttribute() + "='imageDialog']").dialog({
+			let img = $(ev.target).attr("src");
+			let title = $(ev.target).prev("figcaption").text();
+			$("[" + this.getIdAttribute() + "='imageViewer']").attr("src", url + "/" + img);
+			let image = new Image();
+			image.onload = () => {
+				$("[" + this.getIdAttribute() + "='imageDialog']").dialog({
 					modal: true
 					,width: image.width + 34
 					,height: image.height + 64

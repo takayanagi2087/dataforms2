@@ -24,8 +24,8 @@ class DaoGeneratorEditForm extends EditForm {
 		super.attach();
 		let thisForm = this;
 		this.onChangeType("1");
-		this.get("editFormType").click(function() {
-			thisForm.onChangeType($(this).val());
+		this.get("editFormType").change((ev) => {
+			thisForm.onChangeType($(ev.target).val());
 			thisForm.getKeyFieldList();
 		});
 	}
@@ -77,14 +77,13 @@ class DaoGeneratorEditForm extends EditForm {
 	 * キーフィールドリスト取得します。
 	 *
 	 */
-	getKeyFieldList() {
+	async getKeyFieldList() {
 		let type = this.get("editFormType").val();
 		if (type == "2") {
-			this.submit("getKeyList", (r) => {
-				logger.log("getKeyList r=" + JSON.stringify(r));
-				let list = this.getComponent("keyFieldList");
-				list.setTableData(r.result);
-			});
+			let r = await this.submit("getKeyList");
+			logger.log("getKeyList r=" + JSON.stringify(r));
+			let list = this.getComponent("keyFieldList");
+			list.setTableData(r.result);
 		} else {
 			let list = this.getComponent("keyFieldList");
 			list.setTableData([]);

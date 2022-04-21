@@ -23,7 +23,7 @@ class TableClassNameField extends SimpleClassNameField {
 	onUpdateRelationField() {
 		super.onUpdateRelationField();
 		if (this.get().val().length != 0) {
-			var form = this.getParentForm();
+			let form = this.getParentForm();
 			if (typeof form.getFieldList == "function") {
 				form.getFieldList();
 			}

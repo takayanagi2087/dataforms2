@@ -17,10 +17,13 @@ class QueryClassNameField extends SimpleClassNameField {
 		super.attach();
 	}
 
+	/**
+	 * 関連フィールドの更新。
+	 */
 	onUpdateRelationField() {
 		super.onUpdateRelationField();
 		if (this.get().val().length != 0) {
-			var form = this.getParentForm();
+			let form = this.getParentForm();
 			if (typeof form.getSql == "function") {
 				form.getSql();
 			}

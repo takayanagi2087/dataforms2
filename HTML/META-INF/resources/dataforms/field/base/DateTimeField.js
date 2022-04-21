@@ -31,12 +31,11 @@ class DateTimeField extends Field {
 	setFormat(displayFormat, editFormat) {
 		this.displayFormat = displayFormat;
 		this.editFormat = editFormat;
-		var thisForm = this;
-		this.get().focus(function() {
-			thisForm.toEditFormat($(this));
+		this.get().focus((ev) => {
+			this.toEditFormat($(ev.target));
 		});
-		this.get().blur(function() {
-			thisForm.toDisplayFormat($(this));
+		this.get().blur((ev) => {
+			this.toDisplayFormat($(ev.target));
 		});
 	}
 
@@ -45,10 +44,10 @@ class DateTimeField extends Field {
 	 * @param {jQuery} f テキストフィールド。
 	 */
 	toEditFormat(f) {
-		var v = f.val();
-		var fmt = new SimpleDateFormat(this.displayFormat);
-		var efmt = new SimpleDateFormat(this.editFormat);
-		var ev = fmt.parse(v);
+		let v = f.val();
+		let fmt = new SimpleDateFormat(this.displayFormat);
+		let efmt = new SimpleDateFormat(this.editFormat);
+		let ev = fmt.parse(v);
 		if (ev != null) {
 			f.val(efmt.format(ev));
 		}
@@ -60,10 +59,10 @@ class DateTimeField extends Field {
 	 * @param {jQuery} f テキストフィールド。
 	 */
 	toDisplayFormat(f) {
-		var v = f.val();
-		var fmt = new SimpleDateFormat(this.displayFormat);
-		var efmt = new SimpleDateFormat(this.editFormat);
-		var ev = efmt.parse(v);
+		let v = f.val();
+		let fmt = new SimpleDateFormat(this.displayFormat);
+		let efmt = new SimpleDateFormat(this.editFormat);
+		let ev = efmt.parse(v);
 		if (ev != null) {
 			f.val(fmt.format(ev));
 		}
@@ -85,7 +84,7 @@ class DateTimeField extends Field {
 	 */
 	setValue(date) {
 		if (date instanceof Date) {
-			var fmt = new SimpleDateFormat(this.displayFormat);
+			let fmt = new SimpleDateFormat(this.displayFormat);
 			super.setValue(fmt.format(date));
 		} else {
 			super.setValue(date);
@@ -97,13 +96,13 @@ class DateTimeField extends Field {
 	 * @returns {Date} 値(日付形式)。
 	 */
 	getValue() {
-		var v = super.getValue();
+		let v = super.getValue();
 		if (v != null && v.length > 0) {
 			logger.log("getValue()=" + v);
-			var dfmt = new SimpleDateFormat(this.displayFormat);
-			var ret = dfmt.parse(v);
+			let dfmt = new SimpleDateFormat(this.displayFormat);
+			let ret = dfmt.parse(v);
 			if (ret == null) {
-				var efmt = new SimpleDateFormat(this.editFormat);
+				let efmt = new SimpleDateFormat(this.editFormat);
 				ret = efmt.parse(v);
 			}
 			return ret;

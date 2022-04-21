@@ -853,9 +853,11 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	/**
 	 * 関連データの取得イベントの種類を設定します。
 	 * @param relationDataEvent 関連データの取得イベントの種類。
+	 * @return 設定されたフィールド。
 	 */
-	public void setRelationDataEvent(final RelationDataEvent relationDataEvent) {
+	public Field<?> setRelationDataEvent(final RelationDataEvent relationDataEvent) {
 		this.relationDataEvent = relationDataEvent;
+		return this;
 	}
 
 	/**

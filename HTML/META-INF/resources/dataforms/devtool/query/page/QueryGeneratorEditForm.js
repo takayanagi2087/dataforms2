@@ -15,14 +15,13 @@ class QueryGeneratorEditForm extends EditForm {
 	 */
 	attach() {
 		super.attach();
-		var thisForm = this;
-		this.get("selectAll").click(function() {
+		this.get("selectAll").click((ev) => {
 			logger.log("selectAll");
-			if (thisForm.mode == "confirm") {
+			if (this.mode == "confirm") {
 				return false;
 			}
-			var selectFieldList = thisForm.getComponent("selectFieldList");
-			var ck = $(this).prop("checked");
+			let selectFieldList = this.getComponent("selectFieldList");
+			let ck = $(ev.target).prop("checked");
 			selectFieldList.checkAll(ck);
 		});
 	}
@@ -44,8 +43,7 @@ class QueryGeneratorEditForm extends EditForm {
 	 * フォームに対してデータを設定します。
 	 * @param {Object} data 設定するデータ。
 	 */
-	setFormData(data) {
-		var thisForm = this;
+	async setFormData(data) {
 		super.setFormData(data);
 		this.setFunctionSelect("functionSelect", data.packageName);
 		let joinTableList = this.getComponent("joinTableList");
@@ -56,37 +54,33 @@ class QueryGeneratorEditForm extends EditForm {
 		}
 		this.setFunctionSelect("mainTableFunctionSelect", data.mainTablePackageName);
 		if (data.joinTableList != null || data.leftJoinTableList != null || data.rightJoinTableList != null) {
-			thisForm.submit("getJoinCondition", function(r) {
-				currentPage.resetErrorStatus();
-				if (r.status == ServerMethod.SUCCESS) {
-					logger.log("field list=" + JSON.stringify(r.result));
-					thisForm.setJoinCondition(r.result);
-				}
-			});
+			let r = await this.submit("getJoinCondition");
+			currentPage.resetErrorStatus();
+			if (r.status == JsonResponse.SUCCESS) {
+				logger.log("field list=" + JSON.stringify(r.result));
+				this.setJoinCondition(r.result);
+			}
 		}
 	}
 
 	/**
 	 * フィールドリストを取得します。
 	 */
-	getFieldList() {
-		var thisForm = this;
-		this.submit("getFieldList", function(r) {
+	async getFieldList() {
+		let r = await this.submit("getFieldList");
+		currentPage.resetErrorStatus();
+		if (r.status == JsonResponse.SUCCESS) {
+			this.get("selectAll").prop("checked", false);
+			logger.log("field list=" + JSON.stringify(r.result));
+			let ftbl = this.getComponent("selectFieldList");
+			ftbl.setTableData(r.result);
+			let cr = await this.submit("getJoinCondition");
 			currentPage.resetErrorStatus();
-			if (r.status == ServerMethod.SUCCESS) {
-				thisForm.get("selectAll").prop("checked", false);
-				logger.log("field list=" + JSON.stringify(r.result));
-				var ftbl = thisForm.getComponent("selectFieldList");
-				ftbl.setTableData(r.result);
-				thisForm.submit("getJoinCondition", function(r) {
-					currentPage.resetErrorStatus();
-					if (r.status == ServerMethod.SUCCESS) {
-						logger.log("field list=" + JSON.stringify(r.result));
-						thisForm.setJoinCondition(r.result);
-					}
-				});
+			if (cr.status == JsonResponse.SUCCESS) {
+				logger.log("field list=" + JSON.stringify(cr.result));
+				this.setJoinCondition(cr.result);
 			}
-		});
+		}
 	}
 
 
@@ -109,9 +103,9 @@ class QueryGeneratorEditForm extends EditForm {
 	 */
 	setJoinConditionToTable(table, list) {
 		if (list != null) {
-			var cf = table.getColumnField("joinCondition");
-			for (var i = 0; i < list.length; i++) {
-				var f = table.getRowField(i, cf);
+			let cf = table.getColumnField("joinCondition");
+			for (let i = 0; i < list.length; i++) {
+				let f = table.getRowField(i, cf);
 				f.setValue(list[i].joinCondition);
 			}
 		}

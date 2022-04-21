@@ -34,7 +34,7 @@ class QueryGeneratorQueryResultForm extends QueryResultForm {
 		logger.log("queryClassName=" + queryClassName);
 		let m = this.getWebMethod("generateSubQuery");
 		let r = await m.execute("queryClass=" + queryClassName);
-		if (r.status == ServerMethod.SUCCESS) {
+		if (r.status == JsonResponse.SUCCESS) {
 			currentPage.alert(null, r.result);
 		}
 		this.changePage();

@@ -63,35 +63,30 @@ class WebResourceForm extends Form {
 	/**
 	 * HTML作成を行います。
 	 */
-	generateHtml() {
-		var thisForm = this;
-		this.submit("generateHtml", function(ret) {
-			thisForm.parent.resetErrorStatus();
-			if (ret.status == ServerMethod.SUCCESS) {
-				var systemName = MessagesUtil.getMessage("message.systemname");
-				currentPage.alert(systemName, ret.result);
-			} else if (ret.status == ServerMethod.INVALID) {
-				thisForm.parent.setErrorInfo(thisForm.getValidationResult(ret), thisForm);
-			}
-		});
+	async generateHtml() {
+		let ret = await this.submit("generateHtml");
+		this.parent.resetErrorStatus();
+		if (ret.status == JsonResponse.SUCCESS) {
+			let systemName = MessagesUtil.getMessage("message.systemname");
+			currentPage.alert(systemName, ret.result);
+		} else if (ret.status == JsonResponse.INVALID) {
+			this.parent.setErrorInfo(this.getValidationResult(ret), this);
+		}
 	}
 
 	/**
 	 * javascriptの作成を行います。
 	 */
-	generateJavascript() {
-		var thisForm = this;
-		this.submit("generateJavascript", function(ret) {
-			thisForm.parent.resetErrorStatus();
-			if (ret.status == ServerMethod.SUCCESS) {
-				var systemName = MessagesUtil.getMessage("message.systemname");
-				currentPage.alert(systemName, ret.result);
-			} else if (ret.status == ServerMethod.INVALID) {
-				thisForm.parent.setErrorInfo(thisForm.getValidationResult(ret), thisForm);
-			}
-		});
+	async generateJavascript() {
+		let ret = await this.submit("generateJavascript");
+		this.parent.resetErrorStatus();
+		if (ret.status == JsonResponse.SUCCESS) {
+			let systemName = MessagesUtil.getMessage("message.systemname");
+			currentPage.alert(systemName, ret.result);
+		} else if (ret.status == JsonResponse.INVALID) {
+			this.parent.setErrorInfo(this.getValidationResult(ret), this);
+		}
 	}
-
 }
 
 

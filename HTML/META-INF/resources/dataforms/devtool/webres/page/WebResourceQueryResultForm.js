@@ -27,26 +27,26 @@ class WebResourceQueryResultForm extends QueryResultForm {
 	 */
 	setFormData(result) {
 		super.setFormData(result);
-		var thisForm = this;
-		var queryResult = result.queryResult;
-		var table = this.getComponent("queryResult");
+		let thisForm = this;
+		let queryResult = result.queryResult;
+		let table = this.getComponent("queryResult");
 		if (queryResult != null) {
-			for (var i = 0; i < queryResult.length; i++) {
-				var id = "queryResult[" + i + "].className";
-				this.get(id).click(function() {
-					var classname = table.getSameRowField($(this), "className").html();
-					var webComponentType = table.getSameRowField($(this), "webComponentType").val();
-					var htmlStatus = table.getSameRowField($(this), "htmlStatus").val();
-					var javascriptStatus = table.getSameRowField($(this), "javascriptStatus").val();
-					var javascriptClass = table.getSameRowField($(this), "javascriptClass").val();
-					var data = {};
+			for (let i = 0; i < queryResult.length; i++) {
+				let id = "queryResult[" + i + "].className";
+				this.get(id).click((ev) => {
+					let classname = table.getSameRowField($(ev.target), "className").html();
+					let webComponentType = table.getSameRowField($(ev.target), "webComponentType").val();
+					let htmlStatus = table.getSameRowField($(ev.target), "htmlStatus").val();
+					let javascriptStatus = table.getSameRowField($(ev.target), "javascriptStatus").val();
+					let javascriptClass = table.getSameRowField($(ev.target), "javascriptClass").val();
+					let data = {};
 					data.className = classname;
 					data.webComponentType = webComponentType;
 					data.htmlStatus = htmlStatus;
 					data.javascriptStatus = javascriptStatus;
 					data.javascriptClass = javascriptClass;
-					var dlg = thisForm.parent.getComponent("webResourceDialog");
-					var f = dlg.getComponent("webResourceForm");
+					let dlg = thisForm.parent.getComponent("webResourceDialog");
+					let f = dlg.getComponent("webResourceForm");
 					data.webSourcePath = f.getFieldValue("webSourcePath");
 					f.setFormData(data);
 					dlg.showModal({width: 850});

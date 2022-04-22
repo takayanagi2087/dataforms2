@@ -55,6 +55,15 @@ class AllTypeEditForm extends EditForm {
 //		alert(MessagesUtil.getMessage("error.duplicate", "aaa"));
 	}
 
+	onCalc(jq) {
+		logger.log("onCalc");
+		if (jq != null) {
+			logger.log("id=" + jq.attr("id"));
+			logger.dir(jq);
+		}
+	}
+
+
 	/**
 	 * 印刷処理を行います。
 	 */

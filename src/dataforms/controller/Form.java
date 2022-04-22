@@ -415,7 +415,7 @@ public  class Form extends WebComponent {
 					// ファイルが指定されておらず、削除も設定されていない場合、データをキープする.
 					m.put(f.getId() + "Kf", "1"); // 更新は行わない.
 				} else {
-					m.put(f.getId() + "Kf", "0"); // 更新する.
+					m.put(f.getId() + "Kf", "0"); // 更新する(ファイルが指定されていないので削除になる).
 				}
 			} else {
 				f.setClientValue(v);

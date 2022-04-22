@@ -57,6 +57,7 @@ class AllTypeEditForm extends EditForm {
 
 	onCalc(jq) {
 		logger.log("onCalc");
+		logger.dir(jq);
 		if (jq != null) {
 			logger.log("id=" + jq.attr("id"));
 			logger.dir(jq);

@@ -26,7 +26,7 @@ class TimestampField extends DateTimeField {
 	 */
 	attach() {
 		super.attach();
-		var comp = this.get();
+		let comp = this.get();
 		if (!comp.prop("readonly")) {
 			this.setFormat(this.displayFormat, this.editFormat);
 		}

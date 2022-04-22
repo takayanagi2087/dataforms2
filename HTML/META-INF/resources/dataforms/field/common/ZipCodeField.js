@@ -15,11 +15,10 @@ class ZipCodeField extends CharField {
 	 */
 	attach() {
 		super.attach();
-		var thisField = this;
-		this.get().change(function() {
-			var comp = $(this);
-			thisField.addHyphen(comp);
-			thisField.queryAddress(comp);
+		this.get().change((ev) => {
+			let comp = $(ev.target);
+			this.addHyphen(comp);
+			this.queryAddress(comp);
 		});
 	}
 
@@ -28,9 +27,9 @@ class ZipCodeField extends CharField {
 	 * @param {jQuery} comp 郵便番号入力フィールド。
 	 */
 	addHyphen(comp) {
-		var val = comp.val();
+		let val = comp.val();
 		if (val.match(/[0-9]{7}/)) {
-			var v = val.substr(0, 3) + "-" + val.substr(3);
+			let v = val.substr(0, 3) + "-" + val.substr(3);
 			comp.val(v);
 		}
 	}
@@ -40,12 +39,12 @@ class ZipCodeField extends CharField {
 	 * @param comp {jQuery} 郵便番号フィールドに対応したjQueryオブジェクト。
 	 */
 	queryAddress(comp) {
-		var thisField = this;
-		var address = thisField.addressFieldId;
+		let thisField = this;
+		let address = thisField.addressFieldId;
 		if (address != null) {
-			var address2 = thisField.addressFieldId2;
-			var address3 = thisField.addressFieldId3;
-			var sp = comp.attr(this.getIdAttribute()).split(".");
+			let address2 = thisField.addressFieldId2;
+			let address3 = thisField.addressFieldId3;
+			let sp = comp.attr(this.getIdAttribute()).split(".");
 			if (sp.length == 2) {
 				address = sp[0] + "." + thisField.addressFieldId;
 				if (address2 != null) {

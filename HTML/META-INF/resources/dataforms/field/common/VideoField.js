@@ -18,7 +18,7 @@ class VideoField extends StreamingField {
 	 */
 	attach() {
 		super.attach();
-		var player = this.getPlayer();
+		let player = this.getPlayer();
 		player.attr("width", this.playerWidth);
 		player.attr("height", this.playerlHeight);
 	};

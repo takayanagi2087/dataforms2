@@ -19,7 +19,7 @@ class FlagField extends CharField {
 	attach() {
 		super.attach();
 		if (currentPage.useUniqueId) {
-			var lbl = this.getParentForm().find("label[for='" + this.id + "']");
+			let lbl = this.getParentForm().find("label[for='" + this.id + "']");
 			logger.log("lbl.length=" + lbl.length);
 			if (lbl.length > 0) {
 				lbl.attr("for", this.realId);
@@ -33,8 +33,8 @@ class FlagField extends CharField {
 	 * @param {String} value 値。
 	 */
 	setInputValue(comp, value) {
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
+		let tag = comp.prop("tagName");
+		let type = comp.prop("type");
 		if (tag == "INPUT" && type.toLowerCase() == "checkbox") {
 			if (value == "1") {
 				comp.prop("checked", true);
@@ -51,11 +51,11 @@ class FlagField extends CharField {
 	 * @param {Boolean} lk ロックする場合true。
 	 */
 	lock(lk) {
-		var comp = this.get();
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
+		let comp = this.get();
+		let tag = comp.prop("tagName");
+		let type = comp.prop("type");
 		if ("INPUT" == tag && type.toLowerCase() == "checkbox") {
-			var span = this.addSpan(comp);
+			let span = this.addSpan(comp);
 			span.html("<input type='checkbox' " + this.getIdAttribute() + "='" + this.id + "_ck' onclick='return false;'>");
 			this.parent.get(this.id + "_ck").prop("checked", comp.prop("checked"));
 			if (lk) {

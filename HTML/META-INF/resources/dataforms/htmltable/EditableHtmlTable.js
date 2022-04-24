@@ -17,15 +17,14 @@ class EditableHtmlTable extends HtmlTable {
 	 * 各エレメントとの対応付け.
 	 */
 	attach() {
-		var thisTable = this;
 		super.attach();
 		if (!this.readonly) {
-			this.find("tfoot").find(this.convertSelector("[id$='\\.addButton']")).click(function() {
-				thisTable.addRow(null);
+			this.find("tfoot").find(this.convertSelector("[id$='\\.addButton']")).click(() => {
+				this.addRow(null);
 				return false;
 			});
-			if (thisTable.sortable) {
-				thisTable.makeSortable();
+			if (this.sortable) {
+				this.makeSortable();
 			}
 		}
 	}
@@ -53,16 +52,12 @@ class EditableHtmlTable extends HtmlTable {
 	 *
 	 */
 	enableSortable() {
-		var thisTable = this;
 		if (this.isSortable != true) {
 			this.get().find("tbody").sortable({
-				start:function(event, ui) {
+				start:(_, __) => {
 				},
-				update:function(event, ui) {
-					var cnt = thisTable.find("tbody>tr").length;
-					var lasttr = thisTable.find("tbody>tr:last");
-					var sel = "[id^='" + thisTable.selectorEscape(thisTable.id + "[" + (cnt - 1) + "]") + "']";
-					thisTable.resetIdIndex();
+				update:(_, __) => {
+					this.resetIdIndex();
 				},
 				axis: "y"
 			});
@@ -95,9 +90,9 @@ class EditableHtmlTable extends HtmlTable {
 					this.enableSortable();
 				}
 			} else {
-				var ckid = this.id + ".sortable";
-				var ck = this.parent.get(ckid);
-				var sort = ck.prop("checked");
+				let ckid = this.id + ".sortable";
+				let ck = this.parent.get(ckid);
+				let sort = ck.prop("checked");
 				if (sort) {
 					// sortのチェックがOnの時のみ切り替える。
 					if (lk) {
@@ -121,27 +116,26 @@ class EditableHtmlTable extends HtmlTable {
 	 * 行入替可能なテーブルに設定します。
 	 */
 	makeSortable() {
-		var thisTable = this;
-		var ckid = this.id + ".sortable";
+		let ckid = this.id + ".sortable";
 		this.enableSortable();
 		if (this.isSortableSwitching()) {
 			// タッチパネルの場合は行入替のOn/Off切り替え機能が必要。
-			var label = MessagesUtil.getMessage("message.table.sortablelabel");
-			var cb = '<input type="checkbox" id="' + ckid + '"><label for="' + ckid + '">' + label + '</label>';
+			let label = MessagesUtil.getMessage("message.table.sortablelabel");
+			let cb = '<input type="checkbox" id="' + ckid + '"><label for="' + ckid + '">' + label + '</label>';
 			if (currentPage.useUniqueId) {
 				cb = '<input type="checkbox" ' + this.getIdAttribute() + '="' + ckid + '" id="' + this.realId + '.sortable" "><label for="' + this.realId + '.sortable">' + label + '</label>';
 			}
 //			this.get().before(cb);
 			this.find("thead th:first").append(cb);
-			this.parent.get(ckid).click(function() {
-				if ($(this).prop("checked")) {
-					thisTable.find("[id$='\\.addButton']").prop("disabled", true);
-					thisTable.find("[id$='\\.deleteButton']").prop("disabled", true);
-					thisTable.enableSortable();
+			this.parent.get(ckid).click((ev) => {
+				if ($(ev.currentTarget).prop("checked")) {
+					this.find("[id$='\\.addButton']").prop("disabled", true);
+					this.find("[id$='\\.deleteButton']").prop("disabled", true);
+					this.enableSortable();
 				} else {
-					thisTable.find("[id$='\\.addButton']").prop("disabled", false);
-					thisTable.find("[id$='\\.deleteButton']").prop("disabled", false);
-					thisTable.disableSortable();
+					this.find("[id$='\\.addButton']").prop("disabled", false);
+					this.find("[id$='\\.deleteButton']").prop("disabled", false);
+					this.disableSortable();
 				}
 				return true;
 			});
@@ -163,9 +157,9 @@ class EditableHtmlTable extends HtmlTable {
 	 * @param lk 非表示にする場合true.
 	 */
 	lockEditButton(lk) {
-		var ckid = this.id + ".sortable";
-		var addbtn = this.find("[id$='\\.addButton']");
-		var delbtn = this.find("[id$='\\.deleteButton']");
+		let ckid = this.id + ".sortable";
+		let addbtn = this.find("[id$='\\.addButton']");
+		let delbtn = this.find("[id$='\\.deleteButton']");
 		if (lk) {
 			addbtn.hide();
 			delbtn.hide();
@@ -199,51 +193,50 @@ class EditableHtmlTable extends HtmlTable {
 	 * 各行のid中のインデックスを整列する.
 	 */
 	resetIdIndex() {
-		var thisTable = this;
-		var trlist = thisTable.find("tbody>tr,tfoot>tr");
-		for (var i = 0; i < trlist.length; i++) {
+		let trlist = this.find("tbody>tr,tfoot>tr");
+		for (let i = 0; i < trlist.length; i++) {
 			{
-				var c = $(trlist.get(i)).find(this.convertSelector("[id^='" + thisTable.id + "\\[']"));
-				c.each(function() {
+				let c = $(trlist.get(i)).find(this.convertSelector("[id^='" + this.id + "\\[']"));
+				c.each((_, el) => {
 					{
-						var id = $(this).attr(thisTable.getIdAttribute());
-						var newid = id.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]");
-						$(this).attr(thisTable.getIdAttribute(), newid);
+						let id = $(el).attr(this.getIdAttribute());
+						let newid = id.replace(new RegExp(this.id + "\\[.+?\\]"), this.id + "[" + i + "]");
+						$(el).attr(this.getIdAttribute(), newid);
 					}
 					{
-						if ("id" != thisTable.getIdAttribute()) {
-							var id = $(this).attr("id");
+						if ("id" != this.getIdAttribute()) {
+							let id = $(el).attr("id");
 							logger.info("id=" + id);
 							if (id != null) {
-								var newid = id.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]");
-								$(this).attr("id", newid);
+								let newid = id.replace(new RegExp(this.id + "\\[.+?\\]"), this.id + "[" + i + "]");
+								$(el).attr("id", newid);
 							}
 						}
 					}
 					{
-						var name = $(this).attr("name");
+						let name = $(el).attr("name");
 						if (name != null) {
-							var newname = name.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]");
-							$(this).attr("name", newname);
+							let newname = name.replace(new RegExp(this.id + "\\[.+?\\]"), this.id + "[" + i + "]");
+							$(el).attr("name", newname);
 						}
 					}
 				});
 			}
 			{
-				var c = $(trlist.get(i)).find(this.convertSelector("[for^='" + thisTable.id + "\\[']"));
-				c.each(function() {
-					var id = $(this).attr("for");
-					var newid = id.replace(new RegExp(thisTable.id + "\\[.+?\\]"), thisTable.id + "[" + i + "]")
-					$(this).attr("for", newid);
+				let c = $(trlist.get(i)).find(this.convertSelector("[for^='" + this.id + "\\[']"));
+				c.each((_, el) => {
+					let id = $(el).attr("for");
+					let newid = id.replace(new RegExp(this.id + "\\[.+?\\]"), this.id + "[" + i + "]")
+					$(el).attr("for", newid);
 				});
 			}
 		}
 		this.resetRowNo();
 		// IDを作り直したのでdatepickerを設定し直す.
-		var n = this.find("tbody>tr").length;
-		for (var lidx = 0; lidx < n; lidx++) {
-			for (var i = 0; i < this.fields.length; i++) {
-				var f = this.getRowField(lidx, this.fields[i]);
+		let n = this.find("tbody>tr").length;
+		for (let lidx = 0; lidx < n; lidx++) {
+			for (let i = 0; i < this.fields.length; i++) {
+				let f = this.getRowField(lidx, this.fields[i]);
 				f.onIdChange();
 			}
 		}
@@ -257,13 +250,12 @@ class EditableHtmlTable extends HtmlTable {
 	 * @param {String} rowid 設定する行のID('tableid[idx]'形式)。
 	 */
 	onAddTr(rowid) {
-		var thisTable = this;
-		thisTable.get(rowid + ".addButton").click(function() {
-			thisTable.addRow(this);
+		this.get(rowid + ".addButton").click((ev) => {
+			this.addRow(ev.currentTarget);
 			return false;
 		});
-		thisTable.get(rowid + ".deleteButton").click(function() {
-			thisTable.deleteRow(this);
+		this.get(rowid + ".deleteButton").click((ev) => {
+			this.deleteRow(ev.currentTarget);
 			return false;
 		});
 	}
@@ -278,8 +270,8 @@ class EditableHtmlTable extends HtmlTable {
 	 * </pre>
 	 */
 	addRow(rowinfo) {
-		var thisTable = this;
-		var rowIndex = null;
+		let thisTable = this;
+		let rowIndex = null;
 		if (rowinfo != null) {
 			if (rowinfo instanceof Element) {
 				rowIndex = thisTable.getRowIndex($(rowinfo));
@@ -292,7 +284,7 @@ class EditableHtmlTable extends HtmlTable {
 		if (this.getRowCount() == 0) {
 			rowIndex = null;
 		}
-		var lidx = thisTable.addTr(rowIndex);
+		let lidx = thisTable.addTr(rowIndex);
 		this.onAddTr(thisTable.id + "[" + lidx + "]");
 		this.resetIdIndex();
 	}
@@ -302,15 +294,15 @@ class EditableHtmlTable extends HtmlTable {
 	 * @param {Element} btn 削除ボタン。
 	 */
 	deleteRow(btn) {
-		var thisTable = this;
-		var rowIndex = thisTable.getRowIndex($(btn));
-		for (var i = 0; i < this.fields.length; i++) {
-			var f = this.getRowField(rowIndex, this.fields[i]);
+		let thisTable = this;
+		let rowIndex = thisTable.getRowIndex($(btn));
+		for (let i = 0; i < this.fields.length; i++) {
+			let f = this.getRowField(rowIndex, this.fields[i]);
 			f.onDestroy();
 		}
 		thisTable.find("tbody>tr:eq(" + rowIndex + ")").remove();
 		this.resetIdIndex();
-		var form = this.getParentForm();
+		let form = this.getParentForm();
 		form.onCalc(this.get());
 	}
 
@@ -322,11 +314,11 @@ class EditableHtmlTable extends HtmlTable {
 	 * </pre>
 	 */
 	resetRowNo() {
-		var trlist = this.find("[" + this.getIdAttribute() + "$=\\.no]");
-		for (var i = 0; i < trlist.length; i++) {
-			var lineNoId = this.id + "[" + i + "].no";
+		let trlist = this.find("[" + this.getIdAttribute() + "$=\\.no]");
+		for (let i = 0; i < trlist.length; i++) {
+			let lineNoId = this.id + "[" + i + "].no";
 			this.get(lineNoId).text(i + 1);
-			var sortOrderId = this.id + "[" + i + "].sortOrder";
+			let sortOrderId = this.id + "[" + i + "].sortOrder";
 			this.get(sortOrderId).val(i);
 
 		}
@@ -339,11 +331,11 @@ class EditableHtmlTable extends HtmlTable {
 	 * @param {Array} list テーブルデータ。
 	 */
 	setTableData(list) {
-		var ckid = this.id + ".sortable";
-		var ck = this.parent.get(ckid);
+		let ckid = this.id + ".sortable";
+		let ck = this.parent.get(ckid);
 		ck.prop("checked", false);
 		super.setTableData(list);
-		var lastAddButton = this.find("tfoot").find(this.convertSelector("[id$='\\.addButton']"));
+		let lastAddButton = this.find("tfoot").find(this.convertSelector("[id$='\\.addButton']"));
 		lastAddButton.prop("disabled", false);
 		this.resetRowNo();
 	}
@@ -353,10 +345,10 @@ class EditableHtmlTable extends HtmlTable {
 	 * 必須マークを設定します。
 	 */
 	setRequiredMark() {
-		for (var i = 0; i < this.fields.length; i++) {
-			var el = $(this.trLine).find(this.convertSelector("#" + this.selectorEscape(this.id + "[0]." + this.fields[i].id)));
+		for (let i = 0; i < this.fields.length; i++) {
+			let el = $(this.trLine).find(this.convertSelector("#" + this.selectorEscape(this.id + "[0]." + this.fields[i].id)));
 			if (this.fields[i].isRequired(el)) {
-				var lel = this.getLabelElement(this.fields[i]);
+				let lel = this.getLabelElement(this.fields[i]);
 				if (lel != null) {
 					lel.addClass("requiredFieldLabel");
 				}

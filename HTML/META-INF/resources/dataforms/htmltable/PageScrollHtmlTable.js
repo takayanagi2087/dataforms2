@@ -18,13 +18,12 @@ class PageScrollHtmlTable extends HtmlTable {
 	 */
 	attach() {
 		this.sortOrder = "";
-		var thisTable = this;
 		super.attach();
-		thisTable.get().before(this.additionalHtmlText);
-		thisTable.parent.find("div.pageController :input").each(function() {
-			let id = $(this).attr(thisTable.getIdAttribute());
-			if ($(this).attr("name") == null) {
-				$(this).attr("name", id);
+		this.get().before(this.additionalHtmlText);
+		this.parent.find("div.pageController :input").each((_, el) => {
+			let id = $(el).attr(this.getIdAttribute());
+			if ($(el).attr("name") == null) {
+				$(el).attr("name", id);
 			}
 		});
 		if (currentPage.useUniqueId) {
@@ -42,8 +41,8 @@ class PageScrollHtmlTable extends HtmlTable {
 	 * @param {String} fid フィールドID。
 	 */
 	setPageControllerRealId(fid) {
-		var comp = this.parent.getComponent(fid);
-		var jq = this.parent.find("[" + this.getIdAttribute() + "='" + fid + "']");
+		let comp = this.parent.getComponent(fid);
+		let jq = this.parent.find("[" + this.getIdAttribute() + "='" + fid + "']");
 		jq.attr("id", comp.realId);
 	}
 
@@ -52,13 +51,13 @@ class PageScrollHtmlTable extends HtmlTable {
 	 * @return {String} ソート順情報。
 	 */
 	getSortOrder() {
-		var flist = this.getSortFieldList();
-		var sortOrder = "";
-		for (var i = 0; i < flist.length; i++) {
+		let flist = this.getSortFieldList();
+		let sortOrder = "";
+		for (let i = 0; i < flist.length; i++) {
 			if (sortOrder.length > 0) {
 				sortOrder += ",";
 			}
-			var f = flist[i];
+			let f = flist[i];
 			sortOrder += (f.id + ":" + f.currentSortOrder);
 		}
 		return sortOrder;
@@ -71,11 +70,10 @@ class PageScrollHtmlTable extends HtmlTable {
 	 *
 	 */
 	sortTable(col) {
-		var thisTable = this;
 		this.changeSortMark(col);
 		this.sortOrder = this.getSortOrder();
-		for (var i = 0; i < this.fields.length; i++) {
-			var f = this.fields[i];
+		for (let i = 0; i < this.fields.length; i++) {
+			let f = this.fields[i];
 			f.sortOrder = f.currentSortOrder;
 		}
 		this.parent.get("pageNo").val("0");

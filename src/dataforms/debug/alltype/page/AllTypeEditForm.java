@@ -56,7 +56,7 @@ public class AllTypeEditForm extends EditForm {
 		tbl.setSortable(true);
 //		tbl.setFixedColumns(5);
 		tbl.setFixedWidth(50.0);
-//		tbl.setSortableSwitching(true);
+		tbl.setSortableSwitching(true);
 		this.addHtmlTable(tbl);
 
 		this.getFieldList().get("charField").addValidator(new RequiredValidator());

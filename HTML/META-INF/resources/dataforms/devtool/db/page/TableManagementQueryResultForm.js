@@ -168,7 +168,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			for (let i = 0; i < queryResult.length; i++) {
 				let id = "queryResult[" + i + "].className";
 				this.get(id).click(async (ev) => {
-					let clsname = $(ev.target).html();
+					let clsname = $(ev.currentTarget).html();
 					let qs="className=" + clsname;
 					let method = this.getWebMethod("getTableInfo");
 					let sqllist = await method.execute(qs);
@@ -197,7 +197,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 				}
 			}
 			this.find("[id$='\.tableName']").click((ev) => {
-				this.showQueryForm($(ev.target));
+				this.showQueryForm($(ev.currentTarget));
 			});
 		}
 		this.controlButton();

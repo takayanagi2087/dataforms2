@@ -25,7 +25,7 @@ class DaoGeneratorEditForm extends EditForm {
 		let thisForm = this;
 		this.onChangeType("1");
 		this.get("editFormType").change((ev) => {
-			thisForm.onChangeType($(ev.target).val());
+			thisForm.onChangeType($(ev.currentTarget).val());
 			thisForm.getKeyFieldList();
 		});
 	}

@@ -21,7 +21,7 @@ class QueryGeneratorEditForm extends EditForm {
 				return false;
 			}
 			let selectFieldList = this.getComponent("selectFieldList");
-			let ck = $(ev.target).prop("checked");
+			let ck = $(ev.currentTarget).prop("checked");
 			selectFieldList.checkAll(ck);
 		});
 	}

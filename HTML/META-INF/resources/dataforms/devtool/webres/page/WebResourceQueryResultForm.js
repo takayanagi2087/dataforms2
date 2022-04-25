@@ -34,11 +34,11 @@ class WebResourceQueryResultForm extends QueryResultForm {
 			for (let i = 0; i < queryResult.length; i++) {
 				let id = "queryResult[" + i + "].className";
 				this.get(id).click((ev) => {
-					let classname = table.getSameRowField($(ev.target), "className").html();
-					let webComponentType = table.getSameRowField($(ev.target), "webComponentType").val();
-					let htmlStatus = table.getSameRowField($(ev.target), "htmlStatus").val();
-					let javascriptStatus = table.getSameRowField($(ev.target), "javascriptStatus").val();
-					let javascriptClass = table.getSameRowField($(ev.target), "javascriptClass").val();
+					let classname = table.getSameRowField($(ev.currentTarget), "className").html();
+					let webComponentType = table.getSameRowField($(ev.currentTarget), "webComponentType").val();
+					let htmlStatus = table.getSameRowField($(ev.currentTarget), "htmlStatus").val();
+					let javascriptStatus = table.getSameRowField($(ev.currentTarget), "javascriptStatus").val();
+					let javascriptClass = table.getSameRowField($(ev.currentTarget), "javascriptClass").val();
 					let data = {};
 					data.className = classname;
 					data.webComponentType = webComponentType;

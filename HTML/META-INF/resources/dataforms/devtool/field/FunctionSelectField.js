@@ -21,7 +21,7 @@ class FunctionSelectField extends SingleSelectField {
 	attach() {
 		super.attach();
 		this.get().change((ev) => {
-			this.setPackageName($(ev.target))
+			this.setPackageName($(ev.currentTarget))
 		});
 	}
 

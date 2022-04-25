@@ -16,7 +16,7 @@ class ZipCodeField extends CharField {
 	attach() {
 		super.attach();
 		this.get().change((ev) => {
-			let comp = $(ev.target);
+			let comp = $(ev.currentTarget);
 			this.addHyphen(comp);
 			this.queryAddress(comp);
 		});

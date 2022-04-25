@@ -32,10 +32,10 @@ class DateTimeField extends Field {
 		this.displayFormat = displayFormat;
 		this.editFormat = editFormat;
 		this.get().focus((ev) => {
-			this.toEditFormat($(ev.target));
+			this.toEditFormat($(ev.currentTarget));
 		});
 		this.get().blur((ev) => {
-			this.toDisplayFormat($(ev.target));
+			this.toDisplayFormat($(ev.currentTarget));
 		});
 	}
 

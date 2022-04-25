@@ -32,7 +32,7 @@ class FileField extends Field {
 		});
 		this.parent.get(delid).click((ev) => {
 			this.id = $(ev.currentTarget).attr(this.getIdAttribute()).replace("_del", "");
-			$(ev.target).parent().hide();
+			$(ev.currentTarget).hide();
 			this.delFile();
 		});
 		comp.change((ev) => {

@@ -18,7 +18,7 @@ class UserRegistForm extends EditForm {
 		if (this.config.loginIdIsMail) {
 			this.get("loginId").parents("tr:first").hide();
 			this.get("mailAddress").change((ev) => {
-				this.copyToLoginId($(ev.target));
+				this.copyToLoginId($(ev.currentTarget));
 			});
 		}
 		if (!this.config.mailCheck) {

@@ -21,7 +21,7 @@ class DeveloperEditForm extends EditForm {
 			this.get("flagDiv").hide();
 		}
 		this.get("userImportFlag").click((ev) => {
-			if ($(ev.target).prop("checked")) {
+			if ($(ev.currentTarget).prop("checked")) {
 				this.get("userInfoTable").hide();
 			} else {
 				this.get("userInfoTable").show();

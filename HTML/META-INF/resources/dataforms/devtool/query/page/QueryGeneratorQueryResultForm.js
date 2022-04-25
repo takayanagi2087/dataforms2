@@ -48,14 +48,14 @@ class QueryGeneratorQueryResultForm extends QueryResultForm {
 		let queryResult = this.getComponent("queryResult");
 		// リスト中のボタンに対してイベント処理を追加。
 		this.find("[id$='\.generateSubQueryButton']").click(async (ev) => {
-			let sq = queryResult.getSameRowField($(ev.target), "subQuery").text();
+			let sq = queryResult.getSameRowField($(ev.currentTarget), "subQuery").text();
 			if (sq.length > 0) {
 				let msg = MessagesUtil.getMessage("message.confirmsubquery");
 				if (await currentPage.confirm(null, msg)) {
-					this.generateSubQuery($(ev.target));
+					this.generateSubQuery($(ev.currentTarget));
 				};
 			} else {
-				this.generateSubQuery($(ev.target));
+				this.generateSubQuery($(ev.currentTarget));
 			}
 		});
 	}

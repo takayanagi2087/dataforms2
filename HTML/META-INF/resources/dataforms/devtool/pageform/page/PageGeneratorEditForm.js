@@ -18,11 +18,10 @@ class PageGeneratorEditForm extends EditForm {
 	 *
 	 */
 	attach() {
-		let thisForm = this;
 		super.attach();
 
 		this.get("pageClassName").change((ev) => {
-			this.updateFormName($(ev.target));
+			this.updateFormName($(ev.currentTarget));
 		});
 		this.get("allErrorButton").click(() => {
 			this.find("[id$='OverwriteMode']").each((_, el) => {

@@ -16,8 +16,8 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 	attach() {
 		super.attach();
 		this.get("selAll").click((ev) => {
-			logger.log("selAll=" + $(ev.target).prop("checked"));
-			this.selAll($(ev.target));
+			logger.log("selAll=" + $(ev.currentTarget).prop("checked"));
+			this.selAll($(ev.currentTarget));
 		});
 		this.get("exportButton").click((ev) => {
 			this.exportWebRes();

@@ -43,12 +43,12 @@ class Field extends WebComponent {
 		if (this.relationDataAcquisition) {
 			if (this.relationDataEvent == "BLUR") {
 				comp.blur((ev) => {
-					this.adjustIdIndex($(ev.target));
+					this.adjustIdIndex($(ev.currentTarget));
 					this.getRelationData();
 				});
 			} else {
 				comp.change((ev) => {
-					this.adjustIdIndex($(ev.target));
+					this.adjustIdIndex($(ev.currentTarget));
 					this.getRelationData();
 				});
 			}
@@ -59,7 +59,7 @@ class Field extends WebComponent {
 		}
 		if (this.calcEventField) {
 			comp.change((ev) => {
-				this.callOnCalc($(ev.target));
+				this.callOnCalc($(ev.currentTarget));
 			});
 		}
 		if (this.readonly) {
@@ -541,7 +541,7 @@ class Field extends WebComponent {
 	setAutocomplete() {
 		this.get().autocomplete({
 			search: (ev) => {
-				this.adjustIdIndex($(ev.target));
+				this.adjustIdIndex($(ev.currentTarget));
 			},
 			source: (_, res) => {
 				this.getSource(res);
@@ -561,7 +561,7 @@ class Field extends WebComponent {
 				if (this.calcEventField) {
 					logger.log("thisField.calcEventField=" + this.calcEventField);
 					let form = this.getParentForm();
-					form.onCalc($(ev.target));
+					form.onCalc($(ev.currentTarget));
 				}
 				this.onAutocompleteSelected();
 			}

@@ -28,13 +28,13 @@ class DocFramePage extends BasePage {
 			this.get("docFrame").attr("src", src);
 		}
 		this.find("a").click((ev) => {
-			let path = $(ev.target).data("path");
+			let path = $(ev.currentTarget).data("path");
 			let src = "../../../../doc/" + path;
 			this.get("docFrame").attr("src", src);
 			$("ul.dropdwn_menu").slideUp();
 		});
 		this.get("docFrame").on('load', (ev) => {
-			this.onLoadDocFrame($(ev.target));
+			this.onLoadDocFrame($(ev.currentTarget));
 		});
 
 		$(window).resize(() => {
@@ -44,9 +44,9 @@ class DocFramePage extends BasePage {
 
 
 		$('.dropdwn li').hover((ev) =>{
-			$("ul:not(:animated)", ev.target).slideDown();
+			$("ul:not(:animated)", ev.currentTarget).slideDown();
 		}, (ev) => {
-			$("ul.dropdwn_menu", ev.target).slideUp();
+			$("ul.dropdwn_menu", ev.currentTarget).slideUp();
 		});
 	}
 	/**
@@ -164,8 +164,8 @@ class DocFramePage extends BasePage {
 			if (idx > 0) {
 				url = url.substring(0, idx);
 			}
-			let img = $(ev.target).attr("src");
-			let title = $(ev.target).prev("figcaption").text();
+			let img = $(ev.currentTarget).attr("src");
+			let title = $(ev.currentTarget).prev("figcaption").text();
 			$("[" + this.getIdAttribute() + "='imageViewer']").attr("src", url + "/" + img);
 			let image = new Image();
 			image.onload = () => {

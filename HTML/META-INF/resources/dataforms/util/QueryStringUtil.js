@@ -21,7 +21,7 @@ class QueryStringUtil {
 	static parse(qs) {
 		let vars = {};
 		if (qs != null && qs.length > 0) {
-			var sidx = 0;
+			let sidx = 0;
 			if (qs.charAt(0) == "?") {
 				sidx = 1;
 			}

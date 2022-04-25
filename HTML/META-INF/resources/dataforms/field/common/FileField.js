@@ -26,18 +26,18 @@ class FileField extends Field {
 		let selid = this.id + "_sel"; // 選択ボタンID.
 		let delid = this.id + "_del"; // ファイル削除のチェックボックス.
 		this.parent.get(selid).click((ev) => {
-			let inpid = $(ev.target).parent().attr(this.getIdAttribute()).replace("_sel", "");
+			let inpid = $(ev.currentTarget).attr(this.getIdAttribute()).replace("_sel", "");
 			this.id = inpid;
 			this.parent.get(inpid).click();
 		});
 		this.parent.get(delid).click((ev) => {
-			this.id = $(ev.target).parent().attr(this.getIdAttribute()).replace("_del", "");
+			this.id = $(ev.currentTarget).attr(this.getIdAttribute()).replace("_del", "");
 			$(ev.target).parent().hide();
 			this.delFile();
 		});
 		comp.change((ev) => {
-			this.adjustIdIndex($(ev.target));
-			this.selectFile($(ev.target));
+			this.adjustIdIndex($(ev.currentTarget));
+			this.selectFile($(ev.currentTarget));
 		});
 		if (this.readonly) {
 			this.lock(true);

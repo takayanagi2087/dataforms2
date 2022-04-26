@@ -237,7 +237,7 @@
 				// 外部ユーザ登録関連(外部ユーザ登録機能を無効にするには以下の2ページを無効にしてください)
 				//
 				// ユーザ登録ページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.UserRegistPage", "dataforms.app.base.page.HiddenPage"]
+				//, ["dataforms.app.user.page.UserRegistPage", "dataforms.app.base.page.HiddenPage"]
 				// ユーザ有効化ページを隠す場合は以下を有効にしてください。
 				// , ["dataforms.app.user.page.UserEnablePage", "dataforms.app.base.page.HiddenPage"]
 				//
@@ -267,7 +267,7 @@
 	<!--
 		外部ユーザ登録ページのパスを指定します。
 		デフォルトのパスはdataforms2.jar中のページ"dataforms.app.user.page.UserRegistPage"のパスになっています。
-		インターネットからのユーザ登録を許可しない場合は、
+		インターネットからのユーザ登録を許可しない場合は、以下の設定をコメントアウトし、
 		page-overrideパラメータで、"dataforms.app.user.page.UserRegistPage"を無効にしてください。
 	 -->
 	<context-param>

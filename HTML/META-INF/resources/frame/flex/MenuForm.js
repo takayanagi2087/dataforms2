@@ -15,15 +15,14 @@ class MenuForm extends Form {
 	/**
 	 * メニュー項目を更新する.
 	 */
-	update() {
-		var thisForm = this;
-		var method = this.getServerMethod("getMenu");
-		method.execute("", function(ret) {
-			if (ret.status == ServerMethod.SUCCESS) {
-				thisForm.menu.menuGroupList = ret.result.menuGroupList;
-				thisForm.menu.update();
-			}
-		});
+	async update() {
+		let thisForm = this;
+		let method = this.getWebMethod("getMenu");
+		let ret = await method.execute("");
+		if (ret.status == JsonResponse.SUCCESS) {
+			thisForm.menu.menuGroupList = ret.result.menuGroupList;
+			thisForm.menu.update();
+		}
 	}
 }
 

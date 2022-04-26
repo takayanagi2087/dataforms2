@@ -469,15 +469,6 @@ class Page extends DataForms {
 		}
 	}
 
-
-	/**
-	 * ログインダイアログを表示します。
-	 */
-	showLoginDialog() {
-		let dlg = this.getComponent("loginDialog");
-		dlg.showModal();
-	}
-
 	/**
 	 * ページをロックします。
 	 * <pre>

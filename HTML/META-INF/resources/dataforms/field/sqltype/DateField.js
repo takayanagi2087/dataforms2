@@ -29,8 +29,7 @@ class DateField extends DateTimeField {
 	 */
 	attach() {
 		super.attach();
-		var thisField = this;
-		var comp = this.get();
+		let comp = this.get();
 		if (!comp.prop("readonly")) {
 			if (this.datepickerEnabled) {
 				this.setDatepicker();
@@ -46,9 +45,10 @@ class DateField extends DateTimeField {
 	 * @param {Object} Datepickerのインスタンス。
 	 */
 	onSelect(datetext, inst) {
+		logger.log("datetext=" + datetext + ",inst=" + inst);
 		if (this.calcEventField) {
-			var form = this.getParentForm();
-			form.onCalc($(this));
+			let form = this.getParentForm();
+			form.onCalc(this.get());
 		}
 	}
 
@@ -56,22 +56,21 @@ class DateField extends DateTimeField {
 	 * Datepickerの設定を行います。
 	 */
 	setDatepicker() {
-		var datepickerFormat = MessagesUtil.getMessage("format.datepicker");
-		var comp = this.get();
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
-		var thisField = this;
+		let datepickerFormat = MessagesUtil.getMessage("format.datepicker");
+		let comp = this.get();
+		let tag = comp.prop("tagName");
+		let type = comp.prop("type");
 		if (tag == "INPUT" && type == "text") {
 //			$(this.convertSelector("#" + this.selectorEscape(this.id))).datepicker({
 			comp.datepicker({
 				dateFormat: datepickerFormat
-				,autoSize: true
-				,showOn: "button"
-				,buttonText: "..."
-				,beforeShow:function(input, inst) {
+				, autoSize: true
+				, showOn: "button"
+				, buttonText: "..."
+				, beforeShow: (_, __) => {
 				}
-				,onSelect:function(datetext, inst) {
-					thisField.onSelect(datetext, inst);
+				, onSelect: (datetext, inst) => {
+					this.onSelect(datetext, inst);
 				}
 			});
 		}
@@ -84,9 +83,9 @@ class DateField extends DateTimeField {
 	 */
 	getFormatedText(value) {
 		if (value != null) {
-			var d = new Date(value);
-			var displayFormat = MessagesUtil.getMessage("format.datefield");
-			var fmt = new SimpleDateFormat(displayFormat);
+			let d = new Date(value);
+			let displayFormat = MessagesUtil.getMessage("format.datefield");
+			let fmt = new SimpleDateFormat(displayFormat);
 			return fmt.format(d);
 		} else {
 			return value;
@@ -148,7 +147,7 @@ class DateField extends DateTimeField {
 	 */
 	lock(lk) {
 		super.lock(lk);
-		var tbtn = this.get().next(".ui-datepicker-trigger:first");
+		let tbtn = this.get().next(".ui-datepicker-trigger:first");
 		if (lk) {
 			tbtn.hide();
 		} else {

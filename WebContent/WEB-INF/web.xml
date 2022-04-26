@@ -168,8 +168,8 @@
 				"allowIE": true
 				// BabelがES5のソースを展開するフォルダ
 				, "babelWork": "/tmp/babel"
-				// サーバーサイドでES6->ES5変換を行うコマンドを記述します。
-				, "babelCommand": "C:/Users/takay/AppData/Roaming/npm/babel.cmd --presets C:/Users/takay/AppData/Roaming/npm/node_modules/babel-preset-es2015"
+				// サーバーサイドでES8->ES5変換を行うコマンドを記述します。
+				, "babelCommand": "C:/babel/node_modules/.bin/babel.cmd --config-file c:/babel/.babelrc --no-babelrc "
 				// , "babelCommand": "standalone"
 			}
 		</param-value>

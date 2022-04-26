@@ -14,17 +14,16 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 	 * HTMLエレメントとの対応付けを行います。
 	 */
 	attach() {
-		var thisForm = this;
 		super.attach();
-		this.get("selAll").click(function() {
-			logger.log("selAll=" + $(this).prop("checked"));
-			thisForm.selAll($(this));
+		this.get("selAll").click((ev) => {
+			logger.log("selAll=" + $(ev.currentTarget).prop("checked"));
+			this.selAll($(ev.currentTarget));
 		});
-		this.get("exportButton").click(function() {
-			thisForm.exportWebRes();
+		this.get("exportButton").click((ev) => {
+			this.exportWebRes();
 		});
-		this.get("selectNotExportedButton").click(function() {
-			thisForm.selectedNotExportedFile();
+		this.get("selectNotExportedButton").click((ev) => {
+			this.selectedNotExportedFile();
 		});
 	}
 
@@ -33,14 +32,14 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 	 * @returns バリデーション結果。
 	 */
 	validateFields() {
-		var ret = super.validateFields();
+		let ret = super.validateFields();
 		if (ret.length == 0) {
 			if (this.get("forceOverwrite").prop("checked") == false) {
-				var result = this.formData.queryResult;
-				for (var i = 0; i < result.length; i++) {
-					var selid = "queryResult[" + i + "].sel";
+				let result = this.formData.queryResult;
+				for (let i = 0; i < result.length; i++) {
+					let selid = "queryResult[" + i + "].sel";
 					if (this.get(selid).prop("checked")) {
-						var efid = "queryResult[" + i + "].existFlag";
+						let efid = "queryResult[" + i + "].existFlag";
 						if (this.getFieldValue(efid) == "1") {
 							ret.push(new ValidationError("queryResult[" + i + "].fileName",
 								MessagesUtil.getMessage("error.alreadyexported", result[i].fileName)));
@@ -56,10 +55,10 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 	 * エクスポートされていないファイルを選択します。
 	 */
 	selectedNotExportedFile() {
-		var result = this.formData.queryResult;
-		for (var i = 0; i < result.length; i++) {
-			var selid = "queryResult[" + i + "].sel";
-			var efid = "queryResult[" + i + "].existFlag";
+		let result = this.formData.queryResult;
+		for (let i = 0; i < result.length; i++) {
+			let selid = "queryResult[" + i + "].sel";
+			let efid = "queryResult[" + i + "].existFlag";
 			if (this.getFieldValue(efid) != "1") {
 				this.get(selid).prop("checked", true);
 			}
@@ -69,17 +68,18 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 	/**
 	 * Webリソースをエクスポートします。
 	 */
-	exportWebRes() {
+	async exportWebRes() {
 		this.parent.resetErrorStatus();
 		if (this.validate()) {
-			var p = this.get().serialize();
+			let p = this.get().serialize();
 			logger.log("p=" + p);
-			this.submit("exportWebResource", function(r) {
-				if (r.status == ServerMethod.SUCCESS) {
-					var systemName = MessagesUtil.getMessage("message.systemname");
+			let r = await this.submit("exportWebResource");
+			if (r != null) {
+				if (r.status == JsonResponse.SUCCESS) {
+					let systemName = MessagesUtil.getMessage("message.systemname");
 					currentPage.alert(systemName, r.result);
 				}
-			});
+			}
 		}
 	}
 

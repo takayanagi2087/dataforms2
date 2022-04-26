@@ -285,25 +285,25 @@ class QueryResultForm extends Form {
 	 */
 	setQueryResultEventHandler() {
 		this.find("[id$='\.viewButton']").click((ev) => {
-			if (this.setSelectedKey($(ev.target))) {
+			if (this.setSelectedKey($(ev.currentTarget))) {
 				this.viewData();
 			}
 		});
 		//
 		this.find("[id$='\.updateButton']").click((ev) => {
-			if (this.setSelectedKey($(ev.target))) {
+			if (this.setSelectedKey($(ev.currentTarget))) {
 				// データ検索ダイアログ用に選択されたデータを設定する。
-				this.setSelectedData($(ev.target));
+				this.setSelectedData($(ev.currentTarget));
 				this.updateData();
 			}
 		});
 		this.find("[id$='\.referButton']").click((ev) => {
-			if (this.setSelectedKey($(ev.target))) {
+			if (this.setSelectedKey($(ev.currentTarget))) {
 				this.referData();
 			}
 		});
 		this.find("[id$='\.deleteButton']").click((ev) => {
-			if (this.setSelectedKey($(ev.target))) {
+			if (this.setSelectedKey($(ev.currentTarget))) {
 				this.deleteData();
 			}
 		});

@@ -21,33 +21,33 @@ class MultiSelectField extends SelectField {
 	 *
 	 */
 	setValue(value) {
-		var comp = this.get();
+		let comp = this.get();
 		if (comp.length > 0) {
-			var tag = comp.prop("tagName");
-			var type = comp.prop("type");
+			let tag = comp.prop("tagName");
+			let type = comp.prop("type");
 			if ("INPUT" == tag && type == "checkbox") {
 				// checkboxの対応.
-				comp.each(function() {
-					var v = $(this).val();
-					$(this).prop("checked", false);
+				comp.each((_, el) => {
+					let v = $(el).val();
+					$(el).prop("checked", false);
 					if (value != null) {
-						for (var i = 0; i < value.length; i++) {
+						for (let i = 0; i < value.length; i++) {
 							if (v == value[i]) {
-								$(this).prop("checked", true);
+								$(el).prop("checked", true);
 							}
 						}
 					}
 				});
 			} else if ("SELECT" == tag) {
 				// マルチ選択リストボックスの設定.
-				var opt = comp.find("option");
-				opt.each(function() {
-					var v = $(this).val();
-					$(this).prop("selected", false);
+				let opt = comp.find("option");
+				opt.each((_, el) => {
+					let v = $(el).val();
+					$(el).prop("selected", false);
 					if (value != null) {
-						for (var i = 0; i < value.length; i++) {
+						for (let i = 0; i < value.length; i++) {
 							if (v == value[i]) {
-								$(this).prop("selected", true);
+								$(el).prop("selected", true);
 							}
 						}
 					}
@@ -64,14 +64,14 @@ class MultiSelectField extends SelectField {
 	 * @param {Array} value 値。
 	 */
 	setTextValue(comp, value) {
-		var v = "";
+		let v = "";
 		if (value != null) {
-			for (var i = 0; i < value.length; i++) {
+			for (let i = 0; i < value.length; i++) {
 				if (v.length > 0) {
 					v += ",";
 				}
-				var iv = value[i];
-				for (var j = 0; j < this.optionList.length; j++) {
+				let iv = value[i];
+				for (let j = 0; j < this.optionList.length; j++) {
 					if (value[i] == this.optionList[j].value) {
 						iv = this.optionList[j].name;
 						break;
@@ -88,14 +88,14 @@ class MultiSelectField extends SelectField {
 	 * @return {String} 値。
 	 */
 	getValue() {
-		var comp = this.get();
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
-		var ret = [];
+		let comp = this.get();
+		let tag = comp.prop("tagName");
+		let type = comp.prop("type");
+		let ret = [];
 		if ("INPUT" == tag && "checkbox" == type) {
-			comp.each(function() {
-				if ($(this).prop("checked")) {
-					ret.push($(this).val());
+			comp.each((_, el) => {
+				if ($(el).prop("checked")) {
+					ret.push($(el).val());
 				}
 			});
 		} else {

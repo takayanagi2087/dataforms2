@@ -44,6 +44,8 @@ public class AllTypeEditForm extends EditForm {
 	 */
 	public AllTypeEditForm() {
 		this.addTableFields(new AllTypeTable());
+		this.getFieldList().get("smallintField").setCalcEventField(true);
+		this.getFieldList().get("dateField").setCalcEventField(true);
 //		this.getFieldList().get("radioField").addValidator(new RequiredValidator());
 //		this.getFieldList().get("checkboxField").addValidator(new RequiredValidator());
 
@@ -54,7 +56,7 @@ public class AllTypeEditForm extends EditForm {
 		tbl.setSortable(true);
 //		tbl.setFixedColumns(5);
 		tbl.setFixedWidth(50.0);
-//		tbl.setSortableSwitching(true);
+		tbl.setSortableSwitching(true);
 		this.addHtmlTable(tbl);
 
 		this.getFieldList().get("charField").addValidator(new RequiredValidator());

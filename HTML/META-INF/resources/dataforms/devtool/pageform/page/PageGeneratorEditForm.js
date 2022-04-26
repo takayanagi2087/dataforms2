@@ -18,56 +18,52 @@ class PageGeneratorEditForm extends EditForm {
 	 *
 	 */
 	attach() {
-		var thisForm = this;
 		super.attach();
 
-		this.get("pageClassName").change(function() {
-			thisForm.updateFormName($(this));
+		this.get("pageClassName").change((ev) => {
+			this.updateFormName($(ev.currentTarget));
 		});
-		this.get("allErrorButton").click(function() {
-			thisForm.find("[id$='OverwriteMode']").each(function() {
-				$(this).val("error");
+		this.get("allErrorButton").click(() => {
+			this.find("[id$='OverwriteMode']").each((_, el) => {
+				$(el).val("error");
 			});
 		});
-		this.get("allSkipButton").click(function() {
-			thisForm.find("[id$='OverwriteMode']").each(function() {
-				$(this).val("skip");
+		this.get("allSkipButton").click(() => {
+			this.find("[id$='OverwriteMode']").each((_, el) => {
+				$(el).val("skip");
 			});
 		});
-		this.get("allForceOverwriteButton").click(function() {
-			thisForm.find("[id$='OverwriteMode']").each(function() {
-				$(this).val("force");
+		this.get("allForceOverwriteButton").click(() => {
+			this.find("[id$='OverwriteMode']").each((_, el) => {
+				$(el).val("force");
 			});
 		});
-		this.get("errorSkipButton").click(function() {
-			thisForm.find(".errorField").each(function() {
-				var id = $(this).attr(thisForm.getIdAttribute());
+		this.get("errorSkipButton").click(() => {
+			this.find(".errorField").each((_, el) => {
+				let id = $(el).attr(this.getIdAttribute());
 				if (id.indexOf("ClassName") > 0) {
-					var owmId = id.replace("ClassName", "ClassOverwriteMode");
-					thisForm.setFieldValue(owmId, "skip");
+					let owmId = id.replace("ClassName", "ClassOverwriteMode");
+					this.setFieldValue(owmId, "skip");
 				}
 			});
 		});
-		this.get("errorForceButton").click(function() {
-			thisForm.find(".errorField").each(function() {
-				var id = $(this).attr(thisForm.getIdAttribute());
+		this.get("errorForceButton").click(() => {
+			this.find(".errorField").each((_, el) => {
+				let id = $(el).attr(this.getIdAttribute());
 				if (id.indexOf("ClassName") > 0) {
-					var owmId = id.replace("ClassName", "ClassOverwriteMode");
-					thisForm.setFieldValue(owmId, "force");
+					let owmId = id.replace("ClassName", "ClassOverwriteMode");
+					this.setFieldValue(owmId, "force");
 				}
 			});
 		});
-		this.get("queryFormClassFlag").click(function() {
-			thisForm.setFormFlag();
+		this.get("queryFormClassFlag").click(() => {
+			this.setFormFlag();
 		});
-		this.get("queryResultFormClassFlag").click(function() {
-			thisForm.setFormFlag();
+		this.get("queryResultFormClassFlag").click(() => {
+			this.setFormFlag();
 		});
-		this.get("editFormClassFlag").click(function() {
-			thisForm.setFormFlag();
-		});
-		this.find("[name='updateTable']").click(function() {
-			thisForm.setUpdateTable();
+		this.get("editFormClassFlag").click(() => {
+			this.setFormFlag();
 		});
 	}
 
@@ -76,29 +72,11 @@ class PageGeneratorEditForm extends EditForm {
 	 * @param {jQuery} pc ページクラス名フィールド。
 	 */
 	updateFormName(pc) {
-		var pcname = pc.val();
-		var n = pcname.replace(/Page$/, "");
+		let pcname = pc.val();
+		let n = pcname.replace(/Page$/, "");
 		this.setFieldValue("queryFormClassName", n + "QueryForm");
 		this.setFieldValue("queryResultFormClassName", n + "QueryResultForm");
 		this.setFieldValue("editFormClassName", n + "EditForm");
-	}
-
-	/**
-	 * テーブル更新の有無を設定します。
-	 */
-	setUpdateTable() {
-		var v = this.find("[name='updateTable']:checked").val();
-		if (v == "0") {
-			$(this.convertSelector("#tablePackageName")).prop("disabled", true);
-			$(this.convertSelector("#tableClassName")).prop("disabled", true);
-			$(this.convertSelector("#daoClassName")).prop("disabled", true);
-			$(this.convertSelector("#daoClassOverwriteMode")).prop("disabled", true);
-		} else {
-			$(this.convertSelector("#tablePackageName")).prop("disabled", false);
-			$(this.convertSelector("#tableClassName")).prop("disabled", false);
-			$(this.convertSelector("#daoClassName")).prop("disabled", false);
-			$(this.convertSelector("#daoClassOverwriteMode")).prop("disabled", false);
-		}
 	}
 
 	/**
@@ -110,9 +88,9 @@ class PageGeneratorEditForm extends EditForm {
 	toEditMode() {
 		super.toEditMode();
 		// 更新時にはクラス名を編集できなくする。
-		var funcsel = this.getComponent("functionSelect");
-		var pkgname = this.getComponent("packageName");
-		var cnfield = this.getComponent("pageClassName");
+		let funcsel = this.getComponent("functionSelect");
+		let pkgname = this.getComponent("packageName");
+		let cnfield = this.getComponent("pageClassName");
 		if (this.saveMode == "new") {
 			funcsel.lock(false);
 			pkgname.lock(false);
@@ -152,8 +130,8 @@ class PageGeneratorEditForm extends EditForm {
 		this.setFormClassName();
 		if (element != null) {
 			if (element.attr(this.getIdAttribute()) == "functionSelect") {
-				var funcname = element.val();
-				var packageName = funcname.replace(/\//g, ".").substr(1) + ".dao";
+				let funcname = element.val();
+				let packageName = funcname.replace(/\//g, ".").substr(1) + ".dao";
 				this.setFieldValue("tablePackageName", packageName);
 			}
 		}
@@ -165,7 +143,7 @@ class PageGeneratorEditForm extends EditForm {
 	 *
 	 */
 	setFormFlag() {
-		var thisForm = this;
+		let thisForm = this;
 		if (!this.get("queryFormClassFlag").prop("checked")) {
 			thisForm.get("queryFormClassName").val("");
 			thisForm.get("queryFormClassName").prop("disabled", true);
@@ -201,9 +179,9 @@ class PageGeneratorEditForm extends EditForm {
 	 * @param type フォームの種類。
 	 */
 	setFormClassNameField(name, type) {
-		var pageclass = this.getFieldValue("pageClassName");
-		var n = pageclass.replace(/Page$/, "");
-		var f = this.get(name);
+		let pageclass = this.getFieldValue("pageClassName");
+		let n = pageclass.replace(/Page$/, "");
+		let f = this.get(name);
 		if (f.val() == "") {
 			if (!f.prop("disabled")) {
 				f.val(n + type);
@@ -216,7 +194,7 @@ class PageGeneratorEditForm extends EditForm {
 	 *
 	 */
 	setFormClassName() {
-		var pageclass = this.getFieldValue("pageClassName");
+		let pageclass = this.getFieldValue("pageClassName");
 		if (pageclass.length > 0) {
 			this.setFormClassNameField("queryFormClassName", "QueryForm");
 			this.setFormClassNameField("queryResultFormClassName", "QueryResultForm");
@@ -233,21 +211,27 @@ class PageGeneratorEditForm extends EditForm {
 	 * 各フィールドのバリデーションを行います。
 	 */
 	validateFields() {
-		var ret = super.validateFields();
+		let ret = super.validateFields();
 		if (this.find("[name='updateTable']:checked").val() == "1") {
-			var v = new RequiredValidator();
+			let v = new RequiredValidator();
 			v.messageKey = "error.required";
-			var r = this.getComponent("tablePackageName").performValidator(v);
-			if (r != null) {
-				ret.push(r);
+			{
+				let r = this.getComponent("tablePackageName").performValidator(v);
+				if (r != null) {
+					ret.push(r);
+				}
 			}
-			var r = this.getComponent("tableClassName").performValidator(v);
-			if (r != null) {
-				ret.push(r);
+			{
+				let r = this.getComponent("tableClassName").performValidator(v);
+				if (r != null) {
+					ret.push(r);
+				}
 			}
-			var r = this.getComponent("daoClassName").performValidator(v);
-			if (r != null) {
-				ret.push(r);
+			{
+				let r = this.getComponent("daoClassName").performValidator(v);
+				if (r != null) {
+					ret.push(r);
+				}
 			}
 		}
 		return ret;
@@ -259,8 +243,7 @@ class PageGeneratorEditForm extends EditForm {
 	 */
 	setFormData(data) {
 		super.setFormData(data);
-		this.setUpdateTable();
-		var daoFunctionSelect = this.getComponent("daoFunctionSelect");
+		let daoFunctionSelect = this.getComponent("daoFunctionSelect");
 		daoFunctionSelect.selectPackage(this.getComponent("daoPackageName").getValue());
 	}
 }

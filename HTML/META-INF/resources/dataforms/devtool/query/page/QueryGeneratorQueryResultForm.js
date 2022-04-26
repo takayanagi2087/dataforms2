@@ -34,7 +34,7 @@ class QueryGeneratorQueryResultForm extends QueryResultForm {
 		logger.log("queryClassName=" + queryClassName);
 		let m = this.getWebMethod("generateSubQuery");
 		let r = await m.execute("queryClass=" + queryClassName);
-		if (r.status == ServerMethod.SUCCESS) {
+		if (r.status == JsonResponse.SUCCESS) {
 			currentPage.alert(null, r.result);
 		}
 		this.changePage();
@@ -48,14 +48,14 @@ class QueryGeneratorQueryResultForm extends QueryResultForm {
 		let queryResult = this.getComponent("queryResult");
 		// リスト中のボタンに対してイベント処理を追加。
 		this.find("[id$='\.generateSubQueryButton']").click(async (ev) => {
-			let sq = queryResult.getSameRowField($(ev.target), "subQuery").text();
+			let sq = queryResult.getSameRowField($(ev.currentTarget), "subQuery").text();
 			if (sq.length > 0) {
 				let msg = MessagesUtil.getMessage("message.confirmsubquery");
 				if (await currentPage.confirm(null, msg)) {
-					this.generateSubQuery($(ev.target));
+					this.generateSubQuery($(ev.currentTarget));
 				};
 			} else {
-				this.generateSubQuery($(ev.target));
+				this.generateSubQuery($(ev.currentTarget));
 			}
 		});
 	}

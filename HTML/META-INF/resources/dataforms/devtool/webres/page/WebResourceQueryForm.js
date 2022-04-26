@@ -20,13 +20,13 @@ class WebResourceQueryForm extends QueryForm {
 	attach() {
 		super.attach();
 		this.get("checkAllTypeButton").click(() => {
-			this.find("[name='webComponentTypeList']").each(function() {
-				$(this).prop("checked", true);
+			this.find("[name='webComponentTypeList']").each((_, el) => {
+				$(el).prop("checked", true);
 			});
 		});
 		this.get("uncheckAllTypeButton").click(() => {
-			this.find("[name='webComponentTypeList']").each(function() {
-				$(this).prop("checked", false);
+			this.find("[name='webComponentTypeList']").each((_, el) => {
+				$(el).prop("checked", false);
 			});
 		});
 	}

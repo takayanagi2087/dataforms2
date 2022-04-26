@@ -21,7 +21,7 @@ class ImageDialog extends Dialog {
 	 * 閉じる際に画像をクリアします。
 	 */
 	close() {
-		var imgfld = this.getComponent("imageForm").getComponent("image");
+		let imgfld = this.getComponent("imageForm").getComponent("image");
 		imgfld.setValue(null);
 		super.close();
 	}

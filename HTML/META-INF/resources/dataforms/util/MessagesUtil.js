@@ -52,12 +52,12 @@ class MessagesUtil {
 	 * @returns {String} メッセージ.
 	 */
 	static getMessage() {
-		var msg = MessagesUtil.messageMap[arguments[0]];
+		let msg = MessagesUtil.messageMap[arguments[0]];
 		if (msg != null) {
-			for (var i = 1; i < arguments.length; i++) {
-				var rex = RegExp('\\{' + (i - 1) +  '\\}');
+			for (let i = 1; i < arguments.length; i++) {
+				let rex = RegExp('\\{' + (i - 1) +  '\\}');
 				if (msg.match(rex)) {
-					var mid = RegExp.lastMatch;
+					let mid = RegExp.lastMatch;
 					msg = msg.replace(mid, arguments[i]);
 				}
 			}

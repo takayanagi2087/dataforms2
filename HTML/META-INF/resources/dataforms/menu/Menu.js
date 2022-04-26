@@ -59,9 +59,9 @@ class Menu extends WebComponent {
 	 * メニューの表示内容を更新します。
 	 */
 	update() {
-		var mglist = this.menuGroupList;
-		var menuHtml = this.getMenuHtml(mglist);
-		var menu = this.get();
+		let mglist = this.menuGroupList;
+		let menuHtml = this.getMenuHtml(mglist);
+		let menu = this.get();
 		menu.html(menuHtml);
 	}
 
@@ -71,25 +71,25 @@ class Menu extends WebComponent {
 	 * @returns {String} HTML.
 	 */
 	getMenuHtml(mglist) {
-	    var ret = "";
-		var pat = new RegExp(this.id + "\\[0\\]", "g");
-		var patl = new RegExp("pageList\\[0\\]", "g");
-		for (var i = 0; i < mglist.length; i++) {
-			var mg = this.menuLayout.replace(pat, this.id + "[" + i + "]")
-			var q = $("<div>" + mg + "</div>");
-			var menu = $(q.find(this.convertSelector("[id$='\\.pageList']")).get()[0]).html();
-			var plist = q.find(this.convertSelector("[id$='\\.pageList']"));
+	    let ret = "";
+		let pat = new RegExp(this.id + "\\[0\\]", "g");
+		let patl = new RegExp("pageList\\[0\\]", "g");
+		for (let i = 0; i < mglist.length; i++) {
+			let mg = this.menuLayout.replace(pat, this.id + "[" + i + "]")
+			let q = $("<div>" + mg + "</div>");
+			let menu = $(q.find(this.convertSelector("[id$='\\.pageList']")).get()[0]).html();
+			let plist = q.find(this.convertSelector("[id$='\\.pageList']"));
 			plist.empty();
-			for (var j = 0; j < mglist[i].pageList.length; j++) {
+			for (let j = 0; j < mglist[i].pageList.length; j++) {
 				plist.append(menu.replace(patl, "pageList[" + j +"]"));
 			}
 			q.find(this.convertSelector("#" + this.id + "\\[" + i + "\\]\\.name")).html(mglist[i].name);
 			q.find(this.convertSelector("#" + this.id + "\\[" + i + "\\]\\.name")).attr("data-menu-group-id", mglist[i].id);
-			for (var j = 0; j < mglist[i].pageList.length; j++) {
-	            plist.find(this.convertSelector("[id$='\\.pageList\\[" + j + "\\]\\.url']")).attr("href", mglist[i].pageList[j].url);
-	            if (mglist[i].pageList[j].menuTarget != null) {
-	                plist.find(this.convertSelector("[id$='\\.pageList\\[" + j + "\\]\\.url']")).attr("target", mglist[i].pageList[j].menuTarget);
-	            }
+			for (let j = 0; j < mglist[i].pageList.length; j++) {
+				plist.find(this.convertSelector("[id$='\\.pageList\\[" + j + "\\]\\.url']")).attr("href", mglist[i].pageList[j].url);
+				if (mglist[i].pageList[j].menuTarget != null) {
+					plist.find(this.convertSelector("[id$='\\.pageList\\[" + j + "\\]\\.url']")).attr("target", mglist[i].pageList[j].menuTarget);
+				}
 				plist.find(this.convertSelector("[id$='\\.pageList\\[" + j + "\\]\\.name']")).html(mglist[i].pageList[j].menuName);
 				plist.find(this.convertSelector("[id$='\\.pageList\\[" + j + "\\]\\.description']")).html(mglist[i].pageList[j].description);
 			}

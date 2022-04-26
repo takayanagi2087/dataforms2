@@ -18,25 +18,24 @@ class SideMenu extends Menu {
 	 */
 	attach() {
 		super.attach();
-		var thisMenu = this;
-		var menu = this.get();
-		menu.find(".sideMenuGroup").click(function() {
-			if (!thisMenu.multiOpenMenu) {
-				thisMenu.hideAllMenu();
+		let menu = this.get();
+		menu.find(".sideMenuGroup").click((ev) => {
+			if (!this.multiOpenMenu) {
+				this.hideAllMenu();
 			}
-			var menuGroupId = $(this).attr("data-menu-group-id");
-			$(this).next().slideToggle("fast", function() {
-				thisMenu.setCookie("menuGroup_" + menuGroupId, $(this).is(":visible"));
+			let menuGroupId = $(ev.currentTarget).attr("data-menu-group-id");
+			$(ev.currentTarget).next().slideToggle("fast", () => {
+				this.setCookie("menuGroup_" + menuGroupId, $(ev.currentTarget).next().is(":visible"));
 			});
 			return false;
 		});
-		menu.find(".sideMenuGroup").each(function() {
-			var menuGroupId = $(this).attr("data-menu-group-id");
-			var status = thisMenu.getCookie("menuGroup_" + menuGroupId);
+		menu.find(".sideMenuGroup").each((_, el) => {
+			let menuGroupId = $(el).attr("data-menu-group-id");
+			let status = this.getCookie("menuGroup_" + menuGroupId);
 			if (status == "true") {
-				$(this).next().show();
+				$(el).next().show();
 			} else {
-				$(this).next().hide();
+				$(el).next().hide();
 			}
 		});
 	}
@@ -45,12 +44,11 @@ class SideMenu extends Menu {
 	 * 全メニューを隠します。
 	 */
 	hideAllMenu() {
-		var thisMenu = this;
-		var menu = this.get();
+		let menu = this.get();
 		menu.find("[id$='.\pageList']").hide();
-		menu.find(".sideMenuGroup").each(function () {
-			var menuGroupId = $(this).attr("data-menu-group-id");
-			thisMenu.setCookie("menuGroup_" + menuGroupId, false);
+		menu.find(".sideMenuGroup").each((_, el) => {
+			let menuGroupId = $(el).attr("data-menu-group-id");
+			this.setCookie("menuGroup_" + menuGroupId, false);
 		});
 	}
 

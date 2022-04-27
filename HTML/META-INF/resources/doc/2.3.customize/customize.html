@@ -920,7 +920,7 @@ public class SampleExcelReport extends ExcelReport {
 		</div>
 		<p>
 			次に、このレポートクラスにで使用するExcelテンプレートを用意します。
-			以下の内容のExcelファイルをWebContent/exceltemplate/sample.xlsxに作成します。
+			以下の内容のExcelファイルをsrc/main/webapp/exceltemplate/sample.xlsxに作成します。
 		</p>
 		<figure>
 			<figcaption>Excelテンプレートの内容</figcaption>
@@ -1030,18 +1030,17 @@ class SampleEditForm extends EditForm {
 	/**
 	 * &#12469;&#12540;&#12496;&#12398;&#21360;&#21047;&#20966;&#29702;&#12434;&#21628;&#12403;&#20986;&#12375;&#12414;&#12377;&#12290;
 	 */
-	print() {
+	async print() {
 		if (this.validate()) {
-			this.submit(&quot;print&quot;, (r) =&gt; {
-				this.parent.resetErrorStatus();
-				if (r.status == ServerMethod.SUCCESS) {
-					// TODO:&#25104;&#21151;&#26178;&#12398;&#20966;&#29702;&#12434;&#35352;&#36848;&#12375;&#12414;&#12377;&#12290;
-					// &#24540;&#31572;&#24773;&#22577;&#12434;&#12525;&#12464;&#34920;&#31034;
-					logger.dir(r);
-				} else {
-					this.parent.setErrorInfo(this.getValidationResult(r), this);
-				}
-			});
+			let r = await this.submit("print");
+			this.parent.resetErrorStatus();
+			if (r.status == JsonResponse.SUCCESS) {
+				// TODO:成功時の処理を記述します。
+				// 応答情報をログ表示
+				logger.dir(r);
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(r), this);
+			}
 		}
 	}
 	</b>

@@ -503,16 +503,14 @@ public class Page extends DataForms implements WebEntryPoint {
     private static final  String INIT_SCRIPT0 =
     	"\t\t<script>\n" +
 		"\t\t<!--\n" +
-		"\t\t$(function() {\n";
+		"\t\t$(() => {\n";
 
     /**
      * フォーム初期化メソッド1。
      */
     private static final  String INIT_SCRIPT1 =
-//		"\t\t\tdf.clientValidation = false;\n" +
 		"\t\t\tcurrentPage = page;\n" +
 		"\t\t\tpage.init();\n" +
-//		"\t\t\tpage.attach();\n" +
 		"\t\t});\n" +
 		"\t\t-->\n" +
 		"\t\t</script>\n";
@@ -566,7 +564,7 @@ public class Page extends DataForms implements WebEntryPoint {
 	 */
 	protected void buildInitScript(final StringBuilder sb, final String pageclass, final String csrfToken) throws Exception {
 		sb.append(INIT_SCRIPT0);
-		sb.append("\t\t\tvar page = new " + pageclass + "();\n");
+		sb.append("\t\t\tlet page = new " + pageclass + "();\n");
 		if (csrfToken != null) {
 			sb.append("\t\t\tpage.csrfToken=\"" + java.net.URLEncoder.encode(csrfToken, DataFormsServlet.getEncoding()) + "\";\n");
 		}

@@ -279,14 +279,15 @@ class WebMethod {
 	 *
 	 */
 	async submitWithoutFile(form) {
-		var data = form.serialize();
+		let data = form.serialize();
 		// ファイルは名前だけ送信する。
-		form.find(':file').each(function() {
+		form.find(':file').each((_, el) => {
 			if (data.length > 0) {
 				data += "&";
 			}
-			data += $(this).attr("name") + "=" + encodeURIComponent($(this).val());
+			data += $(el).attr("name") + "=" + encodeURIComponent($(el).val());
 		});
+		logger.log("data=" + data);
 		return await this.execute(data);
 	}
 

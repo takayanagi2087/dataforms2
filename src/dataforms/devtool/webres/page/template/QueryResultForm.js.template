@@ -38,13 +38,12 @@ ${onCalc}
 /*
 	setQueryResultEventHandler() {
 		super.setQueryResultEventHandler();
-		var thisForm = this;
 		// リスト中のボタンに対してイベント処理を追加。
-		this.find("[id$='\.hogeButton']").click(function() {
+		this.find("[id$='\.hogeButton']").click((ev) => {
 			// 押されたボタンと同じ行にあるキー情報を選択。
-			if (thisForm.setSelectedKey($(this))) {
-				logger.log("this.selectedQueryString=" + thisForm.selectedQueryString);
-				// thisForm.hogeMethod(); // 選択したに対する処理を実行。
+			if (this.setSelectedKey($(ev.currentTarget))) {
+				logger.log("this.selectedQueryString=" + this.selectedQueryString);
+				// this.hogeMethod(); // 選択したに対する処理を実行。
 			}
 		});
 	}

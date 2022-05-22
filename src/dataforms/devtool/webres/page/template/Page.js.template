@@ -30,7 +30,7 @@ class ${className} extends ${superClassName} {
 	 *
 	 */
 /*
-	callWebMethod() {
+	async callWebMethod() {
 		// ページの初期化.
 		let method = this.getWebMethod("webMethod");
 		let r = await method.execute("p1=v1&p2=v2");

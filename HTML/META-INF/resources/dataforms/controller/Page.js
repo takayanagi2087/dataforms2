@@ -7,7 +7,7 @@
 /**
  * 現在のページインスタンスです。
  */
-let currentPage = null;
+var currentPage = null;
 
 /**
  * consoleのコピーです。
@@ -16,7 +16,7 @@ let currentPage = null;
  * loggerを使用すると、web.xmlのclient-log-levelの設定で、ログレベルの変更が可能です。
  * </pre>
  */
-let logger = null;
+var logger = null;
 
 
 /**
@@ -477,7 +477,8 @@ class Page extends DataForms {
 	 */
 	lock() {
 		let sel = this.convertSelector("#lockLayer");
-		let h = $("body").height()
+		let h = $("body").height();
+		logger.log("lock() w=" + $(document).width() + ", h=" + h);
 		$(sel).css({
 			display: 'block',
 			width: $(document).width(),
@@ -597,8 +598,4 @@ class Page extends DataForms {
 			return Page.BROWSER_OTHER;
 		}
 	}
-
-
 }
-
-

@@ -22,6 +22,9 @@ class AllTypeEditForm extends EditForm {
 	 * HTMLエレメントとの対応付けを行います。
 	 */
 	attach() {
+		logger.info("class dump");
+		logger.dir(AllTypeEditForm);
+		logger.dir(AllTypeEditForm.prototype);
 		super.attach();
 		var thisForm = this;
 		this.get("printButton").click(function() {

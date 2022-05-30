@@ -24,7 +24,7 @@ class FuncEditForm extends EditForm {
 	 * データのエクスポートを行います。
 	 */
 	async exportInitData() {
-		if (await currentPage.confirm(null, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"))) {
+		if (await currentPage.confirm(null, MessagesUtil.getMessage("message.exportAsInitialDataConfirm"))) {
 			let data = await this.submit("export");
 			currentPage.alert(null, data.result);
 		}

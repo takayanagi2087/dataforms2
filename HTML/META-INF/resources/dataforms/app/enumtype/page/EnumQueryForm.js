@@ -35,7 +35,7 @@ class EnumQueryForm extends QueryForm {
 	 * データのエクスポートを行います。
 	 */
 	async exportInitData() {
-		let ret = await currentPage.confirm(null, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"));
+		let ret = await currentPage.confirm(null, MessagesUtil.getMessage("message.exportAsInitialDataConfirm"));
 		if (ret) {
 			let data = await this.submit("export");
 			currentPage.alert(null, data.result);

@@ -82,7 +82,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 		});
 
 		this.get("exportAsInitialDataButton").click(async () => {
-			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"))) {
+			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.exportAsInitialDataConfirm"))) {
 				let result = await this.submit("exportTableAsInitialData");
 				if (result.status == JsonResponse.SUCCESS) {
 					let path = result.result;

@@ -39,6 +39,7 @@ import dataforms.dao.file.FileObject;
 import dataforms.dao.file.FileStore;
 import dataforms.dao.file.FolderFileStore;
 import dataforms.dao.sqlgen.SqlGenerator;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
@@ -538,7 +539,7 @@ public class TableManagerDao extends Dao {
 	public void importV1Data(final String classname, final String jsonpath, final String path) throws Exception {
 		final Table tbl = Table.newInstance(classname);
 		String file = path + jsonpath;
-		if (file != null) {
+		if (new File(file).exists()) {
 			InputStream is = new FileInputStream(file);
 			try {
 				this.importJson(is, tbl, path);
@@ -546,6 +547,8 @@ public class TableManagerDao extends Dao {
 			} finally {
 				is.close();
 			}
+		} else {
+			throw new ApplicationException(this.getPage(), "error.ver1datanotexist", file.replaceAll("\\\\", "/"));
 		}
 	}
 

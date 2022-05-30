@@ -94,7 +94,6 @@ public class UserQueryForm extends QueryForm {
 			TableManagerDao dao = new TableManagerDao(this);
 			//String initialDataPath =  DeveloperPage.getExportInitalDataPath(this.getPage()); // DeveloperPage.getWebSourcePath() + "/WEB-INF/initialdata";
 			String initialDataPath = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata");
-			logger.debug("initialDataPath v1=" + initialDataPath);
 			dao.executeUpdate("delete from " + new UserAttributeTable().getTableName(), new HashMap<String, Object>());
 			dao.executeUpdate("delete from " + new UserInfoTable().getTableName(), new HashMap<String, Object>());
 			dao.importData("dataforms.app.user.dao.UserInfoTable", initialDataPath);
@@ -118,7 +117,6 @@ public class UserQueryForm extends QueryForm {
 		if (this.getPage().checkUserAttribute("userLevel", "developer")) {
 			TableManagerDao dao = new TableManagerDao(this);
 			String initialDataPath = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata_v1");
-			logger.debug("initialDataPath v1=" + initialDataPath);
 			dao.executeUpdate("delete from " + new UserAttributeTable().getTableName(), new HashMap<String, Object>());
 			dao.executeUpdate("delete from " + new UserInfoTable().getTableName(), new HashMap<String, Object>());
 			dao.importV1Data("dataforms.app.user.dao.UserInfoTable", "/dataforms/app/dao/user/UserInfoTable.data.json", initialDataPath);

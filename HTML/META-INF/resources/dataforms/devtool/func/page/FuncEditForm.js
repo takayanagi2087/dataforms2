@@ -18,6 +18,12 @@ class FuncEditForm extends EditForm {
 		this.get("exportInitDataButton").click(() => {
 			this.exportInitData();
 		});
+		this.get("importDataButton").click(() => {
+			this.importInitData();
+		});
+		this.get("importV1DataButton").click(() => {
+			this.importV1InitData();
+		});
 	}
 
 	/**
@@ -30,6 +36,27 @@ class FuncEditForm extends EditForm {
 		}
 	}
 
+	/**
+	 * データのインポートを行います。
+	 */
+	async importInitData() {
+		let ret = await currentPage.confirm(null, MessagesUtil.getMessage("message.importInitialDataConfirm"));
+		if (ret) {
+			let data = await this.submit("importData");
+			await currentPage.alert(null, data.result);
+		}
+	}
+
+	/**
+	 * ver1.x形式のデータのインポートを行います。
+	 */
+	async importV1InitData() {
+		let ret = await currentPage.confirm(null, MessagesUtil.getMessage("message.importV1InitialDataConfirm"));
+		if (ret) {
+			let data = await this.submit("importV1Data");
+			await currentPage.alert(null, data.result);
+		}
+	}
 
 	/**
 	 * 編集モードにします。

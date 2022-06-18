@@ -77,7 +77,7 @@ class EditForm extends Form {
      * </pre>
 	 */
 	initWithoutQuery() {
-		logger.log("intitWithoutQuery");
+		logger.log("initWithoutQuery");
 		this.updateData();
 	}
 

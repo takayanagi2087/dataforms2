@@ -13,6 +13,8 @@ import dataforms.dao.file.FileObject;
 import dataforms.debug.alltype.dao.FileFieldTestDao;
 import dataforms.debug.alltype.dao.FileFieldTestTable;
 import dataforms.debug.alltype.report.FielFieldTestReport;
+import dataforms.field.base.FieldList;
+import dataforms.field.common.ImageField;
 import dataforms.field.common.WebResourceImageField;
 import dataforms.response.BinaryResponse;
 import dataforms.response.JsonResponse;
@@ -36,6 +38,10 @@ public class FileTestEditForm extends EditForm {
 		FileFieldTestTable tbl = new FileFieldTestTable();
 		this.addTableFields(tbl);
 		this.addField(new WebResourceImageField("menuImage", "/frame/default/image/menu.png"));
+		FieldList flist = this.getFieldList();
+		ImageField ifld = (ImageField) flist.get(FileFieldTestTable.Entity.ID_BLOB_IMAGE);;
+		ifld.setThumbnailWidth(320);
+		ifld.setThumbnailHeight(180);
 	}
 
 	@Override

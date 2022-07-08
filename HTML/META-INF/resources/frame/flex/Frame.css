@@ -228,7 +228,7 @@ div.bodyDiv {
 @media screen and (max-width: var(--sp-screen-max)) {
 	/* 基本フォントサイズ */
 	html body {
-		font-size:11pt;
+		font-size:14pt;
 	}
 
 	/* ヘッダ領域 */

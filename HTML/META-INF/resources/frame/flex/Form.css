@@ -95,11 +95,6 @@ div.hScrollDiv {
 
 /* スマートフォン  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (max-width: var(--sp-screen-max)) {
-	.mainDiv table.responsive th,
-	.mainDiv table.responsive td {
-		height: 40px;
-	}
-
 	/* レスポンシブテーブルの制御設定 */
 	table.responsive {
 		width: 100%;
@@ -109,12 +104,16 @@ div.hScrollDiv {
 	table.responsive tbody tr td
 	{
 		display: inline-block;
-		vertical-align: middle;
 		width: 100%;
 		margin: 1px;
 	}
+	table.responsive tbody tr td {
+		height: auto;
 
+	}
 	table.responsive tbody tr th {
-		padding-top: 12px;
+		height: 32px;
+		padding-top: 8px;
+
 	}
 }

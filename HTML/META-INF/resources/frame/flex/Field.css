@@ -22,6 +22,7 @@ button, input[type='button'], input[type='submit'] {
 	border-radius: 3px;
 	transition: .4s;
 	outline: none;
+	font-size: 9pt;
 }
 
 button:hover,
@@ -47,6 +48,9 @@ input[type='submit']:disabled {
 	margin-top: 4px;
 	height: 30px;
 }
+
+
+
 
 button:not(.largeButton),
 input[type='button']:not(.largeButton),
@@ -84,6 +88,7 @@ textarea {
 	border-width: 1px;
 	border-style: solid;
 	outline: none;
+	box-sizing: border-box;
 }
 
 input[type='text']:disabled,
@@ -202,28 +207,28 @@ tr.oddTr button:hover {
 
 	/* 入力フィールドの高さ */
 	input[type="text"], input[type="email"], input[type="search"], input[type="password"] {
-		height: 20px;
-		width: calc(100% - 6px);
+		height: 30px;
+		width: calc(100%);
 	}
 
 	input[type="file"] {
-		height: 24px;
+		height: 30px;
 		width: calc(100% - 2px);
 	}
 	textarea {
-		width: calc(100% - 6px);
-		height: calc(100% - 6px);
+		width: calc(100%);
+		height: calc(100%);
 	}
 
 	select {
-		height: 24px;
+		height: 30px;
 		width: 100%;
 	}
 
 	/* フィールド値を表示するspanに適したスタイル */
 	.fieldSpan {
 		display:table-cell;
-		height: 20px;
+		height: 32px;
 		vertical-align: middle;
 	}
 
@@ -232,22 +237,22 @@ tr.oddTr button:hover {
 /* スマートフォン  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (max-width: var(--sp-screen-max)) {
 	input,select,textarea {
-		font-size:11pt;
+		font-size:12pt;
 	}
 
 	/* 入力フィールドの高さ */
 	input[type="text"], input[type="email"], input[type="search"], input[type="password"], input[type="file"] {
-		height: 32px;
-		width: calc(100% - 6px);
+		height: 40px;
+		width: calc(100%);
 	}
 
 	textarea {
-		width: calc(100% - 6px);
-		height: calc(100% - 6px);
+		width: calc(100%);
+		height: calc(100%);
 	}
 
 	select {
-		height: 38px;
+		height: 40px;
 		width: 100%;
 	}
 
@@ -257,6 +262,13 @@ tr.oddTr button:hover {
 		display:table-cell;
 		height: 20px;
 		vertical-align: middle;
+	}
+
+
+	.largeButton {
+		margin-top: 4px;
+		font-size:12pt !important;
+		height: 40px;
 	}
 
 }

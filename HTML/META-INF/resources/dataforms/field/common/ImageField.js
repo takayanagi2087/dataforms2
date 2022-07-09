@@ -23,9 +23,6 @@ class ImageField extends FileField {
 		let link = this.parent.get(linkid);
 		let thumbid = this.id + "_thm"; // サムネイルID.
 		let thumb = this.parent.get(thumbid);
-		thumb.attr("width", this.thumbnailWidth);
-		thumb.attr("height", this.thumbnailHeight);
-
 		thumb.click(() => {
 			let fval = thisField.get().val();
 			let val = {};
@@ -154,7 +151,11 @@ class ImageField extends FileField {
 			let linkid = this.id + "_link";
 			let fnlink = this.parent.get(linkid);
 			if (value.url == null) {
-				let url = location.pathname + "?dfMethod=" + encodeURIComponent(this.getUniqId()) + ".downloadThumbnail"  + "&" + value.downloadParameter;
+				let func = ".downloadThumbnail";
+				if (!this.reducedThumbnail) {
+					func = ".download";
+				}
+				let url = location.pathname + "?dfMethod=" + encodeURIComponent(this.getUniqId()) + func  + "&" + value.downloadParameter;
 				if (currentPage.csrfToken != null) {
 					url += "&csrfToken=" + currentPage.csrfToken;
 				}

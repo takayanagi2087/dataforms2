@@ -45,6 +45,12 @@ public class StaticFolderFileStore extends FileStore {
 		this.baseFolder = field.getBaseFolder();
 	}
 
+	@Override
+	public void initDownloadParameter(Map<String, Object> p) {
+		super.initDownloadParameter(p);
+		this.baseFolder = (String) p.get("b");
+	}
+
 	/**
 	 * ファイルの保存フォルダを取得します。
 	 * @return ファイルの保存フォルダ。

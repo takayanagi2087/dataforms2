@@ -32,8 +32,10 @@ public class FileFieldTestTable extends Table {
 		BlobStoreFileField blob = (BlobStoreFileField) this.addField(new BlobStoreFileField("blobFile")); //
 		blob.setDbDependentType(MysqlSqlGenerator.DATABASE_PRODUCT_NAME, "mediumblob");
 		this.addField(new FolderStoreFileField("folderFile")); //
+		this.addField(new FolderStoreFileField("staticFolderFile").setBaseFolder("C:/home/admin/PLADB.data/testdata02.zip/Image")); //
 		this.addField(new BlobStoreImageField("blobImage")); //
 		this.addField(new FolderStoreImageField("folderImage")); //
+		this.addField(new FolderStoreImageField("staticFolderImageFile").setBaseFolder("C:/home/admin/PLADB.data/testdata02.zip/Image")); //
 		this.addField(new BlobStoreVideoField("blobVideo")); //
 		this.addField(new FolderStoreVideoField("folderVideo")); //
 		this.addField(new BlobStoreAudioField("blobAudio")); //
@@ -258,6 +260,14 @@ public class FileFieldTestTable extends Table {
 	 */
 	public FolderStoreImageField getFolderImageField() {
 		return (FolderStoreImageField) this.getField(Entity.ID_FOLDER_IMAGE);
+	}
+
+	/**
+	 * フィールドを取得します。
+	 * @return フィールド。
+	 */
+	public FolderStoreImageField getStaticFolderImageField() {
+		return (FolderStoreImageField) this.getField("staticFolderImageFile");
 	}
 
 	/**

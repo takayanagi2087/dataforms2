@@ -37,7 +37,7 @@ import dataforms.dao.TableRelation;
 import dataforms.dao.file.BlobFileStore;
 import dataforms.dao.file.FileObject;
 import dataforms.dao.file.FileStore;
-import dataforms.dao.file.FolderFileStore;
+import dataforms.dao.file.TableFolderFileStore;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
@@ -320,7 +320,7 @@ public class TableManagerDao extends Dao {
 			ff.setDBValue(value);
 			fo = ff.getValue();
 			FileStore store = ff.newFileStore();
-			if (store instanceof FolderFileStore) {
+			if (store instanceof TableFolderFileStore) {
 				;
 			} else if (store instanceof BlobFileStore) {
 				fo.setDownloadParameter(ff.getBlobDownloadParameter(data));

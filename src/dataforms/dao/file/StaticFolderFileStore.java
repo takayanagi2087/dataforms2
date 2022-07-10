@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,57 +11,26 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dataforms.controller.WebEntryPoint;
 import dataforms.field.common.FileField;
-import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;
 import dataforms.util.StringUtil;
 
 /**
- * フォルダファイルストアクラス。
+ * 固定フォルダに保存するファイルストアクラス。
  * <pre>
- * アップロードされたファイルを、upload-data-folderで指定されたフォルダに保存し、
- * テーブルにはそのパスを記録するファイルストアです。
- * このファイルストアには、ユーザID,テーブル名,フィールドIDでフォルダ分けを行います。
+ * アップロードされたファイルを指定されたフォルダに保存し、テーブルにはそのフォルダ以下のパスを記録するファイルストアです。
  * </pre>
  */
-public class FolderFileStore extends FileStore {
-
+public class StaticFolderFileStore extends FileStore {
 	/**
 	 * Logger。
 	 */
-	private Logger logger = LogManager.getLogger(FolderFileStore.class);
-
-	/**
-	 * ファイル名を一意にするためのタイムスタンプパターン。
-	 */
-	private static final String TIMESPAMP_PATTERN = "yyyyMMddHHmmssSSS";
+	private Logger logger = LogManager.getLogger(StaticFolderFileStore.class);
 
 	/**
 	 * ユーザID。
 	 */
-	private String uploadDataForlder = null;
-
-	/**
-	 * ユーザID。
-	 */
-	private long userId = 0L;
-	/**
-	 * テーブル名。
-	 */
-	private String tableName = null;
-
-	/**
-	 * フィールドID。
-	 */
-	private String fieldId = null;
-
-
-	/**
-	 * ファイル名。
-	 */
-	private String fileName = null;
-
+	private String baseFolder = null;
 
 	/**
 	 * ファイルのパス。
@@ -72,64 +38,23 @@ public class FolderFileStore extends FileStore {
 	private String filePath = null;
 
 	/**
-	 * ファイルのタイムスタンプ。
-	 */
-	private String timestamp = null;
-
-
-	/**
 	 * コンストラクタ。
 	 * @param field フィールド。
 	 */
-	public FolderFileStore(final FileField<? extends FileObject> field) {
-		this.uploadDataForlder = DataFormsServlet.getUploadDataFolder();
-		WebEntryPoint p = field.getWebEntryPoint();
-		this.userId = p.getUserId();
-		if (field.getTable() != null) {
-			this.tableName = field.getTable().getClass().getSimpleName();
-		}
-		this.fieldId = field.getId();
+	public StaticFolderFileStore(final FileField<? extends FileObject> field) {
+		this.baseFolder = field.getBaseFolder();
 	}
-
-	/**
-	 * ダウンロードパラメータを指定してファイルストアを作成した場合の初期化処理です。
-	 * <pre>
-	 * パラメータに指定されたテーブル名設定します。
-	 * </pre>
-	 * @param param ダウンロードパラメータ。
-	 */
-	public void initDownloadParameter(final Map<String, Object> param) {
-		String t = (String) param.get("t");
-		this.tableName = t;
-	}
-
 
 	/**
 	 * ファイルの保存フォルダを取得します。
 	 * @return ファイルの保存フォルダ。
 	 */
 	public String getSaveFolder() {
-		String ret = this.uploadDataForlder + "/" + this.tableName + "/" + this.fieldId  + "/" + this.userId;
-		File f = new File(ret);
+		File f = new File(this.baseFolder);
 		if (!f.exists()) {
 			f.mkdirs();
 		}
-		return ret;
-	}
-
-	/**
-	 * 一意な保存ファイルを作成します。
-	 * <pre>
-	 * ファイル名が重複しないようなファイル名を作成します。
-	 * </pre>
-	 * @return 保存ファイル。
-	 */
-	public File makeUniqFile() {
-		SimpleDateFormat fmt = new SimpleDateFormat(TIMESPAMP_PATTERN);
-		Date now = new Date();
-		String path = this.getSaveFolder() + "/" + fmt.format(now) + "_" + this.fileName;
-		this.filePath = path;
-		return new File(path);
+		return this.baseFolder;
 	}
 
 	/**
@@ -156,9 +81,7 @@ public class FolderFileStore extends FileStore {
 	 */
 	@Override
 	public File makeTempFromFileItem(final FileItem fileItem) throws Exception {
-		this.fileName = FileUtil.getFileName(fileItem.getName());
-
-		File file = this.makeUniqFile();
+		File file = new File(this.baseFolder + "/" + fileItem.getName());
 		FileOutputStream os = new FileOutputStream(file);
 		try {
 			InputStream is = fileItem.getInputStream();
@@ -176,9 +99,7 @@ public class FolderFileStore extends FileStore {
 
 	@Override
 	public File makeTemp(final String filename, final File orgfile) throws Exception {
-		this.fileName = filename; //FileUtil.getFileName(orgfile.getAbsolutePath());
-
-		File file = this.makeUniqFile();
+		File file = new File(this.baseFolder + "/" + orgfile.getName());
 		FileOutputStream os = new FileOutputStream(file);
 		try {
 			InputStream is = new FileInputStream(orgfile);
@@ -206,8 +127,7 @@ public class FolderFileStore extends FileStore {
 			if (obj instanceof FileObject) {
 				FileObject fobj = (FileObject) obj;
 				if (fobj.getTempFile() != null) {
-					File folder = new File(this.uploadDataForlder);
-					String ret = fobj.getTempFile().getAbsolutePath().substring(folder.getAbsolutePath().length());
+					String ret = fobj.getTempFile().getAbsolutePath().substring(this.baseFolder.length());
 					ret = ret.replaceAll("\\\\", "/");
 					logger.debug("FileFolderStore:path={}", ret);
 					return ret;
@@ -234,14 +154,9 @@ public class FolderFileStore extends FileStore {
 		FileObject fobj = new FileObject();
 		String path = (String) colValue;
 		if (!StringUtil.isBlank(path)) {
-			String[] sp = path.split("/");
-			this.tableName = sp[1];
-			this.fieldId = sp[2];
-			this.userId = Long.parseLong(sp[3]);
-			this.fileName = sp[4].substring(TIMESPAMP_PATTERN.length() + 1);
-			this.timestamp = sp[4].substring(0, TIMESPAMP_PATTERN.length());
-			File f = new File(this.uploadDataForlder + path);
-			fobj.setFileName(this.fileName);
+			File f = new File(this.baseFolder + "/" + path);
+			this.filePath = path;
+			fobj.setFileName(f.getName());
 			fobj.setLength(f.length());
 			String dlparam = this.getDownloadParameter(null, null); //"store=" + this.getClass().getName() + "&u=" + this.userId + "&t=" + this.tableName + "&f=" + this.fieldId + "&n=" + this.fileName + "&ts=" + ts;
 			fobj.setDownloadParameter(dlparam);
@@ -256,21 +171,10 @@ public class FolderFileStore extends FileStore {
 
 	@Override
 	public FileObject readFileObject(final Map<String, Object> param) throws Exception {
-		String folder = DataFormsServlet.getUploadDataFolder();
-		Long u = null;
-		if (param.get("u") instanceof BigDecimal) {
-			u = ((BigDecimal) param.get("u")).longValue();
-		} else {
-			u = (Long) param.get("u");
-		}
-		String t = (String) param.get("t");
-		String f = (String) param.get("f");
-		String n = (String) param.get("n");
-		String ts = (String) param.get("ts");
-		String path = folder + "/" + t + "/" + f + "/" + u + "/" + ts + "_" + n;
-		File file = new File(path);
+		String path = (String) param.get("p");
+		File file = new File(this.baseFolder + "/" + path);
 		FileObject fobj = new FileObject();
-		fobj.setFileName(n);
+		fobj.setFileName(file.getName());
 		fobj.setLength(file.length());
 		fobj.setTempFile(file);
 		return fobj;
@@ -298,19 +202,14 @@ public class FolderFileStore extends FileStore {
 	public String getDownloadParameter(final FileField<?> field, final Map<String, Object> d) {
 		Map<String, Object> m = getDownloadInfoMap(field, d);
 		return "key=" + this.encryptDownloadParameter(m);
-/*	String dlparam = "store=" + this.getClass().getName() + "&u=" + this.userId + "&t=" + this.tableName + "&f=" + this.fieldId + "&n=" + this.fileName + "&ts=" + this.timestamp;
-		return dlparam;*/
 	}
 
 	@Override
 	public Map<String, Object> getDownloadInfoMap(final FileField<?> field, final Map<String, Object> d) {
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("store", this.getClass().getName());
-		m.put("u", this.userId);
-		m.put("t", this.tableName);
-		m.put("f", this.fieldId);
-		m.put("n", this.fileName);
-		m.put("ts", this.timestamp);
+		m.put("b", this.baseFolder);
+		m.put("p", this.filePath);
 		return m;
 	}
 

@@ -31,17 +31,25 @@ public class FileTestEditForm extends EditForm {
 	 * Logger.
 	 */
 	private static Logger logger = LogManager.getLogger(FileTestEditForm.class);
+
+
 	/**
 	 * コンストラクタ。
 	 */
 	public FileTestEditForm() {
 		FileFieldTestTable tbl = new FileFieldTestTable();
+		tbl.getFolderImageField().setThumbnailWidth(480);
+		tbl.getFolderImageField().setThumbnailHeight(270);
+		tbl.getStaticFolderImageField().setThumbnailWidth(480);
+		tbl.getStaticFolderImageField().setThumbnailHeight(270);
+		tbl.getStaticFolderImageField().setReducedThumbnail(false);
 		this.addTableFields(tbl);
 		this.addField(new WebResourceImageField("menuImage", "/frame/default/image/menu.png"));
 		FieldList flist = this.getFieldList();
 		ImageField ifld = (ImageField) flist.get(FileFieldTestTable.Entity.ID_BLOB_IMAGE);;
-		ifld.setThumbnailWidth(320);
-		ifld.setThumbnailHeight(180);
+		ifld.setThumbnailWidth(480);
+		ifld.setThumbnailHeight(270);
+		ifld.setReducedThumbnail(false);
 	}
 
 	@Override
@@ -53,6 +61,7 @@ public class FileTestEditForm extends EditForm {
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
 		FileFieldTestDao dao = new FileFieldTestDao(this);
 		Map<String, Object> ret = dao.queryEditData(data);
+		ret.put("fileImage", "img001.jpg");
 //		log.debug("formData=" + JSON.encode(ret, true));
 		return ret;
 	}

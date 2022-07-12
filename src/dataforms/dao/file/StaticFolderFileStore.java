@@ -137,6 +137,11 @@ public class StaticFolderFileStore extends FileStore {
 					ret = ret.replaceAll("\\\\", "/");
 					logger.debug("FileFolderStore:path={}", ret);
 					return ret;
+				} else if (fobj.getFileName() != null){
+					String ret = fobj.getFileName();
+					ret = ret.replaceAll("\\\\", "/");
+					logger.debug("FileFolderStore:path={}", ret);
+					return ret;
 				} else {
 					return null;
 				}

@@ -36,6 +36,11 @@ h3 {
 	font-size: 100%;
 }
 
+.pageName, loginInfo {
+	display: flex;
+	align-items: center;
+}
+
 /*
  * ヘッダ領域
  */
@@ -263,13 +268,24 @@ div.bodyDiv {
 
 	div.menuDiv {
 		display: none;
-		width: var(--menu-width);
+		width: 80%;
 	}
 
 	div.mainDiv {
 		width: 100%;
 	}
 
+	.loginInfoForm {
+		font-size: 80%;
+	}
+
+
+	/* ページ名ブロック */
+	.headerDiv .pageName,
+	.headerDiv .loginInfo {
+		height: auto;
+		min-height: 34px;
+	}
 }
 
 /* ページロックDIVのスタイル */

@@ -402,7 +402,8 @@ class Page extends DataForms {
 			}
 			return false;
 		});
-		$("body").click(() => {
+		this.get().click(() => {
+			logger.log("click");
 			if ($(thisPage.convertSelector("#showMenuButton")).is(":visible")) {
 				let menu = $(thisPage.convertSelector("#menuDiv"));
 				if (menu.is(":visible")) {
@@ -458,7 +459,9 @@ class Page extends DataForms {
 	 * リサイズ時の処理を行います。
 	 */
 	onResize() {
-		$(this.convertSelector("div.menuDiv")).css("display", "");
+		if ($(window).width() >= 1024) {
+			$(this.convertSelector("div.menuDiv")).css("display", "");
+		}
 		let sel = this.convertSelector("#lockLayer");
 		let h = $("body").height();
 		if ($(sel).is(":visible")) {

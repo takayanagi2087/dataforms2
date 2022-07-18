@@ -112,8 +112,8 @@ div.hScrollDiv {
 
 	}
 	table.responsive tbody tr th {
-		height: 32px;
+		height: auto;
+		min-height: 30px;
 		padding-top: 8px;
-
 	}
 }

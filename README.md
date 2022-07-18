@@ -54,7 +54,7 @@ Servlet 3.0に対応したアプリケーションサーバで動作するはず
 ## Application
 以下のサイトはdataforms2.jarで作成されています。
 
-* [ココ散歩](https://cocosampo.net/sampo/)　60度動画を使用した散歩システム
+* [ココ散歩](https://cocosampo.net/sampo/)　360度動画を使用した散歩システム
 
 入口はWordPressですが、「登録された散歩コース一覧」等のメニューのリンク先はdataforms2.jarで作成されたアプリケーションになっています。
 dataforms2.jarのサンプルは事務処理向けのアプリケーションの印象があるかもしれませんが、このようなWebアプリケーションにも応用されています。

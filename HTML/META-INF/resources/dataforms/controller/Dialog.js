@@ -33,9 +33,9 @@ class Dialog extends DataForms {
 	 */
 	init() {
 		super.init();
-		var dlgdiv = $('body').find(this.convertSelector('#' + this.selectorEscape(this.id)));
+		let dlgdiv = $('body').find(this.convertSelector('#' + this.selectorEscape(this.id)));
 		if (dlgdiv.length == 0) {
-			var htmlstr = this.additionalHtmlText;
+			let htmlstr = this.additionalHtmlText;
 			dlgdiv = $('body').append("<div " + this.getIdAttribute() + "='" + this.id + "' class='" + this.id + "' style='display:none;'>" + htmlstr + "</div>");
 		}
 		// ダイアログ中のFormの初期化.
@@ -64,8 +64,8 @@ class Dialog extends DataForms {
 	 */
 	show(modal, p) {
 		this.toQueryMode();
-		var dlgdiv = $('body').find(this.convertSelector('#' + this.selectorEscape(this.id)));
-		var m = {
+		let dlgdiv = $('body').find(this.convertSelector('#' + this.selectorEscape(this.id)));
+		let m = {
 			modal: modal
 			,title: this.title
 			,height: this.width
@@ -73,7 +73,7 @@ class Dialog extends DataForms {
 			,resizable: this.resizable
 		};
 		if (p != null) {
-			for (var k in p) {
+			for (let k in p) {
 				m[k] = p[k];
 			}
 		}
@@ -102,7 +102,7 @@ class Dialog extends DataForms {
 	 */
 	close() {
 		this.resetErrorStatus();
-		var dlgdiv = $('body').find(this.convertSelector('#' + this.selectorEscape(this.id)));
+		let dlgdiv = $('body').find(this.convertSelector('#' + this.selectorEscape(this.id)));
 		dlgdiv.dialog('close');
 	}
 

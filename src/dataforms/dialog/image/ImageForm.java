@@ -14,8 +14,9 @@ public class ImageForm extends Form {
 	public ImageForm() {
 		super(null);
 		ImageField f = new ImageField("image");
-		f.setThumbnailWidth(640);
-		f.setThumbnailHeight(480);
+		f.setThumbnailWidth(960);
+		f.setThumbnailHeight(540);
+		f.setReducedThumbnail(false);
 		this.addField(f);
 	}
 }

@@ -29,27 +29,27 @@ class Field extends WebComponent {
 	 * </pre>
 	 */
 	attach() {
-		var thisField = this;
+		let thisField = this;
 		super.attach();
 		if (this.label == null) {
 			this.label = this.getLabel();
 		}
 		// nameが指定されていない場合nameにidを設定.
-		var comp = this.parent.get(this.id);
+		let comp = this.parent.get(this.id);
 		if (comp.attr("name") == null) {
 			comp.attr("name", comp.attr(this.getIdAttribute()));
 		}
 		this.backupStyle();
 		if (this.relationDataAcquisition) {
 			if (this.relationDataEvent == "BLUR") {
-				comp.blur(function() {
-					thisField.adjustIdIndex($(this));
-					thisField.getRelationData();
+				comp.blur((ev) => {
+					this.adjustIdIndex($(ev.currentTarget));
+					this.getRelationData();
 				});
 			} else {
-				comp.change(function() {
-					thisField.adjustIdIndex($(this));
-					thisField.getRelationData();
+				comp.change((ev) => {
+					this.adjustIdIndex($(ev.currentTarget));
+					this.getRelationData();
 				});
 			}
 		}
@@ -58,8 +58,8 @@ class Field extends WebComponent {
 			this.setAutocomplete();
 		}
 		if (this.calcEventField) {
-			comp.change(function() {
-				thisField.callOnCalc($(this));
+			comp.change((ev) => {
+				this.callOnCalc($(ev.currentTarget));
 			});
 		}
 		if (this.readonly) {
@@ -83,7 +83,7 @@ class Field extends WebComponent {
 	 * @param {jQuery} f フィールド。
 	 */
 	callOnCalc(f) {
-		var form = this.getParentForm();
+		let form = this.getParentForm();
 		form.onCalc(f);
 	}
 
@@ -93,9 +93,9 @@ class Field extends WebComponent {
 	 */
 	initValidator(vlist) {
 		this.validators = [];
-		for (var i = 0; i < vlist.length; i++) {
-			var v = vlist[i];
-			var validator = this.newInstance(v);
+		for (let i = 0; i < vlist.length; i++) {
+			let v = vlist[i];
+			let validator = this.newInstance(v);
 			validator.init();
 			this.validators[i] = validator;
 		}
@@ -119,14 +119,14 @@ class Field extends WebComponent {
 	 * @returns {jQuery} フィールドに対応したラベルを取得します。
 	 */
 	getLabelElement() {
-		var label = null;
-		var tag = this.parent.find("label[for='" + this.id +"']");
+		let label = null;
+		let tag = this.parent.find("label[for='" + this.id +"']");
 		if (tag.length > 0) {
 			// ラベルのIDが指定されていた場合の処理.
 			label = tag;
 		} else {
 			// フィールドに対応したラベルを探す処理.
-			var l = this.parent.get(this.id).prev('label:last');
+			let l = this.parent.get(this.id).prev('label:last');
 			if (l.length > 0) {
 				label = l;
 			} else {
@@ -139,7 +139,7 @@ class Field extends WebComponent {
 				}
 			}
 			if (label == null || label.length == 0) {
-				var l = this.parent.get(this.id + "[0]").parent(':last').prev('label:last');
+				let l = this.parent.get(this.id + "[0]").parent(':last').prev('label:last');
 				if (l.length > 0) {
 					label = l;
 				} else {
@@ -161,8 +161,8 @@ class Field extends WebComponent {
 	 * @return {String} フィールドに対応したラベル文字列。
 	 */
 	getLabel() {
-		var labelstr = this.id;
-		var label = this.getLabelElement();
+		let labelstr = this.id;
+		let label = this.getLabelElement();
 		if (label != null) {
 			labelstr = label.html();
 		}
@@ -181,7 +181,7 @@ class Field extends WebComponent {
 	 * 属性のバックアップをとります。
 	 */
 	backupStyle() {
-		var comp = this.get();
+		let comp = this.get();
 		comp.prop("readonly-bak", comp.prop("readonly"));
 	}
 
@@ -199,26 +199,24 @@ class Field extends WebComponent {
 	 * 各フィールドのgetRelationDataメソッドが呼び出され、その結果を親フォームに設定します。
 	 * </pre>
 	 */
-	getRelationData() {
-		var thisField = this;
-		var m = this.getServerMethod("getRelationData");
-		var form = this.getParentForm();
-		var param = this.getAjaxParameter();
-		m.execute(param, function(ret) {
-			if (ret.status == ServerMethod.SUCCESS) {
-				for (var k in ret.result) {
-					if (Array.isArray(ret.result[k])) {
-						var t = form.getComponent(k);
-						if (t != null && typeof t.setTableData == "function") {
-							t.setTableData(ret.result[k]);
-						}
-					} else {
-						form.setFieldValue(k, ret.result[k]);
+	async getRelationData() {
+		let m = this.getWebMethod("getRelationData");
+		let form = this.getParentForm();
+		let param = this.getAjaxParameter();
+		let ret = await m.execute(param);
+		if (ret.status == JsonResponse.SUCCESS) {
+			for (let k in ret.result) {
+				if (Array.isArray(ret.result[k])) {
+					let t = form.getComponent(k);
+					if (t != null && typeof t.setTableData == "function") {
+						t.setTableData(ret.result[k]);
 					}
+				} else {
+					form.setFieldValue(k, ret.result[k]);
 				}
 			}
-			thisField.onUpdateRelationField();
-		});
+		}
+		this.onUpdateRelationField();
 	}
 
 	/**
@@ -248,15 +246,14 @@ class Field extends WebComponent {
 	 * @param {String} value 設定値。
 	 */
 	setValue(value) {
-		var comp = this.get();
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
+		let comp = this.get();
+		let tag = comp.prop("tagName");
 		if ("INPUT" == tag || "TEXTAREA" == tag || "SELECT" == tag) {
 			this.setInputValue(comp, value);
 			if ("SELECT" == tag) {
 				if (this.readonly) {
-					var v = this.find("option:selected").text()
-					var span = this.addSpan(comp);
+					let v = this.find("option:selected").text()
+					let span = this.addSpan(comp);
 					span.text(v);
 				}
 			}
@@ -270,9 +267,8 @@ class Field extends WebComponent {
 	 * @return {String} 値。
 	 */
 	getValue() {
-		var comp = this.get();
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
+		let comp = this.get();
+		let tag = comp.prop("tagName");
 		if ("INPUT" == tag || "TEXTAREA" == tag || "SELECT" == tag) {
 			return comp.val();
 		} else {
@@ -289,13 +285,13 @@ class Field extends WebComponent {
 	 * @returns {ValidationError} 検証結果。問題が発生しなければnullを返します。
 	 */
 	validate() {
-		var val = this.get().val();
+		let val = this.get().val();
 		this.value = val;
 		if (this.validators != null) {
-			for (var i = 0; i < this.validators.length; i++) {
-				var v = this.validators[i];
+			for (let i = 0; i < this.validators.length; i++) {
+				let v = this.validators[i];
 				if (v.validate(val) == false) {
-					var msg = v.getMessage(this.label);
+					let msg = v.getMessage(this.label);
 					return new ValidationError(this.id, msg);
 				}
 			}
@@ -312,10 +308,10 @@ class Field extends WebComponent {
 	 * @returns {ValidationError} 検証結果。正常な場合null。
 	 */
 	performValidator(v) {
-		var val = this.getParentForm().getFieldValue(this.id);
+		let val = this.getParentForm().getFieldValue(this.id);
 		this.value = val;
 		if (v.validate(val) == false) {
-			var msg = v.getMessage(this.label);
+			let msg = v.getMessage(this.label);
 			return new ValidationError(this.id, msg);
 		}
 		return null;
@@ -331,8 +327,8 @@ class Field extends WebComponent {
 	 * @returns {jQuery} 作成したspan要素。
 	 */
 	addSpan(comp) {
-		var spanid = this.id + "_span";
-		var span = this.parent.get(spanid);
+		let spanid = this.id + "_span";
+		let span = this.parent.get(spanid);
 		if (span.length == 0) {
 			if (currentPage.useUniqueId) {
 				comp.after("<span data-id='" + spanid + "' id='" + this.realId + "_span' class='selectSpan'></span>");
@@ -349,7 +345,7 @@ class Field extends WebComponent {
 	 * @param {Boolean} lk ロックする場合true。
 	 */
 	lockTextbox(lk) {
-		var comp = this.get();
+		let comp = this.get();
 		if (lk) {
 			comp.prop("readonly", true);
 			comp.css("border-style", "none");
@@ -369,15 +365,15 @@ class Field extends WebComponent {
 	 * @param {Boolean} lk ロックする場合true。
 	 */
 	lockRadio(lk) {
-		var comp = this.get();
-		var block = comp.parent("span");
-		var v = "";
-		comp.each(function() {
-			if ($(this).prop("checked")) {
-				v = $(this).val();
+		let comp = this.get();
+		let block = comp.parent("span");
+		let v = "";
+		comp.each((_, el) => {
+			if ($(el).prop("checked")) {
+				v = $(el).val();
 			}
 		});
-		var span = this.addSpan(block);
+		let span = this.addSpan(block);
 		if (lk) {
 			block.hide();
 			span.show();
@@ -394,15 +390,15 @@ class Field extends WebComponent {
 	 * @param {Boolean} lk ロックする場合true。
 	 */
 	lockCheckbox(lk) {
-		var comp = this.get();
-		var block = comp.parent('span');
-		var v = [];
-		comp.each(function() {
-			if ($(this).prop("checked")) {
-				v.push($(this).val());
+		let comp = this.get();
+		let block = comp.parent('span');
+		let v = [];
+		comp.each((_, el) => {
+			if ($(el).prop("checked")) {
+				v.push($(el).val());
 			}
 		});
-		var span = this.addSpan(block);
+		let span = this.addSpan(block);
 		if (lk) {
 			block.hide();
 			span.show();
@@ -419,10 +415,10 @@ class Field extends WebComponent {
 	 * @param {Boolean} lk ロックする場合true。
 	 */
 	lockFile(lk) {
-		var comp = this.get();
-		var selbtn = this.parent.get(this.id + "_sel");
-		var delbtn = this.parent.get(this.id + "_del");
-		var fnlink = this.parent.get(this.id + "_link");
+		let comp = this.get();
+		let selbtn = this.parent.get(this.id + "_sel");
+		let delbtn = this.parent.get(this.id + "_del");
+		let fnlink = this.parent.get(this.id + "_link");
 		if (lk) {
 			selbtn.hide();
 			delbtn.hide();
@@ -431,7 +427,7 @@ class Field extends WebComponent {
 			}
 		} else {
 			selbtn.show();
-			var v = fnlink.attr("href");
+			let v = fnlink.attr("href");
 			if (v != null && v.length > 0) {
 				delbtn.show();
 			} else {
@@ -446,9 +442,9 @@ class Field extends WebComponent {
 	 * @param {Boolean} lk ロックする場合true。
 	 */
 	lockSelect(lk) {
-		var comp = this.get();
-		var v = this.find("option:selected").text();
-		var span = this.addSpan(comp);
+		let comp = this.get();
+		let v = this.find("option:selected").text();
+		let span = this.addSpan(comp);
 		if (lk) {
 			comp.hide();
 			span.show();
@@ -467,9 +463,9 @@ class Field extends WebComponent {
 		if (lk == false && this.readonly == true) {
 			return;
 		}
-		var comp = this.get();
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
+		let comp = this.get();
+		let tag = comp.prop("tagName");
+		let type = comp.prop("type");
 		if (("INPUT" == tag && (type.toLowerCase() == "text"
 			|| type.toLowerCase() == "password"
 			|| type.toLowerCase() == "email"
@@ -501,11 +497,11 @@ class Field extends WebComponent {
 		if (el == null) {
 			el = this.get();
 		}
-		var tag = el.prop("tagName");
-		var type = el.prop("type");
+		let tag = el.prop("tagName");
+		let type = el.prop("type");
 		if ("INPUT" == tag || "TEXTAREA" == tag || "SELECT" == tag) {
-			for (var i = 0; i < this.validatorList.length; i++) {
-				var v = this.newInstance(this.validatorList[i]);
+			for (let i = 0; i < this.validatorList.length; i++) {
+				let v = this.newInstance(this.validatorList[i]);
 				if (v instanceof RequiredValidator) {
 					return true;
 				}
@@ -521,15 +517,15 @@ class Field extends WebComponent {
 	 * </pre>
 	 * @param {res} リスト設定メソッド.
 	 */
-	getSource(res) {
-		var method = this.getServerMethod("getAutocompleteSource");
-		var param = this.getAjaxParameter();
-		method.execute(param, function(ret) {
-			if (ret.status == ServerMethod.SUCCESS) {
-				res(ret.result);
-			}
-		});
+	async getSource(res) {
+		let method = this.getWebMethod("getAutocompleteSource");
+		let param = this.getAjaxParameter();
+		let ret = await method.execute(param,);
+		if (ret.status == JsonResponse.SUCCESS) {
+			res(ret.result);
+		}
 	}
+
 	/**
 	 * autocompleteの選択時の処理を記述します。
 	 */
@@ -543,32 +539,31 @@ class Field extends WebComponent {
 	 * Autocompleteの設定を行います。
 	 */
 	setAutocomplete() {
-		var thisField = this;
 		this.get().autocomplete({
-			search:function(event, ui) {
-				thisField.adjustIdIndex($(this));
+			search: (ev) => {
+				this.adjustIdIndex($(ev.currentTarget));
 			},
-			source:function(req, res) {
-				thisField.getSource(res);
+			source: (_, res) => {
+				this.getSource(res);
 			},
-			select: function(event, ui) {
-				for (var k in ui.item) {
+			select: (ev, ui) => {
+				for (let k in ui.item) {
 					if (k == "label") {
 					} else if (k == "value") {
 					} else {
-						if (thisField.parent instanceof Form) {
-							thisField.parent.setFieldValue(k, ui.item[k]);
-						} else if (thisField.parent instanceof HtmlTable) {
-							thisField.parent.parent.setFieldValue(k, ui.item[k]);
+						if (this.parent instanceof Form) {
+							this.parent.setFieldValue(k, ui.item[k]);
+						} else if (this.parent instanceof HtmlTable) {
+							this.parent.parent.setFieldValue(k, ui.item[k]);
 						}
 					}
 				}
-				if (thisField.calcEventField) {
-					logger.log("thisField.calcEventField=" + thisField.calcEventField);
-					var form = thisField.getParentForm();
-					form.onCalc($(event.target));
+				if (this.calcEventField) {
+					logger.log("thisField.calcEventField=" + this.calcEventField);
+					let form = this.getParentForm();
+					form.onCalc($(ev.currentTarget));
 				}
-				thisField.onAutocompleteSelected();
+				this.onAutocompleteSelected();
 			}
 		});
 	}
@@ -602,7 +597,7 @@ class Field extends WebComponent {
 	 * @returns {Number} 比較結果。
 	 */
 	comp(a, b) {
-		var ret = 0;
+		let ret = 0;
 		if (a[this.id].toString() < b[this.id].toString()) {
 			ret = -1;
 		} else if (a[this.id].toString() > b[this.id].toString()) {
@@ -617,7 +612,7 @@ class Field extends WebComponent {
 	 * @returns {Field} フィールド。
 	 */
 	getNearField(id) {
-		var tableId = this.getHtmlTableId(this.id);
+		let tableId = this.getHtmlTableId(this.id);
 		if (tableId != null) {
 			return this.parent.getSameRowField(this, id);
 		} else {

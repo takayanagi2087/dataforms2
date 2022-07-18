@@ -70,36 +70,35 @@ class HtmlTable extends WebComponent {
 		super.setRealId();
 		logger.log("fixedColumns=" + this.fixedColumns);
 		logger.log("fixedWidth=" + this.fixedWidth);
-		var thisTable = this;
 		if (this.fixedColumns >= 0 || this.fixedWidth != null) {
 			if (this.fixedWidth != null) {
 				// Windowサイズ変更に伴う固定カラムの設定変更。
-				$(window).resize(function() {
-					thisTable.calcFixedColumns(thisTable.columnWidthList, thisTable.tableWidth);
-					if (thisTable.fixedColumns > 0) {
-						thisTable.setFixedColumn(thisTable.fixedColumns, thisTable.columnWidthList);
+				$(window).resize(() => {
+					this.calcFixedColumns(this.columnWidthList, this.tableWidth);
+					if (this.fixedColumns > 0) {
+						this.setFixedColumn(this.fixedColumns, this.columnWidthList);
 					}
 				});
 			}
 			this.setFixedColumnStyle();
-			var bt = currentPage.getBrowserType();
+			let bt = currentPage.getBrowserType();
 			logger.log("browserType=" + bt);
-			var isEdge = (bt == Page.BROWSER_EDGE);
-			var isIe = (bt == Page.BROWSER_IE);
+			let isEdge = (bt == Page.BROWSER_EDGE);
+			let isIe = (bt == Page.BROWSER_IE);
 			if (isIe || isEdge) {
 				// Edgeはtheadのstickyの動作がおかしいので、theadの固定をスクリプトで行う。
 				this.get().find("thead").css("position", "relative");
-				thisTable.timeoutId = null;
-				this.get().scroll(function() {
-					if (thisTable.timeoutId != null) {
-						clearTimeout(thisTable.timeoutId);
-						thisTable.timeoutId = null;
+				this.timeoutId = null;
+				this.get().scroll(() => {
+					if (this.timeoutId != null) {
+						clearTimeout(this.timeoutId);
+						this.timeoutId = null;
 					}
-					thisTable.timeoutId = setTimeout(function () {
-						var top = thisTable.get().scrollTop();
-						thisTable.get().find("thead").css("top", top);
+					this.timeoutId = setTimeout(() => {
+						let top = this.get().scrollTop();
+						this.get().find("thead").css("top", top);
 						if (isIe) {
-							thisTable.moveColumnForIe();
+							this.moveColumnForIe();
 						}
 					}, 100 ) ;
 				});
@@ -107,7 +106,7 @@ class HtmlTable extends WebComponent {
 		}
 		this.setSortMark();
 		this.setColumnSortEvent();
-		var tbl = this.get();
+		let tbl = this.get();
 		this.trLine = tbl.find("tbody>tr:first").html();
 		this.clear();
 	}
@@ -124,13 +123,13 @@ class HtmlTable extends WebComponent {
 	 * @returns {WebComponent} 所有オブジェクトのインスタンス。
 	 */
 	getComponent(id) {
-		var tblid = this.getHtmlTableId(id);
+		let tblid = this.getHtmlTableId(id);
 		if (tblid != null) {
-			var colid = this.getHtmlTableColumnId(id);
-			var tbl = this;
-			for (var i = 0; i <  tbl.fields.length; i++) {
+			let colid = this.getHtmlTableColumnId(id);
+			let tbl = this;
+			for (let i = 0; i <  tbl.fields.length; i++) {
 				if (tbl.fields[i].id == colid) {
-					var tblfield = new tbl.fields[i].constructor();
+					let tblfield = new tbl.fields[i].constructor();
 					Object.assign(tblfield, tbl.fields[i]);
 					tblfield.id = id;
 					return tblfield;
@@ -148,40 +147,40 @@ class HtmlTable extends WebComponent {
 	 * @returns {jQuery} ラベルのエレメント.
 	 */
 	getLabelElement(field) {
-		var label = null;
-		var tblid = this.id;
-//		var tag = this.parent.find('#' + this.selectorEscape(field.labelId));
-		var fid = field.id;
+		let label = null;
+		let tblid = this.id;
+//		let tag = this.parent.find('#' + this.selectorEscape(field.labelId));
+		let fid = field.id;
 		if (this.isHtmlTableElementId(fid)) {
 			fid = this.getHtmlTableColumnId(fid);
 		}
-		var tag = this.parent.find("label[for='" + fid + "']");
+		let tag = this.parent.find("label[for='" + fid + "']");
 
 		if (tag.length > 0) {
 			// ラベルのIDが指定されていた場合の処理.
 			label = tag;
 		} else {
-			var theadTr = this.parent.find("#" + tblid).find("thead tr:last");
-			var tbodyTr = this.parent.find("#" + tblid).find("tbody tr:first");
+			let theadTr = this.parent.find("#" + tblid).find("thead tr:last");
+			let tbodyTr = this.parent.find("#" + tblid).find("tbody tr:first");
 			if (tbodyTr.length == 0) {
 				tbodyTr = $("<tr>" + this.trLine + "</tr>");
 			}
-			var tdlist = tbodyTr.children();
-			var idx = -1;
-			for (var i = 0; i < tdlist.length; i++) {
-				var comp = $(tdlist[i]).find(this.convertSelector("[id$='" + field.id + "']"));
+			let tdlist = tbodyTr.children();
+			let idx = -1;
+			for (let i = 0; i < tdlist.length; i++) {
+				let comp = $(tdlist[i]).find(this.convertSelector("[id$='" + field.id + "']"));
 				if (comp.length > 0) {
 					idx = i;
 					break;
 				}
 			}
 			if (idx >= 0) {
-				var thlist = theadTr.find("th")
-				var hidx = idx;
-				for (var i = 0; i < idx && i < thlist.length; i++) {
-					var colspan = thlist.eq(i).attr("colspan");
+				let thlist = theadTr.find("th")
+				let hidx = idx;
+				for (let i = 0; i < idx && i < thlist.length; i++) {
+					let colspan = thlist.eq(i).attr("colspan");
 					if (colspan != null) {
-						var cs = parseInt(colspan);
+						let cs = parseInt(colspan);
 						hidx -= (cs - 1);
 					}
 				}
@@ -198,7 +197,7 @@ class HtmlTable extends WebComponent {
 	 * @returns {String} ラベル文字列。
 	 */
 	getLabel(field) {
-		var el = this.getLabelElement(field);
+		let el = this.getLabelElement(field);
 		if (el != null) {
 			return el.html();
 		} else {
@@ -213,9 +212,9 @@ class HtmlTable extends WebComponent {
 	 *
 	 */
 	initField(fieldList) {
-		for (var i = 0; i < fieldList.length; i++) {
-			var f = fieldList[i];
-			var field = this.newInstance(f);
+		for (let i = 0; i < fieldList.length; i++) {
+			let f = fieldList[i];
+			let field = this.newInstance(f);
 			this.fields[i] = field;
 		}
 	}
@@ -224,15 +223,15 @@ class HtmlTable extends WebComponent {
 	 * カラムソートイベントを設定します。
 	 */
 	setColumnSortEvent() {
-		var thisTable = this;
-		for (var i = 0; i < this.fields.length; i++) {
-			var field = this.fields[i];
+		let thisTable = this;
+		for (let i = 0; i < this.fields.length; i++) {
+			let field = this.fields[i];
 			field.label = this.getLabel(field);
 			if (field.sortable) {
-				var el = this.getLabelElement(field);
+				let el = this.getLabelElement(field);
 				if (el != null) {
-					el.click(function() {
-						thisTable.sortTable($(this));
+					el.click((ev) => {
+						thisTable.sortTable($(ev.currentTarget));
 					});
 				}
 			}
@@ -246,23 +245,23 @@ class HtmlTable extends WebComponent {
 	 * @param {Array} warrayAll カラム幅の配列(padding, borderを含めた幅)。
 	 */
 	setColumnWidth(tag, warray, warrayAll) {
-		this.find(tag + " tr").each(function () {
-			var i = 0;
-			$(this).children().each(function() {
-				var colspan = $(this).attr("colspan");
+		this.find(tag + " tr").each((_, el) => {
+			let i = 0;
+			$(el).children().each((_, col) => {
+				let colspan = $(col).attr("colspan");
 				if (colspan === undefined) {
-					$(this).width(warray[i++]);
+					$(col).width(warray[i++]);
 				} else {
-					var w = 0;
-					var cnt = parseInt(colspan);
-					for (var c = 0; c < cnt; c++) {
+					let w = 0;
+					let cnt = parseInt(colspan);
+					for (let c = 0; c < cnt; c++) {
 						if (c < (cnt - 1)) {
 							w += warrayAll[i++];
 						} else {
 							w += warray[i++];
 						}
 					}
-					$(this).width(w);
+					$(col).width(w);
 				}
 			});
 		});
@@ -293,21 +292,21 @@ class HtmlTable extends WebComponent {
 	 * @param {Array} warray カラム幅の配列。
 	 */
 	lockColumn(tr, cols, warray) {
-		var idx = 0;
-		var pos = 0;
-		tr.children().each(function() {
+		let idx = 0;
+		let pos = 0;
+		tr.children().each((_, el) => {
 			if (idx < cols) {
-				$(this).addClass("fixedColumn");
-				$(this).css("left", pos + "px");
-				var colspan = $(this).prop("colspan");
+				$(el).addClass("fixedColumn");
+				$(el).css("left", pos + "px");
+				let colspan = $(el).prop("colspan");
 				logger.log("colspan=" + colspan);
 				if (colspan == null) {
 					colspan = 1;
 				}
-				for (var i = 0; i < colspan; i++) {
+				for (let i = 0; i < colspan; i++) {
 					pos += warray[idx++];
 				}
-				$(this).css("z-index", "3");
+				$(el).css("z-index", "3");
 			}
 		});
 	}
@@ -330,14 +329,14 @@ class HtmlTable extends WebComponent {
 	 * @param {Array} warray カラム幅の配列。
 	 */
 	setTbodyFixedColumn(tr, cols, warray) {
-		var idx = 0;
-		var pos = 0;
-		tr.children().each(function() {
+		let idx = 0;
+		let pos = 0;
+		tr.children().each((_, el) => {
 			if (idx < cols) {
-				$(this).addClass("fixedColumn");
-				$(this).css("left", pos + "px");
+				$(el).addClass("fixedColumn");
+				$(el).css("left", pos + "px");
 				pos += warray[idx++];
-				$(this).css("z-index", "1");
+				$(el).css("z-index", "1");
 			}
 		});
 	}
@@ -367,17 +366,15 @@ class HtmlTable extends WebComponent {
 		this.find("td").removeClass("fixedColumn");
 		this.find("td").css("left", "");
 		this.find("td").css("z-index", "");
-		var thisTable = this;
-		var idx = 0;
-		var pos = 0;
-		this.find("thead tr").each(function() {
-			thisTable.setTheadFixedColumn($(this), cols, warray);
+		let thisTable = this;
+		this.find("thead tr").each((_, el) => {
+			thisTable.setTheadFixedColumn($(el), cols, warray);
 		});
-		this.find("tbody tr").each(function() {
-			thisTable.setTbodyFixedColumn($(this), cols, warray);
+		this.find("tbody tr").each((_, el) => {
+			thisTable.setTbodyFixedColumn($(el), cols, warray);
 		});
-		this.find("tfoot tr").each(function() {
-			thisTable.setTfootFixedColumn($(this), cols, warray);
+		this.find("tfoot tr").each((_, el) => {
+			thisTable.setTfootFixedColumn($(el), cols, warray);
 		});
 	}
 
@@ -394,13 +391,13 @@ class HtmlTable extends WebComponent {
 	 * 固定カラム幅に対応したカラム数を計算します。
 	 */
 	calcFixedColumns(warrayAll, tbodyWidth) {
-		var form = this.getParentForm();
-		var tw = form.get().width();
+		let form = this.getParentForm();
+		let tw = form.get().width();
 		logger.log("tw=" + tw);
-		var fw = tw * this.fixedWidth / 100.0;
-		var cols = 0;
-		var w = 0;
-		for (var i = 0; i < warrayAll.length; i++) {
+		let fw = tw * this.fixedWidth / 100.0;
+		let cols = 0;
+		let w = 0;
+		for (let i = 0; i < warrayAll.length; i++) {
 			w += warrayAll[i];
 			if (w > fw) {
 				break;
@@ -419,16 +416,14 @@ class HtmlTable extends WebComponent {
 	 * 固定カラム用のスタイル設定を行います。
 	 */
 	setFixedColumnStyle() {
-		var sd = this.get().closest("div.hScrollDiv");
 		this.get().closest("div.hScrollDiv").css("overflow-x", "hidden");
 		this.get().addClass("columnFixedTable");
-		var wbody = 0;
-		var warray = [];
-		var warrayAll = [];
-		var thisTable = this;
-		this.find("tbody tr:first").find("td").each(function() {
-			warray.push($(this).width());
-			var fw = thisTable.getColumnWidth($(this));
+		let wbody = 0;
+		let warray = [];
+		let warrayAll = [];
+		this.find("tbody tr:first").find("td").each((_, el) => {
+			warray.push($(el).width());
+			let fw = this.getColumnWidth($(el));
 			warrayAll.push(fw);
 			wbody += fw;
 		});
@@ -455,12 +450,9 @@ class HtmlTable extends WebComponent {
 	 * IE用のカラム位置設定。
 	 */
 	setColumnLeftForIe(tr) {
-		var idx = 0;
-		var pos = 0;
-		var sx = this.get().scrollLeft();
-		var thisForm = this;
-		tr.children(".fixedColumn").each(function() {
-			$(this).css("left", sx + "px");
+		let sx = this.get().scrollLeft();
+		tr.children(".fixedColumn").each((_, el) => {
+			$(el).css("left", sx + "px");
 		});
 	}
 
@@ -471,15 +463,14 @@ class HtmlTable extends WebComponent {
 	moveColumnForIe() {
 		this.get().find("th.fixedColumn").css("position", "relative");
 		this.get().find("td.fixedColumn").css("position", "relative");
-		var thisTable = this;
-		this.find("thead tr").each(function() {
-			thisTable.setColumnLeftForIe($(this));
+		this.find("thead tr").each((_, el) => {
+			this.setColumnLeftForIe($(el));
 		});
-		this.find("tbody tr").each(function() {
-			thisTable.setColumnLeftForIe($(this));
+		this.find("tbody tr").each((_, el) => {
+			this.setColumnLeftForIe($(el));
 		});
-		this.find("tfoot tr").each(function() {
-			thisTable.setColumnLeftForIe($(this));
+		this.find("tfoot tr").each((_, el) => {
+			this.setColumnLeftForIe($(el));
 		});
 
 	}
@@ -490,17 +481,17 @@ class HtmlTable extends WebComponent {
 	 */
 	setSortMark() {
 		logger.log("setSortMark");
-		var thisTable = this;
-		for (var i = 0; i < this.fields.length; i++) {
-			var field = this.fields[i];
+		let thisTable = this;
+		for (let i = 0; i < this.fields.length; i++) {
+			let field = this.fields[i];
 			if (field.sortable) {
-				var el = this.getLabelElement(field);
+				let el = this.getLabelElement(field);
 				if (el == null) {
 					continue;
 				}
 				logger.log("el.tag=" + el.prop("tagName"));
-				var labelspan = MessagesUtil.getMessage("htmltable.sortablelabel");
-				var mark = MessagesUtil.getMessage("htmltable.sortable");
+				let labelspan = MessagesUtil.getMessage("htmltable.sortablelabel");
+				let mark = MessagesUtil.getMessage("htmltable.sortable");
 				if (field.sortOrder == "ASC") {
 					mark = MessagesUtil.getMessage("htmltable.sortedasc");
 					el.data("order", "ASC");
@@ -528,10 +519,10 @@ class HtmlTable extends WebComponent {
 	 * @param co {jQuery} ラベルのエレメント.l
 	 */
 	changeSortMark(col) {
-		var colid = col.data("id");
-		var order = col.data("order");
+		let colid = col.data("id");
+		let order = col.data("order");
 		logger.log("column click=" + col.data("id") + "," + col.data("order"));
-		var mark = MessagesUtil.getMessage("htmltable.sortable");
+		let mark = MessagesUtil.getMessage("htmltable.sortable");
 		if (order == "ASC") {
 			mark = MessagesUtil.getMessage("htmltable.sorteddesc");
 			col.data("order", "DESC");
@@ -551,11 +542,11 @@ class HtmlTable extends WebComponent {
 	 * @returns {Array} ソート対象フィールドのリスト。
 	 */
 	getSortFieldList() {
-		var flist = [];
-		for (var i = 0; i < this.fields.length; i++) {
-			var field = this.fields[i];
+		let flist = [];
+		for (let i = 0; i < this.fields.length; i++) {
+			let field = this.fields[i];
 			if (field.sortable) {
-				var col = this.getLabelElement(field);
+				let col = this.getLabelElement(field);
 				if (col != null) {
 					field.currentSortOrder = col.data("order");
 					logger.log(field.id + ":" + field.currentSortOrder);
@@ -575,11 +566,11 @@ class HtmlTable extends WebComponent {
 	 * @returns ソート結果。
 	 */
 	sort(list) {
-		var sflg = false;
-		for (var i = 0; i < this.fields.length; i++) {
-			var field = this.fields[i];
+		let sflg = false;
+		for (let i = 0; i < this.fields.length; i++) {
+			let field = this.fields[i];
 			if (field.sortable) {
-				var col = this.getLabelElement(field);
+				let col = this.getLabelElement(field);
 				if (col != null) {
 					field.currentSortOrder = col.data("order");
 					logger.log(field.id + ":" + field.currentSortOrder);
@@ -589,14 +580,13 @@ class HtmlTable extends WebComponent {
 				}
 			}
 		}
-//		logger.log("sflg=" + sflg);
-		var slist = list;
+		let slist = list;
 		if (sflg) {
-			var thisTable = this;
-			slist = list.sort(function(a, b) {
-				var cmp = 0;
-				for (var i = 0; i < thisTable.fields.length; i++) {
-					var field = thisTable.fields[i];
+//			logger.log("sflg=" + sflg);
+			slist = list.sort((a, b) => {
+				let cmp = 0;
+				for (let i = 0; i < this.fields.length; i++) {
+					let field = this.fields[i];
 					if (field.sortable) {
 						if (field.currentSortOrder == "ASC") {
 							cmp = field.comp(a, b);
@@ -619,7 +609,7 @@ class HtmlTable extends WebComponent {
 	 * @returns {Array} ソートされたリスト。
 	 */
 	getSortedList() {
-		var list = this.tableData.concat();
+		let list = this.tableData.concat();
 		return this.sort(list);
 	}
 
@@ -631,9 +621,8 @@ class HtmlTable extends WebComponent {
 	 *
 	 */
 	sortTable(col) {
-		var thisTable = this;
 		this.changeSortMark(col);
-		var slist = this.getSortedList();
+		let slist = this.getSortedList();
 		this.setTableData(slist);
 		return slist;
 	}
@@ -644,14 +633,14 @@ class HtmlTable extends WebComponent {
 	 */
 	clear() {
 		// フィールドの解放を行う
-		var n = this.find("tbody>tr").length;
-		for (var lidx = 0; lidx < n; lidx++) {
-			for (var i = 0; i < this.fields.length; i++) {
-				var f = this.getRowField(lidx, this.fields[i]);
+		let n = this.find("tbody>tr").length;
+		for (let lidx = 0; lidx < n; lidx++) {
+			for (let i = 0; i < this.fields.length; i++) {
+				let f = this.getRowField(lidx, this.fields[i]);
 				f.onDestroy();
 			}
 		}
-		var tbl = this.parent.get(this.id);
+		let tbl = this.parent.get(this.id);
 		tbl.find("tbody").empty();
 	}
 
@@ -666,7 +655,7 @@ class HtmlTable extends WebComponent {
 	 * @returns テーブルのカラムフィールド。
 	 */
 	getColumnField(id) {
-		for (var i = 0; i < this.fields.length; i++) {
+		for (let i = 0; i < this.fields.length; i++) {
 			if (this.fields[i].id == id) {
 				return this.fields[i];
 			}
@@ -692,11 +681,11 @@ class HtmlTable extends WebComponent {
 	 * @returns {Field} フィールド。
 	 */
 	getRowField(idx, fobj) {
-		var field = fobj;
+		let field = fobj;
 		if (!(fobj instanceof Field)) {
 			field = this.getColumnField(fobj);
 		}
-		var f = new field.constructor();
+		let f = new field.constructor();
 		Object.assign(f, field);
 		f.id = this.id + "[" + idx + "]." + field.id;
 		if (f.realId != null) {
@@ -711,16 +700,16 @@ class HtmlTable extends WebComponent {
 	 *
 	 */
 	addTr(l) {
-		var tb = this.find("tbody");
-		var lidx = this.find("tbody>tr").length;
-		var line = this.trLine.replace(/\[0\]/g, "[" + lidx + "]");
+		let tb = this.find("tbody");
+		let lidx = this.find("tbody>tr").length;
+		let line = this.trLine.replace(/\[0\]/g, "[" + lidx + "]");
 		if (l == null) {
 			tb.append("<tr>" + line + "</tr>");
 		} else {
 			$(this.find("tbody>tr").get(l)).before("<tr>" + line + "</tr>");
 		}
-		for (var i = 0; i < this.fields.length; i++) {
-			var f = this.getRowField(lidx, this.fields[i]);
+		for (let i = 0; i < this.fields.length; i++) {
+			let f = this.getRowField(lidx, this.fields[i]);
 			f.attach();
 		}
 		return lidx;
@@ -742,9 +731,9 @@ class HtmlTable extends WebComponent {
 	 * @param {Object} line フォームデータ。
 	 */
 	setRowData(idx, line) {
-		for (var i = 0; i < this.fields.length; i++) {
-			var orgf = this.fields[i];
-			var f = this.getRowField(idx, orgf);
+		for (let i = 0; i < this.fields.length; i++) {
+			let orgf = this.fields[i];
+			let f = this.getRowField(idx, orgf);
 			f.setValue(line[orgf.id]);
 		}
 	}
@@ -758,9 +747,9 @@ class HtmlTable extends WebComponent {
 	 * @param rowData 行のみのデータ.
 	 */
 	updateRowData(line, rowData) {
-		for (var i = 0; i < this.fields.length; i++) {
-			var orgf = this.fields[i];
-			var f = this.getRowField(line, orgf);
+		for (let i = 0; i < this.fields.length; i++) {
+			let orgf = this.fields[i];
+			let f = this.getRowField(line, orgf);
 			f.setValue(rowData[orgf.id]);
 		}
 	}
@@ -770,7 +759,7 @@ class HtmlTable extends WebComponent {
 	 * @param {Object} formData フォームのデータ。
 	 */
 	setFormData(formData) {
-		var list = formData[this.id];
+		let list = formData[this.id];
 		this.setSortMark();
 		this.setTableData(list);
 		this.tableData = list;
@@ -780,7 +769,7 @@ class HtmlTable extends WebComponent {
 	 * 各行の背景色を設定します。
 	 */
 	resetBackgroundColor() {
-		var fsel = 'input[type="text"],input[type="password"],textarea,select';
+		let fsel = 'input[type="text"],input[type="password"],textarea,select';
 		//
 		this.find('tbody tr:even').removeClass("oddTr");
 		this.find('tbody tr:even').find(fsel).removeClass("oddTr");
@@ -816,11 +805,11 @@ class HtmlTable extends WebComponent {
 		if (list != null) {
 			this.find("tbody").empty();
 			// 表の行を追加.
-			for (var i = 0; i < list.length; i++) {
+			for (let i = 0; i < list.length; i++) {
 				this.addTr();
 			}
 			// 表のデータを追加.
-			for (var i = 0; i < list.length; i++) {
+			for (let i = 0; i < list.length; i++) {
 				this.setRowData(i, list[i]);
 				this.onAddTr(this.id + "[" + i + "]");
 			}
@@ -850,14 +839,14 @@ class HtmlTable extends WebComponent {
 	 * @returns {Array} バリデーション結果。
 	 */
 	validate() {
-		var result = [];
-		for (var i = 0;; i++) {
-			var flg = false;
-			for (var f = 0; f < this.fields.length; f++) {
-				var fld = this.getRowField(i, this.fields[f]);
+		let result = [];
+		for (let i = 0;; i++) {
+			let flg = false;
+			for (let f = 0; f < this.fields.length; f++) {
+				let fld = this.getRowField(i, this.fields[f]);
 				if (fld.get().length > 0) {
 					flg = true;
-					var e = fld.validate();
+					let e = fld.validate();
 					if (e != null) {
 						result.push(e);
 					}
@@ -888,9 +877,9 @@ class HtmlTable extends WebComponent {
 	 * @returns {Boolean} 指定行が存在する場合true。
 	 */
 	lockRow(line, lk) {
-		var flg = false;
-		for (var f = 0; f < this.fields.length; f++) {
-			var fld = this.getRowField(line, this.fields[f]);
+		let flg = false;
+		for (let f = 0; f < this.fields.length; f++) {
+			let fld = this.getRowField(line, this.fields[f]);
 			if (fld.get().length > 0) {
 				flg = true;
 				fld.lock(lk);
@@ -904,8 +893,8 @@ class HtmlTable extends WebComponent {
 	 * @param {Boolean} lk ロックする場合true.
 	 */
 	lockFields(lk) {
-		for (var i = 0;; i++) {
-			var flg = this.lockRow(i, lk);
+		for (let i = 0;; i++) {
+			let flg = this.lockRow(i, lk);
 			if (!flg) {
 				break;
 			}
@@ -937,11 +926,11 @@ class HtmlTable extends WebComponent {
 	 */
 	getSameRowField(f, tid) {
 		if (f instanceof jQuery) {
-			var id = f.attr(this.getIdAttribute());
-			var rid = id.replace(/\]\..+$/, "]." + tid);
+			let id = f.attr(this.getIdAttribute());
+			let rid = id.replace(/\]\..+$/, "]." + tid);
 			return this.get(rid);
 		} else {
-			var rid = f.id.replace(/\]\..+$/, "]." + tid);
+			let rid = f.id.replace(/\]\..+$/, "]." + tid);
 			return this.getComponent(rid);
 		}
 	}
@@ -952,8 +941,8 @@ class HtmlTable extends WebComponent {
 	 * @returns {Integer} 行インデックス。
 	 */
 	getRowIndex(el) {
-		var id = el.attr(this.getIdAttribute());
-		var sp = id.split(/[\[\]]/);
+		let id = el.attr(this.getIdAttribute());
+		let sp = id.split(/[\[\]]/);
 		return parseInt(sp[1]);
 	}
 
@@ -971,7 +960,7 @@ class HtmlTable extends WebComponent {
 	 * @returns {jQuery} td要素。
 	 */
 	getTd(row, id) {
-		var fid = this.id + "[" + row + "]." + id;
+		let fid = this.id + "[" + row + "]." + id;
 		return this.get(fid).parents("td:first");
 	}
 
@@ -981,11 +970,11 @@ class HtmlTable extends WebComponent {
 	 */
 	setRowSpan(id) {
 		if (this.tableData != null) {
-			var v0 = null;
-			var rowspan = 1;
-			var startrow = 0;
-			for (var i = 0; i < this.tableData.length; i++) {
-				var v = this.tableData[i][id];
+			let v0 = null;
+			let rowspan = 1;
+			let startrow = 0;
+			for (let i = 0; i < this.tableData.length; i++) {
+				let v = this.tableData[i][id];
 				logger.log("v=" + v);
 				if (v != v0) {
 					this.getTd(startrow, id).prop("rowspan", rowspan);
@@ -1006,16 +995,8 @@ class HtmlTable extends WebComponent {
 	 * @returns {Number} テーブルの行数。
 	 */
 	getRowCount() {
-		var n = this.find("tbody>tr").length;
+		let n = this.find("tbody>tr").length;
 		return n;
 	}
 
 }
-
-
-
-
-
-
-
-

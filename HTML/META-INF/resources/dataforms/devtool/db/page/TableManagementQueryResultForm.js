@@ -19,111 +19,107 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 */
 	attach() {
 		super.attach();
-		var systemName = MessagesUtil.getMessage("message.systemname");
-		var thisForm = this;
-		this.get("selectAllButton").click(function() {
-			$("[name='checkedClass']").each(function() {
-				$(this).prop("checked", true);
+		let systemName = MessagesUtil.getMessage("message.systemname");
+		this.get("selectAllButton").click(() => {
+			$("[name='checkedClass']").each((_, ck) => {
+				$(ck).prop("checked", true);
 			});
-			thisForm.controlButton();
+			this.controlButton();
 		});
-		this.get("selectNothingButton").click(function() {
-			for (var i = 0;;i++) {
-				var id = "queryResult[" + i + "].statusVal";
-				var st = thisForm.get(id);
+		this.get("selectNothingButton").click(() => {
+			for (let i = 0;;i++) {
+				let id = "queryResult[" + i + "].statusVal";
+				let st = this.get(id);
 				if (st.length == 0) {
 					break;
 				}
 				if (st.val() == "0") {
-					var cbid = "queryResult[" + i + "].checkedClass";
-					thisForm.get(cbid).prop("checked", true);
+					let cbid = "queryResult[" + i + "].checkedClass";
+					this.get(cbid).prop("checked", true);
 				}
 			}
-			thisForm.controlButton();
+			this.controlButton();
 		});
-		this.get("selectDiffButton").click(function() {
-			for (var i = 0;;i++) {
-				var id = "queryResult[" + i + "].differenceVal";
-				var st = thisForm.get(id);
+		this.get("selectDiffButton").click(() => {
+			for (let i = 0;;i++) {
+				let id = "queryResult[" + i + "].differenceVal";
+				let st = this.get(id);
 				if (st.length == 0) {
 					break;
 				}
 				if (st.val() == "1") {
-					var cbid = "queryResult[" + i + "].checkedClass";
-					thisForm.get(cbid).prop("checked", true);
+					let cbid = "queryResult[" + i + "].checkedClass";
+					this.get(cbid).prop("checked", true);
 				}
 			}
-			thisForm.controlButton();
+			this.controlButton();
 		});
-		this.get("unselectAllButton").click(function() {
-			$("[name='checkedClass']").each(function() {
-				$(this).prop("checked", false);
+		this.get("unselectAllButton").click(() => {
+			$("[name='checkedClass']").each((_, ck) => {
+				$(ck).prop("checked", false);
 			});
-			thisForm.controlButton();
+			this.controlButton();
 		});
-		this.get("initTableButton").click(function() {
-			currentPage.confirm(systemName, MessagesUtil.getMessage("message.initTableConfirm"), function() {
-				thisForm.submit("initTable", function(result) {
-					thisForm.updateTableInfoList(result);
-				});
-			})
+		this.get("initTableButton").click(async () => {
+			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.initTableConfirm"))) {
+				let result = await this.submit("initTable");
+				this.updateTableInfoList(result);
+			}
 		});
 
-		this.get("updateTableButton").click(function() {
-			currentPage.confirm(systemName, MessagesUtil.getMessage("message.updateTableConfirm"), function() {
-				thisForm.submit("updateTable", function(result) {
-					thisForm.updateTableInfoList(result);
-				});
-			});
+		this.get("updateTableButton").click(async () => {
+			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.updateTableConfirm"))) {
+				let result = await this.submit("updateTable");
+				this.updateTableInfoList(result);
+			}
 		});
 
-		this.get("dropTableButton").click(function() {
-			currentPage.confirm(systemName, MessagesUtil.getMessage("message.dropTableConfirm"), function() {
-				thisForm.submit("dropTable", function(result) {
-					thisForm.updateTableInfoList(result);
-				});
-			});
+		this.get("dropTableButton").click(async () => {
+			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.dropTableConfirm"))) {
+				let result = await this.submit("dropTable");
+				this.updateTableInfoList(result);
+			}
 		});
 
-		this.get("exportAsInitialDataButton").click(function() {
-			currentPage.confirm(systemName, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"), function() {
-				thisForm.submit("exportTableAsInitialData", function(result) {
-					if (result.status == ServerMethod.SUCCESS) {
-						var path = result.result;
-						currentPage.alert(systemName, MessagesUtil.getMessage("message.exportInitialDataResult", path));
-					}
-				});
-			});
+		this.get("exportAsInitialDataButton").click(async () => {
+			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.exportAsInitialDataConfirm"))) {
+				let result = await this.submit("exportTableAsInitialData");
+				if (result.status == JsonResponse.SUCCESS) {
+					let path = result.result;
+					currentPage.alert(systemName, MessagesUtil.getMessage("message.exportInitialDataResult", path));
+				}
+			}
 		});
 
-		this.get("exportTableButton").click(function() {
-			currentPage.confirm(systemName, MessagesUtil.getMessage("message.dexportTableConfirm"), function() {
-				thisForm.submit("exportTable", function(result) {
-					if (result.status == ServerMethod.SUCCESS) {
-						var path = result.result;
-						currentPage.alert(systemName, MessagesUtil.getMessage("message.exportInitialDataResult", path));
-					}
-				});
-			});
+		this.get("exportTableButton").click(async () => {
+			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.dexportTableConfirm"))) {
+				let result = await this.submit("exportTable");
+				if (result.status == JsonResponse.SUCCESS) {
+					let path = result.result;
+					currentPage.alert(systemName, MessagesUtil.getMessage("message.exportInitialDataResult", path));
+				}
+			}
 		});
-		this.get("importTableButton").click(function() {
-			var dlg = thisForm.parent.getComponent("importDataDialog");
+
+		this.get("importTableButton").click(() => {
+			let dlg = this.parent.getComponent("importDataDialog");
 			dlg.showModal();
 		});
-		var tbl = this.getComponent("queryResult");
+
+		let tbl = this.getComponent("queryResult");
 		// ソート結果の行番号を修正。
-		tbl.getSortedList = function() {
-			var list = HtmlTable.prototype.getSortedList.call(this);
-			for (var i = 0; i < list.length; i++) {
+		tbl.getSortedList = () => {
+			let list = HtmlTable.prototype.getSortedList.call(tbl);
+			for (let i = 0; i < list.length; i++) {
 				list[i].rowNo = (i + 1);
 			}
 			return list;
 		};
 		// ソート時のイベントハンドラ設定。
-		tbl.sortTable = function(col) {
+		tbl.sortTable = (col) => {
 			logger.log("sort");
-			var list = HtmlTable.prototype.sortTable.call(this, col);
-			this.parent.setTableEventHandler(list);
+			let list = HtmlTable.prototype.sortTable.call(tbl, col);
+			this.setTableEventHandler(list);
 		};
 
 		this.controlButton();
@@ -133,7 +129,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 * ボタンのenable/disable制御を行います。
 	 */
 	controlButton() {
-		var tr = this.find("#queryResult>tbody>tr");
+		let tr = this.find("#queryResult>tbody>tr");
 		if (tr.length > 0) {
 			this.get("selectAllButton").prop("disabled", false);
 			this.get("selectNothingButton").prop("disabled", false);
@@ -145,7 +141,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			this.get("selectDiffButton").prop("disabled", true);
 			this.get("unselectAllButton").prop("disabled", true);
 		}
-		var ckcb = this.find("[name='checkedClass']:checked");
+		let ckcb = this.find("[name='checkedClass']:checked");
 		if (ckcb.length > 0) {
 			this.get("updateTableButton").prop("disabled", false);
 			this.get("initTableButton").prop("disabled", false);
@@ -168,28 +164,25 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 * @param queryResult {Array} 検索結果。
 	 */
 	setTableEventHandler(queryResult) {
-		var thisForm = this;
 		if (queryResult != null) {
-			for (var i = 0; i < queryResult.length; i++) {
-				var id = "queryResult[" + i + "].className";
-				this.get(id).click(function() {
-					var clsname = $(this).html();
-					var qs="className=" + clsname;
-					var method = thisForm.getServerMethod("getTableInfo");
-					method.execute(qs, function(sqllist) {
-						if (sqllist.status == ServerMethod.SUCCESS) {
-							thisForm.showTableInfo(sqllist.result);
-						}
-					});
+			for (let i = 0; i < queryResult.length; i++) {
+				let id = "queryResult[" + i + "].className";
+				this.get(id).click(async (ev) => {
+					let clsname = $(ev.currentTarget).html();
+					let qs="className=" + clsname;
+					let method = this.getWebMethod("getTableInfo");
+					let sqllist = await method.execute(qs);
+					if (sqllist.status == JsonResponse.SUCCESS) {
+						this.showTableInfo(sqllist.result);
+					}
 				});
-//				var sid = "queryResult[" + i + "].statusVal";
 			}
-			this.find("[name='checkedClass']").each(function() {
-				$(this).click(function() {
-					thisForm.controlButton();
+			this.find("[name='checkedClass']").each((_, ck) => {
+				$(ck).click(() => {
+					this.controlButton();
 				});
 			});
-			for (var i = 0; i < queryResult.length; i++) {
+			for (let i = 0; i < queryResult.length; i++) {
 				logger.log("statusVal=" + queryResult[i].statusVal + ",differenceVal=" + queryResult[0].differenceVal);
 				if (queryResult[i].differenceVal == "1") {
 					this.find("#queryResult tbody tr:eq(" + i + ")").addClass("warnTr");
@@ -203,18 +196,21 @@ class TableManagementQueryResultForm extends QueryResultForm {
 
 				}
 			}
-			this.find("[id$='\.tableName']").click(function () {
-				thisForm.showQueryForm($(this));
+			this.find("[id$='\.tableName']").click((ev) => {
+				this.showQueryForm($(ev.currentTarget));
 			});
 		}
 		this.controlButton();
 	}
 
 
+	/**
+	 * 問い合わせフォームを表示します。
+	 */
 	showQueryForm(lnk) {
-		var table = lnk.text();
+		let table = lnk.text();
 		logger.log("tableName=" + table);
-		var url = currentPage.contextPath + "/dataforms/devtool/query/page/QueryExecutorPage.df?t=" + table;
+		let url = currentPage.contextPath + "/dataforms/devtool/query/page/QueryExecutorPage.df?t=" + table;
 		window.open(url, "_blank")
 	}
 
@@ -226,7 +222,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 * @param result 問い合わせ結果。
 	 */
 	setQueryResult(result) {
-		var tbl = this.getComponent("queryResult");
+		let tbl = this.getComponent("queryResult");
 		result.queryResult = tbl.sort(result.queryResult);
 		super.setQueryResult(result);
 	}
@@ -237,7 +233,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 */
 	setFormData(result) {
 		super.setFormData(result);
-		var queryResult = result.queryResult;
+		let queryResult = result.queryResult;
 		this.setTableEventHandler(queryResult);
 	}
 
@@ -247,7 +243,7 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 *
 	 */
 	showTableInfo(result) {
-		var dlg = this.parent.getComponent("tableInfoDialog");
+		let dlg = this.parent.getComponent("tableInfoDialog");
 		dlg.getComponent("tableInfoForm").setFormData(result);
 		dlg.showModal();
 	}
@@ -257,15 +253,14 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 * @param {Object} result テーブル情報。
 	 */
 	updateTableInfo(result) {
-		for (var i = 0;;i++) {
-			var id = "queryResult[" + i + "].className";
-			var clsname = this.get(id);
+		for (let i = 0;;i++) {
+			let id = "queryResult[" + i + "].className";
+			let clsname = this.get(id);
 			if (clsname.length > 0) {
 				if (clsname.html() == result.className) {
 					result.rowNo = (i + 1);
-					var rt = this.getComponent("queryResult");
+					let rt = this.getComponent("queryResult");
 					rt.updateRowData(i, result);
-
 					if (result.differenceVal == "1") {
 						this.find("#queryResult tbody tr:eq(" + i + ")").addClass("warnTr");
 					} else {
@@ -289,9 +284,9 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 * @param {Array} result テーブル情報の配列。
 	 */
 	updateTableInfoList(result) {
-		if (result.status == ServerMethod.SUCCESS) {
-			var tlist = result.result;
-			for (var i = 0; i < tlist.length; i++) {
+		if (result.status == JsonResponse.SUCCESS) {
+			let tlist = result.result;
+			for (let i = 0; i < tlist.length; i++) {
 				this.updateTableInfo(tlist[i]);
 			}
 		}
@@ -301,16 +296,12 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 * Importを実行します。
 	 * @param {String} path インポートデータのパス。
 	 */
-	importTableData(path) {
-		var thisForm = this;
+	async importTableData(path) {
+		logger.log("import=" + path);
 		$(this.convertSelector("#datapath")).val(path);
-		thisForm.submit("importTable", function(result) {
-			if (result.status == ServerMethod.SUCCESS) {
-				thisForm.updateTableInfoList(result);
-			}
-		});
+		let result = await this.submit("importTable");
+		this.updateTableInfoList(result);
 	}
-
 }
 
 

@@ -52,8 +52,8 @@ public abstract class FileStore {
 	public abstract File makeTemp(final String filename, final File orgfile) throws Exception;
 
 	/**
-	 * ダウンロードパラメータを指定してファイルストアを作成した場合の初期化処理です。
-	 * @param param ダウンロードパラメータ。
+	 * ダウンロードパラメータからファイルストアを作成した場合の初期化処理です。
+	 * @param param デコードされたダウンロードパラメータ。
 	 */
 	public void initDownloadParameter(final Map<String, Object> param) {
 

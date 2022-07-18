@@ -37,8 +37,9 @@ import dataforms.dao.TableRelation;
 import dataforms.dao.file.BlobFileStore;
 import dataforms.dao.file.FileObject;
 import dataforms.dao.file.FileStore;
-import dataforms.dao.file.FolderFileStore;
+import dataforms.dao.file.TableFolderFileStore;
 import dataforms.dao.sqlgen.SqlGenerator;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
@@ -319,7 +320,7 @@ public class TableManagerDao extends Dao {
 			ff.setDBValue(value);
 			fo = ff.getValue();
 			FileStore store = ff.newFileStore();
-			if (store instanceof FolderFileStore) {
+			if (store instanceof TableFolderFileStore) {
 				;
 			} else if (store instanceof BlobFileStore) {
 				fo.setDownloadParameter(ff.getBlobDownloadParameter(data));
@@ -519,52 +520,97 @@ public class TableManagerDao extends Dao {
 		if (file != null) {
 			InputStream is = new FileInputStream(file);
 			try {
-				// JSONReader を取得
-				JSONReader reader = new JSON().getReader(is);
-				JSONEventType type = null;
-				while ((type = reader.next()) != null) {
-					if (type ==  JSONEventType.START_OBJECT) {
-						@SuppressWarnings("unchecked")
-						Map<String, Object> m = (Map<String, Object>) reader.getMap();
-						logger.debug(() -> "m=" + m.toString());
-						for (String key: m.keySet()) {
-							Object v = m.get(key);
-							if (v instanceof String) {
-								String str = (String) v;
-//								log.debug("unescape=" + str + "->" + StringEscapeUtils.unescapeHtml4(str));
-								m.put(key, StringEscapeUtils.unescapeHtml4(str));
-							}
-						}
-						this.convertImportData(m, path, tbl);
-						Map<String, Object> data = tbl.convertImportData(m);
-						this.setUserIdValue(data);
-						if (this.existRecord(tbl, data)) {
-							this.executeUpdate0(tbl, data);
-						} else {
-							this.executeInsert0(tbl, data);
-						}
-					}
-				}
-				SqlGenerator gen = this.getSqlGenerator();
-				if (gen.isSequenceSupported()) {
-					if (tbl.recordIdExists() && tbl.isAutoIncrementId()) {
-						String sql = gen.generateAdjustSequenceSql(tbl);
-						if (sql != null) {
-							this.executeQuery(sql, (Map<String, Object>) null);
-						} else {
-							String maxsql = gen.generateGetMaxValueSql(tbl, tbl.getIdField(), new FieldList(), null);
-							Long max = NumberUtil.longValueObject(this.executeScalarQuery(maxsql, null));
-							if (max != null) {
-								String dssql = gen.generateDropSequenceSql(tbl.getSequenceName());
-								this.executeUpdate(dssql, (Map<String, Object>) null);
-								String cssql = gen.generateCreateSequenceSql(tbl.getSequenceName(), max.longValue() + 1);
-								this.executeUpdate(cssql, (Map<String, Object>) null);
-							}
-						}
-					}
-				}
+				this.importJson(is, tbl, path);
+				this.adjustSequence(tbl);
 			} finally {
 				is.close();
+			}
+		}
+	}
+
+
+	/**
+	 * 指定フォルダのデータをインポートします。
+	 * @param classname テーブルクラス名。
+	 * @param jsonpath var1.xのjsonファイルのパス。
+	 * @param path データのパス。
+	 * @throws Exception データ。
+	 */
+	public void importV1Data(final String classname, final String jsonpath, final String path) throws Exception {
+		final Table tbl = Table.newInstance(classname);
+		String file = path + jsonpath;
+		if (new File(file).exists()) {
+			InputStream is = new FileInputStream(file);
+			try {
+				this.importJson(is, tbl, path);
+				this.adjustSequence(tbl);
+			} finally {
+				is.close();
+			}
+		} else {
+			throw new ApplicationException(this.getPage(), "error.ver1datanotexist", file.replaceAll("\\\\", "/"));
+		}
+	}
+
+	/**
+	 * JSONデータをテーブルにインポートします。
+	 * @param is JSONデータの入力ストリーム。
+	 * @param tbl インポート先のテーブル。
+	 * @param path JSONのベースパス。
+	 * @throws Exception 例外。
+	 */
+	private void importJson(InputStream is, final Table tbl, final String path) throws Exception {
+		// JSONReader を取得
+		JSONReader reader = new JSON().getReader(is);
+		JSONEventType type = null;
+		while ((type = reader.next()) != null) {
+			if (type ==  JSONEventType.START_OBJECT) {
+				@SuppressWarnings("unchecked")
+				Map<String, Object> m = (Map<String, Object>) reader.getMap();
+				logger.debug(() -> "m=" + m.toString());
+				for (String key: m.keySet()) {
+					Object v = m.get(key);
+					if (v instanceof String) {
+						String str = (String) v;
+//								log.debug("unescape=" + str + "->" + StringEscapeUtils.unescapeHtml4(str));
+						m.put(key, StringEscapeUtils.unescapeHtml4(str));
+					}
+				}
+				this.convertImportData(m, path, tbl);
+				Map<String, Object> data = tbl.convertImportData(m);
+				this.setUserIdValue(data);
+				if (this.existRecord(tbl, data)) {
+					this.executeUpdate0(tbl, data);
+				} else {
+					this.executeInsert0(tbl, data);
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * インポート後のシーケンス調整。
+	 * @param tbl テーブル。
+	 * @throws Exception 例外。
+	 */
+	private void adjustSequence(final Table tbl) throws Exception {
+		SqlGenerator gen = this.getSqlGenerator();
+		if (gen.isSequenceSupported()) {
+			if (tbl.recordIdExists() && tbl.isAutoIncrementId()) {
+				String sql = gen.generateAdjustSequenceSql(tbl);
+				if (sql != null) {
+					this.executeQuery(sql, (Map<String, Object>) null);
+				} else {
+					String maxsql = gen.generateGetMaxValueSql(tbl, tbl.getIdField(), new FieldList(), null);
+					Long max = NumberUtil.longValueObject(this.executeScalarQuery(maxsql, null));
+					if (max != null) {
+						String dssql = gen.generateDropSequenceSql(tbl.getSequenceName());
+						this.executeUpdate(dssql, (Map<String, Object>) null);
+						String cssql = gen.generateCreateSequenceSql(tbl.getSequenceName(), max.longValue() + 1);
+						this.executeUpdate(cssql, (Map<String, Object>) null);
+					}
+				}
 			}
 		}
 	}

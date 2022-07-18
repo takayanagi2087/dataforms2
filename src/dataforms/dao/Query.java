@@ -999,4 +999,99 @@ public class Query {
 		return dao.getWhereCondition(this, flist, p);
 	}
 
+
+	/**
+	 * サブクエリを作成します。
+	 * @param alias 別名。
+	 * @return サブクエリ。
+	 */
+	public SubQuery createSubQuery(final String alias) {
+		SubQuery ret = new SubQuery(this);
+		if (alias != null) {
+			ret.setAlias(alias);
+		}
+		return ret;
+	}
+
+	/**
+	 * サブクエリを作成します。
+	 * @return サブクエリ。
+	 */
+	public SubQuery createSubQuery() {
+		return this.createSubQuery(null);
+	}
+
+
+	/**
+	 * UNION 情報。
+	 */
+	public static class UnionInfo {
+		/**
+		 * ALLフラグ。
+		 */
+		private boolean allFlag = false;
+		/**
+		 * 問合せ。
+		 */
+		private Query query = null;
+
+		/**
+		 * コンストラクタ。
+		 * @param all UNION ALLフラグ。
+		 * @param query 問合せ。
+		 */
+		public UnionInfo(final Query query, final boolean all) {
+			this.query = query;
+			this.allFlag = all;
+		}
+
+		/**
+		 * UNION ALLフラグを取得します。
+		 * @return union allの場合true。
+		 */
+		public boolean isAllFlag() {
+			return allFlag;
+		}
+
+		/**
+		 * 問合せを取得します。
+		 * @return 問合せを。
+		 */
+		public Query getQuery() {
+			return query;
+		}
+	}
+
+	/**
+	 * Unionする問合せリスト。
+	 */
+	private List<UnionInfo> unionQueryList = null;
+
+	/**
+	 * Unionする問合せを追加。
+	 * @param query Unionする問合せ。
+	 * @param allFlag allフラグ。
+	 */
+	public void addUnionQuery(final Query query, final boolean allFlag) {
+		if (this.unionQueryList	 == null) {
+			this.unionQueryList = new ArrayList<UnionInfo>();
+		}
+		this.unionQueryList.add(new UnionInfo(query, allFlag));
+	}
+
+	/**
+	 * Unionする問合せを追加。
+	 * @param query Unionする問合せ。
+	 */
+	public void addUnionQuery(final Query query) {
+		this.addUnionQuery(query, false);
+	}
+
+	/**
+	 * Unionする問合せリストを取得します。
+	 * @return Unionする問合せリスト。
+	 */
+	public List<UnionInfo> getUnionQueryList() {
+		return unionQueryList;
+	}
 }

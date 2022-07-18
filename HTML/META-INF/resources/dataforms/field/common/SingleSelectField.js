@@ -25,12 +25,12 @@ class SingleSelectField extends SelectField {
 	 * @param {String} value 値。
 	 */
 	setInputValue(comp, value) {
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
+		let tag = comp.prop("tagName");
+		let type = comp.prop("type");
 		if ("INPUT" == tag && "radio" == type) {
-			comp.each(function() {
-				if ($(this).val() == value) {
-					$(this).prop("checked", true);
+			comp.each((_, el) => {
+				if ($(el).val() == value) {
+					$(el).prop("checked", true);
 				}
 			});
 		} else {
@@ -43,14 +43,14 @@ class SingleSelectField extends SelectField {
 	 * @return {String} 値。
 	 */
 	getValue() {
-		var comp = this.get();
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
-		var ret = "";
+		let comp = this.get();
+		let tag = comp.prop("tagName");
+		let type = comp.prop("type");
+		let ret = "";
 		if ("INPUT" == tag && "radio" == type) {
-			comp.each(function() {
-				if ($(this).prop("checked")) {
-					ret = $(this).val();
+			comp.each((_, el) => {
+				if ($(el).prop("checked")) {
+					ret = $(el).val();
 				}
 			});
 		} else {

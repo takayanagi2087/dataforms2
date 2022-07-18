@@ -17,20 +17,18 @@ class LoginForm extends Form {
 	 * ログイン処理を行います。
 	 *
 	 */
-	login() {
-		var form = this;
-		if (form.validate()) {
-			form.submit("login", function(result) {
-				form.parent.resetErrorStatus();
-				if (result.status == ServerMethod.SUCCESS) {
-					if (form.parent instanceof Dialog) {
-						form.parent.close();
-					}
-					currentPage.toTopPage();
-				} else {
-					form.parent.setErrorInfo(form.getValidationResult(result), form);
+	async login() {
+		if (this.validate()) {
+			let result = await this.submit("login");
+			this.parent.resetErrorStatus();
+			if (result.status == JsonResponse.SUCCESS) {
+				if (this.parent instanceof Dialog) {
+					this.parent.close();
 				}
-			});
+				currentPage.toTopPage();
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
 		}
 	}
 
@@ -43,7 +41,6 @@ class LoginForm extends Form {
 	 */
 	attach() {
 		super.attach();
-		var form = this;
 		this.get("loginButton").click(() => {
 			this.login();
 			return false;

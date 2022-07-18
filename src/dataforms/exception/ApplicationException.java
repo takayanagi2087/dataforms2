@@ -22,6 +22,22 @@ public class ApplicationException extends Exception {
 	 */
 	private String messageKey = null;
 
+
+	/**
+	 * 応答モード。
+	 */
+	public enum ResponseMode {
+		/** エラー情報をJSONで送る。 */
+		JSON
+		/** エラーページへのリダイレクト。 */
+		, REDIRECT_TO_ERROR_PAGE
+	}
+
+	/**
+	 * 応答モード。
+	 */
+	private ResponseMode responseMode = ResponseMode.JSON;
+
 	/**
 	 * コンストラクタ。
 	 * @param epoint エラーが発生したページ。
@@ -54,7 +70,6 @@ public class ApplicationException extends Exception {
 		return messageKey;
 	}
 
-
 	/**
 	 * メッセージキーを設定します。
 	 * @param messageKey メッセージキー。
@@ -62,6 +77,23 @@ public class ApplicationException extends Exception {
 	public void setMessageKey(final String messageKey) {
 		this.messageKey = messageKey;
 	}
+
+	/**
+	 * 応答モードを取得します。
+	 * @return 応答モード。
+	 */
+	public ResponseMode getResponseMode() {
+		return responseMode;
+	}
+
+	/**
+	 * 応答モードを設定します。
+	 * @param responseMode 応答モード。
+	 */
+	public void setResponseMode(final ResponseMode responseMode) {
+		this.responseMode = responseMode;
+	}
+
 
 	/**
 	 * 例外の情報を持ったJsonResponseを取得します。
@@ -73,6 +105,5 @@ public class ApplicationException extends Exception {
 		einfo.put("message", this.getMessage());
 		JsonResponse ret = new JsonResponse(JsonResponse.APPLICATION_EXCEPTION, einfo);
 		return ret;
-
 	}
 }

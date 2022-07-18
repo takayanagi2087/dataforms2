@@ -21,32 +21,32 @@ class NumberField extends Field {
 	 */
 	attach() {
 		super.attach();
-		var thisField = this;
-		var el = this.get();
+		let el = this.get();
 		// 右寄せに設定.
 		el.css("text-align", "right");
 		// focusイベント処理を登録
-		el.focus(function() {
-			if (thisField.commaFormat) {
-				var v = el.val();
-				v = thisField.delComma(v);
+		el.focus(() => {
+			if (this.commaFormat) {
+				let v = el.val();
+				v = this.delComma(v);
 				el.val(v);
 			}
 		});
 		// blurイベント処理を登録.
-		el.blur(function() {
-			var v = el.val();
-			var v = StringUtil.fullToHalf(v);
-			v = thisField.adjustScale(v);
+		el.blur(() => {
+			let v = el.val();
+			v = StringUtil.fullToHalf(v);
+			v = this.adjustScale(v);
 			el.val(v);
-			if (thisField.commaFormat) {
-				var v = el.val();
-				v = thisField.addComma(v);
+			if (this.commaFormat) {
+				v = el.val();
+				v = this.addComma(v);
 				el.val(v);
 			}
 		});
 		this.backupStyle();
 	}
+
 	/**
 	 * 3桁ごとにカンマを追加するします。
 	 * @param {String} v 数値文字列。
@@ -84,20 +84,20 @@ class NumberField extends Field {
 		if (v == null || v == "" || isNaN(Number(v))) {
 			return v;
 		}
-		var value = v.toString();
+		let value = v.toString();
 		if (this.scale > 0) {
 			if (value.indexOf(".") < 0) {
 				value += ".";
 			}
-			for (var i = 0; i < this.scale; i++) {
+			for (let i = 0; i < this.scale; i++) {
 				value += "0";
 			}
-			var pp = value.indexOf(".");
+			let pp = value.indexOf(".");
 			if (pp >= 0) {
 				value = value.substring(0, pp + this.scale + 1);
 			}
 		} else {
-			var pp = value.indexOf(".");
+			let pp = value.indexOf(".");
 			if (pp >= 0) {
 				value = value.substring(0, pp);
 			}
@@ -110,7 +110,7 @@ class NumberField extends Field {
 	 * @param {String} value 設定値。
 	 */
 	setValue(value) {
-		var v = value;
+		let v = value;
 		v = this.adjustScale(v);
 		if (this.commaFormat) {
 			v = this.addComma(v);
@@ -123,8 +123,8 @@ class NumberField extends Field {
 	 * @return {Number} 値。
 	 */
 	getValue() {
-		var ret = super.getValue();
-		var r = parseFloat(this.delComma(ret));
+		let ret = super.getValue();
+		let r = parseFloat(this.delComma(ret));
 		if (isNaN(r)) {
 			return null;
 		} else {
@@ -139,7 +139,7 @@ class NumberField extends Field {
 	 * @returns {Number} 比較結果。
 	 */
 	comp(a, b) {
-		var ret = 0;
+		let ret = 0;
 		if (parseFloat(a[this.id].toString()) < parseFloat(b[this.id].toString())) {
 			ret = -1;
 		} else if (parseFloat(a[this.id].toString()) > parseFloat(b[this.id].toString())) {
@@ -149,10 +149,4 @@ class NumberField extends Field {
 	}
 
 }
-
-
-
-
-
-
 

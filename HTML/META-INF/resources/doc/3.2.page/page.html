@@ -233,7 +233,7 @@ group by
  			</pre>
 		</div>
 		<p>
-			次の画面でDaoクラスを作成し、一覧取得用問合せに席に作成したMultiTestCode1Queryを指定します。
+			次の画面でDaoクラスを作成し、一覧取得用問合せに先に作成したMultiTestCode1Queryを指定します。
 		</p>
 		<p>
 			編集フォーム用問合せは、Code1Fieldが同じ複数のレコードを編集するだめ、
@@ -794,7 +794,7 @@ class Sample2EditForm extends EditForm {
 		if (this.validate()) {
 			this.submit(&quot;webMethod&quot;, (r) =&gt; {
 				this.parent.resetErrorStatus();
-				if (r.status == ServerMethod.SUCCESS) {
+				if (r.status == JsonResponse.SUCCESS) {
 					// TODO:&#25104;&#21151;&#26178;&#12398;&#20966;&#29702;&#12434;&#35352;&#36848;&#12375;&#12414;&#12377;&#12290;
 					// &#24540;&#31572;&#24773;&#22577;&#12434;&#12525;&#12464;&#34920;&#31034;
 					logger.dir(r);

@@ -20,8 +20,8 @@ class ImportDataForm extends Form {
 	attach() {
 		super.attach();
 		this.get("importButton").click(() => {
-			var rform = currentPage.getComponent("queryResultForm");
-			var path = this.getFieldValue("pathName");
+			let rform = currentPage.getComponent("queryResultForm");
+			let path = this.getFieldValue("pathName");
 			rform.importTableData(path);
 			this.parent.close();
 		});

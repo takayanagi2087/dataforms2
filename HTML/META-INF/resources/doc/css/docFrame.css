@@ -1,27 +1,22 @@
 @charset "UTF-8";
 
-.dropdwn {
+ul.dropdwn {
 	max-width: 1200px;
 	display: flex;
-}
-
-ul {
+	flex-wrap: wrap;
+	width: 100%;
 	text-align: left;
 	list-style-type: none;
 	padding: 0;
 	color: #000;
 }
 
-li {
-	max-width: calc(1200px/ 5);
+ul.dropdwn>li {
+	min-width: calc(1200px / 5);
 	position: relative;
 	padding: 5px;
 	display: block;
 	cursor: pointer;
-}
-
-.dropdwn>li {
-	width: 1200px;
 	margin: 1px;
 	background: var(--menu-level1-background-color);
 	display: inline;
@@ -29,12 +24,15 @@ li {
 
 .dropdwn_menu {
 	width: 100%;
+	min-width: 120x;
 	display: none;
 	position: absolute;
 	margin-left: -5px;
 	margin-top: 5px;
 	padding: 0;
 	background: var(--menu-level2-background-color);
+	overflow: hidden;
+	z-index: 10;
 }
 
 .dropdwn_menu li {

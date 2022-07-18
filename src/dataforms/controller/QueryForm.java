@@ -100,7 +100,7 @@ public abstract class QueryForm extends Form {
         		return table.getFieldList();
     		}
     	}
-    	// 問合せフォームがない場合
+    	// 問合せ結果フォームがない場合
 		throw new ApplicationException(this.getPage(), "error.notimplemetmethod");
     }
 

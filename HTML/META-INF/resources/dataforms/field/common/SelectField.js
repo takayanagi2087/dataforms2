@@ -32,12 +32,12 @@ class SelectField extends Field {
 		super.attach();
 		this.setOptionList();
 		if (this.calcEventField) {
-			var comp = this.get();
-			var tag = comp.prop("tagName");
-			var type = comp.prop("type");
+			let comp = this.get();
+			let tag = comp.prop("tagName");
+			let type = comp.prop("type");
 			if ("INPUT" == tag && (type.toLowerCase() == "radio" || type.toLowerCase() == "checkbox")) {
 				comp.click(() => {
-					var form = this.getParentForm();
+					let form = this.getParentForm();
 					form.onCalc($(this));
 				});
 			}
@@ -49,7 +49,7 @@ class SelectField extends Field {
 	 * @returns {jQuery} 対応するHTMLエレメント。
 	 */
 	get() {
-		var el = super.get();
+		let el = super.get();
 		if (el.length == 0) {
 			el = this.parent.find("[id^='" + this.selectorEscape(this.id + "[") + "']");
 		}
@@ -67,10 +67,10 @@ class SelectField extends Field {
 	getOptionName(value) {
 		let ret = "";
 		if (value != null && this.optionList != null) {
-			for (var i = 0; i < this.optionList.length; i++) {
-				var opt = this.optionList[i];
-				var ov = (opt.value == null ? "" : opt.value.toString());
-				var v = value.toString();
+			for (let i = 0; i < this.optionList.length; i++) {
+				let opt = this.optionList[i];
+				let ov = (opt.value == null ? "" : opt.value.toString());
+				let v = value.toString();
 				if (ov == v) {
 					ret = opt.name;
 					break;
@@ -94,10 +94,10 @@ class SelectField extends Field {
 				comp.text("");
 				return;
 			}
-			for (var i = 0; i < this.optionList.length; i++) {
-				var opt = this.optionList[i];
-				var ov = (opt.value == null ? "" : opt.value.toString());
-				var v = value.toString();
+			for (let i = 0; i < this.optionList.length; i++) {
+				let opt = this.optionList[i];
+				let ov = (opt.value == null ? "" : opt.value.toString());
+				let v = value.toString();
 				if (ov == v) {
 					comp.text(opt.name);
 					break;
@@ -123,25 +123,25 @@ class SelectField extends Field {
 		if (this.optionList == null) {
 			return;
 		}
-		var el = this.get();
+		let el = this.get();
 		if (el.length > 0) {
 			if (el.prop("tagName") == "SELECT") {
-				var opthtml = "";
+				let opthtml = "";
 				if (this.blankOption) {
 					opthtml += "<option value=''></option>";
 				}
-				for (var i = 0; i < this.optionList.length; i++) {
-					var opt = this.optionList[i];
+				for (let i = 0; i < this.optionList.length; i++) {
+					let opt = this.optionList[i];
 					opthtml += "<option value='" + opt.value + "'>" + opt.name + "</option>";
 				}
 				el.html(opthtml);
 			} else if (el.prop("tagName") == "INPUT") {
 				if (el.attr("type").toLowerCase() == "radio" ) {
-					var pl = el.parent();
+					let pl = el.parent();
 					pl.html("");
-					var opthtml = "";
-					for (var i = 0; i < this.optionList.length; i++) {
-						var opt = this.optionList[i];
+					let opthtml = "";
+					for (let i = 0; i < this.optionList.length; i++) {
+						let opt = this.optionList[i];
 						if (currentPage.useUniqueId) {
 							opthtml +=
 								"<input type='radio' id='" + this.realId + "[" + i + "]' data-id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
@@ -154,11 +154,11 @@ class SelectField extends Field {
 					}
 					pl.html(opthtml);
 				} else if (el.attr("type").toLowerCase() == "checkbox" ) {
-					var pl = el.parent();
+					let pl = el.parent();
 					pl.html("");
-					var opthtml = "";
-					for (var i = 0; i < this.optionList.length; i++) {
-						var opt = this.optionList[i];
+					let opthtml = "";
+					for (let i = 0; i < this.optionList.length; i++) {
+						let opt = this.optionList[i];
 						if (currentPage.useUniqueId) {
 							opthtml +=
 								"<input type='checkbox' id='" + this.realId  + "[" + i + "]' data-id='" + this.id + "[" + i + "]' name='" + this.id + "' value='" + opt.value + "'/>"
@@ -175,7 +175,4 @@ class SelectField extends Field {
 		}
 	}
 }
-
-
-
 

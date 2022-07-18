@@ -20,39 +20,32 @@ class FileField extends Field {
 	 * </pre>
 	 */
 	attach() {
-		var comp = this.get();
+		let comp = this.get();
 		this.addElements(comp);
 		super.attach();
-		var thisComp = this;
-		var selid = this.id + "_sel"; // 選択ボタンID.
-		var delid = this.id + "_del"; // ファイル削除のチェックボックス.
-		this.parent.get(selid).click(function() {
-			let inpid = $(this).attr(thisComp.getIdAttribute()).replace("_sel", "")
-			thisComp.id = inpid;
-			thisComp.parent.get(inpid).click();
+		let selid = this.id + "_sel"; // 選択ボタンID.
+		let delid = this.id + "_del"; // ファイル削除のチェックボックス.
+		this.parent.get(selid).click((ev) => {
+			let inpid = $(ev.currentTarget).attr(this.getIdAttribute()).replace("_sel", "");
+			this.id = inpid;
+			this.parent.get(inpid).click();
 		});
-		this.parent.get(delid).click(function() {
-			let ckid = $(this).attr(thisComp.getIdAttribute()).replace("_del", "_ck");
-			thisComp.id = $(this).attr(thisComp.getIdAttribute()).replace("_del", "");
-			thisComp.parent.get(ckid).click();
-			$(this).hide();
+		this.parent.get(delid).click((ev) => {
+			this.id = $(ev.currentTarget).attr(this.getIdAttribute()).replace("_del", "");
+			$(ev.currentTarget).hide();
+			this.delFile();
 		});
-		var ckid = this.id + "_ck"; // ファイル削除のチェックボックス.
-		this.parent.get(ckid).click(function() {
-			thisComp.id = $(this).attr(thisComp.getIdAttribute()).replace("_ck", "");
-			thisComp.delFile($(this));
-		});
-		comp.change(function() {
-			thisComp.adjustIdIndex($(this));
-			thisComp.selectFile($(this));
+		comp.change((ev) => {
+			this.adjustIdIndex($(ev.currentTarget));
+			this.selectFile($(ev.currentTarget));
 		});
 		if (this.readonly) {
 			this.lock(true);
 		} else {
 			this.lock(false);
 		}
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
+		let tag = comp.prop("tagName");
+		let type = comp.prop("type");
 		if (tag == "INPUT" && type.toLowerCase() == "file") {
 			comp.hide();
 		} else {
@@ -65,12 +58,12 @@ class FileField extends Field {
 	 * @param {jQuery} fld ファイルフィールド。
 	 */
 	selectFile(fld) {
-		var selfileid = this.id + "_selfile"; // 選択ボタンID.
-		var selfile = this.parent.get(selfileid);
+		let selfileid = this.id + "_selfile"; // 選択ボタンID.
+		let selfile = this.parent.get(selfileid);
 		selfile.text(fld.val());
 
-		var linkid = this.id + "_link"; // ダウンロードリンク.
-		var fnlink = this.parent.get(linkid);
+		let linkid = this.id + "_link"; // ダウンロードリンク.
+		let fnlink = this.parent.get(linkid);
 
 		fnlink.attr("data-value", "");
 		fnlink.attr("data-size", "");
@@ -78,8 +71,8 @@ class FileField extends Field {
 
 		fnlink.html(fnlink.attr("data-value"));
 
-		var fnid = this.id + "_fn"; // ファイル名のリンク.
-		var fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
+		let fnid = this.id + "_fn"; // ファイル名のリンク.
+		let fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
 		fnhidden.val(fnlink.attr("data-value"));
 		this.id = fld.attr(this.getIdAttribute());
 		this.showDelCheckbox();
@@ -88,29 +81,21 @@ class FileField extends Field {
 	/**
 	 * 削除チェックボックスの処理を行います。
 	 */
-	delFile(ck) {
-//		var comp = this.get();
-		var comp = this.parent.get(this.id);
-
-		var linkid = this.id + "_link"; // ダウンロードリンク.
-		var selfileid = this.id + "_selfile"; // 選択ボタンID.
-		var fnid = this.id + "_fn"; // ファイル名のリンク.
-		var selfile = this.parent.get(selfileid);
-		var fnlink = this.parent.get(linkid);
-		var fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
-		//logger.log("checked=" + ck.prop("checked"));
-		if (ck.prop("checked")) {
-			selfile.html("");
-			fnhidden.val("");
-			fnlink.html("");
-			fnlink.attr("data-value", "");
-			fnlink.attr("data-size", "");
-			fnlink.attr("data-dlparam", "");
-			comp.val("");
-		} else {
-			fnlink.html(fnlink.attr("data-value"));
-			fnhidden.val(fnlink.attr("data-value"));
-		}
+	delFile() {
+		let comp = this.parent.get(this.id);
+		let linkid = this.id + "_link"; // ダウンロードリンク.
+		let selfileid = this.id + "_selfile"; // 選択ボタンID.
+		let fnid = this.id + "_fn"; // ファイル名のリンク.
+		let selfile = this.parent.get(selfileid);
+		let fnlink = this.parent.get(linkid);
+		let fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
+		selfile.html("");
+		fnhidden.val("");
+		fnlink.html("");
+		fnlink.attr("data-value", "");
+		fnlink.attr("data-size", "");
+		fnlink.attr("data-dlparam", "");
+		comp.val("");
 	}
 
 
@@ -118,23 +103,16 @@ class FileField extends Field {
 	 * 削除チェックボックスを表示します。
 	 */
 	showDelCheckbox() {
-		var delid = this.id + "_del";
+		let delid = this.id + "_del";
 		this.parent.get(delid).show();
-		var ckid = this.id + "_ck";
-		var delcheck = this.parent.get(ckid);
-		delcheck.prop("checked", false);
-		delcheck.hide();
 	}
 
 	/**
 	 * 削除チェックボックスを隠します。
 	 */
 	hideDelCheckbox() {
-		var delid = this.id + "_del";
+		let delid = this.id + "_del";
 		this.parent.get(delid).hide();
-		var ckid = this.id + "_ck";
-		var delcheck = this.parent.get(ckid);
-		delcheck.hide();
 	}
 
 	/**
@@ -142,13 +120,13 @@ class FileField extends Field {
 	 * @param comp ファイルフィールド。
 	 */
 	addElements(comp) {
-		var htmlstr = this.additionalHtmlText;
-		var html = htmlstr.replace(/\$\{fieldId\}/g, this.id);
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
+		let htmlstr = this.additionalHtmlText;
+		let html = htmlstr.replace(/\$\{fieldId\}/g, this.id);
+		let tag = comp.prop("tagName");
+		let type = comp.prop("type");
 		if ("INPUT" == tag && type == "file") {
 			comp.after(html);
-		} else if (tag == "DIV") {
+		} else if (tag == "DIV" || tag == "SPAN") {
 			comp.html(html);
 		}
 	}
@@ -159,29 +137,24 @@ class FileField extends Field {
 	 * @param {Object} value 値。
 	 */
 	setValue(value) {
-		var comp = this.get();
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
-		var linkid = this.id + "_link";
-		var selfileid = this.id + "_selfile";
-		var fnid = this.id + "_fn";
-		var ckid = this.id + "_ck";
+		let comp = this.get();
+		let tag = comp.prop("tagName");
+		let linkid = this.id + "_link";
+		let selfileid = this.id + "_selfile";
+		let fnid = this.id + "_fn";
 
 		// 選択ファイル名をリセット
-		var selfile = this.parent.get(selfileid);
+		let selfile = this.parent.get(selfileid);
 		selfile.html("");
 		// 削除フラグのリセット
-		var delcheck = this.parent.get(ckid);
-		delcheck.prop("checked", false);
 		if (value != null) {
-			var form = this.getParentForm();
-			var url = location.pathname + "?dfMethod=" + encodeURIComponent(this.getUniqId()) + ".download"  + "&" + value.downloadParameter;
+			let url = location.pathname + "?dfMethod=" + encodeURIComponent(this.getUniqId()) + ".download"  + "&" + value.downloadParameter;
 			if (currentPage.csrfToken != null) {
 				url += "&csrfToken=" + currentPage.csrfToken;
 			}
-			var fnlink = this.parent.get(linkid);
+			let fnlink = this.parent.get(linkid);
 			fnlink.attr("href", url);
-			var fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
+			let fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
 			fnlink.html(value.fileName);
 			fnlink.attr("data-value", value.fileName);
 			fnlink.attr("data-size", value.size);
@@ -190,25 +163,23 @@ class FileField extends Field {
 			if (this.readonly) {
 				this.hideDelCheckbox();
 			} else {
-				var tag = comp.prop("tagName");
-				var type = comp.prop("type");
+				let tag = comp.prop("tagName");
+				let type = comp.prop("type");
 				if ("INPUT" == tag && type == "file") {
 					this.showDelCheckbox();
 				}
 			}
 			this.hideDelCheckbox();
-			delcheck.attr("checked", false);
 		} else {
-			var fnlink = this.parent.get(linkid);
+			let fnlink = this.parent.get(linkid);
 			fnlink.attr("href", "");
-			var fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
+			let fnhidden = this.parent.find("[name='" + this.selectorEscape(fnid) + "']");
 			fnlink.html("");
 			fnlink.attr("data-value", "");
 			fnlink.attr("data-size", "");
 			fnlink.attr("data-dlparam", "");
 			fnhidden.val("");
 			this.hideDelCheckbox();
-			delcheck.attr("checked", false);
 		}
 		if ("INPUT" == tag) {
 			comp.val("");
@@ -220,9 +191,9 @@ class FileField extends Field {
 	 * @return {String} 値。
 	 */
 	getValue() {
-		var ret = this.get().val();
+		let ret = this.get().val();
 		if (ret.length == 0) {
-			var fnid = this.id + "_link";
+			let fnid = this.id + "_link";
 			ret = this.parent.get(fnid).text();
 		}
 		return ret;
@@ -237,13 +208,13 @@ class FileField extends Field {
 	 * @returns {ValidationError} 検証結果。問題が発生しなければnullを返します。
 	 */
 	validate() {
-		var val = this.getValue();
+		let val = this.getValue();
 		this.value = val;
 		if (this.validators != null) {
-			for (var i = 0; i < this.validators.length; i++) {
-				var v = this.validators[i];
+			for (let i = 0; i < this.validators.length; i++) {
+				let v = this.validators[i];
 				if (v.validate(val) == false) {
-					var msg = v.getMessage(this.label);
+					let msg = v.getMessage(this.label);
 					return new ValidationError(this.id, msg);
 				}
 			}
@@ -251,8 +222,4 @@ class FileField extends Field {
 		return null;
 	}
 }
-
-
-
-
 

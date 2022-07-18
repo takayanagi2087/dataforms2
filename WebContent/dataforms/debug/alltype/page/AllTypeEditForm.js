@@ -22,6 +22,9 @@ class AllTypeEditForm extends EditForm {
 	 * HTMLエレメントとの対応付けを行います。
 	 */
 	attach() {
+		logger.info("class dump");
+		logger.dir(AllTypeEditForm);
+		logger.dir(AllTypeEditForm.prototype);
 		super.attach();
 		var thisForm = this;
 		this.get("printButton").click(function() {
@@ -54,6 +57,16 @@ class AllTypeEditForm extends EditForm {
 //		$("#test3").val("<script>alert('ccc');</script>");
 //		alert(MessagesUtil.getMessage("error.duplicate", "aaa"));
 	}
+
+	onCalc(jq) {
+		logger.log("onCalc");
+		logger.dir(jq);
+		if (jq != null) {
+			logger.log("id=" + jq.attr("id"));
+			logger.dir(jq);
+		}
+	}
+
 
 	/**
 	 * 印刷処理を行います。

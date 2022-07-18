@@ -20,9 +20,9 @@ class UserAttributeTypeField extends EnumTypeSingleSelectField {
 	 */
 	attach() {
 		super.attach();
-		var thisField = this;
-		this.get().change(function() {
-			thisField.setUserAttributeValueOption($(this).attr(thisField.getIdAttribute()), $(this).val());
+		this.get().change((ev) => {
+			logger.dir(ev);
+			this.setUserAttributeValueOption($(ev.currentTarget).attr(this.getIdAttribute()), $(ev.currentTarget).val());
 		});
 	}
 
@@ -32,8 +32,8 @@ class UserAttributeTypeField extends EnumTypeSingleSelectField {
 	 * @param type ユーザ属性名称。
 	 */
 	setUserAttributeValueOption(id, type) {
-		var vid = id.replace("userAttributeType", "userAttributeValue");
-		var val = this.parent.getComponent(vid);
+		let vid = id.replace("userAttributeType", "userAttributeValue");
+		let val = this.parent.getComponent(vid);
 		val.setUserAttributeType(type);
 	}
 

@@ -82,7 +82,7 @@ public class RestoreForm extends Form {
 	 */
 	@WebMethod
 	public Response restore(final Map<String, Object> p) throws Exception {
-		Response resp = null;
+		JsonResponse resp = null;
 		List<ValidationError> list = this.validate(p);
 		if (list.size() == 0) {
 			Map<String, Object> data = this.convertToServerData(p);

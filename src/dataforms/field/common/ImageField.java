@@ -7,6 +7,7 @@ import dataforms.annotation.WebMethod;
 import dataforms.dao.file.FileObject;
 import dataforms.dao.file.FileStore;
 import dataforms.dao.file.ImageData;
+import dataforms.response.BinaryResponse;
 import dataforms.response.ImageResponse;
 
 /**
@@ -25,6 +26,11 @@ public class ImageField extends FileField<ImageData> {
 	private int thumbnailHeight = 64;
 
 	/**
+	 * 縮小サムネイル。
+	 */
+	private Boolean reducedThumbnail = true;
+
+	/**
 	 * コンストラクタ。
 	 *
 	 */
@@ -41,18 +47,34 @@ public class ImageField extends FileField<ImageData> {
 		super(id);
 	}
 
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();
 	}
-	
+
+	/**
+	 * 縮小サムネイルフラグを取得します。
+	 * @return 縮小サムネイルフラグ。
+	 */
+	public Boolean getReducedThumbnail() {
+		return reducedThumbnail;
+	}
+
+	/**
+	 * 縮小サムネイルフラグを設定します。
+	 * @param reducedThumbnail 縮小サムネイルフラグ。
+	 */
+	public void setReducedThumbnail(final boolean reducedThumbnail) {
+		this.reducedThumbnail = reducedThumbnail;
+	}
+
 	@Override
 	public void init() throws Exception {
 		super.init();
 		this.setAdditionalHtml(this.getPage().getPageFramePath() + "/ImageField.html");
 	}
-	
+
 	/**
 	 * サムネイル幅を取得します。
 	 * @return サムネイル幅。
@@ -149,11 +171,18 @@ public class ImageField extends FileField<ImageData> {
 		return resp;
 	}
 
+	@WebMethod(useDB = true)
+	@Override
+	public BinaryResponse download(Map<String, Object> p) throws Exception {
+		return this.downloadFullImage(p);
+	}
+
 	@Override
 	public Map<String, Object> getProperties() throws Exception {
 		Map<String, Object> ret = super.getProperties();
 		ret.put("thumbnailWidth", this.getThumbnailWidth());
 		ret.put("thumbnailHeight", this.getThumbnailHeight());
+		ret.put("reducedThumbnail", this.getReducedThumbnail());
 		return ret;
 	}
 

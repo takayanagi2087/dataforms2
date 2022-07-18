@@ -42,23 +42,31 @@
 		</p>
 		<h3>データベース接続設定の記述内容</h3>
 		<p>
-			dfblank_xxx.warに入っている、META-INF/context.xmlは以下の様になっています。
+			dfblank_xxx.war中のMETA-INF/context.xmlを以下に示します。
 		</p>
 		<div class="filecaption">context.xmlの内容</div>
 		<div class="wrappre">
 			<pre>
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE Context&gt;&lt;Context addWebinfClassesResources=&quot;true&quot;&gt;
+&lt;!DOCTYPE Context&gt;
+&lt;Context&gt;
+	&lt;!--
+		&#12513;&#12540;&#12523;&#36865;&#20449;&#27231;&#33021;&#12434;&#20351;&#29992;&#12377;&#12427;&#22580;&#21512;SMTP&#12469;&#12540;&#12496;&#12398;&#24773;&#22577;&#12434;&#36969;&#20999;&#12395;&#35373;&#23450;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
+	 --&gt;
+	&lt;!--
+	&lt;Resource name=&quot;mail/Session&quot; auth=&quot;Container&quot; type=&quot;javax.mail.Session&quot;
+		mail.smtp.host=&quot;localhost&quot; mail.smtp.port=&quot;25&quot; /&gt;
+	--&gt;
 	&lt;!--
 		&#32068;&#12415;&#36796;&#12415;Apache derby&#29992;&#12398;&#25509;&#32154;&#35373;&#23450;
 		Apache derby&#12398;JDBC&#12489;&#12521;&#12452;&#12496;&#12399;&#21046;&#32004;&#21517;&#31216;&#12434;&#21462;&#24471;&#12377;&#12427;API&#12364;&#12354;&#12427;&#12383;&#12417;
 		duplicateErrorMessage&#12392;foreignKeyErrorMessage&#12398;&#35373;&#23450;&#12399;&#19981;&#35201;&#12290;
 	 --&gt;
-	<b>&lt;Resource auth=&quot;Container&quot;</b>
-		<b>driverClassName=&quot;org.apache.derby.jdbc.EmbeddedDriver&quot;</b>
-		<b>name=&quot;jdbc/dfdb&quot; type=&quot;javax.sql.DataSource&quot;</b>
-		<b>url=&quot;jdbc:derby:/javadb/dfdbC;create=true&quot;</b>
-		<b>username=&quot;&quot; password=&quot;&quot; /&gt;</b>
+	&lt;Resource auth=&quot;Container&quot;
+		driverClassName=&quot;org.apache.derby.jdbc.EmbeddedDriver&quot;
+		name=&quot;jdbc/dfdb&quot; type=&quot;javax.sql.DataSource&quot;
+		url=&quot;jdbc:derby:./javadb/blankdb;create=true&quot;
+		username=&quot;&quot; password=&quot;&quot; /&gt;
 	&lt;!--
 		Apache derby&#12493;&#12483;&#12488;&#12527;&#12540;&#12463;&#12469;&#12540;&#12496;&#29992;&#12398;&#25509;&#32154;&#35373;&#23450;
 		Apache derby&#12398;JDBC&#12489;&#12521;&#12452;&#12496;&#12399;&#21046;&#32004;&#21517;&#31216;&#12434;&#21462;&#24471;&#12377;&#12427;API&#12364;&#12354;&#12427;&#12383;&#12417;
@@ -67,7 +75,7 @@
 	&lt;!--
 	&lt;Resource auth=&quot;Container&quot; driverClassName=&quot;org.apache.derby.jdbc.ClientDriver&quot;
 		maxActive=&quot;8&quot; maxIdle=&quot;4&quot; name=&quot;jdbc/dfdb&quot; type=&quot;javax.sql.DataSource&quot;
-		url=&quot;jdbc:derby://localhost:1527/javadb/blank;create=true&quot; username=&quot;APP&quot;
+		url=&quot;jdbc:derby://localhost:1527/javadb/blankdb;create=true&quot; username=&quot;APP&quot;
 		password=&quot;password&quot; /&gt;
 	--&gt;
 
@@ -80,7 +88,7 @@
 	&lt;!--
 	&lt;Resource name=&quot;jdbc/dfdb&quot; type=&quot;javax.sql.DataSource&quot;
 		auth=&quot;Container&quot; driverClassName=&quot;org.postgresql.Driver&quot;
-		url=&quot;jdbc:postgresql://192.168.56.102:5432/dfdb&quot; username=&quot;postgres&quot;
+		url=&quot;jdbc:postgresql://192.168.56.102:5432/blankdb&quot; username=&quot;postgres&quot;
 		password=&quot;&quot; /&gt;
 	&lt;Environment name=&quot;duplicateErrorMessage&quot; value=&quot;&#19968;&#24847;&#24615;&#21046;&#32004;&quot;(.+?)&quot;&#12395;&#36949;&#21453;&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
 	&lt;Environment name=&quot;foreignKeyErrorMessage&quot; value=&quot;&#22806;&#37096;&#12461;&#12540;&#21046;&#32004;&quot;(.+?)&quot;&#12395;&#36949;&#21453;&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
@@ -96,7 +104,7 @@
 	&lt;!--
 	&lt;Resource name=&quot;jdbc/dfdb&quot; auth=&quot;Container&quot; type=&quot;javax.sql.DataSource&quot;
 		username=&quot;dfuser&quot; password=&quot;password&quot; driverClassName=&quot;org.mariadb.jdbc.Driver&quot;
-		url=&quot;jdbc:mysql://192.168.56.102/dfdb?useOldAliasMetadataBehavior=true&quot; /&gt;
+		url=&quot;jdbc:mysql://192.168.56.102/blankdb?useOldAliasMetadataBehavior=true&quot; /&gt;
 	&lt;Environment name=&quot;duplicateErrorMessage&quot; value=&quot;for key '(.+?)'$&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
 	&lt;Environment name=&quot;foreignKeyErrorMessage&quot; value=&quot;CONSTRAINT `(.+?)` FOREIGN KEY&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
 	--&gt;
@@ -111,7 +119,7 @@
 	&lt;!--
 	&lt;Resource name=&quot;jdbc/dfdb&quot; auth=&quot;Container&quot; type=&quot;javax.sql.DataSource&quot;
 		username=&quot;dfuser&quot; password=&quot;password&quot; driverClassName=&quot;com.mysql.jdbc.Driver&quot;
-		url=&quot;jdbc:mysql://192.168.56.102/dfdb?generateSimpleParameterMetadata=true&amp;useInformationSchema=true&amp;useOldAliasMetadataBehavior=true&amp;characterEncoding=utf8&quot; /&gt;
+		url=&quot;jdbc:mysql://192.168.56.102/blankdb?generateSimpleParameterMetadata=true&amp;useInformationSchema=true&amp;useOldAliasMetadataBehavior=true&amp;characterEncoding=utf8&quot; /&gt;
 	&lt;Environment name=&quot;duplicateErrorMessage&quot; value=&quot;for key '(.+?)'$&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
 	&lt;Environment name=&quot;foreignKeyErrorMessage&quot; value=&quot;CONSTRAINT `(.+?)` FOREIGN KEY&quot; type=&quot;java.lang.String&quot; override=&quot;false&quot;/&gt;
 	--&gt;

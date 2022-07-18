@@ -18,7 +18,7 @@ class TextField extends Field {
 	 * @param {String} value 設定値。
 	 */
 	setValue(value) {
-		var ut = $('<div>').html(value).text(); //unescape
+		let ut = $('<div>').html(value).text(); //unescape
 		super.setValue(ut);
 	}
 }

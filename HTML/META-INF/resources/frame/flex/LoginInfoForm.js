@@ -17,53 +17,45 @@ class LoginInfoForm extends Form {
 	/**
 	 * ログイン状態の更新.
 	 */
-	update() {
-		var thisForm = this;
-		var method = this.getServerMethod("getUserInfo");
-		method.execute("", function (ret) {
-			if (ret.status == ServerMethod.SUCCESS) {
-				if (ret.result.loginId != null) {
-					thisForm.setFormData(ret.result);
-					thisForm.get("underLoginDiv").show();
-					thisForm.get("dontLoginDiv").hide();
-				} else {
-					thisForm.get("underLoginDiv").hide();
-					thisForm.get("dontLoginDiv").show();
-				}
+	async update() {
+		let thisForm = this;
+		let method = this.getWebMethod("getUserInfo");
+		let ret = await method.execute("");
+		if (ret.status == JsonResponse.SUCCESS) {
+			if (ret.result.loginId != null) {
+				thisForm.setFormData(ret.result);
+				thisForm.get("underLoginDiv").show();
+				thisForm.get("dontLoginDiv").hide();
+			} else {
+				thisForm.get("underLoginDiv").hide();
+				thisForm.get("dontLoginDiv").show();
 			}
-		});
+		}
 	}
 
 	/**
 	 * ログアウト処理.
 	 */
-	logout() {
-		var thisForm = this;
-		var method = this.getServerMethod("logout");
-		method.execute("", function(ret) {
-			currentPage.toTopPage();
-		});
+	async logout() {
+		let method = this.getWebMethod("logout");
+		await method.execute("");
+		currentPage.toTopPage();
 	}
 
 	/**
 	 * ページの各エレメントとの対応付け.
 	 */
 	attach() {
-		super.attach(this);
-		var form = this;
-		var thisPage = this.parent;
-		form.get('loginButton').click(function () {
-			thisPage.showLoginDialog();
-		});
-		if (form.userRegistPage != null) {
-			form.get('regUserButton').click(function() {
-				window.location.href = thisPage.contextPath + form.userRegistPage + "." + currentPage.pageExt;
+		super.attach();
+		if (this.userRegistPage != null) {
+			this.get('regUserButton').click(() => {
+				window.location.href = currentPage.contextPath + this.userRegistPage + "." + currentPage.pageExt;
 			});
 		} else {
-			form.get('regUserButton').remove();
+			this.get('regUserButton').remove();
 		}
-		form.get('logoutButton').click(function() {
-			form.logout();
+		this.get('logoutButton').click(() => {
+			this.logout();
 		});
 		this.update();
 	}

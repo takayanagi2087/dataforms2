@@ -26,6 +26,9 @@ class QueryOrTableClassNameField extends QueryClassNameField {
 		logger.dir(this);
 	}
 
+	/**
+	 * 関連フィールドの更新。
+	 */
 	onUpdateRelationField() {
 		super.onUpdateRelationField();
 

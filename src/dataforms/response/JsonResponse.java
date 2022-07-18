@@ -59,13 +59,6 @@ public class JsonResponse extends Response {
 
 	/**
 	 * コンストラクタ。
-	 * <pre>
-	 * 以下のような形式のJSONを作成し応答します。
-	 * {
-	 * 	status: <status>,
-	 *  result: <resultのJSON展開>
-	 * }
-	 * </pre>
 	 * @param status 処理の状態。
 	 * @param result 処理結果。
 	 */

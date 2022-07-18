@@ -19,9 +19,9 @@ class ErrorPage extends BasePage {
 	 */
 	attach() {
 		super.attach();
-		var title = MessagesUtil.getMessage("errorpage.title");
-		var backButton = MessagesUtil.getMessage("errorpage.backbutton");
-		var message = this.errorMessage;
+		let title = MessagesUtil.getMessage("errorpage.title");
+		let backButton = MessagesUtil.getMessage("errorpage.backbutton");
+		let message = this.errorMessage;
 		$("title").html(title);
 		$("h1").html(title);
 		this.get("errorMessages").html(message);

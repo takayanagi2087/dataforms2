@@ -15,17 +15,16 @@ class UserRegistForm extends EditForm {
 	attach() {
 		super.attach();
 		logger.log("config=" + JSON.stringify(this.config));
-		var thisForm = this;
 		if (this.config.loginIdIsMail) {
 			this.get("loginId").parents("tr:first").hide();
-			this.get("mailAddress").change(function() {
-				thisForm.copyToLoginId($(this));
+			this.get("mailAddress").change((ev) => {
+				this.copyToLoginId($(ev.currentTarget));
 			});
 		}
 		if (!this.config.mailCheck) {
 			this.get("mailAddressCheck").parents("tr:first").hide();
 		}
-	};
+	}
 
 	/**
 	 * メールアドレスをloginIdへコピーします。

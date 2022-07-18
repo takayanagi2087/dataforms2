@@ -29,33 +29,31 @@ class QueryResultForm extends Form {
 	attach() {
 		super.attach();
 		this.queryResult = null;
-		var thisForm = this;
-		this.get("linesPerPage").change(function() {
-			thisForm.get("pageNo").val(0);
-			thisForm.changePage();
+		this.get("linesPerPage").change(() => {
+			this.get("pageNo").val(0);
+			this.changePage();
 		});
-		this.get("pageNo").change(function() {
-			thisForm.changePage();
+		this.get("pageNo").change(() => {
+			this.changePage();
 		});
 
-		this.get("topPageButton").click(function() {
-			thisForm.topPage();
+		this.get("topPageButton").click(() => {
+			this.topPage();
 			return false;
 		});
 
-		this.get("bottomPageButton").click(function() {
-			thisForm.bottomPage();
+		this.get("bottomPageButton").click(() => {
+			this.bottomPage();
 			return false;
 		});
 
-		this.get("prevPageButton").click(function() {
-			thisForm.prevPage();
+		this.get("prevPageButton").click(() => {
+			this.prevPage();
 			return false;
 		});
 
-
-		this.get("nextPageButton").click(function() {
-			thisForm.nextPage();
+		this.get("nextPageButton").click(() => {
+			this.nextPage();
 			return false;
 		});
 		this.controlPager();
@@ -75,76 +73,72 @@ class QueryResultForm extends Form {
 	 * 末尾ページに遷移します。
 	 */
 	bottomPage() {
-		var thisForm = this;
-		var v = thisForm.find("#pageNo>option:last").val();
-		thisForm.get("pageNo").val(v);
-		thisForm.changePage();
+		let v = this.find("#pageNo>option:last").val();
+		this.get("pageNo").val(v);
+		this.changePage();
 	}
 
 	/**
 	 * 前ページに遷移します。
 	 */
 	prevPage() {
-		var thisForm = this;
-		var v = parseInt(thisForm.get("pageNo").val(), 10);
-		var idx = v - 1;
+		let v = parseInt(this.get("pageNo").val(), 10);
+		let idx = v - 1;
 		if (idx < 0){
 			idx = 0;
 		}
-		thisForm.get("pageNo").val(idx);
-		thisForm.changePage();
+		this.get("pageNo").val(idx);
+		this.changePage();
 	}
 
 	/**
 	 * 次ページに遷移します。
 	 */
 	nextPage() {
-		var thisForm = this;
-		var max = parseInt(thisForm.find("#pageNo>option:last").val(), 10);
-		var v = parseInt(thisForm.get("pageNo").val(), 10);
-		var idx = v + 1;
+		let max = parseInt(this.find("#pageNo>option:last").val(), 10);
+		let v = parseInt(this.get("pageNo").val(), 10);
+		let idx = v + 1;
 		if (idx > max){
 			idx = max;
 		}
-		thisForm.get("pageNo").val(idx);
-		thisForm.changePage();
+		this.get("pageNo").val(idx);
+		this.changePage();
 	}
 
 	/**
 	 * ページの更新を行います。
 	 */
-	changePage() {
-		var queryResultForm = this;
-		var lpp = this.get("linesPerPage");
-		var lines = "";
+	async changePage() {
+		let lpp = this.get("linesPerPage");
+		let lines = "";
 		if (lpp.prop("disabled")) {
-			this.get("linesPerPage").find("option").each(function() {
-				if ($(this).attr("selected") == "selected") {
-					lines = "&linesPerPage=" + $(this).val();
+			// 1ページの行数がdisabledの場合無理やり取得する。
+			this.get("linesPerPage").find("option").each((_, el) => {
+				if ($(el).attr("selected") == "selected") {
+					lines = "&linesPerPage=" + $(el).val();
 				}
 			});
 		}
-		var rt = this.getComponent("queryResult");
+		let rt = this.getComponent("queryResult");
 		logger.log("sortOrder=" + rt.sortOrder);
-		var param = this.condition + lines +  "&" + this.get().serialize() + "&sortOrder=" + rt.sortOrder;
+		let param = this.condition + lines +  "&" + this.get().serialize() + "&sortOrder=" + rt.sortOrder;
 		logger.log("param=" + param);
-		var method = this.getServerMethod("changePage");
-		method.execute(param, function(result) {
-			queryResultForm.parent.resetErrorStatus();
-			if (result.status == ServerMethod.SUCCESS) {
-				queryResultForm.setQueryResult(result.result);
-			} else {
-				queryResultForm.parent.setErrorInfo(queryResultForm.getValidationResult(result), queryResultForm);
-			}
-		});
+		let method = this.getWebMethod("changePage");
+		let result = await method.execute(param);
+		this.parent.resetErrorStatus();
+		if (result.status == JsonResponse.SUCCESS) {
+			this.setQueryResult(result.result);
+		} else {
+			this.parent.setErrorInfo(this.getValidationResult(result), this);
+		}
 	}
 
 	/**
 	 * 選択データを更新します。
 	 */
 	updateData() {
-		var queryResultForm = this;
-		var editForm = this.parent.getComponent("editForm");
+		let queryResultForm = this;
+		let editForm = this.parent.getComponent("editForm");
 		if (editForm != null) {
 			editForm.updateData();
 		} else {
@@ -158,8 +152,7 @@ class QueryResultForm extends Form {
 	 * 選択データをコピーした新規データを登録します。
 	 */
 	referData() {
-		var queryResultForm = this;
-		var editForm = this.parent.getComponent("editForm");
+		let editForm = this.parent.getComponent("editForm");
 		if (editForm != null) {
 			editForm.referData();
 		}
@@ -169,8 +162,7 @@ class QueryResultForm extends Form {
 	 * 選択データの表示します。
 	 */
 	viewData() {
-		var queryResultForm = this;
-		var editForm = this.parent.getComponent("editForm");
+		let editForm = this.parent.getComponent("editForm");
 		if (editForm != null) {
 			editForm.viewData();
 		}
@@ -179,22 +171,20 @@ class QueryResultForm extends Form {
 	/**
 	 * 選択データの削除を行います。
 	 */
-	deleteData() {
-		var systemName = MessagesUtil.getMessage("message.systemname");
-		var msg = MessagesUtil.getMessage("message.deleteconfirm");
-		var queryResultForm = this;
-		currentPage.confirm(systemName, msg, function() {
-			logger.log("selectedQueryString=" + queryResultForm.selectedQueryString);
-			var method = queryResultForm.getServerMethod("delete");
-			method.execute(queryResultForm.selectedQueryString, function(result) {
-				queryResultForm.parent.resetErrorStatus();
-				if (result.status == ServerMethod.SUCCESS) {
-					queryResultForm.changePage();
-				} else {
-					queryResultForm.parent.setErrorInfo(queryResultForm.getValidationResult(result), queryResultForm);
-				}
-			});
-		});
+	async deleteData() {
+		let systemName = MessagesUtil.getMessage("message.systemname");
+		let msg = MessagesUtil.getMessage("message.deleteconfirm");
+		if (await currentPage.confirm(systemName, msg)) {
+			logger.log("selectedQueryString=" + this.selectedQueryString);
+			let method = this.getWebMethod("delete");
+			let result = await method.execute(this.selectedQueryString);
+			this.parent.resetErrorStatus();
+			if (result.status == JsonResponse.SUCCESS) {
+				this.changePage();
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
+		}
 	}
 
 	/**
@@ -202,16 +192,16 @@ class QueryResultForm extends Form {
 	 * @param {Object} queryResult 問い合わせ結果。
 	 */
 	setPagerInfo(queryResult) {
-		var hitCount = queryResult.hitCount;
-		var linesPerPage = queryResult.linesPerPage;
-		var pageSelector = this.find("select[id='pageNo']");
+		let hitCount = queryResult.hitCount;
+		let linesPerPage = queryResult.linesPerPage;
+		let pageSelector = this.find("select[id='pageNo']");
 		if (pageSelector.length) {
-			var max = Math.floor(hitCount / linesPerPage);
+			let max = Math.floor(hitCount / linesPerPage);
 			if (hitCount % linesPerPage != 0) {
 				max ++;
 			}
 			pageSelector.empty();
-			for (var i = 0; i < max; i++) {
+			for (let i = 0; i < max; i++) {
 				pageSelector.append('<option value="' + i + '">' + (i + 1) + '</option>');
 			}
 		}
@@ -235,9 +225,9 @@ class QueryResultForm extends Form {
 			this.get("pageNo").prop("disabled", false);
 			this.get("nextPageButton").prop("disabled", false);
 			this.get("bottomPageButton").prop("disabled", false);
-			var minPage = 0;
-			var maxPage = parseInt(this.find("#pageNo>option:last").val(), 10);
-			var pageNo = parseInt(this.get("pageNo").val(), 10);
+			let minPage = 0;
+			let maxPage = parseInt(this.find("#pageNo>option:last").val(), 10);
+			let pageNo = parseInt(this.get("pageNo").val(), 10);
 			if (pageNo == minPage) {
 				this.get("topPageButton").prop("disabled", true);
 				this.get("prevPageButton").prop("disabled", true);
@@ -260,17 +250,17 @@ class QueryResultForm extends Form {
 	setSelectedKey(comp) {
 		// クリックされたボタンと同一行にあるキー項目の値を取得する.
 		this.selectedQueryString = "";
-		var tbl = this.getComponent("queryResult");
-		var ridx = tbl.getRowIndex(comp);
-		for (var i = 0; i < this.pkFieldList.length; i++) {
-			var id = this.pkFieldList[i];
-			var v = this.queryResult.queryResult[ridx][id];
+		let tbl = this.getComponent("queryResult");
+		let ridx = tbl.getRowIndex(comp);
+		for (let i = 0; i < this.pkFieldList.length; i++) {
+			let id = this.pkFieldList[i];
+			let v = this.queryResult.queryResult[ridx][id];
 			// 処理対象を指定するキーフィールドに値を設定する.
 			if (this.selectedQueryString.length > 0) {
 				this.selectedQueryString += "&"
 			}
 			this.selectedQueryString += (id + "=" + v);
-			var editForm = this.parent.getComponent("editForm");
+			let editForm = this.parent.getComponent("editForm");
 			if (editForm != null) {
 				editForm.setFieldValue(id, v);
 			}
@@ -283,10 +273,10 @@ class QueryResultForm extends Form {
 	 * @param {jQuery} comp イベントの発生したコンポーネント。
 	 */
 	setSelectedData(comp) {
-		var table = this.getComponent("queryResult");
-		var idx = table.getRowIndex(comp);
-		var seldata = this.queryResult.queryResult[idx];
-		var dlg = this.getParentDataForms();
+		let table = this.getComponent("queryResult");
+		let idx = table.getRowIndex(comp);
+		let seldata = this.queryResult.queryResult[idx];
+		let dlg = this.getParentDataForms();
 		dlg.data = seldata;
 	}
 
@@ -294,32 +284,31 @@ class QueryResultForm extends Form {
 	 * 問合せ結果にデフォルトイベント処理を設定します。
 	 */
 	setQueryResultEventHandler() {
-		var thisForm = this;
-		this.find("[id$='\.viewButton']").click(function() {
-			if (thisForm.setSelectedKey($(this))) {
-				thisForm.viewData();
+		this.find("[id$='\.viewButton']").click((ev) => {
+			if (this.setSelectedKey($(ev.currentTarget))) {
+				this.viewData();
 			}
 		});
 		//
-		this.find("[id$='\.updateButton']").click(function() {
-			if (thisForm.setSelectedKey($(this))) {
-				// データ検索ダイアログように、選択されたデータを設定する。
-				thisForm.setSelectedData($(this));
-				thisForm.updateData();
+		this.find("[id$='\.updateButton']").click((ev) => {
+			if (this.setSelectedKey($(ev.currentTarget))) {
+				// データ検索ダイアログ用に選択されたデータを設定する。
+				this.setSelectedData($(ev.currentTarget));
+				this.updateData();
 			}
 		});
-		this.find("[id$='\.referButton']").click(function() {
-			if (thisForm.setSelectedKey($(this))) {
-				thisForm.referData();
+		this.find("[id$='\.referButton']").click((ev) => {
+			if (this.setSelectedKey($(ev.currentTarget))) {
+				this.referData();
 			}
 		});
-		this.find("[id$='\.deleteButton']").click(function() {
-			if (thisForm.setSelectedKey($(this))) {
-				thisForm.deleteData();
+		this.find("[id$='\.deleteButton']").click((ev) => {
+			if (this.setSelectedKey($(ev.currentTarget))) {
+				this.deleteData();
 			}
 		});
 
-		var editForm = this.parent.getComponent("editForm");
+		let editForm = this.parent.getComponent("editForm");
 		if (editForm == null) {
 			this.find(".deleteColumn").hide();
 		}
@@ -342,7 +331,7 @@ class QueryResultForm extends Form {
 		this.setPagerInfo(queryResult);
 		this.setFormData(queryResult);
 		// 各リンクのイベント処理を登録.
-		var thisForm = this;
+		let thisForm = this;
 		this.controlPager();
 		// テーブルのイベント処理を追加する。
 		this.setQueryResultEventHandler();

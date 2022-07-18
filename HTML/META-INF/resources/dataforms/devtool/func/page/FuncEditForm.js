@@ -18,34 +18,58 @@ class FuncEditForm extends EditForm {
 		this.get("exportInitDataButton").click(() => {
 			this.exportInitData();
 		});
+		this.get("importDataButton").click(() => {
+			this.importInitData();
+		});
+		this.get("importV1DataButton").click(() => {
+			this.importV1InitData();
+		});
 	}
 
 	/**
 	 * データのエクスポートを行います。
 	 */
-	exportInitData() {
-		var thisForm = this;
-		currentPage.confirm(null, MessagesUtil.getMessage("message.dexportAsInitialDataConfirm"), function() {
-			thisForm.submit("export", function(data) {
-				currentPage.alert(null, data.result);
-			});
-		});
+	async exportInitData() {
+		if (await currentPage.confirm(null, MessagesUtil.getMessage("message.exportAsInitialDataConfirm"))) {
+			let data = await this.submit("export");
+			currentPage.alert(null, data.result);
+		}
 	}
 
+	/**
+	 * データのインポートを行います。
+	 */
+	async importInitData() {
+		let ret = await currentPage.confirm(null, MessagesUtil.getMessage("message.importInitialDataConfirm"));
+		if (ret) {
+			let data = await this.submit("importData");
+			await currentPage.alert(null, data.result);
+		}
+	}
+
+	/**
+	 * ver1.x形式のデータのインポートを行います。
+	 */
+	async importV1InitData() {
+		let ret = await currentPage.confirm(null, MessagesUtil.getMessage("message.importV1InitialDataConfirm"));
+		if (ret) {
+			let data = await this.submit("importV1Data");
+			await currentPage.alert(null, data.result);
+		}
+	}
 
 	/**
 	 * 編集モードにします。
 	 */
 	toEditMode() {
 		super.toEditMode();
-		var thisForm = this;
-		var table = this.getComponent("funcTable");
-		this.find("[id$='\\.funcPath']").each(function() {
-			var f = thisForm.getComponent($(this).attr(thisForm.getIdAttribute()));
-			logger.log("id=" + f.id + ":" + $(this).val());
-			if ($(this).val().indexOf("/dataforms") == 0) {
-				var field = table.getSameRowField($(this), "funcName");
-				var namef = thisForm.getComponent(field.attr(thisForm.getIdAttribute()));
+		let table = this.getComponent("funcTable");
+		this.find("[id$='\\.funcPath']").each((_, tx) => {
+			let f = this.getComponent($(tx).attr(this.getIdAttribute()));
+			logger.log("id=" + f.id + ":" + $(tx).val());
+			if ($(tx).val().indexOf("/dataforms") == 0) {
+				let field = table.getSameRowField($(tx), "funcName");
+				let namef = this.getComponent(field.attr(this.getIdAttribute()));
 				f.lock(true);
 				namef.lock(true);
 			}

@@ -908,6 +908,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 			if (table instanceof SubQuery) {
 				SubQuery sq = (SubQuery) table;
 				String sql = this.generateQuerySql(sq.getQuery(), false);
+				sql = sql.replaceAll("\n", "");
 				sq.setSql(sql);
 			}
 		}
@@ -944,9 +945,9 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		for (JoinInfo joinInfo: list) {
 			Table table = joinInfo.getJoinTable();
 			this.generateSubQuerySql(table);
-			sb.append(" ");
+//			sb.append(" ");
 			sb.append(joinInfo.getJoinType());
-			sb.append(" ");
+//			sb.append(" ");
 			sb.append(table.getTableName());
 			sb.append(this.getAsAliasSql());
 			sb.append(table.getAlias());
@@ -1382,6 +1383,23 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	}
 
 	/**
+	 * Unionする問合せを追加。
+	 * @param sb SQLの文字列バッファ。
+	 * @param list Unionする問合せリスト。
+	 */
+	private void addUnionQuery(final StringBuilder sb, final List<Query.UnionInfo> list) {
+		for (Query.UnionInfo ui: list) {
+			if (ui.isAllFlag()) {
+				sb.append("\n union all \n");
+			} else {
+				sb.append("\n union \n");
+			}
+			String sql = this.generateQuerySql(ui.getQuery());
+			sb.append(sql);
+		}
+	}
+
+	/**
 	 * 問い合わせのSQLを取得します。
 	 * @param query 問い合わせ。
 	 * @param orderBy trueの場合、order byを生成する。
@@ -1416,6 +1434,10 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		sb.append(this.getGroupBySql(query));
 		if (orderBy) {
 			sb.append(this.getOrderBySql(query));
+		}
+		// UNIONが設定されいる場合それを展開する。
+		if (query.getUnionQueryList() != null) {
+			this.addUnionQuery(sb, query.getUnionQueryList());
 		}
 		return sb.toString();
 	}

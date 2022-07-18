@@ -17,6 +17,13 @@ th {
 	text-align:center;
 	font-weight:normal;
 	border : 0px;
+	height: 30px;
+	min-height: 30px;
+}
+
+td {
+	height: 30px;
+	min-height: 30px;
 }
 
 /* テーブル奇数行のスタイル */
@@ -49,9 +56,11 @@ th {
  * カラムソートヘッダ関連(開始)
  */
 .sortableMark {
+
 }
 
 .sortableLabel {
+
 }
 /*
  * カラムソートヘッダ関連(終了)

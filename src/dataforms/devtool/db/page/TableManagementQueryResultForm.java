@@ -142,6 +142,7 @@ public class TableManagementQueryResultForm extends QueryResultForm {
 		return ret;
 	}
 
+	// TODO:FKを設定したテーブルを削除すると問題が発生する可能性がある。要確認。
 	/**
 	 * テーブルを削除します。
 	 * @param params パラメータ。

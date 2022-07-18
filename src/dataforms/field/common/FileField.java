@@ -14,7 +14,8 @@ import dataforms.annotation.WebMethod;
 import dataforms.dao.file.BlobFileStore;
 import dataforms.dao.file.FileObject;
 import dataforms.dao.file.FileStore;
-import dataforms.dao.file.FolderFileStore;
+import dataforms.dao.file.StaticFolderFileStore;
+import dataforms.dao.file.TableFolderFileStore;
 import dataforms.dao.file.WebResource;
 import dataforms.dao.file.WebResourceFileStore;
 import dataforms.dao.sqldatatype.SqlBlob;
@@ -40,6 +41,12 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	 * ダウンロードファイル一時ファイルを記録するセッションキー。
 	 */
 	public static final String DOWNLOADING_FILE = "downloadingFile_";
+
+	/**
+	 * 基底フォルダ。
+	 */
+	private String baseFolder = null;
+
 	/**
 	 * Logger.
 	 */
@@ -66,6 +73,30 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	}
 
 	/**
+	 * 基底フォルダを取得します。
+	 * @return 基底フォルダ。
+	 */
+	public String getBaseFolder() {
+		return this.baseFolder;
+	}
+
+	/**
+	 * 基底フォルダを設定します。
+	 * <pre>
+	 * このプロパティはBlobStoreXXXXXFieldでは無効で、FolderStoreXXXXXFieldクラスの場合のみ有効です。
+	 * FolderStoreXXXXXFieldはファイルの実態は指定されたフォルダに記録し、テーブル中にはそのパスを記録するフィールドです。
+	 * このプロパティがnullの場合テーブル,カラム,ユーザIDに応じたフォルダにファイルを保存します。
+	 * baseFolderプロパティに基底フォルダを指定するとそのフォルダ以下にファイル保存します。
+	 * </pre>
+	 * @param baseFolder 基底フォルダ。
+	 * @return FileFieldのオブジェクト。
+	 */
+	public FileField<? extends FileObject> setBaseFolder(final String baseFolder) {
+		this.baseFolder = baseFolder;
+		return this;
+	}
+
+	/**
 	 * ファイルストアを作成します。
 	 * @return ファイルストア。
 	 */
@@ -73,7 +104,11 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 		if (this instanceof SqlBlob) {
 			return new BlobFileStore(this);
 		} else if (this instanceof SqlVarchar) {
-			return new FolderFileStore(this);
+			if (this.getBaseFolder() != null) {
+				return new StaticFolderFileStore(this);
+			} else {
+				return new TableFolderFileStore(this);
+			}
 		} else if (this instanceof WebResource){
 			return new WebResourceFileStore(this);
 		} else {
@@ -206,7 +241,7 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	 * @return 処理結果。
 	 * @throws Exception 例外。
 	 */
-	@WebMethod(useDB = false)
+	@WebMethod
 	public JsonResponse deleteTempFile(final Map<String, Object> p) throws Exception {
 		String key = (String) p.get("key");
 		logger.debug(() -> "key=" + key);

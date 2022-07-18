@@ -25,8 +25,8 @@ class UserAttributeValueField extends EnumOptionSingleSelectField {
 		// この設定処理は選択肢がそろっていないので空振りします。
 		super.setValue(v);
 		// 一旦値を保持し、選択肢を取得してから設定します。
-		var tid = this.id.replace("userAttributeValue", "userAttributeType");
-		var type = this.getParentForm().getFieldValue(tid);
+		let tid = this.id.replace("userAttributeValue", "userAttributeType");
+		let type = this.getParentForm().getFieldValue(tid);
 		this.setUserAttributeType(type, v);
 	}
 
@@ -37,17 +37,15 @@ class UserAttributeValueField extends EnumOptionSingleSelectField {
 	 * </pre>
 	 * @param {String} type ユーザ属性。
 	 */
-	setUserAttributeType(type, v) {
-		var thisField = this;
-		var m = this.getServerMethod("getTypeOption");
-		var opt = m.execute("type=" + type, (opt) => {
-			if (opt.status == ServerMethod.SUCCESS) {
-				thisField.setOptionList(opt.result);
-				if (v != null) {
-					super.setValue(v);
-				}
+	async setUserAttributeType(type, v) {
+		let m = this.getWebMethod("getTypeOption");
+		let opt = await m.execute("type=" + type);
+		if (opt.status == JsonResponse.SUCCESS) {
+			this.setOptionList(opt.result);
+			if (v != null) {
+				super.setValue(v);
 			}
-		});
+		}
 	}
 }
 

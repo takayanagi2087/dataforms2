@@ -97,7 +97,9 @@
 		<param-name>initialize-package-list</param-name>
 		<param-value>
 			dataforms.app
+			,dataforms.debug
 			,test
+			,sample
 		</param-value>
 	</context-param>
 
@@ -166,8 +168,8 @@
 				"allowIE": true
 				// BabelがES5のソースを展開するフォルダ
 				, "babelWork": "/tmp/babel"
-				// サーバーサイドでES6->ES5変換を行うコマンドを記述します。
-				, "babelCommand": "C:/Users/takay/AppData/Roaming/npm/babel.cmd --presets C:/Users/takay/AppData/Roaming/npm/node_modules/babel-preset-es2015"
+				// サーバーサイドでES8->ES5変換を行うコマンドを記述します。
+				, "babelCommand": "C:/babel/node_modules/.bin/babel.cmd --config-file c:/babel/.babelrc --no-babelrc "
 				// , "babelCommand": "standalone"
 			}
 		</param-value>
@@ -235,7 +237,7 @@
 				// 外部ユーザ登録関連(外部ユーザ登録機能を無効にするには以下の2ページを無効にしてください)
 				//
 				// ユーザ登録ページを隠す場合は以下を有効にしてください。
-				// , ["dataforms.app.user.page.UserRegistPage", "dataforms.app.base.page.HiddenPage"]
+				//, ["dataforms.app.user.page.UserRegistPage", "dataforms.app.base.page.HiddenPage"]
 				// ユーザ有効化ページを隠す場合は以下を有効にしてください。
 				// , ["dataforms.app.user.page.UserEnablePage", "dataforms.app.base.page.HiddenPage"]
 				//
@@ -265,7 +267,7 @@
 	<!--
 		外部ユーザ登録ページのパスを指定します。
 		デフォルトのパスはdataforms2.jar中のページ"dataforms.app.user.page.UserRegistPage"のパスになっています。
-		インターネットからのユーザ登録を許可しない場合は、
+		インターネットからのユーザ登録を許可しない場合は、以下の設定をコメントアウトし、
 		page-overrideパラメータで、"dataforms.app.user.page.UserRegistPage"を無効にしてください。
 	 -->
 	<context-param>

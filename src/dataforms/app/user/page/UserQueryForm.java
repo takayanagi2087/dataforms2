@@ -1,6 +1,7 @@
 package dataforms.app.user.page;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +9,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
+import dataforms.app.user.dao.UserAttributeTable;
 import dataforms.app.user.dao.UserDao;
+import dataforms.app.user.dao.UserInfoTable;
 import dataforms.app.user.field.LoginIdField;
 import dataforms.app.user.field.UserAttributeTypeField;
 import dataforms.app.user.field.UserAttributeValueField;
 import dataforms.app.user.field.UserNameField;
+import dataforms.controller.Page;
 import dataforms.controller.QueryForm;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.db.dao.TableManagerDao;
@@ -57,9 +61,9 @@ public class UserQueryForm extends QueryForm {
 	}
 
 	/**
-	 * 列挙型関連テーブルのエクスポートを行います。
+	 * ユーザ関連テーブルのエクスポートを行います。
 	 * @param p パラメータ。
-	 * @return Json形式のエクスポート。
+	 * @return エクスポート結果。
 	 * @throws Exception 例外。
 	 */
 	@WebMethod
@@ -71,6 +75,53 @@ public class UserQueryForm extends QueryForm {
 			dao.exportData("dataforms.app.user.dao.UserInfoTable", initialDataPath);
 			dao.exportData("dataforms.app.user.dao.UserAttributeTable", initialDataPath);
 			ret = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.initializationdatacreated"));
+		} else {
+			ret = new JsonResponse(JsonResponse.INVALID, MessagesUtil.getMessage(this.getPage(), "error.permission"));
+		}
+		return ret;
+	}
+
+	/**
+	 * ユーザ関連テーブルの初期化データのインポートを行います。
+	 * @param p パラメータ。
+	 * @return エクスポート結果。
+	 * @throws Exception 例外。
+	 */
+	@WebMethod
+	public JsonResponse importData(final Map<String, Object> p) throws Exception {
+		JsonResponse ret = null;
+		if (this.getPage().checkUserAttribute("userLevel", "developer")) {
+			TableManagerDao dao = new TableManagerDao(this);
+			//String initialDataPath =  DeveloperPage.getExportInitalDataPath(this.getPage()); // DeveloperPage.getWebSourcePath() + "/WEB-INF/initialdata";
+			String initialDataPath = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata");
+			dao.executeUpdate("delete from " + new UserAttributeTable().getTableName(), new HashMap<String, Object>());
+			dao.executeUpdate("delete from " + new UserInfoTable().getTableName(), new HashMap<String, Object>());
+			dao.importData("dataforms.app.user.dao.UserInfoTable", initialDataPath);
+			dao.importData("dataforms.app.user.dao.UserAttributeTable", initialDataPath);
+			ret = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.initialDataImported"));
+		} else {
+			ret = new JsonResponse(JsonResponse.INVALID, MessagesUtil.getMessage(this.getPage(), "error.permission"));
+		}
+		return ret;
+	}
+
+	/**
+	 * ユーザ関連テーブルのV1.x形式の初期化データのインポートを行います。
+	 * @param p パラメータ。
+	 * @return エクスポート結果。
+	 * @throws Exception 例外。
+	 */
+	@WebMethod
+	public JsonResponse importV1Data(final Map<String, Object> p) throws Exception {
+		JsonResponse ret = null;
+		if (this.getPage().checkUserAttribute("userLevel", "developer")) {
+			TableManagerDao dao = new TableManagerDao(this);
+			String initialDataPath = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata_v1");
+			dao.executeUpdate("delete from " + new UserAttributeTable().getTableName(), new HashMap<String, Object>());
+			dao.executeUpdate("delete from " + new UserInfoTable().getTableName(), new HashMap<String, Object>());
+			dao.importV1Data("dataforms.app.user.dao.UserInfoTable", "/dataforms/app/dao/user/UserInfoTable.data.json", initialDataPath);
+			dao.importV1Data("dataforms.app.user.dao.UserAttributeTable", "/dataforms/app/dao/user/UserAttributeTable.data.json", initialDataPath);
+			ret = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.initialDataImported"));
 		} else {
 			ret = new JsonResponse(JsonResponse.INVALID, MessagesUtil.getMessage(this.getPage(), "error.permission"));
 		}

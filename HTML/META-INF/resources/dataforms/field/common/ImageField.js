@@ -18,31 +18,28 @@ class ImageField extends FileField {
 	 */
 	attach() {
 		super.attach();
-		var thisField = this;
-		var linkid = this.id + "_link";
-		var link = this.parent.get(linkid);
-		var thumbid = this.id + "_thm"; // サムネイルID.
-		var thumb = this.parent.get(thumbid);
-		thumb.attr("width", this.thumbnailWidth);
-		thumb.attr("height", this.thumbnailHeight);
-
-		thumb.click(function(e) {
-			var fval = thisField.get().val();
-			var val = {};
+		let thisField = this;
+		let linkid = this.id + "_link";
+		let link = this.parent.get(linkid);
+		let thumbid = this.id + "_thm"; // サムネイルID.
+		let thumb = this.parent.get(thumbid);
+		thumb.click(() => {
+			let fval = thisField.get().val();
+			let val = {};
 			if (fval.length == 0) {
 				val.fileName = link.attr("data-value");
 				val.size = link.attr("data-size");
 				val.downloadParameter = link.attr("data-dlparam");
 			} else {
-				var fl = thisField.get().get()[0].files[0];
-				var url = URL.createObjectURL(fl);
+				let fl = thisField.get().get()[0].files[0];
+				let url = URL.createObjectURL(fl);
 				val.fileName = fl.name;
 				val.size = fl.size;
 				val.url = url;
 				logger.log("url=" + url);
 			}
 			if (val.fileName.length > 0) {
-				thisField.showImage(val);
+				this.showImage(val);
 			}
 		});
 	}
@@ -53,26 +50,20 @@ class ImageField extends FileField {
 	 */
 	selectFile(fld) {
 		super.selectFile(fld);
-		var thumbid = this.id + "_thm"; // サムネイルID.
-		var thumb = this.parent.get(thumbid);
+		let thumbid = this.id + "_thm"; // サムネイルID.
+		let thumb = this.parent.get(thumbid);
 		this.previewImage(fld, thumb);
 	}
 
 	/**
 	 * 削除チェックボックスの処理を行います。
 	 */
-	delFile(ck) {
-		super.delFile(ck);
+	delFile() {
+		super.delFile();
 		// サムネイルの表示制御を追加。
-		var thumbid = this.id + "_thm"; // サムネイルID.
-		var thumb = this.parent.get(thumbid);
-		if (ck.prop("checked")) {
-			thumb.attr("src", null);
-		} else {
-			if (this.downloadUrl != null) {
-				thumb.attr("src", this.downloadUrl);
-			}
-		}
+		let thumbid = this.id + "_thm"; // サムネイルID.
+		let thumb = this.parent.get(thumbid);
+		thumb.attr("src", null);
 	}
 
 	/**
@@ -81,13 +72,13 @@ class ImageField extends FileField {
 	 * @param {jQuery} thumb サムネイル。
 	 */
 	previewImage(inputFile, thumb) {
-		var fileList = inputFile.get()[0].files;
+		let fileList = inputFile.get()[0].files;
 		if (fileList.length > 0) {
-			var fileReader = new FileReader() ;
+			let fileReader = new FileReader() ;
 			// 読み込み後の処理を決めておく
 			fileReader.onload = function() {
 				// データURIを取得
-				var dataUri = this.result ;
+				let dataUri = this.result ;
 				// HTMLに書き出し (src属性にデータURIを指定)
 				//document.getElementById( "output" ).innerHTML += '<img src="' + dataUri + '">' ;
 				thumb.attr("src", dataUri);
@@ -105,13 +96,13 @@ class ImageField extends FileField {
 		if (this.parent.id == "imageForm") {
 			return;
 		}
-		var dlg = currentPage.getComponent("imageDialog");
+		let dlg = currentPage.getComponent("imageDialog");
 		if (dlg == null) {
 			if (img != null) {
 				if (img.url != null) {
 					window.open(img.url, "_image");
 				} else {
-					var url = location.pathname + "?dfMethod=" + encodeURIComponent(this.getUniqId()) + ".download"  + "&" + img.downloadParameter;
+					let url = location.pathname + "?dfMethod=" + encodeURIComponent(this.getUniqId()) + ".download"  + "&" + img.downloadParameter;
 					if (currentPage.csrfToken != null) {
 						url += "&csrfToken=" + currentPage.csrfToken;
 					}
@@ -119,8 +110,8 @@ class ImageField extends FileField {
 				}
 			}
 		} else {
-			var imgfrm = dlg.getComponent("imageForm");
-			var imgfld = imgfrm.getComponent("image");
+			let imgfrm = dlg.getComponent("imageForm");
+			let imgfld = imgfrm.getComponent("image");
 			logger.dir(imgfld);
 			imgfld.setValue(img);
 			dlg.showModal();
@@ -131,13 +122,13 @@ class ImageField extends FileField {
 	 * @param comp ファイルフィールド。
 	 */
 	addElements(comp) {
-		var htmlstr = this.additionalHtmlText;
-		var html = htmlstr.replace(/\$\{fieldId\}/g, this.id);
-		var html = html.replace(/\$\{width\}/g, this.thumbnailWidth);
-		var html = html.replace(/\$\{height\}/g, this.thumbnailHeight);
+		let htmlstr = this.additionalHtmlText;
+		let html = htmlstr.replace(/\$\{fieldId\}/g, this.id);
+		html = html.replace(/\$\{width\}/g, this.thumbnailWidth);
+		html = html.replace(/\$\{height\}/g, this.thumbnailHeight);
 		logger.log("htmlstr=" + html);
-		var tag = comp.prop("tagName");
-		var type = comp.prop("type");
+		let tag = comp.prop("tagName");
+		let type = comp.prop("type");
 		if ("INPUT" == tag && type == "file") {
 			comp.after(html);
 		} else if (tag == "DIV") {
@@ -153,14 +144,18 @@ class ImageField extends FileField {
 	 */
 	setValue(value) {
 		super.setValue(value);
-		var thumbid = this.id + "_thm"; // サムネイルID.
-		var thumb = this.parent.get(thumbid);
+		let thumbid = this.id + "_thm"; // サムネイルID.
+		let thumb = this.parent.get(thumbid);
 		this.downloadUrl = null;
 		if (value != null) {
-			var linkid = this.id + "_link";
-			var fnlink = this.parent.get(linkid);
+			let linkid = this.id + "_link";
+			let fnlink = this.parent.get(linkid);
 			if (value.url == null) {
-				var url = location.pathname + "?dfMethod=" + encodeURIComponent(this.getUniqId()) + ".downloadThumbnail"  + "&" + value.downloadParameter;
+				let func = ".downloadThumbnail";
+				if (!this.reducedThumbnail) {
+					func = ".download";
+				}
+				let url = location.pathname + "?dfMethod=" + encodeURIComponent(this.getUniqId()) + func  + "&" + value.downloadParameter;
 				if (currentPage.csrfToken != null) {
 					url += "&csrfToken=" + currentPage.csrfToken;
 				}

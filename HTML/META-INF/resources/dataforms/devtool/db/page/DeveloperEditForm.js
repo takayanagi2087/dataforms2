@@ -20,12 +20,11 @@ class DeveloperEditForm extends EditForm {
 		} else {
 			this.get("flagDiv").hide();
 		}
-		var thisForm = this;
-		this.get("userImportFlag").click(function() {
-			if ($(this).prop("checked")) {
-				thisForm.get("userInfoTable").hide();
+		this.get("userImportFlag").click((ev) => {
+			if ($(ev.currentTarget).prop("checked")) {
+				this.get("userInfoTable").hide();
 			} else {
-				thisForm.get("userInfoTable").show();
+				this.get("userInfoTable").show();
 			}
 		});
 	}

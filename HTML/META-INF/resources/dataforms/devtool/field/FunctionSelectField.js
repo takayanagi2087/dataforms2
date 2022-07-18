@@ -20,9 +20,8 @@ class FunctionSelectField extends SingleSelectField {
 	 */
 	attach() {
 		super.attach();
-		var thisField = this;
-		this.get().change(function() {
-			thisField.setPackageName($(this))
+		this.get().change((ev) => {
+			this.setPackageName($(ev.currentTarget))
 		});
 	}
 
@@ -31,17 +30,17 @@ class FunctionSelectField extends SingleSelectField {
 	 * @param {String} jq パッケージ名を設定するフィールド。
 	 */
 	setPackageName(jq) {
-		var form = this.getParentForm();
-		var funcname = jq.val();
+		let form = this.getParentForm();
+		let funcname = jq.val();
 		if (funcname != null && funcname.length > 0) {
-			var packageName = funcname.replace(/\//g, ".").substr(1);
+			let packageName = funcname.replace(/\//g, ".").substr(1);
 			if (this.packageOption.length > 0) {
 				packageName +=  "." + this.packageOption;
 			}
-			var id = jq.attr(this.getIdAttribute());
+			let id = jq.attr(this.getIdAttribute());
 			logger.log("functionSelectField id=" + id)
 			if (this.isHtmlTableElementId(id)) {
-				var a = id.split(".");
+				let a = id.split(".");
 				form.find("#" + this.selectorEscape(a[0] + "." + this.packageFieldId)).val(packageName);
 			} else {
 				form.find("#" + this.selectorEscape(this.packageFieldId)).val(packageName);

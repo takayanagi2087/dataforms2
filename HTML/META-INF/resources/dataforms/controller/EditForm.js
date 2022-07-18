@@ -43,32 +43,31 @@ class EditForm extends Form {
 	 */
 	attach() {
 		super.attach();
-		var form = this;
-		form.get("confirmButton").click(function () {
-			form.confirm();
+		this.get("confirmButton").click(() => {
+			this.confirm();
 			return false;
 		});
-		form.get("saveButton").click(function () {
-			form.save();
+		this.get("saveButton").click(() => {
+			this.save();
 			return false;
 		});
-		form.get("resetButton").click(function() {
-			form.reset();
+		this.get("resetButton").click(() => {
+			this.reset();
 			return false;
 		});
-		form.get("backButton").click(function() {
-			if (form.parent.isBrowserBackEnabled()) {
+		this.get("backButton").click(() => {
+			if (this.parent.isBrowserBackEnabled()) {
 				history.back();
 			} else {
-				form.back();
+				this.back();
 			}
 			return false;
 		});
-		form.get('deleteButton').click(function() {
-			form.del();
+		this.get('deleteButton').click(() => {
+			this.del();
 			return false;
 		});
-		form.toEditMode();
+		this.toEditMode();
 	}
 
 	/**
@@ -78,7 +77,7 @@ class EditForm extends Form {
      * </pre>
 	 */
 	initWithoutQuery() {
-		logger.log("intitWithoutQuery");
+		logger.log("initWithoutQuery");
 		this.updateData();
 	}
 
@@ -101,15 +100,15 @@ class EditForm extends Form {
 	 *
 	 */
 	lockPkFields() {
-		var lk = false;
+		let lk = false;
 		if (this.saveMode == "new") {
 			lk = false;
 		} else {
 			lk = true;
 		}
 		if (this.pkFieldIdList != null) {
-			for (var i = 0; i < this.pkFieldIdList.length; i++) {
-				var f = this.getComponent(this.pkFieldIdList[i]);
+			for (let i = 0; i < this.pkFieldIdList.length; i++) {
+				let f = this.getComponent(this.pkFieldIdList[i]);
 				if (f != null) {
 					f.lock(lk);
 				}
@@ -126,7 +125,7 @@ class EditForm extends Form {
 	toEditMode() {
 		this.mode = "edit";
 		this.lockFields(false);
-		var cb = this.get("confirmButton");
+		let cb = this.get("confirmButton");
 		if (cb.length > 0) {
 			// 確認画面があるパターン.
 			cb.show();
@@ -148,7 +147,7 @@ class EditForm extends Form {
 	toConfirmMode() {
 		this.mode = "confirm";
 		this.lockFields(true);
-		var cb = this.get("confirmButton");
+		let cb = this.get("confirmButton");
 		if (cb.length > 0) {
 			// 確認画面があるパターン.
 			cb.hide();
@@ -167,19 +166,17 @@ class EditForm extends Form {
 	 * ファイルアップロードフィールドはサーバーに送信されません。
 	 * </pre>
 	 */
-	confirm() {
-		var form = this;
-		if (form.validate()) {
+	async confirm() {
+		if (this.validate()) {
 			this.get("saveMode").val(this.saveMode);
-			form.submitWithoutFile("confirm", function(result) {
-				form.parent.resetErrorStatus();
-				if (result.status == ServerMethod.SUCCESS) {
-					form.toConfirmMode();
-					form.parent.pushConfirmModeStatus();
-				} else {
-					form.parent.setErrorInfo(form.getValidationResult(result), form);
-				}
-			});
+			let result = await this.submitWithoutFile("confirm");
+			this.parent.resetErrorStatus();
+			if (result.status == JsonResponse.SUCCESS) {
+				this.toConfirmMode();
+				this.parent.pushConfirmModeStatus();
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
 		}
 	}
 
@@ -190,21 +187,19 @@ class EditForm extends Form {
 	 * 各フィールドに取得データを設定し、編集モードにします。
 	 * </pre>
 	 */
-	newData() {
-		var title = MessagesUtil.getMessage("message.editformtitle.new");
+	async newData() {
+		let title = MessagesUtil.getMessage("message.editformtitle.new");
 		this.get("editFormTitle").text(title);
-		var form = this;
-		form.submitWithoutFile("getNewData", function(result) {
-			form.parent.resetErrorStatus();
-			if (result.status == ServerMethod.SUCCESS) {
-				form.saveMode = "new";
-				form.setFormData(result.result);
-				form.toEditMode();
-				form.parent.pushEditModeStatus();
-			} else {
-				form.parent.setErrorInfo(form.getValidationResult(result), form);
-			}
-		});
+		let result = await this.submitWithoutFile("getNewData");
+		this.parent.resetErrorStatus();
+		if (result.status == JsonResponse.SUCCESS) {
+			this.saveMode = "new";
+			this.setFormData(result.result);
+			this.toEditMode();
+			this.parent.pushEditModeStatus();
+		} else {
+			this.parent.setErrorInfo(this.getValidationResult(result), this);
+		}
 	}
 
 	/**
@@ -214,22 +209,20 @@ class EditForm extends Form {
 	 * 各フィールドに取得データを設定し、編集モードにします。
 	 * </pre>
 	 */
-	updateData() {
-		var title = MessagesUtil.getMessage("message.editformtitle.update");
+	async updateData() {
+		let title = MessagesUtil.getMessage("message.editformtitle.update");
 		this.get("editFormTitle").text(title);
-		var form = this;
-		form.submitWithoutFile("getData", function(result) {
-			form.parent.resetErrorStatus();
-			if (result.status == ServerMethod.SUCCESS) {
-				form.parent.toEditMode();
-				form.saveMode = "update";
-				form.setFormData(result.result);
-				form.toEditMode();
-				form.parent.pushEditModeStatus();
-			} else {
-				form.parent.setErrorInfo(form.getValidationResult(result), form);
-			}
-		});
+		let result = await this.submitWithoutFile("getData");
+		this.parent.resetErrorStatus();
+		if (result.status == JsonResponse.SUCCESS) {
+			this.parent.toEditMode();
+			this.saveMode = "update";
+			this.setFormData(result.result);
+			this.toEditMode();
+			this.parent.pushEditModeStatus();
+		} else {
+			this.parent.setErrorInfo(this.getValidationResult(result), this);
+		}
 	}
 
 	/**
@@ -240,22 +233,20 @@ class EditForm extends Form {
 	 * </pre>
 	 *
 	 */
-	referData() {
-		var title = MessagesUtil.getMessage("message.editformtitle.refer");
+	async referData() {
+		let title = MessagesUtil.getMessage("message.editformtitle.refer");
 		this.get("editFormTitle").text(title);
-		var form = this;
-		form.submitWithoutFile("getReferData", function(result) {
-			form.parent.resetErrorStatus();
-			if (result.status == ServerMethod.SUCCESS) {
-				form.parent.toEditMode();
-				form.saveMode = "new";
-				form.setFormData(result.result);
-				form.toEditMode();
-				form.parent.pushEditModeStatus();
-			} else {
-				form.parent.setErrorInfo(form.getValidationResult(result), form);
-			}
-		});
+		let result = await this.submitWithoutFile("getReferData");
+		this.parent.resetErrorStatus();
+		if (result.status == JsonResponse.SUCCESS) {
+			this.parent.toEditMode();
+			this.saveMode = "new";
+			this.setFormData(result.result);
+			this.toEditMode();
+			this.parent.pushEditModeStatus();
+		} else {
+			this.parent.setErrorInfo(this.getValidationResult(result), this);
+		}
 	}
 
 	/**
@@ -265,25 +256,23 @@ class EditForm extends Form {
 	 * 各フィールドに取得データを設定し、参照モードにします。
 	 * </pre>
 	 */
-	viewData() {
-		var title = MessagesUtil.getMessage("message.editformtitle.view");
+	async viewData() {
+		let title = MessagesUtil.getMessage("message.editformtitle.view");
 		this.get("editFormTitle").text(title);
-		var form = this;
-		form.submitWithoutFile("getData", function(result) {
-			form.parent.resetErrorStatus();
-			if (result.status == ServerMethod.SUCCESS) {
-				form.parent.toEditMode();
-				form.saveMode = "update";
-				form.setFormData(result.result);
-				form.lockFields(true);
-				form.get("confirmButton").hide();
-				form.get("saveButton").hide();
-				form.get("resetButton").hide();
-				form.parent.pushConfirmModeStatus();
-			} else {
-				form.parent.setErrorInfo(form.getValidationResult(result), form);
-			}
-		});
+		let result = await this.submitWithoutFile("getData");
+		this.parent.resetErrorStatus();
+		if (result.status == JsonResponse.SUCCESS) {
+			this.parent.toEditMode();
+			this.saveMode = "update";
+			this.setFormData(result.result);
+			this.lockFields(true);
+			this.get("confirmButton").hide();
+			this.get("saveButton").hide();
+			this.get("resetButton").hide();
+			this.parent.pushConfirmModeStatus();
+		} else {
+			this.parent.setErrorInfo(this.getValidationResult(result), this);
+		}
 	}
 
 	/**
@@ -331,24 +320,21 @@ class EditForm extends Form {
 	 * ファイルアップロードフィールドもサーバーに送信されます。
 	 * </pre>
 	 */
-	save() {
-		var form = this;
-		if (form.validate()) {
+	async save() {
+		if (this.validate()) {
 			this.get("saveMode").val(this.saveMode);
-			form.submit("save", function(result) {
-				form.parent.resetErrorStatus();
-				if (result.status == ServerMethod.SUCCESS) {
-					if (result.result != null && result.result.length > 0) {
-						currentPage.alert(null, result.result, function() {
-							form.changeStateForAfterUpdate();
-						});
-					} else {
-						form.changeStateForAfterUpdate();
-					}
+			let result = await this.submit("save");
+			this.parent.resetErrorStatus();
+			if (result.status == JsonResponse.SUCCESS) {
+				if (result.result != null && result.result.length > 0) {
+					await currentPage.alert(null, result.result);
+					this.changeStateForAfterUpdate();
 				} else {
-					form.parent.setErrorInfo(form.getValidationResult(result), form);
+					this.changeStateForAfterUpdate();
 				}
-			});
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
 		}
 	}
 
@@ -359,24 +345,21 @@ class EditForm extends Form {
 	 * 対応するEditFormのdeleteメソッドを呼び出し、保存処理を行います。
 	 * </pre>
 	 */
-	del() {
-		var systemName = MessagesUtil.getMessage("message.systemname");
-		var msg = MessagesUtil.getMessage("message.deleteconfirm");
-		var form = this;
-		currentPage.confirm(systemName, msg, function() {
-			form.submit("delete", function(result) {
-				form.parent.resetErrorStatus();
-				if (result.status == ServerMethod.SUCCESS) {
-					if (result.result != null && result.result.length > 0) {
-						currentPage.alert(null, result.result, function() {
-							form.changeStateForAfterUpdate();
-						});
-					} else {
-						form.changeStateForAfterUpdate();
-					}
+	async del() {
+		let systemName = MessagesUtil.getMessage("message.systemname");
+		let msg = MessagesUtil.getMessage("message.deleteconfirm");
+		if (await currentPage.confirm(systemName, msg)) {
+			let result = await this.submit("delete");
+			this.parent.resetErrorStatus();
+			if (result.status == JsonResponse.SUCCESS) {
+				if (result.result != null && result.result.length > 0) {
+					await currentPage.alert(null, result.result);
+					this.changeStateForAfterUpdate();
+				} else {
+					this.changeStateForAfterUpdate();
 				}
-			});
-		});
+			}
+		}
 	}
 }
 

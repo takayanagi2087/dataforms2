@@ -278,3 +278,11 @@ div.videoPlayer,
 div.audioPlayer {
 	margin-top: 8px;
 }
+
+.multiField {
+	display: flex;
+	flex-flow: row;
+	justify-content: space-between;
+	align-items: center;
+}
+

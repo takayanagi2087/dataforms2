@@ -280,6 +280,7 @@ div.audioPlayer {
 }
 
 .multiField {
+	width: 100%;
 	display: flex;
 	flex-flow: row;
 	justify-content: space-between;

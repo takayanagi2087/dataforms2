@@ -19,64 +19,56 @@
 							<td><input type="text" id="sqlVarchar" /></td>
 						</tr>
 						<tr>
-							<th>Smallintフィールド(from)</th>
-							<td><input type="text" id="sqlSmallintFrom" /></td>
+							<th>Smallintフィールド</th>
+							<td><div class="multiField">
+								<input type="text" id="sqlSmallintFrom" class="rangeField" />
+								～
+								<input type="text" id="sqlSmallintTo" class="rangeField"/>
+							</div></td>
 						</tr>
 						<tr>
-							<th>Smallintフィールド(to)</th>
-							<td><input type="text" id="sqlSmallintTo" /></td>
+							<th>Integerフィールド</th>
+							<td><div class="multiField">
+								<input type="text" id="sqlIntegerFrom" class="rangeField" />
+								～
+								<input type="text" id="sqlIntegerTo" class="rangeField"/>
+							</div></td>
 						</tr>
 						<tr>
-							<th>Integerフィールド(from)</th>
-							<td><input type="text" id="sqlIntegerFrom" /></td>
+							<th>Bigintフィールド</th>
+							<td><div class="multiField">
+								<input type="text" id="sqlBigintFrom" class="rangeField" />
+								～
+								<input type="text" id="sqlBigintTo" class="rangeField"/>
+							</div></td>
 						</tr>
 						<tr>
-							<th>Integerフィールド(to)</th>
-							<td><input type="text" id="sqlIntegerTo" /></td>
+							<th>Doubleフィールド</th>
+							<td><div class="multiField">
+								<input type="text" id="sqlDoubleFrom" class="rangeField" />
+								～
+								<input type="text" id="sqlDoubleTo" class="rangeField"/>
+							</div></td>
 						</tr>
 						<tr>
-							<th>Bigintフィールド(from)</th>
-							<td><input type="text" id="sqlBigintFrom" /></td>
+							<th>Numericフィールド</th>
+							<td><div class="multiField">
+								<input type="text" id="sqlNumericFrom" class="rangeField" />
+								～
+								<input type="text" id="sqlNumericTo" class="rangeField"/>
+							</div></td>
 						</tr>
 						<tr>
-							<th>Bigintフィールド(to)</th>
-							<td><input type="text" id="sqlBigintTo" /></td>
-						</tr>
-						<tr>
-							<th>Doubleフィールド(from)</th>
-							<td><input type="text" id="sqlDoubleFrom" /></td>
-						</tr>
-						<tr>
-							<th>Doubleフィールド(to)</th>
-							<td><input type="text" id="sqlDoubleTo" /></td>
-						</tr>
-						<tr>
-							<th>Numericフィールド(from)</th>
-							<td><input type="text" id="sqlNumericFrom" /></td>
-						</tr>
-						<tr>
-							<th>Numericフィールド(to)</th>
-							<td><input type="text" id="sqlNumericTo" /></td>
-						</tr>
-						<tr>
-							<th>Dateフィールド(from)</th>
-							<td><input type="text" id="sqlDateFrom" /></td>
-						</tr>
-						<tr>
-							<th>Dateフィールド(to)</th>
-							<td><input type="text" id="sqlDateTo" /></td>
+							<th>Dateフィールド</th>
+							<td><div class="multiField">
+								<input type="text" id="sqlDateFrom" class="dateRangeField" />
+								～
+								<input type="text" id="sqlDateTo" class="dateRangeField"/>
+							</div></td>
 						</tr>
 						<tr>
 							<th>Timeフィールド(from)</th>
 							<td><input type="text" id="sqlTimeFrom" /></td>
-						</tr>
-						<tr>
-							<th>Timeフィールド(to)</th>
-							<td><input type="text" id="sqlTimeTo" /></td>
-						</tr>
-						<tr>
-							<th>Timestampフィールド(from)</th>
-							<td><input type="text" id="sqlTimestampFrom" /></td>
 						</tr>
 						<tr>
 							<th>Timestampフィールド(to)</th>
@@ -257,7 +249,7 @@
 						</tr>
 						<tr>
 							<th>Dateフィールド</th>
-							<td><input type="text" id="sqlDate" /></td>
+							<td><div class="multiField"><input type="text" id="sqlDate" /></td>
 						</tr>
 						<tr>
 							<th>Timeフィールド</th>
@@ -273,10 +265,11 @@
 						</tr>
 						<tr>
 							<th>郵便番号</th>
-							<td>
-								<input type="text" id="zipCode"/>
-								<input type="text" id="address" />
-							</td>
+							<td><input type="text" id="zipCode" /></td>
+						</tr>
+						<tr>
+							<th>住所</th>
+							<td><input type="text" id="address" /></td>
 						</tr>
 					</tbody>
 				</table>

@@ -23,6 +23,7 @@ import dataforms.devtool.field.PathNameField;
 import dataforms.devtool.field.WebComponentTypeField;
 import dataforms.devtool.field.WebSourcePathField;
 import dataforms.field.base.Field;
+import dataforms.field.base.Field.MatchType;
 import dataforms.field.common.DeleteFlagField;
 import dataforms.field.common.FileField;
 import dataforms.field.common.FlagField;
@@ -31,6 +32,7 @@ import dataforms.field.common.PresenceField;
 import dataforms.field.common.RowNoField;
 import dataforms.field.common.SingleSelectField;
 import dataforms.field.sqltype.ClobField;
+import dataforms.field.sqltype.DateField;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.htmltable.HtmlTable;
 import dataforms.htmltable.PageScrollHtmlTable;
@@ -261,6 +263,20 @@ public class WebResourceForm extends Form {
 			return sb.toString();
 		}
 
+		/**
+		 * 日付フィールドのHTMLを作成します。
+		 * @param field フィールド。
+		 * @param tabs 段付けようのtab。
+		 * @return 日付フィールドのHTML。
+		 */
+		private String getDateFieldHtml(final Field<?> field, final String tabs) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(tabs + "\t\t\t<tr>\n");
+			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
+			sb.append(tabs + "\t\t\t\t<td><div class=\"multiField\"><input type=\"text\" id=\"" + field.getId() + "\" /></td>\n");
+			sb.append(tabs + "\t\t\t</tr>\n");
+			return sb.toString();
+		}
 
 		/**
 		 * SelectフィールドのHTMLを作成します。
@@ -394,14 +410,104 @@ public class WebResourceForm extends Form {
 			}
 		}
 
+		/**
+		 * 範囲条件のフィールドクラス。
+		 */
+		private class RangeFieldPair extends WebComponent {
+			/**
+			 * 範囲開始フィールド。
+			 */
+			private Field<?> from = null;
+
+			/**
+			 * 範囲終了フィールド。
+			 */
+			private Field<?> to = null;
+
+			/**
+			 * コンストラクタ。
+			 */
+			public RangeFieldPair() {
+			}
+
+			/**
+			 * 開始フィールドを取得します。
+			 * @return 開始フィールド。
+			 */
+			public Field<?> getFrom() {
+				return this.from;
+			}
+
+			/**
+			 * 開始フィールドを取得します。
+			 * @param from 開始フィールドを設定します。
+			 */
+			public void setFrom(final Field<?> from) {
+				this.from = from;
+			}
+
+			/**
+			 * 終了フィールドを取得します。
+			 * @return 終了フィールド。
+			 */
+			@SuppressWarnings("unused")
+			public Field<?> getTo() {
+				return to;
+			}
+
+			/**
+			 * 終了フィールドを取得します。
+			 * @param to 終了フィールドを設定します。
+			 */
+			public void setTo(final Field<?> to) {
+				this.to = to;
+			}
+
+			/**
+			 * フィールドコメントを取得します。
+			 * @return フィールドコメント。
+			 */
+			public String getComment() {
+				String ret = this.from.getComment();
+				return ret.replaceAll("\\(from\\)$", "");
+			}
+
+			/**
+			 * 範囲フィールドのcssクラスを取得します。
+			 * @return 範囲フィールドのcssクラス。
+			 *
+			 */
+			public String getRangeFieldClass() {
+				if (this.from instanceof DateField) {
+					return "dateRangeField";
+				} else {
+					return "rangeField";
+				}
+			}
+		}
 
 		/**
-		 * 表示フィールドを生成する。
-		 * @param f フォーム。
-		 * @param sb 出力先文字列バッファ。
+		 * "From","To"を除いたフィールドIDが一致するかを確認。
+		 * @param from Fromフィールド。
+		 * @param to Toフィールド。
+		 * @return 一致する場合true。
 		 */
-		private void generateVisibleField(final Form f, final StringBuilder sb) {
-			String tabs = getTabs();
+		private boolean checkFieldId(final Field<?> from, final Field<?> to) {
+			String fromId = from.getId().replaceAll("From$", "");
+			String toId = to.getId().replaceAll("To$", "");
+			boolean ret = fromId.equals(toId);
+			return ret;
+		}
+
+
+		/**
+		 * フォームの表示フィールドのリストを取得します。
+		 * @param f フォーム。
+		 * @return 表示フィールドのリスト。
+		 */
+		private List<WebComponent> getVisibleFieldList(final Form f) {
+			List<WebComponent> list = new ArrayList<WebComponent>();
+			RangeFieldPair pair = null;
 			for (WebComponent c: f.getComponentList()) {
 				if (c instanceof Field) {
 					Field<?> field = (Field<?>) c;
@@ -417,6 +523,68 @@ public class WebResourceForm extends Form {
 					if (c instanceof DeleteFlagField) {
 						continue;
 					}
+					if (field.getMatchType() == MatchType.RANGE_FROM) {
+						pair = new RangeFieldPair();
+						pair.setFrom(field);
+					} else if (field.getMatchType() == MatchType.RANGE_TO) {
+						if (pair != null && this.checkFieldId(pair.getFrom(), field)) {
+							// toの直前にfromがあった場合
+							pair.setTo(field);
+							list.add(pair);
+							pair = null;
+						} else {
+							if (pair != null) {
+								list.add(pair.getFrom());
+								pair = null;
+							}
+							list.add(field);
+						}
+					} else {
+						if (pair != null) {
+							// Fromの後にTOが来ない場合
+							list.add(pair.getFrom());
+							pair = null;
+						}
+						list.add(c);
+					}
+				}
+			}
+			return list;
+		}
+
+
+		/**
+		 * 範囲フィールドを展開します。
+		 * @param tabs タブの数。
+		 * @param pair 範囲フィールドペア。
+		 * @return 展開したHTML。
+		 */
+		private String getRangeFieldPair(final String tabs, final RangeFieldPair pair) {
+			logger.info("rangeFieldPair");
+			StringBuilder sb = new StringBuilder();
+			sb.append(tabs + "\t\t\t<tr>\n");
+			sb.append(tabs + "\t\t\t\t<th>" + pair.getComment() + "</th>\n");
+			sb.append(tabs + "\t\t\t\t<td><div class=\"multiField\">\n");
+			sb.append(tabs + "\t\t\t\t\t<input type=\"text\" id=\"" + pair.getFrom().getId() + "\" class=\"" + pair.getRangeFieldClass() + "\" />\n");
+			sb.append(tabs + "\t\t\t\t\t～\n");
+			sb.append(tabs + "\t\t\t\t\t<input type=\"text\" id=\"" + pair.getTo().getId() + "\" class=\"" + pair.getRangeFieldClass() + "\"/>\n");
+			sb.append(tabs + "\t\t\t\t</div></td>\n");
+			sb.append(tabs + "\t\t\t</tr>\n");
+			return sb.toString();
+		}
+
+		/**
+		 * 表示フィールドを生成する。
+		 * @param f フォーム。
+		 * @param sb 出力先文字列バッファ。
+		 */
+		private void generateVisibleField(final Form f, final StringBuilder sb) {
+			String tabs = getTabs();
+			for (WebComponent c: this.getVisibleFieldList(f)) {
+				if (c instanceof RangeFieldPair) {
+					sb.append(this.getRangeFieldPair(tabs, (RangeFieldPair) c));
+				} else if (c instanceof Field) {
+					Field<?> field = (Field<?>) c;
 					if (c instanceof SingleSelectField) {
 						SingleSelectField<?> msf = (SingleSelectField<?>) c;
 						if (msf.getHtmlFieldType() == SingleSelectField.HtmlFieldType.SELECT) {
@@ -443,6 +611,8 @@ public class WebResourceForm extends Form {
 					} else if (c instanceof FileField) {
 						// fileを展開
 						sb.append(this.getFileFieldHtml(field, tabs));
+					} else if (c instanceof DateField) {
+						sb.append(this.getDateFieldHtml(field, tabs));
 					} else {
 						// 通常はテキストボックス。
 						sb.append(this.getTextFieldHtml(field, tabs));

@@ -47,8 +47,8 @@ public class SqlTypeQueryForm extends QueryForm {
 		this.addField(new SqlDateField(SqlTypeTable.Entity.ID_SQL_DATE + "From")).setMatchType(MatchType.RANGE_FROM).setComment("Dateフィールド(from)");
 		this.addField(new SqlDateField(SqlTypeTable.Entity.ID_SQL_DATE + "To")).setMatchType(MatchType.RANGE_TO).setComment("Dateフィールド(to)");
 		this.addField(new SqlTimeField(SqlTypeTable.Entity.ID_SQL_TIME + "From")).setMatchType(MatchType.RANGE_FROM).setComment("Timeフィールド(from)");
-		this.addField(new SqlTimeField(SqlTypeTable.Entity.ID_SQL_TIME + "To")).setMatchType(MatchType.RANGE_TO).setComment("Timeフィールド(to)");
-		this.addField(new SqlTimestampField(SqlTypeTable.Entity.ID_SQL_TIMESTAMP + "From")).setMatchType(MatchType.RANGE_FROM).setComment("Timestampフィールド(from)");
+//		this.addField(new SqlTimeField(SqlTypeTable.Entity.ID_SQL_TIME + "To")).setMatchType(MatchType.RANGE_TO).setComment("Timeフィールド(to)");
+//		this.addField(new SqlTimestampField(SqlTypeTable.Entity.ID_SQL_TIMESTAMP + "From")).setMatchType(MatchType.RANGE_FROM).setComment("Timestampフィールド(from)");
 		this.addField(new SqlTimestampField(SqlTypeTable.Entity.ID_SQL_TIMESTAMP + "To")).setMatchType(MatchType.RANGE_TO).setComment("Timestampフィールド(to)");
 		this.addField(new SqlClobField(SqlTypeTable.Entity.ID_SQL_CLOB)).setMatchType(MatchType.FULL).setComment("Clobフィールド");
 		this.addField(new ZipCodeField(SqlTypeTable.Entity.ID_ZIP_CODE)).setMatchType(MatchType.FULL).setComment("郵便番号");

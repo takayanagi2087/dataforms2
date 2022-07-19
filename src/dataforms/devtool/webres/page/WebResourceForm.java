@@ -273,7 +273,7 @@ public class WebResourceForm extends Form {
 			StringBuilder sb = new StringBuilder();
 			sb.append(tabs + "\t\t\t<tr>\n");
 			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><div class=\"multiField\"><input type=\"text\" id=\"" + field.getId() + "\" /></td>\n");
+			sb.append(tabs + "\t\t\t\t<td><div class=\"multiField\"><input type=\"text\" id=\"" + field.getId() + "\" /></div></td>\n");
 			sb.append(tabs + "\t\t\t</tr>\n");
 			return sb.toString();
 		}

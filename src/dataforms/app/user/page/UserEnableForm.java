@@ -7,6 +7,7 @@ import dataforms.app.user.dao.UserInfoTable;
 import dataforms.controller.EditForm;
 import dataforms.exception.ApplicationException;
 import dataforms.util.MessagesUtil;
+import dataforms.util.UserInfoTableUtil;
 
 /**
  * ユーザ有効化フォームクラス。
@@ -18,14 +19,14 @@ public class UserEnableForm extends EditForm {
 	 * コンストラクタ。
 	 */
 	public UserEnableForm() {
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		this.addField(table.getUserNameField()).removeRequiredValidator();
 		this.addField(table.getLoginIdField()).removeRequiredValidator();
 		this.addField(table.getPasswordField());
 		this.addField(table.getUpdateUserIdField());
 		this.addField(table.getUpdateTimestampField());
 	}
-	
+
 	@Override
 	public void init() throws Exception {
 		super.init();
@@ -34,12 +35,12 @@ public class UserEnableForm extends EditForm {
 		this.setFormData(UserInfoTable.Entity.ID_USER_NAME, e.getUserName());
 		this.setFormData(UserInfoTable.Entity.ID_LOGIN_ID, e.getLoginId());
 	}
-	
+
 	@Override
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
 		Long loginId = (Long) this.getPage().getRequest().getSession().getAttribute(UserInfoTable.Entity.ID_USER_ID);
 		UserDao dao = new UserDao(this);
-		Map<String, Object> ret = dao.queryUserInfo(loginId); 
+		Map<String, Object> ret = dao.queryUserInfo(loginId);
 		return ret;
 	}
 
@@ -72,7 +73,7 @@ public class UserEnableForm extends EditForm {
 	public void deleteData(final Map<String, Object> data) throws Exception {
 
 	}
-	
+
 	@Override
 	protected String getSavedMessage(final Map<String, Object> data) {
 		String msg = MessagesUtil.getMessage(this.getPage(), "message.userenabled");

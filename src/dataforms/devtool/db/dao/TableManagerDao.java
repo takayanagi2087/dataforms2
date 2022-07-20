@@ -44,6 +44,7 @@ import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
 import dataforms.response.BinaryResponse;
+import dataforms.servlet.DataFormsServlet;
 import dataforms.util.ClassFinder;
 import dataforms.util.FileUtil;
 import dataforms.util.NumberUtil;
@@ -615,12 +616,54 @@ public class TableManagerDao extends Dao {
 		}
 	}
 
+
+	/**
+	 * web.xmlのuser-info-table-classに指定されたテーブルのクラスを取得します。
+	 * @return テーブルクラス。
+	 */
+	@SuppressWarnings("unchecked")
+	private static Set<String> getAbstractTableSet() {
+		Set<String> ret = new HashSet<String>();
+		try {
+			DataFormsServlet servlet = Page.getServlet();
+			String json = servlet.getServletContext().getInitParameter("abstract-table-list");
+			if (json != null) {
+				json = json.trim();
+				if (json.length() != 0) {
+					List<String> list = JSON.decode(json, ArrayList.class);
+					for (String v: list) {
+						logger.debug("abstractTableClass=" + v);
+						ret.add(v);
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return ret;
+	}
+
+	/**
+	 * 抽象テーブルクラスの集合。
+	 */
+	private static Set<String> abstractTableSet = null;
+
+	/**
+	 * 初期化処理。
+	 */
+	static {
+		abstractTableSet = TableManagerDao.getAbstractTableSet();
+	}
+
 	/**
 	 * テーブル作成します。
 	 * @param className テーブルクラス名。
 	 * @throws Exception 例外。
 	 */
 	public void createTable(final String className) throws Exception {
+		if (TableManagerDao.abstractTableSet.contains(className)) {
+			return;
+		}
 		SqlGenerator gen = this.getSqlGenerator();
 		Table tbl = Table.newInstance(className);
 		List<String> sqllist = gen.generateCreateTableSqlList(tbl);
@@ -759,6 +802,9 @@ public class TableManagerDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void initTable(final String className) throws Exception {
+		if (TableManagerDao.abstractTableSet.contains(className)) {
+			return;
+		}
 		Table tbl = Table.newInstance(className);
 		// テーブルが存在したらバックアップを行う.
 		if (this.tableExists(tbl.getTableName())) {
@@ -777,6 +823,9 @@ public class TableManagerDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void updateTable(final String className) throws Exception {
+		if (TableManagerDao.abstractTableSet.contains(className)) {
+			return;
+		}
 		Table tbl = Table.newInstance(className);
 		if (this.tableExists(tbl.getTableName())) {
 			this.dropIndex(tbl);

@@ -17,6 +17,7 @@ import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.field.common.FlagField;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
+import dataforms.util.UserInfoTableUtil;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
@@ -38,7 +39,7 @@ public class DeveloperEditForm extends EditForm {
 	 */
 	public DeveloperEditForm() {
 		this.addField(new FlagField("userImportFlag"));
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		table.getLoginIdField().addValidator(new RequiredValidator());
 		table.getPasswordField().addValidator(new RequiredValidator());
 		this.addTableFields(table);
@@ -154,7 +155,7 @@ public class DeveloperEditForm extends EditForm {
 	 * @throws Exception 例外。
 	 */
 	private boolean userInfoDataExists() throws Exception {
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		String path = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata");
 		String userInitialFile = table.getImportData(path);
 		logger.debug(() -> "userInitialFile=" + userInitialFile);

@@ -12,6 +12,7 @@ import dataforms.controller.EditForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.util.UserAdditionalInfoTableUtil;
+import dataforms.util.UserInfoTableUtil;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
@@ -62,7 +63,7 @@ public class UserEditForm extends EditForm {
 	 */
 	public UserEditForm(final boolean isAdmin) {
 		this.admin = isAdmin;
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		table.getLoginIdField().addValidator(new RequiredValidator());
 		table.getPasswordField().addValidator(new RequiredValidator());
 		table.getUserNameField().addValidator(new RequiredValidator());

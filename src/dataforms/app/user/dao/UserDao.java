@@ -18,6 +18,7 @@ import dataforms.field.base.FieldList;
 import dataforms.field.common.SelectField;
 import dataforms.util.CryptUtil;
 import dataforms.util.UserAdditionalInfoTableUtil;
+import dataforms.util.UserInfoTableUtil;
 
 /**
  *
@@ -69,7 +70,7 @@ public class UserDao extends Dao {
 	 */
 	public Map<String, Object> queryUser(final FieldList flist, final Map<String, Object> data) throws Exception {
 		data.put("userAttributeList", this.queryUserAttributeList());
-		Query query = new UserQuery(flist, data);
+		UserQuery query = new UserQuery(flist, data);
 		String sortOrder = (String) data.get("sortOrder");
 		FieldList sflist = query.getFieldList().getOrderByFieldList(sortOrder);
 		if (sflist.size() == 0) {
@@ -125,7 +126,7 @@ public class UserDao extends Dao {
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
 		e.setPassword(CryptUtil.encrypt(e.getPassword()));
 
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 //		Long pk = this.getNewRecordId(table);
 //		data.put("userId", pk);
 		this.executeInsert(table, data);
@@ -147,7 +148,7 @@ public class UserDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public boolean existLoginId(final Map<String, Object> data, final boolean forUpdate) throws Exception {
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		return this.existRecord(table, new FieldList(table.getLoginIdField()), data, forUpdate);
 	}
 
@@ -160,7 +161,7 @@ public class UserDao extends Dao {
 		 * @param data フォームから入力されたデータ。
 		 */
 		public GetUserIdQuery(final Map<String, Object> data) {
-			UserInfoTable tbl = new UserInfoTable();
+			UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 			this.setFieldList(tbl.getFieldList());
 			this.setMainTable(tbl);
 			this.setConditionFieldList(new FieldList(tbl.getUserIdField()));
@@ -177,7 +178,7 @@ public class UserDao extends Dao {
 		 * @param data フォームから入力されたデータ。
 		 */
 		public GetLoginIdQuery(final Map<String, Object> data) {
-			UserInfoTable tbl = new UserInfoTable();
+			UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 			this.setFieldList(tbl.getFieldList());
 			this.setMainTable(tbl);
 			this.setConditionFieldList(new FieldList(tbl.getLoginIdField(), tbl.getPasswordField()));
@@ -229,7 +230,7 @@ public class UserDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	private boolean isUpdatableUser(final Map<String, Object> data) throws Exception {
-		UserInfoTable tbl = new UserInfoTable();
+		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		boolean ret = this.isUpdatable(tbl, data);
 		if (ret) {
 			@SuppressWarnings("unchecked")
@@ -265,7 +266,7 @@ public class UserDao extends Dao {
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
 		e.setPassword(CryptUtil.encrypt(e.getPassword()));
 		SqlGenerator gen = this.getSqlGenerator();
-		UserInfoTable tbl = new UserInfoTable();
+		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		String sql = gen.generateUpdateSql(tbl);
 		this.executeUpdate(sql, data);
 
@@ -294,7 +295,7 @@ public class UserDao extends Dao {
 //		data.put("password", CryptUtil.encrypt((String) data.get("password")));
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
 		e.setPassword(CryptUtil.encrypt(e.getPassword()));
-		UserInfoTable tbl = new UserInfoTable();
+		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		this.executeUpdate(tbl,
 			new FieldList(
 				/*
@@ -323,7 +324,7 @@ public class UserDao extends Dao {
 		e.setUserId(p.getUserId());
 		e.setUpdateUserId(p.getUserId());
 		e.setEnabledFlag("1");
-		UserInfoTable tbl = new UserInfoTable();
+		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		this.executeUpdate(tbl,
 			new FieldList(
 				tbl.getEnabledFlagField()
@@ -333,7 +334,23 @@ public class UserDao extends Dao {
 			new FieldList(tbl.getUserIdField()), e.getMap(), true);
 	}
 
-
+	/**
+	 * ユーザ情報変更ページで更新できるフィールドリストを取得します。
+	 * @param table ユーザ情報テーブル。
+	 * @return ユーザ情報変更ページで更新できるフィールドリスト。
+	 */
+	public static FieldList getSelfUpdateFieldList(final UserInfoTable table) {
+		FieldList flist = new FieldList();
+		flist.addAll(table.getFieldList());
+		flist.remove(UserInfoTable.Entity.ID_USER_ID);
+		flist.remove(UserInfoTable.Entity.ID_PASSWORD);
+		flist.remove(UserInfoTable.Entity.ID_EXTERNAL_USER_FLAG);
+		flist.remove(UserInfoTable.Entity.ID_ENABLED_FLAG);
+		flist.remove(UserInfoTable.Entity.ID_DELETE_FLAG);
+		flist.remove(UserInfoTable.Entity.ID_CREATE_USER_ID);
+		flist.remove(UserInfoTable.Entity.ID_CREATE_TIMESTAMP);
+		return flist;
+	}
 
 	/**
 	 * ユーザ自身が更新できる項目を更新します。
@@ -344,20 +361,10 @@ public class UserDao extends Dao {
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
 //		data.put("password", CryptUtil.encrypt((String) data.get("password")));
 		e.setPassword(CryptUtil.encrypt(e.getPassword()));
-		UserInfoTable tbl = new UserInfoTable();
+		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
+		FieldList flist = UserDao.getSelfUpdateFieldList(tbl);
 		this.executeUpdate(tbl,
-			new FieldList(
-/*				tbl.getField(UserInfoTable.Entity.ID_LOGIN_ID)
-				, tbl.getField(UserInfoTable.Entity.ID_USER_NAME)
-				, tbl.getField(UserInfoTable.Entity.ID_MAIL_ADDRESS)
-				, tbl.getField(UserInfoTable.Entity.ID_UPDATE_USER_ID)
-				, tbl.getField(UserInfoTable.Entity.ID_UPDATE_TIMESTAMP)*/
-				tbl.getLoginIdField()
-				, tbl.getUserNameField()
-				, tbl.getMailAddressField()
-				, tbl.getUpdateUserIdField()
-				, tbl.getUpdateTimestampField()
-			),
+			flist,
 			new FieldList(tbl.getField(UserInfoTable.Entity.ID_USER_ID)), data, true);
 		UserAdditionalInfoTableUtil.write(this, data);
 	}
@@ -370,7 +377,7 @@ public class UserDao extends Dao {
 	public void deleteUser(final Map<String, Object> data) throws Exception {
 		UserAdditionalInfoTableUtil.delete(this, data);
 		SqlGenerator gen = this.getSqlGenerator();
-		UserInfoTable tbl = new UserInfoTable();
+		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		String sql = gen.generateDeleteSql(tbl, new FieldList(tbl.getField(UserInfoTable.Entity.ID_USER_ID)));
 		this.executeUpdate(sql, data);
 		UserAttributeTable atbl = new UserAttributeTable();
@@ -421,7 +428,7 @@ public class UserDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public Map<String, Object> queryUserInfo(final String loginId) throws Exception {
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		FieldList flist = new FieldList(table.getLoginIdField());
 		UserInfoTable.Entity e = new UserInfoTable.Entity();
 		e.setMailAddress(loginId);
@@ -441,7 +448,7 @@ public class UserDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public List<Map<String, Object>> queryUserListByMail(final String mail) throws Exception {
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		FieldList flist = new FieldList(table.getMailAddressField());
 		UserInfoTable.Entity e = new UserInfoTable.Entity();
 		e.setMailAddress(mail);
@@ -455,7 +462,7 @@ public class UserDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void reencryptPassword(final String algolithm, final String password) throws Exception {
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		SingleTableQuery q = new SingleTableQuery(table);
 		List<Map<String, Object>> list = this.executeQuery(q);
 		for (Map<String, Object> m: list) {

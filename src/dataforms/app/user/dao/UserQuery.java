@@ -16,6 +16,7 @@ import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.sqlfunc.AliasField;
 import dataforms.util.UserAdditionalInfoTableUtil;
+import dataforms.util.UserInfoTableUtil;
 import net.arnx.jsonic.JSON;
 
 /**
@@ -103,7 +104,7 @@ public class UserQuery extends Query {
 		List<String> atlist = (List<String>) data.get("userAttributeList");
 		logger.debug(() -> "atlist=" + JSON.encode(atlist));
 		this.setDistinct(true);
-		UserInfoTable mtbl = new UserInfoTable();
+		UserInfoTable mtbl = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		FieldList fl = new FieldList();
 		fl.addAll(mtbl.getFieldList());
 		// 該当するユーザ属性のサブクエリ

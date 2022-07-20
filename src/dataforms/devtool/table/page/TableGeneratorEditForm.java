@@ -142,6 +142,7 @@ public class TableGeneratorEditForm extends EditForm {
 			}
 			m.put("isDataformsField", (Field.isDataformsField(className) ? "1" : "0"));
 			m.put("pkFlag", pkflg);
+			m.put("notNullFlag", (f.isNotNull() ? "1" : "0"));
 			m.put("fieldLength", f.getLengthParameter());
 			if (!f.idIsDefault()) {
 				m.put("fieldId", f.getId());
@@ -535,6 +536,7 @@ public class TableGeneratorEditForm extends EditForm {
 			String fpackage = (String) m.get("packageName");
 			String fclass = (String) m.get("fieldClassName");
 			String pkFlag = (String) m.get("pkFlag");
+			String notNullFlag = (String) m.get("notNullFlag");
 			String fieldId = (String) m.get("fieldId");
 			String fieldLength = (String) m.get("fieldLength");
 			implist.add(fpackage + "." + fclass);
@@ -555,7 +557,11 @@ public class TableGeneratorEditForm extends EditForm {
 				}
 			}
 			String comment = (String) m.get("comment");
-			constructor.append(")); //" + comment + "\n");
+			if ("0".equals(notNullFlag)) {
+				constructor.append(")); //" + comment + "\n");
+			} else {
+				constructor.append(")).setNotNull(true); //" + comment + "\n");
+			}
 		}
 		String flg = (String) data.get(ID_UPDATE_INFO_FLAG);
 		if ("1".equals(flg)) {

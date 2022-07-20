@@ -193,6 +193,9 @@
 									PK
 								</th>
 								<th>
+									Not null
+								</th>
+								<th>
 									コメント
 								</th>
 								<th>
@@ -227,11 +230,14 @@
 								<td style="width:50px;">
 									<input type="text" id="fieldList[0].fieldId" style="width:160px;"/>
 								</td>
-								<td>
-									<input type="text" id="fieldList[0].fieldLength" style="width:48px;"/>
+								<td style="width:48px;">
+									<input type="text" id="fieldList[0].fieldLength" style="text-align: right;" />
 								</td>
-								<td style="width:32px;">
+								<td style="width:32px; text-align: center;">
 									<input type="checkbox" id="fieldList[0].pkFlag" value="1"/>
+								</td>
+								<td style="width:64px; text-align: center;">
+									<input type="checkbox" id="fieldList[0].notNullFlag" value="1"/>
 								</td>
 								<td style="width:220px;">
 									<input type="text" id="fieldList[0].comment" />
@@ -246,7 +252,7 @@
 								<th>
 									<input type="button" id="fieldList.addButton" value="+"/>
 								</th>
-								<th colspan="11">
+								<th colspan="12">
 								</th>
 							</tr>
 						</tfoot>

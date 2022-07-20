@@ -29,6 +29,7 @@ public class FieldListHtmlTable extends EditableHtmlTable {
 			, new FieldIdField()
 			, new FieldLengthField()
 			, (new FlagField("pkFlag")).setComment("主キー")
+			, (new FlagField("notNullFlag")).setComment("Not Null")
 			, (new VarcharField("comment", 256)).setComment("コメント")
 			, new FlagField("isDataformsField")
 			, new OverwriteModeField()

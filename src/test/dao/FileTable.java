@@ -1,19 +1,20 @@
 package test.dao;
 
 import java.util.Map;
+
 import dataforms.dao.Table;
-import test.field.FileIdField;
-import test.field.FolderImageField;
-import test.field.FolderVideoField;
-import test.field.BlobImageField;
-import test.field.BlobVideoField;
+import dataforms.field.common.SortOrderField;
 import dataforms.util.NumberUtil;
 import test.field.BlobAudioField;
-import dataforms.field.common.SortOrderField;
-import test.field.FolderAudioField;
 import test.field.BlobFileField;
-import test.field.MemoField;
+import test.field.BlobImageField;
+import test.field.BlobVideoField;
+import test.field.FileIdField;
+import test.field.FolderAudioField;
 import test.field.FolderFileField;
+import test.field.FolderImageField;
+import test.field.FolderVideoField;
+import test.field.MemoField;
 
 
 /**
@@ -29,7 +30,7 @@ public class FileTable extends Table {
 		this.setComment("各種ファイルテーブル");
 		this.addPkField(new FileIdField()); //ファイルID
 		this.addField(new SortOrderField()); //ソート順
-		this.addField(new MemoField()); //メモ
+		this.addField(new MemoField()).setNotNull(true); //メモ
 		this.addField(new BlobFileField()); //BLOBファイル
 		this.addField(new BlobImageField()); //BLOB画像
 		this.addField(new BlobVideoField()); //BLOB動画

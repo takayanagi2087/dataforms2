@@ -184,6 +184,10 @@ public class TableManagerDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public Map<String, Object> getTableInfo(final String classname) throws Exception {
+		logger.debug("*** classname=" + classname);
+		if (TableManagerDao.abstractTableSet.contains(classname)) {
+			return null;
+		}
 		Map<String, Object> tableInfo = new HashMap<String, Object>();
 		tableInfo.put("checkedClass", classname);
 		tableInfo.put("className", classname);

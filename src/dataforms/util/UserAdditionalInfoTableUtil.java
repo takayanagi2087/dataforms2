@@ -153,7 +153,7 @@ public class UserAdditionalInfoTableUtil {
 	}
 
 	/**
-	 * ユーザ追加情報テーブルを読み込みます。
+	 * ユーザ追加情報テーブルに書き込みます。
 	 * @param dao Daoのインスタンス。
 	 * @param data 書き込みデータ。
 	 * @throws Exception 例外。

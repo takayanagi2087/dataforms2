@@ -3,8 +3,6 @@ package test.dao;
 import java.util.Map;
 
 import dataforms.app.user.dao.UserInfoTable;
-import dataforms.app.user.dao.UserInfoTableRelation;
-import dataforms.dao.TableRelation;
 import dataforms.debug.user.field.AddressField;
 import dataforms.field.common.ZipCodeField;
 
@@ -21,18 +19,6 @@ public class ExtendedUserInfoTable extends UserInfoTable {
 		this.addField(new AddressField()); //住所
 	}
 
-	/**
-	 * テーブル名をuser_infoとする。
-	 */
-	@Override
-	public String getTableName() {
-		return super.getTableName();
-	}
-
-	@Override
-	public TableRelation getTableRelation() throws Exception {
-		return new UserInfoTableRelation(this);
-	}
 	/**
 	 * Entity操作クラスです。
 	 */

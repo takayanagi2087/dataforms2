@@ -463,7 +463,8 @@ class Page extends DataForms {
 			$(this.convertSelector("div.menuDiv")).css("display", "");
 		}
 		let sel = this.convertSelector("#lockLayer");
-		let h = $("body").height();
+		// let h = $("body").clientHeight();
+		let h = window.innerHeight;
 		if ($(sel).is(":visible")) {
 			$(sel).css({
 				width: $(document).width(),
@@ -480,7 +481,8 @@ class Page extends DataForms {
 	 */
 	lock() {
 		let sel = this.convertSelector("#lockLayer");
-		let h = $("body").height();
+//		let h = $("body").height();
+		let h = window.innerHeight;
 		logger.log("lock() w=" + $(document).width() + ", h=" + h);
 		$(sel).css({
 			display: 'block',

@@ -26,6 +26,7 @@ import dataforms.field.base.Field;
 import dataforms.field.base.Field.MatchType;
 import dataforms.field.common.DeleteFlagField;
 import dataforms.field.common.FileField;
+import dataforms.field.common.FileReceiverField;
 import dataforms.field.common.FlagField;
 import dataforms.field.common.MultiSelectField;
 import dataforms.field.common.PresenceField;
@@ -247,6 +248,21 @@ public class WebResourceForm extends Form {
 			return sb.toString();
 		}
 
+
+		/**
+		 * テキストフィールドのHTMLを作成します。
+		 * @param field フィールド。
+		 * @param tabs 段付けようのtab。
+		 * @return テキストフィールドのHTML。
+		 */
+		private String getFileReceiverHtml(final Field<?> field, final String tabs) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(tabs + "\t\t\t<tr>\n");
+			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
+			sb.append(tabs + "\t\t\t\t<td><div id=\"" + field.getId() + "\" class=\"fileReceiver\"></div></td>\n");
+			sb.append(tabs + "\t\t\t</tr>\n");
+			return sb.toString();
+		}
 
 		/**
 		 * テキストフィールドのHTMLを作成します。
@@ -613,6 +629,8 @@ public class WebResourceForm extends Form {
 						sb.append(this.getFileFieldHtml(field, tabs));
 					} else if (c instanceof DateField) {
 						sb.append(this.getDateFieldHtml(field, tabs));
+					} else if (c instanceof FileReceiverField) {
+						sb.append(this.getFileReceiverHtml(field, tabs));
 					} else {
 						// 通常はテキストボックス。
 						sb.append(this.getTextFieldHtml(field, tabs));
@@ -818,6 +836,16 @@ public class WebResourceForm extends Form {
 		 * @param field フィールド。
 		 * @return フィールドのタグ。
 		 */
+		private String getFileReceiverHtml(final String tblid, final Field<?> field) {
+			return "<div id=\"" + tblid + "[0]." + field.getId() + "\" class=\"fileReceiver\"></div>";
+		}
+
+		/**
+		 * ファイルフィールドのHTMLを作成します。
+		 * @param tblid テーブルID。
+		 * @param field フィールド。
+		 * @return フィールドのタグ。
+		 */
 		private String getFileFieldHtml(final String tblid, final Field<?> field) {
 			return "<input type=\"file\" id=\"" + tblid + "[0]." + field.getId() + "\" />";
 		}
@@ -860,6 +888,8 @@ public class WebResourceForm extends Form {
 			} else if (c instanceof FileField) {
 				// fileを展開
 				sb.append(this.getFileFieldHtml(tblid, field));
+			} else if (c instanceof FileReceiverField) {
+				sb.append(this.getFileReceiverHtml(tblid, field));
 			} else {
 				// 通常はテキストボックス。
 				sb.append(this.getTextFieldHtml(tblid, field));

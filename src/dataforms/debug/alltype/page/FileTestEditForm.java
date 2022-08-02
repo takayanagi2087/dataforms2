@@ -14,6 +14,7 @@ import dataforms.debug.alltype.dao.FileFieldTestDao;
 import dataforms.debug.alltype.dao.FileFieldTestTable;
 import dataforms.debug.alltype.report.FielFieldTestReport;
 import dataforms.field.base.FieldList;
+import dataforms.field.common.FileReceiverField;
 import dataforms.field.common.ImageField;
 import dataforms.field.common.WebResourceImageField;
 import dataforms.response.BinaryResponse;
@@ -45,6 +46,7 @@ public class FileTestEditForm extends EditForm {
 		tbl.getStaticFolderImageField().setReducedThumbnail(false);
 		this.addTableFields(tbl);
 		this.addField(new WebResourceImageField("menuImage", "/frame/default/image/menu.png"));
+		this.addField(new FileReceiverField("blobFileReceiver", tbl.getBlobFileField().getId()));
 		FieldList flist = this.getFieldList();
 		ImageField ifld = (ImageField) flist.get(FileFieldTestTable.Entity.ID_BLOB_IMAGE);;
 		ifld.setThumbnailWidth(480);

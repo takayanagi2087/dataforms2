@@ -76,7 +76,6 @@ public class FileReceiverField extends Field<String> {
 
 	@Override
 	public void init() throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
 		super.init();
 		this.message = MessagesUtil.getMessage(getWebEntryPoint(), "message.filereceiver");
 	}

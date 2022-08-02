@@ -46,7 +46,12 @@ public class FileTestEditForm extends EditForm {
 		tbl.getStaticFolderImageField().setReducedThumbnail(false);
 		this.addTableFields(tbl);
 		this.addField(new WebResourceImageField("menuImage", "/frame/default/image/menu.png"));
+
 		this.addField(new FileReceiverField("blobFileReceiver", tbl.getBlobFileField().getId()));
+		this.addField(new FileReceiverField("blobImageReceiver", tbl.getBlobImageField().getId()));
+		this.addField(new FileReceiverField("blobVideoReceiver", tbl.getBlobVideoField().getId()));
+		this.addField(new FileReceiverField("blobAudioReceiver", "blobAudio"));
+
 		FieldList flist = this.getFieldList();
 		ImageField ifld = (ImageField) flist.get(FileFieldTestTable.Entity.ID_BLOB_IMAGE);;
 		ifld.setThumbnailWidth(480);

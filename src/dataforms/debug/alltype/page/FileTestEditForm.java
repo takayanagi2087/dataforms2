@@ -14,7 +14,6 @@ import dataforms.debug.alltype.dao.FileFieldTestDao;
 import dataforms.debug.alltype.dao.FileFieldTestTable;
 import dataforms.debug.alltype.report.FielFieldTestReport;
 import dataforms.field.base.FieldList;
-import dataforms.field.common.FileReceiverField;
 import dataforms.field.common.ImageField;
 import dataforms.field.common.WebResourceImageField;
 import dataforms.response.BinaryResponse;
@@ -41,23 +40,16 @@ public class FileTestEditForm extends EditForm {
 		FileFieldTestTable tbl = new FileFieldTestTable();
 		tbl.getFolderImageField().setThumbnailWidth(480);
 		tbl.getFolderImageField().setThumbnailHeight(270);
-		tbl.getStaticFolderImageField().setThumbnailWidth(480);
-		tbl.getStaticFolderImageField().setThumbnailHeight(270);
-		tbl.getStaticFolderImageField().setReducedThumbnail(false);
-
-		tbl.getFieldList().insertAfter(new FileReceiverField("blobFileReceiver", tbl.getBlobFileField().getId()), tbl.getBlobFileField().getId()).setComment("BLOB保存ファイルレシーバー");
-		tbl.getFieldList().insertAfter(new FileReceiverField("blobImageReceiver", tbl.getBlobImageField().getId()), tbl.getBlobImageField().getId()).setComment("BLOB保存画像ファイルレシーバー");
-		tbl.getFieldList().insertAfter(new FileReceiverField("blobVideoReceiver", tbl.getBlobVideoField().getId()), tbl.getBlobVideoField().getId()).setComment("BLOB保存動画ファイルレシーバー");
-		tbl.getFieldList().insertAfter(new FileReceiverField("blobAudioReceiver", "blobAudio"), "blobAudio").setComment("BLOB保存音声ファイルレシーバー");
-
+		tbl.getStaticFolderImageFileField().setThumbnailWidth(480);
+		tbl.getStaticFolderImageFileField().setThumbnailHeight(270);
+		tbl.getStaticFolderImageFileField().setReducedThumbnail(false);
+		tbl.getBlobFileField().setEnableFileReceiver(true);
+		tbl.getBlobImageField().setEnableFileReceiver(true);
+		tbl.getBlobVideoField().setEnableFileReceiver(true);
+		tbl.getBlobAudioField().setEnableFileReceiver(true);
 		this.addTableFields(tbl);
 		this.addField(new WebResourceImageField("menuImage", "/frame/default/image/menu.png"));
 
-/*		this.addField(new FileReceiverField("blobFileReceiver", tbl.getBlobFileField().getId()));
-		this.addField(new FileReceiverField("blobImageReceiver", tbl.getBlobImageField().getId()));
-		this.addField(new FileReceiverField("blobVideoReceiver", tbl.getBlobVideoField().getId()));
-		this.addField(new FileReceiverField("blobAudioReceiver", "blobAudio"));
-*/
 		FieldList flist = this.getFieldList();
 		ImageField ifld = (ImageField) flist.get(FileFieldTestTable.Entity.ID_BLOB_IMAGE);;
 		ifld.setThumbnailWidth(480);

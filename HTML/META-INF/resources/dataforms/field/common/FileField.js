@@ -4,6 +4,71 @@
 
 'use strict';
 
+ /**
+ * @class FileReceiver
+ * ファイルDrag&Drop受付領域。
+ * @extends Field
+ */
+ class FileReceiver {
+
+	/**
+	 * コンストラクタ。
+	 * @param {FileField} fileField ファイルフィールド。
+	 */
+	constructor(fileField) {
+		this.fileField = fileField;
+	}
+
+	/**
+	 * HTMLエレメントとの対応付けを行います。
+	 * <pre>
+	 * ファイルのドロップイベントの設定を行います。
+	 * </pre>
+	 */
+	attach() {
+		let msg = MessagesUtil.getMessage("message.filereceiver")
+		logger.log("realId=" + this.fileField.realId);
+		let rdiv = this.fileField.parent.find("[data-id='" + this.fileField.id + "_rcv']");
+		rdiv.text(msg);
+		rdiv.show();
+
+		rdiv.on("dragenter", (ev) => {
+			ev.stopPropagation();
+			ev.preventDefault();
+			$(ev.target).addClass("fileReceiverActive");
+		});
+
+		rdiv.on("dragover", (ev) => {
+			ev.stopPropagation();
+			ev.preventDefault();
+		});
+
+		rdiv.on("drop", (ev) => {
+			ev.stopPropagation();
+			ev.preventDefault();
+			$(ev.target).removeClass("fileReceiverActive");
+			this.setFile(ev.originalEvent.dataTransfer.files);
+		});
+
+		rdiv.on("dragleave", (ev) => {
+			ev.stopPropagation();
+			ev.preventDefault();
+			$(ev.target).removeClass("fileReceiverActive");
+		});
+
+	}
+
+	/**
+	 * ファイルを設定します。
+	 * @param {Array} ファイルリスト。
+	 */
+	setFile(files) {
+		let el = this.fileField.get().get()[0];
+		el.files = files;
+		this.fileField.selectFile(this.fileField.get());
+	}
+}
+
 /**
  * @class FileField
  * ファイルフィールドクラス。
@@ -50,6 +115,10 @@ class FileField extends Field {
 			comp.hide();
 		} else {
 			this.parent.get(selid).hide();
+		}
+		if (this.enableFileReceiver) {
+			let r = new FileReceiver(this);
+			r.attach();
 		}
 	}
 

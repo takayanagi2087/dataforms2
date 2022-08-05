@@ -42,6 +42,12 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	 */
 	public static final String DOWNLOADING_FILE = "downloadingFile_";
 
+
+	/**
+	 * ファイルのDrag&Drop領域の有効フラグ。
+	 */
+	private Boolean enableFileReceiver = false;
+
 	/**
 	 * 基底フォルダ。
 	 */
@@ -94,6 +100,23 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	public FileField<? extends FileObject> setBaseFolder(final String baseFolder) {
 		this.baseFolder = baseFolder;
 		return this;
+	}
+
+
+	/**
+	 * ファイルのDrag&Drop領域の有効フラグを取得します。
+	 * @return ファイルのDrag&Drop領域の有効フラグ。
+	 */
+	public Boolean getEnableFileReceiver() {
+		return enableFileReceiver;
+	}
+
+	/**
+	 * ファイルのDrag&Drop領域の有効フラグを設定します。
+	 * @param enableFileReceiver ファイルのDrag&Drop領域の有効フラグ。
+	 */
+	public void setEnableFileReceiver(final Boolean enableFileReceiver) {
+		this.enableFileReceiver = enableFileReceiver;
 	}
 
 	/**
@@ -341,5 +364,12 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 	@Override
 	public int calcDefaultColumnWidth() {
 		return 300;
+	}
+
+	@Override
+	public Map<String, Object> getProperties() throws Exception {
+		Map<String, Object> prop = super.getProperties();
+		prop.put("enableFileReceiver", this.enableFileReceiver);
+		return prop;
 	}
 }

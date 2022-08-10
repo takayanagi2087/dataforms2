@@ -104,16 +104,16 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 
 
 	/**
-	 * ファイルのDrag&Drop領域の有効フラグを取得します。
-	 * @return ファイルのDrag&Drop領域の有効フラグ。
+	 * ファイルのDrag&amp;Drop領域の有効フラグを取得します。
+	 * @return ファイルのDrag&amp;Drop領域の有効フラグ。
 	 */
 	public Boolean getEnableFileReceiver() {
 		return enableFileReceiver;
 	}
 
 	/**
-	 * ファイルのDrag&Drop領域の有効フラグを設定します。
-	 * @param enableFileReceiver ファイルのDrag&Drop領域の有効フラグ。
+	 * ファイルのDrag&amp;Drop領域の有効フラグを設定します。
+	 * @param enableFileReceiver ファイルのDrag&amp;Drop領域の有効フラグ。
 	 */
 	public void setEnableFileReceiver(final Boolean enableFileReceiver) {
 		this.enableFileReceiver = enableFileReceiver;

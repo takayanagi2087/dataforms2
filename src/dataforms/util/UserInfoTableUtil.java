@@ -60,7 +60,6 @@ public final class UserInfoTableUtil {
 	/**
 	 * ユーザ情報テーブルのインスタンスを取得します。
 	 * @return ユーザ情報テーブルのインスタンス。
-	 * @throws Exception 例外。
 	 */
 	public static UserInfoTable newUserInfoTable() {
 		UserInfoTable ret = new UserInfoTable();

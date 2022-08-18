@@ -206,4 +206,22 @@ public interface WebEntryPoint {
     	}
     	return ret;
     }
+
+    /**
+     * ContextのURLを取得します。
+     * @return ContextのURL。
+     */
+    default String getContextUrl() {
+    	HttpServletRequest req = this.getRequest();
+		String scheme = req.getScheme();
+		String sv = req.getServerName();
+		int port = req.getServerPort();
+		String p = ":" + port;
+		if ((port == 80 && "http".equals(scheme)) || (port == 443 && "https".equals(scheme))) {
+			p = "";
+		}
+		String context = req.getContextPath();
+		String url = scheme + "://" + sv + p + context;
+		return url;
+    }
 }

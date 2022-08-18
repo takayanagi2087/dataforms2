@@ -470,18 +470,22 @@ public class TableManagerDao extends Dao {
 	public void importIntialData(final String classname) throws Exception {
 		final Table tbl = Table.newInstance(classname);
 		this.deleteAllRecord(tbl);
-		List<Map<String, Object>> list = tbl.getInitialData();
-		if (list != null) {
-			String sql = this.getSqlGenerator().generateInsertSql(tbl);
-			for (int i = 0; i < list.size(); i++) {
-				Map<String, Object> m = list.get(i);
-				Map<String, Object> data = tbl.getFieldList().convertClientToServer(m);
-				this.setUserIdValue(data);
-				this.executeUpdate(sql, data);
-			}
-		}
 		String initialDataPath = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata");
-		this.importData(classname, initialDataPath);
+		String file = tbl.getImportData(initialDataPath);
+		if (file == null) {
+			List<Map<String, Object>> list = tbl.getInitialData();
+			if (list != null) {
+				String sql = this.getSqlGenerator().generateInsertSql(tbl);
+				for (int i = 0; i < list.size(); i++) {
+					Map<String, Object> m = list.get(i);
+					Map<String, Object> data = tbl.getFieldList().convertClientToServer(m);
+					this.setUserIdValue(data);
+					this.executeUpdate(sql, data);
+				}
+			}
+		} else {
+			this.importData(classname, initialDataPath);
+		}
 	}
 
 	/**

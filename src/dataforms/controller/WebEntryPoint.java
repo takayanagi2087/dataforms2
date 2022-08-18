@@ -209,6 +209,9 @@ public interface WebEntryPoint {
 
     /**
      * ContextのURLを取得します。
+     * <pre>
+     * "http[s]://server[:port]/context"の文字列を返します。
+     * </pre>
      * @return ContextのURL。
      */
     default String getContextUrl() {

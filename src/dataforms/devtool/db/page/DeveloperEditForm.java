@@ -34,6 +34,27 @@ public class DeveloperEditForm extends EditForm {
      */
     private static Logger logger = LogManager.getLogger(DeveloperEditForm.class.getName());
 
+    /**
+     * ユーザインポートフラグの初期値。
+     */
+    private static Boolean checkUserImport = false;
+
+    /**
+	 * ユーザインポートフラグを取得します。
+     * @return ユーザインポートフラグ。
+     */
+	public static Boolean getCheckUserImport() {
+		return checkUserImport;
+	}
+
+	/**
+	 * ユーザインポートフラグを設定します。
+	 * @param checkUserImport ユーザインポートフラグ。
+	 */
+	public static void setCheckUserImport(final Boolean checkUserImport) {
+		DeveloperEditForm.checkUserImport = checkUserImport;
+	}
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -96,6 +117,13 @@ public class DeveloperEditForm extends EditForm {
 		String userLevel = this.getInitializeUserLvel();
 		ret.put("loginId", userLevel);
 		ret.put("userName", userLevel);
+		logger.debug(() -> "checkUserImport=" + DeveloperEditForm.checkUserImport);
+		boolean exists = this.userInfoDataExists();
+		if (exists && DeveloperEditForm.checkUserImport) {
+			ret.put("userImportFlag", "1");
+		} else {
+			ret.put("userImportFlag", "0");
+		}
 		return ret;
 	}
 

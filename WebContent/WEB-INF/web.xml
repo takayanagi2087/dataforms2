@@ -87,6 +87,14 @@
 	</context-param>
 
 	<!--
+		trueの場合ユーザの初期化データが存在した場合、ユーザのインポートを優先します。
+	 -->
+	<context-param>
+		<param-name>check-user-import</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!--
 		データベースの作成時に、初期化するパッケージリストを指定します。
 		パッケージ名は,区切りで複数設定することができます。
 		データベースを作成するときに、このパッケージリストを参照し、
@@ -110,6 +118,7 @@
 		dataforms2.jarに含まれたUserInfoTableに項目を追加する場合、
 		このコメントを有効にしてUserInfoTableから派生したテーブルクラスに項目を追加します。
 	 -->
+	 <!--
 	<context-param>
 		<param-name>abstract-table-list</param-name>
 		<param-value>
@@ -118,6 +127,7 @@
 			]
 		</param-value>
 	</context-param>
+	  -->
 
 	<!--
 		UserInfoTableに項目を追加したExtendedUserInfoTableを作成した場合、
@@ -127,12 +137,14 @@
 		UserEditForm.html,UserSelfEditPage.html,UserRegistPage.htmlをjarファイルからプロジェクトにエクスポートし、
 		フィールドを追加することにより追加情報を入力することが可能になります。
 	 -->
+	 <!--
 	<context-param>
 		<param-name>user-info-table-class</param-name>
 		<param-value>
 			test.dao.ExtendedUserInfoTable
 		</param-value>
 	</context-param>
+	  -->
 
 	<!--
 		この設定は非推奨です。user-info-table-classを使用してください。

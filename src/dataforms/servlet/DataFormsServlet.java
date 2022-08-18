@@ -55,6 +55,7 @@ import dataforms.dao.file.BlobFileStore;
 import dataforms.dao.file.FileObject;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.db.dao.TableManagerDao;
+import dataforms.devtool.db.page.DeveloperEditForm;
 import dataforms.exception.ApplicationException;
 import dataforms.exception.ApplicationException.ResponseMode;
 import dataforms.exception.AuthoricationException;
@@ -450,6 +451,11 @@ public class DataFormsServlet extends HttpServlet {
 				: this.getServletContext().getInitParameter("use-unique-id")
 		);
 		WebComponent.setUseUniqueId(useUniqueId);
+
+		Boolean checkUserImport = Boolean.parseBoolean(this.getServletContext().getInitParameter("check-user-import") == null ? "true"
+						: this.getServletContext().getInitParameter("check-user-import"));
+		logger.info(() -> "init:checkUserImport=" + checkUserImport);
+		DeveloperEditForm.setCheckUserImport(checkUserImport);
 
 		String ieSupportJson = this.getServletContext().getInitParameter("ie-support");
 		logger.debug(() -> "ieSupport=" + ieSupportJson);

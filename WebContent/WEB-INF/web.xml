@@ -569,8 +569,11 @@
 		<param-value>
 			[
 				{"fnPattern": "(?i).*\\.txt$", "contentType": "text/plain"},
+				{"fnPattern": "(?i).*\\.js$", "contentType": "text/javascript"},
+				{"fnPattern": "(?i).*\\.json$", "contentType": "application/json"},
 				{"fnPattern": "(?i).*\\.html$", "contentType": "text/html"},
 				{"fnPattern": "(?i).*\\.htm$", "contentType": "text/html"},
+				{"fnPattern": "(?i).*\\.css$", "contentType": "text/css"},
 				{"fnPattern": "(?i).*\\.xhtml$", "contentType": "text/xhtml+xml"},
 				{"fnPattern": "(?i).*\\.rss$", "contentType": "application/rss+xml"},
 
@@ -583,6 +586,7 @@
 				{"fnPattern": "(?i).*\\.jpeg$", "contentType": "image/jpeg"},
 				{"fnPattern": "(?i).*\\.gif$", "contentType": "image/gif"},
 				{"fnPattern": "(?i).*\\.svg$", "contentType": "image/svg+xml"},
+				{"fnPattern": "(?i).*\\.ico$", "contentType": "image/ico"},
 
 				{"fnPattern": "(?i).*\\.swf$", "contentType": "application/x-shockwave-flash"},
 				{"fnPattern": "(?i).*\\.mpg$", "contentType": "video/mpeg"},
@@ -594,6 +598,8 @@
 
 				{"fnPattern": "(?i).*\\.mp3$", "contentType": "audio/mpeg"},
 				{"fnPattern": "(?i).*\\.wav$", "contentType": "audio/wav"},
+
+				{"fnPattern": "(?i).*\\.woff2$", "contentType": "font/woff2"},
 
 				{"fnPattern": ".+", "contentType": "application/octet-stream"}
 			]

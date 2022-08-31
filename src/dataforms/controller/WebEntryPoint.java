@@ -76,6 +76,11 @@ public interface WebEntryPoint {
 	 */
 	void setConnection(final Connection connection);
 
+	/**
+	 * JDBC接続を取得します。
+	 * @return JDBC接続。
+	 */
+	Connection getConnection();
 
 	/**
 	 * 認証済みかどうかを返します。

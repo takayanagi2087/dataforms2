@@ -380,7 +380,7 @@ public class WebComponent implements JDBCConnectableObject {
 	}
 
 	/**
-     * WEBエントリーポイントを設定します。
+     * WEBエントリーポイントを取得します。
 	 * @return WEBエントリーポイント。
 	 */
 	public WebEntryPoint getWebEntryPoint() {
@@ -396,7 +396,7 @@ public class WebComponent implements JDBCConnectableObject {
 	}
 
 	/**
-	 * ページを削除します。
+	 * WEBエントリーポイントを削除します。
 	 */
 	public void releaseWebEntryPoint() {
 		WebComponent.entryPoint.remove();
@@ -408,9 +408,8 @@ public class WebComponent implements JDBCConnectableObject {
 	 */
 	@Override
 	public Connection getConnection() {
-		return this.getPage().getConnection();
+		return WebComponent.entryPoint.get().getConnection();
 	}
-
 
 	/**
 	 * 初期化処理を行います。

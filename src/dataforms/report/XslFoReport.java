@@ -147,9 +147,9 @@ public class XslFoReport extends Report {
 	 * @param data 画像データ。
 	 * @return 画像タグ。
 	 */
-	private String getImageTag(final ImageData data) {
+	private String getImageTag(final ImageData data) throws Exception {
 		if (data != null) {
-			String encoded = Base64.getEncoder().encodeToString(data.getContents());
+			String encoded = Base64.getEncoder().encodeToString(data.readContents());
 			String ret = "data:" + data.getContentType() + ";base64, " + encoded;
 			return ret;
 		} else {

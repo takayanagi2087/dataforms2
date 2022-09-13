@@ -1,14 +1,23 @@
 package dataforms.debug.alltype.page;
 
+import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.oned.Code39Writer;
 
 import dataforms.annotation.WebMethod;
 import dataforms.app.enumtype.dao.EnumDao;
@@ -133,7 +142,7 @@ public class AllTypeEditForm extends EditForm {
 	 */
 	public ImageData getBarcodeImage(final String text) throws Exception {
 		// zxing-core.jar zxing-javase.jarを使用したバーコード生成
-/*		String contents = text;
+		String contents = text;
 		BarcodeFormat format = BarcodeFormat.CODE_39;
 		int width = 200;
 		int height = 50;
@@ -149,9 +158,9 @@ public class AllTypeEditForm extends EditForm {
 		ImageData ret = new ImageData();
 		ret.setFileName("barcode.png");
 		ret.setContents(os.toByteArray());
-		log.debug("Image conetnt-type=" + ret.getContentType());
-		return ret;*/
-		return null;
+		logger.debug("Image conetnt-type=" + ret.getContentType());
+		return ret;
+//		return null;
 	}
 
 

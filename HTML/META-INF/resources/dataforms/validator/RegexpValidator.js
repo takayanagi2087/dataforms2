@@ -21,10 +21,17 @@ class RegexpValidator extends FieldValidator {
 		if (this.isBlank(v)) {
 			return true;
 		}
-		var regex = new RegExp(this.pattern);
-	    if (regex.test(v)) {
-	    	return true;
-	    }
+		if (this.multiline) {
+			let regex = new RegExp(this.pattern, "m");
+			if (regex.test(v)) {
+				return true;
+			}
+		} else {
+			let regex = new RegExp(this.pattern);
+			if (regex.test(v)) {
+				return true;
+			}
+		}
 	    return false;
 	}
 }

@@ -1,6 +1,7 @@
 package dataforms.validator;
 
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import dataforms.util.MessagesUtil;
@@ -21,6 +22,11 @@ public class RegexpValidator extends FieldValidator {
 	 * 正規表現パターン。
 	 */
 	private String pattern = null;
+
+	/**
+	 * 請求フラグ。
+	 */
+	private int flags = 0;
 
 	/**
 	 * コンストラクタ。
@@ -44,6 +50,17 @@ public class RegexpValidator extends FieldValidator {
 		this.pattern = pattern;
 	}
 
+	/**
+	 * コンストラクタ。
+	 * @param msgkey メッセージキー。
+	 * @param pattern 正規表現パターン。
+	 * @param flags パターンフラグ。
+	 */
+	public RegexpValidator(final String msgkey, final String pattern, final int flags) {
+		super(msgkey);
+		this.pattern = pattern;
+		this.flags = flags;
+	}
 
 	/**
 	 * 正規表現パターンを取得します。
@@ -59,7 +76,13 @@ public class RegexpValidator extends FieldValidator {
 			return true;
 		}
 		String str = (String) value;
-		return Pattern.matches(this.pattern, str);
+		if (this.flags == 0) {
+			return Pattern.matches(this.pattern, str);
+		} else {
+			Pattern p = Pattern.compile(this.pattern, this.flags);
+			Matcher m = p.matcher(str);
+			return m.find();
+		}
 	}
 
 	@Override
@@ -71,6 +94,7 @@ public class RegexpValidator extends FieldValidator {
 	public  Map<String, Object> getProperties() throws Exception {
 		Map<String, Object> map = super.getProperties();
 		map.put("pattern", this.pattern);
+		map.put("multiline", (this.flags | Pattern.MULTILINE) != 0);
 		return map;
 	}
 }

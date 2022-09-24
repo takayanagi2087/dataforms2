@@ -21,12 +21,25 @@ class RegexpValidator extends FieldValidator {
 		if (this.isBlank(v)) {
 			return true;
 		}
-		if (this.multiline) {
-			let regex = new RegExp(this.pattern, "m");
+		if (this.multiline || this.caseInsensitive || this.dotAll ) {
+			let flags = "";
+			if (this.multiline) {
+				flags += "m"
+			}
+			if (this.caseInsensitive) {
+				flags += "i"
+			}
+			if (this.dotAll) {
+				flags += "s"
+			}
+			logger.log("flags=" + flags);
+			logger.log("pattern=" + this.pattern);
+			let regex = new RegExp(this.pattern, flags);
 			if (regex.test(v)) {
 				return true;
 			}
 		} else {
+			logger.log("pattern=" + this.pattern);
 			let regex = new RegExp(this.pattern);
 			if (regex.test(v)) {
 				return true;

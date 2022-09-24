@@ -55,6 +55,9 @@ public class RegexpValidator extends FieldValidator {
 	 * @param msgkey メッセージキー。
 	 * @param pattern 正規表現パターン。
 	 * @param flags パターンフラグ。
+	 * <pre>
+	 * Pattern.MULTILINE, Pattern.CASE_INSENSITIVE, Pattern.DOTALLに対応しています。
+	 * </pre>
 	 */
 	public RegexpValidator(final String msgkey, final String pattern, final int flags) {
 		super(msgkey);
@@ -94,7 +97,9 @@ public class RegexpValidator extends FieldValidator {
 	public  Map<String, Object> getProperties() throws Exception {
 		Map<String, Object> map = super.getProperties();
 		map.put("pattern", this.pattern);
-		map.put("multiline", (this.flags | Pattern.MULTILINE) != 0);
+		map.put("multiline", (this.flags & Pattern.MULTILINE) != 0);
+		map.put("caseInsensitive", (this.flags & Pattern.CASE_INSENSITIVE) != 0);
+		map.put("dotAll", (this.flags & Pattern.DOTALL) != 0);
 		return map;
 	}
 }

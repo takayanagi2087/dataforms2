@@ -88,9 +88,9 @@
 	<!--
 	<Resource name="jdbc/dfdb" auth="Container"
 		type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
-		url="jdbc:oracle:thin:@192.168.56.102:1521:xe"
+		url="jdbc:oracle:thin:@192.168.5.115:1521/xepdb1"
 		username="dfuser" password="password"/>
 	<Environment name="duplicateErrorMessage" value="constraint \(.+?\.(.+?)\) violated" type="java.lang.String" override="false"/>
 	<Environment name="foreignKeyErrorMessage" value="constraint \(.+?\.(.+?)\) violated " type="java.lang.String" override="false"/>
-	-->
+	 -->
 </Context>

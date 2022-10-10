@@ -2,20 +2,21 @@ package dataforms.dao.sqlgen.mssql;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
-import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.SqlGeneratorImpl;
+import dataforms.dao.Index;
 import dataforms.dao.Query;
 import dataforms.dao.QueryPager;
+import dataforms.dao.Table;
 import dataforms.dao.sqldatatype.SqlBlob;
 import dataforms.dao.sqldatatype.SqlClob;
 import dataforms.dao.sqldatatype.SqlTimestamp;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.field.base.Field;
+import dataforms.servlet.DataFormsServlet;
 
 /**
  * MS SQL Server用SQL Generator.
@@ -146,13 +147,25 @@ public class MssqlSqlGenerator extends SqlGenerator {
 
 	@Override
 	public String getConstraintViolationException(SQLException ex) {
-		if (ex instanceof SQLIntegrityConstraintViolationException) {
-			if ("org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException".equals(ex.getClass().getName())) {
-				DerbySQLIntegrityConstraintViolationException dex = (DerbySQLIntegrityConstraintViolationException) ex;
-				logger.debug(() -> "dex.getTableName()=" + dex.getTableName());
-				logger.debug(() -> "dex.getConstraintName()=" + dex.getConstraintName());
-				return dex.getConstraintName();
+		logger.debug(() -> "message=" + ex.getMessage());
+		logger.debug(() -> "errorCode=" + ex.getErrorCode());
+		logger.debug(() -> "getSQLState=" + ex.getSQLState());
+		if ("23000".equals(ex.getSQLState())) {
+			String pat = "一意インデックス '(.+?)' を含むオブジェクト";
+			if (DataFormsServlet.getDuplicateErrorMessage() != null) {
+				pat = DataFormsServlet.getDuplicateErrorMessage();
 			}
+			logger.debug("DuplicateErrorMessage={}", pat);
+			// ERROR: 重複キーが一意性制約"enum_index"に違反しています
+			return this.getConstraintName(pat, ex.getMessage());
+		} else if ("23503".equals(ex.getSQLState())) {
+			// ERROR: テーブル"enum"の更新または削除は、テーブル"enum"の外部キー制約"fk_enum_table01"に違反します
+			String pat = "外部キー制約\"(.+?)\"に違反します";
+			if (DataFormsServlet.getForeignKeyErrorMessage() != null) {
+				pat = DataFormsServlet.getForeignKeyErrorMessage();
+			}
+			logger.debug("ForeignKeyErrorMessage={}", pat);
+			return this.getConstraintName(pat, ex.getMessage());
 		}
 		return null;
 	}
@@ -169,5 +182,32 @@ public class MssqlSqlGenerator extends SqlGenerator {
 		}
 
 		return type;
+	}
+
+	@Override
+	public String generateDropIndexSql(Index index) {
+		String tableName = index.getTable().getTableName();
+		return "drop index " + tableName + "." + index.getIndexName();
+	}
+
+	@Override
+	public String generateDropIndexSql(String indexName, String tableName) {
+		return "drop index " + tableName + "." + indexName;
+	}
+
+
+	@Override
+	public String generateAddUniqueSql(Index index) {
+		return null;
+	}
+
+	@Override
+	public String generateDropUniqueSql(Index index) {
+		return null;
+	}
+
+	@Override
+	public String generateDropUniqueSql(Table table, String idxName) {
+		return null;
 	}
 }

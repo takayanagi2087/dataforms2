@@ -10,7 +10,7 @@ import dataforms.dao.TableRelation;
  * FileTableの関係を定義するクラスです。
  *
  */
-public class FileTableRelation extends TableRelation {
+public class FileFieldTableRelation extends TableRelation {
 
 	/**
 	 * 外部キーリスト。
@@ -37,7 +37,7 @@ public class FileTableRelation extends TableRelation {
 	 * コンストラクタ。
 	 * @param table 対象テーブル。
 	 */
-	public FileTableRelation(final Table table) {
+	public FileFieldTableRelation(final Table table) {
 		super(table);
 	}
 

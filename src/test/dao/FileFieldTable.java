@@ -20,11 +20,11 @@ import test.field.FolderFileField;
  * 各種ファイルテーブルクラス。
  *
  */
-public class FileTable extends Table {
+public class FileFieldTable extends Table {
 	/**
 	 * コンストラクタ。
 	 */
-	public FileTable() {
+	public FileFieldTable() {
 		this.setAutoIncrementId(true);
 		this.setComment("各種ファイルテーブル");
 		this.addPkField(new FileIdField()).setNotNull(true); //ファイルID
@@ -43,7 +43,7 @@ public class FileTable extends Table {
 
 	@Override
 	public String getJoinCondition(final Table joinTable, final String alias) {
-		FileTableRelation r = new FileTableRelation(this);
+		FileFieldTableRelation r = new FileFieldTableRelation(this);
 		return r.getJoinCondition(joinTable, alias);
 	}
 

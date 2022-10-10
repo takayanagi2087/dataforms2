@@ -1358,7 +1358,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @param query 問い合わせ・
 	 * @return Group By 句。
 	 */
-	private String getGroupBySql(final Query query) {
+	protected String getGroupBySql(final Query query) {
 		FieldList flist = query.getGroupByFieldList();
 		if (flist.size() > 0) {
 			return " group by " + this.getFieldSequence(query, flist, false);
@@ -1372,7 +1372,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @param query 問い合わせ。
 	 * @return order By 句。
 	 */
-	private String getOrderBySql(final Query query) {
+	protected String getOrderBySql(final Query query) {
 		FieldList flist = query.getOrderByFieldList();
 		if (flist != null) {
 			if (flist.size() > 0) {
@@ -1797,7 +1797,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @return レコード数をカウントするsql。
 	 */
 	public String generateHitCountSql(final Query query) {
-		String orgsql = this.generateQuerySql(query, true);
+		String orgsql = this.generateQuerySql(query, false);
 		String sql = "select count(*) as cnt from (" + orgsql + ") as m";
 		return sql;
 	}
@@ -1814,26 +1814,31 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 
 
 	/**
-	 * レコード数をカウントするsqlを作成します。
-	 * @param qp QueryPager・
-	 * @return レコード数をカウントするsql。
-	 */
-	public String generateHitCountSql(final QueryPager qp) {
-		String orgsql = getOrgSql(qp);
-		String sql = "select count(*) as cnt from (" + orgsql + ") as m";
-		return sql;
-	}
-
-	/**
 	 * Page表示するSQLを取得します。
 	 * @param qp QueryPager。
 	 * @return Page表示するSQL。
 	 */
 	protected String getOrgSql(final QueryPager qp) {
-		String orgsql = qp.getSql();
+/*		String orgsql = qp.getSql();
 		if (orgsql == null) {
 			Query q = qp.getQuery();
 			orgsql = this.generateQuerySql(q, true);
+		}
+		return orgsql;*/
+		return this.getOrgSql(qp, true);
+	}
+
+	/**
+	 * Page表示するSQLを取得します。
+	 * @param qp QueryPager。
+	 * @param orderBy trueを指定すると order byを生成する。
+	 * @return Page表示するSQL。
+	 */
+	protected String getOrgSql(final QueryPager qp, final boolean orderBy) {
+		String orgsql = qp.getSql();
+		if (orgsql == null) {
+			Query q = qp.getQuery();
+			orgsql = this.generateQuerySql(q, orderBy);
 		}
 		return orgsql;
 	}

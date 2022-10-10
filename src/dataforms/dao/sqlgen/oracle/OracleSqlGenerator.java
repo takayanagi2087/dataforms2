@@ -214,23 +214,11 @@ public class OracleSqlGenerator extends SqlGenerator {
 	 */
 	@Override
 	public String generateHitCountSql(final Query query) {
-		String orgsql = this.generateQuerySql(query, true);
+		String orgsql = this.generateQuerySql(query, false);
 		String sql = "select count(*) as cnt from (" + orgsql + ") m";
 		return sql;
 	}
 
-
-	/**
-	 * レコード数をカウントするsqlを作成します。
-	 * @param qp QueryPager・
-	 * @return レコード数をカウントするsql。
-	 */
-	@Override
-	public String generateHitCountSql(final QueryPager qp) {
-		String orgsql = getOrgSql(qp);
-		String sql = "select count(*) as cnt from (" + orgsql + ")";
-		return sql;
-	}
 
 	/**
 	 * レコード数をカウントするsqlを作成します。

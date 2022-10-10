@@ -1414,9 +1414,16 @@ public class Dao implements JDBCConnectableObject {
 	 * @return Boolean型のフラグ。
 	 */
 	private Boolean getNonUnique(final Object nonUnique) {
+		if (nonUnique == null) {
+			// MS SQL-Serverはnullを返してくる。
+			return false;
+		}
 		if (nonUnique instanceof BigDecimal) {
 			BigDecimal v = (BigDecimal) nonUnique;
 			return v.compareTo(BigDecimal.valueOf(0.0)) != 0;
+		} else if (nonUnique instanceof Short) {
+			Short v = (Short) nonUnique;
+			return v != 0;
 		} else {
 			return (Boolean) nonUnique;
 		}
@@ -1445,6 +1452,7 @@ public class Dao implements JDBCConnectableObject {
 					Object value = rset.getObject(i + 1);
 					m.put(name, value);
 				}
+				logger.info("md=" + JSON.encode(m, true));
 				Object nu = m.get("nonUnique");
 				Boolean nonUnique = this.getNonUnique(nu);
 				logger.debug(() -> "nu=" + nu + ", nonUnique=" + nonUnique);

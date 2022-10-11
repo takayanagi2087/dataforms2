@@ -13,7 +13,6 @@ import dataforms.dao.QueryPager;
 import dataforms.dao.Table;
 import dataforms.dao.sqldatatype.SqlTimestamp;
 import dataforms.dao.sqlgen.SqlGenerator;
-import dataforms.exception.ApplicationError;
 import dataforms.field.base.Field;
 import dataforms.servlet.DataFormsServlet;
 
@@ -126,28 +125,12 @@ public class MysqlSqlGenerator extends SqlGenerator {
 	}
 
 	/**
-	 * スキーマ名を取得します。
-	 * @return スキーマ名。
-	 */
-	private String getSchema() {
-		String ret = null;
-		try {
-			Connection conn = this.getConnection();
-			ret = conn.getCatalog();
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new ApplicationError(e);
-		}
-		return ret;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 * INFORMATION_SCHEMA.TABLESにテーブルが登録されているか確認するSQLを作成します。
 	 */
 	@Override
 	public String generateTableExistsSql() {
-		String schema = this.getSchema();
+		String schema = this.getCatalog();
 		String sql = "select count(*) as TABLE_EXISTS from INFORMATION_SCHEMA.TABLES where LOWER(TABLE_SCHEMA)='" + schema + "' and  LOWER(TABLE_NAME)=:table_name";
 		return sql;
 	}

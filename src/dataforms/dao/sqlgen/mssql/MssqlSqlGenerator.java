@@ -76,7 +76,7 @@ public class MssqlSqlGenerator extends SqlGenerator {
 				+ "@name = N'MS_Description'"
 				+ ", @value = N'" + table.getComment() + "'"
 				+ ", @level0type = N'SCHEMA'"
-				+ ", @level0name = N'dbo'"
+				+ ", @level0name = N'" + this.getSchema() + "'"
 				+ ", @level1type = N'TABLE'"
 				+ ", @level1name = N'" + table.getTableName() + "'";
 		return sql;
@@ -87,7 +87,7 @@ public class MssqlSqlGenerator extends SqlGenerator {
 		String sql = "sys.sp_addextendedproperty @name = N'MS_Description'"
 				+ ", @value = N'" + field.getComment() + "'"
 				+ ", @level0type = N'SCHEMA'"
-				+ ", @level0name = N'dbo'"
+				+ ", @level0name = N'" + this.getSchema() + "'"
 				+ ", @level1type = N'TABLE'"
 				+ ", @level1name = N'" + table.getTableName() + "'"
 				+ ", @level2type = N'COLUMN'"

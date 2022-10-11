@@ -86,6 +86,33 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
     private String databaseVersion = null;
 
     /**
+     * カタログ。
+     */
+    private String catalog = null;
+
+    /**
+     * スキーマ。
+     */
+    private String schema = null;
+
+
+    /**
+     * カタログを取得します。
+     * @return カタログ。
+     */
+    public String getCatalog() {
+		return catalog;
+	}
+
+    /**
+     * スキーマを取得します。
+     * @return スキーマ。
+     */
+	public String getSchema() {
+		return schema;
+	}
+
+	/**
      * コンストラクタ。
      * @param conn JDBC接続情報。
      */
@@ -209,6 +236,8 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		Constructor<?> c = SqlGenerator.sqlGeneratorClass.getConstructor(Connection.class);
 		SqlGenerator gen = (SqlGenerator) c.newInstance(conn);
 		gen.setDatabaseVersion(conn.getMetaData().getDatabaseProductVersion());
+		gen.schema = conn.getSchema();
+		gen.catalog = conn.getCatalog();
 		return gen;
 	}
 

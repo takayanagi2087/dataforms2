@@ -1501,7 +1501,7 @@ public class Dao implements JDBCConnectableObject {
 	private List<Map<String, Object>> getCurrentDBForeignKeyInfo(final DatabaseMetaData md, final String catalog, final String schema, final String table) throws Exception {
 		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
 		logger.debug(() -> "catalog=" + catalog + ", schema=" + schema + ", table=" + table);
-		ResultSet rset = md.getImportedKeys(catalog.toUpperCase(), schema.toUpperCase(), table);
+		ResultSet rset = md.getImportedKeys(catalog, schema, table);
 		try {
 			ResultSetMetaData rmd = rset.getMetaData();
 			while (rset.next()) {

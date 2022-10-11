@@ -57,13 +57,11 @@
 		一意制約名取得用の正規表現をduplicateErrorMessage、
 		外部キー制約用名取得用の正規表現をforeignKeyErrorMessageに設定します。
 	 -->
-	<!--
 	<Resource name="jdbc/dfdb" auth="Container" type="javax.sql.DataSource"
-		username="dfuser" password="password" driverClassName="org.mariadb.jdbc.Driver"
-		url="jdbc:mysql://192.168.56.102/dfdb?useOldAliasMetadataBehavior=true" />
+		username="dfuser" password="" driverClassName="org.mariadb.jdbc.Driver"
+		url="jdbc:mysql://192.168.56.10/dfdb?useOldAliasMetadataBehavior=true" />
 	<Environment name="duplicateErrorMessage" value="for key '(.+?)'$" type="java.lang.String" override="false"/>
 	<Environment name="foreignKeyErrorMessage" value="CONSTRAINT `(.+?)` FOREIGN KEY" type="java.lang.String" override="false"/>
-	-->
 
 	<!--
 		MySQL用接続設定
@@ -74,11 +72,11 @@
 	-->
 	<!--
 	<Resource name="jdbc/dfdb" auth="Container" type="javax.sql.DataSource"
-		username="dfuser" password="password" driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://192.168.56.102/dfdb?generateSimpleParameterMetadata=true&amp;useInformationSchema=true&amp;useOldAliasMetadataBehavior=true&amp;characterEncoding=utf8" />
+		username="dfuser" password="" driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://192.168.56.10/dfdb?generateSimpleParameterMetadata=true&amp;useInformationSchema=true&amp;useOldAliasMetadataBehavior=true&amp;characterEncoding=utf8" />
 	<Environment name="duplicateErrorMessage" value="for key '(.+?)'$" type="java.lang.String" override="false"/>
 	<Environment name="foreignKeyErrorMessage" value="CONSTRAINT `(.+?)` FOREIGN KEY" type="java.lang.String" override="false"/>
-	-->
+	 -->
 
 	<!--
 		ORACLE用の接続設定
@@ -100,6 +98,7 @@
 		一意制約名取得用の正規表現をduplicateErrorMessage、
 		外部キー制約用名取得用の正規表現をforeignKeyErrorMessageに設定します。
 	-->
+	<!--
 	<Resource name="jdbc/dfdb" auth="Container"
 		type="javax.sql.DataSource"
 		driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
@@ -109,5 +108,5 @@
 
 	<Environment name="duplicateErrorMessage" value="一意インデックス '(.+?)' を含むオブジェクト"  type="java.lang.String" override="false"/>
 	<Environment name="foreignKeyErrorMessage" value="制約 &quot;(.+?)&quot; と競合しています。" type="java.lang.String" override="false"/>
-
+	 -->
 </Context>

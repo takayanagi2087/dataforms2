@@ -61,13 +61,38 @@ public class MssqlSqlGenerator extends SqlGenerator {
 
 	/**
 	 * {@inheritDoc}
-	 * テーブル、カラムのcommentはサポートされていません。
+	 * テーブル、カラムのcommentは特殊文法です。
 	 *
 	 */
 	@Override
 	protected CommentSyntax getCommentSyntax() {
 		// commentはサポートしない.
-		return SqlGenerator.CommentSyntax.NONE;
+		return SqlGenerator.CommentSyntax.SPECIAL_GRAMMAR;
+	}
+
+	@Override
+	public String generateTableCommentSql(final Table table) {
+		String sql = "sys.sp_addextendedproperty "
+				+ "@name = N'MS_Description'"
+				+ ", @value = N'" + table.getComment() + "'"
+				+ ", @level0type = N'SCHEMA'"
+				+ ", @level0name = N'dbo'"
+				+ ", @level1type = N'TABLE'"
+				+ ", @level1name = N'" + table.getTableName() + "'";
+		return sql;
+	}
+
+	@Override
+	public String generateFieldCommentSql(final Table table, final Field<?> field) {
+		String sql = "sys.sp_addextendedproperty @name = N'MS_Description'"
+				+ ", @value = N'" + field.getComment() + "'"
+				+ ", @level0type = N'SCHEMA'"
+				+ ", @level0name = N'dbo'"
+				+ ", @level1type = N'TABLE'"
+				+ ", @level1name = N'" + table.getTableName() + "'"
+				+ ", @level2type = N'COLUMN'"
+				+ ", @level2name = N'" + field.getDbColumnName() + "'";
+		return sql;
 	}
 
 	/**

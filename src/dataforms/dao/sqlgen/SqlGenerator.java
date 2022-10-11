@@ -101,17 +101,35 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
     public enum CommentSyntax {
     	/**
     	 * サポートなし。
+    	 * <pre>
+    	 * Apache derby。
+    	 * </pre>
     	 */
     	NONE,
     	/**
     	 * comment on構文をサポート。
+    	 * <pre>
+    	 * Oracle, PostgreSQL。
+    	 * </pre>
     	 */
     	COMMENT,
     	/**
     	 * create文中のcommentサポート。
+    	 * <pre>
+    	 * MySQL, MariaDB。
+    	 * </pre>
     	 */
-    	CREATE_COMMENT
+    	CREATE_COMMENT,
+    	/**
+    	 * 特殊文法。
+    	 * <pre>
+    	 * MS SQL Server。
+    	 * generateTableCommentSql, generateFieldCommentSqlメソッドでSQLを設定します。
+    	 * </pre>
+    	 */
+    	SPECIAL_GRAMMAR
     };
+
 
     /**
      * データベースの製品名を取得します。
@@ -428,7 +446,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @param table 対象テーブル。
 	 * @return テーブルコメント作成用SQL。
 	 */
-	private String generateTableCommentSql(final Table table) {
+	public String generateTableCommentSql(final Table table) {
 		StringBuilder sb = new StringBuilder();
 		String comment = table.getComment();
 		if (comment != null) {
@@ -450,7 +468,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @param field フィールド。
 	 * @return 例外。
 	 */
-	private String generateFieldCommentSql(final Table table, final Field<?> field) {
+	public String generateFieldCommentSql(final Table table, final Field<?> field) {
 		StringBuilder sb = new StringBuilder();
 		String comment = field.getComment();
 		if (comment != null) {
@@ -561,7 +579,8 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	public List<String> generateCreateTableSqlList(final Table table) throws Exception {
 		List<String> list = new ArrayList<String>();
 		list.add(this.generateCreateTableSql(table));
-		if (this.getCommentSyntax() == CommentSyntax.COMMENT) {
+		if (this.getCommentSyntax() == CommentSyntax.COMMENT
+			|| this.getCommentSyntax() == CommentSyntax.SPECIAL_GRAMMAR) {
 			String tcom = this.generateTableCommentSql(table);
 			if (tcom != null) {
 				list.add(tcom);

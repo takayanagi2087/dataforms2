@@ -16,7 +16,9 @@ import dataforms.dao.sqldatatype.SqlClob;
 import dataforms.dao.sqldatatype.SqlTimestamp;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.field.base.Field;
+import dataforms.field.base.FieldList;
 import dataforms.servlet.DataFormsServlet;
+import dataforms.util.StringUtil;
 
 /**
  * MS SQL Server用SQL Generator.
@@ -130,10 +132,43 @@ public class MssqlSqlGenerator extends SqlGenerator {
 		return "current_timestamp";
 	}
 
+	/**
+	 * MS SQL Serverのrow_number用のorder byを生成します。
+	 * @param query 問い合わせ。
+	 * @return order by句。
+	 */
+	private String getRowNumberOrderBy(final Query query) {
+		FieldList flist = query.getOrderByFieldList();
+		if (flist == null || flist.size() == 0) {
+			// order byが無かった場合はPK順。
+			Table mt = query.getMainTable();
+			flist = mt.getPkFieldList();
+			if (flist.size() == 0) {
+				// PKがなかった場合先頭フィールド順。
+				flist = new FieldList(query.getFieldList().get(0));
+			}
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Field<?> field: flist) {
+			if (sb.length() > 0) {
+				sb.append(",");
+			}
+			sb.append("m.");
+			sb.append(StringUtil.camelToSnake(field.getId()));
+			if (field.getSortOrder() == Field.SortOrder.ASC) {
+				sb.append(" asc");
+			} else {
+				sb.append(" desc");
+			}
+		}
+		return "order by " + sb.toString();
+	}
+
+
 	@Override
 	public String generateGetPageSql(final QueryPager qp) {
 		Query query  = qp.getQuery();
-		String orderBy = this.getOrderBySql(query);
+		String orderBy = this.getRowNumberOrderBy(query);
 		String orgsql = this.getOrgSql(qp, false);
 		String sql = "select * from (select row_number() over(" + orderBy + ") as row_no, m.* from (" + orgsql + ") as m) as m where (:row_from + 1) <= m.row_no and m.row_no <= (:row_to + 1)";
 		return sql;
@@ -146,11 +181,11 @@ public class MssqlSqlGenerator extends SqlGenerator {
 	}
 
 	@Override
-	public String getConstraintViolationException(SQLException ex) {
+	public String getConstraintViolationException(final SQLException ex) {
 		logger.debug(() -> "message=" + ex.getMessage());
 		logger.debug(() -> "errorCode=" + ex.getErrorCode());
 		logger.debug(() -> "getSQLState=" + ex.getSQLState());
-		if ("23000".equals(ex.getSQLState())) {
+		if (2601 == ex.getErrorCode()) {
 			String pat = "一意インデックス '(.+?)' を含むオブジェクト";
 			if (DataFormsServlet.getDuplicateErrorMessage() != null) {
 				pat = DataFormsServlet.getDuplicateErrorMessage();
@@ -158,9 +193,9 @@ public class MssqlSqlGenerator extends SqlGenerator {
 			logger.debug("DuplicateErrorMessage={}", pat);
 			// ERROR: 重複キーが一意性制約"enum_index"に違反しています
 			return this.getConstraintName(pat, ex.getMessage());
-		} else if ("23503".equals(ex.getSQLState())) {
+		} else if (ex.getErrorCode() == 547) {
 			// ERROR: テーブル"enum"の更新または削除は、テーブル"enum"の外部キー制約"fk_enum_table01"に違反します
-			String pat = "外部キー制約\"(.+?)\"に違反します";
+			String pat = "制約 \"(.+?)\" と競合しています。";
 			if (DataFormsServlet.getForeignKeyErrorMessage() != null) {
 				pat = DataFormsServlet.getForeignKeyErrorMessage();
 			}

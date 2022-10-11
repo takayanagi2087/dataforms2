@@ -7,6 +7,7 @@ import dataforms.dao.Table;
 import dataforms.util.DateTimeUtil;
 import sample.dao.MaterialOrderDao;
 import sample.dao.MaterialOrderTable;
+import sample.dao.SupplierMasterTable;
 
 /**
  * 編集フォームクラス。
@@ -18,6 +19,8 @@ public class MaterialOrderEditForm extends EditForm {
 	public MaterialOrderEditForm() {
 		MaterialOrderDao dao = new MaterialOrderDao();
 		this.addFields(dao);
+		SupplierMasterTable table = dao.getMaterialOrderQuery().getSupplierMasterTable();
+		table.getSupplierCodeField().setAutocomplete(true).setRelationDataAcquisition(true);
 	}
 
 	/**

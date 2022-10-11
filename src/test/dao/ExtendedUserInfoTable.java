@@ -91,4 +91,5 @@ public class ExtendedUserInfoTable extends UserInfoTable {
 	public AddressField getAddressField() {
 		return (AddressField) this.getField(Entity.ID_ADDRESS);
 	}
+
 }

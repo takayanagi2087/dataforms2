@@ -99,9 +99,9 @@ public class MaterialOrderListQuery extends Query {
 			, this.materialOrderItemTable.getUpdateTimestampField()
 		));
 		this.setMainTable(materialOrderItemTable);
-		this.addInnerJoin(materialMasterTable);
-		this.addInnerJoin(materialOrderTable);
-		this.addInnerJoin(supplierMasterTable);
+		this.addLeftJoin(materialMasterTable);
+		this.addLeftJoin(materialOrderTable);
+		this.addLeftJoin(supplierMasterTable);
 
 	}
 }

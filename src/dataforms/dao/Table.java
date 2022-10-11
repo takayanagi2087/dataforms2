@@ -756,7 +756,7 @@ public class Table  {
 				return rel;
 			}
 		} catch (ClassNotFoundException e) {
-			logger.debug(e.getMessage(), e);
+			logger.warn(e.getMessage());
 		}
 		return null;
 	}

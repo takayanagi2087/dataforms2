@@ -850,9 +850,11 @@ public class DataFormsServlet extends HttpServlet {
 					}
 					Table tbl = (Table) cls.getDeclaredConstructor().newInstance();
 					TableRelation rel = tbl.getTableRelation();
-					for (ForeignKey fk: rel.getForeignKeyList()) {
-						DataFormsServlet.constraintMap.put(fk.getConstraintName(), fk);
-						logger.debug(() -> "ForeignKey:" + fk.getConstraintName() + ":" + fk.getViolationMessageKey());
+					if (rel != null) {
+						for (ForeignKey fk: rel.getForeignKeyList()) {
+							DataFormsServlet.constraintMap.put(fk.getConstraintName(), fk);
+							logger.debug(() -> "ForeignKey:" + fk.getConstraintName() + ":" + fk.getViolationMessageKey());
+						}
 					}
 				}
 				// インデックスから一意制約を取り出す。

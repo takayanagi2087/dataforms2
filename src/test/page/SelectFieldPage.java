@@ -6,7 +6,10 @@ import test.dao.SelectFieldDao;
 
 
 /**
- * ページクラス。
+ * 選択肢フィールド ページクラス。
+ * <pre>
+ *
+ * </pre>
  */
 public class SelectFieldPage extends BasePage {
 	/**
@@ -14,7 +17,6 @@ public class SelectFieldPage extends BasePage {
 	 */
 	public SelectFieldPage() {
 		this.addForm(new SelectFieldEditForm());
-
 	}
 
 	/**

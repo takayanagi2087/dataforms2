@@ -44,20 +44,33 @@ public class MssqlSqlGenerator extends SqlGenerator {
 		super(conn);
 	}
 
+	/**
+	 * 主要なパラメータのみの表示用に編集する。
+	 * <pre>
+	 * MS SQL Serverは全てのパスメータが設定されたURLを返すので、
+	 * 接続するデータベースの指定のみを返す。
+	 * </pre>
+	 */
+	@Override
+	public String getConnectionUrl(Connection conn) throws Exception {
+		String orgUrl = super.getConnectionUrl(conn);
+		String[] list = orgUrl.split(";");
+		StringBuilder sb = new StringBuilder();
+		sb.append(list[0]);
+		for (int i = 0; i < list.length; i++) {
+			String s = list[i];
+			if (s.indexOf("databaseName=") == 0) {
+				sb.append(";");
+				sb.append(s);
+			}
+		}
+		return sb.toString();
+	}
+
 	@Override
 	public String getDatabaseProductName() {
 		return DATABASE_PRODUCT_NAME;
 	}
-
-
-/*	@Override
-	public String getDatabaseType(final Field<?> field) {
-		String type = field.getDbDependentType(DATABASE_PRODUCT_NAME);
-		if (type != null) {
-			return type;
-		}
-		return super.getDatabaseType(field);
-	}*/
 
 	/**
 	 * {@inheritDoc}

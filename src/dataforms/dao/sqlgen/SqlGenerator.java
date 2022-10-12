@@ -197,6 +197,21 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 
 
     /**
+     * 接続URLを取得します。
+     * <pre>
+     * JDBCドライバーによっては長いURLを返す場合があるので、
+     * 不要なパラメータを取り除いたURLを返します。
+     * </pre>
+     * @param conn コネクション。
+     * @return 接続先URL。
+     * @throws Exception 例外。
+     */
+    public String getConnectionUrl(final Connection conn) throws Exception {
+    	String ret = conn.getMetaData().getURL();
+    	return ret;
+    }
+
+    /**
      * 別名を付ける際に使うasの文字列を返す。
      * <pre>
      * Oracle等でasを書くと、エラーするDBでは組み直します。

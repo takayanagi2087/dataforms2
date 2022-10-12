@@ -46,6 +46,20 @@ public class MysqlSqlGenerator extends SqlGenerator {
 	}
 
 	/**
+	 * 主要なパラメータのみの表示用に編集する。
+	 * <pre>
+	 * My SQLはQueryStringを削除する。
+	 * </pre>
+	 */
+	@Override
+	public String getConnectionUrl(Connection conn) throws Exception {
+		String orgUrl = super.getConnectionUrl(conn);
+		String[] list = orgUrl.split("\\?");
+		return list[0];
+	}
+
+
+	/**
 	 * {@inheritDoc}
 	 * MySQLはシーケンスをサポートしていないのでfalseを返します。
 	 */

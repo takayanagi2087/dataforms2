@@ -3,6 +3,7 @@ package dataforms.devtool.db.page;
 import java.sql.Connection;
 
 import dataforms.controller.Form;
+import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.field.sqltype.VarcharField;
 
 /**
@@ -12,6 +13,11 @@ import dataforms.field.sqltype.VarcharField;
  * </pre>
  */
 public class DatabaseInfoForm extends Form {
+	/**
+	 * Logger.
+	 */
+	// private Logger logger = LogManager.getLogger(DatabaseInfoForm.class);
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -35,7 +41,8 @@ public class DatabaseInfoForm extends Form {
 		Connection conn = this.getConnection();
 		String dbServerName =  conn.getMetaData().getDatabaseProductName();
 		String dbServerVersion = conn.getMetaData().getDatabaseProductVersion();
-		String dbServerURL = conn.getMetaData().getURL();
+		SqlGenerator gen = SqlGenerator.getInstance(conn);
+		String dbServerURL = gen.getConnectionUrl(conn);
 		this.setFormData("dbServerName", dbServerName);
 		this.setFormData("dbServerVersion", dbServerVersion);
 		this.setFormData("dbServerURL", dbServerURL);

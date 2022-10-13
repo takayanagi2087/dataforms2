@@ -613,6 +613,15 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 */
 	public abstract String generateGetRecordIdSql(final String table) throws Exception;
 
+	/**
+	 * レコードIDの取得SQL Insert文用を取得します。
+	 * @param table テーブル。
+	 * @return SQL。
+	 * @throws Exception 例外。
+	 */
+	public String generateGetRecordIdSqlForInsert(final Table table) throws Exception {
+		return "(" + this.generateGetRecordIdSql(table) + ")";
+	}
 
 	/**
 	 * テーブルを作成するためのSQLリストを取得します。

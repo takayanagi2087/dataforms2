@@ -1509,6 +1509,7 @@ public class Dao implements JDBCConnectableObject {
 				for (int i = 0; i < rmd.getColumnCount(); i++) {
 					String name = StringUtil.snakeToCamel(rmd.getColumnName(i + 1).toLowerCase());
 					Object value = rset.getObject(i + 1);
+					logger.debug(() -> "name=" + name + ", value=" + value);
 					m.put(name, value);
 				}
 				ret.add(m);

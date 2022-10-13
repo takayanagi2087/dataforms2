@@ -166,6 +166,11 @@ public class MssqlSqlGenerator extends SqlGenerator {
 	}
 
 	@Override
+	public String generateGetRecordIdSqlForInsert(final Table table) throws Exception {
+		return "next value for " + table.getTableName() + "_seq";
+	}
+
+	@Override
 	public String generateSysTimestampSql() {
 		return "current_timestamp";
 	}

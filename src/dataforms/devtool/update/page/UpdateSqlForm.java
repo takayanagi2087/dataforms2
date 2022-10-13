@@ -1,5 +1,7 @@
 package dataforms.devtool.update.page;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,21 +15,35 @@ import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.TableClassNameField;
+import dataforms.devtool.field.UpdateSqlField;
 import dataforms.devtool.field.UpdateSqlTypeField;
 import dataforms.devtool.field.UpdateSqlTypeField.UpdateSqlType;
-import dataforms.field.sqltype.ClobField;
+import dataforms.field.base.FieldList;
+import dataforms.field.common.RecordIdField;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
+import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
+import dataforms.validator.ValidationError;
 
 /**
  * 更新系SQL実行フォームクラス。
  */
 public class UpdateSqlForm extends Form {
 	/**
-	 * Log.
+	 * Logger.
 	 */
 	private static Logger logger = LogManager.getLogger(UpdateSqlForm.class);
+
+	/**
+	 * SQLフィールドID。
+	 */
+	public static final String ID_SQL = "sql";
+
+	/**
+	 * 更新SQLTypeフィールド。
+	 */
+	private UpdateSqlTypeField updateSqlTypeField = null;
 
 	/**
 	 * コンストラクタ。
@@ -37,14 +53,15 @@ public class UpdateSqlForm extends Form {
 		this.addField(new FunctionSelectField());
 		this.addField(new PackageNameField());
 		this.addField(new TableClassNameField()).setAutocomplete(true).setRelationDataAcquisition(true);
-		this.addField(new UpdateSqlTypeField());
-		this.addField(new ClobField("sql")).addValidator(new RequiredValidator());
+		this.addField(this.updateSqlTypeField = new UpdateSqlTypeField());
+		this.addField(new UpdateSqlField(ID_SQL)).addValidator(new RequiredValidator());
 	}
 
 	@Override
 	public void init() throws Exception {
 		super.init();
-		this.setFormData("updateSqlType", UpdateSqlType.INSERT.getString());
+		String id = this.updateSqlTypeField.getId();
+		this.setFormData(id, UpdateSqlType.INSERT.getString());
 	}
 
 	/**
@@ -62,17 +79,72 @@ public class UpdateSqlForm extends Form {
 		return q.getDeclaredConstructor().newInstance();
 	}
 
+	/**
+	 * 新規レコードIDの値を設定します。
+	 * @param dao Dao。
+	 * @param table データ。
+	 * @param sql SQL。
+	 * @return ID値を設定したSQL。
+	 * @throws Exception 例外。
+	 */
+	private String setIdValue(final Dao dao, final Table table, final String sql) throws Exception {
+		String ret = sql;
+		FieldList pklist = table.getPkFieldList();
+		if (pklist.size() == 1 && pklist.get(0) instanceof RecordIdField) {
+			SqlGenerator gen = dao.getSqlGenerator();
+			RecordIdField pkf = (RecordIdField) pklist.get(0);
+			String colname = StringUtil.camelToSnake(pkf.getId());
+			if (gen.isSequenceSupported()) {
+				String genseq = gen.generateGetRecordIdSqlForInsert(table);
+				ret = ret.replace(":" + colname, genseq);
+			} else {
+				ret = ret.replace(":" + colname, "null");
+			}
+		}
+		return ret;
+	}
+
+
+	/**
+	 * 登録者、更新者のユーザIDを設定します。
+	 * @param sql SQL。
+	 * @return 登録者、更新者のユーザIDを設定したSQL。
+	 */
+	private String setUserId(final String sql) {
+		Long userId = this.getPage().getUserId();
+		String ret = sql.replace(":create_user_id", userId.toString());
+		ret = ret.replace(":update_user_id", userId.toString());
+		return ret;
+	}
+
+	/**
+	 * SQLを作成します。
+	 * @param type 更新SQLタイプ。
+	 * @param table テーブル。
+	 * @return SQL。
+	 * @throws Exception 例外。
+	 */
 	private String generateSql(final String type, final Table table) throws Exception {
 		Dao dao = new Dao(this);
 		SqlGenerator gen = dao.getSqlGenerator();
 		String sql = null;
 		if (UpdateSqlType.INSERT.getString().equals(type)) {
+			String seq = gen.generateGetRecordIdSql(table);
+			logger.debug("seq=" + seq);
 			sql = gen.generateInsertSql(table);
+			sql = sql.replaceAll("\\(", "(\n\t");
+			sql = sql.replaceAll(",", "\n\t, ");
+			sql = sql.replaceAll("\\)", "\n)");
+			sql = this.setIdValue(dao, table, sql);
 		} else if (UpdateSqlType.UPDATE.getString().equals(type)) {
 			sql = gen.generateUpdateSql(table);
+			sql = sql.replaceAll(" set \n", " set\n\t");
+			sql = sql.replaceAll(", ", "\t, ");
+			sql = sql.replaceAll("where\n", "where\n\t");
 		} else if (UpdateSqlType.DELETE.getString().equals(type)) {
 			sql = gen.generateDeleteSql(table);
 		}
+		sql = this.setUserId(sql);
 		return sql;
 	}
 
@@ -88,6 +160,28 @@ public class UpdateSqlForm extends Form {
 		String type = (String) param.get("updateSqlType");
 		String sql = this.generateSql(type, table);
 		Response resp = new JsonResponse(JsonResponse.SUCCESS, sql);
+		return resp;
+	}
+
+
+	/**
+	 * 更新系のSQLを実行します。
+	 * @param param パラメータ。
+	 * @return 更新結果。
+	 * @throws Exception 例外。
+	 */
+	@WebMethod
+	public Response update(final Map<String, Object> param) throws Exception {
+		Response resp = null;
+		List<ValidationError> list = this.validate(param);
+		if (list.size() == 0) {
+			Dao dao = new Dao(this);
+			String sql = (String) param.get(UpdateSqlForm.ID_SQL);
+			dao.executeUpdate(sql, new HashMap<String, Object>());
+			resp = new JsonResponse(JsonResponse.SUCCESS, "");
+		} else {
+			resp = new JsonResponse(JsonResponse.INVALID, list);
+		}
 		return resp;
 	}
 }

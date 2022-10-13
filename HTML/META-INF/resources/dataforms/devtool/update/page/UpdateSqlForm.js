@@ -26,6 +26,10 @@ class UpdateSqlForm extends Form {
 			this.generateSql();
 			return false;
 		});
+		this.get("updateButton").click(() => {
+			this.update();
+			return false;
+		});
 	}
 
 	/**
@@ -61,6 +65,21 @@ class UpdateSqlForm extends Form {
 		}
 	}
 
+	/**
+	 * 更新処理。
+	 */
+	async update() {
+		if (this.validate()) {
+			let r = await this.submit("update");
+			this.parent.resetErrorStatus();
+			if (r.status == JsonResponse.SUCCESS) {
+				logger.dir(r);
+				await currentPage.alert(null, r.result);
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(r), this);
+			}
+		}
+	}
 
 	/**
 	 * 各フィールドにデータを設定します。

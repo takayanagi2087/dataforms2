@@ -190,6 +190,11 @@ public class OracleSqlGenerator extends SqlGenerator {
 	}
 
 	@Override
+	public String generateGetRecordIdSqlForInsert(final Table table) throws Exception {
+		return table.getTableName() + "_seq.nextval";
+	}
+
+	@Override
 	public String generateSysTimestampSql() {
 		return "current_timestamp";
 	}

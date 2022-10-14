@@ -104,7 +104,10 @@
 	<context-param>
 		<param-name>initialize-package-list</param-name>
 		<param-value>
-			dataforms.app,sample,test
+			dataforms.app
+			,dataforms.debug
+			,sample
+			,test
 		</param-value>
 		<!--
 		<param-value>

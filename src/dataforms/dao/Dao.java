@@ -1237,7 +1237,7 @@ public class Dao implements JDBCConnectableObject {
 		int nullable = rs.getInt("NULLABLE");
 		String dataType = gen.converTypeNameForDatabaseMetaData(type);
 		if ("char".equals(dataType) || "nchar".equals(dataType) || "varchar".equals(dataType) || "varchar2".equals(dataType) || "nvarchar".equals(dataType) || "nvarchar2".equals(dataType)) {
-			dataType += "(" + size + ")";
+			dataType += "(" + gen.convertColumnSize(size) + ")";
 		} else if ("numeric".equals(dataType) || "number".equals(dataType)) {
 			dataType += "(" + size + "," + scale + ")";
 		}
@@ -1423,6 +1423,9 @@ public class Dao implements JDBCConnectableObject {
 			return v.compareTo(BigDecimal.valueOf(0.0)) != 0;
 		} else if (nonUnique instanceof Short) {
 			Short v = (Short) nonUnique;
+			return v != 0;
+		} else if (nonUnique instanceof Long) {
+			Long v = (Long) nonUnique;
 			return v != 0;
 		} else {
 			return (Boolean) nonUnique;

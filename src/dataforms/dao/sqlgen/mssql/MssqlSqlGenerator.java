@@ -129,6 +129,38 @@ public class MssqlSqlGenerator extends SqlGenerator {
 
 	/**
 	 * {@inheritDoc}
+	 * <pre>
+	 * 以下のタイプ名を変換します。
+	 * int -&gt; integer
+	 * double -&gt; real
+	 * decimal -&gt; numeric
+	 * &lt;/pre&gt;
+	 * </pre>
+	 */
+	@Override
+	public String converTypeNameForDatabaseMetaData(final String type) {
+		String ret = super.converTypeNameForDatabaseMetaData(type);
+		if ("int".equals(ret)) {
+			return "integer";
+		} else if ("varbinary".equals(ret)) {
+			return "varbinary(max)";
+		}
+		return ret;
+	}
+
+	@Override
+	public String convertColumnSize(final int size) {
+		if (2147483647 == size) {
+			return "max";
+		} else {
+	    	return Integer.toString(size);
+		}
+    }
+
+
+
+	/**
+	 * {@inheritDoc}
 	 * SYS.OBJECTSにテーブルが登録されているか確認するSQLを作成します。
 	 */
 	@Override

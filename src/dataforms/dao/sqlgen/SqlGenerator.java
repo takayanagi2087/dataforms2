@@ -232,6 +232,15 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
     }
 
     /**
+     * 文字列のカラムサイズの変換を行います。
+     * @param size カラムサイズ。
+     * @return 変換結果。
+     */
+    public String convertColumnSize(final int size) {
+    	return Integer.toString(size);
+    }
+
+    /**
      * コネクションに応じたSqlGeneratorを取得します。
      * @param conn JDBC接続。
      * @return SqlGeneratorのインスタンス。

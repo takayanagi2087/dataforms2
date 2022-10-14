@@ -4,13 +4,13 @@
 	<Resource name="mail/Session" auth="Container" type="javax.mail.Session"
 		mail.smtp.host="localhost" mail.smtp.port="5525" />
 	 -->
-	<!--
+	 <!--
 	<Resource auth="Container"
 		driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
 		name="jdbc/dfdb" type="javax.sql.DataSource"
 		url="jdbc:derby:/javadb/dfdbC;create=true"
 		username="" password="" />
-	 -->
+	  -->
 	<!--
 		組み込みApache derby用の接続設定
 		Apache derbyのJDBCドライバは制約名称を取得するAPIがあるため
@@ -41,14 +41,14 @@
 		一意制約名取得用の正規表現をduplicateErrorMessage、
 		外部キー制約用名取得用の正規表現をforeignKeyErrorMessageに設定します。
 	 -->
-	 <!--
+	<!--
 	<Resource name="jdbc/dfdb" type="javax.sql.DataSource"
 		auth="Container" driverClassName="org.postgresql.Driver"
 		url="jdbc:postgresql://192.168.56.10:5432/dfdb" username="postgres"
 		password="" />
 	<Environment name="duplicateErrorMessage" value="一意性制約&quot;(.+?)&quot;に違反" type="java.lang.String" override="false"/>
 	<Environment name="foreignKeyErrorMessage" value="外部キー制約&quot;(.+?)&quot;に違反" type="java.lang.String" override="false"/>
-	  -->
+	 -->
 	<!--
 		MariaDB用接続設定
 		MariaDB用のjdbcドライバーを使用する場合の設定です。
@@ -59,11 +59,10 @@
 	<!--
 	<Resource name="jdbc/dfdb" auth="Container" type="javax.sql.DataSource"
 		username="dfuser" password="" driverClassName="org.mariadb.jdbc.Driver"
-		url="jdbc:mysql://192.168.56.10/dfdb?useOldAliasMetadataBehavior=true" />
+		url="jdbc:mariadb://192.168.56.10/dfdb?user=dfuser" />
 	<Environment name="duplicateErrorMessage" value="for key '(.+?)'$" type="java.lang.String" override="false"/>
 	<Environment name="foreignKeyErrorMessage" value="CONSTRAINT `(.+?)` FOREIGN KEY" type="java.lang.String" override="false"/>
 	 -->
-
 	<!--
 		MySQL用接続設定
 		MySQL用のjdbcドライバーを使用する場合の設定です。
@@ -74,7 +73,7 @@
 	<!--
 	<Resource name="jdbc/dfdb" auth="Container" type="javax.sql.DataSource"
 		username="dfuser" password="" driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://192.168.56.10/dfdb?generateSimpleParameterMetadata=true&amp;useInformationSchema=true&amp;useOldAliasMetadataBehavior=true&amp;characterEncoding=utf8" />
+		url="jdbc:mysql://192.168.56.10/dfdb?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;generateSimpleParameterMetadata=true&amp;useInformationSchema=true&amp;useOldAliasMetadataBehavior=true&amp;characterEncoding=utf8" />
 	<Environment name="duplicateErrorMessage" value="for key '(.+?)'$" type="java.lang.String" override="false"/>
 	<Environment name="foreignKeyErrorMessage" value="CONSTRAINT `(.+?)` FOREIGN KEY" type="java.lang.String" override="false"/>
 	 -->

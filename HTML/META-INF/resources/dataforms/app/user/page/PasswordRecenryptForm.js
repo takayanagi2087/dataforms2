@@ -46,17 +46,21 @@ class PasswordRecenryptForm extends Form {
 	 * 再暗号化処理。
 	 */
 	async reencrypt() {
-		if (this.validate()) {
-			this.parent.resetErrorStatus();
-			if (await currentPage.confirm(null, MessagesUtil.getMessage("message.confirmreencrypted"))) {
-				let r = await this.submit("reencrypt");
+		try {
+			if (this.validate()) {
 				this.parent.resetErrorStatus();
-				if (r.status == JsonResponse.INVALID) {
-					currentPage.setErrorInfo(this.getValidationResult(r), this);
-				} else {
-					currentPage.alert(null, r.result);
+				if (await currentPage.confirm(null, MessagesUtil.getMessage("message.confirmreencrypted"))) {
+					let r = await this.submit("reencrypt");
+					this.parent.resetErrorStatus();
+					if (r.status == JsonResponse.INVALID) {
+						currentPage.setErrorInfo(this.getValidationResult(r), this);
+					} else {
+						currentPage.alert(null, r.result);
+					}
 				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 }

@@ -200,23 +200,27 @@ class Field extends WebComponent {
 	 * </pre>
 	 */
 	async getRelationData() {
-		let m = this.getWebMethod("getRelationData");
-		let form = this.getParentForm();
-		let param = this.getAjaxParameter();
-		let ret = await m.execute(param);
-		if (ret.status == JsonResponse.SUCCESS) {
-			for (let k in ret.result) {
-				if (Array.isArray(ret.result[k])) {
-					let t = form.getComponent(k);
-					if (t != null && typeof t.setTableData == "function") {
-						t.setTableData(ret.result[k]);
+		try {
+			let m = this.getWebMethod("getRelationData");
+			let form = this.getParentForm();
+			let param = this.getAjaxParameter();
+			let ret = await m.execute(param);
+			if (ret.status == JsonResponse.SUCCESS) {
+				for (let k in ret.result) {
+					if (Array.isArray(ret.result[k])) {
+						let t = form.getComponent(k);
+						if (t != null && typeof t.setTableData == "function") {
+							t.setTableData(ret.result[k]);
+						}
+					} else {
+						form.setFieldValue(k, ret.result[k]);
 					}
-				} else {
-					form.setFieldValue(k, ret.result[k]);
 				}
 			}
+			this.onUpdateRelationField();
+		} catch (e) {
+			currentPage.reportError(e);
 		}
-		this.onUpdateRelationField();
 	}
 
 	/**
@@ -518,11 +522,15 @@ class Field extends WebComponent {
 	 * @param {res} リスト設定メソッド.
 	 */
 	async getSource(res) {
-		let method = this.getWebMethod("getAutocompleteSource");
-		let param = this.getAjaxParameter();
-		let ret = await method.execute(param,);
-		if (ret.status == JsonResponse.SUCCESS) {
-			res(ret.result);
+		try {
+			let method = this.getWebMethod("getAutocompleteSource");
+			let param = this.getAjaxParameter();
+			let ret = await method.execute(param,);
+			if (ret.status == JsonResponse.SUCCESS) {
+				res(ret.result);
+			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 

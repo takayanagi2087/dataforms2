@@ -3,12 +3,19 @@ package dataforms.devtool.validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import dataforms.util.MessagesUtil;
 import dataforms.validator.FieldValidator;
 
 /**
  * 更新系SQLのバリデーター。
  */
 public class UpdateSqlValidator extends FieldValidator {
+
+	/**
+	 * パラメータ。
+	 */
+	private String param = null;
+
 	/**
 	 * コンストラクタ。
 	 */
@@ -17,11 +24,17 @@ public class UpdateSqlValidator extends FieldValidator {
 	}
 
 	@Override
+	public String getMessage() {
+		return MessagesUtil.getMessage(this.getPage(), this.getMessageKey(), "{0}", this.param);
+	}
+
+	@Override
 	public boolean validate(Object value) throws Exception {
 		String sql = (String) value;
 		Pattern p = Pattern.compile(":[a-zA-Z][0-9a-zA-Z_]*");
 		Matcher m = p.matcher(sql);
 		if (m.find()) {
+			this.param = m.group();
 			return false;
 		}
 		return true;

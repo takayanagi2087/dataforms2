@@ -78,15 +78,19 @@ class DaoGeneratorEditForm extends EditForm {
 	 *
 	 */
 	async getKeyFieldList() {
-		let type = this.get("editFormType").val();
-		if (type == "2") {
-			let r = await this.submit("getKeyList");
-			logger.log("getKeyList r=" + JSON.stringify(r));
-			let list = this.getComponent("keyFieldList");
-			list.setTableData(r.result);
-		} else {
-			let list = this.getComponent("keyFieldList");
-			list.setTableData([]);
+		try {
+			let type = this.get("editFormType").val();
+			if (type == "2") {
+				let r = await this.submit("getKeyList");
+				logger.log("getKeyList r=" + JSON.stringify(r));
+				let list = this.getComponent("keyFieldList");
+				list.setTableData(r.result);
+			} else {
+				let list = this.getComponent("keyFieldList");
+				list.setTableData([]);
+			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 

@@ -22,18 +22,22 @@ class RestoreForm extends Form {
 	 * リストア処理を行います。
 	 */
 	async restore() {
-		if (this.validate()) {
-			let systemname = MessagesUtil.getMessage("message.systemname");
-			let msg = MessagesUtil.getMessage("message.restoreconfirm");
-			if (await currentPage.confirm(systemname, msg)) {
-				let r = await this.submit("restore");
-				this.parent.resetErrorStatus();
-				if (r.status == JsonResponse.INVALID) {
-					currentPage.setErrorInfo(this.getValidationResult(r), this);
-				} else {
-					currentPage.alert(systemname, r.result);
+		try {
+			if (this.validate()) {
+				let systemname = MessagesUtil.getMessage("message.systemname");
+				let msg = MessagesUtil.getMessage("message.restoreconfirm");
+				if (await currentPage.confirm(systemname, msg)) {
+					let r = await this.submit("restore");
+					this.parent.resetErrorStatus();
+					if (r.status == JsonResponse.INVALID) {
+						currentPage.setErrorInfo(this.getValidationResult(r), this);
+					} else {
+						currentPage.alert(systemname, r.result);
+					}
 				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 }

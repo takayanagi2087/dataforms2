@@ -22,16 +22,20 @@ class BackupForm extends Form {
 	 * バックアップ処理。
 	 */
 	async backup() {
-		this.parent.resetErrorStatus();
-		let r = await this.submit("backup");
-		this.parent.resetErrorStatus();
-		if (r != null) {
-			if (r.status == JsonResponse.INVALID) {
-				currentPage.setErrorInfo(this.getValidationResult(r), this);
-			} else {
-				let systemname = MessagesUtil.getMessage("message.systemname");
-				currentPage.alert(systemname, r.result);
+		try {
+			this.parent.resetErrorStatus();
+			let r = await this.submit("backup");
+			this.parent.resetErrorStatus();
+			if (r != null) {
+				if (r.status == JsonResponse.INVALID) {
+					currentPage.setErrorInfo(this.getValidationResult(r), this);
+				} else {
+					let systemname = MessagesUtil.getMessage("message.systemname");
+					currentPage.alert(systemname, r.result);
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 }

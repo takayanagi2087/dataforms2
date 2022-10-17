@@ -167,16 +167,20 @@ class EditForm extends Form {
 	 * </pre>
 	 */
 	async confirm() {
-		if (this.validate()) {
-			this.get("saveMode").val(this.saveMode);
-			let result = await this.submitWithoutFile("confirm");
-			this.parent.resetErrorStatus();
-			if (result.status == JsonResponse.SUCCESS) {
-				this.toConfirmMode();
-				this.parent.pushConfirmModeStatus();
-			} else {
-				this.parent.setErrorInfo(this.getValidationResult(result), this);
+		try {
+			if (this.validate()) {
+				this.get("saveMode").val(this.saveMode);
+				let result = await this.submitWithoutFile("confirm");
+				this.parent.resetErrorStatus();
+				if (result.status == JsonResponse.SUCCESS) {
+					this.toConfirmMode();
+					this.parent.pushConfirmModeStatus();
+				} else {
+					this.parent.setErrorInfo(this.getValidationResult(result), this);
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -188,17 +192,21 @@ class EditForm extends Form {
 	 * </pre>
 	 */
 	async newData() {
-		let title = MessagesUtil.getMessage("message.editformtitle.new");
-		this.get("editFormTitle").text(title);
-		let result = await this.submitWithoutFile("getNewData");
-		this.parent.resetErrorStatus();
-		if (result.status == JsonResponse.SUCCESS) {
-			this.saveMode = "new";
-			this.setFormData(result.result);
-			this.toEditMode();
-			this.parent.pushEditModeStatus();
-		} else {
-			this.parent.setErrorInfo(this.getValidationResult(result), this);
+		try {
+			let title = MessagesUtil.getMessage("message.editformtitle.new");
+			this.get("editFormTitle").text(title);
+			let result = await this.submitWithoutFile("getNewData");
+			this.parent.resetErrorStatus();
+			if (result.status == JsonResponse.SUCCESS) {
+				this.saveMode = "new";
+				this.setFormData(result.result);
+				this.toEditMode();
+				this.parent.pushEditModeStatus();
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -210,18 +218,22 @@ class EditForm extends Form {
 	 * </pre>
 	 */
 	async updateData() {
-		let title = MessagesUtil.getMessage("message.editformtitle.update");
-		this.get("editFormTitle").text(title);
-		let result = await this.submitWithoutFile("getData");
-		this.parent.resetErrorStatus();
-		if (result.status == JsonResponse.SUCCESS) {
-			this.parent.toEditMode();
-			this.saveMode = "update";
-			this.setFormData(result.result);
-			this.toEditMode();
-			this.parent.pushEditModeStatus();
-		} else {
-			this.parent.setErrorInfo(this.getValidationResult(result), this);
+		try {
+			let title = MessagesUtil.getMessage("message.editformtitle.update");
+			this.get("editFormTitle").text(title);
+			let result = await this.submitWithoutFile("getData");
+			this.parent.resetErrorStatus();
+			if (result.status == JsonResponse.SUCCESS) {
+				this.parent.toEditMode();
+				this.saveMode = "update";
+				this.setFormData(result.result);
+				this.toEditMode();
+				this.parent.pushEditModeStatus();
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -234,18 +246,22 @@ class EditForm extends Form {
 	 *
 	 */
 	async referData() {
-		let title = MessagesUtil.getMessage("message.editformtitle.refer");
-		this.get("editFormTitle").text(title);
-		let result = await this.submitWithoutFile("getReferData");
-		this.parent.resetErrorStatus();
-		if (result.status == JsonResponse.SUCCESS) {
-			this.parent.toEditMode();
-			this.saveMode = "new";
-			this.setFormData(result.result);
-			this.toEditMode();
-			this.parent.pushEditModeStatus();
-		} else {
-			this.parent.setErrorInfo(this.getValidationResult(result), this);
+		try {
+			let title = MessagesUtil.getMessage("message.editformtitle.refer");
+			this.get("editFormTitle").text(title);
+			let result = await this.submitWithoutFile("getReferData");
+			this.parent.resetErrorStatus();
+			if (result.status == JsonResponse.SUCCESS) {
+				this.parent.toEditMode();
+				this.saveMode = "new";
+				this.setFormData(result.result);
+				this.toEditMode();
+				this.parent.pushEditModeStatus();
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -257,21 +273,25 @@ class EditForm extends Form {
 	 * </pre>
 	 */
 	async viewData() {
-		let title = MessagesUtil.getMessage("message.editformtitle.view");
-		this.get("editFormTitle").text(title);
-		let result = await this.submitWithoutFile("getData");
-		this.parent.resetErrorStatus();
-		if (result.status == JsonResponse.SUCCESS) {
-			this.parent.toEditMode();
-			this.saveMode = "update";
-			this.setFormData(result.result);
-			this.lockFields(true);
-			this.get("confirmButton").hide();
-			this.get("saveButton").hide();
-			this.get("resetButton").hide();
-			this.parent.pushConfirmModeStatus();
-		} else {
-			this.parent.setErrorInfo(this.getValidationResult(result), this);
+		try {
+			let title = MessagesUtil.getMessage("message.editformtitle.view");
+			this.get("editFormTitle").text(title);
+			let result = await this.submitWithoutFile("getData");
+			this.parent.resetErrorStatus();
+			if (result.status == JsonResponse.SUCCESS) {
+				this.parent.toEditMode();
+				this.saveMode = "update";
+				this.setFormData(result.result);
+				this.lockFields(true);
+				this.get("confirmButton").hide();
+				this.get("saveButton").hide();
+				this.get("resetButton").hide();
+				this.parent.pushConfirmModeStatus();
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -321,20 +341,24 @@ class EditForm extends Form {
 	 * </pre>
 	 */
 	async save() {
-		if (this.validate()) {
-			this.get("saveMode").val(this.saveMode);
-			let result = await this.submit("save");
-			this.parent.resetErrorStatus();
-			if (result.status == JsonResponse.SUCCESS) {
-				if (result.result != null && result.result.length > 0) {
-					await currentPage.alert(null, result.result);
-					this.changeStateForAfterUpdate();
+		try {
+			if (this.validate()) {
+				this.get("saveMode").val(this.saveMode);
+				let result = await this.submit("save");
+				this.parent.resetErrorStatus();
+				if (result.status == JsonResponse.SUCCESS) {
+					if (result.result != null && result.result.length > 0) {
+						await currentPage.alert(null, result.result);
+						this.changeStateForAfterUpdate();
+					} else {
+						this.changeStateForAfterUpdate();
+					}
 				} else {
-					this.changeStateForAfterUpdate();
+					this.parent.setErrorInfo(this.getValidationResult(result), this);
 				}
-			} else {
-				this.parent.setErrorInfo(this.getValidationResult(result), this);
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -346,19 +370,23 @@ class EditForm extends Form {
 	 * </pre>
 	 */
 	async del() {
-		let systemName = MessagesUtil.getMessage("message.systemname");
-		let msg = MessagesUtil.getMessage("message.deleteconfirm");
-		if (await currentPage.confirm(systemName, msg)) {
-			let result = await this.submit("delete");
-			this.parent.resetErrorStatus();
-			if (result.status == JsonResponse.SUCCESS) {
-				if (result.result != null && result.result.length > 0) {
-					await currentPage.alert(null, result.result);
-					this.changeStateForAfterUpdate();
-				} else {
-					this.changeStateForAfterUpdate();
+		try {
+			let systemName = MessagesUtil.getMessage("message.systemname");
+			let msg = MessagesUtil.getMessage("message.deleteconfirm");
+			if (await currentPage.confirm(systemName, msg)) {
+				let result = await this.submit("delete");
+				this.parent.resetErrorStatus();
+				if (result.status == JsonResponse.SUCCESS) {
+					if (result.result != null && result.result.length > 0) {
+						await currentPage.alert(null, result.result);
+						this.changeStateForAfterUpdate();
+					} else {
+						this.changeStateForAfterUpdate();
+					}
 				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 }

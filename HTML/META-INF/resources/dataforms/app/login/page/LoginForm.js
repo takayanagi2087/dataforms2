@@ -18,17 +18,21 @@ class LoginForm extends Form {
 	 *
 	 */
 	async login() {
-		if (this.validate()) {
-			let result = await this.submit("login");
-			this.parent.resetErrorStatus();
-			if (result.status == JsonResponse.SUCCESS) {
-				if (this.parent instanceof Dialog) {
-					this.parent.close();
+		try {
+			if (this.validate()) {
+				let result = await this.submit("login");
+				this.parent.resetErrorStatus();
+				if (result.status == JsonResponse.SUCCESS) {
+					if (this.parent instanceof Dialog) {
+						this.parent.close();
+					}
+					currentPage.toTopPage();
+				} else {
+					this.parent.setErrorInfo(this.getValidationResult(result), this);
 				}
-				currentPage.toTopPage();
-			} else {
-				this.parent.setErrorInfo(this.getValidationResult(result), this);
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 

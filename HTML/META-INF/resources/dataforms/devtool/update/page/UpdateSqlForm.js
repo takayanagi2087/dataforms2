@@ -50,18 +50,22 @@ class UpdateSqlForm extends Form {
 	 * SQLの作成処理。
 	 */
 	async generateSql() {
-		if (this.validateForGenerateSql()) {
-			let r = await this.submit("generateSql");
-			this.parent.resetErrorStatus();
-			if (r.status == JsonResponse.SUCCESS) {
-				logger.dir(r);
-				this.get("sql").val(r.result);
+		try {
+			if (this.validateForGenerateSql()) {
+				let r = await this.submit("generateSql");
+				this.parent.resetErrorStatus();
+				if (r.status == JsonResponse.SUCCESS) {
+					logger.dir(r);
+					this.get("sql").val(r.result);
+				} else {
+					this.parent.setErrorInfo(this.getValidationResult(r), this);
+				}
 			} else {
-				this.parent.setErrorInfo(this.getValidationResult(r), this);
+				let msg = MessagesUtil.getMessage("error.requiredtableclass");
+				await currentPage.alert(null, msg);
 			}
-		} else {
-			let msg = MessagesUtil.getMessage("error.requiredtableclass");
-			await currentPage.alert(null, msg);
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -69,15 +73,19 @@ class UpdateSqlForm extends Form {
 	 * 更新処理。
 	 */
 	async update() {
-		if (this.validate()) {
-			let r = await this.submit("update");
-			this.parent.resetErrorStatus();
-			if (r.status == JsonResponse.SUCCESS) {
-				logger.dir(r);
-				await currentPage.alert(null, r.result);
-			} else {
-				this.parent.setErrorInfo(this.getValidationResult(r), this);
+		try {
+			if (this.validate()) {
+				let r = await this.submit("update");
+				this.parent.resetErrorStatus();
+				if (r.status == JsonResponse.SUCCESS) {
+					logger.dir(r);
+					await currentPage.alert(null, r.result);
+				} else if (r.status == JsonResponse.INVALID) {
+					this.parent.setErrorInfo(this.getValidationResult(r), this);
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 

@@ -36,7 +36,7 @@ class QueryGeneratorQueryResultForm extends QueryResultForm {
 			let m = this.getWebMethod("generateSubQuery");
 			let r = await m.execute("queryClass=" + queryClassName);
 			if (r.status == JsonResponse.SUCCESS) {
-				currentPage.alert(null, r.result);
+				await currentPage.alert(null, r.result);
 			}
 			this.changePage();
 		} catch (e) {
@@ -57,10 +57,10 @@ class QueryGeneratorQueryResultForm extends QueryResultForm {
 				if (sq.length > 0) {
 					let msg = MessagesUtil.getMessage("message.confirmsubquery");
 					if (await currentPage.confirm(null, msg)) {
-						this.generateSubQuery($(ev.currentTarget));
+						await this.generateSubQuery($(ev.currentTarget));
 					};
 				} else {
-					this.generateSubQuery($(ev.currentTarget));
+					await this.generateSubQuery($(ev.currentTarget));
 				}
 			});
 		} catch (e) {

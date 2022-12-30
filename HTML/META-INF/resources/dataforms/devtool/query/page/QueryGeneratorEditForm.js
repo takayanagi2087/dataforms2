@@ -71,19 +71,23 @@ class QueryGeneratorEditForm extends EditForm {
 	 * フィールドリストを取得します。
 	 */
 	async getFieldList() {
-		let r = await this.submit("getFieldList");
-		currentPage.resetErrorStatus();
-		if (r.status == JsonResponse.SUCCESS) {
-			this.get("selectAll").prop("checked", false);
-			logger.log("field list=" + JSON.stringify(r.result));
-			let ftbl = this.getComponent("selectFieldList");
-			ftbl.setTableData(r.result);
-			let cr = await this.submit("getJoinCondition");
+		try {
+			let r = await this.submit("getFieldList");
 			currentPage.resetErrorStatus();
-			if (cr.status == JsonResponse.SUCCESS) {
-				logger.log("field list=" + JSON.stringify(cr.result));
-				this.setJoinCondition(cr.result);
+			if (r.status == JsonResponse.SUCCESS) {
+				this.get("selectAll").prop("checked", false);
+				logger.log("field list=" + JSON.stringify(r.result));
+				let ftbl = this.getComponent("selectFieldList");
+				ftbl.setTableData(r.result);
+				let cr = await this.submit("getJoinCondition");
+				currentPage.resetErrorStatus();
+				if (cr.status == JsonResponse.SUCCESS) {
+					logger.log("field list=" + JSON.stringify(cr.result));
+					this.setJoinCondition(cr.result);
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 

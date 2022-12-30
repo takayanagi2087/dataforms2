@@ -44,22 +44,26 @@ class QueryGeneratorEditForm extends EditForm {
 	 * @param {Object} data 設定するデータ。
 	 */
 	async setFormData(data) {
-		super.setFormData(data);
-		this.setFunctionSelect("functionSelect", data.packageName);
-		let joinTableList = this.getComponent("joinTableList");
-		for (let i = 0; i < joinTableList.getRowCount(); i++) {
-			let pkg = joinTableList.getRowField(i, "packageName").getValue();
-			let id = "joinTableList[" + i + "].functionSelect";
-			this.setFunctionSelect(id, pkg);
-		}
-		this.setFunctionSelect("mainTableFunctionSelect", data.mainTablePackageName);
-		if (data.joinTableList != null || data.leftJoinTableList != null || data.rightJoinTableList != null) {
-			let r = await this.submit("getJoinCondition");
-			currentPage.resetErrorStatus();
-			if (r.status == JsonResponse.SUCCESS) {
-				logger.log("field list=" + JSON.stringify(r.result));
-				this.setJoinCondition(r.result);
+		try {
+			super.setFormData(data);
+			this.setFunctionSelect("functionSelect", data.packageName);
+			let joinTableList = this.getComponent("joinTableList");
+			for (let i = 0; i < joinTableList.getRowCount(); i++) {
+				let pkg = joinTableList.getRowField(i, "packageName").getValue();
+				let id = "joinTableList[" + i + "].functionSelect";
+				this.setFunctionSelect(id, pkg);
 			}
+			this.setFunctionSelect("mainTableFunctionSelect", data.mainTablePackageName);
+			if (data.joinTableList != null || data.leftJoinTableList != null || data.rightJoinTableList != null) {
+				let r = await this.submit("getJoinCondition");
+				currentPage.resetErrorStatus();
+				if (r.status == JsonResponse.SUCCESS) {
+					logger.log("field list=" + JSON.stringify(r.result));
+					this.setJoinCondition(r.result);
+				}
+			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 

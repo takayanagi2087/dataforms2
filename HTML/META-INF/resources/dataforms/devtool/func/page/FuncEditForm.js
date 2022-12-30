@@ -31,8 +31,12 @@ class FuncEditForm extends EditForm {
 	 */
 	async exportInitData() {
 		if (await currentPage.confirm(null, MessagesUtil.getMessage("message.exportAsInitialDataConfirm"))) {
-			let data = await this.submit("export");
-			currentPage.alert(null, data.result);
+			try {
+				let data = await this.submit("export");
+				currentPage.alert(null, data.result);
+			} catch (e) {
+				currentPage.reportError(e);
+			}
 		}
 	}
 
@@ -42,8 +46,12 @@ class FuncEditForm extends EditForm {
 	async importInitData() {
 		let ret = await currentPage.confirm(null, MessagesUtil.getMessage("message.importInitialDataConfirm"));
 		if (ret) {
-			let data = await this.submit("importData");
-			await currentPage.alert(null, data.result);
+			try {
+				let data = await this.submit("importData");
+				await currentPage.alert(null, data.result);
+			} catch (e) {
+				currentPage.reportError(e);
+			}
 		}
 	}
 
@@ -53,8 +61,12 @@ class FuncEditForm extends EditForm {
 	async importV1InitData() {
 		let ret = await currentPage.confirm(null, MessagesUtil.getMessage("message.importV1InitialDataConfirm"));
 		if (ret) {
-			let data = await this.submit("importV1Data");
-			await currentPage.alert(null, data.result);
+			try {
+				let data = await this.submit("importV1Data");
+				await currentPage.alert(null, data.result);
+			} catch (e) {
+				currentPage.reportError(e);
+			}
 		}
 	}
 

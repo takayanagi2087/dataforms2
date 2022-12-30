@@ -87,7 +87,7 @@ class WebResourceForm extends Form {
 			this.parent.resetErrorStatus();
 			if (ret.status == JsonResponse.SUCCESS) {
 				let systemName = MessagesUtil.getMessage("message.systemname");
-				currentPage.alert(systemName, ret.result);
+				await currentPage.alert(systemName, ret.result);
 			} else if (ret.status == JsonResponse.INVALID) {
 				this.parent.setErrorInfo(this.getValidationResult(ret), this);
 			}

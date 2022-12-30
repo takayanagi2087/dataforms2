@@ -188,12 +188,16 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			for (let i = 0; i < queryResult.length; i++) {
 				let id = "queryResult[" + i + "].className";
 				this.get(id).click(async (ev) => {
-					let clsname = $(ev.currentTarget).html();
-					let qs="className=" + clsname;
-					let method = this.getWebMethod("getTableInfo");
-					let sqllist = await method.execute(qs);
-					if (sqllist.status == JsonResponse.SUCCESS) {
-						this.showTableInfo(sqllist.result);
+					try {
+						let clsname = $(ev.currentTarget).html();
+						let qs="className=" + clsname;
+						let method = this.getWebMethod("getTableInfo");
+						let sqllist = await method.execute(qs);
+						if (sqllist.status == JsonResponse.SUCCESS) {
+							this.showTableInfo(sqllist.result);
+						}
+					} catch (e) {
+						currentPage.reportError(e);
 					}
 				});
 			}

@@ -33,7 +33,7 @@ class FuncEditForm extends EditForm {
 		if (await currentPage.confirm(null, MessagesUtil.getMessage("message.exportAsInitialDataConfirm"))) {
 			try {
 				let data = await this.submit("export");
-				currentPage.alert(null, data.result);
+				await currentPage.alert(null, data.result);
 			} catch (e) {
 				currentPage.reportError(e);
 			}

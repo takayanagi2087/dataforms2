@@ -80,12 +80,13 @@ class WebMethod {
 	 * </pre>
 	 * @param {Object} data 返却されたオブジェクト.
 	 */
-	onCatchApplicationException(data) {
+	async onCatchApplicationException(data) {
 		// logger.log("onCatchApplicationException data=" + JSON.stringify(data));
 		if (data.result.key == "error.auth") {
 			window.location.href = currentPage.contextPath + currentPage.errorPage + "?msg=" + data.result.message;
 		} else {
-			alert(data.result.message);
+			// await currentPage.alert(null, data.result.message);
+			throw new Error(data.result.message);
 		}
 	}
 
@@ -200,7 +201,8 @@ class WebMethod {
 				if (data.status == JsonResponse.SUCCESS || data.status == JsonResponse.INVALID) {
 					return data;
 				} else {
-					this.onCatchApplicationException(data);
+					await this.onCatchApplicationException(data);
+					return data;
 				}
 			} else {
 				return data;

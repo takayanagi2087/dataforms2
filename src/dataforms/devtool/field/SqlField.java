@@ -1,17 +1,17 @@
 package dataforms.devtool.field;
 
-import dataforms.devtool.validator.UpdateSqlValidator;
+import dataforms.devtool.validator.SqlValidator;
 import dataforms.field.sqltype.ClobField;
 
 /**
  * 更新SQLフィールド。
  *
  */
-public class UpdateSqlField extends ClobField {
+public class SqlField extends ClobField {
 	/**
 	 * コンストラクタ。
 	 */
-	public UpdateSqlField() {
+	public SqlField() {
 		this(null);
 	}
 
@@ -19,13 +19,13 @@ public class UpdateSqlField extends ClobField {
 	 * コンストラクタ。
 	 * @param id フィールドID。
 	 */
-	public UpdateSqlField(final String id) {
+	public SqlField(final String id) {
 		super(id);
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
-		this.addValidator(new UpdateSqlValidator());
+		this.addValidator(new SqlValidator());
 	}
 }

@@ -9,7 +9,7 @@ import dataforms.validator.FieldValidator;
 /**
  * 更新系SQLのバリデーター。
  */
-public class UpdateSqlValidator extends FieldValidator {
+public class SqlValidator extends FieldValidator {
 
 	/**
 	 * パラメータ。
@@ -19,7 +19,7 @@ public class UpdateSqlValidator extends FieldValidator {
 	/**
 	 * コンストラクタ。
 	 */
-	public UpdateSqlValidator() {
+	public SqlValidator() {
 		super("error.parametersremain");
 	}
 

@@ -15,7 +15,7 @@ import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.TableClassNameField;
-import dataforms.devtool.field.UpdateSqlField;
+import dataforms.devtool.field.SqlField;
 import dataforms.devtool.field.UpdateSqlTypeField;
 import dataforms.devtool.field.UpdateSqlTypeField.UpdateSqlType;
 import dataforms.field.base.FieldList;
@@ -54,7 +54,7 @@ public class UpdateSqlForm extends Form {
 		this.addField(new PackageNameField());
 		this.addField(new TableClassNameField()).setAutocomplete(true).setRelationDataAcquisition(true);
 		this.addField(this.updateSqlTypeField = new UpdateSqlTypeField());
-		this.addField(new UpdateSqlField(ID_SQL)).addValidator(new RequiredValidator());
+		this.addField(new SqlField(ID_SQL)).addValidator(new RequiredValidator());
 	}
 
 	@Override

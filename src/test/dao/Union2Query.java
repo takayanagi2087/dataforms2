@@ -18,6 +18,6 @@ public class Union2Query extends Query {
 		flist.remove(SqlTypeTable.Entity.ID_SQL_CLOB);
 		this.setFieldList(flist);
 		this.setMainTable(table);
-		this.setCondition("m.sql_char='aaaa'");
+		this.setCondition("m.sql_char=:sql_char");
 	}
 }

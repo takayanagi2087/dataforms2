@@ -253,10 +253,10 @@ public class XslFoReport extends Report {
 			return sourceDocument.lookupPrefix(namespaceURI);
 		}
 
-		@SuppressWarnings({ "rawtypes" })
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
 		public Iterator getPrefixes(final String namespaceURI) {
-			return null;
+			return (Iterator) null;
 		}
 	}
 

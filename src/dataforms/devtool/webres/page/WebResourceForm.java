@@ -449,7 +449,6 @@ public class WebResourceForm extends Form {
 			 * 終了フィールドを取得します。
 			 * @return 終了フィールド。
 			 */
-			@SuppressWarnings("unused")
 			public Field<?> getTo() {
 				return to;
 			}

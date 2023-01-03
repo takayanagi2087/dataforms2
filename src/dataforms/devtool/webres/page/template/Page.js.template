@@ -31,11 +31,14 @@ class ${className} extends ${superClassName} {
 	 */
 /*
 	async callWebMethod() {
-		// ページの初期化.
-		let method = this.getWebMethod("webMethod");
-		let r = await method.execute("p1=v1&p2=v2");
-		// TODO:応答情報を適切に処理してください。
-		logger.dir(r);
+		try {
+			let method = this.getWebMethod("webMethod");
+			let r = await method.execute("p1=v1&p2=v2");
+			// TODO:応答情報を適切に処理してください。
+			logger.dir(r);
+		} catch (e) {
+			currentPage.reportError(e);
+		}
 	}
 */
 

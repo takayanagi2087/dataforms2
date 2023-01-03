@@ -5,16 +5,20 @@
 	 */
 /*
 	async callWebMethod() {
-		if (this.validate()) {
-			let r = await this.submit("webMethod");
-			this.parent.resetErrorStatus();
-			if (r.status == JsonResponse.SUCCESS) {
-				// TODO:成功時の処理を記述します。
-				// 応答情報をログ表示
-				logger.dir(r);
-			} else {
-				this.parent.setErrorInfo(this.getValidationResult(r), this);
+		try {
+			if (this.validate()) {
+				let r = await this.submit("webMethod");
+				this.parent.resetErrorStatus();
+				if (r.status == JsonResponse.SUCCESS) {
+					// TODO:成功時の処理を記述します。
+					// 応答情報をログ表示
+					logger.dir(r);
+				} else {
+					this.parent.setErrorInfo(this.getValidationResult(r), this);
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 */

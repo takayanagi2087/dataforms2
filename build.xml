@@ -5,7 +5,6 @@
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. -->
 <!DOCTYPE project>
-
 <!--
 	javadoc, jsdocとdataforms2.jarを作成します。
 

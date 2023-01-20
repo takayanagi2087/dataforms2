@@ -25,7 +25,6 @@ public class SqlTypeDao extends QuerySetDao {
 
 	/**
 	 * コンストラクタ。
-	 * @throws Exception 例外。
 	 */
 	public SqlTypeDao() {
 		this.setComment("SqlTypeテーブルアクセスクラス");

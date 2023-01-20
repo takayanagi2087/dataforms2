@@ -25,7 +25,6 @@ public class MaterialMasterDao extends QuerySetDao {
 
 	/**
 	 * コンストラクタ。
-	 * @throws Exception 例外。
 	 */
 	public MaterialMasterDao() {
 		this.setComment("資材マスタDao");

@@ -7,9 +7,6 @@ import test.dao.SelectFieldDao;
 
 /**
  * 選択肢フィールド ページクラス。
- * <pre>
- *
- * </pre>
  */
 public class SelectFieldPage extends BasePage {
 	/**

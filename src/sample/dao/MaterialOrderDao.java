@@ -51,7 +51,6 @@ public class MaterialOrderDao extends QuerySetDao {
 
 	/**
 	 * コンストラクタ。
-	 * @throws Exception 例外。
 	 */
 	public MaterialOrderDao() {
 		this.setComment("発注情報Dao");
@@ -73,7 +72,7 @@ public class MaterialOrderDao extends QuerySetDao {
 
 	/**
 	 * 主テーブルを取得します。
-	 * @return 主テーブル>
+	 * @return 主テーブル。
 	 */
 	public MaterialOrderTable getMainTable() {
 		if (this.getSingleRecordQuery() != null) {

@@ -25,7 +25,6 @@ public class TestSingleRecDao extends QuerySetDao {
 
 	/**
 	 * コンストラクタ。
-	 * @throws Exception 例外。
 	 */
 	public TestSingleRecDao() {
 		this.setComment("1レコード編集ページ");

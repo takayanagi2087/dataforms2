@@ -1,10 +1,10 @@
 package test.dao;
 
 import dataforms.dao.JDBCConnectableObject;
+import dataforms.dao.Query;
 import dataforms.dao.QuerySetDao;
 import dataforms.dao.SingleTableQuery;
 import dataforms.field.base.FieldList;
-import dataforms.dao.Query;
 import test.field.Code1Field;
 
 
@@ -55,7 +55,6 @@ public class TestMultiRecDao extends QuerySetDao {
 
 	/**
 	 * コンストラクタ。
-	 * @throws Exception 例外。
 	 */
 	public TestMultiRecDao() {
 		this.setComment("複数レコード編集用DAO");

@@ -25,7 +25,6 @@ public class SupplierMasterDao extends QuerySetDao {
 
 	/**
 	 * コンストラクタ。
-	 * @throws Exception 例外。
 	 */
 	public SupplierMasterDao() {
 		this.setComment("仕入先マスタDao");
@@ -46,7 +45,7 @@ public class SupplierMasterDao extends QuerySetDao {
 
 	/**
 	 * 主テーブルを取得します。
-	 * @return 主テーブル>
+	 * @return 主テーブル。
 	 */
 	public SupplierMasterTable getMainTable() {
 		if (this.getSingleRecordQuery() != null) {

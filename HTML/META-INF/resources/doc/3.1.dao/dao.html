@@ -792,8 +792,8 @@ e.setSampleText("test");
 e.setSampleSelect("1");
 e.setSampleNumeric(BigDecimal.valueOf(123));
 query.setConditionData(e.getMap());
-List<Map<String, Object>> result = dao.executeQuery(query);	// 問合せを行い、その結果をMapのListで返します。
-logger.debug(() -> "result=" + JSON.encode(result, true));	// 問合せ結果をJSON形式でlog出力します。
+List&lt;Map&lt;String, Object&gt;&gt; result = dao.executeQuery(query);	// &#21839;&#21512;&#12379;&#12434;&#34892;&#12356;&#12289;&#12381;&#12398;&#32080;&#26524;&#12434;Map&#12398;List&#12391;&#36820;&#12375;&#12414;&#12377;&#12290;
+logger.debug(() -&gt; &quot;result=&quot; + JSON.encode(result, true));	// &#21839;&#21512;&#12379;&#32080;&#26524;&#12434;JSON&#24418;&#24335;&#12391;log&#20986;&#21147;&#12375;&#12414;&#12377;&#12290;
 			</pre>
 		</div>
 		<p>

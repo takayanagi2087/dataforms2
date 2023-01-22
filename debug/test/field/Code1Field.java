@@ -1,0 +1,134 @@
+package test.field;
+
+import java.util.List;
+import java.util.Map;
+
+import dataforms.dao.Query;
+import dataforms.field.base.FieldList;
+import dataforms.field.sqltype.VarcharField;
+import dataforms.validator.MaxLengthValidator;
+import test.dao.TestMultiRecTable;
+
+
+/**
+ * Code1Fieldフィールドクラス。
+ *
+ */
+public class Code1Field extends VarcharField {
+	/**
+	 * フィールド長。
+	 */
+	private static final int LENGTH = 8;
+
+	/**
+	 * フィールドコメント。
+	 */
+	private static final String COMMENT = "コード1";
+	/**
+	 * コンストラクタ。
+	 */
+	public Code1Field() {
+		this(null);
+	}
+	/**
+	 * コンストラクタ。
+	 * @param id フィールドID。
+	 */
+	public Code1Field(final String id) {
+		super(id, LENGTH);
+		this.setComment(COMMENT);
+	}
+
+	@Override
+	protected void onBind() {
+		super.onBind();
+		this.addValidator(new MaxLengthValidator(this.getLength()));
+
+	}
+
+////////////////////////////////////////////////////////////////////////////////////
+// Autocomplete機能と関連データ取得機能を使用する場合以下のメソッドを実装します。
+// 以下のコードのコメントを外して適切に実装してください。
+////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 関連フィールドリスト。
+	 */
+	private static final String[] IDLIST = {
+		// このフィールドのIDを指定します
+		TestMultiRecTable.Entity.ID_CODE1
+	};
+
+	/**
+	 * Code1の一覧取得問合せ。
+	 *
+	 */
+	private static class Code1Query extends Query {
+		/**
+		 * コンストラクタ。
+		 */
+		public Code1Query() {
+			this.setDistinct(true);
+			TestMultiRecTable table = new TestMultiRecTable();
+			FieldList flist = new FieldList();
+			flist.addField(table.getCode1Field());
+			this.setFieldList(flist);
+			this.setMainTable(table);
+			this.setOrderByFieldList(new FieldList(table.getCode1Field()));
+		}
+	}
+
+	/**
+	 * Autocomplete用の一覧を取得するメソッドを実装します。
+	 * @param data パラメータ。
+	 * @return 関連データのマップ。
+	 * @throws Exception 例外。
+	 */
+	@Override
+	protected List<Map<String, Object>> queryAutocompleteSourceList(final Map<String, Object> data) throws Exception {
+		Code1Query query = new Code1Query(); // 一覧を取得する問合せを作成。
+		List<Map<String, Object>> list = this.queryAutocompleteSourceList(
+			data					// フォームのデータ
+			, query					// 問合せ
+			, (Map<String, Object> map, String ... ids) -> {
+				return (String) map.get(ids[0]);
+			}						// ラベルの構築処理を指定します。
+			, IDLIST
+		);
+		return list;
+	}
+	/**
+	 * 関連データを取得します。
+	 * @param data パラメータ。
+	 * @return 関連データのマップ。
+	 * @throws Exception 例外。
+	 */
+/*
+	@Override
+	protected Map<String, Object> queryRelationData(final Map<String, Object> data) throws Exception {
+		SingleTableQuery query = new SingleTableQuery(new MasterTable()); // 関連データを取得する問合せを作成。
+		Map<String, Object> ret = this.queryRelationData(
+			data					// フォームのデータ
+			, query					// 問合せ
+			, IDLIST
+		);
+		return ret;
+	}
+*/
+
+	// 独自のWebメソッドを作成する場合は、以下のコードを参考にしてください。
+	/**
+	 * Webメソッドのサンプル。
+	 * @param p 入力パラメータ。
+	 * @return 応答情報。
+	 * @throws Exception 例外。
+	 */
+/*
+	@WebMethod
+	public Response webMethod(final Map<String, Object> p) throws Exception {
+		Object obj = null;
+		Response resp = new JsonResponse(JsonResponse.SUCCESS, obj);
+		return resp;
+	}
+*/
+
+}

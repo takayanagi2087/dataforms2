@@ -1,0 +1,4 @@
+/**
+ * サンプルフィールドパッケージ。
+ */
+package sample.field;

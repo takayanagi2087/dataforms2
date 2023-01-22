@@ -1,0 +1,4 @@
+/**
+ * サンプルページパッケージ。
+ */
+package sample.page;

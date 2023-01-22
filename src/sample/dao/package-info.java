@@ -1,4 +1,0 @@
-/**
- * サンプルDAOパッケージ。
- */
-package sample.dao;

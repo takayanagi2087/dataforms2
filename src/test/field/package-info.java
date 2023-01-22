@@ -1,4 +1,0 @@
-/**
- * TESTフィールドパッケージ。
- */
-package test.field;

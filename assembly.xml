@@ -1,31 +1,38 @@
-<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 http://maven.apache.org/xsd/assembly-1.1.3.xsd
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 http://maven.apache.org/xsd/assembly-1.1.3.xsd
 http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 ">
 
-    <id>test</id>
-    <formats>
-        <format>jar</format>
-    </formats>
-    <!-- ディレクトリ階層をプロジェクトルートにするかどうか -->
-    <includeBaseDirectory>false</includeBaseDirectory>
-    <fileSets>
-        <fileSet>
-            <directory>src</directory>
-            <outputDirectory></outputDirectory>
-            <excludes>
-            	<exclude>log4j2.xml</exclude>
-            </excludes>
-        </fileSet>
-        <fileSet>
-            <directory>build/classes</directory>
-            <outputDirectory></outputDirectory>
-            <excludes>
-            	<exclude>log4j2.xml</exclude>
-            	<exclude>sample/**</exclude>
-            	<exclude>test/**</exclude>
-            	<exclude>main/**</exclude>
-            </excludes>
-        </fileSet>
-    </fileSets>
+	<id>dataforms2.jar</id>
+	<formats>
+		<format>jar</format>
+	</formats>
+	<!-- ディレクトリ階層をプロジェクトルートにするかどうか -->
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<!-- ソースファイルを含める -->
+		<fileSet>
+			<directory>src</directory>
+			<outputDirectory></outputDirectory>
+			<excludes>
+				<exclude>log4j2.xml</exclude>
+			</excludes>
+		</fileSet>
+		<!-- eclipseのbuildフォルダの内容でパッケージングする。 -->
+		<fileSet>
+			<directory>build/classes</directory>
+			<outputDirectory></outputDirectory>
+			<excludes>
+				<exclude>log4j2.xml</exclude>
+				<exclude>sample/**</exclude>
+				<exclude>test/**</exclude>
+				<exclude>META-INF/**</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>HTML</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+	</fileSets>
 </assembly>

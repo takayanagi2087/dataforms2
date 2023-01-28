@@ -35,6 +35,8 @@ IE11はデフォルトでは動作しない設定になっていますが、
 
 詳細は[ドキュメント](http://www.takayanagi-syslab.net/dfblank/dataforms/devtool/doc/page/DocFramePage.df)の「2.開発環境構築」を参照してください。
 
+現在試験的に[Maven対応のプロジェクト(df2blank)](https://github.com/takayanagi2087/df2blank/)を用意してみました。
+
 
 ## Requirement
 主に、Eclipse(pleiades2020-03) + Java11 + Tomcat9 + Apache Derby,PostgreSQLでテストしています。

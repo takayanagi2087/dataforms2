@@ -48,7 +48,7 @@ Servlet 3.0に対応したアプリケーションサーバで動作するはず
 * PostgreSQL 10.21-2
 * MariaDB 10.3.35-1
 * Oralce21c xe
-* Ms SQL Server 16.0.950.9-1
+* MS SQL Server 16.0.950.9-1
 
 
 ## Licence

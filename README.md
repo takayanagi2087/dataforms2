@@ -42,10 +42,11 @@ Servlet 3.0に対応したアプリケーションサーバで動作するはず
 
 対応しているデータベースサーバは、以下の通りです。(バージョンは実績のあるバージョンを記載しています。)
 
-* Apache Derby 10.14.2.0
-* PostgreSQL 9.2.23-1
-* MariaDB(MySQL) 5.5.56-2
-* Oralce11g 11.2.0.1.0
+* Apache Derby 10.15.2.0
+* PostgreSQL 10.21-2
+* MariaDB 10.3.35-1
+* Oralce21c xe
+* Ms SQL Server 16.0.950.9-1
 
 
 ## Licence

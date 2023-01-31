@@ -291,22 +291,6 @@ public class Dao implements JDBCConnectableObject {
 
 
 	/**
-	 * レコード処理クラス。
-	 * <pre>
-	 * 問い合わせ結果のレコードを一件ずつ処理するためのクラスです。
-	 * </pre>
-	 */
-	public abstract class RecordProcessor {
-		/**
-		 * 1レコード処理します。
-		 * @param rec レコード。
-		 * @return 処理継続フラグ。
-		 * @throws Exception 例外。
-		 */
-		public abstract boolean process(final Map<String, Object> rec) throws Exception;
-	}
-
-	/**
 	 * カラム情報。
 	 *
 	 */
@@ -562,6 +546,7 @@ public class Dao implements JDBCConnectableObject {
 	}
 
 
+
 	/**
 	 * SQLを実行し、その結果リストを返します。
 	 * <pre>
@@ -583,6 +568,18 @@ public class Dao implements JDBCConnectableObject {
 		});
 		return list;
 	}
+
+	/**
+	 * 問い合わせを実行し、ヒットしたレコードを処理します。
+	 * @param query 問い合わせ。
+	 * @param p レコード処理関数。
+	 * @throws Exception 例外。
+	 */
+	public void executeQuery(final Query query, final RecordProcessor p) throws Exception {
+		String sql = this.getSqlGenerator().generateQuerySql(query);
+		this.executeQuery(sql, this.convertToDBValue(query.getConditionFieldList(), query.getConditionData()), p);
+	}
+
 
 	/**
 	 * 問い合わせを実行し、その結果リストを返します。

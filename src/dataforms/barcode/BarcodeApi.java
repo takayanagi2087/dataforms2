@@ -67,6 +67,7 @@ public abstract class BarcodeApi extends WebApi {
 	 * </pre>
 	 * @param p パラメータ。
 	 * @return バーコードイメージ。
+	 * @throws Exception 例外。
 	 */
 	protected abstract byte[] getBarcodeImage(final Map<String, Object> p) throws Exception;
 

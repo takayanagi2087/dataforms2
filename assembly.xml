@@ -21,7 +21,7 @@ http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 ">
 		</fileSet>
 		<!-- eclipseのbuildフォルダの内容でパッケージングする。 -->
 		<fileSet>
-			<directory>build/classes</directory>
+			<directory>target/dataforms2-${project.version}/WEB-INF/classes</directory>
 			<outputDirectory></outputDirectory>
 			<excludes>
 				<exclude>log4j2.xml</exclude>

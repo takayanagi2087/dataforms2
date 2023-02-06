@@ -10,8 +10,10 @@
 		<!-- dataforms2.jarのバージョンファイル(ビルドフォルダ) -->
 		<classes.dataforms.mf>build/classes/META-INF/resources/dataforms.mf</classes.dataforms.mf>
 		<jsdoc.cmd>C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd</jsdoc.cmd>
+		<!--
 		<timestamp>${maven.build.timestamp}</timestamp>
-		<maven.build.timestamp.format>yyMMdd</maven.build.timestamp.format>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+		-->
 	</properties>
 	<!-- dataforms2.jarの依存ライブラリ -->
 	<dependencies>
@@ -119,6 +121,26 @@
 			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.gmaven</groupId>
+				<artifactId>gmaven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>set-custom-property</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<source>
+								def timestamp = new Date().format('yyMMdd')
+								project.properties.setProperty('timestamp', timestamp)
+							</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- コンパイル -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -242,6 +264,7 @@
 								<echo message="Implementation-Version: ${project.version}-${timestamp}&#xa;" file="${html.dataforms.mf}" append="true"  />
 								<echo message="Implementation-Vendor: Masahiko Takayanagi&#xa;" file="${html.dataforms.mf}" append="true" />
 								<echo message="Implementation-Title: Dataforms java web application framework&#xa;" file="${html.dataforms.mf}" append="true"  />
+								<echo message="CreatedTime: ${maven.build.timestamp}&#xa;" file="${html.dataforms.mf}" append="true" />
 								<copy file="${html.dataforms.mf}" tofile="${classes.dataforms.mf}" overwrite="true" />
 							</target>
 						</configuration>
@@ -268,6 +291,7 @@
 							<Implementation-Vendor>Masahiko Takayanagi</Implementation-Vendor>
 							<Implementation-Title>Dataforms java web application framework</Implementation-Title>
 							<Implementation-Version>${project.version}-${timestamp}</Implementation-Version>
+							<CreatedTime>${maven.build.timestamp}</CreatedTime>
 						</manifestEntries>
 					</archive>
 				</configuration>

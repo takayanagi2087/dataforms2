@@ -72,24 +72,21 @@
 					<td>郵便番号住所変換</td>
 				</tr>
 				<tr>
-					<td rowspan="5">commons</td>
+					<td rowspan="4">apache commons</td>
 					<td>commons-fileupload-XXX.jar</td>
 					<td>ファイルのアップロード</td>
 				</tr>
 				<tr>
-					<td>commons-lang3-XXX.jar</td>
-					<td rowspan="2">実態参照変換</td>
+					<td>commons-io-XXX.jar</td>
+					<td></td>
 				</tr>
 				<tr>
 					<td>commons-text-XXX.jar</td>
+					<td></td>
 				</tr>
 				<tr>
 					<td>commons-validator-XXX.jar</td>
 					<td>入力値のバリデーション</td>
-				</tr>
-				<tr>
-					<td>commons-logging-XXX.jar</td>
-					<td>POI,FOPが参照</td>
 				</tr>
 				<tr>
 					<td>jsonic</td>
@@ -97,96 +94,49 @@
 					<td>JSON変換</td>
 				</tr>
 				<tr>
-					<td rowspan="2" >log4j2</td>
-					<td>log4j-api-XXX.jar</td>
-					<td rowspan="2">ログ出力</td>
-				</tr>
-				<tr>
+					<td>apache log4j2</td>
 					<td>log4j-core-XXX.jar</td>
+					<td>ログ出力</td>
 				</tr>
 				<tr>
-					<td rowspan="12">POI</td>
+					<td rowspan="3">apache POI</td>
 					<td>poi-XXX.jar</td>
-					<td rowspan="5">
+					<td rowspan="3">
 						Excel出力で使用<br/>
 						(Excel出力を使用しない場合は削除できます)
 					</td>
 				</tr>
 				<tr>
-					<td>poi-excelant-XXX.jar</td>
-				</tr>
-				<tr>
 					<td>poi-ooxml-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>poi-ooxml-schemas-XXX.jar</td>
 				</tr>
 				<tr>
 					<td>poi-scratchpad-XXX.jar</td>
 				</tr>
 				<tr>
-					<td>commons-codec-XXX.jar</td>
-					<td rowspan="7">
-						POIが参照<br/>
-						(Excel出力を使用しない場合は削除できます)
-					</td>
-				</tr>
-				<tr>
-					<td>commons-collections4-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>commons-compress-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>commons-math3-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>SparseBitSet-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>curvesapi-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>xmlbeans-XXX.jar</td>
-				</tr>
-				<tr>
-					<td rowspan="12" >fop</td>
-					<td>fop.jar</td>
+					<td>apache fop</td>
+					<td>fop-XXX.jar</td>
 					<td>
 						PDF出力<br/>
 						(PDF出力を使用しない場合は削除できます)
 					</td>
 				</tr>
 				<tr>
-					<td>batik-all-XXX.jar</td>
-					<td rowspan="9">
-						FOPが参照<br/>
-						(PDF出力を使用しない場合は削除できます)
+					<td>google.zxing</td>
+					<td>javase-XXX.jar</td>
+					<td>
+						QR-Code生成<br/>
+						(QR-Code出力を使用しない場合は削除できます)
 					</td>
-				</tr>
-				<tr>
-					<td>commons-io-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>fontbox-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>serializer-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>xalan-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>xercesImpl-XXX.jar</td>
-				</tr>
-				<tr>
-					<td>xmlgraphics-commons-XXX.jar</td>
 				</tr>
 			</tbody>
 		</table>
 		<p>
 			この中で一番大きいのがPOIなのですが、Excelレポート出力を使用しないのであればPOIは不要です。
 			また、PDF出力が不要であればFOPも不要です。
+		</p>
+		<p class="topic">
+			依存ライブラリ中のjarファイル一覧はpom.xmlの&lt;dependencies&gt;&lt;/dependencies&gt;に登録してあるもののみを挙げており、
+			これらのライブラリが依存しているものは記載していません。
 		</p>
 		<h3>開発ツールを装備</h3>
 		<p>
@@ -248,6 +198,7 @@
 			<li>MySQL</li>
 			<li>PostgreSQL</li>
 			<li>Oracle</li>
+			<li>Microsoft SQL Server</li>
 		</ol>
 		<p>
 			dataforms2.jarの開発では、開発環境は環境構築が容易なApache Derbyを使用し、結合テスト～運用はPostgreSQL等のデータベースサーバを使用することが一般化しています。

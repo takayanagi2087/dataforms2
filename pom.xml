@@ -17,6 +17,13 @@
 	</properties>
 	<!-- dataforms2.jarの依存ライブラリ -->
 	<dependencies>
+		<!-- Apache commons -->
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -35,18 +42,14 @@
 			<artifactId>commons-validator</artifactId>
 			<version>1.7</version>
 		</dependency>
+		<!-- JSONIC JSON操作ライブラリ -->
 		<!-- https://mvnrepository.com/artifact/net.arnx/jsonic -->
 		<dependency>
 			<groupId>net.arnx</groupId>
 			<artifactId>jsonic</artifactId>
 			<version>1.3.10</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.19.0</version>
-		</dependency>
+		<!-- LOG出力ライブラリ -->
 		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -90,12 +93,6 @@
 			</exclusions>
 		</dependency>
 		<!-- QRコード出力を使う場合はzxingを依存ライブラリに追加 -->
-		<!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
-		<dependency>
-			<groupId>com.google.zxing</groupId>
-			<artifactId>core</artifactId>
-			<version>3.5.1</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.zxing/javase -->
 		<dependency>
 			<groupId>com.google.zxing</groupId>

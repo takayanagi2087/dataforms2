@@ -313,7 +313,7 @@
 		<h2>Mavenプロジェクトへの移行</h2>
 		<p>
 			dfblank_xxx.warをインポートした状態だと、WEB-INF/libにdataforms2.jarが依存するライブラリも展開されています。
-			これらの依存ライブラリはMavenで管理した方が効率的です。
+			このままでも開発は可能ですが、これらの依存ライブラリはMavenで管理した方が効率的です。
 			プロジェクトsampleは動的 Web プロジェクトになっているので、これをMavenプロジェクトに変換します。
 			プロジェクトsampleを右クリックし、「構成→Mavenプロジェクトに変換」を選択します。
 			表示された新規POMの作成ダイアログを適切に入力します。
@@ -341,6 +341,14 @@
 		<figure>
 			<figcaption>WEB-INF/libの内容</figcaption>
 			<img src="eclipse_maven02.png" style="width:50%; height:50%;"/>
+		</figure>
+		<p>
+			Mavenプロジェクトに変換すると、コンパイル時にWEB-INF/libが参照されないようです。
+			そのためプロジェクトのプロパティのJavaのビルドバスでWEB-INF/lib/dataforms2.jarを参照するように設定してください。
+		</p>
+		<figure>
+			<figcaption>Javaのビルドパスの設定</figcaption>
+			<img src="eclipse_maven03.png" style="width:50%; height:50%;"/>
 		</figure>
 		<hr/>
 	</body>

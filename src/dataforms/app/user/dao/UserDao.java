@@ -431,7 +431,7 @@ public class UserDao extends Dao {
 		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		FieldList flist = new FieldList(table.getLoginIdField());
 		UserInfoTable.Entity e = new UserInfoTable.Entity();
-		e.setMailAddress(loginId);
+		e.setLoginId(loginId);
 		List<Map<String, Object>> list =  this.queryUserList(flist, e.getMap());
 		if (list.size() > 0) {
 			return this.getSelectedData(list.get(0));

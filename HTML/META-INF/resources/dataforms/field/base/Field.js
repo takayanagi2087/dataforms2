@@ -136,6 +136,10 @@ class Field extends WebComponent {
 				} else {
 					l = this.parent.get(this.id).parent(':last').prev();
 					label = l;
+					if (label.text().length == 0) {
+						l = this.parent.get(this.id).parents('td:last').prev()
+						label = l;
+					}
 				}
 			}
 			if (label == null || label.length == 0) {

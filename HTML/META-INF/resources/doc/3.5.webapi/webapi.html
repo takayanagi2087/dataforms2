@@ -44,7 +44,7 @@ public class TestApi extends WebApi {
 	 */
 	@WebMethod
 	@Override
-	public Response exec(Map<String, Object> p) throws Exception {
+	public Response exec(Map&lt;String, Object&gt; p) throws Exception {
 		// DAOのインスタンスを作成
 		Dao dao = new Dao(this);
 		// 問合せのインスタンスを作成
@@ -57,7 +57,7 @@ public class TestApi extends WebApi {
 		cd.setLangCode("ja");
 		query.setConditionData(cd.getMap());
 		// 問合せを実行
-		List<Map<String, Object>> result = (List<Map<String, Object>>) dao.executeQuery(query);
+		List&lt;Map&lt;String, Object&gt;&gt; result = (List&lt;Map&lt;String, Object&gt;&gt;) dao.executeQuery(query);
 		return new JsonResponse(result);
 	}
 }

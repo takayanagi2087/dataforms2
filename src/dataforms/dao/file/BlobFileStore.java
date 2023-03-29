@@ -5,7 +5,6 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +21,6 @@ import dataforms.field.base.Field;
 import dataforms.field.common.FileField;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;
-import dataforms.util.ObjectUtil;
 import dataforms.util.StringUtil;
 
 /**
@@ -102,15 +100,10 @@ public class BlobFileStore extends FileStore {
 	 */
 	private File makeBlobTempFile(final String filename, final long length, final InputStream is) throws Exception {
 		BlobFileHeader info = new BlobFileHeader(filename, length);
-		byte[] data = ObjectUtil.getBytes(info);
-		int hlen = data.length;
-		DecimalFormat fmt = new DecimalFormat("00000000");
-		String headerLength = fmt.format(hlen);
 		File blobFile = this.makeTempFile();
 		FileOutputStream os = new FileOutputStream(blobFile);
 		try {
-			os.write(headerLength.getBytes());
-			os.write(data);
+			info.writeBlobFileHeader(os);
 			FileUtil.copyStream(is, os);
 		} finally {
 			os.close();
@@ -179,20 +172,13 @@ public class BlobFileStore extends FileStore {
 	}
 
 	/**
-	 * ファイルヘッダを読み込みます。
+	 * BLOBファイルヘッダを読み込みます。
 	 * @param is 入力ストリーム。
 	 * @return ファイルヘッダ。
 	 * @throws Exception 例外。
 	 */
 	private BlobFileHeader readBlobFileHeader(final InputStream is) throws Exception {
-		byte[] lenbuf = new byte[8];
-		is.read(lenbuf);
-		int len = Integer.parseInt(new String(lenbuf));
-		logger.debug(() -> "header length=" + len);
-		byte[] fileHeaderBuffer = new byte[len];
-		is.read(fileHeaderBuffer);
-		BlobFileHeader header = (BlobFileHeader) ObjectUtil.getObject(fileHeaderBuffer);
-		return header;
+		return BlobFileHeader.readBlobFileHeader(is);
 	}
 
 

@@ -157,6 +157,13 @@ public class Index {
 			} else {
 				return false;
 			}
+		} else if (o instanceof Short) {
+			// for MS SQL Server
+			Short v = (Short) o;
+			return v != 0;
+		} else if (o instanceof Long) {
+			Long v = (Long) o;
+			return v != 0;
 		} else {
 			Boolean b = (Boolean) o;
 			return b.booleanValue();

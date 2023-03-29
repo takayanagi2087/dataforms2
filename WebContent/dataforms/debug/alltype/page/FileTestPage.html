@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>title</title>
+		<title></title>
 	</head>
 	<body>
 		<div id="mainDiv">
@@ -17,49 +17,53 @@
 					</tbody>
 				</table>
 				<input type="submit" id="queryButton" class="largeButton" value="検索">
+				<input type="button" id="exportButton" class="largeButton" value="エクスポート">
 				<input type="button" id="resetButton" class="largeButton" value="リセット">&nbsp;
 				<input type="button" id="newButton" class="largeButton" value="新規登録">
 			</form>
 			<form id="queryResultForm">
 				<div class="formHeader">検索結果</div>
-				<table>
+				<table class="responsive">
 					<tbody>
 					</tbody>
 				</table>
-				<table id="queryResult">
-					<thead>
-						<tr>
-							<th>
-								No.
-							</th>
-							<th>
-								ファイルコメント
-							</th>
-							<th>
-								操作
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<span id="queryResult[0].rowNo"></span>
-								<input type="hidden" id="queryResult[0].recordId">
-							</td>
-							<td>
-								<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].fileComment"></span></a>
-							</td>
-							<td>
-								<input type="button" id="queryResult[0].viewButton" value="表示">
-								<input type="button" id="queryResult[0].referButton" value="参照登録">
-								<input type="button" id="queryResult[0].deleteButton" value="削除">
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="hScrollDiv">
+					<table id="queryResult">
+						<thead>
+							<tr>
+								<th>
+									No.
+								</th>
+								<th>
+									ファイルコメント
+								</th>
+								<th>
+									操作
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<span id="queryResult[0].rowNo"></span>
+									<input type="hidden" id="queryResult[0].recordId" />
+								</td>
+								<td>
+									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].fileComment"></span></a>
+								</td>
+								<td>
+									<input type="button" id="queryResult[0].viewButton" value="表示">
+									<input type="button" id="queryResult[0].referButton" value="参照登録">
+									<input type="button" id="queryResult[0].deleteButton" value="削除">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</form>
 			<form id="editForm">
 				<div class="formHeader"><span id="editFormTitle"></span></div>
+				<input type="hidden" id="saveMode" />
 				<input type="hidden" id="recordId" />
 				<input type="hidden" id="createUserId" />
 				<input type="hidden" id="createTimestamp" />
@@ -72,58 +76,48 @@
 							<td><input type="text" id="fileComment" /></td>
 						</tr>
 						<tr>
-							<th>BLOB保存ファイル</th>
+							<th>blobFile</th>
 							<td><input type="file" id="blobFile"/></td>
 						</tr>
 						<tr>
-							<th>フォルダ保存ファイル</th>
+							<th>folderFile</th>
 							<td><input type="file" id="folderFile"/></td>
 						</tr>
 						<tr>
-							<th>固定フォルダ保存ファイル</th>
+							<th>staticFolderFile</th>
 							<td><input type="file" id="staticFolderFile"/></td>
 						</tr>
 						<tr>
-							<th>BLOB保存画像ファイル</th>
-							<td>
-								<input type="file" id="blobImage" accept="image/*"/>
-							</td>
+							<th>blobImage</th>
+							<td><input type="file" id="blobImage"/></td>
 						</tr>
 						<tr>
-							<th>フォルダ保存画像ファイル</th>
-							<td><input type="file" id="folderImage" accept="image/*"/></td>
+							<th>folderImage</th>
+							<td><input type="file" id="folderImage"/></td>
 						</tr>
 						<tr>
-							<th>固定フォルダ保存画像ファイル</th>
-							<td><input type="file" id="staticFolderImageFile" accept="image/*"/></td>
+							<th>staticFolderImageFile</th>
+							<td><input type="file" id="staticFolderImageFile"/></td>
 						</tr>
 						<tr>
-							<th>BLOB保存動画ファイル</th>
-							<td>
-								<input type="file" id="blobVideo" accept="video/*"/>
-							</td>
+							<th>blobVideo</th>
+							<td><input type="file" id="blobVideo"/></td>
 						</tr>
 						<tr>
-							<th>フォルダ保存動画ファイル</th>
-							<td><input type="file" id="folderVideo" accept="video/*"/></td>
-						</tr>
-												<tr>
-							<th>BLOB保存音声ファイル</th>
-							<td>
-								<input type="file" id="blobAudio" accept="audio/*"/>
-							</td>
+							<th>folderVideo</th>
+							<td><input type="file" id="folderVideo"/></td>
 						</tr>
 						<tr>
-							<th>フォルダ保存音声ファイル</th>
-							<td><input type="file" id="folderAudio" accept="audio/*"/></td>
+							<th>blobAudio</th>
+							<td><input type="file" id="blobAudio"/></td>
 						</tr>
 						<tr>
-							<th>メニュー画像</th>
-							<td><div id="menuImage"></div></td>
+							<th>folderAudio</th>
+							<td><input type="file" id="folderAudio"/></td>
 						</tr>
 						<tr>
-							<th>ファイル画像</th>
-							<td><div id="fileImage"></div></td>
+							<th>menuImage</th>
+							<td><input type="file" id="menuImage"/></td>
 						</tr>
 					</tbody>
 				</table>
@@ -131,9 +125,9 @@
 				<input type="button" id="saveButton" class="largeButton" value="登録"/>
 				<input type="button" id="resetButton" class="largeButton" value="リセット"/>
 				<input type="button" id="deleteButton" class="largeButton" value="削除"/>
-				<input type="button" id="printButton" class="largeButton" value="印刷"/>
 				<input type="button" id="backButton" class="largeButton" value="戻る"/>
 			</form>
+
 		</div>
 	</body>
 </html>

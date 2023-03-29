@@ -96,9 +96,9 @@ public class OracleSqlGenerator extends SqlGenerator {
 	@Override
 	public String converTypeNameForDatabaseMetaData(final String type) {
 		String ret = super.converTypeNameForDatabaseMetaData(type);
-		if ("varchar2".equals(ret)) {
+		/*if ("varchar2".equals(ret)) {
 			return "varchar";
-		} else if ("char".equals(ret)) {
+		} else*/ if ("char".equals(ret)) {
 				return "char";
 		} else if ("float".equals(ret)) {
 			return "real";
@@ -149,7 +149,7 @@ public class OracleSqlGenerator extends SqlGenerator {
 
 	/**
 	 * {@inheritDoc}
-	 * postgresqlは標準的なcomment文をサポートするので、COMMENTを返します。
+	 * Oracleは標準的なcomment文をサポートするので、COMMENTを返します。
 	 *
 	 */
 	@Override
@@ -159,7 +159,7 @@ public class OracleSqlGenerator extends SqlGenerator {
 
 	/**
 	 * {@inheritDoc}
-	 * pg_stat_user_tablesにテーブルが登録されているか確認するSQLを作成します。
+	 * table_existsにテーブルが登録されているか確認するSQLを作成します。
 	 */
 	@Override
 	public String generateTableExistsSql() {
@@ -169,7 +169,7 @@ public class OracleSqlGenerator extends SqlGenerator {
 
 	/**
 	 * {@inheritDoc}
-	 * information_schema.sequencesにシーケンスが登録されているか確認するSQLを作成します。
+	 * user_sequencesにシーケンスが登録されているか確認するSQLを作成します。
 	 */
 	@Override
 	public String generateSequenceExistsSql() {
@@ -187,6 +187,11 @@ public class OracleSqlGenerator extends SqlGenerator {
 	@Override
 	public String generateGetRecordIdSql(final String tablename) throws Exception {
 		return "select " + tablename + "_seq.nextval as seq from dual";
+	}
+
+	@Override
+	public String generateGetRecordIdSqlForInsert(final Table table) throws Exception {
+		return table.getTableName() + "_seq.nextval";
 	}
 
 	@Override
@@ -214,23 +219,11 @@ public class OracleSqlGenerator extends SqlGenerator {
 	 */
 	@Override
 	public String generateHitCountSql(final Query query) {
-		String orgsql = this.generateQuerySql(query, true);
+		String orgsql = this.generateQuerySql(query, false);
 		String sql = "select count(*) as cnt from (" + orgsql + ") m";
 		return sql;
 	}
 
-
-	/**
-	 * レコード数をカウントするsqlを作成します。
-	 * @param qp QueryPager・
-	 * @return レコード数をカウントするsql。
-	 */
-	@Override
-	public String generateHitCountSql(final QueryPager qp) {
-		String orgsql = getOrgSql(qp);
-		String sql = "select count(*) as cnt from (" + orgsql + ")";
-		return sql;
-	}
 
 	/**
 	 * レコード数をカウントするsqlを作成します。

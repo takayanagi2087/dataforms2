@@ -5,13 +5,10 @@ import java.util.Map;
 
 import dataforms.app.user.dao.UserDao;
 import dataforms.app.user.dao.UserInfoTable;
-import dataforms.app.user.field.LoginIdField;
-import dataforms.app.user.field.MailAddressField;
-import dataforms.app.user.field.UserNameField;
 import dataforms.controller.EditForm;
 import dataforms.field.base.FieldList;
 import dataforms.util.UserAdditionalInfoTableUtil;
-import dataforms.validator.RequiredValidator;
+import dataforms.util.UserInfoTableUtil;
 import dataforms.validator.ValidationError;
 
 /**
@@ -34,10 +31,9 @@ public class UserSelfEditForm extends EditForm {
 	 * </pre>
 	 */
 	public UserSelfEditForm() {
-		//this.addField(new UserIdField());
-		this.addField(new LoginIdField()).addValidator(new RequiredValidator());
-		this.addField(new UserNameField()).addValidator(new RequiredValidator());
-		this.addField(new MailAddressField()).addValidator(new RequiredValidator());
+		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable();
+		FieldList list = UserDao.getSelfUpdateFieldList(tbl);
+		this.addFieldList(list);
 		// ユーザ追加情報テーブルのフィールドを追加します。
 		FieldList flist = UserAdditionalInfoTableUtil.getFieldList();
 		if (flist != null) {

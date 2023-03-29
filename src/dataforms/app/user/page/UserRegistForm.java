@@ -25,6 +25,7 @@ import dataforms.mail.MailTemplate;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.CryptUtil;
 import dataforms.util.UserAdditionalInfoTableUtil;
+import dataforms.util.UserInfoTableUtil;
 import dataforms.validator.MailAddressValidator;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
@@ -55,7 +56,7 @@ public class UserRegistForm extends EditForm {
 	 * コンストラクタ。
 	 */
 	public UserRegistForm() {
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		Field<?> loginIdField = this.addField(table.getLoginIdField())
 			.setRelationDataAcquisition(false).setAutocomplete(false);
 		Boolean loginIdIsMail = (Boolean) config.get("loginIdIsMail");
@@ -74,7 +75,11 @@ public class UserRegistForm extends EditForm {
 		}*/
 		this.addField(table.getPasswordField()).addValidator(new RequiredValidator());
 		this.addField(new PasswordField("passwordCheck")).addValidator(new RequiredValidator());
-
+		// ユーザテーブルを拡張した場合のフィールド追加。
+		UserInfoTable btable = new UserInfoTable();
+		for (int i = btable.getFieldList().size(); i < table.getFieldList().size(); i++) {
+			this.addField(table.getFieldList().get(i));
+		}
 		// ユーザ追加情報テーブルのフィールドを追加します。
 		FieldList flist = UserAdditionalInfoTableUtil.getFieldList();
 		if (flist != null) {

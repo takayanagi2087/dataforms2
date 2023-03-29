@@ -240,17 +240,30 @@ public class FileObject implements Serializable {
 					}
 				}
 			} else {
-				for (LinkedHashMap<String, String> m: FileObject.contentTypeList) {
-					String fnPattern = m.get("fnPattern");
-					if (Pattern.matches(fnPattern, fileName)) {
-						this.setContentType(m.get("contentType"));
-						logger.debug(() -> "fileName=" + fileName + ",fnPattern=" + fnPattern + ",contentType=" + this.getContentType());
-						break;
-					}
-
-				}
+				String ct = FileObject.getContentType(fileName);
+				this.setContentType(ct);
 			}
 		}
+	}
+
+	/**
+	 * ファイル名からcontent-typeを取得します。
+	 * <pre>
+	 * web.xmlのcontent-type-listを参照しています。
+	 * </pre>
+	 * @param fileName ファイル名。
+	 * @return content-type。
+	 */
+	public static String getContentType(final String fileName) {
+		String ret = null;
+		for (LinkedHashMap<String, String> m: FileObject.contentTypeList) {
+			String fnPattern = m.get("fnPattern");
+			if (Pattern.matches(fnPattern, fileName)) {
+				ret = m.get("contentType");
+				break;
+			}
+		}
+		return ret;
 	}
 
 

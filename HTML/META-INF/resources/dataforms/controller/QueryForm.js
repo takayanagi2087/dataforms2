@@ -42,19 +42,23 @@ class QueryForm extends Form {
 	 * 問合せを行います。
 	 */
 	async query() {
-		if (this.validate()) {
-			let result = await this.submit("query");
-			this.parent.resetErrorStatus();
-			if (result.status == JsonResponse.SUCCESS) {
-				let resultForm = this.parent.componentMap["queryResultForm"];
-				if (resultForm != null) {
-					this.showQueryResultForm();
+		try {
+			if (this.validate()) {
+				let result = await this.submit("query");
+				this.parent.resetErrorStatus();
+				if (result.status == JsonResponse.SUCCESS) {
+					let resultForm = this.parent.componentMap["queryResultForm"];
+					if (resultForm != null) {
+						this.showQueryResultForm();
+					} else {
+						this.showEditForm();
+					}
 				} else {
-					this.showEditForm();
+					this.parent.setErrorInfo(this.getValidationResult(result), this);
 				}
-			} else {
-				this.parent.setErrorInfo(this.getValidationResult(result), this);
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 	/**
@@ -88,19 +92,23 @@ class QueryForm extends Form {
 	 * 問合せ結果をエクスポートします。
 	 */
 	async exportData() {
-		if (this.validate()) {
-			let sortOrder = this.getSortOrder();
-			logger.log("sortOrder=" + sortOrder);
-			this.setHiddenField("sortOrder", sortOrder);
-			let result = await this.submit("exportData");
-			this.parent.resetErrorStatus();
-			if (result != null) {
-				if (result.status == JsonResponse.INVALID) {
-					this.parent.setErrorInfo(this.getValidationResult(result), this);
+		try {
+			if (this.validate()) {
+				let sortOrder = this.getSortOrder();
+				logger.log("sortOrder=" + sortOrder);
+				this.setHiddenField("sortOrder", sortOrder);
+				let result = await this.submit("exportData");
+				this.parent.resetErrorStatus();
+				if (result != null) {
+					if (result.status == JsonResponse.INVALID) {
+						this.parent.setErrorInfo(this.getValidationResult(result), this);
+					}
 				}
+				logger.log("remove sortOrder");
+				this.get("sortOrder").remove();
 			}
-			logger.log("remove sortOrder");
-			this.get("sortOrder").remove();
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 

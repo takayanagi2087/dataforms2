@@ -86,6 +86,33 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
     private String databaseVersion = null;
 
     /**
+     * カタログ。
+     */
+    private String catalog = null;
+
+    /**
+     * スキーマ。
+     */
+    private String schema = null;
+
+
+    /**
+     * カタログを取得します。
+     * @return カタログ。
+     */
+    public String getCatalog() {
+		return catalog;
+	}
+
+    /**
+     * スキーマを取得します。
+     * @return スキーマ。
+     */
+	public String getSchema() {
+		return schema;
+	}
+
+	/**
      * コンストラクタ。
      * @param conn JDBC接続情報。
      */
@@ -101,17 +128,35 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
     public enum CommentSyntax {
     	/**
     	 * サポートなし。
+    	 * <pre>
+    	 * Apache derby。
+    	 * </pre>
     	 */
     	NONE,
     	/**
     	 * comment on構文をサポート。
+    	 * <pre>
+    	 * Oracle, PostgreSQL。
+    	 * </pre>
     	 */
     	COMMENT,
     	/**
     	 * create文中のcommentサポート。
+    	 * <pre>
+    	 * MySQL, MariaDB。
+    	 * </pre>
     	 */
-    	CREATE_COMMENT
+    	CREATE_COMMENT,
+    	/**
+    	 * 特殊文法。
+    	 * <pre>
+    	 * MS SQL Server。
+    	 * generateTableCommentSql, generateFieldCommentSqlメソッドでSQLを設定します。
+    	 * </pre>
+    	 */
+    	SPECIAL_GRAMMAR
     };
+
 
     /**
      * データベースの製品名を取得します。
@@ -152,6 +197,21 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 
 
     /**
+     * 接続URLを取得します。
+     * <pre>
+     * JDBCドライバーによっては長いURLを返す場合があるので、
+     * 不要なパラメータを取り除いたURLを返します。
+     * </pre>
+     * @param conn コネクション。
+     * @return 接続先URL。
+     * @throws Exception 例外。
+     */
+    public String getConnectionUrl(final Connection conn) throws Exception {
+    	String ret = conn.getMetaData().getURL();
+    	return ret;
+    }
+
+    /**
      * 別名を付ける際に使うasの文字列を返す。
      * <pre>
      * Oracle等でasを書くと、エラーするDBでは組み直します。
@@ -169,6 +229,15 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
      */
     public String converTypeNameForDatabaseMetaData(final String type) {
     	return type.toLowerCase();
+    }
+
+    /**
+     * 文字列のカラムサイズの変換を行います。
+     * @param size カラムサイズ。
+     * @return 変換結果。
+     */
+    public String convertColumnSize(final int size) {
+    	return Integer.toString(size);
     }
 
     /**
@@ -191,6 +260,8 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		Constructor<?> c = SqlGenerator.sqlGeneratorClass.getConstructor(Connection.class);
 		SqlGenerator gen = (SqlGenerator) c.newInstance(conn);
 		gen.setDatabaseVersion(conn.getMetaData().getDatabaseProductVersion());
+		gen.schema = conn.getSchema();
+		gen.catalog = conn.getCatalog();
 		return gen;
 	}
 
@@ -428,7 +499,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @param table 対象テーブル。
 	 * @return テーブルコメント作成用SQL。
 	 */
-	private String generateTableCommentSql(final Table table) {
+	public String generateTableCommentSql(final Table table) {
 		StringBuilder sb = new StringBuilder();
 		String comment = table.getComment();
 		if (comment != null) {
@@ -450,7 +521,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @param field フィールド。
 	 * @return 例外。
 	 */
-	private String generateFieldCommentSql(final Table table, final Field<?> field) {
+	public String generateFieldCommentSql(final Table table, final Field<?> field) {
 		StringBuilder sb = new StringBuilder();
 		String comment = field.getComment();
 		if (comment != null) {
@@ -551,6 +622,15 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 */
 	public abstract String generateGetRecordIdSql(final String table) throws Exception;
 
+	/**
+	 * レコードIDの取得SQL Insert文用を取得します。
+	 * @param table テーブル。
+	 * @return SQL。
+	 * @throws Exception 例外。
+	 */
+	public String generateGetRecordIdSqlForInsert(final Table table) throws Exception {
+		return "(" + this.generateGetRecordIdSql(table) + ")";
+	}
 
 	/**
 	 * テーブルを作成するためのSQLリストを取得します。
@@ -561,7 +641,8 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	public List<String> generateCreateTableSqlList(final Table table) throws Exception {
 		List<String> list = new ArrayList<String>();
 		list.add(this.generateCreateTableSql(table));
-		if (this.getCommentSyntax() == CommentSyntax.COMMENT) {
+		if (this.getCommentSyntax() == CommentSyntax.COMMENT
+			|| this.getCommentSyntax() == CommentSyntax.SPECIAL_GRAMMAR) {
 			String tcom = this.generateTableCommentSql(table);
 			if (tcom != null) {
 				list.add(tcom);
@@ -1358,7 +1439,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @param query 問い合わせ・
 	 * @return Group By 句。
 	 */
-	private String getGroupBySql(final Query query) {
+	protected String getGroupBySql(final Query query) {
 		FieldList flist = query.getGroupByFieldList();
 		if (flist.size() > 0) {
 			return " group by " + this.getFieldSequence(query, flist, false);
@@ -1372,7 +1453,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @param query 問い合わせ。
 	 * @return order By 句。
 	 */
-	private String getOrderBySql(final Query query) {
+	protected String getOrderBySql(final Query query) {
 		FieldList flist = query.getOrderByFieldList();
 		if (flist != null) {
 			if (flist.size() > 0) {
@@ -1797,7 +1878,7 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 	 * @return レコード数をカウントするsql。
 	 */
 	public String generateHitCountSql(final Query query) {
-		String orgsql = this.generateQuerySql(query, true);
+		String orgsql = this.generateQuerySql(query, false);
 		String sql = "select count(*) as cnt from (" + orgsql + ") as m";
 		return sql;
 	}
@@ -1814,26 +1895,31 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 
 
 	/**
-	 * レコード数をカウントするsqlを作成します。
-	 * @param qp QueryPager・
-	 * @return レコード数をカウントするsql。
-	 */
-	public String generateHitCountSql(final QueryPager qp) {
-		String orgsql = getOrgSql(qp);
-		String sql = "select count(*) as cnt from (" + orgsql + ") as m";
-		return sql;
-	}
-
-	/**
 	 * Page表示するSQLを取得します。
 	 * @param qp QueryPager。
 	 * @return Page表示するSQL。
 	 */
 	protected String getOrgSql(final QueryPager qp) {
-		String orgsql = qp.getSql();
+/*		String orgsql = qp.getSql();
 		if (orgsql == null) {
 			Query q = qp.getQuery();
 			orgsql = this.generateQuerySql(q, true);
+		}
+		return orgsql;*/
+		return this.getOrgSql(qp, true);
+	}
+
+	/**
+	 * Page表示するSQLを取得します。
+	 * @param qp QueryPager。
+	 * @param orderBy trueを指定すると order byを生成する。
+	 * @return Page表示するSQL。
+	 */
+	protected String getOrgSql(final QueryPager qp, final boolean orderBy) {
+		String orgsql = qp.getSql();
+		if (orgsql == null) {
+			Query q = qp.getQuery();
+			orgsql = this.generateQuerySql(q, orderBy);
 		}
 		return orgsql;
 	}

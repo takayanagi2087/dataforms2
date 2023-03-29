@@ -1,6 +1,7 @@
 package dataforms.app.enumtype.dao;
 
 import dataforms.dao.Query;
+import dataforms.field.base.FieldList;
 
 /**
  * EnumTable用の問合せクラス。
@@ -37,6 +38,7 @@ public class EnumTableQuery extends Query {
 			EnumTable.Entity p = new EnumTable.Entity();
 			p.setParentId(parentId);
 			this.setConditionData(p.getMap());
+			this.setOrderByFieldList(new FieldList(this.getField(EnumTable.Entity.ID_SORT_ORDER)));
 		} else {
 			this.setCondition("m.parent_id is null");
 		}

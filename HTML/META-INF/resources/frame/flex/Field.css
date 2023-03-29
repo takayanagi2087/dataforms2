@@ -280,9 +280,18 @@ div.audioPlayer {
 }
 
 .multiField {
+	width: 100%;
 	display: flex;
 	flex-flow: row;
 	justify-content: space-between;
 	align-items: center;
 }
 
+.fileReceiver {
+	width: auto;
+	border: 2px dotted #0B85A1;
+}
+
+.fileReceiverActive {
+	border: 2px solid #0B85A1;
+}

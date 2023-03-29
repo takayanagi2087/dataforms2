@@ -13,6 +13,7 @@ import dataforms.field.base.FieldList;
 import dataforms.field.common.RowNoField;
 import dataforms.htmltable.PageScrollHtmlTable;
 import dataforms.util.UserAdditionalInfoTableUtil;
+import dataforms.util.UserInfoTableUtil;
 
 /**
  * ユーザの検索結果フォームクラス。
@@ -33,7 +34,7 @@ public class UserQueryResultForm extends QueryResultForm {
 	 * コンストラクタ。
 	 */
 	public UserQueryResultForm() {
-		UserInfoTable tbl = new UserInfoTable();
+		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		this.addPkField(tbl.getUserIdField());
 		FieldList flist = new FieldList();
 		flist.addField(new RowNoField());

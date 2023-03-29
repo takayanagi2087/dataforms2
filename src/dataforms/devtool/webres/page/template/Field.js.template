@@ -49,11 +49,14 @@ class ${className} extends ${superClassName} {
 	 */
 /*
 	async callWebMethod() {
-		// ページの初期化.
-		let method = this.getWebMethod("webMethod");
-		let r = await method.execute(this.id + "=" + this.getValue());
-		// TODO:応答情報を適切に処理してください。
-		logger.dir(r);
+		try {
+			let method = this.getWebMethod("webMethod");
+			let r = await method.execute(this.id + "=" + this.getValue());
+			// TODO:応答情報を適切に処理してください。
+			logger.dir(r);
+		} catch (e) {
+			currentPage.reportError(e);
+		}
 	}
 */
 

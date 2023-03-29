@@ -38,13 +38,17 @@ class UserAttributeValueField extends EnumOptionSingleSelectField {
 	 * @param {String} type ユーザ属性。
 	 */
 	async setUserAttributeType(type, v) {
-		let m = this.getWebMethod("getTypeOption");
-		let opt = await m.execute("type=" + type);
-		if (opt.status == JsonResponse.SUCCESS) {
-			this.setOptionList(opt.result);
-			if (v != null) {
-				super.setValue(v);
+		try {
+			let m = this.getWebMethod("getTypeOption");
+			let opt = await m.execute("type=" + type);
+			if (opt.status == JsonResponse.SUCCESS) {
+				this.setOptionList(opt.result);
+				if (v != null) {
+					super.setValue(v);
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 }

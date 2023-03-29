@@ -1,0 +1,4 @@
+/**
+ * テストAPIパッケージ。
+ */
+package test.api;

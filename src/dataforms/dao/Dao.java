@@ -291,22 +291,6 @@ public class Dao implements JDBCConnectableObject {
 
 
 	/**
-	 * レコード処理クラス。
-	 * <pre>
-	 * 問い合わせ結果のレコードを一件ずつ処理するためのクラスです。
-	 * </pre>
-	 */
-	public abstract class RecordProcessor {
-		/**
-		 * 1レコード処理します。
-		 * @param rec レコード。
-		 * @return 処理継続フラグ。
-		 * @throws Exception 例外。
-		 */
-		public abstract boolean process(final Map<String, Object> rec) throws Exception;
-	}
-
-	/**
 	 * カラム情報。
 	 *
 	 */
@@ -562,6 +546,7 @@ public class Dao implements JDBCConnectableObject {
 	}
 
 
+
 	/**
 	 * SQLを実行し、その結果リストを返します。
 	 * <pre>
@@ -583,6 +568,18 @@ public class Dao implements JDBCConnectableObject {
 		});
 		return list;
 	}
+
+	/**
+	 * 問い合わせを実行し、ヒットしたレコードを処理します。
+	 * @param query 問い合わせ。
+	 * @param p レコード処理関数。
+	 * @throws Exception 例外。
+	 */
+	public void executeQuery(final Query query, final RecordProcessor p) throws Exception {
+		String sql = this.getSqlGenerator().generateQuerySql(query);
+		this.executeQuery(sql, this.convertToDBValue(query.getConditionFieldList(), query.getConditionData()), p);
+	}
+
 
 	/**
 	 * 問い合わせを実行し、その結果リストを返します。
@@ -1236,8 +1233,8 @@ public class Dao implements JDBCConnectableObject {
 		int scale = rs.getInt("DECIMAL_DIGITS");
 		int nullable = rs.getInt("NULLABLE");
 		String dataType = gen.converTypeNameForDatabaseMetaData(type);
-		if ("char".equals(dataType) || "nchar".equals(dataType) || "varchar".equals(dataType) || "nvarchar".equals(dataType) || "nvarchar2".equals(dataType)) {
-			dataType += "(" + size + ")";
+		if ("char".equals(dataType) || "nchar".equals(dataType) || "varchar".equals(dataType) || "varchar2".equals(dataType) || "nvarchar".equals(dataType) || "nvarchar2".equals(dataType)) {
+			dataType += "(" + gen.convertColumnSize(size) + ")";
 		} else if ("numeric".equals(dataType) || "number".equals(dataType)) {
 			dataType += "(" + size + "," + scale + ")";
 		}
@@ -1414,9 +1411,19 @@ public class Dao implements JDBCConnectableObject {
 	 * @return Boolean型のフラグ。
 	 */
 	private Boolean getNonUnique(final Object nonUnique) {
+		if (nonUnique == null) {
+			// MS SQL-Serverはnullを返してくる。
+			return false;
+		}
 		if (nonUnique instanceof BigDecimal) {
 			BigDecimal v = (BigDecimal) nonUnique;
 			return v.compareTo(BigDecimal.valueOf(0.0)) != 0;
+		} else if (nonUnique instanceof Short) {
+			Short v = (Short) nonUnique;
+			return v != 0;
+		} else if (nonUnique instanceof Long) {
+			Long v = (Long) nonUnique;
+			return v != 0;
 		} else {
 			return (Boolean) nonUnique;
 		}
@@ -1445,6 +1452,7 @@ public class Dao implements JDBCConnectableObject {
 					Object value = rset.getObject(i + 1);
 					m.put(name, value);
 				}
+				logger.info("md=" + JSON.encode(m, true));
 				Object nu = m.get("nonUnique");
 				Boolean nonUnique = this.getNonUnique(nu);
 				logger.debug(() -> "nu=" + nu + ", nonUnique=" + nonUnique);
@@ -1501,6 +1509,7 @@ public class Dao implements JDBCConnectableObject {
 				for (int i = 0; i < rmd.getColumnCount(); i++) {
 					String name = StringUtil.snakeToCamel(rmd.getColumnName(i + 1).toLowerCase());
 					Object value = rset.getObject(i + 1);
+					logger.debug(() -> "name=" + name + ", value=" + value);
 					m.put(name, value);
 				}
 				ret.add(m);

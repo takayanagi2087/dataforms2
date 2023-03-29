@@ -193,6 +193,9 @@
 									PK
 								</th>
 								<th>
+									Not null
+								</th>
+								<th>
 									コメント
 								</th>
 								<th>
@@ -213,30 +216,33 @@
 									<input type="hidden" id="fieldList[0].isDataformsField" />
 								</td>
 								<td>
-									<input type="text" id="fieldList[0].packageName" style="width:120px;"/>
+									<input type="text" id="fieldList[0].packageName" style="width:200px;"/>
 								</td>
 								<td>
-									<input type="text" id="fieldList[0].fieldClassName" style="width:120px;"/>
+									<input type="text" id="fieldList[0].fieldClassName" style="width:160px;"/>
 								</td>
 								<td>
-									<input type="text" id="fieldList[0].superPackageName" style="width:140px;"/>
+									<input type="text" id="fieldList[0].superPackageName" style="width:200px;"/>
 								</td>
 								<td>
-									<input type="text" id="fieldList[0].superSimpleClassName" style="width:120px;"/>
+									<input type="text" id="fieldList[0].superSimpleClassName" style="width:160px;"/>
 								</td>
 								<td style="width:50px;">
-									<input type="text" id="fieldList[0].fieldId" style="width:70px;"/>
+									<input type="text" id="fieldList[0].fieldId" style="width:160px;"/>
 								</td>
-								<td>
-									<input type="text" id="fieldList[0].fieldLength" style="width:48px;"/>
+								<td style="width:48px;">
+									<input type="text" id="fieldList[0].fieldLength" style="text-align: right;" />
 								</td>
-								<td style="width:32px;">
+								<td style="width:32px; text-align: center;">
 									<input type="checkbox" id="fieldList[0].pkFlag" value="1"/>
 								</td>
-								<td>
-									<input type="text" id="fieldList[0].comment" style="width:120px;"/>
+								<td style="width:64px; text-align: center;">
+									<input type="checkbox" id="fieldList[0].notNullFlag" value="1"/>
 								</td>
-								<td nowrap>
+								<td style="width:220px;">
+									<input type="text" id="fieldList[0].comment" />
+								</td>
+								<td nowrap style="width:160px;">
 									<select id="fieldList[0].overwriteMode"></select>
 								</td>
 							</tr>
@@ -246,7 +252,7 @@
 								<th>
 									<input type="button" id="fieldList.addButton" value="+"/>
 								</th>
-								<th colspan="11">
+								<th colspan="12">
 								</th>
 							</tr>
 						</tfoot>

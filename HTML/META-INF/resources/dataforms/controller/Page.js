@@ -310,8 +310,10 @@ class Page extends DataForms {
 		return;
 	};
 
-
-
+	/**
+	 * 戻るボタンの処理。
+	 * @param {Event} ev イベント。
+	 */
 	onBackButton(event) {
 		logger.log("popstate=" + event.originalEvent.state);
 		if (event.originalEvent.state) {
@@ -348,43 +350,47 @@ class Page extends DataForms {
 	 * ページの初期化処理を行います。
 	 */
 	async init() {
-		super.init();
-		this.configureLogger();
-		logger.debug("queryString=" + window.location.search);
-		logger.info("language=" + this.getLanguage());
-		$.datepicker.setDefaults($.datepicker.regional[this.getLanguage()]);
-		// ページの初期化.
-		let method = new WebMethod("getPageInfo");
-		let result = await method.execute("");
-		for (let key in result.result) {
-			this[key] = result.result[key];
-		}
-		this.configureLogLevel();
-		this.configureBrowserBackButton();
-		//メッセージユーティリティの初期化.
-		MessagesUtil.init(this.messageMap);
-		if (!this.noFrame) {
-			this.layout();
-		}
-		// 各フォームの初期化
-		this.initForm(this.formMap);
-		// ダイアログの初期化
-		this.initDialog(this.dialogMap);
-		// バージョン情報などを表示。
-		$(this.convertSelector("#dataformsVersion")).html(this.dataformsVersion);
-		// クッキーチェック
-		if (this.cookieCheck) {
-			this.setCookie("cookiecheck", "true");
-			let cookiecheck = this.getCookie("cookiecheck");
-			logger.log("cookiecheck=" + cookiecheck);
-			if (cookiecheck != "true") {
-				alert(MessagesUtil.getMessage("error.cookienotsupport"));
+		try {
+			super.init();
+			this.configureLogger();
+			logger.debug("queryString=" + window.location.search);
+			logger.info("language=" + this.getLanguage());
+			$.datepicker.setDefaults($.datepicker.regional[this.getLanguage()]);
+			// ページの初期化.
+			let method = new WebMethod("getPageInfo");
+			let result = await method.execute("");
+			for (let key in result.result) {
+				this[key] = result.result[key];
 			}
-			this.setCookie("cookiecheck", "");
+			this.configureLogLevel();
+			this.configureBrowserBackButton();
+			//メッセージユーティリティの初期化.
+			MessagesUtil.init(this.messageMap);
+			if (!this.noFrame) {
+				this.layout();
+			}
+			// 各フォームの初期化
+			this.initForm(this.formMap);
+			// ダイアログの初期化
+			this.initDialog(this.dialogMap);
+			// バージョン情報などを表示。
+			$(this.convertSelector("#dataformsVersion")).html(this.dataformsVersion);
+			// クッキーチェック
+			if (this.cookieCheck) {
+				this.setCookie("cookiecheck", "true");
+				let cookiecheck = this.getCookie("cookiecheck");
+				logger.log("cookiecheck=" + cookiecheck);
+				if (cookiecheck != "true") {
+					alert(MessagesUtil.getMessage("error.cookienotsupport"));
+				}
+				this.setCookie("cookiecheck", "");
+			}
+			//
+			this.attach();
+			$(this.convertSelector("#mainDiv")).addClass("mainDiv");
+		} catch (e) {
+			currentPage.reportError(e);
 		}
-		//
-		this.attach();
-		$(this.convertSelector("#mainDiv")).addClass("mainDiv");
 	}
 
 	/**
@@ -463,7 +469,8 @@ class Page extends DataForms {
 			$(this.convertSelector("div.menuDiv")).css("display", "");
 		}
 		let sel = this.convertSelector("#lockLayer");
-		let h = $("body").height();
+		// let h = $("body").clientHeight();
+		let h = window.innerHeight;
 		if ($(sel).is(":visible")) {
 			$(sel).css({
 				width: $(document).width(),
@@ -480,7 +487,8 @@ class Page extends DataForms {
 	 */
 	lock() {
 		let sel = this.convertSelector("#lockLayer");
-		let h = $("body").height();
+//		let h = $("body").height();
+		let h = window.innerHeight;
 		logger.log("lock() w=" + $(document).width() + ", h=" + h);
 		$(sel).css({
 			display: 'block',
@@ -600,5 +608,13 @@ class Page extends DataForms {
 		} else {
 			return Page.BROWSER_OTHER;
 		}
+	}
+
+	/**
+	 * 例外の情報を出力します。
+	 * @param {Error} e 例外。
+	 */
+	reportError(e) {
+		this.alert(null, e.message);
 	}
 }

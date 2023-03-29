@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import dataforms.annotation.WebMethod;
 import dataforms.app.user.dao.UserAttributeTable;
 import dataforms.app.user.dao.UserDao;
-import dataforms.app.user.dao.UserInfoTable;
 import dataforms.app.user.field.LoginIdField;
 import dataforms.app.user.field.UserAttributeTypeField;
 import dataforms.app.user.field.UserAttributeValueField;
@@ -25,6 +24,7 @@ import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.util.MessagesUtil;
+import dataforms.util.UserInfoTableUtil;
 import net.arnx.jsonic.JSON;
 
 /**
@@ -95,7 +95,7 @@ public class UserQueryForm extends QueryForm {
 			//String initialDataPath =  DeveloperPage.getExportInitalDataPath(this.getPage()); // DeveloperPage.getWebSourcePath() + "/WEB-INF/initialdata";
 			String initialDataPath = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata");
 			dao.executeUpdate("delete from " + new UserAttributeTable().getTableName(), new HashMap<String, Object>());
-			dao.executeUpdate("delete from " + new UserInfoTable().getTableName(), new HashMap<String, Object>());
+			dao.executeUpdate("delete from " + UserInfoTableUtil.newUserInfoTable().getTableName(), new HashMap<String, Object>());
 			dao.importData("dataforms.app.user.dao.UserInfoTable", initialDataPath);
 			dao.importData("dataforms.app.user.dao.UserAttributeTable", initialDataPath);
 			ret = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.initialDataImported"));
@@ -118,7 +118,7 @@ public class UserQueryForm extends QueryForm {
 			TableManagerDao dao = new TableManagerDao(this);
 			String initialDataPath = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata_v1");
 			dao.executeUpdate("delete from " + new UserAttributeTable().getTableName(), new HashMap<String, Object>());
-			dao.executeUpdate("delete from " + new UserInfoTable().getTableName(), new HashMap<String, Object>());
+			dao.executeUpdate("delete from " + UserInfoTableUtil.newUserInfoTable().getTableName(), new HashMap<String, Object>());
 			dao.importV1Data("dataforms.app.user.dao.UserInfoTable", "/dataforms/app/dao/user/UserInfoTable.data.json", initialDataPath);
 			dao.importV1Data("dataforms.app.user.dao.UserAttributeTable", "/dataforms/app/dao/user/UserAttributeTable.data.json", initialDataPath);
 			ret = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.initialDataImported"));

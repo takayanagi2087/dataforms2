@@ -1,16 +1,31 @@
 package dataforms.dao.file;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import dataforms.util.ObjectUtil;
 
 /**
  * BLOB項目の先頭に保存する管理情報クラス。
  *
  */
 public class BlobFileHeader implements Serializable {
+
 	/**
 	 * UID。
 	 */
 	private static final long serialVersionUID = -7222388177179295487L;
+
+	/**
+	 * Log.
+	 */
+	private static Logger logger = LogManager.getLogger(BlobFileHeader.class);
+
 	/**
 	 * ファイル名。
 	 */
@@ -71,5 +86,36 @@ public class BlobFileHeader implements Serializable {
 		fobj.setFileName(this.getFileName());
 		fobj.setLength(this.getLength());
 		return fobj;
+	}
+
+	/**
+	 * BLOBファイルヘッダを出力します。
+	 * @param os 出力す先。
+	 * @throws Exception 例外。
+	 */
+	public void writeBlobFileHeader(final OutputStream os) throws Exception {
+		byte[] data = ObjectUtil.getBytes(this);
+		int hlen = data.length;
+		DecimalFormat fmt = new DecimalFormat("00000000");
+		String headerLength = fmt.format(hlen);
+		os.write(headerLength.getBytes());
+		os.write(data);
+	}
+
+	/**
+	 * BLOBファイルヘッダを読み込みます。
+	 * @param is 入力ストリーム。
+	 * @return ファイルヘッダ。
+	 * @throws Exception 例外。
+	 */
+	public static BlobFileHeader readBlobFileHeader(final InputStream is) throws Exception {
+		byte[] lenbuf = new byte[8];
+		is.read(lenbuf);
+		int len = Integer.parseInt(new String(lenbuf));
+		logger.debug(() -> "header length=" + len);
+		byte[] fileHeaderBuffer = new byte[len];
+		is.read(fileHeaderBuffer);
+		BlobFileHeader header = (BlobFileHeader) ObjectUtil.getObject(fileHeaderBuffer);
+		return header;
 	}
 }

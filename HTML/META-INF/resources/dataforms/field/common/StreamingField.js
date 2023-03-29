@@ -89,12 +89,16 @@ class StreamingField extends FileField {
 	 * サーバ中のストリーミングデータの一時ファイルを削除します。
 	 */
 	async deleteTempFile() {
-		let playerid = this.id + "_player"; // プレーヤーID.
-		let player = this.parent.get(playerid);
-		let key = player.attr("data-key");
-		logger.log("key=" + key);
-		let m = this.getWebMethod("deleteTempFile");
-		await m.execute(key);
+		try {
+			let playerid = this.id + "_player"; // プレーヤーID.
+			let player = this.parent.get(playerid);
+			let key = player.attr("data-key");
+			logger.log("key=" + key);
+			let m = this.getWebMethod("deleteTempFile");
+			await m.execute(key);
+		} catch (e) {
+			currentPage.reportError(e);
+		}
 	}
 
 	/**

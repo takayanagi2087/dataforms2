@@ -15,9 +15,9 @@ import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryClassNameField;
+import dataforms.devtool.field.SqlField;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
-import dataforms.field.sqltype.ClobField;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
 import dataforms.validator.RequiredValidator;
@@ -39,7 +39,7 @@ public class QueryExecutorQueryForm extends QueryForm {
 		this.addField(new FunctionSelectField());
 		this.addField(new PackageNameField());
 		this.addField(new QueryClassNameField("queryClassName")).setAutocomplete(true).setRelationDataAcquisition(true);
-		this.addField(new ClobField("sql")).addValidator(new RequiredValidator());
+		this.addField(new SqlField("sql")).addValidator(new RequiredValidator());
 	}
 
 	@Override

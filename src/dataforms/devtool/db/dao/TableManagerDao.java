@@ -31,6 +31,7 @@ import dataforms.dao.ForeignKey;
 import dataforms.dao.Index;
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.Query;
+import dataforms.dao.RecordProcessor;
 import dataforms.dao.SubQuery;
 import dataforms.dao.Table;
 import dataforms.dao.TableRelation;
@@ -44,6 +45,7 @@ import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
 import dataforms.response.BinaryResponse;
+import dataforms.servlet.DataFormsServlet;
 import dataforms.util.ClassFinder;
 import dataforms.util.FileUtil;
 import dataforms.util.NumberUtil;
@@ -183,6 +185,10 @@ public class TableManagerDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public Map<String, Object> getTableInfo(final String classname) throws Exception {
+		logger.debug("*** classname=" + classname);
+		if (TableManagerDao.abstractTableSet.contains(classname)) {
+			return null;
+		}
 		Map<String, Object> tableInfo = new HashMap<String, Object>();
 		tableInfo.put("checkedClass", classname);
 		tableInfo.put("className", classname);
@@ -465,18 +471,22 @@ public class TableManagerDao extends Dao {
 	public void importIntialData(final String classname) throws Exception {
 		final Table tbl = Table.newInstance(classname);
 		this.deleteAllRecord(tbl);
-		List<Map<String, Object>> list = tbl.getInitialData();
-		if (list != null) {
-			String sql = this.getSqlGenerator().generateInsertSql(tbl);
-			for (int i = 0; i < list.size(); i++) {
-				Map<String, Object> m = list.get(i);
-				Map<String, Object> data = tbl.getFieldList().convertClientToServer(m);
-				this.setUserIdValue(data);
-				this.executeUpdate(sql, data);
-			}
-		}
 		String initialDataPath = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata");
-		this.importData(classname, initialDataPath);
+		String file = tbl.getImportData(initialDataPath);
+		if (file == null) {
+			List<Map<String, Object>> list = tbl.getInitialData();
+			if (list != null) {
+				String sql = this.getSqlGenerator().generateInsertSql(tbl);
+				for (int i = 0; i < list.size(); i++) {
+					Map<String, Object> m = list.get(i);
+					Map<String, Object> data = tbl.getFieldList().convertClientToServer(m);
+					this.setUserIdValue(data);
+					this.executeUpdate(sql, data);
+				}
+			}
+		} else {
+			this.importData(classname, initialDataPath);
+		}
 	}
 
 	/**
@@ -615,12 +625,54 @@ public class TableManagerDao extends Dao {
 		}
 	}
 
+
+	/**
+	 * web.xmlのuser-info-table-classに指定されたテーブルのクラスを取得します。
+	 * @return テーブルクラス。
+	 */
+	@SuppressWarnings("unchecked")
+	private static Set<String> getAbstractTableSet() {
+		Set<String> ret = new HashSet<String>();
+		try {
+			DataFormsServlet servlet = Page.getServlet();
+			String json = servlet.getServletContext().getInitParameter("abstract-table-list");
+			if (json != null) {
+				json = json.trim();
+				if (json.length() != 0) {
+					List<String> list = JSON.decode(json, ArrayList.class);
+					for (String v: list) {
+						logger.debug("abstractTableClass=" + v);
+						ret.add(v);
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return ret;
+	}
+
+	/**
+	 * 抽象テーブルクラスの集合。
+	 */
+	private static Set<String> abstractTableSet = null;
+
+	/**
+	 * 初期化処理。
+	 */
+	static {
+		abstractTableSet = TableManagerDao.getAbstractTableSet();
+	}
+
 	/**
 	 * テーブル作成します。
 	 * @param className テーブルクラス名。
 	 * @throws Exception 例外。
 	 */
 	public void createTable(final String className) throws Exception {
+		if (TableManagerDao.abstractTableSet.contains(className)) {
+			return;
+		}
 		SqlGenerator gen = this.getSqlGenerator();
 		Table tbl = Table.newInstance(className);
 		List<String> sqllist = gen.generateCreateTableSqlList(tbl);
@@ -759,6 +811,9 @@ public class TableManagerDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void initTable(final String className) throws Exception {
+		if (TableManagerDao.abstractTableSet.contains(className)) {
+			return;
+		}
 		Table tbl = Table.newInstance(className);
 		// テーブルが存在したらバックアップを行う.
 		if (this.tableExists(tbl.getTableName())) {
@@ -777,6 +832,9 @@ public class TableManagerDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void updateTable(final String className) throws Exception {
+		if (TableManagerDao.abstractTableSet.contains(className)) {
+			return;
+		}
 		Table tbl = Table.newInstance(className);
 		if (this.tableExists(tbl.getTableName())) {
 			this.dropIndex(tbl);

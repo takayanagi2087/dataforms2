@@ -20,7 +20,6 @@ class FlagField extends CharField {
 		super.attach();
 		if (currentPage.useUniqueId) {
 			let lbl = this.getParentForm().find("label[for='" + this.id + "']");
-			logger.log("lbl.length=" + lbl.length);
 			if (lbl.length > 0) {
 				lbl.attr("for", this.realId);
 			}

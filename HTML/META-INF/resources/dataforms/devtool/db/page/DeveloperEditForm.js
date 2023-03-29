@@ -29,6 +29,22 @@ class DeveloperEditForm extends EditForm {
 		});
 	}
 
+
+
+	/**
+	 * フォームデータを設定します。
+	 */
+	setFormData(data) {
+		super.setFormData(data);
+		if (this.userInfoDataExists) {
+			if (data.userImportFlag == "1") {
+				this.get("userInfoTable").hide();
+			} else {
+				this.get("userInfoTable").show();
+			}
+		}
+	}
+
 	/**
 	 * フォームのチェックを行います。
 	 *

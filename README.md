@@ -35,6 +35,8 @@ IE11はデフォルトでは動作しない設定になっていますが、
 
 詳細は[ドキュメント](http://www.takayanagi-syslab.net/dfblank/dataforms/devtool/doc/page/DocFramePage.df)の「2.開発環境構築」を参照してください。
 
+現在試験的に[Maven対応のプロジェクト(df2blank)](https://github.com/takayanagi2087/df2blank/)を用意してみました。
+
 
 ## Requirement
 主に、Eclipse(pleiades2020-03) + Java11 + Tomcat9 + Apache Derby,PostgreSQLでテストしています。
@@ -42,10 +44,11 @@ Servlet 3.0に対応したアプリケーションサーバで動作するはず
 
 対応しているデータベースサーバは、以下の通りです。(バージョンは実績のあるバージョンを記載しています。)
 
-* Apache Derby 10.14.2.0
-* PostgreSQL 9.2.23-1
-* MariaDB(MySQL) 5.5.56-2
-* Oralce11g 11.2.0.1.0
+* Apache Derby 10.15.2.0
+* PostgreSQL 10.21-2
+* MariaDB 10.3.35-1
+* Oralce21c xe
+* MS SQL Server 16.0.950.9-1
 
 
 ## Licence
@@ -54,7 +57,7 @@ Servlet 3.0に対応したアプリケーションサーバで動作するはず
 ## Application
 以下のサイトはdataforms2.jarで作成されています。
 
-* [ココ散歩](https://cocosampo.net/sampo/)　60度動画を使用した散歩システム
+* [ココ散歩](https://cocosampo.net/sampo/)　360度動画を使用した散歩システム
 
 入口はWordPressですが、「登録された散歩コース一覧」等のメニューのリンク先はdataforms2.jarで作成されたアプリケーションになっています。
 dataforms2.jarのサンプルは事務処理向けのアプリケーションの印象があるかもしれませんが、このようなWebアプリケーションにも応用されています。

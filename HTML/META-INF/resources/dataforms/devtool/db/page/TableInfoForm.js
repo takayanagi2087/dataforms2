@@ -60,16 +60,20 @@ class TableInfoForm extends Form {
 	 * DBテーブルの初期化を行います。
 	 */
 	async initTable() {
-		let systemName = MessagesUtil.getMessage("message.systemname");
-		if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.initTableConfirm"))) {
-			let clsname = this.get("className").html();
-			let p = "className=" + clsname;
-			let method = this.getWebMethod("initTable");
-			let result = await method.execute(p);
-			if (result.status == JsonResponse.SUCCESS) {
-				this.setFormData(result.result);
-				this.updateTableInfo(result.result);
+		try {
+			let systemName = MessagesUtil.getMessage("message.systemname");
+			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.initTableConfirm"))) {
+				let clsname = this.get("className").html();
+				let p = "className=" + clsname;
+				let method = this.getWebMethod("initTable");
+				let result = await method.execute(p);
+				if (result.status == JsonResponse.SUCCESS) {
+					this.setFormData(result.result);
+					this.updateTableInfo(result.result);
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -78,16 +82,20 @@ class TableInfoForm extends Form {
 	 * DBテーブルの削除を行います。
 	 */
 	async dropTable() {
-		let systemName = MessagesUtil.getMessage("message.systemname");
-		if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.dropTableConfirm"))) {
-			let clsname = this.get("className").html();
-			let p = "className=" + clsname;
-			let method = this.getWebMethod("dropTable");
-			let result = await method.execute(p);
-			if (result.status == JsonResponse.SUCCESS) {
-				this.setFormData(result.result);
-				this.updateTableInfo(result.result);
+		try {
+			let systemName = MessagesUtil.getMessage("message.systemname");
+			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.dropTableConfirm"))) {
+				let clsname = this.get("className").html();
+				let p = "className=" + clsname;
+				let method = this.getWebMethod("dropTable");
+				let result = await method.execute(p);
+				if (result.status == JsonResponse.SUCCESS) {
+					this.setFormData(result.result);
+					this.updateTableInfo(result.result);
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -95,16 +103,20 @@ class TableInfoForm extends Form {
 	 * DBテーブルの再構築を行います。
 	 */
 	async updateTable() {
-		let systemName = MessagesUtil.getMessage("message.systemname");
-		if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.updateTableConfirm"))) {
-			let clsname = this.get("className").html();
-			let p = "className=" + clsname;
-			let method = this.getWebMethod("updateTable");
-			let result = await method.execute(p);
-			if (result.status == JsonResponse.SUCCESS) {
-				this.setFormData(result.result);
-				this.updateTableInfo(result.result);
+		try {
+			let systemName = MessagesUtil.getMessage("message.systemname");
+			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.updateTableConfirm"))) {
+				let clsname = this.get("className").html();
+				let p = "className=" + clsname;
+				let method = this.getWebMethod("updateTable");
+				let result = await method.execute(p);
+				if (result.status == JsonResponse.SUCCESS) {
+					this.setFormData(result.result);
+					this.updateTableInfo(result.result);
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 

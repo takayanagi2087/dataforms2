@@ -69,17 +69,21 @@ class ExportWebResourceQueryResultForm extends QueryResultForm {
 	 * Webリソースをエクスポートします。
 	 */
 	async exportWebRes() {
-		this.parent.resetErrorStatus();
-		if (this.validate()) {
-			let p = this.get().serialize();
-			logger.log("p=" + p);
-			let r = await this.submit("exportWebResource");
-			if (r != null) {
-				if (r.status == JsonResponse.SUCCESS) {
-					let systemName = MessagesUtil.getMessage("message.systemname");
-					currentPage.alert(systemName, r.result);
+		try {
+			this.parent.resetErrorStatus();
+			if (this.validate()) {
+				let p = this.get().serialize();
+				logger.log("p=" + p);
+				let r = await this.submit("exportWebResource");
+				if (r != null) {
+					if (r.status == JsonResponse.SUCCESS) {
+						let systemName = MessagesUtil.getMessage("message.systemname");
+						currentPage.alert(systemName, r.result);
+					}
 				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 

@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<form id="tableInfoForm">
-			<table class="responsive thtd">
+			<table class="responsive thtdthtd">
 				<tbody>
 					<tr>
 						<th>
@@ -15,8 +15,6 @@
 						<td>
 							<span id="className"></span>
 						</td>
-					</tr>
-					<tr>
 						<th>
 							Table name
 						</th>
@@ -32,8 +30,6 @@
 							<span id="status"></span>
 							<input type="hidden" id="statusVal"/>
 						</td>
-					</tr>
-					<tr>
 						<th>
 							Sequence
 						</th>
@@ -49,8 +45,6 @@
 							<span id="difference"></span>
 							<input type="hidden" id="differenceVal"/>
 						</td>
-					</tr>
-					<tr>
 						<th>
 							Records
 						</th>
@@ -62,8 +56,8 @@
 						<th>
 							Create SQL
 						</th>
-						<td>
-							<textarea id="createTableSql" rows="20" cols="60" readonly="readonly"></textarea>
+						<td colspan="3">
+							<textarea id="createTableSql" rows="20" cols="60" readonly="readonly"  style="width: 100%; height: 300px;"></textarea>
 						</td>
 					</tr>
 					<tr>

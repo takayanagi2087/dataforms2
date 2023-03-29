@@ -102,13 +102,17 @@ class TableGeneratorEditForm extends EditForm {
 	 * インポート関連フィールドの表示。
 	 */
 	async importTable() {
-		let m = this.getWebMethod("importTable");
-		let importTable = this.getFieldValue("importTable");
-		let func = this.getFieldValue("functionSelect");
-		let r = await m.execute("importTable=" + importTable + "&functionSelect=" + func);
-		if (r.status == JsonResponse.SUCCESS) {
-			this.setTableInfo(r.result);
-			this.find(".importFields").toggle();
+		try {
+			let m = this.getWebMethod("importTable");
+			let importTable = this.getFieldValue("importTable");
+			let func = this.getFieldValue("functionSelect");
+			let r = await m.execute("importTable=" + importTable + "&functionSelect=" + func);
+			if (r.status == JsonResponse.SUCCESS) {
+				this.setTableInfo(r.result);
+				this.find(".importFields").toggle();
+			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -210,59 +214,63 @@ class TableGeneratorEditForm extends EditForm {
 	 * @param {jQuery} element イベントが発生した要素。
 	 */
 	async onCalcClass(element) {
-		let thisForm = this;
-		let tbl = this.getComponent("fieldList");
-		let p = tbl.getSameRowField(element, "packageName").val();
-		let c = tbl.getSameRowField(element, "fieldClassName").val();
-		if (p.length > 0 && c.length > 0) {
-			let classname = p + "." + c;
-			logger.log("classname=" + classname);
-			let method = this.getWebMethod("getFieldClassInfo");
-			let ret = await method.execute("classname=" + classname);
-			if (ret.status == JsonResponse.SUCCESS) {
-				let dfflg = tbl.getSameRowField(element, "isDataformsField");
-				let len = tbl.getSameRowField(element, "fieldLength");
-				let cmnt = tbl.getSameRowField(element, "comment");
-				let bpkg = tbl.getSameRowField(element, "superPackageName");
-				let bcls = tbl.getSameRowField(element, "superSimpleClassName");
-				let owm = tbl.getSameRowField(element, "overwriteMode");
-				dfflg.val(ret.result.isDataformsField);
-				if (ret.result.isDataformsField == "1") {
-					if (ret.result.fieldLength != null && ret.result.fieldLength.length > 0) {
-						len.val(ret.result.fieldLength);
-						tbl.getComponent(len.attr(thisForm.getIdAttribute())).lock(false);
-					} else {
-						len.val("");
-						tbl.getComponent(len.attr(thisForm.getIdAttribute())).lock(true);
-					}
-					bpkg.val(ret.result.superClassPackage);
-					bcls.val(ret.result.superClassSimpleName);
-					cmnt.val(ret.result.fieldComment);
-					tbl.getComponent(bpkg.attr(thisForm.getIdAttribute())).lock(true);
-					tbl.getComponent(bcls.attr(thisForm.getIdAttribute())).lock(true);
-					owm.hide();
-				} else {
-					if (ret.result.fieldLength != null && ret.result.fieldLength.length > 0) {
-						if (len.val().length == 0) {
+		try {
+			let thisForm = this;
+			let tbl = this.getComponent("fieldList");
+			let p = tbl.getSameRowField(element, "packageName").val();
+			let c = tbl.getSameRowField(element, "fieldClassName").val();
+			if (p.length > 0 && c.length > 0) {
+				let classname = p + "." + c;
+				logger.log("classname=" + classname);
+				let method = this.getWebMethod("getFieldClassInfo");
+				let ret = await method.execute("classname=" + classname);
+				if (ret.status == JsonResponse.SUCCESS) {
+					let dfflg = tbl.getSameRowField(element, "isDataformsField");
+					let len = tbl.getSameRowField(element, "fieldLength");
+					let cmnt = tbl.getSameRowField(element, "comment");
+					let bpkg = tbl.getSameRowField(element, "superPackageName");
+					let bcls = tbl.getSameRowField(element, "superSimpleClassName");
+					let owm = tbl.getSameRowField(element, "overwriteMode");
+					dfflg.val(ret.result.isDataformsField);
+					if (ret.result.isDataformsField == "1") {
+						if (ret.result.fieldLength != null && ret.result.fieldLength.length > 0) {
 							len.val(ret.result.fieldLength);
+							tbl.getComponent(len.attr(thisForm.getIdAttribute())).lock(false);
+						} else {
+							len.val("");
+							tbl.getComponent(len.attr(thisForm.getIdAttribute())).lock(true);
 						}
-					}
-					if (ret.result.superClassPackage != null) {
 						bpkg.val(ret.result.superClassPackage);
-					}
-					if (ret.result.superClassSimpleName != null) {
 						bcls.val(ret.result.superClassSimpleName);
-					}
-					if (ret.result.fieldComment != null && ret.result.fieldComment.length > 0) {
-						if (cmnt.val().length == 0) {
-							cmnt.val(ret.result.fieldComment);
+						cmnt.val(ret.result.fieldComment);
+						tbl.getComponent(bpkg.attr(thisForm.getIdAttribute())).lock(true);
+						tbl.getComponent(bcls.attr(thisForm.getIdAttribute())).lock(true);
+						owm.hide();
+					} else {
+						if (ret.result.fieldLength != null && ret.result.fieldLength.length > 0) {
+							if (len.val().length == 0) {
+								len.val(ret.result.fieldLength);
+							}
 						}
+						if (ret.result.superClassPackage != null) {
+							bpkg.val(ret.result.superClassPackage);
+						}
+						if (ret.result.superClassSimpleName != null) {
+							bcls.val(ret.result.superClassSimpleName);
+						}
+						if (ret.result.fieldComment != null && ret.result.fieldComment.length > 0) {
+							if (cmnt.val().length == 0) {
+								cmnt.val(ret.result.fieldComment);
+							}
+						}
+						tbl.getComponent(bpkg.attr(thisForm.getIdAttribute())).lock(false);
+						tbl.getComponent(bcls.attr(thisForm.getIdAttribute())).lock(false);
+						owm.show();
 					}
-					tbl.getComponent(bpkg.attr(thisForm.getIdAttribute())).lock(false);
-					tbl.getComponent(bcls.attr(thisForm.getIdAttribute())).lock(false);
-					owm.show();
 				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -271,20 +279,24 @@ class TableGeneratorEditForm extends EditForm {
 	 * @param {jQuery} element イベントが発生した要素。
 	 */
 	async onCalcSuperClass(element) {
-		let tbl = this.getComponent("fieldList");
-		let p = tbl.getSameRowField(element, "superPackageName").val();
-		let c = tbl.getSameRowField(element, "superSimpleClassName").val();
-		if (p.length > 0 && c.length > 0) {
-			let classname = p + "." + c;
-			logger.log("super classname=" + classname);
-			let method = this.getWebMethod("getSuperFieldClassInfo");
-			let ret = await method.execute("superclassname=" + classname);
-			if (ret.status == JsonResponse.SUCCESS) {
-				let len = tbl.getSameRowField(element, "fieldLength");
-				if (len.val().length == 0) {
-					len.val(ret.result.fieldLength);
+		try {
+			let tbl = this.getComponent("fieldList");
+			let p = tbl.getSameRowField(element, "superPackageName").val();
+			let c = tbl.getSameRowField(element, "superSimpleClassName").val();
+			if (p.length > 0 && c.length > 0) {
+				let classname = p + "." + c;
+				logger.log("super classname=" + classname);
+				let method = this.getWebMethod("getSuperFieldClassInfo");
+				let ret = await method.execute("superclassname=" + classname);
+				if (ret.status == JsonResponse.SUCCESS) {
+					let len = tbl.getSameRowField(element, "fieldLength");
+					if (len.val().length == 0) {
+						len.val(ret.result.fieldLength);
+					}
 				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -292,8 +304,11 @@ class TableGeneratorEditForm extends EditForm {
 	 * テーブル定義書を作成します。
 	 */
 	async print() {
-		this.parent.resetErrorStatus();
-		await this.submit("print");
+		try {
+			this.parent.resetErrorStatus();
+			await this.submit("print");
+		} catch (e) {
+			currentPage.reportError(e);
+		}
 	}
-
 }

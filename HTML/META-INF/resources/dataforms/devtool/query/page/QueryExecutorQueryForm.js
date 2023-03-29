@@ -21,9 +21,13 @@ class QueryExecutorQueryForm extends QueryForm {
 	 * Queryクラスに対応するSQLを取得します。
 	 */
 	async getSql() {
-		let r = await this.submit("getSql");
-		if (r.status == JsonResponse.SUCCESS) {
-			this.get("sql").val(r.result);
+		try {
+			let r = await this.submit("getSql");
+			if (r.status == JsonResponse.SUCCESS) {
+				this.get("sql").val(r.result);
+			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 }

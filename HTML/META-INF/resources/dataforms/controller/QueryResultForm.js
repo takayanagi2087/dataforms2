@@ -109,27 +109,31 @@ class QueryResultForm extends Form {
 	 * ページの更新を行います。
 	 */
 	async changePage() {
-		let lpp = this.get("linesPerPage");
-		let lines = "";
-		if (lpp.prop("disabled")) {
-			// 1ページの行数がdisabledの場合無理やり取得する。
-			this.get("linesPerPage").find("option").each((_, el) => {
-				if ($(el).attr("selected") == "selected") {
-					lines = "&linesPerPage=" + $(el).val();
-				}
-			});
-		}
-		let rt = this.getComponent("queryResult");
-		logger.log("sortOrder=" + rt.sortOrder);
-		let param = this.condition + lines +  "&" + this.get().serialize() + "&sortOrder=" + rt.sortOrder;
-		logger.log("param=" + param);
-		let method = this.getWebMethod("changePage");
-		let result = await method.execute(param);
-		this.parent.resetErrorStatus();
-		if (result.status == JsonResponse.SUCCESS) {
-			this.setQueryResult(result.result);
-		} else {
-			this.parent.setErrorInfo(this.getValidationResult(result), this);
+		try {
+			let lpp = this.get("linesPerPage");
+			let lines = "";
+			if (lpp.prop("disabled")) {
+				// 1ページの行数がdisabledの場合無理やり取得する。
+				this.get("linesPerPage").find("option").each((_, el) => {
+					if ($(el).attr("selected") == "selected") {
+						lines = "&linesPerPage=" + $(el).val();
+					}
+				});
+			}
+			let rt = this.getComponent("queryResult");
+			logger.log("sortOrder=" + rt.sortOrder);
+			let param = this.condition + lines +  "&" + this.get().serialize() + "&sortOrder=" + rt.sortOrder;
+			logger.log("param=" + param);
+			let method = this.getWebMethod("changePage");
+			let result = await method.execute(param);
+			this.parent.resetErrorStatus();
+			if (result.status == JsonResponse.SUCCESS) {
+				this.setQueryResult(result.result);
+			} else {
+				this.parent.setErrorInfo(this.getValidationResult(result), this);
+			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -172,18 +176,22 @@ class QueryResultForm extends Form {
 	 * 選択データの削除を行います。
 	 */
 	async deleteData() {
-		let systemName = MessagesUtil.getMessage("message.systemname");
-		let msg = MessagesUtil.getMessage("message.deleteconfirm");
-		if (await currentPage.confirm(systemName, msg)) {
-			logger.log("selectedQueryString=" + this.selectedQueryString);
-			let method = this.getWebMethod("delete");
-			let result = await method.execute(this.selectedQueryString);
-			this.parent.resetErrorStatus();
-			if (result.status == JsonResponse.SUCCESS) {
-				this.changePage();
-			} else {
-				this.parent.setErrorInfo(this.getValidationResult(result), this);
+		try {
+			let systemName = MessagesUtil.getMessage("message.systemname");
+			let msg = MessagesUtil.getMessage("message.deleteconfirm");
+			if (await currentPage.confirm(systemName, msg)) {
+				logger.log("selectedQueryString=" + this.selectedQueryString);
+				let method = this.getWebMethod("delete");
+				let result = await method.execute(this.selectedQueryString);
+				this.parent.resetErrorStatus();
+				if (result.status == JsonResponse.SUCCESS) {
+					this.changePage();
+				} else {
+					this.parent.setErrorInfo(this.getValidationResult(result), this);
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 
@@ -327,14 +335,18 @@ class QueryResultForm extends Form {
 	 * @param {Object} queryResult 問い合わせ結果。
 	 */
 	setQueryResult(queryResult) {
-		this.queryResult = queryResult;
-		this.setPagerInfo(queryResult);
-		this.setFormData(queryResult);
-		// 各リンクのイベント処理を登録.
-		let thisForm = this;
-		this.controlPager();
-		// テーブルのイベント処理を追加する。
-		this.setQueryResultEventHandler();
+		// データの設定に時間がかかる場合があるのでlockする。
+		currentPage.lock();
+		setTimeout(() => {
+			this.queryResult = queryResult;
+			this.setPagerInfo(queryResult);
+			this.setFormData(queryResult);
+			// 各リンクのイベント処理を登録.
+			this.controlPager();
+			// テーブルのイベント処理を追加する。
+			this.setQueryResultEventHandler();
+			currentPage.unlock();
+		}, 10);
 	}
 
 }

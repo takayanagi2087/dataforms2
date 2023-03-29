@@ -1,7 +1,6 @@
 package dataforms.debug.alltype.dao;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,9 +80,9 @@ public class AllTypeTable extends Table {
 		nf.setCommaFormat(true);
 		this.addField(nf).setNotNull(false).setComment("数値フィールド").setDefaultValue(BigDecimal.valueOf(0));
 		this.addField(new DateField("dateField")).setComment("日付フィールド").setDefaultValue(new Date());
-		java.util.Date now = new java.util.Date();
-		this.addField(new TimeField("timeField")).setComment("時刻フィールド").setDefaultValue(new java.sql.Time(now.getTime()));
-		this.addField(new TimestampField("timestampField")).setComment("日付時刻フィールド").setDefaultValue(new Timestamp(now.getTime()));
+//		java.util.Date now = new java.util.Date();
+		this.addField(new TimeField("timeField")).setComment("時刻フィールド")/*.setDefaultValue(new java.sql.Time(now.getTime()))*/;
+		this.addField(new TimestampField("timestampField")).setComment("日付時刻フィールド")/*.setDefaultValue(new Timestamp(now.getTime()))*/;
 		ZipCodeField zipCode = new ZipCodeField();
 		zipCode.setAddressFieldId("address");
 		zipCode.setAddressFieldId2("address2");

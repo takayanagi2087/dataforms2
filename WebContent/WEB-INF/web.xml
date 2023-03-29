@@ -87,6 +87,14 @@
 	</context-param>
 
 	<!--
+		trueの場合ユーザの初期化データが存在した場合、ユーザのインポートを優先します。
+	 -->
+	<context-param>
+		<param-name>check-user-import</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!--
 		データベースの作成時に、初期化するパッケージリストを指定します。
 		パッケージ名は,区切りで複数設定することができます。
 		データベースを作成するときに、このパッケージリストを参照し、
@@ -98,10 +106,70 @@
 		<param-value>
 			dataforms.app
 			,dataforms.debug
+			,sample
 			,test
+		</param-value>
+		<!--
+		<param-value>
+			dataforms.app
+			,dataforms.debug
 			,sample
 		</param-value>
+		 -->
 	</context-param>
+
+	<!--
+		このリストに記載されたテーブルはデータベースに実体が作成されません。
+		複数のテーブルクラスの基底クラスとして定義し、
+		テーブルの実体を作成する必要がないテーブルクラスを指定します。
+		dataforms2.jarに含まれたUserInfoTableに項目を追加する場合、
+		このコメントを有効にしてUserInfoTableから派生したテーブルクラスに項目を追加します。
+	 -->
+	 <!--
+	<context-param>
+		<param-name>abstract-table-list</param-name>
+		<param-value>
+			[
+				"dataforms.app.user.dao.UserInfoTable"
+			]
+		</param-value>
+	</context-param>
+	  -->
+
+	<!--
+		UserInfoTableに項目を追加したExtendedUserInfoTableを作成した場合、
+		以下の設定を有効にするとExtendedUserInfoTableクラスがユーザテーブルとなります。
+
+		このクラスを指定するとUserEditForm.java,UserSelfEditForm.java,UserRegistForm.javaに指定されたテーブルのフィールドが配置されます。
+		UserEditForm.html,UserSelfEditPage.html,UserRegistPage.htmlをjarファイルからプロジェクトにエクスポートし、
+		フィールドを追加することにより追加情報を入力することが可能になります。
+	 -->
+	 <!--
+	<context-param>
+		<param-name>user-info-table-class</param-name>
+		<param-value>
+			test.dao.ExtendedUserInfoTable
+		</param-value>
+	</context-param>
+	  -->
+
+	<!--
+		この設定は非推奨です。user-info-table-classを使用してください。
+
+		ユーザの追加情報を記録するテーブルクラス。
+		UserIdFieldクラスが主キーとなるテーブルクラスを指定します。
+		このクラスを指定するとUserEditForm.java,UserSelfEditForm.java,UserRegistForm.javaに指定されたテーブルのフィールドが配置されます。
+		UserEditForm.html,UserSelfEditPage.html,UserRegistPage.htmlをjarファイルからプロジェクトにエクスポートし、
+		フィールドを追加することにより追加情報を入力することが可能になります。
+	 -->
+	<!--
+	<context-param>
+		<param-name>user-additional-info-table</param-name>
+		<param-value>
+			dataforms.debug.user.dao.UserAdditionalInfoTable
+		</param-value>
+	</context-param>
+	 -->
 
 	<!--
 		サポートする言語コードを指定します。
@@ -508,8 +576,11 @@
 		<param-value>
 			[
 				{"fnPattern": "(?i).*\\.txt$", "contentType": "text/plain"},
+				{"fnPattern": "(?i).*\\.js$", "contentType": "text/javascript"},
+				{"fnPattern": "(?i).*\\.json$", "contentType": "application/json"},
 				{"fnPattern": "(?i).*\\.html$", "contentType": "text/html"},
 				{"fnPattern": "(?i).*\\.htm$", "contentType": "text/html"},
+				{"fnPattern": "(?i).*\\.css$", "contentType": "text/css"},
 				{"fnPattern": "(?i).*\\.xhtml$", "contentType": "text/xhtml+xml"},
 				{"fnPattern": "(?i).*\\.rss$", "contentType": "application/rss+xml"},
 
@@ -522,6 +593,7 @@
 				{"fnPattern": "(?i).*\\.jpeg$", "contentType": "image/jpeg"},
 				{"fnPattern": "(?i).*\\.gif$", "contentType": "image/gif"},
 				{"fnPattern": "(?i).*\\.svg$", "contentType": "image/svg+xml"},
+				{"fnPattern": "(?i).*\\.ico$", "contentType": "image/ico"},
 
 				{"fnPattern": "(?i).*\\.swf$", "contentType": "application/x-shockwave-flash"},
 				{"fnPattern": "(?i).*\\.mpg$", "contentType": "video/mpeg"},
@@ -533,6 +605,8 @@
 
 				{"fnPattern": "(?i).*\\.mp3$", "contentType": "audio/mpeg"},
 				{"fnPattern": "(?i).*\\.wav$", "contentType": "audio/wav"},
+
+				{"fnPattern": "(?i).*\\.woff2$", "contentType": "font/woff2"},
 
 				{"fnPattern": ".+", "contentType": "application/octet-stream"}
 			]
@@ -555,21 +629,6 @@
 	<context-param>
 		<param-name>multi-open-menu</param-name>
 		<param-value>true</param-value>
-	</context-param>
-	<!--
-		ユーザの追加情報を記録するテーブルクラス。
-		UserIdFieldクラスが主キーとなるテーブルクラスを指定します。
-		このクラスを指定するとUserEditForm.java,UserSelfEditForm.java,
-		UserRegistForm.javaに指定されたテーブルのフィールドが配置されます。
-		UserEditForm.html,UserSelfEditPage.html,UserRegistPage.htmlを
-		jarファイルからプロジェクトにエクスポートし、フィールドを追加
-		することにより追加情報を入力することが可能になります。
-	 -->
-	<context-param>
-		<param-name>user-additional-info-table</param-name>
-		<param-value>
-			dataforms.debug.user.dao.UserAdditionalInfoTable
-		</param-value>
 	</context-param>
 	<!--
 		HTML5のキャッシュ・マニフェストファイルのパスを指定します。

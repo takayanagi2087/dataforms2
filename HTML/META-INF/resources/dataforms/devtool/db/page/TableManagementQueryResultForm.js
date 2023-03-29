@@ -62,41 +62,61 @@ class TableManagementQueryResultForm extends QueryResultForm {
 		});
 		this.get("initTableButton").click(async () => {
 			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.initTableConfirm"))) {
-				let result = await this.submit("initTable");
-				this.updateTableInfoList(result);
+				try {
+					let result = await this.submit("initTable");
+					this.updateTableInfoList(result);
+				} catch (e) {
+					currentPage.reportError(e);
+				}
 			}
 		});
 
 		this.get("updateTableButton").click(async () => {
 			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.updateTableConfirm"))) {
-				let result = await this.submit("updateTable");
-				this.updateTableInfoList(result);
+				try {
+					let result = await this.submit("updateTable");
+					this.updateTableInfoList(result);
+				} catch (e) {
+					currentPage.reportError(e);
+				}
 			}
 		});
 
 		this.get("dropTableButton").click(async () => {
 			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.dropTableConfirm"))) {
-				let result = await this.submit("dropTable");
-				this.updateTableInfoList(result);
+				try {
+					let result = await this.submit("dropTable");
+					this.updateTableInfoList(result);
+				} catch (e) {
+					currentPage.reportError(e);
+				}
 			}
 		});
 
 		this.get("exportAsInitialDataButton").click(async () => {
 			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.exportAsInitialDataConfirm"))) {
-				let result = await this.submit("exportTableAsInitialData");
-				if (result.status == JsonResponse.SUCCESS) {
-					let path = result.result;
-					currentPage.alert(systemName, MessagesUtil.getMessage("message.exportInitialDataResult", path));
+				try {
+					let result = await this.submit("exportTableAsInitialData");
+					if (result.status == JsonResponse.SUCCESS) {
+						let path = result.result;
+						currentPage.alert(systemName, MessagesUtil.getMessage("message.exportInitialDataResult", path));
+					}
+				} catch (e) {
+					currentPage.reportError(e);
 				}
 			}
 		});
 
 		this.get("exportTableButton").click(async () => {
 			if (await currentPage.confirm(systemName, MessagesUtil.getMessage("message.dexportTableConfirm"))) {
-				let result = await this.submit("exportTable");
-				if (result.status == JsonResponse.SUCCESS) {
-					let path = result.result;
-					currentPage.alert(systemName, MessagesUtil.getMessage("message.exportInitialDataResult", path));
+				try {
+					let result = await this.submit("exportTable");
+					if (result.status == JsonResponse.SUCCESS) {
+						let path = result.result;
+						currentPage.alert(systemName, MessagesUtil.getMessage("message.exportInitialDataResult", path));
+					}
+				} catch (e) {
+					currentPage.reportError(e);
 				}
 			}
 		});
@@ -168,12 +188,16 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			for (let i = 0; i < queryResult.length; i++) {
 				let id = "queryResult[" + i + "].className";
 				this.get(id).click(async (ev) => {
-					let clsname = $(ev.currentTarget).html();
-					let qs="className=" + clsname;
-					let method = this.getWebMethod("getTableInfo");
-					let sqllist = await method.execute(qs);
-					if (sqllist.status == JsonResponse.SUCCESS) {
-						this.showTableInfo(sqllist.result);
+					try {
+						let clsname = $(ev.currentTarget).html();
+						let qs="className=" + clsname;
+						let method = this.getWebMethod("getTableInfo");
+						let sqllist = await method.execute(qs);
+						if (sqllist.status == JsonResponse.SUCCESS) {
+							this.showTableInfo(sqllist.result);
+						}
+					} catch (e) {
+						currentPage.reportError(e);
 					}
 				});
 			}
@@ -298,9 +322,13 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 */
 	async importTableData(path) {
 		logger.log("import=" + path);
-		$(this.convertSelector("#datapath")).val(path);
-		let result = await this.submit("importTable");
-		this.updateTableInfoList(result);
+		try {
+			$(this.convertSelector("#datapath")).val(path);
+			let result = await this.submit("importTable");
+			this.updateTableInfoList(result);
+		} catch (e) {
+			currentPage.reportError(e);
+		}
 	}
 }
 

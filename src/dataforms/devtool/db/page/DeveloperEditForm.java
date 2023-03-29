@@ -17,6 +17,7 @@ import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.field.common.FlagField;
 import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
+import dataforms.util.UserInfoTableUtil;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
@@ -33,12 +34,33 @@ public class DeveloperEditForm extends EditForm {
      */
     private static Logger logger = LogManager.getLogger(DeveloperEditForm.class.getName());
 
+    /**
+     * ユーザインポートフラグの初期値。
+     */
+    private static Boolean checkUserImport = false;
+
+    /**
+	 * ユーザインポートフラグを取得します。
+     * @return ユーザインポートフラグ。
+     */
+	public static Boolean getCheckUserImport() {
+		return checkUserImport;
+	}
+
+	/**
+	 * ユーザインポートフラグを設定します。
+	 * @param checkUserImport ユーザインポートフラグ。
+	 */
+	public static void setCheckUserImport(final Boolean checkUserImport) {
+		DeveloperEditForm.checkUserImport = checkUserImport;
+	}
+
 	/**
 	 * コンストラクタ。
 	 */
 	public DeveloperEditForm() {
 		this.addField(new FlagField("userImportFlag"));
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		table.getLoginIdField().addValidator(new RequiredValidator());
 		table.getPasswordField().addValidator(new RequiredValidator());
 		this.addTableFields(table);
@@ -95,6 +117,13 @@ public class DeveloperEditForm extends EditForm {
 		String userLevel = this.getInitializeUserLvel();
 		ret.put("loginId", userLevel);
 		ret.put("userName", userLevel);
+		logger.debug(() -> "checkUserImport=" + DeveloperEditForm.checkUserImport);
+		boolean exists = this.userInfoDataExists();
+		if (exists && DeveloperEditForm.checkUserImport) {
+			ret.put("userImportFlag", "1");
+		} else {
+			ret.put("userImportFlag", "0");
+		}
 		return ret;
 	}
 
@@ -154,7 +183,7 @@ public class DeveloperEditForm extends EditForm {
 	 * @throws Exception 例外。
 	 */
 	private boolean userInfoDataExists() throws Exception {
-		UserInfoTable table = new UserInfoTable();
+		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		String path = Page.getServlet().getServletContext().getRealPath("/WEB-INF/initialdata");
 		String userInitialFile = table.getImportData(path);
 		logger.debug(() -> "userInitialFile=" + userInitialFile);

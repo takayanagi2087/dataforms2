@@ -533,6 +533,7 @@ public class DataFormsServlet extends HttpServlet {
 	}
 
 
+
 	/**
 	 * デフォルト設定。
 	 */
@@ -551,6 +552,7 @@ public class DataFormsServlet extends HttpServlet {
 	 *
 	 */
 	private void initPassword() {
+		CryptUtil.initPasswordType(this.getServletContext());
 		String conf = this.getServletContext().getInitParameter("crypt-config");
 		if (conf == null) {
 			conf = DEFAULT_CRYPT_CONFIG;

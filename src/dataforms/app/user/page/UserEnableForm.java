@@ -6,6 +6,7 @@ import dataforms.app.user.dao.UserDao;
 import dataforms.app.user.dao.UserInfoTable;
 import dataforms.controller.EditForm;
 import dataforms.exception.ApplicationException;
+import dataforms.util.CryptUtil;
 import dataforms.util.MessagesUtil;
 import dataforms.util.UserInfoTableUtil;
 
@@ -59,11 +60,10 @@ public class UserEnableForm extends EditForm {
 		Long userId = (Long) this.getPage().getRequest().getSession().getAttribute(UserInfoTable.Entity.ID_USER_ID);
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
 		e.setUserId(userId);
-		String cpass = e.getPassword();
+		String cpass = CryptUtil.encryptUserPassword(e.getPassword());
 		UserDao dao = new UserDao(this);
-		Map<String, Object> m = dao.queryUserInfo(userId);
-		UserInfoTable.Entity ui = new UserInfoTable.Entity(m);
-		if (!cpass.equals(ui.getPassword())) {
+		String dbpass = dao.getUserPassword(userId);
+		if (!cpass.equals(dbpass)) {
 			throw new ApplicationException(this.getPage(), "error.invaliduserid");
 		}
 		dao.enableUser(data);

@@ -11,7 +11,7 @@
 				<thead></thead>
 				<tbody>
 					<tr>
-						<th>ログインID</th>
+						<th>Login ID</th>
 						<td>
 							<input type="hidden" id="userId" value=""/>
 							<input type="hidden" id="updateUserId" value=""/>
@@ -19,41 +19,41 @@
 							<input type="text" id="loginId" value=""/>
 						</td>
 					</tr>
-					<tr>
-						<th>パスワード</th>
+					<tr class="passwordTr">
+						<th>Password</th>
 						<td><input type="password" id="password" value=""/></td>
 					</tr>
-					<tr>
-						<th>パスワード(確認)</th>
+					<tr class="passwordTr">
+						<th>Password(Confirm)</th>
 						<td><input type="password" id="passwordCheck" value=""/></td>
 					</tr>
 					<tr>
-						<th>氏名</th>
+						<th>Name</th>
 						<td><input type="text" id="userName" value=""/></td>
 					</tr>
 					<tr>
-						<th>メールアドレス</th>
+						<th>E-Mail address</th>
 						<td><input type="text" id="mailAddress" value=""/></td>
 					</tr>
 					<tr>
-						<th>郵便番号</th>
+						<th>Zip code</th>
 						<td><input type="text" id="zipCode" value="" class="zipCode"/></td>
 					</tr>
 					<tr>
-						<th>住所</th>
+						<th>Address</th>
 						<td><input type="text" id="address" value=""/></td>
 					</tr>
 					<tr>
-						<th>フラグ</th>
+						<th>Flags</th>
 						<td>
-							<input type="checkbox" id="externalUserFlag" value="1"/><label for="externalUserFlag">外部ユーザ</label>
-							<input type="checkbox" id="enabledFlag" value="1"/><label for="enabledFlag">有効</label>
+							<input type="checkbox" id="externalUserFlag" value="1"/><label for="externalUserFlag">External user</label>
+							<input type="checkbox" id="enabledFlag" value="1"/><label for="enabledFlag">Enabled</label>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 			<br/>
-			ユーザ属性(ユーザレベルは必ず1件指定してください。)<br/>
+			User attributes(The user level, please appoint one case by all means.)<br/>
 			<div class="hScrollDiv">
 				<table id="attTable" class="editableTable">
 					<thead>
@@ -63,8 +63,8 @@
 							<th class="buttonColumn">
 							</th>
 							<th>No.</th>
-							<th>ユーザ属性</th>
-							<th>値</th>
+							<th>User attribute name</th>
+							<th>User attribute value</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -99,11 +99,11 @@
 				</table>
 			</div>
 			<br/>
-			<input type="button" id="confirmButton" class="largeButton" value="確認"/>
-			<input type="button" id="saveButton" class="largeButton" value="登録"/>
-			<input type="button" id="resetButton" class="largeButton" value="リセット"/>
-			<input type="button" id="deleteButton" class="largeButton" value="削除"/>
-			<input type="button" id="backButton" class="largeButton" value="戻る"/>
+			<input type="button" id="confirmButton" class="largeButton" value="Confirm"/>
+			<input type="button" id="saveButton" class="largeButton" value="Save"/>
+			<input type="button" id="resetButton" class="largeButton" value="Reset"/>
+			<input type="button" id="deleteButton" class="largeButton" value="Delete"/>
+			<input type="button" id="backButton" class="largeButton" value="Back"/>
 		</form>
 	</body>
 </html>

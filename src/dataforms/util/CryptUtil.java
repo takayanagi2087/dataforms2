@@ -10,6 +10,11 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.ServletContext;
+
+import org.apache.commons.codec.binary.Hex;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 暗号化ユーティリティクラス。
@@ -24,7 +29,7 @@ public final class CryptUtil {
 	/**
 	 * Logger.
 	 */
-	//private static Logger log = Logger.getLogger(CryptUtil.class);
+	private static Logger logger = LogManager.getLogger(CryptUtil.class);
 
 	/**
 	 * バイト列変更時の文字コード。
@@ -78,6 +83,7 @@ public final class CryptUtil {
 	private CryptUtil() {
 
 	}
+
 
 	/**
 	 * 暗号化アルゴリズム。
@@ -324,6 +330,104 @@ public final class CryptUtil {
 			} else {
 				return CryptUtil.aesDecrypt(text, password, CryptUtil.aesInitialVector);
 			}
+		} else {
+			return null;
+		}
+	}
+
+
+	/**
+	 * ハッシュ値。
+	 * @param algorithm アルゴリズム(SHA-1, SHA-256, SHA-384, SHA-512)。
+	 * @param text テキスト。
+	 * @return ハッシュ値。
+	 * @throws Exception 例外。
+	 */
+	public static String getHash(final String algorithm, final String text) throws Exception {
+		MessageDigest digest = MessageDigest.getInstance(algorithm);
+		byte[] ret = digest.digest(text.getBytes());
+		return Hex.encodeHexString(ret);
+	}
+
+	/**
+	 * ユーザパスワードタイプ。
+	 */
+	public static enum UserPasswordType {
+		/**
+		 * 可逆パスワード。
+		 */
+		REVERSIBLE_PASSWORD
+		/**
+		 * 不可逆パスワード。
+		 */
+		, IRREVERSIBLE_PASSWORD
+	};
+
+	/**
+	 * パスワードタイプ。
+	 */
+	private static UserPasswordType userPasswordType = UserPasswordType.REVERSIBLE_PASSWORD;
+
+	/**
+	 * パスワードタイプを取得します。。
+	 * @return パスワードタイプ。
+	 */
+	public static UserPasswordType getUserPasswordType() {
+		return userPasswordType;
+	}
+
+	/**
+	 * ハッシュアルゴリズム。
+	 */
+	private static String hashAlgorithm = "SHA-512";
+
+	/**
+	 * ハッシュアルゴリズムを取得します。
+	 * @return ハッシュアルゴリズム。
+	 */
+	public static String getHashAlgorithm() {
+		return hashAlgorithm;
+	}
+
+	/**
+	 * パスワードタイプを取得する。
+	 * @param context ServletContext。
+	 */
+	public static void initPasswordType(final ServletContext context) {
+		String passwordType = context.getInitParameter("password-type");
+		if (passwordType != null) {
+			CryptUtil.userPasswordType = UserPasswordType.valueOf(passwordType);
+		}
+		String hash = context.getInitParameter("hash-algorithm");
+		if (hash != null) {
+			CryptUtil.hashAlgorithm = hash;
+		}
+		logger.info("passwordType=" + CryptUtil.userPasswordType + ", hashAlgorithm=" + CryptUtil.hashAlgorithm);
+	}
+
+	/**
+	 * ユーザパスワードを暗号化します。
+	 * @param password パスワード。
+	 * @return 暗号化パスワード。
+	 * @throws Exception 例外。
+	 */
+	public static String encryptUserPassword(final String password) throws Exception {
+		if (CryptUtil.userPasswordType == UserPasswordType.REVERSIBLE_PASSWORD) {
+			return CryptUtil.encrypt(password);
+		} else {
+			return CryptUtil.getHash(CryptUtil.hashAlgorithm, password);
+		}
+	}
+
+	/**
+	 * ユーザパスワードを複合します。
+	 * @param password 暗号化されたパスワード。
+	 * @return 複合されたパスワード。
+	 * @throws Exception 例外。
+	 */
+	public static String decryptUserPassword(final String password) throws Exception {
+		if (CryptUtil.userPasswordType == UserPasswordType.REVERSIBLE_PASSWORD) {
+			return CryptUtil.decrypt(password);
 		} else {
 			return null;
 		}

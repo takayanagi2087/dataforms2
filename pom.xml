@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dataforms2</groupId>
 	<artifactId>dataforms2</artifactId>
-	<version>2.30</version>
+	<version>2.31</version>
 	<packaging>war</packaging>
 	<properties>
 		<!-- dataforms2.jarのバージョンファイル(ソースフォルダ) -->
@@ -118,13 +118,21 @@
 			</resource>
 		</resources>
 		<plugins>
+			<!-- コンパイル -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<release>11</release>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.gmaven</groupId>
 				<artifactId>gmaven-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>set-custom-property</id>
-						<phase>initialize</phase>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>execute</goal>
 						</goals>
@@ -136,15 +144,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-
-			<!-- コンパイル -->
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
-				<configuration>
-					<release>11</release>
-				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>

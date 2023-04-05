@@ -431,9 +431,31 @@
 		<param-value>/uploadData</param-value>
 	</context-param>
 
-	<!--
-		暗号化設定
-	 -->
+	<!-- パスワード確認方式 -->
+	<context-param>
+		<param-name>password-type</param-name>
+		<!--
+			可逆パスワード:
+			crypt-configで設定したdefaultPasswordを使用してパスワードを暗号化
+		 -->
+		 <!--
+		<param-value>REVERSIBLE_PASSWORD</param-value>
+		  -->
+		<!--
+			不可逆パスワード:
+			hash-configで指定したアルゴリズムでパスワードをハッシュ化
+		 -->
+		<param-value>IRREVERSIBLE_PASSWORD</param-value>
+	</context-param>
+
+	<!-- ハッシュアルゴリズム -->
+	<context-param>
+		<param-name>hash-algorithm</param-name>
+		<!-- SHA-1 or SHA-256 or SHA-384 or SHA-512 -->
+		<param-value>SHA-512</param-value>
+	</context-param>
+
+	<!-- 暗号化設定 -->
 	<context-param>
 		<param-name>crypt-config</param-name>
 		<param-value>

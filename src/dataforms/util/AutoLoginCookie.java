@@ -120,11 +120,8 @@ public final class AutoLoginCookie {
 							@SuppressWarnings("unchecked")
 							Map<String, Object> p = JSON.decode(json, HashMap.class);
 							UserInfoTable.Entity pe = new UserInfoTable.Entity(p);
-							String password = pe.getPassword();
-							password = CryptUtil.decrypt(password);
-							pe.setPassword(password);
 							try {
-								Map<String, Object> userInfo = dao.login(pe.getMap());
+								Map<String, Object> userInfo = dao.login(pe.getMap(), false);
 								HttpSession session = page.getRequest().getSession();
 								session.setAttribute("userInfo", userInfo);
 							} catch (ApplicationException ex) {

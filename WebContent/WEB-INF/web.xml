@@ -438,14 +438,14 @@
 			可逆パスワード:
 			crypt-configで設定したdefaultPasswordを使用してパスワードを暗号化
 		 -->
-		 <!--
 		<param-value>REVERSIBLE_PASSWORD</param-value>
-		  -->
 		<!--
 			不可逆パスワード:
 			hash-configで指定したアルゴリズムでパスワードをハッシュ化
 		 -->
+		 <!--
 		<param-value>IRREVERSIBLE_PASSWORD</param-value>
+		  -->
 	</context-param>
 
 	<!-- ハッシュアルゴリズム -->

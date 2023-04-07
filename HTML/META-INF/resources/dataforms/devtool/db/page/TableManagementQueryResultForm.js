@@ -210,7 +210,6 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			let tbl = this.getComponent("queryResult");
 			for (let i = 0; i < queryResult.length; i++) {
 				let bkfld = tbl.getRowField(i, "backupTable");
-				logger.log(bkfld);
 				let flg = queryResult[i].backupTable;
 				if (flg == "1") {
 					bkfld.get().next().show();
@@ -266,16 +265,20 @@ class TableManagementQueryResultForm extends QueryResultForm {
 	 * @param {Event} ev イベント情報。
 	 */
 	async dropBackupTable(ev) {
-		let msg = MessagesUtil.getMessage("message.dropBackupConfirm");
-		let ck = await currentPage.confirm(null, msg);
-		if (ck) {
-			let table = $(ev.target).data("table");
-			let m = this.getWebMethod("dropBackupTable");
-			let r = await m.execute("table=" + table);
-			if (r.status == JsonResponse.SUCCESS) {
-				currentPage.alert(null, r.result);
-				this.changePage();
+		try {
+			let msg = MessagesUtil.getMessage("message.dropBackupConfirm");
+			let ck = await currentPage.confirm(null, msg);
+			if (ck) {
+				let table = $(ev.target).data("table");
+				let m = this.getWebMethod("dropBackupTable");
+				let r = await m.execute("table=" + table);
+				if (r.status == JsonResponse.SUCCESS) {
+					currentPage.alert(null, r.result);
+					this.changePage();
+				}
 			}
+		} catch (e) {
+			currentPage.reportError(e);
 		}
 	}
 

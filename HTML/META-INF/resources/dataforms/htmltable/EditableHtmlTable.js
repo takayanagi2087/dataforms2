@@ -206,7 +206,6 @@ class EditableHtmlTable extends HtmlTable {
 					{
 						if ("id" != this.getIdAttribute()) {
 							let id = $(el).attr("id");
-							logger.info("id=" + id);
 							if (id != null) {
 								let newid = id.replace(new RegExp(this.id + "\\[.+?\\]"), this.id + "[" + i + "]");
 								$(el).attr("id", newid);

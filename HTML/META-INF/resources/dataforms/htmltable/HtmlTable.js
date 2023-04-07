@@ -230,7 +230,6 @@ class HtmlTable extends WebComponent {
 				let el = this.getLabelElement(field);
 				if (el != null) {
 					el.click((ev) => {
-						logger.info("aaa");
 						this.sortTable($(ev.currentTarget));
 					});
 				}
@@ -620,7 +619,6 @@ class HtmlTable extends WebComponent {
 	 * @return {Array} ソート結果リスト。
 	 */
 	sortTable(col) {
-		logger.info("sortTable");
 		this.changeSortMark(col);
 		let slist = this.getSortedList();
 		this.setTableData(slist);

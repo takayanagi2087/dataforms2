@@ -10,6 +10,7 @@
 		<!-- dataforms2.jarのバージョンファイル(ビルドフォルダ) -->
 		<classes.dataforms.mf>build/classes/META-INF/resources/dataforms.mf</classes.dataforms.mf>
 		<jsdoc.cmd>C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd</jsdoc.cmd>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!--
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
@@ -129,6 +130,7 @@
 			<plugin>
 				<groupId>org.codehaus.gmaven</groupId>
 				<artifactId>gmaven-plugin</artifactId>
+				<version>1.5</version>
 				<executions>
 					<execution>
 						<id>set-custom-property</id>

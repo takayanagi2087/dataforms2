@@ -22,7 +22,6 @@ class DbTableListHtmlTable extends HtmlTable {
 	 */
 	attach() {
 		super.attach();
-		logger.info("DbTableListHtmlTable");
 	}
 
 	/**

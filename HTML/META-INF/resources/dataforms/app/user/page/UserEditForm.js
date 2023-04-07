@@ -26,8 +26,6 @@ class UserEditForm extends EditForm {
 
 	toEditMode() {
 		super.toEditMode();
-		logger.info("this.saveMode=" + this.saveMode);
-		logger.info("this.userPasswordType=" + this.userPasswordType);
 		if (this.saveMode == "new") {
 			this.find("tr.passwordTr").show();
 		} else {

@@ -614,7 +614,20 @@ class Page extends DataForms {
 	 * 例外の情報を出力します。
 	 * @param {Error} e 例外。
 	 */
+	printStackTrace(e) {
+		if (e.stack) {
+			logger.error(e.stack);
+		} else {
+			logger.error(e.message, e);
+		}
+	}
+
+	/**
+	 * 例外の情報を出力します。
+	 * @param {Error} e 例外。
+	 */
 	reportError(e) {
+		this.printStackTrace(e);
 		this.alert(null, e.message);
 	}
 }

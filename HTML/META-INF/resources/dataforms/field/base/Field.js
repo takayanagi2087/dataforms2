@@ -106,7 +106,6 @@ class Field extends WebComponent {
 	 * @returns {String} サーバに送信するQueryString形式のパラメータ。
 	 */
 	getAjaxParameter() {
-		logger.info("id=" + this.id + ",realId=" + this.realId);
 		if (this.ajaxParameter == "FORM") {
 			return this.getParentForm().get().serialize() + "&currentFieldId=" + this.id;
 		} else {

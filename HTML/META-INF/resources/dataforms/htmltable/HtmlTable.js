@@ -223,7 +223,6 @@ class HtmlTable extends WebComponent {
 	 * カラムソートイベントを設定します。
 	 */
 	setColumnSortEvent() {
-		let thisTable = this;
 		for (let i = 0; i < this.fields.length; i++) {
 			let field = this.fields[i];
 			field.label = this.getLabel(field);
@@ -231,7 +230,8 @@ class HtmlTable extends WebComponent {
 				let el = this.getLabelElement(field);
 				if (el != null) {
 					el.click((ev) => {
-						thisTable.sortTable($(ev.currentTarget));
+						logger.info("aaa");
+						this.sortTable($(ev.currentTarget));
 					});
 				}
 			}
@@ -616,11 +616,11 @@ class HtmlTable extends WebComponent {
 
 	/**
 	 * ソートを行います。
-	 * @param co {jQuery} ラベルのエレメント.
+	 * @param co {jQuery} ラベルのエレメント。
 	 * @return {Array} ソート結果リスト。
-	 *
 	 */
 	sortTable(col) {
+		logger.info("sortTable");
 		this.changeSortMark(col);
 		let slist = this.getSortedList();
 		this.setTableData(slist);

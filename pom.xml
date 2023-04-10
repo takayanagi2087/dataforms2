@@ -4,22 +4,18 @@
 	<artifactId>dataforms2</artifactId>
 	<version>2.31</version>
 	<packaging>war</packaging>
+	<!--
+		以下の環境変数を設定してください。
+		env.INSTALLPATH : df2blankのWEB-INF/lib (ex: C:\eclipse\workspaceGithub\df2blank\src\main\webapp\WEB-INF\lib)
+		env.JSDOC : jsdocコマンド (ex: C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd)
+	-->
 	<properties>
-		<!-- dataforms2.jarのバージョンファイル(ソースフォルダ) -->
-		<html.dataforms.mf>HTML/META-INF/resources/dataforms.mf</html.dataforms.mf>
-		<!-- dataforms2.jarのバージョンファイル(ビルドフォルダ) -->
-		<classes.dataforms.mf>build/classes/META-INF/resources/dataforms.mf</classes.dataforms.mf>
-		<jsdoc.cmd>C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd</jsdoc.cmd>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!--
-		<timestamp>${maven.build.timestamp}</timestamp>
-		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-		-->
+		<!-- dataforms2.jarのバージョンファイル(ソースフォルダ) -->
+		<html.dataforms.mf>${project.basedir}/HTML/META-INF/resources/dataforms.mf</html.dataforms.mf>
 		<!-- Java VMのパス　-->
-		<java.cmd>C:\eclipse\pleiades\java\17\bin\java.exe</java.cmd>
 		<buildDate>${maven.build.timestamp}</buildDate>
 		<maven.build.timestamp.format>yyMMdd</maven.build.timestamp.format>
-		<installpath>C:\eclipse\workspaceGithub\df2blank\src\main\webapp\WEB-INF\lib</installpath>
 	</properties>
 	<!-- dataforms2.jarの依存ライブラリ -->
 	<dependencies>
@@ -128,7 +124,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<release>11</release>
+					<source>11</source>
+					<target>11</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -249,7 +246,7 @@
 						<id>generate jsdoc</id>
 						<phase>prepare-package</phase>
 						<configuration>
-							<executable>${jsdoc.cmd}</executable>
+							<executable>${env.JSDOC}</executable>
 							<arguments>
 								<argument>-d</argument>
 								<argument>HTML/META-INF/resources/doc/jsdoc</argument>
@@ -289,9 +286,9 @@
 						<configuration>
 							<target>
 								<delete>
-									<fileset dir="${installpath}" includes="*.jar"/>
+									<fileset dir="${env.INSTALLPATH}" includes="*.jar"/>
 								</delete>
-								<copy file="${project.build.directory}/dataforms2-${project.version}.jar" todir="${installpath}/" overwrite="true" />
+								<copy file="${project.build.directory}/dataforms2-${project.version}.jar" todir="${env.INSTALLPATH}/" overwrite="true" />
 							</target>
 						</configuration>
 						<goals>

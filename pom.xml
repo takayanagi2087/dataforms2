@@ -24,14 +24,36 @@
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-servlet-api</artifactId>
 			<version>9.0.10</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api -->
+		<!--
 		<dependency>
 			<groupId>javax.websocket</groupId>
 			<artifactId>javax.websocket-api</artifactId>
 			<version>1.1</version>
 			<scope>provided</scope>
 		</dependency>
+		-->
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyshared</artifactId>
+			<version>10.15.2.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- Apache commons -->
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
@@ -146,29 +168,6 @@
 				<version>3.2.3</version>
 				<configuration>
 					<warSourceDirectory>WebContent</warSourceDirectory>
-					<additionalDependencies>
-						<additionalDependency>
-							<groupId>javax.servlet</groupId>
-							<artifactId>javax.servlet-api</artifactId>
-							<version>3.0.1</version>
-							<scope>provided</scope>
-						</additionalDependency>
-						<additionalDependency>
-							<groupId>javax.activation</groupId>
-							<artifactId>activation</artifactId>
-							<version>1.1.1</version>
-						</additionalDependency>
-						<additionalDependency>
-							<groupId>javax.mail</groupId>
-							<artifactId>mail</artifactId>
-							<version>1.4</version>
-						</additionalDependency>
-						<additionalDependency>
-							<groupId>org.apache.derby</groupId>
-							<artifactId>derbyshared</artifactId>
-							<version>10.15.2.0</version>
-						</additionalDependency>
-					</additionalDependencies>
 				</configuration>
 			</plugin>
 			<!-- dataforms2.jarファイルの作成 -->
@@ -289,10 +288,32 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.3.1</version>
+				<executions>
+					<execution>
+						<id>install-library</id>
+						<phase>package</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<file>${project.build.directory}/${project.name}-${project.version}.jar</file>
+							<groupId>jp.walking360</groupId>
+							<artifactId>dataforms2</artifactId>
+							<version>${project.version}</version>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- dataforms2.jarをdf2blankプロジェクトにコピー -->
+			<!--
+			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>3.1.0</version>
 				<executions>
-					<!-- dataforms2.jarをdf2blankプロジェクトにコピー -->
 					<execution>
 						<id>install-df2blank-project</id>
 						<phase>package</phase>
@@ -310,6 +331,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 </project>

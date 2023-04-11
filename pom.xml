@@ -6,7 +6,6 @@
 	<packaging>war</packaging>
 	<!--
 		以下の環境変数を設定してください。
-		env.INSTALLPATH : df2blankのWEB-INF/lib (ex: C:\eclipse\workspaceGithub\df2blank\src\main\webapp\WEB-INF\lib)
 		env.JSDOC : jsdocコマンド (ex: C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd)
 		env.MAKEVER : バージョン情報作成コマンド。 (ex: makever.bat)
 	-->
@@ -27,32 +26,20 @@
 			<version>9.0.10</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api -->
-		<!--
-		<dependency>
-			<groupId>javax.websocket</groupId>
-			<artifactId>javax.websocket-api</artifactId>
-			<version>1.1</version>
-			<scope>provided</scope>
-		</dependency>
-		-->
 		<dependency>
 			<groupId>javax.activation</groupId>
 			<artifactId>activation</artifactId>
 			<version>1.1.1</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbyshared</artifactId>
 			<version>10.15.2.0</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Apache commons -->

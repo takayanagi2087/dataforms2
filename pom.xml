@@ -19,6 +19,19 @@
 	</properties>
 	<!-- dataforms2.jarの依存ライブラリ -->
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-servlet-api -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-servlet-api</artifactId>
+			<version>9.0.10</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api -->
+		<dependency>
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
+		</dependency>
 		<!-- Apache commons -->
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>

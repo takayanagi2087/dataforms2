@@ -8,9 +8,13 @@
 		以下の環境変数を設定してください。
 		env.JSDOC : jsdocコマンド (ex: C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd)
 		env.MAKEVER : バージョン情報作成コマンド。 (ex: makever.bat)
+		env.JAVA_HOME : JAVAのインストールディレクトリ (ex: C:\eclipse\pleiades\java\17)
+		env.COPYDEP : copydep.jarのパス (ex: C:\cygwin64\home\takay\copydep.jar)
+		env.MVNREP : mavenローカルリポジトリのパス (ex: C:\Users\takay\.m2\repository\jp\walking360\dataforms2)
 	-->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<javacmd>${env.JAVA_HOME}/bin/java</javacmd>
 		<!-- dataforms2.jarのバージョンファイル(ソースフォルダ) -->
 		<html.dataforms.mf>${project.basedir}/HTML/META-INF/resources/dataforms.mf</html.dataforms.mf>
 		<!-- Java VMのパス　-->
@@ -19,7 +23,6 @@
 	</properties>
 	<!-- dataforms2.jarの依存ライブラリ -->
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-servlet-api -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-servlet-api</artifactId>
@@ -27,21 +30,29 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>javax.activation</groupId>
 			<artifactId>activation</artifactId>
 			<version>1.1.1</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbyshared</artifactId>
 			<version>10.15.2.0</version>
+			<scope>provided</scope>
 		</dependency>
-
 		<!-- Apache commons -->
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
@@ -235,6 +246,28 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- dataforms2-x.xx.jar のリポジトリ登録-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>install-library</id>
+						<phase>package</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<file>${project.build.directory}/${project.name}-${project.version}.jar</file>
+							<groupId>jp.walking360</groupId>
+							<artifactId>dataforms2</artifactId>
+							<version>${project.version}</version>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -272,26 +305,26 @@
 							<goal>exec</goal>
 						</goals>
 					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
-				<version>3.1.1</version>
-				<executions>
+					<!--
+						warプロジェクトでjarをインストールした関係で、pomファイルに依存関係が
+						設定されていないため、強制的に依存関係を追加する。
+					-->
 					<execution>
-						<id>install-library</id>
+						<id>update-dataforms2-x.xx.pom </id>
 						<phase>package</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
 						<configuration>
-							<file>${project.build.directory}/${project.name}-${project.version}.jar</file>
-							<groupId>jp.walking360</groupId>
-							<artifactId>dataforms2</artifactId>
-							<version>${project.version}</version>
-							<packaging>jar</packaging>
+							<executable>${javacmd}</executable>
+							<arguments>
+								<argument>-jar</argument>
+								<argument>${env.COPYDEP}</argument>
+								<argument>${project.basedir}/pom.xml</argument>
+								<argument>${env.MVNREP}/${project.version}/${project.name}-${project.version}.pom</argument>
+								<argument>${env.MVNREP}/${project.version}/${project.name}-${project.version}.pom</argument>
+							</arguments>
 						</configuration>
+						<goals>
+							<goal>exec</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

@@ -11,12 +11,15 @@
 		env.JAVA_HOME : JAVAのインストールディレクトリ (ex: C:\eclipse\pleiades\java\17)
 		env.COPYDEP : copydep.jarのパス (ex: C:\cygwin64\home\takay\copydep.jar)
 		env.MVNREP : mavenローカルリポジトリのパス (ex: C:\Users\takay\.m2\repository\jp\walking360\dataforms2)
+		env.ECLIPSE_TRANSFORMER : eclipse transformerのパス。(ex: C:\eclipse\transformer\org.eclipse.transformer.cli-0.5.0.jar)
 	-->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javacmd>${env.JAVA_HOME}/bin/java</javacmd>
 		<!-- dataforms2.jarのバージョンファイル(ソースフォルダ) -->
 		<html.dataforms.mf>${project.basedir}/HTML/META-INF/resources/dataforms.mf</html.dataforms.mf>
+		<!-- javax → jakarta パッケージ変換ツールのパス -->
+		<jakarta.transformer>${env.ECLIPSE_TRANSFORMER}</jakarta.transformer>
 		<!-- Java VMのパス　-->
 		<buildDate>${maven.build.timestamp}</buildDate>
 		<maven.build.timestamp.format>yyMMdd</maven.build.timestamp.format>
@@ -169,36 +172,6 @@
 					<warSourceDirectory>WebContent</warSourceDirectory>
 				</configuration>
 			</plugin>
-			<!-- dataforms2.jarファイルの作成 -->
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.4.2</version>
-				<configuration>
-					<finalName>dataforms2-${project.version}</finalName>
-					<!-- 成果物の名前にassemblyがidを振ってしまうのを無効にする -->
-					<appendAssemblyId>false</appendAssemblyId>
-					<descriptors>
-						<!-- include/excludeなどの設定は外部ファイルに記述する -->
-						<descriptor>assembly.xml</descriptor>
-					</descriptors>
-					<archive>
-						<manifestEntries>
-							<Implementation-Vendor>Masahiko Takayanagi</Implementation-Vendor>
-							<Implementation-Title>Dataforms java web application framework</Implementation-Title>
-							<Implementation-Version>${project.version}</Implementation-Version>
-						</manifestEntries>
-					</archive>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<!-- packageフェーズでassemblyのゴールを呼び出すことで、jarにリソースを同梱させる -->
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<!-- javadocの作成 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -246,6 +219,36 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- dataforms2.jarファイルの作成 -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.4.2</version>
+				<configuration>
+					<finalName>javax-dataforms2-${project.version}</finalName>
+					<!-- 成果物の名前にassemblyがidを振ってしまうのを無効にする -->
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<!-- include/excludeなどの設定は外部ファイルに記述する -->
+						<descriptor>assembly.xml</descriptor>
+					</descriptors>
+					<archive>
+						<manifestEntries>
+							<Implementation-Vendor>Masahiko Takayanagi</Implementation-Vendor>
+							<Implementation-Title>Dataforms java web application framework</Implementation-Title>
+							<Implementation-Version>${project.version}</Implementation-Version>
+						</manifestEntries>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<!-- packageフェーズでassemblyのゴールを呼び出すことで、jarにリソースを同梱させる -->
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- dataforms2-x.xx.jar のリポジトリ登録-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -253,15 +256,29 @@
 				<version>3.1.1</version>
 				<executions>
 					<execution>
-						<id>install-library</id>
-						<phase>package</phase>
+						<id>install-javax-library</id>
+						<phase>install</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
 						<configuration>
-							<file>${project.build.directory}/${project.name}-${project.version}.jar</file>
+							<file>${project.build.directory}/javax-${project.name}-${project.version}.jar</file>
 							<groupId>jp.walking360</groupId>
-							<artifactId>dataforms2</artifactId>
+							<artifactId>javax-dataforms2</artifactId>
+							<version>${project.version}</version>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-jakaruta-library</id>
+						<phase>install</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<file>${project.build.directory}/jakarta-${project.name}-${project.version}.jar</file>
+							<groupId>jp.walking360</groupId>
+							<artifactId>jakarta-dataforms2</artifactId>
 							<version>${project.version}</version>
 							<packaging>jar</packaging>
 						</configuration>
@@ -305,21 +322,56 @@
 							<goal>exec</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>convert to jakarta package</id>
+						<phase>package</phase>
+						<configuration>
+							<executable>${javacmd}</executable>
+							<arguments>
+								<argument>-jar</argument>
+								<argument>${jakarta.transformer}</argument>
+								<argument>-o</argument>
+								<argument>${project.build.directory}/javax-${project.name}-${project.version}.jar</argument>
+								<argument>${project.build.directory}/jakarta-${project.name}-${project.version}.jar</argument>
+							</arguments>
+						</configuration>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
 					<!--
 						warプロジェクトでjarをインストールした関係で、pomファイルに依存関係が
 						設定されていないため、強制的に依存関係を追加する。
 					-->
 					<execution>
-						<id>update-dataforms2-x.xx.pom </id>
-						<phase>package</phase>
+						<id>update-javax-dataforms2-x.xx.pom </id>
+						<phase>install</phase>
 						<configuration>
 							<executable>${javacmd}</executable>
 							<arguments>
 								<argument>-jar</argument>
 								<argument>${env.COPYDEP}</argument>
 								<argument>${project.basedir}/pom.xml</argument>
-								<argument>${env.MVNREP}/${project.version}/${project.name}-${project.version}.pom</argument>
-								<argument>${env.MVNREP}/${project.version}/${project.name}-${project.version}.pom</argument>
+								<argument>${env.MVNREP}/javax-${project.name}/${project.version}/javax-${project.name}-${project.version}.pom</argument>
+								<argument>${env.MVNREP}/javax-${project.name}/${project.version}/javax-${project.name}-${project.version}.pom</argument>
+							</arguments>
+						</configuration>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>update-jakarta-dataforms2-x.xx.pom </id>
+						<phase>install</phase>
+						<configuration>
+							<executable>${javacmd}</executable>
+							<arguments>
+								<argument>-jar</argument>
+								<argument>${env.COPYDEP}</argument>
+								<argument>${project.basedir}/pom.xml</argument>
+								<argument>${env.MVNREP}/jakarta-${project.name}/${project.version}/jakarta-${project.name}-${project.version}.pom</argument>
+								<argument>${env.MVNREP}/jakarta-${project.name}/${project.version}/jakarta-${project.name}-${project.version}.pom</argument>
+								<argument>jakarta</argument>
 							</arguments>
 						</configuration>
 						<goals>

@@ -91,7 +91,8 @@
 		</p>
 		<h2>プロジェクトの作成</h2>
 		<p>
-			<a href="https://github.com/takayanagi2087/dataforms2/releases" target="_blank">GitHub</a>からdataforms2.jarのブランクアプリケーション(dfblank_xxx.war)をダウンロードして下さい。
+			<a href="https://www.walking360.jp/dataforms2/" target="_blank">https://www.walking360.jp/dataforms2/</a>から
+			dataforms2.jarのブランクアプリケーションdf2blank-*.warをダウンロードして下さい。
 			ダウンロードしたwarファイルは、eclipseプロジェクトとしてインポートすることができます。
 		</p>
 		<p>
@@ -170,6 +171,7 @@
 ./src/main/webapp/frame/default/AppFrame.css
 ./src/main/webapp/frame/flex
 ./src/main/webapp/frame/flex/AppFrame.css
+./src/main/webapp/frame/jslib.html
 ./src/main/webapp/frame/messages
 ./src/main/webapp/frame/messages/AppClientMessages.properties
 ./src/main/webapp/frame/messages/AppClientMessages_ja.properties
@@ -225,7 +227,7 @@
 ./src/main/webapp/WEB-INF/lib/commons-collections4-4.4.jar
 ./src/main/webapp/WEB-INF/lib/commons-compress-1.21.jar
 ./src/main/webapp/WEB-INF/lib/commons-digester-2.1.jar
-./src/main/webapp/WEB-INF/lib/commons-fileupload-1.4.jar
+./src/main/webapp/WEB-INF/lib/commons-fileupload-1.5.jar
 ./src/main/webapp/WEB-INF/lib/commons-io-2.11.0.jar
 ./src/main/webapp/WEB-INF/lib/commons-lang3-3.12.0.jar
 ./src/main/webapp/WEB-INF/lib/commons-logging-1.2.jar
@@ -234,7 +236,6 @@
 ./src/main/webapp/WEB-INF/lib/commons-validator-1.7.jar
 ./src/main/webapp/WEB-INF/lib/core-3.5.1.jar
 ./src/main/webapp/WEB-INF/lib/curvesapi-1.07.jar
-./src/main/webapp/WEB-INF/lib/dataforms2.jar
 ./src/main/webapp/WEB-INF/lib/fontbox-2.0.24.jar
 ./src/main/webapp/WEB-INF/lib/fop-2.8.jar
 ./src/main/webapp/WEB-INF/lib/fop-core-2.8.jar
@@ -242,6 +243,7 @@
 ./src/main/webapp/WEB-INF/lib/fop-util-2.8.jar
 ./src/main/webapp/WEB-INF/lib/jai-imageio-core-1.4.0.jar
 ./src/main/webapp/WEB-INF/lib/javase-3.5.1.jar
+./src/main/webapp/WEB-INF/lib/javax-dataforms2-2.31.jar
 ./src/main/webapp/WEB-INF/lib/jcommander-1.82.jar
 ./src/main/webapp/WEB-INF/lib/jsonic-1.3.10.jar
 ./src/main/webapp/WEB-INF/lib/log4j-api-2.19.0.jar
@@ -312,7 +314,7 @@
 		</figure>
 		<h2>Mavenプロジェクトへの移行</h2>
 		<p>
-			dfblank_xxx.warをインポートした状態だと、WEB-INF/libにdataforms2.jarが依存するライブラリも展開されています。
+			df2blank-*.warをインポートした状態だと、WEB-INF/libにdataforms2.jarが依存するライブラリも展開されています。
 			このままでも開発は可能ですが、これらの依存ライブラリはMavenで管理した方が効率的です。
 			プロジェクトsampleは動的 Web プロジェクトになっているので、これをMavenプロジェクトに変換します。
 			プロジェクトsampleを右クリックし、「構成→Mavenプロジェクトに変換」を選択します。
@@ -325,7 +327,7 @@
 		<p>
 			作成されたpom.xmlには依存関係の記載がありません。
 			dataforms2.jarの依存関係の情報は以下のパスのpom.xmlに存在しています。
-			以下のpom.xmlの&lt;dependencies&gt;...&lt;/dependencies&gt;をsample/pom.xmlにコピーします。
+			以下のpom.xmlの&lt;repositories&gt;...&lt;/repositories&gt;と&lt;dependencies&gt;...&lt;/dependencies&gt;をsample/pom.xmlにコピーします。
 		</p>
 		<pre>
 			sample/src/main/webapp/META-INF/maven/df2blank/df2blank/pom.xml
@@ -336,15 +338,74 @@
 		</figure>
 		<p>
 			pom.xmlに依存ライブラリを記述すれば、WEB-INF/lib中の依存ライブラリは不要になります。
-			そのためWEB-INF/libのdataforms2.jar以外のファイルを削除します。
+			そのためWEB-INF/libのjarファイル全て除します。
 		</p>
-		<p style="color: red; font-weight: bold;">
-			dataforms2.jarはmavenリポジトリに登録されていなので、削除しないでください。
+		<h2>pom.xmlの調整</h2>
+		<p>
+			dataforms2.jarが依存するライブラリには、Excel出力で使用するApacje POI,PDF出力で使用するApache FOP,QRコード生成で使用するgoogle.zxingが指定されています。
+			それぞれの機能を使用しない場合、これらのライブラリを除外してWEBアプリケーションのサイズを小さくすることができます。
+			&lt;exclusions&gt;...&lt;exclusions&gt;内にコメントアウトされている、ライブラリの除外設定を有効にしてください。
 		</p>
-		<figure>
-			<figcaption>WEB-INF/libの内容</figcaption>
-			<img src="eclipse_maven02.png" style="width:50%; height:50%;"/>
-		</figure>
+		<p>
+			Tomcat10以上ではjavax.servlet等のパッケージがjakarta.servletに変更されました。
+			そのためdataforms2.jarでは2つのjavax-dataforms2とjakarta-dataforms2というartifactIdを用意してあります。
+			Tomcat10以上で開発する場合はjakarta-dataforms2を使用してください。
+		</p>
+		<div class="filecaption">pom.xmlの内容</div>
+		<div class="wrappre">
+			<pre>
+	&lt;repositories&gt;
+		&lt;repository&gt;
+			&lt;id&gt;jp.walking360&lt;/id&gt;
+			&lt;url&gt;https://www.walking360.jp/mvn/repository&lt;/url&gt;
+		&lt;/repository&gt;
+	&lt;/repositories&gt;
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;jp.walking360&lt;/groupId&gt;
+			&lt;!-- tomcat9&#20197;&#21069;&#12399;javax&#12289;tomcat10&#20197;&#24460;&#12399;jakarta&#12434;&#20351;&#29992;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;!--&gt;
+			&lt;artifactId&gt;javax-dataforms2&lt;/artifactId&gt;
+			&lt;!--
+			&lt;artifactId&gt;jakarta-dataforms2&lt;/artifactId&gt;
+			--&gt;
+			&lt;version&gt;2.31&lt;/version&gt;
+			&lt;exclusions&gt;
+				&lt;!-- Excel&#20986;&#21147;&#12434;&#20351;&#12431;&#12394;&#12356;&#22580;&#21512;&#12289;&#20197;&#19979;&#12398;&#35373;&#23450;&#12434;&#26377;&#21177;&#12395;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356; --&gt;
+				&lt;!--
+				&lt;exclusion&gt;
+					&lt;groupId&gt;org.apache.poi&lt;/groupId&gt;
+					&lt;artifactId&gt;poi&lt;/artifactId&gt;
+				&lt;/exclusion&gt;
+				&lt;exclusion&gt;
+					&lt;groupId&gt;org.apache.poi&lt;/groupId&gt;
+					&lt;artifactId&gt;poi-ooxml&lt;/artifactId&gt;
+				&lt;/exclusion&gt;
+				&lt;exclusion&gt;
+					&lt;groupId&gt;org.apache.poi&lt;/groupId&gt;
+					&lt;artifactId&gt;poi-scratchpad&lt;/artifactId&gt;
+				&lt;/exclusion&gt;
+				--&gt;
+				&lt;!-- PDF&#20986;&#21147;&#12434;&#20351;&#12431;&#12394;&#12356;&#22580;&#21512;&#12289;&#20197;&#19979;&#12398;&#35373;&#23450;&#12434;&#26377;&#21177;&#12395;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356; --&gt;
+				&lt;!--
+				&lt;exclusion&gt;
+					&lt;groupId&gt;org.apache.xmlgraphics&lt;/groupId&gt;
+					&lt;artifactId&gt;fop&lt;/artifactId&gt;
+				&lt;/exclusion&gt;
+				--&gt;
+				&lt;!-- QR&#12467;&#12540;&#12489;&#12434;&#20351;&#12431;&#12394;&#12356;&#22580;&#21512;&#12289;&#20197;&#19979;&#12398;&#35373;&#23450;&#12434;&#26377;&#21177;&#12395;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356; --&gt;
+				&lt;!--
+				&lt;exclusion&gt;
+					&lt;groupId&gt;com.google.zxing&lt;/groupId&gt;
+					&lt;artifactId&gt;javase&lt;/artifactId&gt;
+				&lt;/exclusion&gt;
+				--&gt;
+			&lt;/exclusions&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+
+			</pre>
+		</div>
+
 		<hr/>
 	</body>
 </html>

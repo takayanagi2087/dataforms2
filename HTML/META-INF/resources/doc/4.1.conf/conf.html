@@ -553,6 +553,28 @@ dataSource = initContext.lookup("java:/comp/env/jdbc/dfdb");<br/>
 					</tr>
 					<tr>
 						<td class="commentOut"></td>
+						<td>password-type</td>
+						<td>REVERSIBLE_PASSWORD</td>
+						<td>
+							REVERSIBLE_PASSWORD(可逆パスワード)またはIRREVERSIBLE_PASSWORD(不可逆パスワード)を指定します。
+							<b>この設定はシステムの運用開始前に設定してください。
+							(変更する際にはユーザテーブルを初期化する必要があります。)</b>
+							不可逆パスワードを指定した場合、パスワードの複合化は困難ですが、
+							管理者が各ユーザのパスワードを変更することはできません。
+							可逆パスワードを指定した場合、管理者側でユーザのパスワードを修正することができますが、
+							パスワードが複合化される可能性は不可逆パスワードより高くなります。
+						</td>
+					</tr>
+					<tr>
+						<td class="commentOut"></td>
+						<td>hash-algorithm</td>
+						<td>SHA-512</td>
+						<td>
+							password-type不可逆パスワードを設定した場合、パスワードのハッシュを計算するアルゴリズムを指定します。
+						</td>
+					</tr>
+					<tr>
+						<td class="commentOut"></td>
 						<td>crypt-config</td>
 						<td>
 							<code>

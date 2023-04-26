@@ -171,6 +171,7 @@ public class OnetimePasswordUtil {
 	 * ワンタイムパスワードスキップクッキーを設定する。
 	 * @param page ページ。
 	 * @param p ログインパラメータ。
+	 * @throws Exception 例外。
 	 */
 	public static void setSkipOnetimeCookie(final Page page, final Map<String, Object> p) throws Exception {
 		logger.debug("setSkipOnetimeCookie");

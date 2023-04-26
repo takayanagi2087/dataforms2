@@ -431,7 +431,7 @@
 		<param-value>/uploadData</param-value>
 	</context-param>
 
-	<!-- パスワード確認方式 -->
+	<!-- パスワード保存方法 -->
 	<context-param>
 		<param-name>password-type</param-name>
 		<!--

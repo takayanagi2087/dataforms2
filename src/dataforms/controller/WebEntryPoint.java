@@ -23,8 +23,12 @@ import dataforms.util.StringUtil;
  */
 public interface WebEntryPoint {
 
+	/**
+	 * ユーザ情報のセッションキー。
+	 */
+	public static final String USER_INFO = "userInfo";
 
-//	Response getHtml(final Map<String, Object> params) throws Exception;
+	//	Response getHtml(final Map<String, Object> params) throws Exception;
 	/**
 	 * Webアプリケーションの処理を実行します。
 	 * @param p パラメータ。
@@ -98,7 +102,7 @@ public interface WebEntryPoint {
 	 */
 	default Map<String, Object> getUserInfo() {
 		@SuppressWarnings("unchecked")
-		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute("userInfo");
+		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute(USER_INFO);
 		return userInfo;
 	}
 
@@ -109,7 +113,7 @@ public interface WebEntryPoint {
 	default long getUserId() {
     	long userid = -1L;
     	@SuppressWarnings("unchecked")
-		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute("userInfo");
+		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute(USER_INFO);
     	if (userInfo != null) {
         	userid = (Long) userInfo.get("userId");
     	}
@@ -134,7 +138,7 @@ public interface WebEntryPoint {
 	 */
 	@SuppressWarnings("unchecked")
 	default boolean checkUserAttribute(final String t, final String v) {
-		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute("userInfo");
+		Map<String, Object> userInfo = (Map<String, Object>) this.getRequest().getSession().getAttribute(USER_INFO);
 		if (userInfo != null) {
 			List<Map<String, Object>> attlist = (List<Map<String, Object>>) userInfo.get("attTable");
 			for (Map<String, Object> m: attlist) {

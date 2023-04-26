@@ -9,6 +9,7 @@ import dataforms.annotation.WebMethod;
 import dataforms.app.user.field.LoginIdField;
 import dataforms.app.user.field.UserNameField;
 import dataforms.controller.Form;
+import dataforms.controller.WebEntryPoint;
 import dataforms.response.JsonResponse;
 import dataforms.util.AutoLoginCookie;
 
@@ -88,7 +89,7 @@ public class LoginInfoForm extends Form {
 	 */
 	private void getUserInfo() {
     	@SuppressWarnings("unchecked")
-		Map<String, Object> userInfo = (Map<String, Object>) this.getPage().getRequest().getSession().getAttribute("userInfo");
+		Map<String, Object> userInfo = (Map<String, Object>) this.getPage().getRequest().getSession().getAttribute(WebEntryPoint.USER_INFO);
     	if (userInfo != null) {
         	this.setFormData("loginId", userInfo.get("loginId"));
         	this.setFormData("userName", userInfo.get("userName"));
@@ -121,7 +122,7 @@ public class LoginInfoForm extends Form {
 	public JsonResponse logout(final Map<String, Object> param) throws Exception {
 		Map<String, Object> userInfo = this.getPage().getUserInfo();
 		logger.info(() -> "logout success=" + userInfo.get("loginId") + "(" + userInfo.get("userId") + ")");
-		this.getPage().getRequest().getSession().setAttribute("userInfo", null);
+		this.getPage().getRequest().getSession().setAttribute(WebEntryPoint.USER_INFO, null);
 		AutoLoginCookie.clearAutoLoginCookie(this.getPage());
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, "");
 		return ret;

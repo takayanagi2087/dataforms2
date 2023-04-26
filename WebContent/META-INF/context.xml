@@ -7,7 +7,7 @@
 	<Resource auth="Container"
 		driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
 		name="jdbc/dfdb" type="javax.sql.DataSource"
-		url="jdbc:derby:/javadb/dfdbC;create=true"
+		url="jdbc:derby:/javadb/dfdbI;create=true"
 		username="" password="" />
 	<!--
 		組み込みApache derby用の接続設定

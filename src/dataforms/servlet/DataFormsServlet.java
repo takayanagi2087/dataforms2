@@ -69,6 +69,7 @@ import dataforms.util.CryptUtil;
 import dataforms.util.HttpRangeInfo;
 import dataforms.util.MessagesUtil;
 import dataforms.util.MessagesUtil.ClientMessageTransfer;
+import dataforms.util.OnetimePasswordUtil;
 import dataforms.util.StringUtil;
 import net.arnx.jsonic.JSON;
 
@@ -383,6 +384,7 @@ public class DataFormsServlet extends HttpServlet {
 		logger.info(() -> "init:disableDeveloperTools=" + DataFormsServlet.disableDeveloperTools);
 
 		this.initPassword();
+		this.initOnetimePassword();
 
 		DataFormsServlet.cookieCheck = Boolean.parseBoolean(
 				this.getServletContext().getInitParameter("cookie-check") == null ? "false"
@@ -409,6 +411,7 @@ public class DataFormsServlet extends HttpServlet {
 		String secureAutoLoginCookie = this.getServletContext().getInitParameter("secure-auto-login-cookie");
 		if (!StringUtil.isBlank(secureAutoLoginCookie)) {
 			AutoLoginCookie.setSecure("true".equals(secureAutoLoginCookie));
+			OnetimePasswordUtil.setSecure("true".equals(secureAutoLoginCookie));
 		}
 		DeveloperPage.setJavaSourcePath(this.getServletContext().getInitParameter("java-source-path"));
 		DeveloperPage.setWebSourcePath(this.getServletContext().getInitParameter("web-source-path"));
@@ -579,6 +582,18 @@ public class DataFormsServlet extends HttpServlet {
 			DataFormsServlet.csrfSessionidCrypPassword = csrfSessionidCryptPassword;
 		} else {
 			DataFormsServlet.csrfSessionidCrypPassword = null;
+		}
+	}
+
+
+	/**
+	 * ワンタイムパスワード関連情報を取得します。
+	 */
+	private void initOnetimePassword() {
+		String conf = this.getServletContext().getInitParameter(OnetimePasswordUtil.CONFIG_KEY);
+		if (conf != null) {
+			Map<String, Object> m = JSON.decode(conf);
+			OnetimePasswordUtil.setConfig(m);
 		}
 	}
 

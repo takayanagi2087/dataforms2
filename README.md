@@ -23,19 +23,18 @@ IE11はデフォルトでは動作しない設定になっていますが、
 
 
 ## Install
-インストールの手順をまとめると以下のようになります。
 
 * [Pleiades - Eclipse プラグイン日本語化プラグイン](http://mergedoc.osdn.jp/index.html#pleiades.html)をダウンロードしインストール。
 * EclipseのサーバービューにTomcat9(java11)を追加。
 * Pleiadesに付属するtomcat9のlibフォルダに[Apache Derby](https://db.apache.org/derby/)からダウンロードした組み込みDerbyのドライバをコピー。
 * [javax.mail.jar](https://github.com/javaee/javamail/releases)と[javax.activation.jar](https://github.com/javaee/activation/releases)をtomcat9のlibフォルダにコピー。
-* [リリース](https://github.com/takayanagi2087/dataforms2/releases)から、dfblank_xxx.warファイルをダウンロードし、Eclipseでインポート。
+* [https://www.dataforms.jp/dataforms2/](https://www.dataforms.jp/dataforms2/)から、df2blank_xxx.warファイルをダウンロードし、Eclipseでインポート。
 * Tomcat9(Java11)にインポートしたプロジェクトを追加し、プロジェクトをビルドした後Tomcat9を起動。
 * ブラウザからアプリをアクセスし、開発者ユーザを登録。
+* [https://www.dataforms.jp/mvn/repository/](https://www.dataforms.jp/mvn/repository/)にMavenリポジトリを公開したので、EclipseのMavenプロジェクトに変換することが可能。
+* Eclipse transformerを利用してTomcat10に対応したjarをMavenリポジトリに登録してあるので、pom.xmlを修正するだけでTomcat10対応のアプリケーションを作成することができる。
 
-詳細は[ドキュメント](http://www.takayanagi-syslab.net/dfblank/dataforms/devtool/doc/page/DocFramePage.df)の「2.開発環境構築」を参照してください。
-
-現在試験的に[Maven対応のプロジェクト(df2blank)](https://github.com/takayanagi2087/df2blank/)を用意してみました。
+詳細は[ドキュメント](http://www.dataforms.jp/df2blank/dataforms/devtool/doc/page/DocFramePage.df)の「2.開発環境構築」を参照してください。
 
 
 ## Requirement

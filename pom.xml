@@ -10,7 +10,7 @@
 		env.MAKEVER : バージョン情報作成コマンド。 (ex: makever.bat)
 		env.JAVA_HOME : JAVAのインストールディレクトリ (ex: C:\eclipse\pleiades\java\17)
 		env.COPYDEP : copydep.jarのパス (ex: C:\cygwin64\home\takay\copydep.jar)
-		env.MVNREP : mavenローカルリポジトリのパス (ex: C:\Users\takay\.m2\repository\jp\walking360\dataforms2)
+		env.MVNREP : mavenローカルリポジトリのパス (ex: C:\Users\takay\.m2\repository\jp\dataforms\dataforms2)
 		env.ECLIPSE_TRANSFORMER : eclipse transformerのパス。(ex: C:\eclipse\transformer\org.eclipse.transformer.cli-0.5.0.jar)
 	-->
 	<properties>
@@ -263,7 +263,7 @@
 						</goals>
 						<configuration>
 							<file>${project.build.directory}/javax-${project.name}-${project.version}.jar</file>
-							<groupId>jp.walking360</groupId>
+							<groupId>jp.dataforms</groupId>
 							<artifactId>javax-dataforms2</artifactId>
 							<version>${project.version}</version>
 							<packaging>jar</packaging>
@@ -277,7 +277,7 @@
 						</goals>
 						<configuration>
 							<file>${project.build.directory}/jakarta-${project.name}-${project.version}.jar</file>
-							<groupId>jp.walking360</groupId>
+							<groupId>jp.dataforms</groupId>
 							<artifactId>jakarta-dataforms2</artifactId>
 							<version>${project.version}</version>
 							<packaging>jar</packaging>

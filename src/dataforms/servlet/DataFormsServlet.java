@@ -471,13 +471,13 @@ public class DataFormsServlet extends HttpServlet {
 		this.getUserRegistConf();
 		super.init();
 		WebComponent.setServlet(this);
-		this.setupServletInstanceBean();
 		// DB存在チェック。
 		this.checkDbConnection();
 		// DBの存在チェック。
 		this.checkDBStructure();
 		// 制約マップを作成します。
 		this.makeConstraintMap();
+		this.setupServletInstanceBean();
 	}
 
 	/**

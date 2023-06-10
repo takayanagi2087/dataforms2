@@ -1084,7 +1084,7 @@ public class TableManagerDao extends Dao {
 			for (String s: scriptList) {
 				String sc = s.trim();
 				if (sc.length() > 0) {
-					logger.debug(() -> "script=" + s);
+					logger.info(() -> "script=" + s);
 					try (PreparedStatement st = conn.prepareStatement(s)) {
 						st.execute();
 					}
@@ -1098,9 +1098,12 @@ public class TableManagerDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void executeBeforeRebuildSql() throws Exception {
-//		String beforeSql = Page.getServlet().getServletContext().getRealPath("/WEB-INF/dbRebuild/before.sql");
 		String beforeSql = this.getSqlGenerator().getBeforeRebildSql();
-		this.executeSqlScript(beforeSql);
+		try {
+			this.executeSqlScript(beforeSql);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
 	}
 
 	/**
@@ -1108,8 +1111,11 @@ public class TableManagerDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void executeAfterRebuildSql() throws Exception {
-//		String afterSql = Page.getServlet().getServletContext().getRealPath("/WEB-INF/dbRebuild/after.sql");
 		String afterSql = this.getSqlGenerator().getAfterRebildSql();
-		this.executeSqlScript(afterSql);
+		try {
+			this.executeSqlScript(afterSql);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
 	}
 }

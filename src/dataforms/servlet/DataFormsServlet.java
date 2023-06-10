@@ -469,9 +469,9 @@ public class DataFormsServlet extends HttpServlet {
 		}
 		this.getUserEditFormConf();
 		this.getUserRegistConf();
-		this.setupServletInstanceBean();
 		super.init();
 		WebComponent.setServlet(this);
+		this.setupServletInstanceBean();
 		// DB存在チェック。
 		this.checkDbConnection();
 		// DBの存在チェック。

@@ -99,6 +99,22 @@ public class FieldList extends ArrayList<Field<?>> {
 		return field;
 	}
 
+	/**
+	 * 同じIDを持つフィールドを置き換えます。
+	 * @param field 置き換えるフィールド。
+	 * @return 置き換えるフィールド。
+	 */
+	public Field<?> replace(final Field<?> field) {
+		for (int i = 0; i < this.size(); i++) {
+			Field<?> f = this.get(i);
+			if (f.getId().equals(field.getId())) {
+				this.add(i, field);
+				this.remove(i + 1);
+				break;
+			}
+		}
+		return field;
+	}
 
 	/**
 	 * フィールドを追加します。

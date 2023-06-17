@@ -410,13 +410,16 @@ public class DaoGeneratorEditForm extends EditForm {
 				}
 				@SuppressWarnings("unchecked")
 				Class<? extends Query> qcls = (Class<? extends Query>) Class.forName(fullClassName);
-				Query query = qcls.getConstructor().newInstance();
-				Table table = query.getMainTable();
-				String tableClassName = table.getClass().getName();
-				logger.debug("tableClassName=" + tableClassName);
-				if (!set.contains(tableClassName)) {
-					implist.add(tableClassName);
-					set.add(tableClassName);
+				Object obj = qcls.getConstructor().newInstance();
+				if (obj instanceof Query) {
+					Query query = (Query) obj;
+					Table table = query.getMainTable();
+					String tableClassName = table.getClass().getName();
+					logger.debug("tableClassName=" + tableClassName);
+					if (!set.contains(tableClassName)) {
+						implist.add(tableClassName);
+						set.add(tableClassName);
+					}
 				}
 			}
 		}

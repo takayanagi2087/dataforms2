@@ -7,12 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import dataforms.controller.Form;
 import dataforms.dao.Dao;
+import dataforms.dao.ForeignKey;
 import dataforms.dao.Table;
+import dataforms.dao.TableRelation;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
@@ -32,6 +36,12 @@ import dataforms.validator.RequiredValidator;
  *
  */
 public class TableReport extends ExcelReport {
+
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LogManager.getLogger(TableReport.class);
+
 	/**
 	 * コンストラクタ。
 	 * @param templatePath テンプレートファイルパス。
@@ -78,6 +88,27 @@ public class TableReport extends ExcelReport {
 		return tmp;
 	}
 
+	/**
+	 * ForeignKeyのカラムマップを作成します。
+	 * @param rel テーブル関連情報。
+	 * @return ForeignKeyのカラムマップ。
+	 * @throws Exception 例外。
+	 */
+	private Map<String, String> getFkMap(final TableRelation rel) throws Exception {
+		List<ForeignKey> fklist = rel.getForeignKeyList();
+		Map<String, String> ret = new HashMap<String, String>();
+		for (ForeignKey fk: fklist) {
+			for (int i = 0; i < fk.getFieldIdList().length; i++) {
+				String fid = fk.getFieldIdList()[i];
+				Table table = (Table) fk.getReferenceTableClass().getConstructor().newInstance();
+				String rid = fk.getReferenceFieldIdList()[i];
+				String t = table.getTableName();
+				String fn = table.getFieldList().get(rid).getDbColumnName();
+				ret.put(fid, t + "." + fn);
+			}
+		}
+		return ret;
+	}
 
 	/**
 	 * 仕様書作成用の追加情報を設定する。
@@ -99,11 +130,17 @@ public class TableReport extends ExcelReport {
 			ret.put("tableName", t.getTableName());
 			ret.put("tableComment", t.getComment());
 			ret.put("tableClassName", t.getClass().getName());
+			TableRelation rel = t.getTableRelation();
+			Map<String, String> map = this.getFkMap(rel);
 			List<Map<String, Object>> fieldList = new ArrayList<Map<String, Object>>();
 			for (int i = 0; i < t.getFieldList().size(); i++) {
 				Map<String, Object> m = new HashMap<String, Object>();
 				Field<?> f = t.getFieldList().get(i);
-				m.put("comment", f.getComment());
+				String comment = f.getComment();
+				if (map.get(f.getId()) != null) {
+					comment += "  (-> " + map.get(f.getId()) + ")";
+				}
+				m.put("comment", comment);
 				m.put("columnName", f.getDbColumnName());
 				if (t.getPkFieldList().get(f.getId()) != null) {
 					m.put("pkFlag", "*");

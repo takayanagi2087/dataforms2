@@ -501,7 +501,7 @@
 		<param-value>
 			{
 				// ワンタイムパスワードを使用するかどうか。
-				"useOnetimePassword": true,
+				"useOnetimePassword": false,
 				// ワンタイムパスワード文字数。
 				"length": 6,
 				// ワンタイムパスワードキャンセルクッキーの有効日数

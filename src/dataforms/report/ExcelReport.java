@@ -372,11 +372,15 @@ public class ExcelReport extends Report {
 		Row row = sh.getRow(rowIndex);
 		for (int i = 0; i < row.getLastCellNum(); i++) {
 			Cell cell = row.getCell(i);
-			String text = cell.getStringCellValue();
-			if (text != null) {
-				if (text.indexOf("[0]") > 0) {
-					String v = text.replaceAll(listId + "\\[0\\]", listId + "[" + dataIndex + "]");
-					cell.setCellValue(v);
+			if (cell != null) {
+				if (cell.getCellType() == CellType.STRING) {
+					String text = cell.getStringCellValue();
+					if (text != null) {
+						if (text.indexOf("[0]") > 0) {
+							String v = text.replaceAll(listId + "\\[0\\]", listId + "[" + dataIndex + "]");
+							cell.setCellValue(v);
+						}
+					}
 				}
 			}
 		}

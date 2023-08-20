@@ -38,6 +38,12 @@
 			このサーバ以外は邪魔なのでサーバビューから削除します。
 			その後"Tomcat9_Java17"を起動します。
 		</p>
+		<p class="topic">
+			Tomcat10で運用したい場合は、Tomcat10を残しておいてください。
+			Tomcat10以上ではjavax.servlet等のパッケージがjakarta.servletに変更されました。
+			そのためdataforms2.jarでは2つのjavax-dataforms2とjakarta-dataforms2というartifactIdを用意してあります。
+			Tomcat10以上で開発する場合はMavenプロジェクトに移行した後pom.xmlを修正し、jakarta-dataforms2に切り替えます。
+		</p>
 		<p>
 			Tomcatを起動すると、コンソールにTomcatの起動ログが表示されます。
 		</p>
@@ -54,15 +60,6 @@
 		</figure>
 		<p>
 			Tomcatの起動が確認出来たら、一旦Tomcatを終了してください。
-		</p>
-		<p class="topic">
-			Tomcat10ではパッケージ名"javax.servlet"が"jakarta.servlet"に変更されました。
-			そのためdataforms2.jarで作成したアプリケーションを動作させるには、変換ツールでアプリケーションを変換してデプロイする必要があります。
-			そのため当面はTomcat9で開発しTomcat10で運用する場合は変換して動作させることにします。
-			dataforms2.jarで作成したアプリケーションをTomcat10にデプロイするには、
-			Tomcat10のwebappsフォルダの隣にwebapps-javaeeというフォルダを作成しそこにwarファイルをコピーします。
-			この操作で自動的に変換ツールが動作しwebappsにアプリケーションが展開されます。
-			本格的に検証はしていませんが、dfblank.warはとりあえず動いているようです。
 		</p>
 		<h2>データベースを用意する</h2>
 		<p>
@@ -87,7 +84,7 @@
 		</p>
 		<p class="topic">
 			Tomcat10の場合javax.mail.jarではなく、jakarta.mail-xxx.jarでないとダメなようです。
-			$CATALINA_HOME/libにjakarta.mail-xxx.jarとjavax.activation.jarをコピーしてください。
+			$CATALINA_HOME/libにjakarta.mail-xxx.jarとjakarta.activation-api-xxx.jarをコピーしてください。
 		</p>
 		<h2>プロジェクトの作成</h2>
 		<p>

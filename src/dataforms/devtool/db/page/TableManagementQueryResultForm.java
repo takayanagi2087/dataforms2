@@ -5,22 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import dataforms.annotation.WebMethod;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.db.dao.TableManagerDao;
-import dataforms.devtool.field.ClassNameField;
+import dataforms.devtool.db.table.DbTableListHtmlTable;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.MultiSelectField;
-import dataforms.field.common.PresenceField;
-import dataforms.field.common.RowNoField;
-import dataforms.field.sqltype.IntegerField;
 import dataforms.field.sqltype.VarcharField;
-import dataforms.htmltable.HtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.servlet.DataFormsServlet;
+import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
 
 /**
@@ -31,27 +31,14 @@ public class TableManagementQueryResultForm extends QueryResultForm {
 	/**
 	 * Log.
 	 */
-//	private static Logger log = Logger.getLogger(TableManagementQueryResultForm.class.getName());
+	private static Logger logger = LogManager.getLogger(TableManagementQueryResultForm.class.getName());
 	/**
 	 * コンストラクタ。
 	 */
 	public TableManagementQueryResultForm() {
 		this.addField(new VarcharField("className", 256));
 		this.addField(new MultiSelectField<String>("checkedClass"));
-		HtmlTable htmltbl = new HtmlTable(Page.ID_QUERY_RESULT
-			, new ClassNameField("checkedClass")
-			, new RowNoField()
-			, (new ClassNameField()).setSortable(true)
-			, (new VarcharField("tableName", 64)).setSortable(true)
-			, (new VarcharField("tableComment", 1024)).setSortable(true)
-			, (new VarcharField("indexNames", 1024)).setSortable(true)
-			, new PresenceField("status").setSortable(true)
-			, new PresenceField("statusVal")
-			, new PresenceField("sequenceGeneration").setSortable(true)
-			, new PresenceField("difference").setSortable(true)
-			, new PresenceField("differenceVal")
-			, new IntegerField("recordCount").setSortable(true)
-		);
+		DbTableListHtmlTable htmltbl = new DbTableListHtmlTable(Page.ID_QUERY_RESULT);
 		this.addHtmlTable(htmltbl);
 	}
 
@@ -226,6 +213,22 @@ public class TableManagementQueryResultForm extends QueryResultForm {
 		}
 		List<Map<String, Object>> result = dao.getTableInfoList(classlist);
 		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, result);
+		return ret;
+	}
+
+	/**
+	 * バックアップテーブルを削除します。
+	 * @param param パラメータ。
+	 * @return 応答情報。
+	 * @throws Exception 例外。
+	 */
+	@WebMethod
+	public JsonResponse dropBackupTable(final Map<String, Object> param) throws Exception {
+		String table = (String) param.get("table");
+		logger.debug("table=" + table);
+		TableManagerDao dao = new TableManagerDao(this);
+		dao.dropBackupTable(table);
+		JsonResponse ret = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.backupTableDroped"));
 		return ret;
 	}
 }

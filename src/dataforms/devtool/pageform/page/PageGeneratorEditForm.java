@@ -616,6 +616,9 @@ public class PageGeneratorEditForm extends EditForm {
 	private String getFunctionPropertiesPath(final String functionPath) throws Exception {
 		String webResourcePath = DeveloperPage.getWebSourcePath();
 		String funcprop = this.getPage().getAppropriatePath(functionPath + "/Function.properties", this.getPage().getRequest());
+		if (funcprop == null) {
+			funcprop = functionPath + "/Function.properties";
+		}
 		funcprop = webResourcePath + funcprop;
 		return funcprop;
 	}

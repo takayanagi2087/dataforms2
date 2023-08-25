@@ -114,7 +114,7 @@
 		<div class="filecaption">SamplePageを「ゲスト」用に修正</div>
 		<div class="wrappre">
 			<pre>
-<b>import dataforms.app.page.base.GuestPage;</b>
+<b>import dataforms.app.base.page.GuestPage;</b>
 import dataforms.dao.Dao;
 import sample.dao.SampleDao;
 
@@ -867,7 +867,7 @@ class SampleEditForm extends EditForm {
 	attach() {
 		super.attach();
 		<b>this.get(&quot;printButton&quot;).click(() =&gt; {
-			alert(&quot;&#21360;&#21047;&#20966;&#29702;&#12434;&#23455;&#35013;&#20104;&#23450;&quot;);
+			currentPage.alert(null, "印刷処理を実装予定");
 			return false;
 		});</b>
 	}

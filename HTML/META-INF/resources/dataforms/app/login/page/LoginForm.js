@@ -26,7 +26,11 @@ class LoginForm extends Form {
 					if (this.parent instanceof Dialog) {
 						this.parent.close();
 					}
-					currentPage.toTopPage();
+					if (result.result == "onetime") {
+						window.location.href = "OnetimePasswordPage.df";
+					} else {
+						currentPage.toTopPage();
+					}
 				} else {
 					this.parent.setErrorInfo(this.getValidationResult(result), this);
 				}

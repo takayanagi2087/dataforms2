@@ -11,8 +11,11 @@ import dataforms.app.user.field.PasswordField;
 import dataforms.controller.EditForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.util.CryptUtil;
+import dataforms.util.CryptUtil.UserPasswordType;
 import dataforms.util.UserAdditionalInfoTableUtil;
 import dataforms.util.UserInfoTableUtil;
+import dataforms.validator.DisplayedRequiredValidator;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
@@ -65,7 +68,7 @@ public class UserEditForm extends EditForm {
 		this.admin = isAdmin;
 		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); // new UserInfoTable();
 		table.getLoginIdField().addValidator(new RequiredValidator());
-		table.getPasswordField().addValidator(new RequiredValidator());
+		table.getPasswordField().addValidator(new DisplayedRequiredValidator());
 		table.getUserNameField().addValidator(new RequiredValidator());
 
 		Boolean reqEmail = (Boolean) getConfig().get("requiredMailAddress");
@@ -74,7 +77,8 @@ public class UserEditForm extends EditForm {
 		}
 		this.addTableFields(table);
 		PasswordField pwck = new PasswordField("passwordCheck");
-		this.insertFieldAfter(pwck, "password").addValidator(new RequiredValidator());
+		pwck.addValidator(new DisplayedRequiredValidator());
+		this.insertFieldAfter(pwck, "password");
 		// ユーザ追加情報テーブルのフィールドを追加します。
 		FieldList flist = UserAdditionalInfoTableUtil.getFieldList();
 		if (flist != null) {
@@ -213,5 +217,13 @@ public class UserEditForm extends EditForm {
 	public void deleteData(final Map<String, Object> data) throws Exception {
 		UserDao dao = new UserDao(this);
 		dao.deleteUser(data);
+	}
+
+	@Override
+	public Map<String, Object> getProperties() throws Exception {
+		Map<String, Object> ret = super.getProperties();
+		UserPasswordType type = CryptUtil.getUserPasswordType();
+		ret.put("userPasswordType", type);
+		return ret;
 	}
 }

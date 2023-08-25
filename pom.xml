@@ -2,21 +2,60 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dataforms2</groupId>
 	<artifactId>dataforms2</artifactId>
-	<version>2.30</version>
+	<version>2.31</version>
 	<packaging>war</packaging>
+	<!--
+		以下の環境変数を設定してください。
+		env.JSDOC : jsdocコマンド (ex: C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd)
+		env.MAKEVER : バージョン情報作成コマンド。 (ex: makever.bat)
+		env.JAVA_HOME : JAVAのインストールディレクトリ (ex: C:\eclipse\pleiades\java\17)
+		env.COPYDEP : copydep.jarのパス (ex: C:\cygwin64\home\takay\copydep.jar)
+		env.MVNREP : mavenローカルリポジトリのパス (ex: C:\Users\takay\.m2\repository\jp\dataforms\dataforms2)
+		env.ECLIPSE_TRANSFORMER : eclipse transformerのパス。(ex: C:\eclipse\transformer\org.eclipse.transformer.cli-0.5.0.jar)
+	-->
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<javacmd>${env.JAVA_HOME}/bin/java</javacmd>
 		<!-- dataforms2.jarのバージョンファイル(ソースフォルダ) -->
-		<html.dataforms.mf>HTML/META-INF/resources/dataforms.mf</html.dataforms.mf>
-		<!-- dataforms2.jarのバージョンファイル(ビルドフォルダ) -->
-		<classes.dataforms.mf>build/classes/META-INF/resources/dataforms.mf</classes.dataforms.mf>
-		<jsdoc.cmd>C:\Users\takay\AppData\Roaming\npm\jsdoc.cmd</jsdoc.cmd>
-		<!--
-		<timestamp>${maven.build.timestamp}</timestamp>
-		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-		-->
+		<html.dataforms.mf>${project.basedir}/HTML/META-INF/resources/dataforms.mf</html.dataforms.mf>
+		<!-- javax → jakarta パッケージ変換ツールのパス -->
+		<jakarta.transformer>${env.ECLIPSE_TRANSFORMER}</jakarta.transformer>
+		<!-- Java VMのパス　-->
+		<buildDate>${maven.build.timestamp}</buildDate>
+		<maven.build.timestamp.format>yyMMdd</maven.build.timestamp.format>
 	</properties>
 	<!-- dataforms2.jarの依存ライブラリ -->
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-servlet-api</artifactId>
+			<version>9.0.10</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyshared</artifactId>
+			<version>10.15.2.0</version>
+			<scope>provided</scope>
+		</dependency>
 		<!-- Apache commons -->
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
@@ -28,7 +67,7 @@
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
-			<version>1.4</version>
+			<version>1.5</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
 		<dependency>
@@ -99,7 +138,6 @@
 			<artifactId>javase</artifactId>
 			<version>3.5.1</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -118,32 +156,13 @@
 			</resource>
 		</resources>
 		<plugins>
-			<plugin>
-				<groupId>org.codehaus.gmaven</groupId>
-				<artifactId>gmaven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>set-custom-property</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-						<configuration>
-							<source>
-								def timestamp = new Date().format('yyMMdd')
-								project.properties.setProperty('timestamp', timestamp)
-							</source>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
 			<!-- コンパイル -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<release>11</release>
+					<source>11</source>
+					<target>11</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -151,29 +170,6 @@
 				<version>3.2.3</version>
 				<configuration>
 					<warSourceDirectory>WebContent</warSourceDirectory>
-					<additionalDependencies>
-						<additionalDependency>
-							<groupId>javax.servlet</groupId>
-							<artifactId>javax.servlet-api</artifactId>
-							<version>3.0.1</version>
-							<scope>provided</scope>
-						</additionalDependency>
-						<additionalDependency>
-							<groupId>javax.activation</groupId>
-							<artifactId>activation</artifactId>
-							<version>1.1.1</version>
-						</additionalDependency>
-						<additionalDependency>
-							<groupId>javax.mail</groupId>
-							<artifactId>mail</artifactId>
-							<version>1.4</version>
-						</additionalDependency>
-						<additionalDependency>
-							<groupId>org.apache.derby</groupId>
-							<artifactId>derbyshared</artifactId>
-							<version>10.15.2.0</version>
-						</additionalDependency>
-					</additionalDependencies>
 				</configuration>
 			</plugin>
 			<!-- javadocの作成 -->
@@ -193,10 +189,9 @@
 					<destDir>javadoc</destDir>
 					<additionalDependencies>
 						<additionalDependency>
-							<groupId>javax.servlet</groupId>
-							<artifactId>javax.servlet-api</artifactId>
-							<version>3.0.1</version>
-							<scope>provided</scope>
+							<groupId>org.apache.tomcat</groupId>
+							<artifactId>tomcat-servlet-api</artifactId>
+							<version>9.0.10</version>
 						</additionalDependency>
 						<additionalDependency>
 							<groupId>javax.activation</groupId>
@@ -224,59 +219,12 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Jsdoc作成 -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<executable>${jsdoc.cmd}</executable>
-					<arguments>
-						<argument>-d</argument>
-						<argument>HTML/META-INF/resources/doc/jsdoc</argument>
-						<argument>-r</argument>
-						<argument>HTML/META-INF/resources/dataforms</argument>
-					</arguments>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- Version情報ファイルの作成 -->
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<id>ant-execute</id>
-						<phase>prepare-package</phase>
-						<configuration>
-							<target>
-								<echo message="Manifest-Version: 1.0&#xa;" file="${html.dataforms.mf}" append="false"  />
-								<echo message="Implementation-Version: ${project.version}-${timestamp}&#xa;" file="${html.dataforms.mf}" append="true"  />
-								<echo message="Implementation-Vendor: Masahiko Takayanagi&#xa;" file="${html.dataforms.mf}" append="true" />
-								<echo message="Implementation-Title: Dataforms java web application framework&#xa;" file="${html.dataforms.mf}" append="true"  />
-								<echo message="CreatedTime: ${maven.build.timestamp}&#xa;" file="${html.dataforms.mf}" append="true" />
-								<copy file="${html.dataforms.mf}" tofile="${classes.dataforms.mf}" overwrite="true" />
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<!-- dataforms2.jarファイルの作成 -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.4.2</version>
 				<configuration>
-					<finalName>dataforms2</finalName>
+					<finalName>javax-dataforms2-${project.version}</finalName>
 					<!-- 成果物の名前にassemblyがidを振ってしまうのを無効にする -->
 					<appendAssemblyId>false</appendAssemblyId>
 					<descriptors>
@@ -287,8 +235,7 @@
 						<manifestEntries>
 							<Implementation-Vendor>Masahiko Takayanagi</Implementation-Vendor>
 							<Implementation-Title>Dataforms java web application framework</Implementation-Title>
-							<Implementation-Version>${project.version}-${timestamp}</Implementation-Version>
-							<CreatedTime>${maven.build.timestamp}</CreatedTime>
+							<Implementation-Version>${project.version}</Implementation-Version>
 						</manifestEntries>
 					</archive>
 				</configuration>
@@ -302,6 +249,161 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- dataforms2-x.xx.jar のリポジトリ登録-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>install-javax-library</id>
+						<phase>install</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<file>${project.build.directory}/javax-${project.name}-${project.version}.jar</file>
+							<groupId>jp.dataforms</groupId>
+							<artifactId>javax-dataforms2</artifactId>
+							<version>${project.version}</version>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-jakaruta-library</id>
+						<phase>install</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<file>${project.build.directory}/jakarta-${project.name}-${project.version}.jar</file>
+							<groupId>jp.dataforms</groupId>
+							<artifactId>jakarta-dataforms2</artifactId>
+							<version>${project.version}</version>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<!-- Jsdoc作成 -->
+					<execution>
+						<id>generate jsdoc</id>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>${env.JSDOC}</executable>
+							<arguments>
+								<argument>-d</argument>
+								<argument>HTML/META-INF/resources/doc/jsdoc</argument>
+								<argument>-r</argument>
+								<argument>HTML/META-INF/resources/dataforms</argument>
+							</arguments>
+						</configuration>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+					<!-- バージョン情報ファイルの作成 -->
+					<execution>
+						<id>generate-dataforms-mf</id>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>${env.MAKEVER}</executable>
+							<arguments>
+								<argument>${project.basedir}</argument>
+								<argument>${project.version}-${maven.build.timestamp}</argument>
+							</arguments>
+						</configuration>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>convert to jakarta package</id>
+						<phase>package</phase>
+						<configuration>
+							<executable>${javacmd}</executable>
+							<arguments>
+								<argument>-jar</argument>
+								<argument>${jakarta.transformer}</argument>
+								<argument>-o</argument>
+								<argument>${project.build.directory}/javax-${project.name}-${project.version}.jar</argument>
+								<argument>${project.build.directory}/jakarta-${project.name}-${project.version}.jar</argument>
+							</arguments>
+						</configuration>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+					<!--
+						warプロジェクトでjarをインストールした関係で、pomファイルに依存関係が
+						設定されていないため、強制的に依存関係を追加する。
+					-->
+					<execution>
+						<id>update-javax-dataforms2-x.xx.pom </id>
+						<phase>install</phase>
+						<configuration>
+							<executable>${javacmd}</executable>
+							<arguments>
+								<argument>-jar</argument>
+								<argument>${env.COPYDEP}</argument>
+								<argument>${project.basedir}/pom.xml</argument>
+								<argument>${env.MVNREP}/javax-${project.name}/${project.version}/javax-${project.name}-${project.version}.pom</argument>
+								<argument>${env.MVNREP}/javax-${project.name}/${project.version}/javax-${project.name}-${project.version}.pom</argument>
+							</arguments>
+						</configuration>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>update-jakarta-dataforms2-x.xx.pom </id>
+						<phase>install</phase>
+						<configuration>
+							<executable>${javacmd}</executable>
+							<arguments>
+								<argument>-jar</argument>
+								<argument>${env.COPYDEP}</argument>
+								<argument>${project.basedir}/pom.xml</argument>
+								<argument>${env.MVNREP}/jakarta-${project.name}/${project.version}/jakarta-${project.name}-${project.version}.pom</argument>
+								<argument>${env.MVNREP}/jakarta-${project.name}/${project.version}/jakarta-${project.name}-${project.version}.pom</argument>
+								<argument>jakarta</argument>
+							</arguments>
+						</configuration>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- dataforms2.jarをdf2blankプロジェクトにコピー -->
+			<!--
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>install-df2blank-project</id>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<delete>
+									<fileset dir="${env.INSTALLPATH}" includes="*.jar"/>
+								</delete>
+								<copy file="${project.build.directory}/dataforms2-${project.version}.jar" todir="${env.INSTALLPATH}/" overwrite="true" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			-->
 		</plugins>
 	</build>
 </project>

@@ -14,9 +14,11 @@ import dataforms.app.user.dao.UserDao;
 import dataforms.app.user.field.LoginIdField;
 import dataforms.app.user.field.PasswordField;
 import dataforms.controller.Form;
+import dataforms.controller.WebEntryPoint;
 import dataforms.field.common.FlagField;
 import dataforms.response.JsonResponse;
 import dataforms.util.AutoLoginCookie;
+import dataforms.util.OnetimePasswordUtil;
 import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
@@ -62,7 +64,6 @@ public class LoginForm extends Form {
 		AutoLoginCookie.autoLogin(this.getPage());
 	}
 
-
 	/**
 	 * ログインの処理を行います。
 	 * @param params パラメータ。
@@ -83,11 +84,20 @@ public class LoginForm extends Form {
 		} else {
 			UserDao dao = new UserDao(this);
 			Map<String, Object> userInfo = dao.login(params);
-			HttpSession session = this.getPage().getRequest().getSession();
-			session.setAttribute("userInfo", userInfo);
-			logger.info(() -> "login success=" + userInfo.get("loginId") + "(" + userInfo.get("userId") + ")");
-			AutoLoginCookie.setAutoLoginCookie(this.getPage(), params);
-			ret = new JsonResponse(JsonResponse.SUCCESS, "");
+			if (OnetimePasswordUtil.needConfirmation(this.getPage(), userInfo)) {
+				// ワンタイムパスワード確認モード。
+				String keepLogin = (String) params.get(AutoLoginCookie.ID_KEEP_LOGIN);
+				userInfo.put(AutoLoginCookie.ID_KEEP_LOGIN, keepLogin);
+				HttpSession session = this.getPage().getRequest().getSession();
+				session.setAttribute(OnetimePasswordUtil.USERINFO, userInfo);
+				ret = new JsonResponse(JsonResponse.SUCCESS, "onetime");
+			} else {
+				HttpSession session = this.getPage().getRequest().getSession();
+				session.setAttribute(WebEntryPoint.USER_INFO, userInfo);
+				logger.info(() -> "login success=" + userInfo.get("loginId") + "(" + userInfo.get("userId") + ")");
+				AutoLoginCookie.setAutoLoginCookie(this.getPage(), params);
+				ret = new JsonResponse(JsonResponse.SUCCESS, "");
+			}
 		}
 		return ret;
 	}

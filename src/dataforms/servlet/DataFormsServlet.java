@@ -69,6 +69,7 @@ import dataforms.util.CryptUtil;
 import dataforms.util.HttpRangeInfo;
 import dataforms.util.MessagesUtil;
 import dataforms.util.MessagesUtil.ClientMessageTransfer;
+import dataforms.util.OnetimePasswordUtil;
 import dataforms.util.StringUtil;
 import net.arnx.jsonic.JSON;
 
@@ -383,6 +384,7 @@ public class DataFormsServlet extends HttpServlet {
 		logger.info(() -> "init:disableDeveloperTools=" + DataFormsServlet.disableDeveloperTools);
 
 		this.initPassword();
+		this.initOnetimePassword();
 
 		DataFormsServlet.cookieCheck = Boolean.parseBoolean(
 				this.getServletContext().getInitParameter("cookie-check") == null ? "false"
@@ -409,6 +411,7 @@ public class DataFormsServlet extends HttpServlet {
 		String secureAutoLoginCookie = this.getServletContext().getInitParameter("secure-auto-login-cookie");
 		if (!StringUtil.isBlank(secureAutoLoginCookie)) {
 			AutoLoginCookie.setSecure("true".equals(secureAutoLoginCookie));
+			OnetimePasswordUtil.setSecure("true".equals(secureAutoLoginCookie));
 		}
 		DeveloperPage.setJavaSourcePath(this.getServletContext().getInitParameter("java-source-path"));
 		DeveloperPage.setWebSourcePath(this.getServletContext().getInitParameter("web-source-path"));
@@ -466,7 +469,6 @@ public class DataFormsServlet extends HttpServlet {
 		}
 		this.getUserEditFormConf();
 		this.getUserRegistConf();
-		this.setupServletInstanceBean();
 		super.init();
 		WebComponent.setServlet(this);
 		// DB存在チェック。
@@ -475,6 +477,7 @@ public class DataFormsServlet extends HttpServlet {
 		this.checkDBStructure();
 		// 制約マップを作成します。
 		this.makeConstraintMap();
+		this.setupServletInstanceBean();
 	}
 
 	/**
@@ -533,6 +536,7 @@ public class DataFormsServlet extends HttpServlet {
 	}
 
 
+
 	/**
 	 * デフォルト設定。
 	 */
@@ -551,6 +555,7 @@ public class DataFormsServlet extends HttpServlet {
 	 *
 	 */
 	private void initPassword() {
+		CryptUtil.initPasswordType(this.getServletContext());
 		String conf = this.getServletContext().getInitParameter("crypt-config");
 		if (conf == null) {
 			conf = DEFAULT_CRYPT_CONFIG;
@@ -577,6 +582,18 @@ public class DataFormsServlet extends HttpServlet {
 			DataFormsServlet.csrfSessionidCrypPassword = csrfSessionidCryptPassword;
 		} else {
 			DataFormsServlet.csrfSessionidCrypPassword = null;
+		}
+	}
+
+
+	/**
+	 * ワンタイムパスワード関連情報を取得します。
+	 */
+	private void initOnetimePassword() {
+		String conf = this.getServletContext().getInitParameter(OnetimePasswordUtil.CONFIG_KEY);
+		if (conf != null) {
+			Map<String, Object> m = JSON.decode(conf);
+			OnetimePasswordUtil.setConfig(m);
 		}
 	}
 

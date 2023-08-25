@@ -125,23 +125,6 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			let dlg = this.parent.getComponent("importDataDialog");
 			dlg.showModal();
 		});
-
-		let tbl = this.getComponent("queryResult");
-		// ソート結果の行番号を修正。
-		tbl.getSortedList = () => {
-			let list = HtmlTable.prototype.getSortedList.call(tbl);
-			for (let i = 0; i < list.length; i++) {
-				list[i].rowNo = (i + 1);
-			}
-			return list;
-		};
-		// ソート時のイベントハンドラ設定。
-		tbl.sortTable = (col) => {
-			logger.log("sort");
-			let list = HtmlTable.prototype.sortTable.call(tbl, col);
-			this.setTableEventHandler(list);
-		};
-
 		this.controlButton();
 	}
 
@@ -223,6 +206,22 @@ class TableManagementQueryResultForm extends QueryResultForm {
 			this.find("[id$='\.tableName']").click((ev) => {
 				this.showQueryForm($(ev.currentTarget));
 			});
+
+			let tbl = this.getComponent("queryResult");
+			for (let i = 0; i < queryResult.length; i++) {
+				let bkfld = tbl.getRowField(i, "backupTable");
+				let flg = queryResult[i].backupTable;
+				if (flg == "1") {
+					bkfld.get().next().show();
+				} else {
+					bkfld.get().next().hide();
+				}
+				let dropButton = bkfld.get().next().find(".dropButton");
+				dropButton.data("table", queryResult[i].className)
+				dropButton.click((ev) => {
+					this.dropBackupTable(ev);
+				});
+			}
 		}
 		this.controlButton();
 	}
@@ -259,6 +258,28 @@ class TableManagementQueryResultForm extends QueryResultForm {
 		super.setFormData(result);
 		let queryResult = result.queryResult;
 		this.setTableEventHandler(queryResult);
+	}
+
+	/**
+	 * バックアップテーブルを削除します。
+	 * @param {Event} ev イベント情報。
+	 */
+	async dropBackupTable(ev) {
+		try {
+			let msg = MessagesUtil.getMessage("message.dropBackupConfirm");
+			let ck = await currentPage.confirm(null, msg);
+			if (ck) {
+				let table = $(ev.target).data("table");
+				let m = this.getWebMethod("dropBackupTable");
+				let r = await m.execute("table=" + table);
+				if (r.status == JsonResponse.SUCCESS) {
+					currentPage.alert(null, r.result);
+					this.changePage();
+				}
+			}
+		} catch (e) {
+			currentPage.reportError(e);
+		}
 	}
 
 	/**

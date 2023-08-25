@@ -49,6 +49,7 @@
 								<th>テーブル有無</th>
 								<th>シーケンス生成</th>
 								<th>構造の差分</th>
+								<th>バックアップテーブル</th>
 								<th>レコード件数</th>
 							</tr>
 						</thead>
@@ -82,6 +83,12 @@
 								<td>
 									<span id="queryResult[0].difference"></span>
 									<input type="hidden" id="queryResult[0].differenceVal" value=""/>
+								</td>
+								<td>
+									<span id="queryResult[0].backupTable"></span>&nbsp;
+									<span style="float: right;" class="backupButtons">
+										<button type="button" id="queryResult[0].dropButton" class="dropButton" >削除</button>
+									</span>
 								</td>
 								<td style="text-align: right;">
 									<span id="queryResult[0].recordCount"></span>

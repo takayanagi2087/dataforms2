@@ -173,6 +173,13 @@ public class TableManagerDao extends Dao {
 			m.put("statusVal", "0");
 			m.put("recordCount", Integer.valueOf(0));
 		}
+		String backupTable = tbl.getBackupTableName();
+		logger.info("backupTable=" + backupTable);
+		if (this.tableExists(backupTable)) {
+			m.put("backupTable", "1");
+		} else {
+			m.put("backupTable", "0");
+		}
 	}
 
 
@@ -221,6 +228,9 @@ public class TableManagerDao extends Dao {
 		tableInfo.put("differenceVal", (st ? "0" : "1"));
 		boolean seq = tbl.isAutoIncrementId();
 		tableInfo.put("sequenceGeneration", (seq ? "1" : "0"));
+
+		logger.info("backup table=" + tbl.getBackupTableName());
+
 		return tableInfo;
 	}
 
@@ -252,6 +262,18 @@ public class TableManagerDao extends Dao {
 		this.dropIndex(tbl);
 		SqlGenerator gen = this.getSqlGenerator();
 		String sql = gen.generateDropTableSql(tbl.getTableName());
+		this.executeUpdate(sql, (Map<String, Object>) null);
+	}
+
+	/**
+	 * バックアップテーブルを削除します。
+	 * @param className テーブルクラス名。
+	 * @throws Exception 例外。
+	 */
+	public void dropBackupTable(final String className) throws Exception {
+		Table tbl = Table.newInstance(className);
+		SqlGenerator gen = this.getSqlGenerator();
+		String sql = gen.generateDropTableSql(tbl.getBackupTableName());
 		this.executeUpdate(sql, (Map<String, Object>) null);
 	}
 
@@ -1062,7 +1084,7 @@ public class TableManagerDao extends Dao {
 			for (String s: scriptList) {
 				String sc = s.trim();
 				if (sc.length() > 0) {
-					logger.debug(() -> "script=" + s);
+					logger.info(() -> "script=" + s);
 					try (PreparedStatement st = conn.prepareStatement(s)) {
 						st.execute();
 					}
@@ -1076,9 +1098,12 @@ public class TableManagerDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void executeBeforeRebuildSql() throws Exception {
-//		String beforeSql = Page.getServlet().getServletContext().getRealPath("/WEB-INF/dbRebuild/before.sql");
 		String beforeSql = this.getSqlGenerator().getBeforeRebildSql();
-		this.executeSqlScript(beforeSql);
+		try {
+			this.executeSqlScript(beforeSql);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
 	}
 
 	/**
@@ -1086,8 +1111,11 @@ public class TableManagerDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void executeAfterRebuildSql() throws Exception {
-//		String afterSql = Page.getServlet().getServletContext().getRealPath("/WEB-INF/dbRebuild/after.sql");
 		String afterSql = this.getSqlGenerator().getAfterRebildSql();
-		this.executeSqlScript(afterSql);
+		try {
+			this.executeSqlScript(afterSql);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
 	}
 }

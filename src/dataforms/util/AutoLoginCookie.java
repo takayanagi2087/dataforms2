@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import dataforms.app.user.dao.UserDao;
 import dataforms.app.user.dao.UserInfoTable;
 import dataforms.controller.Page;
+import dataforms.controller.WebEntryPoint;
 import dataforms.devtool.db.dao.TableManagerDao;
 import dataforms.exception.ApplicationException;
 import dataforms.servlet.DataFormsServlet;
@@ -79,16 +80,16 @@ public final class AutoLoginCookie {
 	}
 
 	/**
-	 * AutoLogin関係のクッキーのSecureフラグを取得します。
-	 * @return AutoLogin関係のクッキーのSecureフラグ。
+	 * クッキーのSecureフラグを取得します。
+	 * @return クッキーのSecureフラグ。
 	 */
 	public static boolean isSecure() {
 		return secure;
 	}
 
 	/**
-	 * AutoLogin関係のクッキーのSecureフラグを設定します。
-	 * @param secure AutoLogin関係のクッキーのSecureフラグ。
+	 * クッキーのSecureフラグを設定します。
+	 * @param secure クッキーのSecureフラグ。
 	 */
 	public static void setSecure(final boolean secure) {
 		AutoLoginCookie.secure = secure;
@@ -120,13 +121,10 @@ public final class AutoLoginCookie {
 							@SuppressWarnings("unchecked")
 							Map<String, Object> p = JSON.decode(json, HashMap.class);
 							UserInfoTable.Entity pe = new UserInfoTable.Entity(p);
-							String password = pe.getPassword();
-							password = CryptUtil.decrypt(password);
-							pe.setPassword(password);
 							try {
-								Map<String, Object> userInfo = dao.login(pe.getMap());
+								Map<String, Object> userInfo = dao.login(pe.getMap(), false);
 								HttpSession session = page.getRequest().getSession();
-								session.setAttribute("userInfo", userInfo);
+								session.setAttribute(WebEntryPoint.USER_INFO, userInfo);
 							} catch (ApplicationException ex) {
 								;
 							}

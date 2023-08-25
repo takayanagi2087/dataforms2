@@ -131,7 +131,6 @@ class DataForms extends WebComponent {
 			comp.addClass("errorField");
 			let tag = comp.prop("tagName");
 			let type = comp.prop("type");
-			logger.info("tag=" + tag + ",type=" + type);
 			if ("INPUT" == tag && type == "file") {
 				form.get(this.selectorEscape(errors[i].fieldId + "_sel")).addClass("errorField");
 			}

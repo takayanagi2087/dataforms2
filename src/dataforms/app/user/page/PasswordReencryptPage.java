@@ -1,7 +1,10 @@
 package dataforms.app.user.page;
 
+import java.util.Map;
+
 import dataforms.app.base.page.AdminPage;
 import dataforms.dao.Dao;
+import dataforms.util.CryptUtil;
 
 
 /**
@@ -13,7 +16,20 @@ public class PasswordReencryptPage extends AdminPage {
 	 */
 	public PasswordReencryptPage() {
 		this.addForm(new PasswordRecenryptForm());
+		if (CryptUtil.getUserPasswordType() == CryptUtil.UserPasswordType.IRREVERSIBLE_PASSWORD) {
+			this.setMenuItem(false);
+		}
 	}
+
+	@Override
+	public boolean isAuthenticated(Map<String, Object> params) throws Exception {
+		boolean ret = super.isAuthenticated(params);
+		if (CryptUtil.getUserPasswordType() == CryptUtil.UserPasswordType.IRREVERSIBLE_PASSWORD) {
+			ret = false;
+		}
+		return ret;
+	}
+
 
 	/**
 	 * Pageが配置されるパスを返します。

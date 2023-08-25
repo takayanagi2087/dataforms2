@@ -18,7 +18,7 @@
 	<!-- 開発ツールのjavaソース出力フォルダを指定します。 -->
 	<context-param>
 		<param-name>java-source-path</param-name>
-		<param-value>/eclipse/workspaceGithub/dataforms2/src</param-value>
+		<param-value>/eclipse/workspaceGithub/dataforms2/debug</param-value>
 	</context-param>
 
 	<!-- 開発ツールのhtml,javascript等のWEBリソース出力フォルダを指定します。 -->
@@ -350,7 +350,7 @@
 		<param-name>user-edit-form-config</param-name>
 		<param-value>
 			{
-				"requiredMailAddress": false // メールアドレスを必須とする。
+				"requiredMailAddress": true // メールアドレスを必須とする。
 			}
 		</param-value>
 	</context-param>
@@ -431,9 +431,31 @@
 		<param-value>/uploadData</param-value>
 	</context-param>
 
-	<!--
-		暗号化設定
-	 -->
+	<!-- パスワード保存方法 -->
+	<context-param>
+		<param-name>password-type</param-name>
+		<!--
+			可逆パスワード:
+			crypt-configで設定したdefaultPasswordを使用してパスワードを暗号化
+		 -->
+		<param-value>REVERSIBLE_PASSWORD</param-value>
+		<!--
+			不可逆パスワード:
+			hash-configで指定したアルゴリズムでパスワードをハッシュ化
+		 -->
+		 <!--
+		<param-value>IRREVERSIBLE_PASSWORD</param-value>
+		  -->
+	</context-param>
+
+	<!-- ハッシュアルゴリズム -->
+	<context-param>
+		<param-name>hash-algorithm</param-name>
+		<!-- SHA-1 or SHA-256 or SHA-384 or SHA-512 -->
+		<param-value>SHA-512</param-value>
+	</context-param>
+
+	<!-- 暗号化設定 -->
 	<context-param>
 		<param-name>crypt-config</param-name>
 		<param-value>
@@ -466,6 +488,26 @@
 				// 運用時に変更しても問題ありません。
 				// nullを指定するとCSRF対策を行いません。
 				"csrfSessionidCryptPassword": "CSRFpassword"
+			}
+		</param-value>
+	</context-param>
+
+	<!--
+		この設定を有効にすると、認証時にユーザのメールアドレスにワンタイムパスワードを送信し
+		その確認を行います。
+	 -->
+	<context-param>
+		<param-name>onetime-password-config</param-name>
+		<param-value>
+			{
+				// ワンタイムパスワードを使用するかどうか。
+				"useOnetimePassword": false,
+				// ワンタイムパスワード文字数。
+				"length": 6,
+				// ワンタイムパスワードキャンセルクッキーの有効日数
+				// 0を指定すると毎回ワンタイムパスワードを確認します。
+				// それ以外の場合場クッキーが存在するブラウザの場合、ワンタイムパスワードのチェックは行われません。
+				"cookieExpiration": 20
 			}
 		</param-value>
 	</context-param>
@@ -691,6 +733,12 @@
 	<!-- セッションタイムアウト -->
 	<session-config>
 		<session-timeout>30</session-timeout>
+		<!--
+		<cookie-config>
+			<http-only>true</http-only>
+			<secure>true</secure>
+		</cookie-config>
+		 -->
 	</session-config>
 
 </web-app>

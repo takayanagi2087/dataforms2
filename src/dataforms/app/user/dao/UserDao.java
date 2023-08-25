@@ -19,6 +19,7 @@ import dataforms.field.common.SelectField;
 import dataforms.util.CryptUtil;
 import dataforms.util.UserAdditionalInfoTableUtil;
 import dataforms.util.UserInfoTableUtil;
+import net.arnx.jsonic.JSON;
 
 /**
  *
@@ -124,7 +125,7 @@ public class UserDao extends Dao {
 	public void insertUser(final Map<String, Object> data) throws Exception {
 //		data.put("password", CryptUtil.encrypt((String) data.get("password")));
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
-		e.setPassword(CryptUtil.encrypt(e.getPassword()));
+		e.setPassword(CryptUtil.encryptUserPassword(e.getPassword()));
 
 		UserInfoTable table = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 //		Long pk = this.getNewRecordId(table);
@@ -217,7 +218,7 @@ public class UserDao extends Dao {
 		List<Map<String, Object>> attTable = this.executeQuery(new GetUserAttributeQuery(data));
 		ret.put("attTable", attTable);
 //		ret.put("password", CryptUtil.decrypt((String) ret.get("password")));
-		e.setPassword(CryptUtil.decrypt(e.getPassword()));
+		e.setPassword(CryptUtil.decryptUserPassword(e.getPassword()));
 		ret.put("passwordCheck", e.getPassword());
 		UserAdditionalInfoTableUtil.read(this, ret);
 		return ret;
@@ -252,6 +253,25 @@ public class UserDao extends Dao {
 		return ret;
 	}
 
+	/**
+	 * Userのパスワードを取得します。
+	 * @param userId ユーザID。
+	 * @return 暗号化されたパスワード。
+	 * @throws Exception 例外。
+	 */
+	public String getUserPassword(final Long userId) throws Exception {
+		UserInfoTable table = new UserInfoTable();
+		SingleTableQuery query = new SingleTableQuery(table);
+		query.setConditionFieldList(new FieldList(table.getUserIdField()));
+		UserInfoTable.Entity p = new UserInfoTable.Entity();
+		p.setUserId(userId);
+		query.setConditionData(p.getMap());
+		Map<String, Object> user = this.executeRecordQuery(query);
+		logger.info("userInfo=" + JSON.encode(user, true));
+
+		UserInfoTable.Entity e = new UserInfoTable.Entity(user);
+		return e.getPassword();
+	}
 
 	/**
 	 * ユーザ情報の更新を行ないます。
@@ -264,10 +284,18 @@ public class UserDao extends Dao {
 		}
 //		data.put("password", CryptUtil.encrypt((String) data.get("password")));
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
-		e.setPassword(CryptUtil.encrypt(e.getPassword()));
+		if (CryptUtil.getUserPasswordType() == CryptUtil.UserPasswordType.REVERSIBLE_PASSWORD) {
+			// 可逆パスワードの場合はパスワードも更新可能。
+			e.setPassword(CryptUtil.encryptUserPassword(e.getPassword()));
+		} else {
+			// 不可逆パスワードの場合はパスワードも更新できない。
+			Long userId = e.getUserId();
+			e.setPassword(this.getUserPassword(userId));
+		}
 		SqlGenerator gen = this.getSqlGenerator();
 		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		String sql = gen.generateUpdateSql(tbl);
+		logger.info("sql=" + sql);
 		this.executeUpdate(sql, data);
 
 		@SuppressWarnings("unchecked")
@@ -294,7 +322,7 @@ public class UserDao extends Dao {
 	public void updatePassword(final Map<String, Object> data) throws Exception {
 //		data.put("password", CryptUtil.encrypt((String) data.get("password")));
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
-		e.setPassword(CryptUtil.encrypt(e.getPassword()));
+		e.setPassword(CryptUtil.encryptUserPassword(e.getPassword()));
 		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		this.executeUpdate(tbl,
 			new FieldList(
@@ -358,9 +386,9 @@ public class UserDao extends Dao {
 	 * @throws Exception 例外。
 	 */
 	public void updateSelfUser(final Map<String, Object> data) throws Exception {
-		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
+//		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
 //		data.put("password", CryptUtil.encrypt((String) data.get("password")));
-		e.setPassword(CryptUtil.encrypt(e.getPassword()));
+//		e.setPassword(CryptUtil.encrypt(e.getPassword()));
 		UserInfoTable tbl = UserInfoTableUtil.newUserInfoTable(); //new UserInfoTable();
 		FieldList flist = UserDao.getSelfUpdateFieldList(tbl);
 		this.executeUpdate(tbl,
@@ -388,12 +416,15 @@ public class UserDao extends Dao {
 	/**
 	 * ログインチェックを行ないます。
 	 * @param data データ。
+	 * @param passwordEncrypt パスワード暗号化を行う場合はtrue。
 	 * @return ユーザ情報。
 	 * @throws Exception 例外。
 	 */
-	public Map<String, Object> login(final Map<String, Object> data) throws Exception {
+	public Map<String, Object> login(final Map<String, Object> data, final boolean passwordEncrypt) throws Exception {
 		UserInfoTable.Entity e = new UserInfoTable.Entity(data);
-		e.setPassword(CryptUtil.encrypt(e.getPassword()));
+		if (passwordEncrypt) {
+			e.setPassword(CryptUtil.encryptUserPassword(e.getPassword()));
+		}
 		GetLoginIdQuery query = new GetLoginIdQuery(data);
 		query.setCondition("m.enabled_flag='1'");
 		Map<String, Object> rec = this.executeRecordQuery(query);
@@ -408,6 +439,15 @@ public class UserDao extends Dao {
 		return rec;
 	}
 
+	/**
+	 * ログインチェックを行ないます。
+	 * @param data データ。
+	 * @return ユーザ情報。
+	 * @throws Exception 例外。
+	 */
+	public Map<String, Object> login(final Map<String, Object> data) throws Exception {
+		return this.login(data, true);
+	}
 	/**
 	 * userIdを指定して、そのユーザ情報を取得します。
 	 * @param userId ユーザID。

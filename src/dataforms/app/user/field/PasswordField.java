@@ -9,7 +9,7 @@ public class PasswordField extends VarcharField {
 	/**
 	 * 項目長。
 	 */
-	private static final int LENGTH = 64;
+	private static final int LENGTH = 512;
 	/**
 	 * フィールドコメント。
 	 */

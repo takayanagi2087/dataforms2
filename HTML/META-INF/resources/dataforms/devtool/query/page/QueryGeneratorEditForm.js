@@ -39,6 +39,9 @@ class QueryGeneratorEditForm extends EditForm {
 		}
 	}
 
+	/**
+	 * 結合条件を取得する。
+	 */
 	async getJoinCondition() {
 		let r = await this.submit("getJoinCondition");
 		currentPage.resetErrorStatus();
@@ -74,11 +77,46 @@ class QueryGeneratorEditForm extends EditForm {
 	}
 
 	/**
+	 * 選択フラグの取得。
+	 */
+	getSelFlag() {
+		let ret = {};
+		let selectFieldList = this.getComponent("selectFieldList");
+		for (let i = 0; i < selectFieldList.getRowCount(); i++) {
+			let sel = selectFieldList.getRowField(i, "sel").getValue();
+			let fieldId = selectFieldList.getRowField(i, "fieldId").getValue();
+			let fieldClassName = selectFieldList.getRowField(i, "fieldClassName").getValue();
+			let tableClassName = selectFieldList.getRowField(i, "tableClassName").getValue();
+			let key = tableClassName + "," + fieldClassName + "," + fieldId;
+			ret[key] = sel;
+		}
+		return ret;
+	}
+
+	/**
+	 * 選択フラグの再設定。
+	 */
+	setSelFlag(selmap) {
+		let selectFieldList = this.getComponent("selectFieldList");
+		for (let i = 0; i < selectFieldList.getRowCount(); i++) {
+			let fieldId = selectFieldList.getRowField(i, "fieldId").getValue();
+			let fieldClassName = selectFieldList.getRowField(i, "fieldClassName").getValue();
+			let tableClassName = selectFieldList.getRowField(i, "tableClassName").getValue();
+			let key = tableClassName + "," + fieldClassName + "," + fieldId;
+			let v = selmap[key];
+			if (v != null) {
+				selectFieldList.getRowField(i, "sel").setValue(v);
+			}
+		}
+	}
+
+	/**
 	 * フィールドリストを取得します。
 	 */
 	async getFieldList() {
 		try {
-			await this.getJoinCondition();
+			let selmap = this.getSelFlag();
+			logger.log("selmap=", selmap);
 			let r = await this.submit("getFieldList");
 			currentPage.resetErrorStatus();
 			if (r.status == JsonResponse.SUCCESS) {
@@ -86,6 +124,7 @@ class QueryGeneratorEditForm extends EditForm {
 				logger.log("field list=" + JSON.stringify(r.result));
 				let ftbl = this.getComponent("selectFieldList");
 				ftbl.setTableData(r.result);
+				this.setSelFlag(selmap);
 				let cr = await this.submit("getJoinCondition");
 				currentPage.resetErrorStatus();
 				if (cr.status == JsonResponse.SUCCESS) {

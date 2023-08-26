@@ -628,13 +628,15 @@ public class QueryGeneratorEditForm extends EditForm {
 	 */
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> queryJoinCondition(final Map<String, Object> data) throws Exception {
-		String packageName = (String) data.get(ID_PACKAGE_NAME);
-		String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
-		Query q = this.getQueryInstance(packageName, queryClassName);
 		Map<String, Object> ret = new HashMap<String, Object>();
-		List<Query.JoinInfo> list = this.getTableList(data);
 		List<Map<String, Object>> join = (List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST);
-		ret.put(ID_JOIN_TABLE_LIST, this.queryJoinCondition(list, this.getJoinTableList(join, "j"), q));
+		if (join != null && join.size() > 0) {
+			String packageName = (String) data.get(ID_PACKAGE_NAME);
+			String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
+			Query q = this.getQueryInstance(packageName, queryClassName);
+			List<Query.JoinInfo> list = this.getTableList(data);
+			ret.put(ID_JOIN_TABLE_LIST, this.queryJoinCondition(list, this.getJoinTableList(join, "j"), q));
+		}
 		return ret;
 	}
 
@@ -649,14 +651,9 @@ public class QueryGeneratorEditForm extends EditForm {
 		JsonResponse ret = null;
 		Map<String, Object> p = new HashMap<String, Object>();
 		p.putAll(param);
-		List<ValidationError> vlist = this.validate(p);
-		if (vlist.size() == 0) {
-			Map<String, Object> data = this.convertToServerData(param);
-			Map<String, Object> cond = this.queryJoinCondition(data);
-			ret = new JsonResponse(JsonResponse.SUCCESS, cond);
-		} else {
-			ret = new JsonResponse(JsonResponse.SUCCESS, new HashMap<String, Object>());
-		}
+		Map<String, Object> data = this.convertToServerData(param);
+		Map<String, Object> cond = this.queryJoinCondition(data);
+		ret = new JsonResponse(JsonResponse.SUCCESS, cond);
 		return ret;
 
 	}

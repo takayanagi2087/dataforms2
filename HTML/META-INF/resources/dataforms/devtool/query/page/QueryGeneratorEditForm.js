@@ -39,6 +39,16 @@ class QueryGeneratorEditForm extends EditForm {
 		}
 	}
 
+	async getJoinCondition() {
+		let r = await this.submit("getJoinCondition");
+		currentPage.resetErrorStatus();
+		if (r.status == JsonResponse.SUCCESS) {
+			logger.log("field list=" + JSON.stringify(r.result));
+			this.setJoinCondition(r.result);
+		}
+		return r;
+	}
+
 	/**
 	 * フォームに対してデータを設定します。
 	 * @param {Object} data 設定するデータ。
@@ -54,13 +64,9 @@ class QueryGeneratorEditForm extends EditForm {
 				this.setFunctionSelect(id, pkg);
 			}
 			this.setFunctionSelect("mainTableFunctionSelect", data.mainTablePackageName);
-			if (data.joinTableList != null || data.leftJoinTableList != null || data.rightJoinTableList != null) {
-				let r = await this.submit("getJoinCondition");
-				currentPage.resetErrorStatus();
-				if (r.status == JsonResponse.SUCCESS) {
-					logger.log("field list=" + JSON.stringify(r.result));
-					this.setJoinCondition(r.result);
-				}
+			if (data.joinTableList != null) {
+				logger.log("data=", data);
+				await this.getJoinCondition();
 			}
 		} catch (e) {
 			currentPage.reportError(e);
@@ -72,6 +78,7 @@ class QueryGeneratorEditForm extends EditForm {
 	 */
 	async getFieldList() {
 		try {
+			await this.getJoinCondition();
 			let r = await this.submit("getFieldList");
 			currentPage.resetErrorStatus();
 			if (r.status == JsonResponse.SUCCESS) {

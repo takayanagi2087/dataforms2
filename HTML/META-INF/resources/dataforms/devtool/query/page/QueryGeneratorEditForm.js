@@ -24,7 +24,31 @@ class QueryGeneratorEditForm extends EditForm {
 			let ck = $(ev.currentTarget).prop("checked");
 			selectFieldList.checkAll(ck);
 		});
+		this.get("notUpdateConstractor").click((ev) => {
+			this.lockStructer(ev);
+		});
 	}
+
+	/**
+	 * テーブル構造を元に戻す。
+	 * @param ev イベント情報。
+	 */
+	async lockStructer(ev) {
+		let ck = $(ev.currentTarget).prop("checked");
+		if (ck) {
+			if (await currentPage.confirm(null, MessagesUtil.getMessage("message.confirmfieldreset"))) {
+				this.formData.notUpdateConstractor = "1";
+				let notGenerateEntity = this.get("notGenerateEntity").prop("checked");
+				if (notGenerateEntity) {
+					this.formData.notGenerateEntity = "1";
+				} else {
+					this.formData.notGenerateEntity = "0";
+				}
+				this.setFormData(this.formData);
+			}
+		}
+	}
+
 
 	/**
 	 * パッケージ名から機能を設定します。
@@ -58,6 +82,12 @@ class QueryGeneratorEditForm extends EditForm {
 	 */
 	async setFormData(data) {
 		try {
+			logger.log("this.saveMode=" + this.saveMode);
+			if (this.saveMode == "new") {
+				this.get("notUpdateConstractor").prop("disabled", true);
+			} else {
+				this.get("notUpdateConstractor").prop("disabled", false);
+			}
 			super.setFormData(data);
 			this.setFunctionSelect("functionSelect", data.packageName);
 			let joinTableList = this.getComponent("joinTableList");

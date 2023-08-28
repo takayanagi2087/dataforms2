@@ -29,6 +29,7 @@ import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryClassNameField;
 import dataforms.devtool.field.TableOrSubQueryClassNameField;
+import dataforms.devtool.javasrc.JavaSrc;
 import dataforms.devtool.util.FieldListUtil;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
@@ -54,6 +55,16 @@ import net.arnx.jsonic.JSON;
  *
  */
 public class QueryGeneratorEditForm extends EditForm {
+
+	/**
+	 * コンストラクタを更新しない。
+	 */
+	private static final String ID_NOT_UPDATE_CONSTRACTOR = "notUpdateConstractor";
+
+	/**
+	 * Entityクラスを生成しない。
+	 */
+	private static final String ID_NOT_GENERATE_ENTITY = "notGenerateEntity";
 
 	/**
 	 * JAVAソースパスフィールドID。
@@ -163,6 +174,9 @@ public class QueryGeneratorEditForm extends EditForm {
 		SqlFieldHtmlTable sqlFieldList = new SqlFieldHtmlTable(ID_SQL_FIELD_LIST);
 		sqlFieldList.setCaption("SQLフィールドリスト");
 		this.addHtmlTable(sqlFieldList);
+
+		this.addField(new FlagField(ID_NOT_UPDATE_CONSTRACTOR));
+		this.addField(new FlagField(ID_NOT_GENERATE_ENTITY));
 	}
 
 	@Override
@@ -225,6 +239,22 @@ public class QueryGeneratorEditForm extends EditForm {
 		return q;
 	}
 
+	/**
+	 * Queryクラスの各種フラグを取得する。
+	 * @param q 問い合わせクラス。
+	 * @param ret フラグを設定するマップ。
+	 */
+	private void setFlags(final Query q, final Map<String, Object> ret) {
+		Class<?> cls = q.getClass();
+		String entityClassName = cls.getName() + "$Entity";
+		try {
+			Class.forName(entityClassName);
+			ret.put(ID_NOT_GENERATE_ENTITY, "0");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ret.put(ID_NOT_GENERATE_ENTITY, "1");
+		}
+	}
 
 	@Override
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
@@ -232,6 +262,10 @@ public class QueryGeneratorEditForm extends EditForm {
 		String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
 		Query q = this.getQueryInstance(packageName, queryClassName);
 		Map<String, Object> ret = new HashMap<String, Object>();
+		this.setFlags(q, ret);
+
+		logger.debug("flags=" + JSON.encode(ret));
+
 		ret.put(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
 		ret.put(ID_PACKAGE_NAME, packageName);
 		ret.put(ID_QUERY_CLASS_NAME, queryClassName);
@@ -317,6 +351,8 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 		ret.put(ID_SELECT_FIELD_LIST, selflist);
 		ret.put(ID_SQL_FIELD_LIST, sflist);
+
+
 		return ret;
 	}
 
@@ -1001,6 +1037,10 @@ public class QueryGeneratorEditForm extends EditForm {
 		return ret;
 	}
 
+	/**
+	 * テーブルプロパティを生成する。
+	 * @param data POSTされたデータ。
+	 */
 	private void setTableProperties(final Map<String, Object> data) {
 		HashMap<String, Integer> classCount = new HashMap<String, Integer>();
 		{
@@ -1050,20 +1090,62 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 	}
 
+
 	@Override
 	protected void insertData(final Map<String, Object> data) throws Exception {
+
+		String notUpdateConstractor = (String) data.get(ID_NOT_UPDATE_CONSTRACTOR);
+		String notGenerateEntity = (String) data.get(ID_NOT_GENERATE_ENTITY);
+
 		String javasrc = this.getStringResourse("template/Query.java.template");
 		String packageName = (String) data.get(ID_PACKAGE_NAME);
 		String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
+
+		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
+		String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");
+		String querySrc = srcPath + "/" + queryClassName + ".java";
+
 		this.setTableProperties(data);
 		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", packageName);
 		javasrc = javasrc.replaceAll("\\$\\{queryClassName\\}", queryClassName);
 		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", this.generateImportTables(data));
 		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.generateProperties(data));
-		javasrc = javasrc.replaceAll("\\$\\{newTables\\}", this.generateNewTables(data));
+
 		ImportUtil implist = new ImportUtil();
 		implist.add(Map.class.getName());
 		List<Map<String, Object>> fieldList = new ArrayList<Map<String, Object>>();
+		logger.debug("notUpdateConstractor=" + notUpdateConstractor);
+		String constructor = this.generateConstructor(data, fieldList, implist);
+		if ("0".equals(notUpdateConstractor)) {
+			javasrc = javasrc.replaceAll("\\$\\{constructor\\}", constructor);
+		} else {
+			JavaSrc src = new JavaSrc(new File(querySrc));
+			javasrc = javasrc.replaceAll("\\$\\{constructor\\}", src.getMethodBody(queryClassName));
+		}
+		if ("0".equals(notGenerateEntity)) {
+			String entityClass = this.getEntityClass(fieldList, implist);
+			javasrc = javasrc.replaceAll("\\$\\{entity\\}", entityClass);
+		} else {
+			javasrc = javasrc.replaceAll("\\$\\{entity\\}", "");
+		}
+
+		javasrc = javasrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
+
+		FileUtil.writeTextFileWithBackup(querySrc, javasrc, DataFormsServlet.getEncoding());
+		logger.debug("javasrc=\n" + javasrc);
+	}
+
+	/**
+	 * コンストラクタを生成します。
+	 * @param data データ。
+	 * @param fieldList フィールドリスト。
+	 * @param implist インポートリスト。
+	 * @return コンストラクタ。
+	 * @throws Exception 例外。
+	 */
+	private String generateConstructor(final Map<String, Object> data, final List<Map<String, Object>> fieldList, final ImportUtil implist) throws Exception {
+		String javasrc = this.getStringResourse("template/Constructor.java.template");
+		javasrc = javasrc.replaceAll("\\$\\{newTables\\}", this.generateNewTables(data));
 		javasrc = javasrc.replaceAll("\\$\\{selectFields\\}", this.generateSelectFieldList(data, implist, fieldList));
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", this.getTableVariableName(mainTableClassName));
@@ -1075,6 +1157,20 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 		javasrc = javasrc.replaceAll("\\$\\{queryComment\\}", (String) data.get(ID_QUERY_COMMENT));
 		javasrc = javasrc.replaceAll("\\$\\{joinTables\\}", this.generateJoinTables(data));
+		return javasrc;
+	}
+
+
+	/**
+	 * Entityクラスを生成します。
+	 * @param implist インポートリスト。
+	 * @param fieldList フィールドリスト。
+	 * @return Entityクラスのソース。
+	 * @throws Exception 例外。
+	 */
+	private String getEntityClass(final List<Map<String, Object>> fieldList, final ImportUtil implist) throws Exception {
+
+		String javasrc = this.getStringResourse("template/Entity.java.template");
 
 		javasrc = javasrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList, (Map<String, Object> m) -> {
 			return this.getFieldId(m);
@@ -1101,13 +1197,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			},
 			implist
 		));
-		javasrc = javasrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
-
-		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
-		String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");
-		String query = srcPath + "/" + queryClassName + ".java";
-		FileUtil.writeTextFileWithBackup(query, javasrc, DataFormsServlet.getEncoding());
-		logger.debug("javasrc=\n" + javasrc);
+		return javasrc;
 	}
 
 	@Override

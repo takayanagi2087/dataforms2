@@ -21,6 +21,7 @@ import dataforms.dao.Table;
 import dataforms.dao.TableList;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.devtool.base.page.DeveloperPage;
+import dataforms.devtool.entity.EntityGenerator;
 import dataforms.devtool.field.AliasNameField;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.JavaSourcePathField;
@@ -30,7 +31,6 @@ import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryClassNameField;
 import dataforms.devtool.field.TableOrSubQueryClassNameField;
 import dataforms.devtool.javasrc.JavaSrc;
-import dataforms.devtool.util.FieldListUtil;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
@@ -1024,20 +1024,6 @@ public class QueryGeneratorEditForm extends EditForm {
 	}
 
 	/**
-	 * フィールドIDを取得します。
-	 * @param m フィールドリスト。
-	 * @return フィールドID。
-	 */
-	private String getFieldId(final Map<String, Object> m) {
-		String ret = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
-		String alias = (String) m.get(SelectFieldHtmlTable.ID_ALIAS);
-		if (!StringUtil.isBlank(alias)) {
-			ret = alias;
-		}
-		return ret;
-	}
-
-	/**
 	 * テーブルプロパティを生成する。
 	 * @param data POSTされたデータ。
 	 */
@@ -1123,7 +1109,9 @@ public class QueryGeneratorEditForm extends EditForm {
 			javasrc = javasrc.replaceAll("\\$\\{constructor\\}", src.getMethodBody(queryClassName));
 		}
 		if ("0".equals(notGenerateEntity)) {
-			String entityClass = this.getEntityClass(fieldList, implist);
+//			String entityClass = this.getEntityClass(fieldList, implist);
+			EntityGenerator gen = new EntityGenerator(fieldList);
+			String entityClass = gen.generate(implist);
 			javasrc = javasrc.replaceAll("\\$\\{entity\\}", entityClass);
 		} else {
 			javasrc = javasrc.replaceAll("\\$\\{entity\\}", "");
@@ -1157,46 +1145,6 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 		javasrc = javasrc.replaceAll("\\$\\{queryComment\\}", (String) data.get(ID_QUERY_COMMENT));
 		javasrc = javasrc.replaceAll("\\$\\{joinTables\\}", this.generateJoinTables(data));
-		return javasrc;
-	}
-
-
-	/**
-	 * Entityクラスを生成します。
-	 * @param implist インポートリスト。
-	 * @param fieldList フィールドリスト。
-	 * @return Entityクラスのソース。
-	 * @throws Exception 例外。
-	 */
-	private String getEntityClass(final List<Map<String, Object>> fieldList, final ImportUtil implist) throws Exception {
-
-		String javasrc = this.getStringResourse("template/Entity.java.template");
-
-		javasrc = javasrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList, (Map<String, Object> m) -> {
-			return this.getFieldId(m);
-		}));
-		javasrc = javasrc.replaceAll("\\$\\{valueGetterSetter\\}", FieldListUtil.generateFieldValueGetterSetter(fieldList,
-			(Map<String, Object> m) -> {
-				return this.getFieldId(m);
-			}
-			, (Map<String, Object> m) -> {
-
-				String fcls =  (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
-				String sel = (String) m.get(SelectFieldHtmlTable.ID_SEL);
-				if ("dataforms.field.sqlfunc.CountField".equals(sel)) {
-					fcls = "dataforms.field.sqltype.BigintField";
-				}
-				logger.debug("fcls=" + fcls);
-				return fcls;
-			}
-			, implist
-		));
-		javasrc = javasrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList,
-			(Map<String, Object> m) -> {
-				return this.getFieldId(m);
-			},
-			implist
-		));
 		return javasrc;
 	}
 

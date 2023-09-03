@@ -54,6 +54,16 @@ import net.arnx.jsonic.JSON;
 public class TableGeneratorEditForm extends EditForm {
 
 	/**
+	 * コンストラクタを更新しない。
+	 */
+	private static final String ID_NOT_UPDATE_CONSTRACTOR = "notUpdateConstractor";
+
+	/**
+	 * Entityクラスを生成しない。
+	 */
+	private static final String ID_NOT_GENERATE_ENTITY = "notGenerateEntity";
+
+	/**
 	 * 更新情報フラグ。
 	 */
 	private static final String ID_UPDATE_INFO_FLAG = "updateInfoFlag";
@@ -91,6 +101,8 @@ public class TableGeneratorEditForm extends EditForm {
 		this.addField(new DbTableNameField(ID_IMPORT_TABLE)).setAutocomplete(true);
 		FieldListHtmlTable htmltbl = new FieldListHtmlTable();
 		this.addHtmlTable(htmltbl);
+		this.addField(new FlagField(ID_NOT_UPDATE_CONSTRACTOR));
+		this.addField(new FlagField(ID_NOT_GENERATE_ENTITY));
 		this.setFormData(htmltbl.getId(), new ArrayList<Map<String, Object>>());
 	}
 

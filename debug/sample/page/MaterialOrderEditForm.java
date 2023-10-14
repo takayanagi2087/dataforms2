@@ -2,6 +2,9 @@ package sample.page;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
 import dataforms.util.DateTimeUtil;
@@ -13,14 +16,26 @@ import sample.dao.SupplierMasterTable;
  * 編集フォームクラス。
  */
 public class MaterialOrderEditForm extends EditForm {
+
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LogManager.getLogger(MaterialOrderEditForm.class);
+
 	/**
 	 * コンストラクタ。
 	 */
 	public MaterialOrderEditForm() {
 		MaterialOrderDao dao = new MaterialOrderDao();
 		this.addFields(dao);
+
 		SupplierMasterTable table = dao.getMaterialOrderQuery().getSupplierMasterTable();
 		table.getSupplierCodeField().setAutocomplete(true).setRelationDataAcquisition(true);
+		logger.debug("table=" + table.getClass().getName() + ", alias=" + table.getAlias());
+
+		MaterialOrderTable mtable = dao.getMaterialOrderQuery().getMaterialOrderTable();
+		logger.debug("mtable=" + mtable.getClass().getName() + ", alias=" + mtable.getAlias());
+
 	}
 
 	/**

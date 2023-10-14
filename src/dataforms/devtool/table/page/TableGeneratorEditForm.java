@@ -580,6 +580,22 @@ public class TableGeneratorEditForm extends EditForm {
 			constructor.append("\t\tthis.addUpdateInfoFields();");
 		}
 		tsrc = tsrc.replaceAll("\\$\\{constructor\\}", constructor.toString());
+
+/*		EntityGenerator gen = new EntityGenerator(fieldList);
+		String entsrc = gen.generate(
+			(Map<String, Object> m) -> {
+				return this.getFieldId(m);
+			}
+			, (Map<String, Object> m) -> {
+				String superPackageName = (String) m.get("superPackageName");
+				String superSimpleClassName = (String) m.get("superSimpleClassName");
+				return superPackageName + "." + superSimpleClassName;
+			}
+			, implist
+		);
+		logger.debug("entsrc=" + entsrc);
+*/
+		//
 		tsrc = tsrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList, (Map<String, Object> m) -> {
 			return this.getFieldId(m);
 		}));
@@ -599,6 +615,8 @@ public class TableGeneratorEditForm extends EditForm {
 				return this.getFieldId(m);
 			}
 		));
+		///
+
 		tsrc = tsrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
 		logger.debug("tsrc=\n{}", tsrc);
 		if (!OverwriteModeField.SKIP.equals(tableOverwriteMode)) {

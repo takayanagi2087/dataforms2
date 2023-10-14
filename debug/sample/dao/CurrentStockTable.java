@@ -3,9 +3,10 @@ package sample.dao;
 import java.util.Map;
 import dataforms.dao.Table;
 import sample.field.CurrentStockIdField;
+import dataforms.util.NumberUtil;
+import sample.field.LimitDateField;
 import sample.field.MaterialIdField;
 import sample.field.QuantityField;
-import sample.field.LimitDateField;
 
 
 /**
@@ -19,7 +20,7 @@ public class CurrentStockTable extends Table {
 	public CurrentStockTable() {
 		this.setAutoIncrementId(true);
 		this.setComment("現在在庫数");
-		this.addPkField(new CurrentStockIdField()); //在庫ID
+		this.addPkField(new CurrentStockIdField()).setNotNull(true); //在庫ID
 		this.addField(new MaterialIdField()); //資材ID
 		this.addField(new QuantityField("currentQuantity")); //数量
 		this.addField(new LimitDateField()); //使用期限
@@ -63,7 +64,7 @@ public class CurrentStockTable extends Table {
 		 * @return 在庫ID。
 		 */
 		public java.lang.Long getCurrentStockId() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_CURRENT_STOCK_ID);
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_CURRENT_STOCK_ID));
 		}
 
 		/**
@@ -79,7 +80,7 @@ public class CurrentStockTable extends Table {
 		 * @return 資材ID。
 		 */
 		public java.lang.Long getMaterialId() {
-			return (java.lang.Long) this.getMap().get(Entity.ID_MATERIAL_ID);
+			return NumberUtil.longValueObject(this.getMap().get(Entity.ID_MATERIAL_ID));
 		}
 
 		/**

@@ -26,7 +26,7 @@ public class Query {
     /**
      * Logger.
      */
- //   private static Logger logger = LogManager.getLogger(Query.class);
+//    private static Logger logger = LogManager.getLogger(Query.class);
 
 	/**
 	 * フィールドリスト。
@@ -1093,5 +1093,26 @@ public class Query {
 	 */
 	public List<UnionInfo> getUnionQueryList() {
 		return unionQueryList;
+	}
+
+	/**
+	 * 指定されたクラスのテーブルを取得します。
+	 * @param tblclass テーブルクラス。
+	 * @param alias テーブルの別名。
+	 * @return テーブルクラスのインスタンス。
+	 */
+	protected Table getTable(final Class<? extends Table> tblclass, final String alias) {
+		Table table = null;
+		if (tblclass.isAssignableFrom(this.mainTable.getClass()) && alias.equals(this.mainTable.getAlias())) {
+			table = this.mainTable;
+		} else {
+			for (JoinInfo info: this.joinInfoList) {
+				if (tblclass.isAssignableFrom(info.getJoinTable().getClass()) && alias.equals(info.getJoinTable().getAlias())) {
+					table = info.getJoinTable();
+					break;
+				}
+			}
+		}
+		return table;
 	}
 }

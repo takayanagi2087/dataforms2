@@ -764,10 +764,10 @@ public class QueryGeneratorEditForm extends EditForm {
 		for (Map<String, Object> m:list) {
 			String tableClassName = (String) m.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
 			String propName = (String) m.get(ID_TABLE_PROP);
-			sb.append("\t\tthis." + this.getTableVariableName(propName) + " = new " + tableClassName + "();\n");
+			sb.append("\t\t" + tableClassName + " " + this.getTableVariableName(propName) + " = new " + tableClassName + "();\n");
 			String aliasName = (String) m.get(ID_ALIAS_NAME);
 			if (!StringUtil.isBlank(aliasName)) {
-				sb.append("\t\tthis." + this.getTableVariableName(propName) + ".setAlias(\"" + aliasName + "\");\n");
+				sb.append("\t\t" + this.getTableVariableName(propName) + ".setAlias(\"" + aliasName + "\");\n");
 			}
 		}
 		return sb.toString();
@@ -778,20 +778,17 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * @param packageName パッケージ名。
 	 * @param tableClassName テーブルクラス名。
 	 * @param propName プロパティ名。
+	 * @param alias 別名。
 	 * @return テーブルプロパティ設定ソース。
 	 * @throws Exception 例外。
 	 */
-	private String getTableProperty(final String packageName, final String tableClassName, final String propName) throws Exception {
+	private String getTableProperty(final String packageName, final String tableClassName, final String propName, final String alias) throws Exception {
 		String src = "	/**\n" +
-					"	 * ${comment}。\n" +
-					"	 */\n" +
-					"	private ${className} ${propName} = null;\n\n" +
-					"	/**\n" +
 					"	 * ${comment}を取得します。\n" +
 					"	 * @return ${comment}。\n" +
 					"	 */\n" +
 					"	public ${className} get${PropName}() {\n" +
-					"		return this.${propName};\n" +
+					"		return (${className}) this.getTable(${className}.class, \"${alias}\");\n" +
 					"	}\n\n";
 
 		Class<?> c = Class.forName(packageName + "." + tableClassName);
@@ -800,8 +797,8 @@ public class QueryGeneratorEditForm extends EditForm {
 		ret = ret.replaceAll("\\$\\{propName\\}", propName);
 		ret = ret.replaceAll("\\$\\{PropName\\}", StringUtil.firstLetterToUpperCase(propName));
 		ret = ret.replaceAll("\\$\\{comment\\}", (table.getComment() == null ? "" : table.getComment()));
+		ret = ret.replaceAll("\\$\\{alias\\}", alias);
 		return ret;
-
 	}
 
 	/**
@@ -824,7 +821,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			String alias = (String) data.get(ID_ALIAS_NAME);
 			String propName = (String) data.get(ID_TABLE_PROP);
 			this.propertyMap.put(mainTableClassName + alias, propName);
-			sb.append(this.getTableProperty(mainTablePackageName, mainTableClassName, propName));
+			sb.append(this.getTableProperty(mainTablePackageName, mainTableClassName, propName, alias));
 		}
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST);
 		for (Map<String, Object> m: list) {
@@ -833,7 +830,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			String alias = (String) m.get(JoinHtmlTable.ID_ALIAS_NAME);
 			String propName = (String) m.get(ID_TABLE_PROP);
 			this.propertyMap.put(tableClassName + alias, propName);
-			sb.append(this.getTableProperty(packageName, tableClassName, propName));
+			sb.append(this.getTableProperty(packageName, tableClassName, propName, alias));
 		}
 		return sb.toString();
 	}
@@ -849,10 +846,10 @@ public class QueryGeneratorEditForm extends EditForm {
 		StringBuilder sb = new StringBuilder();
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
 		String propName = (String) data.get(ID_TABLE_PROP);
-		sb.append("\t\tthis." + this.getTableVariableName(propName) + " = new " + mainTableClassName + "();\n");
+		sb.append("\t\t" + mainTableClassName + " "  + this.getTableVariableName(propName) + " = new " + mainTableClassName + "();\n");
 		String aliasName = (String) data.get(ID_ALIAS_NAME);
 		if (!StringUtil.isBlank(aliasName)) {
-			sb.append("\t\tthis." + this.getTableVariableName(propName) + ".setAlias(\"" + aliasName + "\");\n");
+			sb.append("\t\t" + this.getTableVariableName(propName) + ".setAlias(\"" + aliasName + "\");\n");
 		}
 		sb.append(this.generateNewTableList((List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST)));
 		return sb.toString();
@@ -920,13 +917,13 @@ public class QueryGeneratorEditForm extends EditForm {
 					logger.debug("alias=" + alias);
 					if (StringUtil.isBlank(alias)) {
 						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
-						sb.append("this." + this.getTableVariableName(propName) + ".");
+						sb.append(this.getTableVariableName(propName) + ".");
 						sb.append(this.getFieldMethod(fieldId) + this.getCommentCode(m) + "\n");
 					} else {
 						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
 						implist.add(AliasField.class.getName());
 						sb.append("new AliasField(\"" + alias + "\", ");
-						sb.append("this." + this.getTableVariableName(propName) + ".");
+						sb.append(this.getTableVariableName(propName) + ".");
 						sb.append(this.getFieldMethod(fieldId) + this.getCommentCode(m) + ")\n");
 					}
 				} else {
@@ -936,7 +933,7 @@ public class QueryGeneratorEditForm extends EditForm {
 					}
 					Class<?> cls = Class.forName(sel);
 					implist.add(cls.getName());
-					sb.append("new " + cls.getSimpleName() + "(\"" + fieldId + "\", this." + this.getTableVariableName(propName)
+					sb.append("new " + cls.getSimpleName() + "(\"" + fieldId + "\", " + this.getTableVariableName(propName)
 						+ "." + this.getFieldMethod((String) m.get(SelectFieldHtmlTable.ID_FIELD_ID)) + ")"
 						+ this.getCommentCode(m) + "\n");
 				}

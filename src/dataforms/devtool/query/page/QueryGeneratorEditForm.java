@@ -1089,6 +1089,8 @@ public class QueryGeneratorEditForm extends EditForm {
 		String querySrc = srcPath + "/" + queryClassName + ".java";
 
 		this.setTableProperties(data);
+
+		javasrc = javasrc.replaceAll("\\$\\{queryComment\\}", (String) data.get(ID_QUERY_COMMENT));
 		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", packageName);
 		javasrc = javasrc.replaceAll("\\$\\{queryClassName\\}", queryClassName);
 		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", this.generateImportTables(data));

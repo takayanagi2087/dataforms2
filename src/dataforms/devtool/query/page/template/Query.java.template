@@ -6,7 +6,7 @@ ${importList}
 ${importTables}
 
 /**
- * 問い合わせクラスです。
+ * ${queryComment}クラスです。
  *
  */
 public class ${queryClassName} extends Query {

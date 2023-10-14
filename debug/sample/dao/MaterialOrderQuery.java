@@ -19,7 +19,7 @@ import sample.field.OrderIdField;
 
 
 /**
- * 問い合わせクラスです。
+ * 発注ヘッダ部取得の問合せクラスです。
  *
  */
 public class MaterialOrderQuery extends Query {
@@ -43,7 +43,7 @@ public class MaterialOrderQuery extends Query {
 	/**
 	 * コンストラクタ.
 	 */
-	public MaterialOrderQuery() {
+	public MaterialOrderQuery() 	{
 		this.setComment("発注ヘッダ部取得の問合せ");
 		this.setDistinct(false);
 		MaterialOrderTable materialOrderTable = new MaterialOrderTable();
@@ -66,6 +66,7 @@ public class MaterialOrderQuery extends Query {
 		));
 		this.setMainTable(materialOrderTable);
 		this.addInnerJoin(supplierMasterTable);
+
 	}
 
 	/**

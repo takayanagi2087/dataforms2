@@ -125,6 +125,7 @@ public class CurrentStockTable extends Table {
 
 
 	}
+
 	/**
 	 * 在庫IDフィールドを取得します。
 	 * @return 在庫IDフィールド。
@@ -156,6 +157,7 @@ public class CurrentStockTable extends Table {
 	public LimitDateField getLimitDateField() {
 		return (LimitDateField) this.getField(Entity.ID_LIMIT_DATE);
 	}
+
 
 
 }

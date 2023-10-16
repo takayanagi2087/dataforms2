@@ -1073,6 +1073,20 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 	}
 
+	/**
+	 * フィールドIDを取得します。
+	 * @param m フィールドリスト。
+	 * @return フィールドID。
+	 */
+	private String getFieldId(final Map<String, Object> m) {
+		String ret = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+		String alias = (String) m.get(SelectFieldHtmlTable.ID_ALIAS);
+		if (!StringUtil.isBlank(alias)) {
+			ret = alias;
+		}
+		return ret;
+	}
+
 
 	@Override
 	protected void insertData(final Map<String, Object> data) throws Exception {
@@ -1108,15 +1122,28 @@ public class QueryGeneratorEditForm extends EditForm {
 			javasrc = javasrc.replaceAll("\\$\\{constructor\\}", src.getMethodBody(queryClassName));
 		}
 		if ("0".equals(notGenerateEntity)) {
-//			String entityClass = this.getEntityClass(fieldList, implist);
 			EntityGenerator gen = new EntityGenerator(fieldList);
-			String entityClass = gen.generate(implist);
+			String entityClass = gen.generate(
+				implist, implist
+				, (Map<String, Object> m) -> {
+					return this.getFieldId(m);
+				}
+				, (Map<String, Object> m) -> {
+					String fcls =  (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
+					String sel = (String) m.get(SelectFieldHtmlTable.ID_SEL);
+					if ("dataforms.field.sqlfunc.CountField".equals(sel)) {
+						fcls = "dataforms.field.sqltype.BigintField";
+					}
+					logger.debug("fcls=" + fcls);
+					return fcls;
+				}
+			);
 			javasrc = javasrc.replaceAll("\\$\\{entity\\}", entityClass);
 		} else {
 			javasrc = javasrc.replaceAll("\\$\\{entity\\}", "");
 		}
 
-		javasrc = javasrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
+		javasrc = javasrc.replaceAll("\\$\\{importList\\}", implist.getImportText(javasrc));
 
 		FileUtil.writeTextFileWithBackup(querySrc, javasrc, DataFormsServlet.getEncoding());
 		logger.debug("javasrc=\n" + javasrc);

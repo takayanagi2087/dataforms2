@@ -20,13 +20,13 @@ import dataforms.dao.Entity;
 import dataforms.dao.Table;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.db.dao.TableManagerDao;
+import dataforms.devtool.entity.EntityGenerator;
 import dataforms.devtool.field.DbTableNameField;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.JavaSourcePathField;
 import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.TableClassNameField;
-import dataforms.devtool.util.FieldListUtil;
 import dataforms.field.base.Field;
 import dataforms.field.common.CreateTimestampField;
 import dataforms.field.common.CreateUserIdField;
@@ -52,17 +52,6 @@ import net.arnx.jsonic.JSON;
  *
  */
 public class TableGeneratorEditForm extends EditForm {
-
-	/**
-	 * コンストラクタを更新しない。
-	 */
-	private static final String ID_NOT_UPDATE_CONSTRACTOR = "notUpdateConstractor";
-
-	/**
-	 * Entityクラスを生成しない。
-	 */
-	private static final String ID_NOT_GENERATE_ENTITY = "notGenerateEntity";
-
 	/**
 	 * 更新情報フラグ。
 	 */
@@ -101,8 +90,8 @@ public class TableGeneratorEditForm extends EditForm {
 		this.addField(new DbTableNameField(ID_IMPORT_TABLE)).setAutocomplete(true);
 		FieldListHtmlTable htmltbl = new FieldListHtmlTable();
 		this.addHtmlTable(htmltbl);
-		this.addField(new FlagField(ID_NOT_UPDATE_CONSTRACTOR));
-		this.addField(new FlagField(ID_NOT_GENERATE_ENTITY));
+//		this.addField(new FlagField(ID_NOT_UPDATE_CONSTRACTOR));
+//		this.addField(new FlagField(ID_NOT_GENERATE_ENTITY));
 		this.setFormData(htmltbl.getId(), new ArrayList<Map<String, Object>>());
 	}
 
@@ -580,10 +569,10 @@ public class TableGeneratorEditForm extends EditForm {
 			constructor.append("\t\tthis.addUpdateInfoFields();");
 		}
 		tsrc = tsrc.replaceAll("\\$\\{constructor\\}", constructor.toString());
-
-/*		EntityGenerator gen = new EntityGenerator(fieldList);
-		String entsrc = gen.generate(
-			(Map<String, Object> m) -> {
+		EntityGenerator gen = new EntityGenerator(fieldList);
+		String entityClass = gen.generate(
+			implist, null
+			, (Map<String, Object> m) -> {
 				return this.getFieldId(m);
 			}
 			, (Map<String, Object> m) -> {
@@ -591,32 +580,8 @@ public class TableGeneratorEditForm extends EditForm {
 				String superSimpleClassName = (String) m.get("superSimpleClassName");
 				return superPackageName + "." + superSimpleClassName;
 			}
-			, implist
 		);
-		logger.debug("entsrc=" + entsrc);
-*/
-		//
-		tsrc = tsrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList, (Map<String, Object> m) -> {
-			return this.getFieldId(m);
-		}));
-		tsrc = tsrc.replaceAll("\\$\\{valueGetterSetter\\}", FieldListUtil.generateFieldValueGetterSetter(fieldList,
-			(Map<String, Object> m) -> {
-				return this.getFieldId(m);
-			}
-			, (Map<String, Object> m) -> {
-				String superPackageName = (String) m.get("superPackageName");
-				String superSimpleClassName = (String) m.get("superSimpleClassName");
-				return superPackageName + "." + superSimpleClassName;
-			}
-			, implist
-		));
-		tsrc = tsrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList,
-			(Map<String, Object> m) -> {
-				return this.getFieldId(m);
-			}
-		));
-		///
-
+		tsrc = tsrc.replaceAll("\\$\\{entity\\}", entityClass);
 		tsrc = tsrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
 		logger.debug("tsrc=\n{}", tsrc);
 		if (!OverwriteModeField.SKIP.equals(tableOverwriteMode)) {

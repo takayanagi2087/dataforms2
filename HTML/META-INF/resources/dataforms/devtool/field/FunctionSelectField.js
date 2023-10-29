@@ -33,17 +33,19 @@ class FunctionSelectField extends SingleSelectField {
 		let form = this.getParentForm();
 		let funcname = jq.val();
 		if (funcname != null && funcname.length > 0) {
-			let packageName = funcname.replace(/\//g, ".").substr(1);
-			if (this.packageOption.length > 0) {
-				packageName +=  "." + this.packageOption;
-			}
-			let id = jq.attr(this.getIdAttribute());
-			logger.log("functionSelectField id=" + id)
-			if (this.isHtmlTableElementId(id)) {
-				let a = id.split(".");
-				form.find("#" + this.selectorEscape(a[0] + "." + this.packageFieldId)).val(packageName);
-			} else {
-				form.find("#" + this.selectorEscape(this.packageFieldId)).val(packageName);
+			for (let i = 0; i < this.packageOption.length; i++) {
+				let packageName = funcname.replace(/\//g, ".").substr(1);
+				if (this.packageOption[i].length > 0) {
+					packageName +=  "." + this.packageOption[i];
+				}
+				let id = jq.attr(this.getIdAttribute());
+				logger.log("functionSelectField id=" + id)
+				if (this.isHtmlTableElementId(id)) {
+					let a = id.split(".");
+					form.find("#" + this.selectorEscape(a[0] + "." + this.packageFieldId[i])).val(packageName);
+				} else {
+					form.find("#" + this.selectorEscape(this.packageFieldId[i])).val(packageName);
+				}
 			}
 		}
 	}

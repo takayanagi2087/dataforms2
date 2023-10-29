@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<form id="editForm">
+			<div class="formHeader"><span id="editFormTitle"></span></div>
+			<input type="hidden" id="saveMode" />
+			<table class="responsive">
+				<tbody>
+					<tr>
+						<th>フォルダのパス。</th>
+						<td><input type="text" id="javaSourcePath" /></td>
+					</tr>
+					<tr>
+						<th>機能</th>
+						<td><select id="functionSelect"></select></td>
+					</tr>
+					<tr>
+						<th>ページ名</th>
+						<td><input type="text" id="pageName" /></td>
+					</tr>
+					<tr>
+						<th>ページパッケージ名</th>
+						<td><input type="text" id="packageName" /></td>
+					</tr>
+					<tr>
+						<th>ページクラス名</th>
+						<td><input type="text" id="pageClassName" /></td>
+					</tr>
+					<tr>
+						<th>DAOパッケージ名</th>
+						<td><input type="text" id="daoPackageName" /></td>
+					</tr>
+					<tr>
+						<th>DAOクラス名</th>
+						<td><input type="text" id="daoClassName" /></td>
+					</tr>
+				</tbody>
+			</table>
+			<input type="button" id="confirmButton" class="largeButton" value="確認"/>
+			<input type="button" id="saveButton" class="largeButton" value="登録"/>
+			<input type="button" id="resetButton" class="largeButton" value="リセット"/>
+			<input type="button" id="deleteButton" class="largeButton" value="削除"/>
+			<input type="button" id="backButton" class="largeButton" value="戻る"/>
+		</form>
+
+	</body>
+</html>

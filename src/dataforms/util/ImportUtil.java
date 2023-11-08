@@ -40,7 +40,6 @@ public class ImportUtil {
 
 	/**
 	 * インポートテキストを取得します。
-	 * @patam src ソースコード。
 	 * @return インポートテキスト。
 	 */
 	public String getImportText() {

@@ -6,56 +6,302 @@
 	</head>
 	<body>
 		<form id="editForm">
+			<style>
+				div.queryClass input {
+					width: calc(100% - 118px);
+				}
+				div.queryClass button {
+					width: 110px;
+				}
+
+				div.formClass input {
+					width: calc(100% - 118px);
+				}
+				div.formClass select {
+					width: 110px;
+				}
+
+				table.formClass th {
+					width: 300px;
+				}
+				table.formClass tbody td input {
+					width: calc(100% - 208px);
+				}
+				table.formClass td select {
+					width: calc(200px);
+				}
+			</style>
 			<div class="formHeader"><span id="editFormTitle"></span></div>
 			<input type="hidden" id="saveMode" />
-			<table class="responsive">
+			<h2>生成するクラス</h2>
+			<table class="responsive thtdthtdthtd">
 				<tbody>
 					<tr>
-						<th>フォルダのパス。</th>
+						<th>Javaソース出力先</th>
 						<td><input type="text" id="javaSourcePath" /></td>
-					</tr>
-					<tr>
 						<th>機能</th>
 						<td><select id="functionSelect"></select></td>
-					</tr>
-					<tr>
 						<th>ページ名</th>
 						<td><input type="text" id="pageName" /></td>
 					</tr>
 					<tr>
 						<th>ページパッケージ名</th>
 						<td><input type="text" id="packageName" /></td>
-					</tr>
-					<tr>
 						<th>ページクラス名</th>
 						<td><input type="text" id="pageClassName" /></td>
+						<th>上書きモード</th>
+						<td><select id="pageClassOverwriteMode"></select></td>
 					</tr>
 					<tr>
 						<th>DAOパッケージ名</th>
 						<td><input type="text" id="daoPackageName" /></td>
-					</tr>
-					<tr>
 						<th>DAOクラス名</th>
 						<td><input type="text" id="daoClassName" /></td>
-					</tr>
-					<tr>
-						<th>問い合わせ結果</th>
-						<td><span><input type="radio" id="listFormSelect[0]" name="listFormSelect"/></span></td>
-					</tr>
-					<tr>
-						<th>問い合わせ条件</th>
-						<td><span><input type="radio" id="queryFormSelect[0]" name="queryFormSelect"/></span></td>
-					</tr>
-					<tr>
-						<th>データ編集</th>
-						<td><span><input type="radio" id="editFormSelect[0]" name="editFormSelect"/></span></td>
-					</tr>
-					<tr>
-						<th>編集対象</th>
-						<td><span><input type="radio" id="editTypeSelect[0]" name="editTypeSelect"/></span></td>
+						<th>上書きモード</th>
+						<td><select id="daoClassOverwriteMode"></select></td>
 					</tr>
 				</tbody>
 			</table>
+			<h2>ページの機能</h2>
+			<table class="responsive">
+				<tbody>
+					<tr>
+						<th>問合せ条件</th>
+						<td><select id="queryFormSelect" class="pageType"></select></td>
+						<th>問合せ結果</th>
+						<td><select id="listFormSelect" class="pageType"></select></td>
+						<th>データ編集</th>
+						<td><select id="editFormSelect" class="pageType"></select></td>
+					</tr>
+					<tr>
+						<th>編集対象</th>
+						<td colspan="5"><select id="editTypeSelect" class="pageType editForm"></select></td>
+					</tr>
+				</tbody>
+			</table>
+			<h2>フォームとデータベース</h2>
+			<table class="responsive">
+				<thead>
+					<tr>
+						<th style="width: 200px;"></th>
+						<th style="width: 202px;">機能</th>
+						<th>パッケージ</th>
+						<th>テーブルまたは問合せクラス名</th>
+						<th>説明</th>
+					</tr>
+					<tr>
+						<th>検索条件フォーム</th>
+						<td></td>
+						<td></td>
+						<td>
+							<div class="multiField formClass">
+								<input type="text" id="queryFormClassName" class="queryForm"/>&nbsp;
+								<select id="queryFormClassOverwriteMode" class="queryForm"></select>
+							</div>
+						</td>
+						<td>
+							<span class="listQueryDesc">このフォームに入力した条件を一覧取得問合せに渡します。</span>
+							<span class="editQueryDesc">このフォームに入力した条件を更新対象取得問合せに渡します。</span>
+						</td>
+					</tr>
+					<tr>
+						<th>検索結果フォーム</th>
+						<td></td>
+						<td></td>
+						<td>
+							<div class="multiField  formClass">
+								<input type="text" id="queryResultFormClassName" class="listForm" />&nbsp;
+								<select id="queryResultFormClassOverwriteMode" class="listForm"></select>
+							</div>
+						</td>
+						<td>
+							一覧を取得するテーブルまたは問合せクラスを指定します。
+						</td>
+					</tr>
+					<tr>
+						<th>一覧取得問合せ</th>
+						<td><select id="listQueryFunctionSelect" class="listQuery listForm"></select></td>
+						<td><input type="text" id="listQueryPackageName" class="listForm"/></td>
+						<td>
+							<div class="multiField queryClass">
+								<input type="text" id="listQueryClassName" class="listForm"/>
+								<button type="button" id="listQueryFieldButton" class="listForm">フィールド設定</button>
+							</div>
+						</td>
+						<td>
+							リスト中のリンクをクリックすると、そのキー情報を編集対象取問合せに渡します。
+						</td>
+					</tr>
+					<tr>
+						<th>編集フォームクラス名</th>
+						<td></td>
+						<td></td>
+						<td>
+							<div class="multiField formClass">
+								<input type="text" id="editFormClassName" class="editForm"/>&nbsp;
+								<select id="editFormClassOverwriteMode" class="editForm"></select>
+							</div>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<th>編集対象取問合せ</th>
+						<td><select id="editFormQueryFunctionSelect" class="editForm"></select></td>
+						<td><input type="text" id="editFormQueryPackageName" class="editForm"/></td>
+						<td>
+							<div class="multiField queryClass">
+								<input type="text" id="editFormQueryClassName" class="editForm"/>
+								<button type="button" id="editFormFieldButton" class="editForm">フィールド設定</button>
+							</div>
+						</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="multiRecoedQueryList">
+				<h3>複数レコード問合せ</h3>
+				<table id="multiRecordQueryList" class="editableTable">
+					<thead>
+						<tr>
+							<th colspan="2" nowrap>
+
+							</th>
+							<th nowrap>
+								No.
+							</th>
+							<th>
+								機能
+							</th>
+							<th>
+								パッケージ名
+							</th>
+							<th>
+								テーブルまたは問合せクラス名
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="buttonColumn">
+								<input type="button" id="multiRecordQueryList[0].addButton" value="+"/>
+							</td>
+							<td class="buttonColumn">
+								<input type="button" id="multiRecordQueryList[0].deleteButton" value="-"/>
+							</td>
+							<td style="text-align: right;" class="rowno">
+								<span id="multiRecordQueryList[0].no"></span>
+							</td>
+							<td>
+								<select id="multiRecordQueryList[0].functionSelect" ></select>
+							</td>
+							<td>
+								<input type="text" id="multiRecordQueryList[0].packageName" />
+							</td>
+							<td>
+								<div class="multiField queryClass">
+									<input type="text" id="multiRecordQueryList[0].queryClassName" />
+									<button type="button"  id="multiRecordQueryList[0].fieldButton">フィールド設定</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th class="buttonColumn">
+								<input type="button" id="multiRecordQueryList.addButton" value="+"/>
+							</th>
+							<th colspan="5">
+							</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+			<div class="keyFieldList">
+				<h3>キーとなるフィールド</h3>
+				<table id="keyFieldList" class="editableTable">
+					<thead>
+						<tr>
+							<th colspan="2" nowrap>
+
+							</th>
+							<th nowrap>
+								No.
+							</th>
+							<th>
+								sel
+							</th>
+							<th>
+								問合せフィールドID
+							</th>
+							<th>
+								alias
+							</th>
+							<th>
+								フィールドクラス名
+							</th>
+							<th>
+								テーブルクラス名
+							</th>
+							<th>
+								テーブルクラス名
+							</th>
+							<th>
+								tableAlias
+							</th>
+							<th>
+								comment
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="buttonColumn">
+								<input type="button" id="keyFieldList[0].addButton" value="+"/>
+							</td>
+							<td class="buttonColumn">
+								<input type="button" id="keyFieldList[0].deleteButton" value="-"/>
+							</td>
+							<td style="text-align: right;" class="rowno">
+								<span id="keyFieldList[0].no"></span>
+							</td>
+							<td>
+								<input type="checkbox" id="keyFieldList[0].sel" value="1"/>
+								<input type="hidden" id="keyFieldList[0].sortOrder" />
+							</td>
+							<td>
+								<input type="text" id="keyFieldList[0].fieldId" />
+							</td>
+							<td>
+								<input type="text" id="keyFieldList[0].alias" />
+							</td>
+							<td>
+								<input type="text" id="keyFieldList[0].fieldClassName" />
+							</td>
+							<td>
+								<input type="text" id="keyFieldList[0].tableFullClassName" />
+							</td>
+							<td>
+								<input type="text" id="keyFieldList[0].tableClassName" />
+							</td>
+							<td>
+								<input type="text" id="keyFieldList[0].tableAlias" />
+							</td>
+							<td>
+								<input type="text" id="keyFieldList[0].comment" />
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th class="buttonColumn">
+								<input type="button" id="keyFieldList.addButton" value="+"/>
+							</th>
+							<th colspan="10">
+							</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
 			<input type="button" id="confirmButton" class="largeButton" value="確認"/>
 			<input type="button" id="saveButton" class="largeButton" value="登録"/>
 			<input type="button" id="resetButton" class="largeButton" value="リセット"/>

@@ -22,14 +22,72 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	 */
 	attach() {
 		super.attach();
-		// 独自のボタン(id="webMethodButton")を追加しサーバサイドのメソッドを呼び出す場合は以下の様にしてください。
-/*
-		this.get("webMethodButton").click(() => {
-			this.callWebMethod();
-			return false;
+		this.get("pageClassName").change((ev) => {
+			this.onUpdateClassName($(ev.currentTarget));
 		});
-*/
+		this.find("select.pageType").change((ev) => {
+			this.onChangePageType(ev);
+		});
+		this.onChangePageType(null);
 	}
+
+	/**
+	 * Form名称を更新します。
+	 * @param {jQuery} pc ページクラス名フィールド。
+	 */
+	onUpdateClassName(pc) {
+		let pcname = pc.val();
+		let n = pcname.replace(/Page$/, "");
+		this.setFieldValue("daoClassName", n + "Dao");
+	}
+
+	/**
+	 *ページタイプの変更処理。
+	 * @param {Event} ev イベント情報。
+	 */
+	onChangePageType(ev) {
+		logger.log("ev=", ev);
+		let queryFormSelect = this.get("queryFormSelect").val();
+		let listFormSelect = this.get("listFormSelect").val();
+		let editFormSelect = this.get("editFormSelect").val();
+		let editTypeSelect = this.get("editTypeSelect").val();
+		this.find(".listQueryDesc").hide();
+		this.find(".editQueryDesc").hide();
+		if ("1" == queryFormSelect) {
+			this.find(".queryForm").prop("disabled", false);
+			if ("1" == listFormSelect) {
+				this.find(".listQueryDesc").show();
+			} else {
+				if ("1" == editFormSelect) {
+					this.find(".editQueryDesc").show();
+				}
+			}
+			this.find(".queryForm").prop("disabled", false);
+		} else {
+			this.find(".queryForm").prop("disabled", true);
+		}
+		if (listFormSelect == "0") {
+			this.find(".listForm").prop("disabled", true);
+		} else {
+			this.find(".listForm").prop("disabled", false);
+		}
+		if (editFormSelect == "0") {
+			this.find(".editForm").prop("disabled", true);
+		} else {
+			this.find(".editForm").prop("disabled", false);
+		}
+		if (editTypeSelect == "0") {
+			this.find(".multiRecoedQueryList").hide();
+			this.find(".keyFieldList").hide();
+		} else if (editTypeSelect == "1") {
+			this.find(".multiRecoedQueryList").show();
+			this.find(".keyFieldList").hide();
+		} else {
+			this.find(".multiRecoedQueryList").hide();
+			this.find(".keyFieldList").show();
+		}
+	}
+
 
 	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。
 	/**

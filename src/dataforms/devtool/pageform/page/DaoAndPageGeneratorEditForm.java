@@ -181,6 +181,12 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	public void init() throws Exception {
 		super.init();
 		this.setFormData(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
+		this.setFormData(ID_PAGE_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		this.setFormData(ID_DAO_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		this.setFormData(ID_QUERY_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		this.setFormData(ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		this.setFormData(ID_EDIT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+
 		this.setFormData("listFormSelect", "1");
 		this.setFormData("queryFormSelect", "1");
 		this.setFormData("editFormSelect", "1");

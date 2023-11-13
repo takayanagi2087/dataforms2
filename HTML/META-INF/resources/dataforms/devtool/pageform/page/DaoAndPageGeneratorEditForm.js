@@ -39,6 +39,10 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		let pcname = pc.val();
 		let n = pcname.replace(/Page$/, "");
 		this.setFieldValue("daoClassName", n + "Dao");
+		this.setFieldValue("queryFormClassName", n + "QueryForm");
+		this.setFieldValue("queryResultFormClassName", n + "QueryResultForm");
+		this.setFieldValue("editFormClassName", n + "EditForm");
+
 	}
 
 	/**

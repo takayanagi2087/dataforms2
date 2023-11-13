@@ -47,6 +47,9 @@ class FunctionSelectField extends SingleSelectField {
 					form.find("#" + this.selectorEscape(this.packageFieldId[i])).val(packageName);
 				}
 			}
+			if (typeof this.parent.setPackageName == "function") {
+				this.parent.setPackageName(jq);
+			}
 		}
 	}
 

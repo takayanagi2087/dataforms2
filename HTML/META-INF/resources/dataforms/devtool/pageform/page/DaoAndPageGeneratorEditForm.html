@@ -90,9 +90,9 @@
 						<th>説明</th>
 					</tr>
 					<tr>
-						<th>検索条件フォーム</th>
-						<td></td>
-						<td></td>
+						<th>問合せ条件フォーム</th>
+						<td><span class="funcName"></span></td>
+						<td><span class="packageName"></span</td>
 						<td>
 							<div class="multiField formClass">
 								<input type="text" id="queryFormClassName" class="queryForm"/>&nbsp;
@@ -100,22 +100,9 @@
 							</div>
 						</td>
 						<td>
-							<span class="listQueryDesc">このフォームに入力した条件を一覧取得問合せに渡します。</span>
-							<span class="editQueryDesc">このフォームに入力した条件を更新対象取得問合せに渡します。</span>
-						</td>
-					</tr>
-					<tr>
-						<th>検索結果フォーム</th>
-						<td></td>
-						<td></td>
-						<td>
-							<div class="multiField  formClass">
-								<input type="text" id="queryResultFormClassName" class="listForm" />&nbsp;
-								<select id="queryResultFormClassOverwriteMode" class="listForm"></select>
-							</div>
-						</td>
-						<td>
-							一覧を取得するテーブルまたは問合せクラスを指定します。
+							<span class="queryFormDesc listQueryCondition">このフォームに入力した条件を一覧取得問合せに渡します。</span>
+							<span class="queryFormDesc editQueryCondition">このフォームに入力した条件を編集対象取得問合せに渡します。</span>
+							<span class="queryFormDesc noNextForm">任意の情報を入力するフォームです。入力した情報の処理はアプリケーションで実装する必要があります。</span>
 						</td>
 					</tr>
 					<tr>
@@ -129,23 +116,26 @@
 							</div>
 						</td>
 						<td>
-							リスト中のリンクをクリックすると、そのキー情報を編集対象取問合せに渡します。
+							<span class="queryResultFormDesc">一覧を取得するテーブルまたは問合せクラスを指定します。</span>
 						</td>
 					</tr>
 					<tr>
-						<th>編集フォームクラス名</th>
-						<td></td>
-						<td></td>
+						<th>検索結果フォーム</th>
+						<td><span class="funcName"></span></td>
+						<td><span class="packageName"></span</td>
 						<td>
-							<div class="multiField formClass">
-								<input type="text" id="editFormClassName" class="editForm"/>&nbsp;
-								<select id="editFormClassOverwriteMode" class="editForm"></select>
+							<div class="multiField  formClass">
+								<input type="text" id="queryResultFormClassName" class="listForm" />&nbsp;
+								<select id="queryResultFormClassOverwriteMode" class="listForm"></select>
 							</div>
 						</td>
-						<td></td>
+						<td>
+							<span class="queryResultFormDesc">一覧取得問合せの実行結果を表示するフォームです。</span>
+							<span class="queryResultFormDesc editQueryCondition1">リスト中のリンクをクリックすると、そのキー情報を編集対象取問合せに渡します。</span>
+						</td>
 					</tr>
 					<tr>
-						<th>編集対象取問合せ</th>
+						<th>編集対象取得問合せ</th>
 						<td><select id="editFormQueryFunctionSelect" class="editForm"></select></td>
 						<td><input type="text" id="editFormQueryPackageName" class="editForm"/></td>
 						<td>
@@ -154,7 +144,23 @@
 								<button type="button" id="editFormFieldButton" class="editForm">フィールド設定</button>
 							</div>
 						</td>
-						<td></td>
+						<td>
+							<span class="editFormDesc">編集対象の情報を取得するテーブルまたは問合せクラス指定します。</span>
+						</td>
+					</tr>
+					<tr>
+						<th>編集フォームクラス名</th>
+						<td><span class="funcName"></span></td>
+						<td><span class="packageName"></span</td>
+						<td>
+							<div class="multiField formClass">
+								<input type="text" id="editFormClassName" class="editForm"/>&nbsp;
+								<select id="editFormClassOverwriteMode" class="editForm"></select>
+							</div>
+						</td>
+						<td>
+							<span class="editFormDesc">編集対象取問合せで取得したデータを編集し保存します。</span>
+						</td>
 					</tr>
 				</tbody>
 			</table>

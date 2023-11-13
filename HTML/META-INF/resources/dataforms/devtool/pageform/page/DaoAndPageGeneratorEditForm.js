@@ -51,29 +51,38 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		let listFormSelect = this.get("listFormSelect").val();
 		let editFormSelect = this.get("editFormSelect").val();
 		let editTypeSelect = this.get("editTypeSelect").val();
-		this.find(".listQueryDesc").hide();
-		this.find(".editQueryDesc").hide();
+		this.find(".listQueryCondition").hide();
+		this.find(".editQueryCondition").hide();
+		this.find(".noNextForm").hide();
 		if ("1" == queryFormSelect) {
 			this.find(".queryForm").prop("disabled", false);
 			if ("1" == listFormSelect) {
-				this.find(".listQueryDesc").show();
+				this.find(".listQueryCondition").show();
+			} else if ("1" == editFormSelect) {
+				this.find(".editQueryCondition").show();
 			} else {
-				if ("1" == editFormSelect) {
-					this.find(".editQueryDesc").show();
-				}
+				this.find(".noNextForm").show();
 			}
 			this.find(".queryForm").prop("disabled", false);
 		} else {
 			this.find(".queryForm").prop("disabled", true);
 		}
 		if (listFormSelect == "0") {
+			this.find(".queryResultFormDesc").hide();
 			this.find(".listForm").prop("disabled", true);
 		} else {
+			this.find(".queryResultFormDesc").show();
 			this.find(".listForm").prop("disabled", false);
 		}
 		if (editFormSelect == "0") {
+			this.find(".editFormDesc").hide();
+			this.find(".editQueryCondition1").hide();
 			this.find(".editForm").prop("disabled", true);
 		} else {
+			this.find(".editFormDesc").show();
+			if (listFormSelect == 1) {
+				this.find(".editQueryCondition1").show();
+			}
 			this.find(".editForm").prop("disabled", false);
 		}
 		if (editTypeSelect == "0") {
@@ -88,6 +97,22 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		}
 	}
 
+	/**
+	 * フォームのパッケージを設定する。
+	 * @param {jQuery} イベントが発生した要素。
+	 */
+	setPackageName(jq) {
+		logger.log("setPackageName=", jq);
+		let packageName = this.get("packageName").val();
+		logger.log("packageName=" + packageName);
+		this.find(".packageName").each((_, el) => {
+			$(el).text(packageName);
+		});
+		let func = this.get("functionSelect").val();
+		this.find(".funcName").each((_, el) => {
+			$(el).text(func);
+		});
+	}
 
 	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。
 	/**

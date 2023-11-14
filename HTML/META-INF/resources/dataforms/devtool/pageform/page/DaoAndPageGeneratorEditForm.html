@@ -224,88 +224,53 @@
 			</div>
 			<div class="keyFieldList">
 				<h3>キーとなるフィールド</h3>
-				<table id="keyFieldList" class="editableTable">
+				<table id="keyFieldList">
 					<thead>
 						<tr>
-							<th colspan="2" nowrap>
-
+							<th>
+								<input type="checkbox" id="selectAll" value="1"/>
 							</th>
-							<th nowrap>
+							<th>
 								No.
 							</th>
 							<th>
-								sel
+								フィールドID
 							</th>
 							<th>
-								問合せフィールドID
+								フィールドクラス
 							</th>
 							<th>
-								alias
+								テーブルクラス
 							</th>
 							<th>
-								フィールドクラス名
-							</th>
-							<th>
-								テーブルクラス名
-							</th>
-							<th>
-								テーブルクラス名
-							</th>
-							<th>
-								tableAlias
-							</th>
-							<th>
-								comment
+								コメント
 							</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td class="buttonColumn">
-								<input type="button" id="keyFieldList[0].addButton" value="+"/>
-							</td>
-							<td class="buttonColumn">
-								<input type="button" id="keyFieldList[0].deleteButton" value="-"/>
-							</td>
-							<td style="text-align: right;" class="rowno">
-								<span id="keyFieldList[0].no"></span>
-							</td>
 							<td>
-								<input type="checkbox" id="keyFieldList[0].sel" value="1"/>
-								<input type="hidden" id="keyFieldList[0].sortOrder" />
+								<input type="checkbox" id="keyFieldList[0].sel" value="1">
+								<input type="hidden" id="keyFieldList[0].tableFullClassName" >
+								<input type="hidden" id="keyFieldList[0].sortOrder" >
 							</td>
-							<td>
-								<input type="text" id="keyFieldList[0].fieldId" />
+							<td style="text-align: right;">
+								<span id="keyFieldList[0].no" ></span>
 							</td>
-							<td>
-								<input type="text" id="keyFieldList[0].alias" />
+							<td style="width: 180px;">
+								<input type="text" id="keyFieldList[0].fieldId"/>
 							</td>
-							<td>
+							<td style="width: 200px;">
 								<input type="text" id="keyFieldList[0].fieldClassName" />
 							</td>
-							<td>
-								<input type="text" id="keyFieldList[0].tableFullClassName" />
-							</td>
-							<td>
+							<td style="width: 200px;">
 								<input type="text" id="keyFieldList[0].tableClassName" />
 							</td>
-							<td>
-								<input type="text" id="keyFieldList[0].tableAlias" />
-							</td>
-							<td>
+							<td style="width: 300px;">
 								<input type="text" id="keyFieldList[0].comment" />
 							</td>
 						</tr>
 					</tbody>
-					<tfoot>
-						<tr>
-							<th class="buttonColumn">
-								<input type="button" id="keyFieldList.addButton" value="+"/>
-							</th>
-							<th colspan="10">
-							</th>
-						</tr>
-					</tfoot>
 				</table>
 			</div>
 			<input type="button" id="confirmButton" class="largeButton" value="確認"/>

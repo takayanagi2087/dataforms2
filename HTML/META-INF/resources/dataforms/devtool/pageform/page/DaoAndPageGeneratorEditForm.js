@@ -28,6 +28,9 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		this.find("select.pageType").change((ev) => {
 			this.onChangePageType(ev);
 		});
+		this.get("listQueryFieldButton").click(() => {
+			this.onListQueryFieldButton();
+		});
 		this.onChangePageType(null);
 	}
 
@@ -116,6 +119,21 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		this.find(".funcName").each((_, el) => {
 			$(el).text(func);
 		});
+	}
+
+	/**
+	 * 一覧所得問合せフィールド設定。
+	 */
+	onListQueryFieldButton() {
+		let fieldListDialog = this.parent.getComponent("fieldListDialog");
+		logger.log("fieldListDialog=", fieldListDialog);
+		let pkg = this.get("listQueryPackageName").val();
+		let cls = this.get("listQueryClassName").val();
+		if (pkg.length > 0 && cls.length > 0) {
+			fieldListDialog.showModal({
+				targetClass: pkg + "." + cls
+			});
+		}
 	}
 
 	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。

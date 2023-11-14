@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="mainDiv">
+			<form id="fieldListForm">
+				<div class="formHeader">xxx</div>
+				<table class="responsive">
+					<tbody>
+					</tbody>
+				</table>
+				<div class="hScrollDiv">
+					<table id="fieldList" class="editableTable">
+						<thead>
+							<tr>
+								<th colspan="2" nowrap>
+									
+								</th>
+								<th nowrap>
+									No.
+								</th>
+								<th>
+									sel
+								</th>
+								<th>
+									問合せフィールドID
+								</th>
+								<th>
+									alias
+								</th>
+								<th>
+									フィールドクラス名
+								</th>
+								<th>
+									テーブルクラス名
+								</th>
+								<th>
+									テーブルクラス名
+								</th>
+								<th>
+									matchType
+								</th>
+								<th>
+									tableAlias
+								</th>
+								<th>
+									comment
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="buttonColumn">
+									<input type="button" id="fieldList[0].addButton" value="+"/>
+								</td>
+								<td class="buttonColumn">
+									<input type="button" id="fieldList[0].deleteButton" value="-"/>
+								</td>
+								<td style="text-align: right;" class="rowno">
+									<span id="fieldList[0].no"></span>
+								</td>
+								<td>
+									<input type="checkbox" id="fieldList[0].sel" value="1"/>
+									<input type="hidden" id="fieldList[0].sortOrder" />
+								</td>
+								<td>
+									<input type="text" id="fieldList[0].fieldId" />
+								</td>
+								<td>
+									<input type="text" id="fieldList[0].alias" />
+								</td>
+								<td>
+									<input type="text" id="fieldList[0].fieldClassName" />
+								</td>
+								<td>
+									<input type="text" id="fieldList[0].tableFullClassName" />
+								</td>
+								<td>
+									<input type="text" id="fieldList[0].tableClassName" />
+								</td>
+								<td>
+									<select id="fieldList[0].matchType"></select>
+								</td>
+								<td>
+									<input type="text" id="fieldList[0].tableAlias" />
+								</td>
+								<td>
+									<input type="text" id="fieldList[0].comment" />
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th class="buttonColumn">
+									<input type="button" id="fieldList.addButton" value="+"/>
+								</th>
+								<th colspan="11">
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</form>
+
+		</div>
+	</body>
+</html>

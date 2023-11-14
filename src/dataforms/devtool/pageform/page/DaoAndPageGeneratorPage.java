@@ -13,5 +13,6 @@ public class DaoAndPageGeneratorPage extends DeveloperPage {
 		this.addForm(new PageGeneratorQueryForm());
 		this.addForm(new PageGeneratorQueryResultForm());
 		this.addForm(new DaoAndPageGeneratorEditForm());
+		this.addDialog(new FieldListDialog());
 	}
 }

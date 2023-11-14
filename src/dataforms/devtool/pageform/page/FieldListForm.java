@@ -1,5 +1,6 @@
 package dataforms.devtool.pageform.page;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import dataforms.annotation.WebMethod;
 import dataforms.controller.Form;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
+import dataforms.field.base.FieldList;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
 import net.arnx.jsonic.JSON;
@@ -25,6 +27,7 @@ public class FieldListForm extends Form {
 	 * キーフィールドリスト。
 	 */
 	private static final String ID_FIELD_LIST = "fieldList";
+
 
 	/**
 	 * コンストラクタ。
@@ -52,8 +55,10 @@ public class FieldListForm extends Form {
 	 */
 	@WebMethod
 	public Response getFieldList(final Map<String, Object> p) throws Exception {
-		Response resp = new JsonResponse(JsonResponse.SUCCESS, "");
 		logger.debug("p=" + JSON.encode(p));
+		FieldList flist = SelectFieldHtmlTable.getFieldList((String) p.get("c"));
+		List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(flist, "");
+		Response resp = new JsonResponse(JsonResponse.SUCCESS, list);
 		return resp;
 	}
 }

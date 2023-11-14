@@ -41,6 +41,8 @@ class FieldListForm extends Form {
 		let r = await m.execute("c=" + cls);
 		if (r.status == JsonResponse.SUCCESS) {
 			logger.dir(r);
+			let fieldList = this.getComponent("fieldList");
+			fieldList.setTableData(r.result);
 		}
 	}
 

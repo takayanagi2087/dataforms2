@@ -145,6 +145,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);
 
+		// this.addField(new TextField("listQueryConfig"));	// 一覧問合せの設定情報
+
 		this.addField(new EditFormClassNameField());
 		this.addField(new OverwriteModeField(ID_EDIT_FORM_CLASS_OVERWRITE_MODE));
 
@@ -159,6 +161,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			.setCalcEventField(true)
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);
+
+		// this.addField(new TextField("editQueryConfig"));	// 編集対象取得問合せの設定情報
 		//
 		{
 			FieldList flist = new FieldList();

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dataforms.dao.Query;
 import dataforms.dao.Table;
 import dataforms.devtool.field.FieldFullClassNameField;
 import dataforms.devtool.field.MatchTypeSelectField;
@@ -18,6 +19,7 @@ import dataforms.field.base.TextField;
 import dataforms.field.common.FlagField;
 import dataforms.field.common.SortOrderField;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
 
 /**
@@ -103,6 +105,29 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			this.setFixedColumns(5);
 		}
 	}
+
+	/**
+	 * 指定されたクラスのフィールドリストを取得します。
+	 * @param className QueryまたはTableのクラス名。
+	 * @return 主テーブルのインスタンス。
+	 * @throws Exception 例外。
+	 */
+	public static FieldList getFieldList(final String className) throws Exception {
+		FieldList fieldList = null;
+		if (!StringUtil.isBlank(className)) {
+			Class<?> qclass = Class.forName(className);
+			Object obj = qclass.getConstructor().newInstance();
+			if (obj instanceof Query) {
+				Query q = (Query) obj;
+				fieldList = q.getFieldList();
+			} else if (obj instanceof Table){
+				Table t = (Table) obj;
+				fieldList = t.getFieldList();
+			}
+		}
+		return fieldList;
+	}
+
 
 	/**
 	 * fieldListに対応した表示データを作成します。

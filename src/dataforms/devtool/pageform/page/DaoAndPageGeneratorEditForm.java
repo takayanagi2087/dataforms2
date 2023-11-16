@@ -23,6 +23,7 @@ import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryResultFormClassNameField;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.field.base.FieldList;
+import dataforms.field.base.TextField;
 import dataforms.field.common.SingleSelectField.HtmlFieldType;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.util.MessagesUtil;
@@ -145,7 +146,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);
 
-		// this.addField(new TextField("listQueryConfig"));	// 一覧問合せの設定情報
+		this.addField(new TextField("listQueryConfig"));	// 一覧問合せの設定情報
 
 		this.addField(new EditFormClassNameField());
 		this.addField(new OverwriteModeField(ID_EDIT_FORM_CLASS_OVERWRITE_MODE));
@@ -162,7 +163,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);
 
-		// this.addField(new TextField("editQueryConfig"));	// 編集対象取得問合せの設定情報
+		this.addField(new TextField("editQueryConfig"));	// 編集対象取得問合せの設定情報
 		//
 		{
 			FieldList flist = new FieldList();

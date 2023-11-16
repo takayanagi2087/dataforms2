@@ -7,6 +7,7 @@ import java.util.Map;
 
 import dataforms.dao.Query;
 import dataforms.dao.Table;
+import dataforms.devtool.field.FieldDisplaySelectField;
 import dataforms.devtool.field.FieldFullClassNameField;
 import dataforms.devtool.field.MatchTypeSelectField;
 import dataforms.devtool.field.QueryFieldIdField;
@@ -58,6 +59,11 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	private static final String ID_MATCH_TYPE = "matchType";
 
 	/**
+	 * フィールド表示処理。
+	 */
+	private static final String ID_FIELD_DISPLAY = "fieldDisplay";
+
+	/**
 	 * フィールド別名。
 	 */
 	public static final String ID_ALIAS = "alias";
@@ -97,6 +103,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			, new TableFullClassNameField(ID_TABLE_FULL_CLASS_NAME).setReadonly(true)
 			, new TableOrSubQueryClassNameField(ID_TABLE_CLASS_NAME).setReadonly(true)
 			, new MatchTypeSelectField(ID_MATCH_TYPE)
+			, new FieldDisplaySelectField(ID_FIELD_DISPLAY)
 			, new TextField(ID_TABLE_ALIAS ).setReadonly(true)
 			, new TextField(ID_COMMENT)
 		);

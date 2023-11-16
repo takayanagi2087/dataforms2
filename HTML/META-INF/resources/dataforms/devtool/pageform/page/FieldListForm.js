@@ -29,6 +29,13 @@ class FieldListForm extends Form {
 			return false;
 		});
 */
+		this.get("okButton").click(() => {
+			this.onOk();
+		});
+
+		this.get("cancelButton").click(() => {
+			this.onCancel();
+		});
 	}
 
 	/**
@@ -46,6 +53,19 @@ class FieldListForm extends Form {
 		}
 	}
 
+	/**
+	 * OKボタンの処理。
+	 */
+	onOk() {
+		this.parent.close();
+	}
+
+	/**
+	 * Cancelボタンの処理。
+	 */
+	onCancel() {
+		this.parent.close();
+	}
 
 	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。
 	/**

@@ -51,6 +51,13 @@ class UpdateSqlForm extends Form {
 	 */
 	async generateSql() {
 		try {
+			let sql = this.get("sql").val();
+			if (sql.length > 0) {
+				let yes = await currentPage.confirm(null, MessagesUtil.getMessage("confirm.updatesql"));
+				if (!yes) {
+					return;
+				}
+			}
 			if (this.validateForGenerateSql()) {
 				let r = await this.submit("generateSql");
 				this.parent.resetErrorStatus();

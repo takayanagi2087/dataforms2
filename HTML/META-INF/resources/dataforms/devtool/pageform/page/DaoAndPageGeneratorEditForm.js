@@ -128,6 +128,9 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	 * 一覧問合せフィールド設定。
 	 */
 	onListQueryButton() {
+		let json = this.get("listQueryConfig").val();
+		let conf = JSON.parse(json);
+		logger.log("conf=" + json);
 		let fieldListDialog = this.parent.getComponent("fieldListDialog");
 		logger.log("fieldListDialog=", fieldListDialog);
 		let pkg = this.get("listQueryPackageName").val();
@@ -137,7 +140,8 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 				title: MessagesUtil.getMessage("daoandpagegenerator.listfielddialog"),
 				width: 1024,
 				targetClass: pkg + "." + cls,
-				listQuery: true
+				listQuery: true,
+				conf: conf
 			});
 		}
 	}
@@ -146,6 +150,8 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	 * 編集問合せフィールド設定。
 	 */
 	onEditQueryButton() {
+		let json = this.get("editQueryConfig").val();
+		let conf = JSON.parse(json);
 		let fieldListDialog = this.parent.getComponent("fieldListDialog");
 		logger.log("fieldListDialog=", fieldListDialog);
 		let pkg = this.get("editQueryPackageName").val();
@@ -156,7 +162,8 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 				title: MessagesUtil.getMessage("daoandpagegenerator.editfielddialog"),
 				width: 1024,
 				targetClass: pkg + "." + cls,
-				listQuery: false
+				listQuery: false,
+				conf: conf
 			});
 		}
 	}

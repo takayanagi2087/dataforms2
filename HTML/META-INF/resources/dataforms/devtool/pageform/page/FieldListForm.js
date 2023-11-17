@@ -39,19 +39,14 @@ class FieldListForm extends Form {
 	async getFieldList(p) {
 		logger.log("class=", p);
 		this.listQuery = p.listQuery;
-		let m = this.getWebMethod("getFieldList");
-		let r = await m.execute("c=" + p.targetClass);
-		if (r.status == JsonResponse.SUCCESS) {
-			logger.dir(r);
-			let fieldList = this.getComponent("fieldList");
-			fieldList.setTableData(r.result);
-			if (p.listQuery) {
-				this.find(".listQuery").show();
-				this.find(".editQuery").hide();
-			} else {
-				this.find(".listQuery").hide();
-				this.find(".editQuery").show();
-			}
+		let fieldList = this.getComponent("fieldList");
+		fieldList.setTableData(p.conf);
+		if (p.listQuery) {
+			this.find(".listQuery").show();
+			this.find(".editQuery").hide();
+		} else {
+			this.find(".listQuery").hide();
+			this.find(".editQuery").show();
 		}
 	}
 

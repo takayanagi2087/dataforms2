@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dataforms.field.base.Field.MatchType;
 import dataforms.field.common.SelectField;
 import dataforms.field.common.SingleSelectField;
 import dataforms.util.MessagesUtil;
@@ -13,7 +14,7 @@ import dataforms.util.StringUtil;
 /**
  * マッチタイプ選択フィールドクラス。
  */
-public class MatchTypeSelectField extends SingleSelectField<String> {
+public class MatchTypeSelectField extends SingleSelectField<MatchType> {
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
@@ -40,7 +41,6 @@ public class MatchTypeSelectField extends SingleSelectField<String> {
 		}
 		return ret;
 	}
-
 
 	@Override
 	public void init() throws Exception {

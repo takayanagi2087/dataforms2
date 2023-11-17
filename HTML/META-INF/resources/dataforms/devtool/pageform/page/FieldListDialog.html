@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<form id="fieldListForm">
-			<table id="fieldList" class="editableTable">
+			<table id="fieldList" style="height: 600px;">
 				<thead>
 					<tr>
 						<th nowrap>
@@ -19,16 +19,16 @@
 							フィールド名
 						</th>
 						<th>
-							フィールドクラス名
-						</th>
-						<th>
-							テーブルクラス名
-						</th>
-						<th>
 							検索条件
 						</th>
 						<th>
 							表示方法
+						</th>
+						<th>
+							フィールドクラス名
+						</th>
+						<th>
+							テーブルクラス名
 						</th>
 					</tr>
 				</thead>
@@ -43,26 +43,20 @@
 						<td style="width: 120px;">
 							<input type="text" id="fieldList[0].comment" />
 						</td>
-						<td style="width: 300px;">
-							<input type="text" id="fieldList[0].fieldClassName" />
-						</td>
-						<td style="width: 300px;">
-							<input type="text" id="fieldList[0].tableFullClassName" />
-						</td>
 						<td style="width: 200px;">
 							<select id="fieldList[0].matchType"></select>
 						</td>
 						<td  style="width: 200px;">
 							<select id="fieldList[0].fieldDisplay"></select>
 						</td>
+						<td style="width: 300px;">
+							<input type="text" id="fieldList[0].fieldClassName" />
+						</td>
+						<td style="width: 300px;">
+							<input type="text" id="fieldList[0].tableFullClassName" />
+						</td>
 					</tr>
 				</tbody>
-				<tfoot>
-					<tr>
-						<th colspan="10">
-						</th>
-					</tr>
-				</tfoot>
 			</table>
 			<button type="button" id="okButton" class="largeButton">OK</button>
 			<button type="button" id="cancelButton" class="largeButton">Cancel</button>

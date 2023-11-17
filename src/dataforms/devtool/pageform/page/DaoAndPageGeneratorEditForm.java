@@ -70,10 +70,6 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	 */
 	public static final String ID_LIST_QUERY_PACKAGE_NAME = "listQueryPackageName";
 	/**
-	 * 編集フォームレコード取得問合せの機能選択フィールドID。
-	 */
-	public static final String ID_EDIT_FORM_QUERY_FUNCTION_SELECT = "editFormQueryFunctionSelect";
-	/**
 	 * 問合せフォーム上書きモードフィールドID。
 	 */
 	private static final String ID_QUERY_FORM_CLASS_OVERWRITE_MODE = "queryFormClassOverwriteMode";
@@ -82,13 +78,17 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	 */
 	private static final String ID_EDIT_FORM_CLASS_OVERWRITE_MODE = "editFormClassOverwriteMode";
 	/**
+	 * 編集フォームレコード取得問合せの機能選択フィールドID。
+	 */
+	public static final String ID_EDIT_QUERY_FUNCTION_SELECT = "editQueryFunctionSelect";
+	/**
 	 * 編集フォームレコード取得問合せのパッケージ名フィールドID。
 	 */
-	public static final String ID_EDIT_FORM_QUERY_PACKAGE_NAME = "editFormQueryPackageName";
+	public static final String ID_EDIT_QUERY_PACKAGE_NAME = "editQueryPackageName";
 	/**
 	 * 編集フォームレコード取得問合せのクラス名フィールドID。
 	 */
-	public static final String ID_EDIT_FORM_QUERY_CLASS_NAME = "editFormQueryClassName";
+	public static final String ID_EDIT_QUERY_CLASS_NAME = "editQueryClassName";
 	/**
 	 * キーフィールドリストID。
 	 */
@@ -152,13 +152,13 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.addField(new OverwriteModeField(ID_EDIT_FORM_CLASS_OVERWRITE_MODE));
 
 		//
-		this.addField((new FunctionSelectField(ID_EDIT_FORM_QUERY_FUNCTION_SELECT))
-			.setPackageFieldId(ID_EDIT_FORM_QUERY_PACKAGE_NAME)
+		this.addField((new FunctionSelectField(ID_EDIT_QUERY_FUNCTION_SELECT))
+			.setPackageFieldId(ID_EDIT_QUERY_PACKAGE_NAME)
 			.setComment("単一レコード取得用問合せの機能"));
-		this.addField((new PackageNameField(ID_EDIT_FORM_QUERY_PACKAGE_NAME))
+		this.addField((new PackageNameField(ID_EDIT_QUERY_PACKAGE_NAME))
 			.setComment("単一レコード取得用問合せのパッケージ"));
-		this.addField((new QueryOrTableClassNameField(ID_EDIT_FORM_QUERY_CLASS_NAME))
-			.setPackageNameFieldId(ID_EDIT_FORM_QUERY_PACKAGE_NAME))
+		this.addField((new QueryOrTableClassNameField(ID_EDIT_QUERY_CLASS_NAME))
+			.setPackageNameFieldId(ID_EDIT_QUERY_PACKAGE_NAME))
 			.setCalcEventField(true)
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);

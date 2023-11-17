@@ -28,6 +28,7 @@ import dataforms.validator.RequiredValidator;
  *
  */
 public class SelectFieldHtmlTable extends EditableHtmlTable {
+
 	/**
 	 * 選択フラグ。
 	 */
@@ -49,6 +50,16 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	public static final String ID_FIELD_CLASS_NAME = "fieldClassName";
 
 	/**
+	 * 一覧フォームのフィールド表示設定。
+	 */
+	private static final String ID_LIST_FIELD_DISPLAY = "listFieldDisplay";
+
+	/**
+	 * 編集フォームのフィールド表示設定。
+	 */
+	private static final String ID_EDIT_FIELD_DISPLAY = "editFieldDisplay";
+
+	/**
 	 * テーブルクラス名。
 	 */
 	public static final String ID_TABLE_CLASS_NAME = "tableClassName";
@@ -57,11 +68,6 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	 * マッチタイプ。
 	 */
 	private static final String ID_MATCH_TYPE = "matchType";
-
-	/**
-	 * フィールド表示処理。
-	 */
-	private static final String ID_FIELD_DISPLAY = "fieldDisplay";
 
 	/**
 	 * フィールド別名。
@@ -103,7 +109,8 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			, new TableFullClassNameField(ID_TABLE_FULL_CLASS_NAME).setReadonly(true)
 			, new TableOrSubQueryClassNameField(ID_TABLE_CLASS_NAME).setReadonly(true)
 			, new MatchTypeSelectField(ID_MATCH_TYPE)
-			, new FieldDisplaySelectField(ID_FIELD_DISPLAY)
+			, new FieldDisplaySelectField(ID_LIST_FIELD_DISPLAY)
+			, new FieldDisplaySelectField(ID_EDIT_FIELD_DISPLAY)
 			, new TextField(ID_TABLE_ALIAS ).setReadonly(true)
 			, new TextField(ID_COMMENT)
 		);
@@ -135,6 +142,36 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 		return fieldList;
 	}
 
+	/**
+	 * 一覧フォームのフィールド表示設定。
+	 * @param f フィールド。
+	 * @return フィールド表示情報。
+	 */
+	private static FieldDisplaySelectField.FieldDisplay getListFieldDisplay(final Field<?> f) {
+		FieldDisplaySelectField.FieldDisplay ret = FieldDisplaySelectField.FieldDisplay.NONE;
+		if (f.isHidden()) {
+			ret = FieldDisplaySelectField.FieldDisplay.INPUT_HIDDEN;
+		} else {
+			ret = FieldDisplaySelectField.FieldDisplay.SPAN;
+		}
+		return ret;
+	}
+
+	/**
+	 * 編集フォームのフィールド表示設定。
+	 * @param f フィールド。
+	 * @return フィールド表示情報。
+	 */
+	private static FieldDisplaySelectField.FieldDisplay getEditFieldDisplay(final Field<?> f) {
+		FieldDisplaySelectField.FieldDisplay ret = FieldDisplaySelectField.FieldDisplay.NONE;
+		if (f.isHidden()) {
+			ret = FieldDisplaySelectField.FieldDisplay.INPUT_HIDDEN;
+		} else {
+			ret = FieldDisplaySelectField.FieldDisplay.INPUT;
+		}
+		return ret;
+	}
+
 
 	/**
 	 * fieldListに対応した表示データを作成します。
@@ -155,6 +192,10 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			ent.put(ID_TABLE_ALIAS, alias);
 			ent.put(ID_COMMENT, f.getComment());
 			ent.put(ID_MATCH_TYPE, f.getDefaultMatchType());
+
+			ent.put(ID_LIST_FIELD_DISPLAY, SelectFieldHtmlTable.getListFieldDisplay(f));
+			ent.put(ID_EDIT_FIELD_DISPLAY, SelectFieldHtmlTable.getEditFieldDisplay(f));
+
 			// ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
 			ret.add(ent);
 		}

@@ -28,8 +28,11 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		this.find("select.pageType").change((ev) => {
 			this.onChangePageType(ev);
 		});
-		this.get("listQueryFieldButton").click(() => {
-			this.onListQueryFieldButton();
+		this.get("listQueryButton").click(() => {
+			this.onListQueryButton();
+		});
+		this.get("editQueryButton").click(() => {
+			this.onEditQueryButton();
 		});
 		this.onChangePageType(null);
 	}
@@ -122,9 +125,9 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	}
 
 	/**
-	 * 一覧所得問合せフィールド設定。
+	 * 一覧問合せフィールド設定。
 	 */
-	onListQueryFieldButton() {
+	onListQueryButton() {
 		let fieldListDialog = this.parent.getComponent("fieldListDialog");
 		logger.log("fieldListDialog=", fieldListDialog);
 		let pkg = this.get("listQueryPackageName").val();
@@ -133,7 +136,27 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 			fieldListDialog.showModal({
 				title: MessagesUtil.getMessage("daoandpagegenerator.listfielddialog"),
 				width: 1024,
-				targetClass: pkg + "." + cls
+				targetClass: pkg + "." + cls,
+				listQuery: true
+			});
+		}
+	}
+
+	/**
+	 * 編集問合せフィールド設定。
+	 */
+	onEditQueryButton() {
+		let fieldListDialog = this.parent.getComponent("fieldListDialog");
+		logger.log("fieldListDialog=", fieldListDialog);
+		let pkg = this.get("editQueryPackageName").val();
+		let cls = this.get("editQueryClassName").val();
+		logger.log("pkg=" + pkg + ", cls=" + cls);
+		if (pkg.length > 0 && cls.length > 0) {
+			fieldListDialog.showModal({
+				title: MessagesUtil.getMessage("daoandpagegenerator.editfielddialog"),
+				width: 1024,
+				targetClass: pkg + "." + cls,
+				listQuery: false
 			});
 		}
 	}

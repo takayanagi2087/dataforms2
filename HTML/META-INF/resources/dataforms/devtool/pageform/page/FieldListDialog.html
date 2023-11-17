@@ -18,11 +18,14 @@
 						<th>
 							フィールド名
 						</th>
-						<th>
+						<th class="listQuery">
 							検索条件
 						</th>
-						<th>
-							表示方法
+						<th class="listQuery">
+							一覧表示方法
+						</th>
+						<th class="editQuery">
+							編集方法
 						</th>
 						<th>
 							フィールドクラス名
@@ -43,11 +46,14 @@
 						<td style="width: 120px;">
 							<input type="text" id="fieldList[0].comment" />
 						</td>
-						<td style="width: 200px;">
+						<td style="width: 200px;" class="listQuery">
 							<select id="fieldList[0].matchType"></select>
 						</td>
-						<td  style="width: 200px;">
-							<select id="fieldList[0].fieldDisplay"></select>
+						<td  style="width: 200px;" class="listQuery">
+							<select id="fieldList[0].listFieldDisplay"></select>
+						</td>
+						<td  style="width: 200px;" class="editQuery">
+							<select id="fieldList[0].editFieldDisplay"></select>
 						</td>
 						<td style="width: 300px;">
 							<input type="text" id="fieldList[0].fieldClassName" />

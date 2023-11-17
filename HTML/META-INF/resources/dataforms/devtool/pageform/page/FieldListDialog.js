@@ -35,7 +35,7 @@ class FieldListDialog extends Dialog {
 		let fieldListForm = this.getComponent("fieldListForm");
 		logger.log("fieldListForm=", fieldListForm);
 		logger.log("p=", p);
-		fieldListForm.getFieldList(p.targetClass);
+		fieldListForm.getFieldList(p);
 	}
 }
 

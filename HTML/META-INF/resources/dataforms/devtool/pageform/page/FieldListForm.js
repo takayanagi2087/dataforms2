@@ -40,16 +40,23 @@ class FieldListForm extends Form {
 
 	/**
 	 * 指定したクラスからフィールドリストを取得します。
-	 * @param {String} cls テーブルまたは問合せクラス。
+	 * @param {Object} p テーブルまたは問合せクラス。
 	 */
-	async getFieldList(cls) {
-		logger.log("class=" + cls);
+	async getFieldList(p) {
+		logger.log("class=", p);
 		let m = this.getWebMethod("getFieldList");
-		let r = await m.execute("c=" + cls);
+		let r = await m.execute("c=" + p.targetClass);
 		if (r.status == JsonResponse.SUCCESS) {
 			logger.dir(r);
 			let fieldList = this.getComponent("fieldList");
 			fieldList.setTableData(r.result);
+			if (p.listQuery) {
+				this.find(".listQuery").show();
+				this.find(".editQuery").hide();
+			} else {
+				this.find(".listQuery").hide();
+				this.find(".editQuery").show();
+			}
 		}
 	}
 

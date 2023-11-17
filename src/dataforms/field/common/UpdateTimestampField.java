@@ -37,4 +37,10 @@ public class UpdateTimestampField extends TimestampField {
 		this.setComment(COMMENT);
 		this.setHidden(true);
 	}
+
+	@Override
+	public MatchType getDefaultMatchType() {
+		return MatchType.NONE;
+	}
+
 }

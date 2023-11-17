@@ -154,6 +154,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			ent.put(ID_FIELD_CLASS_NAME, f.getClass().getName());
 			ent.put(ID_TABLE_ALIAS, alias);
 			ent.put(ID_COMMENT, f.getComment());
+			ent.put(ID_MATCH_TYPE, f.getDefaultMatchType());
 			// ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
 			ret.add(ent);
 		}

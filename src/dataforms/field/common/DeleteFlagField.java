@@ -32,4 +32,9 @@ public class DeleteFlagField extends FlagField {
 		this.setComment(COMMENT);
 		this.setDefaultValue("0");
 	}
+
+	@Override
+	public MatchType getDefaultMatchType() {
+		return MatchType.NONE;
+	}
 }

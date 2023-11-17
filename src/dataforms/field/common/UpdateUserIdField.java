@@ -29,4 +29,9 @@ public class UpdateUserIdField extends BigintField {
 		this.setComment(COMMENT);
 		this.setHidden(true);
 	}
+
+	@Override
+	public MatchType getDefaultMatchType() {
+		return MatchType.NONE;
+	}
 }

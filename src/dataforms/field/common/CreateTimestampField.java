@@ -34,4 +34,10 @@ public class CreateTimestampField extends TimestampField implements DoNotUpdateF
 		this.setComment(COMMENT);
 		this.setHidden(true);
 	}
+
+	@Override
+	public MatchType getDefaultMatchType() {
+		return MatchType.NONE;
+	}
+
 }

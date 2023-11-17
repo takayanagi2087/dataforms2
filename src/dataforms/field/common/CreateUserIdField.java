@@ -33,4 +33,9 @@ public class CreateUserIdField extends BigintField implements DoNotUpdateField {
 		this.setHidden(true);
 	}
 
+	@Override
+	public MatchType getDefaultMatchType() {
+		return MatchType.NONE;
+	}
+
 }

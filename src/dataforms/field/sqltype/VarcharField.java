@@ -34,4 +34,9 @@ public class VarcharField extends TextField implements SqlVarchar {
 		super.onBind();
 		this.addValidator(new MaxLengthValidator(this.getLength()));
 	}
+
+	@Override
+	public MatchType getDefaultMatchType() {
+		return MatchType.PART;
+	}
 }

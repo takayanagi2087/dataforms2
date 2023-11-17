@@ -131,6 +131,8 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		let cls = this.get("listQueryClassName").val();
 		if (pkg.length > 0 && cls.length > 0) {
 			fieldListDialog.showModal({
+				title: MessagesUtil.getMessage("daoandpagegenerator.listfielddialog"),
+				width: 1024,
 				targetClass: pkg + "." + cls
 			});
 		}

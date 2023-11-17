@@ -18,6 +18,7 @@ import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.field.common.FlagField;
+import dataforms.field.common.RecordIdField;
 import dataforms.field.common.SortOrderField;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.util.StringUtil;
@@ -53,6 +54,11 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	 * 一覧フォームのフィールド表示設定。
 	 */
 	private static final String ID_LIST_FIELD_DISPLAY = "listFieldDisplay";
+
+	/**
+	 * 編集キー。
+	 */
+	private static final String ID_EDIT_KEY = "editKey";
 
 	/**
 	 * 編集フォームのフィールド表示設定。
@@ -110,6 +116,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			, new TableOrSubQueryClassNameField(ID_TABLE_CLASS_NAME).setReadonly(true)
 			, new MatchTypeSelectField(ID_MATCH_TYPE)
 			, new FieldDisplaySelectField(ID_LIST_FIELD_DISPLAY)
+			, new FlagField(ID_EDIT_KEY)
 			, new FieldDisplaySelectField(ID_EDIT_FIELD_DISPLAY)
 			, new TextField(ID_TABLE_ALIAS ).setReadonly(true)
 			, new TextField(ID_COMMENT)
@@ -180,6 +187,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	 * @return テーブルデータ。
 	 */
 	public static List<Map<String, Object>> getTableData(final FieldList flist, final String alias) {
+		boolean pk = false;
 		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
 		for (Field<?> f: flist) {
 			Map<String, Object> ent = new HashMap<String, Object>();
@@ -192,7 +200,13 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			ent.put(ID_TABLE_ALIAS, alias);
 			ent.put(ID_COMMENT, f.getComment());
 			ent.put(ID_MATCH_TYPE, f.getDefaultMatchType());
-
+			// 先頭のrecord idに編集キーを設定する。
+			if (pk == false && f instanceof RecordIdField) {
+				ent.put(ID_EDIT_KEY, "1");
+				pk = true;
+			} else {
+				ent.put(ID_EDIT_KEY, "0");
+			}
 			ent.put(ID_LIST_FIELD_DISPLAY, SelectFieldHtmlTable.getListFieldDisplay(f));
 			ent.put(ID_EDIT_FIELD_DISPLAY, SelectFieldHtmlTable.getEditFieldDisplay(f));
 
@@ -201,7 +215,6 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 		}
 		return ret;
 	}
-
 
 	/**
 	 *

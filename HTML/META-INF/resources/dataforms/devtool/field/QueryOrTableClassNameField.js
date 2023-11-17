@@ -31,7 +31,11 @@ class QueryOrTableClassNameField extends QueryClassNameField {
 	 */
 	onUpdateRelationField() {
 		super.onUpdateRelationField();
-
+		let form = this.getParentForm();
+		logger.log("form=", form);
+		if (typeof form.getFieldConfig == "function") {
+			form.getFieldConfig(this.id);
+		}
 	}
 }
 

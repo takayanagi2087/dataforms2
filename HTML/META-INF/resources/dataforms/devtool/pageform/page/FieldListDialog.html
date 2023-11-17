@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<form id="fieldListForm">
-			<table id="fieldList" style="height: 600px;">
+			<table id="fieldList" style="height: 400px;">
 				<thead>
 					<tr>
 						<th nowrap>
@@ -23,6 +23,9 @@
 						</th>
 						<th class="listQuery">
 							一覧表示方法
+						</th>
+						<th class="listQuery" title="リストを選択した際に編集フォームに渡すキー項目をチェックします。">
+							編集キー
 						</th>
 						<th class="editQuery">
 							編集方法
@@ -51,6 +54,9 @@
 						</td>
 						<td  style="width: 200px;" class="listQuery">
 							<select id="fieldList[0].listFieldDisplay"></select>
+						</td>
+						<td  style="width: 80px; text-align: center;" class="listQuery">
+							<input type="checkbox" id="fieldList[0].editKey" value="1" />
 						</td>
 						<td  style="width: 200px;" class="editQuery">
 							<select id="fieldList[0].editFieldDisplay"></select>

@@ -161,6 +161,36 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		}
 	}
 
+	/**
+	 * フィールドのデフォルト設定を取得する。
+	 * @param {String} cls クラス名。
+	 * @param {String} cfgid 設定情報フィールドID。
+	 */
+	async getFieldInfo(cls, cfgid) {
+		let m = this.getWebMethod("getFieldConfig");
+		let r = await m.execute("c=" + cls);
+		if (r.status == JsonResponse.SUCCESS) {
+			this.get(cfgid).val(JSON.stringify(r.result));
+		}
+	}
+
+	/**
+	 * フィールドのデフォルト設定を取得する。
+	 * @param {String} id フィールドID。
+	 */
+	getFieldConfig(id) {
+		logger.log("field id=" + id);
+		if ("listQueryClassName" == id) {
+			let pkg = this.get("listQueryPackageName").val();
+			let cls = this.get("listQueryClassName").val();
+			this.getFieldInfo(pkg + "." + cls, "listQueryConfig");
+		} else if ("editQueryClassName" == id) {
+			let pkg = this.get("editQueryPackageName").val();
+			let cls = this.get("editQueryClassName").val();
+			this.getFieldInfo(pkg + "." + cls, "editQueryConfig");
+		}
+	}
+
 	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。
 	/**
 	 * Webメソッドの呼び出しサンプル。

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dataforms.annotation.WebMethod;
 import dataforms.controller.EditForm;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.DaoClassNameField;
@@ -26,6 +27,8 @@ import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.field.common.SingleSelectField.HtmlFieldType;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.response.JsonResponse;
+import dataforms.response.Response;
 import dataforms.util.MessagesUtil;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
@@ -240,5 +243,19 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	@Override
 	protected String getSavedMessage(final Map<String, Object> data) {
 		return MessagesUtil.getMessage(this.getPage(), "message.javasourcecreated");
+	}
+
+	/**
+	 * フィールドのデフォルト設定情報を取得する。
+	 * @param p パラメータ。
+	 * @return フィールドのデフォルト設定情報。
+	 * @throws Exception 例外。
+	 */
+	@WebMethod
+	public Response getFieldConfig(final Map<String, Object> p) throws Exception  {
+		String cls = (String) p.get("c");
+		FieldList flist = SelectFieldHtmlTable.getFieldList(cls);
+		List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(flist, "");
+		return new JsonResponse(JsonResponse.SUCCESS, list);
 	}
 }

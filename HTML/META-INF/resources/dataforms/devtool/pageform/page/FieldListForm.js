@@ -32,6 +32,23 @@ class FieldListForm extends Form {
 
 	}
 
+	onCalc(jq) {
+		logger.log("onCalc");
+		let table = this.getComponent("fieldList");
+		if (table != null) {
+			for (let i = 0; i < table.getRowCount(); i++) {
+				let v = table.getRowField(i, "listFieldDisplay").getValue();
+				logger.log("v=" + v);
+				if (v == "NONE" || v == "SPAN") {
+					table.getRowField(i, "editKey").get().prop("disabled", true);
+					table.getRowField(i, "editKey").get().prop("checked", false);
+				} else {
+					table.getRowField(i, "editKey").get().prop("disabled", false);
+				}
+			}
+		}
+	}
+
 	/**
 	 * 指定したクラスからフィールドリストを取得します。
 	 * @param {Object} p テーブルまたは問合せクラス。
@@ -48,6 +65,8 @@ class FieldListForm extends Form {
 			this.find(".listQuery").hide();
 			this.find(".editQuery").show();
 		}
+
+		this.onCalc(null);
 	}
 
 	/**

@@ -32,8 +32,9 @@ public class FieldListForm extends Form {
 	public FieldListForm(final String id) {
 		super(id);
 		SelectFieldHtmlTable table = new SelectFieldHtmlTable(ID_FIELD_LIST, true);
-		table.getFieldList().get("fieldId").clearValidator();
-		table.getFieldList().get("comment").setReadonly(true);
+		table.getFieldList().get(SelectFieldHtmlTable.ID_FIELD_ID).clearValidator();
+		table.getFieldList().get(SelectFieldHtmlTable.ID_COMMENT).setReadonly(true);
+		table.getFieldList().get(SelectFieldHtmlTable.ID_LIST_FIELD_DISPLAY).setCalcEventField(true);
 		table.setFixedColumns(3);
 		this.addHtmlTable(table);
 	}

@@ -53,17 +53,17 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	/**
 	 * 一覧フォームのフィールド表示設定。
 	 */
-	private static final String ID_LIST_FIELD_DISPLAY = "listFieldDisplay";
+	public static final String ID_LIST_FIELD_DISPLAY = "listFieldDisplay";
 
 	/**
 	 * 編集キー。
 	 */
-	private static final String ID_EDIT_KEY = "editKey";
+	public static final String ID_EDIT_KEY = "editKey";
 
 	/**
 	 * 編集フォームのフィールド表示設定。
 	 */
-	private static final String ID_EDIT_FIELD_DISPLAY = "editFieldDisplay";
+	public static final String ID_EDIT_FIELD_DISPLAY = "editFieldDisplay";
 
 	/**
 	 * テーブルクラス名。
@@ -73,7 +73,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	/**
 	 * マッチタイプ。
 	 */
-	private static final String ID_MATCH_TYPE = "matchType";
+	public static final String ID_MATCH_TYPE = "matchType";
 
 	/**
 	 * フィールド別名。

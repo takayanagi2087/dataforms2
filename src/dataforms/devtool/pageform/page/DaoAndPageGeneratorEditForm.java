@@ -1,11 +1,23 @@
 package dataforms.devtool.pageform.page;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import dataforms.annotation.WebMethod;
 import dataforms.controller.EditForm;
+import dataforms.controller.Page;
+import dataforms.controller.QueryForm;
+import dataforms.controller.QueryResultForm;
+import dataforms.controller.WebComponent;
+import dataforms.dao.Dao;
+import dataforms.dao.Query;
+import dataforms.dao.QuerySetDao;
+import dataforms.dao.SingleTableQuery;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.DaoClassNameField;
 import dataforms.devtool.field.EditFormClassNameField;
@@ -23,13 +35,18 @@ import dataforms.devtool.field.QueryFormSelectField;
 import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryResultFormClassNameField;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
+import dataforms.exception.ApplicationException;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.field.common.SingleSelectField.HtmlFieldType;
 import dataforms.htmltable.EditableHtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
+import dataforms.servlet.DataFormsServlet;
+import dataforms.util.ClassNameUtil;
+import dataforms.util.FileUtil;
 import dataforms.util.MessagesUtil;
+import dataforms.util.SequentialProperties;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
 
@@ -38,7 +55,39 @@ import dataforms.validator.ValidationError;
  *
  */
 public class DaoAndPageGeneratorEditForm extends EditForm {
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LogManager.getLogger(DaoAndPageGeneratorEditForm.class);
 
+	/**
+	 * ページ名フィールドID。
+	 */
+	private static final String ID_FUNCTION_SELECT = "functionSelect";
+
+	/**
+	 * ページ名フィールドID。
+	 */
+	private static final String ID_PAGE_NAME = "pageName";
+	/**
+	 * ページパッケージ名フィールドID。
+	 */
+	private static final String ID_PACKAGE_NAME = "packageName";
+
+	/**
+	 * DAOパッケージ名フィールドID。
+	 */
+	private static final String ID_DAO_PACKAGE_NAME = "daoPackageName";
+
+	/**
+	 * DAOクラス名フィールドID。
+	 */
+	private static final String ID_DAO_CLASS_NAME = "daoClassName";
+
+	/**
+	 * ページクラス名フィールドID。
+	 */
+	private static final String ID_PAGE_CLASS_NAME = "pageClassName";
 
 	/**
 	 * JavaソースパスフィールドID。
@@ -111,6 +160,31 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	private static final String ID_KEY_FIELD_LIST = "keyFieldList";
 
 
+	/**
+	 * 問合せフォームクラス名フィールドID。
+	 */
+	private static final String ID_QUERY_FORM_CLASS_NAME = "queryFormClassName";
+
+	/**
+	 * 問合せ結果フォームクラス名フィールドID。
+	 */
+	private static final String ID_QUERY_RESULT_FORM_CLASS_NAME = "queryResultFormClassName";
+	/**
+	 * 編集フォームクラス名フィールドID。
+	 */
+	private static final String ID_EDIT_FORM_CLASS_NAME = "editFormClassName";
+
+	/**
+	 * 一覧問合せ設定フィールドの設定情報。
+	 */
+	private static final String ID_LIST_QUERY_CONFIG = "listQueryConfig";
+
+	/**
+	 * 編集問合せフィールドの設定情報。
+	 */
+	private static final String ID_EDIT_QUERY_CONFIG = "editQueryConfig";
+
+
 
 	/**
 	 * コンストラクタ。
@@ -119,7 +193,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.addField(new JavaSourcePathField());
 		FunctionSelectField funcField = new FunctionSelectField();
 		funcField.setPackageOption("page", "dao");
-		funcField.setPackageFieldId("packageName", "daoPackageName");
+		funcField.setPackageFieldId(ID_PACKAGE_NAME, ID_DAO_PACKAGE_NAME);
 		funcField.setCalcEventField(true);
 		// 生成するクラス
 		this.addField(funcField);
@@ -130,7 +204,6 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.addField(new PackageNameField("daoPackageName")).addValidator(new RequiredValidator()).setComment("DAOパッケージ名");
 		this.addField(new DaoClassNameField()).addValidator(new RequiredValidator()).setComment("DAOクラス名");
 		this.addField(new OverwriteModeField(ID_DAO_CLASS_OVERWRITE_MODE));
-
 		// ページの機能
 		this.addField(new ListFormSelectField().setHtmlFieldType(HtmlFieldType.RADIO)).setComment("問合せ結果");
 		this.addField(new QueryFormSelectField().setHtmlFieldType(HtmlFieldType.RADIO)).setComment("問合せ条件");
@@ -148,12 +221,9 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			.setPackageNameFieldId(ID_LIST_QUERY_PACKAGE_NAME))
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);
-
-		this.addField(new TextField("listQueryConfig"));	// 一覧問合せの設定情報
-
+		this.addField(new TextField(ID_LIST_QUERY_CONFIG));	// 一覧問合せの設定情報
 		this.addField(new EditFormClassNameField());
 		this.addField(new OverwriteModeField(ID_EDIT_FORM_CLASS_OVERWRITE_MODE));
-
 		//
 		this.addField((new FunctionSelectField(ID_EDIT_QUERY_FUNCTION_SELECT))
 			.setPackageFieldId(ID_EDIT_QUERY_PACKAGE_NAME)
@@ -165,8 +235,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			.setCalcEventField(true)
 			.setAutocomplete(true)
 			.setRelationDataAcquisition(true);
-
-		this.addField(new TextField("editQueryConfig"));	// 編集対象取得問合せの設定情報
+		this.addField(new TextField(ID_EDIT_QUERY_CONFIG));	// 編集対象取得問合せの設定情報
 		//
 		{
 			FieldList flist = new FieldList();
@@ -201,11 +270,134 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.setFormData("editTypeSelect", "0");
 	}
 
+	// TODO:後で共通化
+	/**
+	 *
+	 * Function.propertiesのパスを取得します。
+	 * @param functionPath 機能のパス。
+	 * @return Function.propertiesのパス。
+	 * @throws Exception 例外。
+	 */
+	private String getFunctionPropertiesPath(final String functionPath) throws Exception {
+		String webResourcePath = DeveloperPage.getWebSourcePath();
+		String funcprop = this.getPage().getAppropriatePath(functionPath + "/Function.properties", this.getPage().getRequest());
+		if (funcprop == null) {
+			funcprop = functionPath + "/Function.properties";
+		}
+		funcprop = webResourcePath + funcprop;
+		return funcprop;
+	}
+
+	// TODO:後で共通化
+	/**
+	 * Function.propertiesを読み込みます。
+	 * @param funcprop Function.propertiesのパス。
+	 * @return 読み込んだ内容。
+	 * @throws Exception 例外。
+	 */
+	private SequentialProperties readFunctionProperties(final String funcprop) throws Exception {
+		String text = "";
+		File propfile = new File(funcprop);
+		if (propfile.exists()) {
+			text = FileUtil.readTextFile(funcprop, DataFormsServlet.getEncoding());
+		}
+		SequentialProperties prop = new SequentialProperties();
+		prop.loadText(text);
+		return prop;
+	}
+
 
 	@Override
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
+		String pkg = (String) data.get(ID_PACKAGE_NAME);
+		String cls = (String) data.get(ID_PAGE_CLASS_NAME);
+		String classname = pkg + "." + cls;
+		Class<?> clazz = Class.forName(classname);
+		Page p = (Page) clazz.getDeclaredConstructor().newInstance();
+		PageClassInfo pi = new PageClassInfo(p);
+		// Class<? extends Table> tblcls = pi.getTableClass();
+		Class<? extends Dao> daocls = pi.getDaoClass();
+		String functionPath = pi.getFunctionPath();
+		if (daocls == null || functionPath == null) {
+			throw new ApplicationException(this.getPage(), "error.notgeneratedpage");
+		}
 		Map<String, Object> ret = new HashMap<String, Object>();
+		ret.putAll(data);
+		if (daocls.getName().equals(dataforms.dao.Dao.class.getName())) {
+			ret.put(ID_DAO_PACKAGE_NAME, "");
+			ret.put(ID_DAO_CLASS_NAME, "");
+		} else {
+			ret.put(ID_DAO_PACKAGE_NAME, ClassNameUtil.getPackageName(daocls.getName()));
+			ret.put(ID_DAO_CLASS_NAME, daocls.getSimpleName());
+			Dao dao = daocls.getConstructor().newInstance();
+			if (dao instanceof QuerySetDao) {
+				this.getQueryInfo(dao, p, ret);
+			}
+		}
+		ret.put(ID_PAGE_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		ret.put(ID_FUNCTION_SELECT, functionPath);
+
+		String funcprop = this.getFunctionPropertiesPath(functionPath);
+		SequentialProperties prop = this.readFunctionProperties(funcprop);
+		String name = (String) prop.get(pkg + "." + cls);
+		ret.put(ID_PAGE_NAME, name);
+
+		this.getFormInfo(p, ret);
+
 		return ret;
+	}
+
+	/**
+	 * 問合せ情報を設定する。
+	 * @param dao DAOクラスのインスタンス。む
+	 * @param p ページクラスのインスタンス。
+	 * @param ret フォームに表示するデータマップ。
+	 */
+	private void getQueryInfo(final Dao dao, final Page p, final Map<String, Object> ret) {
+		QuerySetDao querySetDao = (QuerySetDao) dao;
+		Query listQuery = querySetDao.getListQuery();
+		logger.debug("listQuery package=" + listQuery.getClass().getPackageName());
+		logger.debug("listQuery class=" + listQuery.getClass().getName());
+		if (listQuery instanceof SingleTableQuery) {
+			ret.put(ID_LIST_QUERY_PACKAGE_NAME, ((SingleTableQuery) listQuery).getMainTable().getClass().getPackageName());
+			ret.put(ID_LIST_QUERY_CLASS_NAME, ((SingleTableQuery) listQuery).getMainTable().getClass().getSimpleName());
+		} else {
+			ret.put(ID_LIST_QUERY_PACKAGE_NAME, listQuery.getClass().getPackageName());
+			ret.put(ID_LIST_QUERY_CLASS_NAME, listQuery.getClass().getSimpleName());
+		}
+		Query editQuery = querySetDao.getSingleRecordQuery();
+		if (listQuery instanceof SingleTableQuery) {
+			ret.put(ID_EDIT_QUERY_PACKAGE_NAME, ((SingleTableQuery) editQuery).getMainTable().getClass().getPackageName());
+			ret.put(ID_EDIT_QUERY_CLASS_NAME, ((SingleTableQuery) editQuery).getMainTable().getClass().getSimpleName());
+		} else {
+			ret.put(ID_EDIT_QUERY_PACKAGE_NAME, editQuery.getClass().getPackageName());
+			ret.put(ID_EDIT_QUERY_CLASS_NAME, editQuery.getClass().getSimpleName());
+		}
+	}
+
+	/**
+	 * フォームの情報を設定する。
+	 * @param p ページクラスのインスタンス。
+	 * @param ret フォームに表示するデータマップ。
+	 */
+	private void getFormInfo(final Page p, final Map<String, Object> ret) {
+		Map<String, WebComponent> fm = p.getFormMap();
+		for (String key: fm.keySet()) {
+			logger.debug("*** key=" + key);
+			WebComponent cmp = fm.get(key);
+			if (cmp != null) {
+				if (cmp instanceof QueryForm) {
+					ret.put(ID_QUERY_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
+					ret.put(ID_QUERY_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+				} else if (cmp instanceof QueryResultForm) {
+					ret.put(ID_QUERY_RESULT_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
+					ret.put(ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+				} else if (cmp instanceof EditForm) {
+					ret.put(ID_EDIT_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
+					ret.put(ID_EDIT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+				}
+			}
+		}
 	}
 
 	@Override

@@ -198,6 +198,40 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		}
 	}
 
+	/**
+	 * 各フィールドにデータを設定します。
+	 * <pre>
+	 * 新規モードの場合、削除ボタンを隠します。
+	 * </pre>
+	 * @param {Object} data フォームデータ.
+	 *
+	 */
+	setFormData(data) {
+		super.setFormData(data);
+		let functionSelect = this.get("functionSelect").val();
+		let packageName = this.get("packageName").val();
+		this.find(".funcName").each((_, el) => {
+			$(el).text(functionSelect);
+		});
+		this.find(".packageName").each((_, el) => {
+			$(el).text(packageName);
+		});
+		let listQueryPackageName = this.get("listQueryPackageName").val();
+		if (listQueryPackageName.length > 0) {
+			let sel = this.getComponent("listQueryFunctionSelect");
+			logger.log("listPackageName=" + listQueryPackageName, sel);
+			sel.selectPackage(listQueryPackageName);
+		}
+		let editQueryPackageName = this.get("editQueryPackageName").val();
+		if (editQueryPackageName.length > 0) {
+			let sel = this.getComponent("editQueryFunctionSelect");
+			logger.log("editQueryPackageName=" + editQueryPackageName, sel);
+			sel.selectPackage(editQueryPackageName);
+		}
+	}
+
+
+
 	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。
 	/**
 	 * Webメソッドの呼び出しサンプル。
@@ -261,19 +295,6 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 
 	// フォームの各種動作をカスタマイズするには以下のメソッドをオーバーライドしてください。
 
-	/**
-	 * 各フィールドにデータを設定します。
-	 * <pre>
-	 * 新規モードの場合、削除ボタンを隠します。
-	 * </pre>
-	 * @param {Object} data フォームデータ.
-	 *
-	 */
-/*
-	setFormData(data) {
-		super.setFormData(data);
-	}
-*/
 
 	/**
 	 * 編集モードにします。

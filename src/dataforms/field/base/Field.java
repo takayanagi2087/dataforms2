@@ -134,10 +134,50 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		NONE
 	}
 
+
+	/**
+	 * フィールド表示。
+	 */
+	public enum Display {
+		/**
+		 * 表示しない。
+		 */
+		NONE
+		/**
+		 * INPUTタグ。
+		 */
+		, INPUT
+		/**
+		 * INPUTタグ読取専用。
+		 */
+		, INPUT_READONLY
+		/**
+		 * INPUTタグ非表示。
+		 */
+		, INPUT_HIDDEN
+		/**
+		 * 表示のみ。
+		 */
+		, SPAN
+	}
+
+
+
 	/**
 	 * 条件タイプ。
 	 */
 	private MatchType matchType = Field.MatchType.FULL;
+
+	/**
+	 * 検索結果表示設定。
+	 */
+	private Display queryResultFormDisplay = Display.SPAN;
+
+	/**
+	 * 編集フォーム設定。
+	 */
+	private Display editFormDisplay = Display.INPUT;
+
 
 	/**
 	 * 条件マッチの際大文字、小文字を区別しない。
@@ -146,9 +186,10 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 
 	/**
 	 * ソート順。
-	 *
 	 */
 	private SortOrder sortOrder = Field.SortOrder.ASC;
+
+
 
 	/**
 	 * 問い合わせフィールドID。
@@ -407,6 +448,9 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		} else {
 			this.setId(id);
 		}
+		this.setMatchType(this.getDefaultMatchType());
+		this.setQueryResultFormDisplay(this.getQueryResultFormDefaultDisplay());
+		this.setEditFormDisplay(this.getEditFormDefaultDisplay());
 	}
 
 	/**
@@ -721,6 +765,18 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		return this.getTable().getAlias() + "." + StringUtil.camelToSnake(this.getId());
 	}
 
+	/**
+	 * デフォルト条件マッチタイプを取得します。
+	 * <pre>
+	 * フィールドクラス単位に設定された、デフォルト条件マッチタイプを返します。
+	 * このメソットは開発ツールでQueryFormのソースコード生成時に呼び出され、
+	 * この値に応じたフィールドが生成されます。と
+	 * </pre>
+	 * @return デフォルト条件マッチタイプ。
+	 */
+	public MatchType getDefaultMatchType() {
+		return MatchType.FULL;
+	}
 
 	/**
 	 * マッチタイプを取得します。
@@ -730,6 +786,58 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		return matchType;
 	}
 
+
+	/**
+	 * 問合せ結果フォーム表示設定のデフォルト値を取得します。
+	 * @return 問合せ結果フォーム表示設定のデフォルト値。
+	 */
+	public Display getQueryResultFormDefaultDisplay() {
+		return Display.SPAN;
+	}
+
+	/**
+	 * 問合せ結果フォーム表示設定を取得します。
+	 * @return 問合せ結果フォーム表示設定。
+	 */
+	public Display getQueryResultFormDisplay() {
+		return queryResultFormDisplay;
+	}
+
+	/**
+	 * 問合せ結果フォーム表示設定を設定します。
+	 * @param queryResultFormDisplay 問合せ結果フォーム表示設定。
+	 * @return フィールド。
+	 */
+	public Field<?> setQueryResultFormDisplay(final Display queryResultFormDisplay) {
+		this.queryResultFormDisplay = queryResultFormDisplay;
+		return this;
+	}
+
+	/**
+	 * 編集フォーム表示設定のデフォルト値を取得します。
+	 * @return 編集フォーム表示設定のデフォルト値。
+	 */
+	public Display getEditFormDefaultDisplay() {
+		return Display.INPUT;
+	}
+
+	/**
+	 * 編集フォーム表示設定を取得します。
+	 * @return 編集フォーム表示設定。
+	 */
+	public Display getEditFormDisplay() {
+		return editFormDisplay;
+	}
+
+	/**
+	 * 編集フォーム表示設定を設定します。
+	 * @param editFormDisplay 編集フォーム表示設定。
+	 * @return フィールド。
+	 */
+	public Field<?> setEditFormDisplay(Display editFormDisplay) {
+		this.editFormDisplay = editFormDisplay;
+		return this;
+	}
 
 	/**
 	 * マッチタイプを設定するします。
@@ -1319,18 +1427,6 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		return this;
 	}
 
-	/**
-	 * デフォルト条件マッチタイプを取得します。
-	 * <pre>
-	 * フィールドクラス単位に設定された、デフォルト条件マッチタイプを返します。
-	 * このメソットは開発ツールでQueryFormのソースコード生成時に呼び出され、
-	 * この値に応じたフィールドが生成されます。と
-	 * </pre>
-	 * @return デフォルト条件マッチタイプ。
-	 */
-	public MatchType getDefaultMatchType() {
-		return MatchType.FULL;
-	}
 
 
 	/**

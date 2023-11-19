@@ -33,8 +33,29 @@ public class DeleteFlagField extends FlagField {
 		this.setDefaultValue("0");
 	}
 
+	/**
+	 * 検索条件に使用しない。
+	 */
 	@Override
 	public MatchType getDefaultMatchType() {
 		return MatchType.NONE;
+	}
+
+
+	/**
+	 * 検索結果フォームには表示しない。
+	 */
+	@Override
+	public Display getQueryResultFormDefaultDisplay() {
+		return Display.NONE;
+	}
+
+
+	/**
+	 * 編集フォームには表示しない。
+	 */
+	@Override
+	public Display getEditFormDefaultDisplay() {
+		return Display.NONE;
 	}
 }

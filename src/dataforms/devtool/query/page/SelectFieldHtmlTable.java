@@ -154,12 +154,12 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	 * @param f フィールド。
 	 * @return フィールド表示情報。
 	 */
-	private static FieldDisplaySelectField.FieldDisplay getListFieldDisplay(final Field<?> f) {
-		FieldDisplaySelectField.FieldDisplay ret = FieldDisplaySelectField.FieldDisplay.NONE;
+	private static Field.Display getListFieldDisplay(final Field<?> f) {
+		Field.Display ret = Field.Display.NONE;
 		if (f.isHidden()) {
-			ret = FieldDisplaySelectField.FieldDisplay.INPUT_HIDDEN;
+			ret = Field.Display.INPUT_HIDDEN;
 		} else {
-			ret = FieldDisplaySelectField.FieldDisplay.SPAN;
+			ret = Field.Display.SPAN;
 		}
 		return ret;
 	}
@@ -169,12 +169,12 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	 * @param f フィールド。
 	 * @return フィールド表示情報。
 	 */
-	private static FieldDisplaySelectField.FieldDisplay getEditFieldDisplay(final Field<?> f) {
-		FieldDisplaySelectField.FieldDisplay ret = FieldDisplaySelectField.FieldDisplay.NONE;
+	private static Field.Display getEditFieldDisplay(final Field<?> f) {
+		Field.Display ret = Field.Display.NONE;
 		if (f.isHidden()) {
-			ret = FieldDisplaySelectField.FieldDisplay.INPUT_HIDDEN;
+			ret = Field.Display.INPUT_HIDDEN;
 		} else {
-			ret = FieldDisplaySelectField.FieldDisplay.INPUT;
+			ret = Field.Display.INPUT;
 		}
 		return ret;
 	}

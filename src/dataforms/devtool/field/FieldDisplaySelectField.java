@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dataforms.devtool.field.FieldDisplaySelectField.FieldDisplay;
+import dataforms.field.base.Field;
 import dataforms.field.common.SelectField;
 import dataforms.field.common.SingleSelectField;
 import dataforms.util.MessagesUtil;
@@ -14,33 +14,7 @@ import dataforms.util.StringUtil;
 /**
  * マッチタイプ選択フィールドクラス。
  */
-public class FieldDisplaySelectField extends SingleSelectField<FieldDisplay> {
-	/**
-	 * フィールド表示。
-	 */
-	public static enum FieldDisplay {
-		/**
-		 * 表示しない。
-		 */
-		NONE
-		/**
-		 * INPUTタグ。
-		 */
-		, INPUT
-		/**
-		 * INPUTタグ読取専用。
-		 */
-		, INPUT_READONLY
-		/**
-		 * INPUTタグ非表示。
-		 */
-		, INPUT_HIDDEN
-		/**
-		 * 表示のみ。
-		 */
-		, SPAN
-	}
-
+public class FieldDisplaySelectField extends SingleSelectField<Field.Display> {
 	/**
 	 * コンストラクタ。
 	 * @param id フィールドID。
@@ -55,7 +29,7 @@ public class FieldDisplaySelectField extends SingleSelectField<FieldDisplay> {
 	 */
 	private List<Map<String, Object>> getMatchTypeList() {
 		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
-		for (FieldDisplay mt: FieldDisplay.values()) {
+		for (Field.Display mt: Field.Display.values()) {
 			String key = "fielddisplay." + mt.toString();
 			String name = MessagesUtil.getMessage(getWebEntryPoint(), key);
 			if (!StringUtil.isBlank(name)) {

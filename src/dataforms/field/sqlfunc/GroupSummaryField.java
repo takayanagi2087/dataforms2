@@ -79,6 +79,23 @@ public abstract class GroupSummaryField<TYPE> extends Field<TYPE> {
 		return MatchType.NONE;
 	}
 
+	/**
+	 * 検索結果フォームは表示のみ。
+	 */
+	@Override
+	public Display getQueryResultFormDefaultDisplay() {
+		return Display.SPAN;
+	}
+
+
+	/**
+	 * 編集フォームはは表示のみ。
+	 */
+	@Override
+	public Display getEditFormDefaultDisplay() {
+		return Display.SPAN;
+	}
+
 	@Override
 	public Field<?> setComment(final String comment) {
 		Field<?> field = this.getTargetField();

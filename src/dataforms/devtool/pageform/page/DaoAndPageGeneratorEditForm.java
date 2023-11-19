@@ -36,10 +36,13 @@ import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryResultFormClassNameField;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.exception.ApplicationException;
+import dataforms.field.base.Field;
+import dataforms.field.base.Field.MatchType;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.field.common.SingleSelectField.HtmlFieldType;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.htmltable.HtmlTable;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
 import dataforms.servlet.DataFormsServlet;
@@ -49,6 +52,7 @@ import dataforms.util.MessagesUtil;
 import dataforms.util.SequentialProperties;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
+import net.arnx.jsonic.JSON;
 
 /**
  * ページ作成フォームクラス。
@@ -348,6 +352,72 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	}
 
 	/**
+	 * 一覧取得問合せのフィールド設定を取得する。
+	 * @param flist フィールドリスト。
+	 * @param qform 問合せフォーム。
+	 * @param qrform 問合せ結果フォーム。
+	 * @return 一覧取得問合せのフィールド設定。
+	 */
+	private List<Map<String, Object>> getListQueryFieldConf(final FieldList flist, final QueryForm qform, final QueryResultForm qrform) {
+		List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(flist, "");
+		if (qform != null) {
+			// QueryFormからMatchTypeを取得する。
+			FieldList qflist = qform.getFieldList();
+			for (Map<String, Object> m: list) {
+				String fid = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+				Field<?> qf = qflist.get(fid);
+				if (qf == null) {
+					qf = qflist.get(fid + "From");
+				}
+				if (qf == null) {
+					m.put(SelectFieldHtmlTable.ID_MATCH_TYPE, MatchType.NONE);
+				} else {
+					m.put(SelectFieldHtmlTable.ID_MATCH_TYPE, qf.getMatchType());
+				}
+			}
+		}
+		if (qrform != null) {
+			HtmlTable table = (HtmlTable) qrform.getComponent(Page.ID_QUERY_RESULT);
+			if (table != null) {
+				FieldList qrflist = table.getFieldList();
+				for (Map<String, Object> m: list) {
+					String fid = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+					Field<?> qrf = qrflist.get(fid);
+					if (qrf == null) {
+						m.put(SelectFieldHtmlTable.ID_LIST_FIELD_DISPLAY, Field.Display.NONE);
+					} else {
+						m.put(SelectFieldHtmlTable.ID_LIST_FIELD_DISPLAY, qrf.getQueryResultFormDisplay());
+					}
+				}
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * 編集対象取得問合せのフィールド設定を取得する。
+	 * @param flist フィールドリスト。
+	 * @param eform 編集フォーム。
+	 * @return 編集問合せのフィールド設定。
+	 */
+	private List<Map<String, Object>> getEditQueryFieldConf(final FieldList flist, final EditForm eform) {
+		List<Map<String, Object>> list = SelectFieldHtmlTable.getTableData(flist, "");
+		if (eform != null) {
+			FieldList eflist = eform.getFieldList();
+			for (Map<String, Object> m: list) {
+				String fid = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+				Field<?> ef = eflist.get(fid);
+				if (ef == null) {
+					m.put(SelectFieldHtmlTable.ID_EDIT_FIELD_DISPLAY, Field.Display.NONE);
+				} else {
+					m.put(SelectFieldHtmlTable.ID_EDIT_FIELD_DISPLAY, ef.getEditFormDisplay());
+				}
+			}
+		}
+		return list;
+	}
+
+	/**
 	 * 問合せ情報を設定する。
 	 * @param dao DAOクラスのインスタンス。む
 	 * @param p ページクラスのインスタンス。
@@ -358,20 +428,34 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		Query listQuery = querySetDao.getListQuery();
 		logger.debug("listQuery package=" + listQuery.getClass().getPackageName());
 		logger.debug("listQuery class=" + listQuery.getClass().getName());
-		if (listQuery instanceof SingleTableQuery) {
-			ret.put(ID_LIST_QUERY_PACKAGE_NAME, ((SingleTableQuery) listQuery).getMainTable().getClass().getPackageName());
-			ret.put(ID_LIST_QUERY_CLASS_NAME, ((SingleTableQuery) listQuery).getMainTable().getClass().getSimpleName());
-		} else {
-			ret.put(ID_LIST_QUERY_PACKAGE_NAME, listQuery.getClass().getPackageName());
-			ret.put(ID_LIST_QUERY_CLASS_NAME, listQuery.getClass().getSimpleName());
+		if (listQuery != null) {
+			if (listQuery instanceof SingleTableQuery) {
+				ret.put(ID_LIST_QUERY_PACKAGE_NAME, ((SingleTableQuery) listQuery).getMainTable().getClass().getPackageName());
+				ret.put(ID_LIST_QUERY_CLASS_NAME, ((SingleTableQuery) listQuery).getMainTable().getClass().getSimpleName());
+			} else {
+				ret.put(ID_LIST_QUERY_PACKAGE_NAME, listQuery.getClass().getPackageName());
+				ret.put(ID_LIST_QUERY_CLASS_NAME, listQuery.getClass().getSimpleName());
+			}
+			FieldList flist = listQuery.getFieldList();
+			QueryForm qf = (QueryForm) p.getComponent(Page.ID_QUERY_FORM);
+			QueryResultForm qrf = (QueryResultForm) p.getComponent(Page.ID_QUERY_RESULT_FORM);
+			List<Map<String, Object>> list = this.getListQueryFieldConf(flist, qf, qrf);
+			ret.put(ID_LIST_QUERY_CONFIG, JSON.encode(list));
+
 		}
 		Query editQuery = querySetDao.getSingleRecordQuery();
-		if (listQuery instanceof SingleTableQuery) {
-			ret.put(ID_EDIT_QUERY_PACKAGE_NAME, ((SingleTableQuery) editQuery).getMainTable().getClass().getPackageName());
-			ret.put(ID_EDIT_QUERY_CLASS_NAME, ((SingleTableQuery) editQuery).getMainTable().getClass().getSimpleName());
-		} else {
-			ret.put(ID_EDIT_QUERY_PACKAGE_NAME, editQuery.getClass().getPackageName());
-			ret.put(ID_EDIT_QUERY_CLASS_NAME, editQuery.getClass().getSimpleName());
+		if (editQuery != null) {
+			if (listQuery instanceof SingleTableQuery) {
+				ret.put(ID_EDIT_QUERY_PACKAGE_NAME, ((SingleTableQuery) editQuery).getMainTable().getClass().getPackageName());
+				ret.put(ID_EDIT_QUERY_CLASS_NAME, ((SingleTableQuery) editQuery).getMainTable().getClass().getSimpleName());
+			} else {
+				ret.put(ID_EDIT_QUERY_PACKAGE_NAME, editQuery.getClass().getPackageName());
+				ret.put(ID_EDIT_QUERY_CLASS_NAME, editQuery.getClass().getSimpleName());
+			}
+			FieldList flist = listQuery.getFieldList();
+			EditForm ef = (EditForm) p.getComponent(Page.ID_EDIT_FORM);
+			List<Map<String, Object>> list = this.getEditQueryFieldConf(flist, ef);
+			ret.put(ID_EDIT_QUERY_CONFIG, JSON.encode(list));
 		}
 	}
 

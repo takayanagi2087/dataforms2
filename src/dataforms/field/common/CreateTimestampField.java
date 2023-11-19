@@ -35,9 +35,29 @@ public class CreateTimestampField extends TimestampField implements DoNotUpdateF
 		this.setHidden(true);
 	}
 
+	/**
+	 * 検索条件にしない。
+	 */
 	@Override
 	public MatchType getDefaultMatchType() {
 		return MatchType.NONE;
+	}
+
+	/**
+	 * 検索結果フォームはhidden出力。
+	 */
+	@Override
+	public Display getQueryResultFormDefaultDisplay() {
+		return Display.INPUT_HIDDEN;
+	}
+
+
+	/**
+	 * 編集フォームはhidden出力。
+	 */
+	@Override
+	public Display getEditFormDefaultDisplay() {
+		return Display.INPUT_HIDDEN;
 	}
 
 }

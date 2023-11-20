@@ -336,6 +336,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		}
 		Map<String, Object> ret = new HashMap<String, Object>();
 		ret.putAll(data);
+		ret.put(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
 		if (daocls.getName().equals(dataforms.dao.Dao.class.getName())) {
 			ret.put(ID_DAO_PACKAGE_NAME, "");
 			ret.put(ID_DAO_CLASS_NAME, "");
@@ -564,7 +565,6 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	@Override
 	protected void insertData(Map<String, Object> data) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
-
 	}
 
 	@Override

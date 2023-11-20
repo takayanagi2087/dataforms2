@@ -1,6 +1,7 @@
 package dataforms.devtool.pageform.page;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,12 +160,6 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	public static final String ID_QUERY_CLASS_NAME = "queryClassName";
 
 	/**
-	 * キーフィールドリスト。
-	 */
-	private static final String ID_KEY_FIELD_LIST = "keyFieldList";
-
-
-	/**
 	 * 問合せフォームクラス名フィールドID。
 	 */
 	private static final String ID_QUERY_FORM_CLASS_NAME = "queryFormClassName";
@@ -188,6 +183,25 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	 */
 	private static final String ID_EDIT_QUERY_CONFIG = "editQueryConfig";
 
+	/**
+	 * 問合せフォームの有無。
+	 */
+	private static final String ID_QUERY_FORM_SELECT = "queryFormSelect";
+
+	/**
+	 * 問合せ結果フォームの有無。
+	 */
+	private static final String ID_LIST_FORM_SELECT = "listFormSelect";
+
+	/**
+	 * 編集フォームの有無。
+	 */
+	private static final String ID_EDIT_FORM_SELECT = "editFormSelect";
+
+	/**
+	 * 編集フォームの種類。
+	 */
+	private static final String ID_EDIT_TYPE_SELECT = "editTypeSelect";
 
 
 	/**
@@ -209,10 +223,10 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.addField(new DaoClassNameField()).addValidator(new RequiredValidator()).setComment("DAOクラス名");
 		this.addField(new OverwriteModeField(ID_DAO_CLASS_OVERWRITE_MODE));
 		// ページの機能
-		this.addField(new ListFormSelectField().setHtmlFieldType(HtmlFieldType.RADIO)).setComment("問合せ結果");
-		this.addField(new QueryFormSelectField().setHtmlFieldType(HtmlFieldType.RADIO)).setComment("問合せ条件");
-		this.addField(new EditFormSelectField().setHtmlFieldType(HtmlFieldType.RADIO)).setComment("データ編集");
-		this.addField(new EditTypeSelectField().setHtmlFieldType(HtmlFieldType.RADIO)).setComment("編集対象");
+		this.addField(new ListFormSelectField().setHtmlFieldType(HtmlFieldType.SELECT)).setComment("問合せ結果");
+		this.addField(new QueryFormSelectField().setHtmlFieldType(HtmlFieldType.SELECT)).setComment("問合せ条件");
+		this.addField(new EditFormSelectField().setHtmlFieldType(HtmlFieldType.SELECT)).setComment("データ編集");
+		this.addField(new EditTypeSelectField().setHtmlFieldType(HtmlFieldType.SELECT)).setComment("編集対象");
 
 		this.addField(new QueryFormClassNameField());
 		this.addField(new OverwriteModeField(ID_QUERY_FORM_CLASS_OVERWRITE_MODE));
@@ -251,11 +265,6 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			EditableHtmlTable list = new EditableHtmlTable(ID_MULTI_RECORD_QUERY_LIST, flist);
 			this.addHtmlTable(list);
 		}
-		{
-			SelectFieldHtmlTable fieldList = new SelectFieldHtmlTable(ID_KEY_FIELD_LIST, true);
-			this.addHtmlTable(fieldList);
-		}
-
 	}
 
 	@Override
@@ -268,10 +277,10 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.setFormData(ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 		this.setFormData(ID_EDIT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 
-		this.setFormData("listFormSelect", "1");
-		this.setFormData("queryFormSelect", "1");
-		this.setFormData("editFormSelect", "1");
-		this.setFormData("editTypeSelect", "0");
+		this.setFormData(ID_LIST_FORM_SELECT, "1");
+		this.setFormData(ID_QUERY_FORM_SELECT, "1");
+		this.setFormData(ID_EDIT_FORM_SELECT, "1");
+		this.setFormData(ID_EDIT_TYPE_SELECT, "0");
 	}
 
 	// TODO:後で共通化
@@ -444,8 +453,14 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 
 		}
 		Query editQuery = querySetDao.getSingleRecordQuery();
+		if (editQuery == null) {
+			List<Query> list = querySetDao.getMultiRecordQueryList();
+			if (list != null && list.size() > 0) {
+				editQuery = list.get(0);
+			}
+		}
 		if (editQuery != null) {
-			if (listQuery instanceof SingleTableQuery) {
+			if (editQuery instanceof SingleTableQuery) {
 				ret.put(ID_EDIT_QUERY_PACKAGE_NAME, ((SingleTableQuery) editQuery).getMainTable().getClass().getPackageName());
 				ret.put(ID_EDIT_QUERY_CLASS_NAME, ((SingleTableQuery) editQuery).getMainTable().getClass().getSimpleName());
 			} else {
@@ -460,12 +475,33 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	}
 
 	/**
+	 * Daoのインスタンスを取得します。
+	 * @param page ページ。
+	 * @return Daoのインスタンス。
+	 * @throws Exception 例外。
+	 */
+	private Dao getDaoInstance(final Page page) throws Exception {
+		Method m = page.getClass().getMethod("getDaoClass");
+		if (m != null) {
+			@SuppressWarnings("unchecked")
+			Class<? extends Dao> cl = (Class<? extends Dao>) m.invoke(page);
+			return cl.getConstructor().newInstance();
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * フォームの情報を設定する。
 	 * @param p ページクラスのインスタンス。
 	 * @param ret フォームに表示するデータマップ。
 	 */
-	private void getFormInfo(final Page p, final Map<String, Object> ret) {
+	private void getFormInfo(final Page p, final Map<String, Object> ret) throws Exception {
 		Map<String, WebComponent> fm = p.getFormMap();
+		String qf = "0";
+		String qrf = "0";
+		String ef = "0";
+
 		for (String key: fm.keySet()) {
 			logger.debug("*** key=" + key);
 			WebComponent cmp = fm.get(key);
@@ -473,12 +509,38 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 				if (cmp instanceof QueryForm) {
 					ret.put(ID_QUERY_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
 					ret.put(ID_QUERY_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+					qf = "1";
 				} else if (cmp instanceof QueryResultForm) {
 					ret.put(ID_QUERY_RESULT_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
 					ret.put(ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+					qrf = "1";
 				} else if (cmp instanceof EditForm) {
 					ret.put(ID_EDIT_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
 					ret.put(ID_EDIT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+					ef = "1";
+				}
+			}
+		}
+		ret.put(ID_QUERY_FORM_SELECT, qf);
+		ret.put(ID_LIST_FORM_SELECT, qrf);
+		ret.put(ID_EDIT_FORM_SELECT, ef);
+		Dao dao = this.getDaoInstance(p);
+		if (dao != null) {
+			if ("1".equals(ef)) {
+				logger.debug("page dao=" + dao.getClass().getName());
+				if (dao instanceof QuerySetDao) {
+					String editTypeSelect = "";
+					QuerySetDao querySetDao = (QuerySetDao) dao;
+					Query sq = querySetDao.getSingleRecordQuery();
+					List<Query> mql = querySetDao.getMultiRecordQueryList();
+					if (sq != null && mql == null) {
+						editTypeSelect = "0";
+					} else if (sq != null && mql != null) {
+						editTypeSelect = "1";
+					} else if (sq == null && mql != null) {
+						editTypeSelect = "2";
+					}
+					ret.put(ID_EDIT_TYPE_SELECT, editTypeSelect);
 				}
 			}
 		}

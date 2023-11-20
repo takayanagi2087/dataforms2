@@ -449,7 +449,6 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 		} else {
 			this.setId(id);
 		}
-		this.setMatchType(this.getDefaultMatchType());
 		this.setQueryResultFormDisplay(this.getQueryResultFormDefaultDisplay());
 		this.setEditFormDisplay(this.getEditFormDefaultDisplay());
 	}

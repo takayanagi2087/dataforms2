@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                                            
+                                                
+    
     
     
     
@@ -10,7 +11,8 @@
     
     
     <wb-module deploy-name="dataforms2-2.32">
-                                                                                
+                                                                                        
+        
         
         
         
@@ -20,7 +22,8 @@
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
-                                                                                        
+                                                                                                
+        
         
         
         
@@ -31,7 +34,8 @@
         
         
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
-                                                                                        
+                                                                                                
+        
         
         
         
@@ -42,7 +46,8 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-                                                                                        
+                                                                                                
+        
         
         
         
@@ -53,7 +58,8 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/HTML"/>
-                                                                        
+                                                                                
+        
         
         
         
@@ -62,7 +68,8 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/debug"/>
-                                                                
+                                                                        
+        
         
         
         
@@ -70,7 +77,9 @@
         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
-                                                                                        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/testapp"/>
+                                                                                                
+        
         
         
         
@@ -81,7 +90,8 @@
         
         
         <property name="java-output-path" value="/dataforms/build/classes"/>
-                                                                                
+                                                                                        
+        
         
         
         
@@ -91,7 +101,8 @@
         
         
         <property name="context-root" value="dataforms2"/>
-                                                                                    
+                                                                                            
+    
     
     
     
@@ -102,7 +113,8 @@
     
     
     </wb-module>
-                                        
+                                            
+
 
 
 

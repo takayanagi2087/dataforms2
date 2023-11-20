@@ -136,27 +136,31 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 
 
 	/**
-	 * フィールド表示。
+	 * フィールドタグの生成方法。
+	 * <pre>
+	 * 開発ツール/Webリソース作成でHTMLを作成する際、
+	 * 各フィールドに対応するHTMLタグの種類を指定します。
+	 * </pre>
 	 */
 	public enum Display {
 		/**
-		 * 表示しない。
+		 * 生成しない (対応するHTMLタグは生成しません).
 		 */
 		NONE
 		/**
-		 * INPUTタグ。
+		 * 入力タグ (&lt;input&gt;/&lt;select&gt;/&lt;textarea&gt;タグ等を生成します。).
 		 */
 		, INPUT
 		/**
-		 * INPUTタグ読取専用。
+		 * 読取専用タグ (&lt;input&gt;/&lt;select&gt;/&lt;textarea&gt;タグ等を生成しreadonly属性を設定します。).
 		 */
 		, INPUT_READONLY
 		/**
-		 * INPUTタグ非表示。
+		 * 非表示タグ (&lt;input type=&quot;hidden&quot;&gt;を生成します。).
 		 */
 		, INPUT_HIDDEN
 		/**
-		 * 表示のみ。
+		 * 表示タグ (&lt;span&gt;&lt;/span&gt;タグを生成します。).
 		 */
 		, SPAN
 	}
@@ -169,12 +173,12 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	private MatchType matchType = Field.MatchType.FULL;
 
 	/**
-	 * 検索結果表示設定。
+	 * 問合せ結果フォームのフィールドタグ生成方法。
 	 */
 	private Display queryResultFormDisplay = Display.SPAN;
 
 	/**
-	 * 編集フォーム設定。
+	 * 編集フォームのフィールドタグ生成方法。
 	 */
 	private Display editFormDisplay = Display.INPUT;
 
@@ -213,13 +217,10 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	 */
 	private Object defaultValue = null;
 
-
 	/**
 	 * 値。
 	 */
 	private Object value = null;
-
-
 
 	/**
 	 * 項目長。
@@ -788,7 +789,7 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 
 
 	/**
-	 * 問合せ結果フォーム表示設定のデフォルト値を取得します。
+	 * 問合せ結果フォームフィールドタグ生成方法のデフォルト値を取得します。
 	 * @return 問合せ結果フォーム表示設定のデフォルト値。
 	 */
 	public Display getQueryResultFormDefaultDisplay() {
@@ -796,16 +797,16 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	}
 
 	/**
-	 * 問合せ結果フォーム表示設定を取得します。
-	 * @return 問合せ結果フォーム表示設定。
+	 * 問合せ結果フォームのフィールドタグ生成方法を取得します。
+	 * @return 問合せ結果フォームのフィールドタグ生成方法。
 	 */
 	public Display getQueryResultFormDisplay() {
 		return queryResultFormDisplay;
 	}
 
 	/**
-	 * 問合せ結果フォーム表示設定を設定します。
-	 * @param queryResultFormDisplay 問合せ結果フォーム表示設定。
+	 * 問合せ結果フォームのフィールドタグ生成方法を設定します。
+	 * @param queryResultFormDisplay 問合せ結果フォームのフィールドタグ生成方法。
 	 * @return フィールド。
 	 */
 	public Field<?> setQueryResultFormDisplay(final Display queryResultFormDisplay) {
@@ -814,27 +815,27 @@ public abstract class Field<TYPE> extends WebComponent implements Cloneable {
 	}
 
 	/**
-	 * 編集フォーム表示設定のデフォルト値を取得します。
-	 * @return 編集フォーム表示設定のデフォルト値。
+	 * 編集フォームフィールドタグ生成方法のデフォルト値を取得します。
+	 * @return 編集フォームフィールドタグ生成方法のデフォルト値。
 	 */
 	public Display getEditFormDefaultDisplay() {
 		return Display.INPUT;
 	}
 
 	/**
-	 * 編集フォーム表示設定を取得します。
-	 * @return 編集フォーム表示設定。
+	 * 編集フォームのフィールドタグ生成方法を取得します。
+	 * @return 編集フォームのフィールドタグ生成方法。
 	 */
 	public Display getEditFormDisplay() {
 		return editFormDisplay;
 	}
 
 	/**
-	 * 編集フォーム表示設定を設定します。
-	 * @param editFormDisplay 編集フォーム表示設定。
+	 * 編集フォームのフィールドタグ生成方法を設定します。
+	 * @param editFormDisplay 編集フォームのフィールドタグ生成方法。
 	 * @return フィールド。
 	 */
-	public Field<?> setEditFormDisplay(Display editFormDisplay) {
+	public Field<?> setEditFormDisplay(final Display editFormDisplay) {
 		this.editFormDisplay = editFormDisplay;
 		return this;
 	}

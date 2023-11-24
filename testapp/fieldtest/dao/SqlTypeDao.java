@@ -5,7 +5,7 @@ import dataforms.dao.QuerySetDao;
 
 
 /**
- * Daoクラスです。
+ * SqlTypeページ用DAOクラスです。
  *
  */
 public class SqlTypeDao extends QuerySetDao {
@@ -28,7 +28,7 @@ public class SqlTypeDao extends QuerySetDao {
 	 * @throws Exception 例外。
 	 */
 	public SqlTypeDao() {
-		this.setComment("SQLタイプDAO");
+		this.setComment("SqlTypeページ用DAOクラス");
 		this.setListQuery(this.sqlTypeTable = new SqlTypeTable());
 		this.setSingleRecordQuery(this.sqlTypeTable);
 

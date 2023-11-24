@@ -20,6 +20,7 @@ import dataforms.dao.Query;
 import dataforms.dao.QuerySetDao;
 import dataforms.dao.SingleTableQuery;
 import dataforms.devtool.base.page.DeveloperPage;
+import dataforms.devtool.dao.page.QuerySetDaoGenerator;
 import dataforms.devtool.field.DaoClassNameField;
 import dataforms.devtool.field.EditFormClassNameField;
 import dataforms.devtool.field.EditFormSelectField;
@@ -68,51 +69,51 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	/**
 	 * ページ名フィールドID。
 	 */
-	private static final String ID_FUNCTION_SELECT = "functionSelect";
+	public static final String ID_FUNCTION_SELECT = "functionSelect";
 
 	/**
 	 * ページ名フィールドID。
 	 */
-	private static final String ID_PAGE_NAME = "pageName";
+	public static final String ID_PAGE_NAME = "pageName";
 	/**
 	 * ページパッケージ名フィールドID。
 	 */
-	private static final String ID_PACKAGE_NAME = "packageName";
+	public static final String ID_PACKAGE_NAME = "packageName";
 
 	/**
 	 * DAOパッケージ名フィールドID。
 	 */
-	private static final String ID_DAO_PACKAGE_NAME = "daoPackageName";
+	public static final String ID_DAO_PACKAGE_NAME = "daoPackageName";
 
 	/**
 	 * DAOクラス名フィールドID。
 	 */
-	private static final String ID_DAO_CLASS_NAME = "daoClassName";
+	public static final String ID_DAO_CLASS_NAME = "daoClassName";
 
 	/**
 	 * ページクラス名フィールドID。
 	 */
-	private static final String ID_PAGE_CLASS_NAME = "pageClassName";
+	public static final String ID_PAGE_CLASS_NAME = "pageClassName";
 
 	/**
 	 * JavaソースパスフィールドID。
 	 */
-	private static final String ID_JAVA_SOURCE_PATH = "javaSourcePath";
+	public static final String ID_JAVA_SOURCE_PATH = "javaSourcePath";
 
 	/**
 	 * 上書きモードフィールドID。
 	 */
-	private static final String ID_PAGE_CLASS_OVERWRITE_MODE = "pageClassOverwriteMode";
+	public static final String ID_PAGE_CLASS_OVERWRITE_MODE = "pageClassOverwriteMode";
 
 	/**
 	 * 上書きモードフィールドID。
 	 */
-	private static final String ID_DAO_CLASS_OVERWRITE_MODE = "daoClassOverwriteMode";
+	public static final String ID_DAO_CLASS_OVERWRITE_MODE = "daoClassOverwriteMode";
 
 	/**
 	 * 問合せ結果フォーム上書きモードフィールドID。
 	 */
-	private static final String ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE = "queryResultFormClassOverwriteMode";
+	public static final String ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE = "queryResultFormClassOverwriteMode";
 
 	/**
 	 * 一覧問合せの機能選択フィールドID。
@@ -129,11 +130,11 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	/**
 	 * 問合せフォーム上書きモードフィールドID。
 	 */
-	private static final String ID_QUERY_FORM_CLASS_OVERWRITE_MODE = "queryFormClassOverwriteMode";
+	public static final String ID_QUERY_FORM_CLASS_OVERWRITE_MODE = "queryFormClassOverwriteMode";
 	/**
 	 * 編集フォーム上書きモードフィールドID。
 	 */
-	private static final String ID_EDIT_FORM_CLASS_OVERWRITE_MODE = "editFormClassOverwriteMode";
+	public static final String ID_EDIT_FORM_CLASS_OVERWRITE_MODE = "editFormClassOverwriteMode";
 	/**
 	 * 編集フォームレコード取得問合せの機能選択フィールドID。
 	 */
@@ -162,46 +163,46 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	/**
 	 * 問合せフォームクラス名フィールドID。
 	 */
-	private static final String ID_QUERY_FORM_CLASS_NAME = "queryFormClassName";
+	public static final String ID_QUERY_FORM_CLASS_NAME = "queryFormClassName";
 
 	/**
 	 * 問合せ結果フォームクラス名フィールドID。
 	 */
-	private static final String ID_QUERY_RESULT_FORM_CLASS_NAME = "queryResultFormClassName";
+	public static final String ID_QUERY_RESULT_FORM_CLASS_NAME = "queryResultFormClassName";
 	/**
 	 * 編集フォームクラス名フィールドID。
 	 */
-	private static final String ID_EDIT_FORM_CLASS_NAME = "editFormClassName";
+	public static final String ID_EDIT_FORM_CLASS_NAME = "editFormClassName";
 
 	/**
 	 * 一覧問合せ設定フィールドの設定情報。
 	 */
-	private static final String ID_LIST_QUERY_CONFIG = "listQueryConfig";
+	public static final String ID_LIST_QUERY_CONFIG = "listQueryConfig";
 
 	/**
 	 * 編集問合せフィールドの設定情報。
 	 */
-	private static final String ID_EDIT_QUERY_CONFIG = "editQueryConfig";
+	public static final String ID_EDIT_QUERY_CONFIG = "editQueryConfig";
 
 	/**
 	 * 問合せフォームの有無。
 	 */
-	private static final String ID_QUERY_FORM_SELECT = "queryFormSelect";
+	public static final String ID_QUERY_FORM_SELECT = "queryFormSelect";
 
 	/**
 	 * 問合せ結果フォームの有無。
 	 */
-	private static final String ID_LIST_FORM_SELECT = "listFormSelect";
+	public static final String ID_LIST_FORM_SELECT = "listFormSelect";
 
 	/**
 	 * 編集フォームの有無。
 	 */
-	private static final String ID_EDIT_FORM_SELECT = "editFormSelect";
+	public static final String ID_EDIT_FORM_SELECT = "editFormSelect";
 
 	/**
 	 * 編集フォームの種類。
 	 */
-	private static final String ID_EDIT_TYPE_SELECT = "editTypeSelect";
+	public static final String ID_EDIT_TYPE_SELECT = "editTypeSelect";
 
 
 	/**
@@ -557,6 +558,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	public List<ValidationError> validate(final Map<String, Object> param) throws Exception {
 		List<ValidationError> ret =  super.validate(param);
 		if (ret.size() == 0) {
+
 		}
 		return ret;
 
@@ -564,7 +566,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 
 	@Override
 	protected void insertData(Map<String, Object> data) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
+		QuerySetDaoGenerator gen = new QuerySetDaoGenerator();
+		gen.generage(this, data);
 	}
 
 	@Override

@@ -56,6 +56,7 @@ class FieldListForm extends Form {
 	async getFieldList(p) {
 		logger.log("class=", p);
 		this.listQuery = p.listQuery;
+		this.setFunc = p.setFunc;
 		let fieldList = this.getComponent("fieldList");
 		fieldList.setTableData(p.conf);
 		if (p.listQuery) {
@@ -76,11 +77,9 @@ class FieldListForm extends Form {
 		let editForm = currentPage.getComponent("editForm");
 		let list = this.getComponent("fieldList").getTableData();
 		let json = JSON.stringify(list);
-		logger.log("json=" + json);
-		if (this.listQuery) {
-			editForm.getComponent("listQueryConfig").setValue(json);
-		} else {
-			editForm.getComponent("editQueryConfig").setValue(json);
+		logger.log("setFunc=", this.setFunc);
+		if (this.setFunc != null) {
+			this.setFunc(json);
 		}
 		this.parent.close();
 	}

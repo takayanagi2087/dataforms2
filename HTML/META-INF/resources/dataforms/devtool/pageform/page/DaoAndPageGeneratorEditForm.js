@@ -141,7 +141,10 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 				width: 1024,
 				targetClass: pkg + "." + cls,
 				listQuery: true,
-				conf: conf
+				conf: conf,
+				setFunc: (json) => {
+					this.getComponent("listQueryConfig").setValue(json);
+				}
 			});
 		}
 	}
@@ -163,7 +166,10 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 				width: 1024,
 				targetClass: pkg + "." + cls,
 				listQuery: false,
-				conf: conf
+				conf: conf,
+				setFunc: (json) => {
+					this.getComponent("editQueryConfig").setValue(json);
+				}
 			});
 		}
 	}
@@ -228,8 +234,50 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 			logger.log("editQueryPackageName=" + editQueryPackageName, sel);
 			sel.selectPackage(editQueryPackageName);
 		}
+		this.onChangePageType(null);
+		let multiRecordQueryList = this.getComponent("multiRecordQueryList");
+		for (let i = 0; i < multiRecordQueryList.getRowCount(); i++) {
+			let sel = multiRecordQueryList.getRowField(i, "functionSelect");
+			let pkg = multiRecordQueryList.getRowField(i, "packageName").getValue();
+			sel.selectPackage(pkg);
+		}
+		if (multiRecordQueryList.getRowCount() > 0) {
+			this.find("[id$='\.fieldButton']").click((ev) => {
+				this.onFieldButton(ev);
+			});
+		}
 	}
 
+	/**
+	 * フィールド設定ボタンの処理。
+	 */
+	onFieldButton(ev) {
+		logger.log("ev=", ev);
+		let multiRecordQueryList = this.getComponent("multiRecordQueryList");
+		let pkg = multiRecordQueryList.getSameRowField($(ev.currentTarget), "packageName").val();
+		let cls = multiRecordQueryList.getSameRowField($(ev.currentTarget), "queryClassName").val();
+		let confField = multiRecordQueryList.getSameRowField($(ev.currentTarget), "queryConfig");
+		let json = confField.val();
+		let conf = JSON.parse(json);
+		logger.log("conf=", conf);
+		let fieldListDialog = this.parent.getComponent("fieldListDialog");
+		logger.log("fieldListDialog=", fieldListDialog);
+		logger.log("pkg=" + pkg + ", cls=" + cls);
+		if (pkg.length > 0 && cls.length > 0) {
+			fieldListDialog.showModal({
+				title: MessagesUtil.getMessage("daoandpagegenerator.editfielddialog"),
+				width: 1024,
+				targetClass: pkg + "." + cls,
+				listQuery: false,
+				conf: conf,
+				setFunc: (json) => {
+					logger.log("*** json=" + json);
+					logger.log("confField=", confField);
+					confField.val(json);
+				}
+			});
+		}
+	}
 
 
 	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。

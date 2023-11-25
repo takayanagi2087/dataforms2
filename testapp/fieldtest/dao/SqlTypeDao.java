@@ -22,6 +22,19 @@ public class SqlTypeDao extends QuerySetDao {
 		return this.sqlTypeTable;
 	}
 
+	/**
+	 * SQLデータ型テーブル2。
+	 */
+	private SqlType2Table sqlType2Table = null;
+
+	/**
+	 * SQLデータ型テーブル2を取得します。
+	 * @return SQLデータ型テーブル2。
+	 */
+	public SqlType2Table getSqlType2Table() {
+		return this.sqlType2Table;
+	}
+
 
 	/**
 	 * コンストラクタ。
@@ -31,6 +44,7 @@ public class SqlTypeDao extends QuerySetDao {
 		this.setComment("SqlTypeページ用DAOクラス");
 		this.setListQuery(this.sqlTypeTable = new SqlTypeTable());
 		this.setSingleRecordQuery(this.sqlTypeTable);
+		this.addMultiRecordQueryList(this.sqlType2Table = new SqlType2Table());
 
 	}
 

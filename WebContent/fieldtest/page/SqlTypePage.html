@@ -235,6 +235,108 @@
 						</tr>
 					</tbody>
 				</table>
+				<div class="hScrollDiv">
+					<table id="sqlType2List" class="editableTable">
+						<thead>
+							<tr>
+								<th colspan="2" nowrap>
+									
+								</th>
+								<th nowrap>
+									No.
+								</th>
+								<th>
+									CHARフィールド
+								</th>
+								<th>
+									VarcharField
+								</th>
+								<th>
+									SMALLINTフィールド
+								</th>
+								<th>
+									INTEGERフィールド
+								</th>
+								<th>
+									DOUBLEフィールド
+								</th>
+								<th>
+									NUMERICフィールド
+								</th>
+								<th>
+									DATEフィールド
+								</th>
+								<th>
+									TIMEフィールド
+								</th>
+								<th>
+									TIMESTAMPフィールド
+								</th>
+								<th>
+									CLOBフィールド
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="buttonColumn">
+									<input type="button" id="sqlType2List[0].addButton" value="+"/>
+								</td>
+								<td class="buttonColumn">
+									<input type="button" id="sqlType2List[0].deleteButton" value="-"/>
+								</td>
+								<td style="text-align: right;" class="rowno">
+									<span id="sqlType2List[0].no"></span>
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlChar2" />
+									<input type="hidden" id="sqlType2List[0].sqlType2Id" />
+									<input type="hidden" id="sqlType2List[0].sqlTypeId" />
+									<input type="hidden" id="sqlType2List[0].createUserId" />
+									<input type="hidden" id="sqlType2List[0].createTimestamp" />
+									<input type="hidden" id="sqlType2List[0].updateUserId" />
+									<input type="hidden" id="sqlType2List[0].updateTimestamp" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlVarchar2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlSmallint2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlInteger2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlDouble2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlNumeric2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlDate2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlTime2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlTimestamp2" />
+								</td>
+								<td>
+									<textarea id="sqlType2List[0].sqlClob2" rows="20" cols="80"></textarea>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th class="buttonColumn">
+									<input type="button" id="sqlType2List.addButton" value="+"/>
+								</th>
+								<th colspan="12">
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
 				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
 				<input type="button" id="saveButton" class="largeButton" value="登録"/>
 				<input type="button" id="resetButton" class="largeButton" value="リセット"/>

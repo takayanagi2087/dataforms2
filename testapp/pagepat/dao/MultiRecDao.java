@@ -9,7 +9,7 @@ import dataforms.dao.Query;
 
 
 /**
- * 複数レコード編集DAOです。
+ * 複数レコード編集ページ用DAOクラスです。
  *
  */
 public class MultiRecDao extends QuerySetDao {
@@ -58,7 +58,7 @@ public class MultiRecDao extends QuerySetDao {
 	 * @throws Exception 例外。
 	 */
 	public MultiRecDao() {
-		this.setComment("複数レコード編集DAO");
+		this.setComment("複数レコード編集ページ用DAOクラス");
 		this.setListQuery(this.code1CountQuery = new Code1CountQuery());
 		this.setSingleRecordQuery((Query) null);
 		this.addMultiRecordQueryList(this.code12Table = new Code12Table());

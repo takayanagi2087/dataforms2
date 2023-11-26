@@ -8,6 +8,12 @@ import java.util.Set;
  *
  */
 public class ImportUtil {
+
+	/**
+	 * インポートコードを出力するソースのパッケージ。
+	 */
+	private String currentPackage = null;
+
 	/**
 	 * クラス名の集合。
 	 */
@@ -17,7 +23,16 @@ public class ImportUtil {
 	 * コンストラクタ。
 	 */
 	public ImportUtil() {
+		this.currentPackage = null;
+	}
 
+
+	/**
+	 * コンストラクタ。
+	 * @param currentPackage インポートコードを出力するソースのパッケージ。
+	 */
+	public ImportUtil(final String currentPackage) {
+		this.currentPackage = currentPackage;
 	}
 
 	/**
@@ -25,6 +40,11 @@ public class ImportUtil {
 	 * @param cls クラス名。
 	 */
 	public void add(final String cls) {
+		if (this.currentPackage != null) {
+			if (cls.indexOf(this.currentPackage) == 0) {
+				return;
+			}
+		}
 		if (!this.set.contains(cls)) {
 			this.set.add(cls);
 		}

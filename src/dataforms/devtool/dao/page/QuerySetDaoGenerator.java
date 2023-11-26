@@ -12,8 +12,10 @@ import org.apache.logging.log4j.Logger;
 
 import dataforms.controller.Form;
 import dataforms.dao.Query;
+import dataforms.dao.SingleTableQuery;
 import dataforms.dao.Table;
 import dataforms.devtool.pageform.page.DaoAndPageGeneratorEditForm;
+import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.field.base.Field;
 import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;
@@ -117,7 +119,12 @@ public class QuerySetDaoGenerator {
 
 	}
 
-	private List<Map<String, Object>> getListFieldList(final Map<String, Object> data) {
+	/**
+	 * 一覧取得問合せ設定情報を取得します。
+	 * @param data POSTされたデータ。
+	 * @return 一覧取得問合せ設定情報。
+	 */
+	private List<Map<String, Object>> getListQueryConfig(final Map<String, Object> data) {
 		String json = (String) data.get(DaoAndPageGeneratorEditForm.ID_LIST_QUERY_CONFIG);
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = JSON.decode(json, ArrayList.class);
@@ -185,13 +192,12 @@ public class QuerySetDaoGenerator {
 			}
 		}
 		{
-/*			@SuppressWarnings("unchecked")
-			List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(DaoAndPageGeneratorEditForm.ID_KEY_FIELD_LIST);
+			List<Map<String, Object>> list = this.getListQueryConfig(data);
 			for (Map<String, Object> m: list) {
-				String sel = (String) m.get("sel");
+				String sel = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
 				if ("1".equals(sel)) {
-					String fieldId = (String) m.get("fieldId");
-					String fullClassName = (String) m.get("fieldClassName");
+					String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+					String fullClassName = (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
 					int idx = fullClassName.lastIndexOf(".");
 					if (idx >= 0) {
 						if (!set.contains(fullClassName)) {
@@ -202,7 +208,7 @@ public class QuerySetDaoGenerator {
 						}
 					}
 				}
-			}*/
+			}
 		}
 		return sb.toString();
 	}
@@ -214,14 +220,14 @@ public class QuerySetDaoGenerator {
 	 * @param implist インポートリスト。
 	 * @return javaソース文字列。
 	 */
-	private String noEditForm(String javasrc, final ImportUtil implist) {
+/*	private String noEditForm(String javasrc, final ImportUtil implist) {
 		implist.add(Table.class.getName());
 		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
 		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "");
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", "Table");
 		implist.add("dataforms.dao.Query");
 		return javasrc;
-	}
+	}*/
 
 	/**
 	 * Mainテーブルを取得します。
@@ -313,8 +319,8 @@ public class QuerySetDaoGenerator {
 	private String getKeyListSource(final Map<String, Object> data, final ImportUtil implist, final String packagename, final String classname) throws Exception {
 		int cnt = 0;
 		StringBuilder sb = new StringBuilder();
-/*		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(DaoAndPageGeneratorEditForm.ID_KEY_FIELD_LIST);
+		List<Map<String, Object>> list = this.getListQueryConfig(data);
+
 		Class<?> cls = Class.forName(packagename + "." + classname);
 		if (Table.class.isAssignableFrom(cls)) {
 			sb.append("\t\tQuery query = new SingleTableQuery(new " + classname + "());\n");
@@ -324,16 +330,16 @@ public class QuerySetDaoGenerator {
 		sb.append("\t\tthis.setMultiRecordQueryKeyList(new FieldList(\n");
 		StringBuilder fsb = new StringBuilder();
 		for (Map<String, Object> m: list) {
-			String sel = (String) m.get("sel");
+			String sel = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
 			if ("1".equals(sel)) {
 				if (fsb.length() > 0) {
 					fsb.append("\t\t\t, ");
 				} else {
 					fsb.append("\t\t\t");
 				}
-				String fieldId = (String) m.get("fieldId");
-				String tbl = (String) m.get("tableClassName");
-				String fieldClassName = (String) m.get("fieldClassName");
+				String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+				String tbl = (String) m.get(SelectFieldHtmlTable.ID_TABLE_CLASS_NAME);
+				String fieldClassName = (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
 				int idx = fieldClassName.lastIndexOf(".");
 				if (idx >= 0) {
 					fieldClassName = fieldClassName.substring(idx + 1);
@@ -353,8 +359,7 @@ public class QuerySetDaoGenerator {
 			return sb.toString();
 		} else {
 			return "";
-		}*/
-		return sb.toString();
+		}
 	}
 
 
@@ -393,16 +398,16 @@ public class QuerySetDaoGenerator {
 	 * @throws Exception 例型。
 	 */
 	public void generage(final Form form, final Map<String, Object> data) throws Exception {
-		List<Map<String, Object>> list = this.getListFieldList(data);
+		List<Map<String, Object>> list = this.getListQueryConfig(data);
 		logger.debug("fieldList=" + list.getClass().getName());
 		for (int i = 0; i < list.size(); i++) {
 			logger.debug("fieldInfo=" + JSON.encode(list.get(i)));
 		}
-		ImportUtil implist = new ImportUtil();
 		String javasrc = this.getStringResourse("template/QuerySetDao.java.template");
 		//logger.debug("template=" + javasrc);
 		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_PACKAGE_NAME);
 		String daoClassName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_CLASS_NAME);
+		ImportUtil implist = new ImportUtil(packageName);
 		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", packageName);
 		javasrc = javasrc.replaceAll("\\$\\{daoClassName\\}", daoClassName);
 		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.getProperties(data, implist));

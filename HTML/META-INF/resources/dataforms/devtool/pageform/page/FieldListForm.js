@@ -74,7 +74,6 @@ class FieldListForm extends Form {
 	 * OKボタンの処理。
 	 */
 	onOk() {
-		let editForm = currentPage.getComponent("editForm");
 		let list = this.getComponent("fieldList").getTableData();
 		let json = JSON.stringify(list);
 		logger.log("setFunc=", this.setFunc);

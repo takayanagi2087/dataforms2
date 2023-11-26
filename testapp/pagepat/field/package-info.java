@@ -1,0 +1,4 @@
+/**
+ * ページパタンテストFieldパッケージ。
+ */
+package pagepat.field;

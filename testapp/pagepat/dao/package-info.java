@@ -1,0 +1,4 @@
+/**
+ * ページパタンテストDAOパッケージ。
+ */
+package pagepat.dao;

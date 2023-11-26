@@ -1,0 +1,4 @@
+/**
+ * ページパタンテストPageパッケージ。
+ */
+package pagepat.page;

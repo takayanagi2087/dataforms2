@@ -213,6 +213,12 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			// ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
 			ret.add(ent);
 		}
+		if (pk == false) {
+			// PKが無かった場合、先頭の項目を条件項目に設定する。
+			Map<String, Object> m = ret.get(0);
+			m.put(ID_LIST_FIELD_DISPLAY, Field.Display.INPUT_HIDDEN);
+			m.put(ID_EDIT_KEY, "1");
+		}
 		return ret;
 	}
 

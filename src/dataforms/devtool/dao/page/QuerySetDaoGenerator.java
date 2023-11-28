@@ -192,19 +192,22 @@ public class QuerySetDaoGenerator {
 			}
 		}
 		{
-			List<Map<String, Object>> list = this.getListQueryConfig(data);
-			for (Map<String, Object> m: list) {
-				String sel = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
-				if ("1".equals(sel)) {
-					String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
-					String fullClassName = (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
-					int idx = fullClassName.lastIndexOf(".");
-					if (idx >= 0) {
-						if (!set.contains(fullClassName)) {
-							sb.append(this.getFieldProperty(fieldId, fullClassName));
-							set.add(fullClassName);
-							implist.add(fullClassName);
-							// implist.add(fullClassName);
+			String editFormType = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_TYPE_SELECT);
+			if ("2".equals(editFormType)) {
+				List<Map<String, Object>> list = this.getListQueryConfig(data);
+				for (Map<String, Object> m: list) {
+					String sel = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
+					if ("1".equals(sel)) {
+						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+						String fullClassName = (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
+						int idx = fullClassName.lastIndexOf(".");
+						if (idx >= 0) {
+							if (!set.contains(fullClassName)) {
+								sb.append(this.getFieldProperty(fieldId, fullClassName));
+								set.add(fullClassName);
+								implist.add(fullClassName);
+								// implist.add(fullClassName);
+							}
 						}
 					}
 				}
@@ -430,14 +433,23 @@ public class QuerySetDaoGenerator {
 				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "(Query) null");
 			}
 		}
+		String editFormSelect = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_FORM_SELECT);
 		String editFormType = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_TYPE_SELECT);
-		if ("0".equals(editFormType)) {
-			javasrc = this.singleRecordEditForm(data, implist, javasrc);
-//			javasrc = this.noEditForm(javasrc, implist);
-		} else if ("1".equals(editFormType)) {
-			javasrc = this.singleRecordEditForm(data, implist, javasrc);
+		if ("1".equals(editFormSelect)) {
+			if ("0".equals(editFormType)) {
+				javasrc = this.singleRecordEditForm(data, implist, javasrc);
+//				javasrc = this.noEditForm(javasrc, implist);
+			} else if ("1".equals(editFormType)) {
+				javasrc = this.singleRecordEditForm(data, implist, javasrc);
+			} else {
+				javasrc = this.multiRecordEditForm(data, implist, javasrc);
+			}
 		} else {
-			javasrc = this.multiRecordEditForm(data, implist, javasrc);
+			javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
+			javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "");
+			javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", "Table");
+			implist.add(dataforms.dao.Query.class);
+			implist.add(dataforms.dao.Table.class);
 		}
 		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", implist.getImportText());
 		logger.debug("javasrc={}", javasrc);

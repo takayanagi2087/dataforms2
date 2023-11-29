@@ -86,12 +86,15 @@ public abstract class EditForm extends Form {
 	 */
 	public void addFields(final QuerySetDao dao) {
 		if (dao.getSingleRecordQuery() != null) {
+			// 単一レコード問合せが指定された場合、そのフィールドをフォームに展開する。
 			FieldList flist = dao.getSingleRecordQuery().getFieldList();
 			this.addFieldList(flist);
 		} else if (dao.getMultiRecordQueryKeyList() != null){
+			// 複数レコードレコード問合せが指定された場合、編集対象のレコードを限定するキーフィールドをフォームに展開する。
 			this.addFieldList(dao.getMultiRecordQueryKeyList());
 		}
 		if (dao.getMultiRecordQueryList() != null) {
+			// 複数レコードレコード問合せが指定された場合、それに対応するHtmlTableを展開する。
 			for (Query q: dao.getMultiRecordQueryList()) {
 				HtmlTable rtable = this.createHtmlTable(q);
 				this.addHtmlTable(rtable);

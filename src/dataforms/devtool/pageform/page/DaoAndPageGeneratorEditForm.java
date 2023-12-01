@@ -24,17 +24,14 @@ import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.dao.page.QuerySetDaoGenerator;
 import dataforms.devtool.field.DaoClassNameField;
 import dataforms.devtool.field.EditFormClassNameField;
-import dataforms.devtool.field.EditFormSelectField;
-import dataforms.devtool.field.EditTypeSelectField;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.JavaSourcePathField;
-import dataforms.devtool.field.ListFormSelectField;
 import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.PageClassNameField;
 import dataforms.devtool.field.PageNameField;
+import dataforms.devtool.field.PagePatternSelectField;
 import dataforms.devtool.field.QueryFormClassNameField;
-import dataforms.devtool.field.QueryFormSelectField;
 import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryResultFormClassNameField;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
@@ -66,6 +63,32 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	 * Logger.
 	 */
 	private static Logger logger = LogManager.getLogger(DaoAndPageGeneratorEditForm.class);
+
+	/**
+	 * ページの動作パターン。
+	 */
+	private static final String ID_PAGE_PATTERN = "pagePattern";
+
+	/**
+	 * 問合せフォームの有無。
+	 */
+	public static final String ID_QUERY_FORM_SELECT = "queryFormSelect";
+
+	/**
+	 * 問合せ結果フォームの有無。
+	 */
+	public static final String ID_LIST_FORM_SELECT = "listFormSelect";
+
+	/**
+	 * 編集フォームの有無。
+	 */
+	public static final String ID_EDIT_FORM_SELECT = "editFormSelect";
+
+	/**
+	 * 編集フォームの種類。
+	 */
+	public static final String ID_EDIT_TYPE_SELECT = "editTypeSelect";
+
 
 	/**
 	 * ページ名フィールドID。
@@ -186,26 +209,6 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	public static final String ID_EDIT_QUERY_CONFIG = "editQueryConfig";
 
 	/**
-	 * 問合せフォームの有無。
-	 */
-	public static final String ID_QUERY_FORM_SELECT = "queryFormSelect";
-
-	/**
-	 * 問合せ結果フォームの有無。
-	 */
-	public static final String ID_LIST_FORM_SELECT = "listFormSelect";
-
-	/**
-	 * 編集フォームの有無。
-	 */
-	public static final String ID_EDIT_FORM_SELECT = "editFormSelect";
-
-	/**
-	 * 編集フォームの種類。
-	 */
-	public static final String ID_EDIT_TYPE_SELECT = "editTypeSelect";
-
-	/**
 	 * 複数レコード編集問合せのフィールド設定。
 	 */
 	private static final String ID_QUERY_CONFIG = "queryConfig";
@@ -219,6 +222,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		funcField.setPackageOption("page", "dao");
 		funcField.setPackageFieldId(ID_PACKAGE_NAME, ID_DAO_PACKAGE_NAME);
 		funcField.setCalcEventField(true);
+		// ページの機能
+		this.addField(new PagePatternSelectField(ID_PAGE_PATTERN).setHtmlFieldType(HtmlFieldType.SELECT)).setComment("ページの動作");
 		// 生成するクラス
 		this.addField(funcField);
 		this.addField(new PageNameField()).addValidator(new RequiredValidator());
@@ -228,11 +233,6 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.addField(new PackageNameField("daoPackageName")).addValidator(new RequiredValidator()).setComment("DAOパッケージ名");
 		this.addField(new DaoClassNameField()).addValidator(new RequiredValidator()).setComment("DAOクラス名");
 		this.addField(new OverwriteModeField(ID_DAO_CLASS_OVERWRITE_MODE));
-		// ページの機能
-		this.addField(new ListFormSelectField().setHtmlFieldType(HtmlFieldType.SELECT)).setComment("問合せ結果");
-		this.addField(new QueryFormSelectField().setHtmlFieldType(HtmlFieldType.SELECT)).setComment("問合せ条件");
-		this.addField(new EditFormSelectField().setHtmlFieldType(HtmlFieldType.SELECT)).setComment("データ編集");
-		this.addField(new EditTypeSelectField().setHtmlFieldType(HtmlFieldType.SELECT)).setComment("編集対象");
 
 		this.addField(new QueryFormClassNameField());
 		this.addField(new OverwriteModeField(ID_QUERY_FORM_CLASS_OVERWRITE_MODE));
@@ -244,7 +244,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.addField((new QueryOrTableClassNameField(ID_LIST_QUERY_CLASS_NAME))
 			.setPackageNameFieldId(ID_LIST_QUERY_PACKAGE_NAME))
 			.setAutocomplete(true)
-			.setRelationDataAcquisition(true);
+			.setRelationDataAcquisition(true)
+			.setCalcEventField(true);
 		this.addField(new TextField(ID_LIST_QUERY_CONFIG));	// 一覧問合せの設定情報
 		this.addField(new EditFormClassNameField());
 		this.addField(new OverwriteModeField(ID_EDIT_FORM_CLASS_OVERWRITE_MODE));
@@ -258,7 +259,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			.setPackageNameFieldId(ID_EDIT_QUERY_PACKAGE_NAME))
 			.setCalcEventField(true)
 			.setAutocomplete(true)
-			.setRelationDataAcquisition(true);
+			.setRelationDataAcquisition(true)
+			.setCalcEventField(true);
 		this.addField(new TextField(ID_EDIT_QUERY_CONFIG));	// 編集対象取得問合せの設定情報
 		//
 		{
@@ -283,6 +285,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.setFormData(ID_QUERY_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 		this.setFormData(ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 		this.setFormData(ID_EDIT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+
+		this.setFormData(ID_PAGE_PATTERN, "p2111");
 
 		this.setFormData(ID_LIST_FORM_SELECT, "1");
 		this.setFormData(ID_QUERY_FORM_SELECT, "1");
@@ -464,17 +468,36 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	}
 
 	/**
+	 * 編集対象を特定するキーを設定する。
+	 * @param dao DAOのインスタンス。
+	 * @param list フィールドの設定情報。
+	 */
+	private void setEditKey(final QuerySetDao dao, final List<Map<String, Object>> list) {
+		FieldList kflist = dao.getEditFormKeyList();
+		if (kflist != null) {
+			for (Map<String, Object> m: list) {
+				String id = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+				if (kflist.get(id) != null) {
+					m.put(SelectFieldHtmlTable.ID_EDIT_KEY, "1");
+				} else {
+					m.put(SelectFieldHtmlTable.ID_EDIT_KEY, "0");
+				}
+			}
+		}
+	}
+
+	/**
 	 * 問合せ情報を設定する。
-	 * @param dao DAOクラスのインスタンス。む
+	 * @param dao DAOクラスのインスタンス。
 	 * @param p ページクラスのインスタンス。
 	 * @param ret フォームに表示するデータマップ。
 	 */
 	private void getQueryInfo(final Dao dao, final Page p, final Map<String, Object> ret) {
 		QuerySetDao querySetDao = (QuerySetDao) dao;
 		Query listQuery = querySetDao.getListQuery();
-		logger.debug("listQuery package=" + listQuery.getClass().getPackageName());
-		logger.debug("listQuery class=" + listQuery.getClass().getName());
 		if (listQuery != null) {
+			logger.debug("listQuery package=" + listQuery.getClass().getPackageName());
+			logger.debug("listQuery class=" + listQuery.getClass().getName());
 			if (listQuery instanceof SingleTableQuery) {
 				ret.put(ID_LIST_QUERY_PACKAGE_NAME, ((SingleTableQuery) listQuery).getMainTable().getClass().getPackageName());
 				ret.put(ID_LIST_QUERY_CLASS_NAME, ((SingleTableQuery) listQuery).getMainTable().getClass().getSimpleName());
@@ -506,6 +529,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			}
 			EditForm ef = (EditForm) p.getComponent(Page.ID_EDIT_FORM);
 			List<Map<String, Object>> list = this.getEditQueryFieldConf(editQuery, ef);
+			this.setEditKey(querySetDao, list);
 			ret.put(ID_EDIT_QUERY_CONFIG, JSON.encode(list));
 			List<Query> qlist = querySetDao.getMultiRecordQueryList();
 			List<Map<String, Object>> multiRecordQueryList = new ArrayList<Map<String, Object>>();

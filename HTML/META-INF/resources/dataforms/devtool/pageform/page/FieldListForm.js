@@ -34,7 +34,7 @@ class FieldListForm extends Form {
 
 	onCalc(jq) {
 		logger.log("onCalc");
-		let table = this.getComponent("fieldList");
+/*		let table = this.getComponent("fieldList");
 		if (table != null) {
 			for (let i = 0; i < table.getRowCount(); i++) {
 				let v = table.getRowField(i, "listFieldDisplay").getValue();
@@ -46,7 +46,7 @@ class FieldListForm extends Form {
 					table.getRowField(i, "editKey").get().prop("disabled", false);
 				}
 			}
-		}
+		}*/
 	}
 
 	/**

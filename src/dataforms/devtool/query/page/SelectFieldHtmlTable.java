@@ -152,11 +152,18 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	/**
 	 * 一覧フォームのフィールド表示設定。
 	 * @param f フィールド。
+	 * @param idx フィールドインデックス。
 	 * @return フィールド表示情報。
 	 */
-	private static Field.Display getListFieldDisplay(final Field<?> f) {
+	private static Field.Display getListFieldDisplay(final Field<?> f, final int idx) {
 		Field.Display ret = Field.Display.NONE;
-		if (f.isHidden()) {
+		if (idx == 0) {
+			if (f.isHidden()) {
+				ret = Field.Display.INPUT_HIDDEN;
+			} else {
+				ret = Field.Display.INPUT_READONLY;
+			}
+		} else 	if (f.isHidden()) {
 			ret = Field.Display.INPUT_HIDDEN;
 		} else {
 			ret = Field.Display.SPAN;
@@ -189,6 +196,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	public static List<Map<String, Object>> getTableData(final FieldList flist, final String alias) {
 		boolean pk = false;
 		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+		int idx = 0;
 		for (Field<?> f: flist) {
 			Map<String, Object> ent = new HashMap<String, Object>();
 			Table table = f.getTable();
@@ -207,7 +215,7 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			} else {
 				ent.put(ID_EDIT_KEY, "0");
 			}
-			ent.put(ID_LIST_FIELD_DISPLAY, SelectFieldHtmlTable.getListFieldDisplay(f));
+			ent.put(ID_LIST_FIELD_DISPLAY, SelectFieldHtmlTable.getListFieldDisplay(f, idx++));
 			ent.put(ID_EDIT_FIELD_DISPLAY, SelectFieldHtmlTable.getEditFieldDisplay(f));
 
 			// ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());

@@ -22,9 +22,14 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	 */
 	attach() {
 		super.attach();
+		this.get("pagePattern").change((ev) => {
+			this.onChangePagePattern();
+		});
+
 		this.get("pageClassName").change((ev) => {
 			this.onUpdateClassName($(ev.currentTarget));
 		});
+
 		this.find("select.pageType").change((ev) => {
 			this.onChangePageType(ev);
 		});
@@ -35,6 +40,18 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 			this.onEditQueryButton();
 		});
 		this.onChangePageType(null);
+	}
+
+	/**
+	 * ページ動作の変更時の処理。
+	 */
+	onChangePagePattern() {
+		let v = this.get("pagePattern").val();
+		logger.log("v=" + v);
+		this.find("div.pageDesc").hide();
+		let did ="desc" + v.substring(2);
+		logger.log("did=" + did);
+		this.get(did).show();
 	}
 
 	/**
@@ -57,10 +74,11 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	 */
 	onChangePageType(ev) {
 		logger.log("ev=", ev);
-		let queryFormSelect = this.get("queryFormSelect").val();
-		let listFormSelect = this.get("listFormSelect").val();
-		let editFormSelect = this.get("editFormSelect").val();
-		let editTypeSelect = this.get("editTypeSelect").val();
+		let pagePattern = this.get("pagePattern").val();
+		let queryFormSelect = pagePattern.charAt(2);
+		let listFormSelect = pagePattern.charAt(3);
+		let editFormSelect = pagePattern.charAt(4);
+//		let editTypeSelect = this.get("editTypeSelect").val();
 		this.find(".listQueryCondition").hide();
 		this.find(".editQueryCondition").hide();
 		this.find(".noNextForm").hide();
@@ -95,15 +113,10 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 			}
 			this.find(".editForm").prop("disabled", false);
 		}
-		if (editTypeSelect == "0") {
-			this.find(".multiRecoedQueryList").hide();
-			this.find(".keyFieldList").hide();
-		} else if (editTypeSelect == "1") {
+		if (editFormSelect == "1") {
 			this.find(".multiRecoedQueryList").show();
-			this.find(".keyFieldList").hide();
 		} else {
 			this.find(".multiRecoedQueryList").hide();
-			this.find(".keyFieldList").show();
 		}
 	}
 
@@ -246,6 +259,7 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 				this.onFieldButton(ev);
 			});
 		}
+		this.onChangePagePattern();
 	}
 
 	/**
@@ -279,6 +293,24 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		}
 	}
 
+	/**
+	 * フォームのバリデーション。
+	 * <pre>
+	 * フォーム内のフィールド関連チェックを実装します。
+	 * </pre>
+	 */
+	validateForm() {
+		let list = super.validateForm();
+		if (list.length == 0) {
+			let json = this.get("editQueryConfig").val();
+			let flist = JSON.parse(json);
+			logger.log("editFieldList=", flist);
+//			if (false) {
+//				list.push(new ValidationError("fieldId", MessagesUtil.getMessage("error.messagekey")));
+//			}
+		}
+		return list;
+	}
 
 	// 独自のWebメソッドを呼び出す場合は、以下のコードを参考にしてください。
 	/**
@@ -305,25 +337,6 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	}
 */
 
-
-	// フォーム単位のバリデーションを行う場合は以下のコメントを参考に実装してください。
-	/**
-	 * フォームのバリデーション。
-	 * <pre>
-	 * フォーム内のフィールド関連チェックを実装します。
-	 * </pre>
-	 */
-/*
-	validateForm() {
-		let list = super.validateForm();
-		if (list.length == 0) {
-			if (エラー判定) {
-				list.push(new ValidationError("fieldId", MessagesUtil.getMessage("error.messagekey")));
-			}
-		}
-		return list;
-	}
-*/
 
 	// フォームの計算処理を行う場合、以下の処理を参考にしてください。
 	/**

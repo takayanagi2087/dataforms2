@@ -21,11 +21,11 @@
 						<th class="listQuery">
 							検索条件
 						</th>
+						<th class="editQuery">
+							編集対象を特定するキー
+						</th>
 						<th class="listQuery">
 							生成するフィールドタグ
-						</th>
-						<th class="listQuery" title="リストを選択した際に編集フォームに渡すキー項目をチェックします。">
-							編集キー
 						</th>
 						<th class="editQuery">
 							生成するフィールドタグ
@@ -52,11 +52,11 @@
 						<td style="width: 200px;" class="listQuery">
 							<select id="fieldList[0].matchType"></select>
 						</td>
+						<td  style="width: 160px; text-align: center;" class="editQuery">
+							<input type="checkbox" id="fieldList[0].editKey" value="1" />
+						</td>
 						<td  style="width: 200px;" class="listQuery">
 							<select id="fieldList[0].listFieldDisplay"></select>
-						</td>
-						<td  style="width: 80px; text-align: center;" class="listQuery">
-							<input type="checkbox" id="fieldList[0].editKey" value="1" />
 						</td>
 						<td  style="width: 200px;" class="editQuery">
 							<select id="fieldList[0].editFieldDisplay"></select>

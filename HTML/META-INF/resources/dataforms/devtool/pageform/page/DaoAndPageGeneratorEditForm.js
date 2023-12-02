@@ -47,11 +47,13 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	 */
 	onChangePagePattern() {
 		let v = this.get("pagePattern").val();
-		logger.log("v=" + v);
-		this.find("div.pageDesc").hide();
-		let did ="desc" + v.substring(2);
-		logger.log("did=" + did);
-		this.get(did).show();
+		if (v != null && v.length > 0) {
+			logger.log("v=" + v);
+			this.find("div.pageDesc").hide();
+			let did ="desc" + v.substring(2);
+			logger.log("did=" + did);
+			this.get(did).show();
+		}
 	}
 
 	/**
@@ -62,6 +64,7 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		let pcname = pc.val();
 		let n = pcname.replace(/Page$/, "");
 		this.setFieldValue("daoClassName", n + "Dao");
+		this.setFieldValue("formClassName", n + "Form");
 		this.setFieldValue("queryFormClassName", n + "QueryForm");
 		this.setFieldValue("queryResultFormClassName", n + "QueryResultForm");
 		this.setFieldValue("editFormClassName", n + "EditForm");
@@ -75,48 +78,60 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	onChangePageType(ev) {
 		logger.log("ev=", ev);
 		let pagePattern = this.get("pagePattern").val();
-		let queryFormSelect = pagePattern.charAt(2);
-		let listFormSelect = pagePattern.charAt(3);
-		let editFormSelect = pagePattern.charAt(4);
-//		let editTypeSelect = this.get("editTypeSelect").val();
-		this.find(".listQueryCondition").hide();
-		this.find(".editQueryCondition").hide();
-		this.find(".noNextForm").hide();
-		if ("1" == queryFormSelect) {
-			this.find(".queryForm").prop("disabled", false);
-			if ("1" == listFormSelect) {
-				this.find(".listQueryCondition").show();
-			} else if ("1" == editFormSelect) {
-				this.find(".editQueryCondition").show();
+		if (pagePattern != null && pagePattern.length > 0) {
+			let queryFormSelect = pagePattern.charAt(2);
+			let listFormSelect = pagePattern.charAt(3);
+			let editFormSelect = pagePattern.charAt(4);
+
+			if (queryFormSelect == "0" && listFormSelect == "0" && editFormSelect == "0") {
+				this.get("formClassName").prop("disabled", false);
+				this.get("formClassOverwriteMode").prop("disabled", false);
+				this.find(".queryForm").prop("disabled", true);
+				this.find(".listForm").prop("disabled", true);
+				this.find(".editForm").prop("disabled", true);
 			} else {
-				this.find(".noNextForm").show();
+				this.get("formClassName").prop("disabled", true);
+				this.get("formClassOverwriteMode").prop("disabled", true);
+				this.find(".listQueryCondition").hide();
+				this.find(".editQueryCondition").hide();
+				this.find(".noNextForm").hide();
+				if ("1" == queryFormSelect) {
+					this.find(".queryForm").prop("disabled", false);
+					if ("1" == listFormSelect) {
+						this.find(".listQueryCondition").show();
+					} else if ("1" == editFormSelect) {
+						this.find(".editQueryCondition").show();
+					} else {
+						this.find(".noNextForm").show();
+					}
+					this.find(".queryForm").prop("disabled", false);
+				} else {
+					this.find(".queryForm").prop("disabled", true);
+				}
+				if (listFormSelect == "0") {
+					this.find(".queryResultFormDesc").hide();
+					this.find(".listForm").prop("disabled", true);
+				} else {
+					this.find(".queryResultFormDesc").show();
+					this.find(".listForm").prop("disabled", false);
+				}
+				if (editFormSelect == "0") {
+					this.find(".editFormDesc").hide();
+					this.find(".editQueryCondition1").hide();
+					this.find(".editForm").prop("disabled", true);
+				} else {
+					this.find(".editFormDesc").show();
+					if (listFormSelect == 1) {
+						this.find(".editQueryCondition1").show();
+					}
+					this.find(".editForm").prop("disabled", false);
+				}
+				if (editFormSelect == "1") {
+					this.find(".multiRecoedQueryList").show();
+				} else {
+					this.find(".multiRecoedQueryList").hide();
+				}
 			}
-			this.find(".queryForm").prop("disabled", false);
-		} else {
-			this.find(".queryForm").prop("disabled", true);
-		}
-		if (listFormSelect == "0") {
-			this.find(".queryResultFormDesc").hide();
-			this.find(".listForm").prop("disabled", true);
-		} else {
-			this.find(".queryResultFormDesc").show();
-			this.find(".listForm").prop("disabled", false);
-		}
-		if (editFormSelect == "0") {
-			this.find(".editFormDesc").hide();
-			this.find(".editQueryCondition1").hide();
-			this.find(".editForm").prop("disabled", true);
-		} else {
-			this.find(".editFormDesc").show();
-			if (listFormSelect == 1) {
-				this.find(".editQueryCondition1").show();
-			}
-			this.find(".editForm").prop("disabled", false);
-		}
-		if (editFormSelect == "1") {
-			this.find(".multiRecoedQueryList").show();
-		} else {
-			this.find(".multiRecoedQueryList").hide();
 		}
 	}
 

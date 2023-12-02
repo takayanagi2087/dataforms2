@@ -21,9 +21,10 @@ import dataforms.dao.Query;
 import dataforms.dao.QuerySetDao;
 import dataforms.dao.SingleTableQuery;
 import dataforms.devtool.base.page.DeveloperPage;
-import dataforms.devtool.dao.page.QuerySetDaoGenerator;
+import dataforms.devtool.dao.gen.QuerySetDaoGenerator;
 import dataforms.devtool.field.DaoClassNameField;
 import dataforms.devtool.field.EditFormClassNameField;
+import dataforms.devtool.field.FormClassNameField;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.JavaSourcePathField;
 import dataforms.devtool.field.OverwriteModeField;
@@ -67,28 +68,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	/**
 	 * ページの動作パターン。
 	 */
-	private static final String ID_PAGE_PATTERN = "pagePattern";
-
-	/**
-	 * 問合せフォームの有無。
-	 */
-	public static final String ID_QUERY_FORM_SELECT = "queryFormSelect";
-
-	/**
-	 * 問合せ結果フォームの有無。
-	 */
-	public static final String ID_LIST_FORM_SELECT = "listFormSelect";
-
-	/**
-	 * 編集フォームの有無。
-	 */
-	public static final String ID_EDIT_FORM_SELECT = "editFormSelect";
-
-	/**
-	 * 編集フォームの種類。
-	 */
-	public static final String ID_EDIT_TYPE_SELECT = "editTypeSelect";
-
+	public static final String ID_PAGE_PATTERN = "pagePattern";
 
 	/**
 	 * ページ名フィールドID。
@@ -135,6 +115,16 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	public static final String ID_DAO_CLASS_OVERWRITE_MODE = "daoClassOverwriteMode";
 
 	/**
+	 * フォームの上書きモードフィールドID。
+	 */
+	private static final String ID_FORM_CLASS_OVERWRITE_MODE = "formClassOverwriteMode";
+
+	/**
+	 * 問合せフォーム上書きモードフィールドID。
+	 */
+	public static final String ID_QUERY_FORM_CLASS_OVERWRITE_MODE = "queryFormClassOverwriteMode";
+
+	/**
 	 * 問合せ結果フォーム上書きモードフィールドID。
 	 */
 	public static final String ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE = "queryResultFormClassOverwriteMode";
@@ -151,10 +141,6 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	 * 一覧問合せパッケージ名のフィールドID。
 	 */
 	public static final String ID_LIST_QUERY_PACKAGE_NAME = "listQueryPackageName";
-	/**
-	 * 問合せフォーム上書きモードフィールドID。
-	 */
-	public static final String ID_QUERY_FORM_CLASS_OVERWRITE_MODE = "queryFormClassOverwriteMode";
 	/**
 	 * 編集フォーム上書きモードフィールドID。
 	 */
@@ -234,6 +220,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.addField(new DaoClassNameField()).addValidator(new RequiredValidator()).setComment("DAOクラス名");
 		this.addField(new OverwriteModeField(ID_DAO_CLASS_OVERWRITE_MODE));
 
+		this.addField(new FormClassNameField());
+		this.addField(new OverwriteModeField(ID_FORM_CLASS_OVERWRITE_MODE));
 		this.addField(new QueryFormClassNameField());
 		this.addField(new OverwriteModeField(ID_QUERY_FORM_CLASS_OVERWRITE_MODE));
 		this.addField(new QueryResultFormClassNameField());
@@ -282,16 +270,18 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.setFormData(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
 		this.setFormData(ID_PAGE_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 		this.setFormData(ID_DAO_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		this.setFormData(ID_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 		this.setFormData(ID_QUERY_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 		this.setFormData(ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 		this.setFormData(ID_EDIT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 
 		this.setFormData(ID_PAGE_PATTERN, "p2111");
-
+/*
 		this.setFormData(ID_LIST_FORM_SELECT, "1");
 		this.setFormData(ID_QUERY_FORM_SELECT, "1");
 		this.setFormData(ID_EDIT_FORM_SELECT, "1");
 		this.setFormData(ID_EDIT_TYPE_SELECT, "0");
+*/
 	}
 
 	// TODO:後で共通化
@@ -336,6 +326,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		String pkg = (String) data.get(ID_PACKAGE_NAME);
 		String cls = (String) data.get(ID_PAGE_CLASS_NAME);
 		String classname = pkg + "." + cls;
+
 		Class<?> clazz = Class.forName(classname);
 		Page p = (Page) clazz.getDeclaredConstructor().newInstance();
 		PageClassInfo pi = new PageClassInfo(p);
@@ -600,29 +591,25 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 				}
 			}
 		}
-		ret.put(ID_QUERY_FORM_SELECT, qf);
-		ret.put(ID_LIST_FORM_SELECT, qrf);
-		ret.put(ID_EDIT_FORM_SELECT, ef);
+
 		Dao dao = this.getDaoInstance(p);
 		if (dao != null) {
 			if ("1".equals(ef)) {
 				logger.debug("page dao=" + dao.getClass().getName());
 				if (dao instanceof QuerySetDao) {
-					String editTypeSelect = "";
 					QuerySetDao querySetDao = (QuerySetDao) dao;
 					Query sq = querySetDao.getSingleRecordQuery();
 					List<Query> mql = querySetDao.getMultiRecordQueryList();
-					if (sq != null && mql == null) {
-						editTypeSelect = "0";
-					} else if (sq != null && mql != null) {
-						editTypeSelect = "1";
-					} else if (sq == null && mql != null) {
-						editTypeSelect = "2";
+					if (sq == null && mql != null) {
+						ef = "2";
 					}
-					ret.put(ID_EDIT_TYPE_SELECT, editTypeSelect);
 				}
 			}
 		}
+
+		String pp = PagePatternSelectField.getPagePattern(this.getPage(), qf,  qrf, ef);
+		ret.put(ID_PAGE_PATTERN, pp);
+
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class Test01Page extends BasePage {
 	 * @return Pageが配置されるパス。
 	 */
 	public String getFunctionPath() {
-		return "/fieldtest";
+		return "/pagepat";
 	}
 
 	/**

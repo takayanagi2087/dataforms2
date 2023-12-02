@@ -1,0 +1,27 @@
+package ${packageName};
+
+import dataforms.app.base.page.BasePage;
+import dataforms.dao.Dao;
+
+
+/**
+ * ${pageName} ページクラス。
+ */
+public class ${pageClassName} extends BasePage {
+	/**
+	 * コンストラクタ。
+	 */
+	public ${pageClassName}() {
+${formList}
+	}
+
+	/**
+	 * Pageが配置されるパスを返します。
+	 *
+	 * @return Pageが配置されるパス。
+	 */
+	public String getFunctionPath() {
+		return "${functionPath}";
+	}
+
+}

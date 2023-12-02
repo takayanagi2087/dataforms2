@@ -1,6 +1,5 @@
-package dataforms.devtool.dao.page;
+package dataforms.devtool.dao.gen;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +13,8 @@ import dataforms.controller.Form;
 import dataforms.dao.Query;
 import dataforms.dao.SingleTableQuery;
 import dataforms.dao.Table;
+import dataforms.devtool.field.PagePatternSelectField;
+import dataforms.devtool.javasrc.JavaSrcGenerator;
 import dataforms.devtool.pageform.page.DaoAndPageGeneratorEditForm;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.field.base.Field;
@@ -26,7 +27,7 @@ import net.arnx.jsonic.JSON;
 /**
  * QuerySetDao生成クラス。
  */
-public class QuerySetDaoGenerator {
+public class QuerySetDaoGenerator extends JavaSrcGenerator {
 
 	/**
 	 * Logger.
@@ -45,13 +46,13 @@ public class QuerySetDaoGenerator {
 	 * @return 文字列。
 	 * @throws Exception 例外。
 	 */
-	protected String getStringResourse(final String path) throws Exception {
+/*	protected String getStringResourse(final String path) throws Exception {
 		Class<?> cls = this.getClass();
 		InputStream is = cls.getResourceAsStream(path);
 		String text = new String(FileUtil.readInputStream(is), DataFormsServlet.getEncoding());
 		return text;
 	}
-
+*/
 	/**
 	 * フィールドのプロパティを作成します。
 	 * @param id フィールドID。
@@ -192,8 +193,9 @@ public class QuerySetDaoGenerator {
 			}
 		}
 		{
-			String editFormType = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_TYPE_SELECT);
-			if ("2".equals(editFormType)) {
+			String pagePattern = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_PATTERN);
+			String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
+			if ("2".equals(ef)) {
 				List<Map<String, Object>> list = this.getListQueryConfig(data);
 				for (Map<String, Object> m: list) {
 					String sel = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
@@ -395,7 +397,7 @@ public class QuerySetDaoGenerator {
 
 
 	/**
-	 * ソースを生成する。
+	 * ソースを生成します。
 	 * @param form フォーム。
 	 * @param data POSTされたデータ。
 	 * @throws Exception 例型。
@@ -406,7 +408,7 @@ public class QuerySetDaoGenerator {
 		for (int i = 0; i < list.size(); i++) {
 			logger.debug("fieldInfo=" + JSON.encode(list.get(i)));
 		}
-		String javasrc = this.getStringResourse("template/QuerySetDao.java.template");
+		String javasrc = this.getStringResourse(this.getClass(), "../page/template/QuerySetDao.java.template");
 		//logger.debug("template=" + javasrc);
 		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_PACKAGE_NAME);
 		String daoClassName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_CLASS_NAME);
@@ -433,27 +435,22 @@ public class QuerySetDaoGenerator {
 				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "(Query) null");
 			}
 		}
-		String editFormSelect = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_FORM_SELECT);
-		String editFormType = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_TYPE_SELECT);
-		if ("1".equals(editFormSelect)) {
-			if ("0".equals(editFormType)) {
-				javasrc = this.singleRecordEditForm(data, implist, javasrc);
-//				javasrc = this.noEditForm(javasrc, implist);
-			} else if ("1".equals(editFormType)) {
-				javasrc = this.singleRecordEditForm(data, implist, javasrc);
-			} else {
-				javasrc = this.multiRecordEditForm(data, implist, javasrc);
-			}
-		} else {
+
+		String pagePattern = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_PATTERN);
+		String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
+		if ("0".equals(ef)) {
 			javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
 			javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "");
 			javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", "Table");
 			implist.add(dataforms.dao.Query.class);
 			implist.add(dataforms.dao.Table.class);
+		} else if ("1".equals(ef)) {
+			javasrc = this.singleRecordEditForm(data, implist, javasrc);
+		} else {
+			javasrc = this.multiRecordEditForm(data, implist, javasrc);
 		}
 		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", implist.getImportText());
 		logger.debug("javasrc={}", javasrc);
-
 		String path = (String) data.get(DaoAndPageGeneratorEditForm.ID_JAVA_SOURCE_PATH);
 		String srcPath = path + "/" + daoclass.replaceAll("\\.", "/") + ".java";
 		logger.debug("srcPath=" + srcPath);

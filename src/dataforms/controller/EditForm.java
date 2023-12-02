@@ -40,7 +40,15 @@ public abstract class EditForm extends Form {
 	 */
 	private List<String> pkFieldIdList = null;
 
+	/**
+	 * 1レコード編集モード。
+	 */
+	private boolean singleRecord = false;
 
+	/**
+	 * PKのフィールドID。
+	 */
+	private String pkFieldId = null;
 
 	/**
 	 * コンストラクタ。
@@ -85,10 +93,17 @@ public abstract class EditForm extends Form {
 	 * @param dao QuerySetDaoのインスタンス。
 	 */
 	public void addFields(final QuerySetDao dao) {
+		this.singleRecord = false;
 		if (dao.getSingleRecordQuery() != null) {
+			this.singleRecord = true;
 			// 単一レコード問合せが指定された場合、そのフィールドをフォームに展開する。
 			FieldList flist = dao.getSingleRecordQuery().getFieldList();
 			this.addFieldList(flist);
+			Table table = dao.getSingleRecordQuery().getMainTable();
+			FieldList pkFieldList = table.getPkFieldList();
+			if (pkFieldList.size() > 0) {
+				this.pkFieldId = pkFieldList.get(0).getId();
+			}
 		} else if (dao.getMultiRecordQueryKeyList() != null){
 			// 複数レコードレコード問合せが指定された場合、編集対象のレコードを限定するキーフィールドをフォームに展開する。
 			this.addFieldList(dao.getMultiRecordQueryKeyList());
@@ -138,6 +153,8 @@ public abstract class EditForm extends Form {
 		if (this.pkFieldIdList != null) {
 			ret.put("pkFieldIdList", this.pkFieldIdList);
 		}
+		ret.put("singleRecord", this.singleRecord);
+		ret.put("pkFieldId", this.pkFieldId);
 		return ret;
 	}
 

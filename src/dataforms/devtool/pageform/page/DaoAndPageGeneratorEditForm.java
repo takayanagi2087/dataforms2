@@ -274,14 +274,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.setFormData(ID_QUERY_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 		this.setFormData(ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 		this.setFormData(ID_EDIT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
-
 		this.setFormData(ID_PAGE_PATTERN, "p2111");
-/*
-		this.setFormData(ID_LIST_FORM_SELECT, "1");
-		this.setFormData(ID_QUERY_FORM_SELECT, "1");
-		this.setFormData(ID_EDIT_FORM_SELECT, "1");
-		this.setFormData(ID_EDIT_TYPE_SELECT, "0");
-*/
 	}
 
 	// TODO:後で共通化
@@ -323,6 +316,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 
 	@Override
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
+
 		String pkg = (String) data.get(ID_PACKAGE_NAME);
 		String cls = (String) data.get(ID_PAGE_CLASS_NAME);
 		String classname = pkg + "." + cls;
@@ -359,6 +353,15 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		ret.put(ID_PAGE_NAME, name);
 
 		this.getFormInfo(p, ret);
+
+		ret.put(ID_PAGE_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		ret.put(ID_DAO_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		ret.put(ID_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		ret.put(ID_QUERY_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		ret.put(ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+		ret.put(ID_EDIT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+
+
 
 		return ret;
 	}

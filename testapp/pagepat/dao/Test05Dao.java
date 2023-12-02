@@ -6,7 +6,7 @@ import dataforms.dao.Query;
 
 
 /**
- * 1レコード編集ページです。
+ * 1レコード編集ページ用DAOクラスです。
  *
  */
 public class Test05Dao extends QuerySetDao {
@@ -29,7 +29,7 @@ public class Test05Dao extends QuerySetDao {
 	 * @throws Exception 例外。
 	 */
 	public Test05Dao() {
-		this.setComment("1レコード編集ページ");
+		this.setComment("1レコード編集ページ用DAOクラス");
 		this.setListQuery((Query) null);
 		this.setSingleRecordQuery(this.testTable = new TestTable());
 

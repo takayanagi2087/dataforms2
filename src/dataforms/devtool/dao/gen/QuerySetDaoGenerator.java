@@ -250,7 +250,7 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 					}
 					logger.debug("listQuery=" + listQueryPackage + "," + listQueryClass);
 					logger.debug("editQuery=" + queryPackage + "," + queryClass);
-					if (listQueryPackage.equals(queryPackage) && listQueryClass.equals(queryClass)) {
+					if (queryPackage.equals(listQueryPackage) && queryClass.equals(listQueryClass)) {
 						javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass));
 					} else {
 						javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");

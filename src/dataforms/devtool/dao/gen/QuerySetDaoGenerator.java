@@ -41,19 +41,6 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 	}
 
 	/**
-	 * 指定された文字列リソースを取得します。
-	 * @param path リソースパス。
-	 * @return 文字列。
-	 * @throws Exception 例外。
-	 */
-/*	protected String getStringResourse(final String path) throws Exception {
-		Class<?> cls = this.getClass();
-		InputStream is = cls.getResourceAsStream(path);
-		String text = new String(FileUtil.readInputStream(is), DataFormsServlet.getEncoding());
-		return text;
-	}
-*/
-	/**
 	 * フィールドのプロパティを作成します。
 	 * @param id フィールドID。
 	 * @param fieldClassName フィールドクラス名。
@@ -72,16 +59,17 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 				"	public ${className} ${getterName}() {\n" +
 				"		return this.${variableName};\n" +
 				"	}\n\n";
+
 		@SuppressWarnings("unchecked")
 		Class<? extends Field<?>> cls = (Class<? extends Field<?>>) Class.forName(fieldClassName);
 		Field<?> field = Field.newFieldInstance(cls);
 		String comment = field.getComment() + "フィールド";
-		String ret = src.replaceAll("\\$\\{className\\}", cls.getSimpleName());
-		ret = ret.replaceAll("\\$\\{variableName\\}", id + "Field");
-		ret = ret.replaceAll("\\$\\{getterName\\}", "get" + StringUtil.firstLetterToUpperCase(id) + "Field");
-		ret = ret.replaceAll("\\$\\{comment\\}", comment);
-		return ret;
-
+ 		Template tmp = new Template(src);
+		tmp.replace("className", cls.getSimpleName());
+		tmp.replace("variableName", id + "Field");
+		tmp.replace("getterName", "get" + StringUtil.firstLetterToUpperCase(id) + "Field");
+		tmp.replace("comment", comment);
+		return tmp.getSource();
 	}
 
 	/**

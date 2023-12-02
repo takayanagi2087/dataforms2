@@ -33,6 +33,7 @@ public abstract class JavaSrcGenerator {
 		return text;
 	}
 
+
 	/**
 	 * ソースを生成します。
 	 * @param form フォーム。
@@ -40,4 +41,41 @@ public abstract class JavaSrcGenerator {
 	 * @throws Exception 例外。
 	 */
 	public abstract void generage(final Form form, final Map<String, Object> data) throws Exception;
+
+
+	/**
+	 * ソーステンプレート。
+	 */
+	public static class Template {
+		/**
+		 * ソース。
+		 */
+		private String src = null;
+
+		/**
+		 * コンストラクタ。
+		 * @param src ソースの文字列。
+		 */
+		public Template(final String src) {
+			this.src = src;
+		}
+
+		/**
+		 * テンプレートの文字列を置き換えます。
+		 * @param key 置き換える文字列のキー。
+		 * @param value 置き換える文字列。
+		 */
+		public void replace(final String key, final String value) {
+			this.src = this.src.replaceAll("\\$\\{" + key + "\\}", value);
+		}
+
+		/**
+		 * ソースファイルを取得します。
+		 * @return ソースファイル。
+		 */
+		public String getSource() {
+			return this.src;
+		}
+	}
+
 }

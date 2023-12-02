@@ -4,7 +4,7 @@ import java.util.Map;
 
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
-import pagepat.dao.Test03Dao;
+import pagepat.dao.Test06Dao;
 
 /**
  * 編集フォームクラス。
@@ -14,7 +14,7 @@ public class Test06EditForm extends EditForm {
 	 * コンストラクタ。
 	 */
 	public Test06EditForm() {
-		Test03Dao dao = new Test03Dao();
+		Test06Dao dao = new Test06Dao();
 		this.addFields(dao);
 	}
 
@@ -42,7 +42,7 @@ public class Test06EditForm extends EditForm {
 	 */
 	@Override
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
-		Test03Dao dao = new Test03Dao(this);
+		Test06Dao dao = new Test06Dao(this);
 		return dao.query(data);
 	}
 
@@ -57,7 +57,7 @@ public class Test06EditForm extends EditForm {
 	@Override
 	protected Map<String, Object> queryReferData(final Map<String, Object> data) throws Exception {
 		Map<String, Object> ret = this.queryData(data);
-		Test03Dao dao = new Test03Dao(this);
+		Test06Dao dao = new Test06Dao(this);
 		removeKeyData(dao, ret);
 		return ret;
 	}
@@ -72,7 +72,7 @@ public class Test06EditForm extends EditForm {
 	 */
 	@Override
 	protected boolean isUpdate(final Map<String, Object> data) throws Exception {
-		Test03Dao dao = new Test03Dao(this);
+		Test06Dao dao = new Test06Dao(this);
 		Table table = dao.getMainTable();
 		boolean ret = this.isUpdate(table, data);
 		return ret;
@@ -84,7 +84,7 @@ public class Test06EditForm extends EditForm {
 	 */
 	@Override
 	protected void insertData(final Map<String, Object> data) throws Exception {
-		Test03Dao dao = new Test03Dao(this);
+		Test06Dao dao = new Test06Dao(this);
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.insert(data);
 	}
@@ -95,7 +95,7 @@ public class Test06EditForm extends EditForm {
 	 */
 	@Override
 	protected void updateData(final Map<String, Object> data) throws Exception {
-		Test03Dao dao = new Test03Dao(this);
+		Test06Dao dao = new Test06Dao(this);
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.update(data);
 	}
@@ -106,7 +106,7 @@ public class Test06EditForm extends EditForm {
 	 */
 	@Override
 	public void deleteData(final Map<String, Object> data) throws Exception {
-		Test03Dao dao = new Test03Dao(this);
+		Test06Dao dao = new Test06Dao(this);
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.delete(data);
 	}

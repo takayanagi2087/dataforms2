@@ -237,6 +237,7 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 	 * @throws Exception 例外。
 	 */
 	private String singleRecordEditForm(final Map<String, Object> data, final ImportUtil implist, String javasrc) throws Exception {
+		Template tmp = new Template(javasrc);
 		String p = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_PACKAGE_NAME);
 		{
 			String listQueryPackage = (String) data.get(DaoAndPageGeneratorEditForm.ID_LIST_QUERY_PACKAGE_NAME);
@@ -251,22 +252,22 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 					logger.debug("listQuery=" + listQueryPackage + "," + listQueryClass);
 					logger.debug("editQuery=" + queryPackage + "," + queryClass);
 					if (queryPackage.equals(listQueryPackage) && queryClass.equals(listQueryClass)) {
-						javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass));
+						tmp.replace("singleRecordQuery", "this." + StringUtil.firstLetterToLowerCase(queryClass));
 					} else {
-						javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");
+						tmp.replace("singleRecordQuery", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");
 					}
 				} else {
 					implist.add(Query.class.getName());
-					javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
+					tmp.replace("singleRecordQuery", "(Query) null");
 				}
 			}
 			if (!StringUtil.isBlank(queryClass)) {
 				String className = queryPackage + "." + queryClass;
 				Table mainTable = this.getMainTable(className);
-				javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
+				tmp.replace("mainTable", mainTable.getClass().getSimpleName());
 			} else {
 				implist.add(Table.class.getName());
-				javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", "Table");
+				tmp.replace("mainTable", "Table");
 			}
 		}
 		StringBuilder sb = new StringBuilder();
@@ -280,8 +281,8 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 			}
 			sb.append("\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(clsname) + " = new " + clsname + "());\n");
 		}
-		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", sb.toString());
-		return javasrc;
+		tmp.replace("addMultiRecordQueryList", sb.toString());
+		return tmp.getSource();
 	}
 
 	/**
@@ -350,21 +351,22 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 	 * @throws Exception 例外。
 	 */
 	private String multiRecordEditForm(final Map<String, Object> data, final ImportUtil implist, String javasrc) throws Exception {
+		Template tmp = new Template(javasrc);
 		String p = (String) data.get(DaoAndPageGeneratorEditForm.ID_PACKAGE_NAME);
 		String packagename = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_PACKAGE_NAME);
 		String classname = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_CLASS_NAME);
 		String src = "\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(classname) + " = new " + classname + "());\n"
 					+ this.getKeyListSource(data, implist, packagename, classname);
-		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", src);
+		tmp.replace("addMultiRecordQueryList", src);
 		implist.add(Query.class.getName());
-		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
+		tmp.replace("singleRecordQuery", "(Query) null");
 		if (!p.equals(packagename)) {
 			implist.add(packagename + "." + classname);
 		}
 
 		Table mainTable = this.getMainTable(packagename + "." + classname);
-		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", mainTable.getClass().getSimpleName());
-		return javasrc;
+		tmp.replace("mainTable", mainTable.getClass().getSimpleName());
+		return tmp.getSource();
 	}
 
 
@@ -381,18 +383,19 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 			logger.debug("fieldInfo=" + JSON.encode(list.get(i)));
 		}
 		String javasrc = this.getStringResourse(this.getClass(), "../page/template/QuerySetDao.java.template");
+		Template tmp = new Template(javasrc);
 		//logger.debug("template=" + javasrc);
 		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_PACKAGE_NAME);
 		String daoClassName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_CLASS_NAME);
 		ImportUtil implist = new ImportUtil(packageName);
-		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", packageName);
-		javasrc = javasrc.replaceAll("\\$\\{daoClassName\\}", daoClassName);
-		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.getProperties(data, implist));
+		tmp.replace("packageName", packageName);
+		tmp.replace("daoClassName", daoClassName);
+		tmp.replace("properties", this.getProperties(data, implist));
 
 		String daoclass = packageName + "." + daoClassName;
 		String comment = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_NAME) + "用DAOクラス";
 		logger.debug("comment=" + comment);
-		javasrc = javasrc.replaceAll("\\$\\{comment\\}", comment);
+		tmp.replace("comment", comment);
 		{
 			String queryPackage = (String) data.get("listQueryPackageName");
 			String queryClass = (String) data.get("listQueryClassName");
@@ -401,32 +404,36 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 					String qc = queryPackage + "." + queryClass;
 					implist.add(qc);
 				}
-				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");
+				tmp.replace("listQuery", "this." + StringUtil.firstLetterToLowerCase(queryClass) + " = new " + queryClass + "()");
 			} else {
 				implist.add(Query.class.getName());
-				javasrc = javasrc.replaceAll("\\$\\{listQuery\\}", "(Query) null");
+				tmp.replace("listQuery", "(Query) null");
 			}
 		}
 
 		String pagePattern = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_PATTERN);
 		String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
 		if ("0".equals(ef)) {
-			javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
-			javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "");
-			javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", "Table");
+			tmp.replace("singleRecordQuery", "(Query) null");
+			tmp.replace("addMultiRecordQueryList", "");
+			tmp.replace("mainTable", "Table");
 			implist.add(dataforms.dao.Query.class);
 			implist.add(dataforms.dao.Table.class);
+			javasrc = tmp.getSource();
 		} else if ("1".equals(ef)) {
+			javasrc = tmp.getSource();
 			javasrc = this.singleRecordEditForm(data, implist, javasrc);
 		} else {
+			javasrc = tmp.getSource();
 			javasrc = this.multiRecordEditForm(data, implist, javasrc);
 		}
-		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", implist.getImportText());
+		tmp = new Template(javasrc);
+		tmp.replace("importTables", implist.getImportText());
+		javasrc = tmp.getSource();
 		logger.debug("javasrc={}", javasrc);
 		String path = (String) data.get(DaoAndPageGeneratorEditForm.ID_JAVA_SOURCE_PATH);
 		String srcPath = path + "/" + daoclass.replaceAll("\\.", "/") + ".java";
 		logger.debug("srcPath=" + srcPath);
 		FileUtil.writeTextFileWithBackup(srcPath, javasrc, DataFormsServlet.getEncoding());
-
 	}
 }

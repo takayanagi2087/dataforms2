@@ -5,7 +5,7 @@ import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
-import pagepat.dao.Test01Dao;
+import pagepat.dao.Test03Dao;
 import pagepat.dao.TestTable;
 
 
@@ -18,7 +18,7 @@ public class Test03QueryResultForm extends QueryResultForm {
 	 * コンストラクタ。
 	 */
 	public Test03QueryResultForm() {
-		Test01Dao dao = new Test01Dao();
+		Test03Dao dao = new Test03Dao();
 		this.addPkFieldList(dao.getEditFormKeyList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
 		htmltable.getFieldList().get(TestTable.Entity.ID_CODE1).setSortable(true);
@@ -38,7 +38,7 @@ public class Test03QueryResultForm extends QueryResultForm {
 	 */
 	@Override
 	protected Map<String, Object> queryPage(final Map<String, Object> data, final FieldList queryFormFieldList) throws Exception {
-		Test01Dao dao = new Test01Dao(this);
+		Test03Dao dao = new Test03Dao(this);
 		return dao.queryPage(data, queryFormFieldList);
 	}
 
@@ -52,7 +52,7 @@ public class Test03QueryResultForm extends QueryResultForm {
 	 */
 	@Override
 	protected void deleteData(final Map<String, Object> data) throws Exception {
-		Test01Dao dao = new Test01Dao(this);
+		Test03Dao dao = new Test03Dao(this);
 		this.setUserInfo(data); // 更新を行うユーザIDを設定する.
 		dao.delete(data);
 	}

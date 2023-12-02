@@ -2,7 +2,6 @@ package pagepat.dao;
 
 import dataforms.dao.JDBCConnectableObject;
 import dataforms.dao.QuerySetDao;
-import dataforms.dao.Query;
 
 
 /**
@@ -30,9 +29,8 @@ public class Test03Dao extends QuerySetDao {
 	 */
 	public Test03Dao() {
 		this.setComment("全レコード編集DAO");
-		this.setListQuery((Query) null);
-		this.setSingleRecordQuery((Query) null);
-		this.addMultiRecordQueryList(this.testTable = new TestTable());
+		this.setListQuery(this.testTable = new TestTable());
+		this.setSingleRecordQuery(this.testTable);
 
 	}
 

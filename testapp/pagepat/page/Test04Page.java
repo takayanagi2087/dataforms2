@@ -2,7 +2,7 @@ package pagepat.page;
 
 import dataforms.app.base.page.BasePage;
 import dataforms.dao.Dao;
-import pagepat.dao.Test02Dao;
+import pagepat.dao.Test04Dao;
 
 
 /**
@@ -35,7 +35,7 @@ public class Test04Page extends BasePage {
 	 * @return Daoクラス。
 	 */
 	public Class<? extends Dao> getDaoClass() {
-		return Test02Dao.class;
+		return Test04Dao.class;
 	}
 
 

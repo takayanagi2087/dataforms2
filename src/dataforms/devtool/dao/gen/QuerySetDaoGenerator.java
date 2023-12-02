@@ -101,11 +101,11 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 			Query query = (Query) obj;
 			comment = query.getComment();
 		}
-		String ret = src.replaceAll("\\$\\{className\\}", tableClassName);
-		ret = ret.replaceAll("\\$\\{variableName\\}", StringUtil.firstLetterToLowerCase(tableClassName));
-		ret = ret.replaceAll("\\$\\{comment\\}", comment);
-		return ret;
-
+ 		Template tmp = new Template(src);
+		tmp.replace("className", tableClassName);
+		tmp.replace("variableName", StringUtil.firstLetterToLowerCase(tableClassName));
+		tmp.replace("comment", comment);
+		return tmp.getSource();
 	}
 
 	/**
@@ -205,22 +205,6 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 		}
 		return sb.toString();
 	}
-
-
-	/**
-	 * 編集フォーム無DAOソース生成を行います。
-	 * @param javasrc javaソース文字列。
-	 * @param implist インポートリスト。
-	 * @return javaソース文字列。
-	 */
-/*	private String noEditForm(String javasrc, final ImportUtil implist) {
-		implist.add(Table.class.getName());
-		javasrc = javasrc.replaceAll("\\$\\{singleRecordQuery\\}", "(Query) null");
-		javasrc = javasrc.replaceAll("\\$\\{addMultiRecordQueryList\\}", "");
-		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", "Table");
-		implist.add("dataforms.dao.Query");
-		return javasrc;
-	}*/
 
 	/**
 	 * Mainテーブルを取得します。

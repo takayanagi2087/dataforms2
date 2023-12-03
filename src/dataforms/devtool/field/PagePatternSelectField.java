@@ -63,7 +63,7 @@ public class PagePatternSelectField extends PropertiesSingleSelectField {
 		String ret = null;
 		if (!StringUtil.isBlank(val)) {
 			if (val.length() >= 5) {
-				ret = val.substring(idx);
+				ret = val.substring(idx, idx + 1);
 			}
 		}
 		return ret;

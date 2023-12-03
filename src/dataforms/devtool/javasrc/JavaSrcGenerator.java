@@ -19,20 +19,6 @@ public abstract class JavaSrcGenerator {
 	 */
 	private static Logger logger = LogManager.getLogger(JavaSrcGenerator.class);
 
-	/**
-	 * 指定された文字列リソースを取得します。
-	 * @param cls クラス。
-	 * @param path リソースパス。
-	 * @return 文字列。
-	 * @throws Exception 例外。
-	 */
-	protected String getStringResourse(final Class<?> cls, final String path) throws Exception {
-		logger.info("getResource:" + cls.getName() + "," + path);
-		InputStream is = cls.getResourceAsStream(path);
-		String text = new String(FileUtil.readInputStream(is), DataFormsServlet.getEncoding());
-		return text;
-	}
-
 
 	/**
 	 * ソースを生成します。
@@ -58,6 +44,30 @@ public abstract class JavaSrcGenerator {
 		 */
 		public Template(final String src) {
 			this.src = src;
+		}
+
+		/**
+		 * コンストラクタ。
+		 * @param cls 起点となるクラス。
+		 * @param path リソースのパス。
+		 * @throws Exception 例外。
+		 */
+		public Template(final Class<?> cls, final String path) throws Exception {
+			this.src = this.getStringResourse(cls, path);
+		}
+
+		/**
+		 * 指定された文字列リソースを取得します。
+		 * @param cls クラス。
+		 * @param path リソースパス。
+		 * @return 文字列。
+		 * @throws Exception 例外。
+		 */
+		protected String getStringResourse(final Class<?> cls, final String path) throws Exception {
+			logger.info("getResource:" + cls.getName() + "," + path);
+			InputStream is = cls.getResourceAsStream(path);
+			String text = new String(FileUtil.readInputStream(is), DataFormsServlet.getEncoding());
+			return text;
 		}
 
 		/**

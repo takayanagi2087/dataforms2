@@ -382,8 +382,8 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 		for (int i = 0; i < list.size(); i++) {
 			logger.debug("fieldInfo=" + JSON.encode(list.get(i)));
 		}
-		String javasrc = this.getStringResourse(this.getClass(), "../page/template/QuerySetDao.java.template");
-		Template tmp = new Template(javasrc);
+//		String javasrc = this.getStringResourse(this.getClass(), "../page/template/QuerySetDao.java.template");
+		Template tmp = new Template(this.getClass(), "../page/template/QuerySetDao.java.template");
 		//logger.debug("template=" + javasrc);
 		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_PACKAGE_NAME);
 		String daoClassName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_CLASS_NAME);
@@ -411,6 +411,7 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 			}
 		}
 
+		String javasrc = null;
 		String pagePattern = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_PATTERN);
 		String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
 		if ("0".equals(ef)) {

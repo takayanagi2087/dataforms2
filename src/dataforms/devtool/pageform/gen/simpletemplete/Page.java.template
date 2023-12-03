@@ -24,4 +24,14 @@ ${formList}
 		return "${functionPath}";
 	}
 
+	/**
+	 * テーブルを操作するためのDaoクラスを取得します。
+	 * <pre>
+	 * ページjavaクラス作成用のメソッドです。
+	 * </pre>
+	 * @return Daoクラス。
+	 */
+	public Class<? extends Dao> getDaoClass() {
+		return null;
+	}
 }

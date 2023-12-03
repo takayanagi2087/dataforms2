@@ -35,6 +35,7 @@ import dataforms.devtool.field.PagePatternSelectField;
 import dataforms.devtool.field.QueryFormClassNameField;
 import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryResultFormClassNameField;
+import dataforms.devtool.pageform.gen.SimplePageGenerator;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.exception.ApplicationException;
 import dataforms.field.base.Field;
@@ -71,6 +72,11 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	public static final String ID_PAGE_PATTERN = "pagePattern";
 
 	/**
+	 * JavaソースパスフィールドID。
+	 */
+	public static final String ID_JAVA_SOURCE_PATH = "javaSourcePath";
+
+	/**
 	 * ページ名フィールドID。
 	 */
 	public static final String ID_FUNCTION_SELECT = "functionSelect";
@@ -100,11 +106,6 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	public static final String ID_PAGE_CLASS_NAME = "pageClassName";
 
 	/**
-	 * JavaソースパスフィールドID。
-	 */
-	public static final String ID_JAVA_SOURCE_PATH = "javaSourcePath";
-
-	/**
 	 * 上書きモードフィールドID。
 	 */
 	public static final String ID_PAGE_CLASS_OVERWRITE_MODE = "pageClassOverwriteMode";
@@ -113,6 +114,12 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	 * 上書きモードフィールドID。
 	 */
 	public static final String ID_DAO_CLASS_OVERWRITE_MODE = "daoClassOverwriteMode";
+
+
+	/**
+	 * 空のフォームクラス名フィールドID。
+	 */
+	public static final String ID_FORM_CLASS_NAME = "formClassName";
 
 	/**
 	 * フォームの上書きモードフィールドID。
@@ -209,7 +216,10 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		funcField.setPackageFieldId(ID_PACKAGE_NAME, ID_DAO_PACKAGE_NAME);
 		funcField.setCalcEventField(true);
 		// ページの機能
-		this.addField(new PagePatternSelectField(ID_PAGE_PATTERN).setHtmlFieldType(HtmlFieldType.SELECT)).setComment("ページの動作");
+		this.addField(new PagePatternSelectField(ID_PAGE_PATTERN)
+				.setHtmlFieldType(HtmlFieldType.SELECT))
+				.addValidator(new RequiredValidator())
+				.setComment("ページの動作");
 		// 生成するクラス
 		this.addField(funcField);
 		this.addField(new PageNameField()).addValidator(new RequiredValidator());
@@ -633,8 +643,18 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 
 	@Override
 	protected void insertData(Map<String, Object> data) throws Exception {
-		QuerySetDaoGenerator gen = new QuerySetDaoGenerator();
-		gen.generage(this, data);
+		String pagePattern = (String) data.get(ID_PAGE_PATTERN);
+		String qf = PagePatternSelectField.getQueryFormFlag(pagePattern);
+		String qrf = PagePatternSelectField.getQueryResultFormFlag(pagePattern);
+		String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
+		logger.debug("qf={}, qrf={}, ef={}", qf, qrf, ef);
+		if ("0".equals(qf) && "0".equals(qrf) && "0".equals(ef)) {
+			SimplePageGenerator gen = new SimplePageGenerator();
+			gen.generage(this, data);
+		} else {
+			QuerySetDaoGenerator gen = new QuerySetDaoGenerator();
+			gen.generage(this, data);
+		}
 	}
 
 	@Override

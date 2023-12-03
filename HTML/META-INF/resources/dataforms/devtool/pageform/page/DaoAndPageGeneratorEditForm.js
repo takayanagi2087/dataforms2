@@ -318,11 +318,14 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		let list = super.validateForm();
 		if (list.length == 0) {
 			let json = this.get("editQueryConfig").val();
-			let flist = JSON.parse(json);
-			logger.log("editFieldList=", flist);
-//			if (false) {
-//				list.push(new ValidationError("fieldId", MessagesUtil.getMessage("error.messagekey")));
-//			}
+			if (json.length > 0) {
+				let flist = JSON.parse(json);
+				logger.log("editFieldList=", flist);
+	//			if (false) {
+	//				list.push(new ValidationError("fieldId", MessagesUtil.getMessage("error.messagekey")));
+	//			}
+
+			}
 		}
 		return list;
 	}

@@ -1,16 +1,17 @@
-package ${packageName};
+package pagepat.page;
 
 import java.util.Map;
-import dataforms.controller.EditForm;
+import dataforms.controller.Form;
 
 /**
- * ${pageName} フォームクラス。
+ * 単純なページ 用フォームクラス。
  */
-public class ${formClassName} extends EditForm {
+public class SimpleForm extends Form {
 	/**
 	 * コンストラクタ。
 	 */
-	public ${formClassName}() {
+	public SimpleForm() {
+		super(null);
 		// TODO:フィールを追加します。
 	}
 

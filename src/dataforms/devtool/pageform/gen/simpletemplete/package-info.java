@@ -1,4 +1,4 @@
 /**
  * 単純なページのテンプレート。
  */
-package dataforms.devtool.pageform.page.simpletemplete;
+package dataforms.devtool.pageform.gen.simpletemplete;

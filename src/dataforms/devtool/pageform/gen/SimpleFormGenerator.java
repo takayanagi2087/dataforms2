@@ -12,49 +12,45 @@ import dataforms.servlet.DataFormsServlet;
 import dataforms.util.FileUtil;
 
 /**
- * 単純なページジェネレータ。
+ * 単純なフォームジェネレータ。
  */
-public class SimplePageGenerator extends JavaSrcGenerator {
+public class SimpleFormGenerator extends JavaSrcGenerator {
 
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = LogManager.getLogger(SimplePageGenerator.class);
+	private static Logger logger = LogManager.getLogger(SimpleFormGenerator.class);
 
 	/**
-	 * ページのソースを作成します。
+	 * フォームのソースを作成します。
 	 * @param data POSTされたデータ。
 	 * @throws Exception 例外。
 	 */
-	private void generatePageClass(final Map<String, Object> data) throws Exception {
-		Template tmp = new Template(this.getClass(), "simpletemplate/Page.java.template");
+	private void generateFormClass(final Map<String, Object> data) throws Exception {
+		Template tmp = new Template(this.getClass(), "simpletemplate/Form.java.template");
 		logger.debug("page src=" + tmp.getSource());
 		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PACKAGE_NAME);
 		String pageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_NAME);
-		String pageClassName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_CLASS_NAME);
-		String functionPath = (String) data.get(DaoAndPageGeneratorEditForm.ID_FUNCTION_SELECT);
 		String formClassName = (String) data.get(DaoAndPageGeneratorEditForm.ID_FORM_CLASS_NAME);
 		tmp.replace(DaoAndPageGeneratorEditForm.ID_PACKAGE_NAME, packageName);
 		tmp.replace(DaoAndPageGeneratorEditForm.ID_PAGE_NAME, pageName);
-		tmp.replace(DaoAndPageGeneratorEditForm.ID_PAGE_CLASS_NAME, pageClassName);
-		tmp.replace("functionPath", functionPath);
-		tmp.replace("formList", "\t\tthis.addForm(new " + formClassName + "());");
+		tmp.replace(DaoAndPageGeneratorEditForm.ID_FORM_CLASS_NAME, formClassName);
 		logger.debug("page=" + tmp.getSource());
 
 		String path = (String) data.get(DaoAndPageGeneratorEditForm.ID_JAVA_SOURCE_PATH);
-		String pageclass = packageName + "." + pageClassName;
-		String srcPath = path + "/" + pageclass.replaceAll("\\.", "/") + ".java";
+		String formclass = packageName + "." + formClassName;
+		String srcPath = path + "/" + formclass.replaceAll("\\.", "/") + ".java";
 		logger.debug("srcPath=" + srcPath);
 		FileUtil.writeTextFileWithBackup(srcPath, tmp.getSource(), DataFormsServlet.getEncoding());
-
 	}
+
 
 	/**
 	 * ソースの生成処理。
 	 */
 	@Override
 	public void generage(final Form form, final Map<String, Object> data) throws Exception {
-		logger.info("generate simple page.");
-		this.generatePageClass(data);
+		logger.info("generate simple form.");
+		this.generateFormClass(data);
 	}
 }

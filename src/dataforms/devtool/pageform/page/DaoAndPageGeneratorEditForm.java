@@ -35,6 +35,8 @@ import dataforms.devtool.field.PagePatternSelectField;
 import dataforms.devtool.field.QueryFormClassNameField;
 import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryResultFormClassNameField;
+import dataforms.devtool.pageform.gen.QueryFormGenerator;
+import dataforms.devtool.pageform.gen.SimpleFormGenerator;
 import dataforms.devtool.pageform.gen.SimplePageGenerator;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.exception.ApplicationException;
@@ -679,11 +681,17 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
 		logger.debug("qf={}, qrf={}, ef={}", qf, qrf, ef);
 		if ("0".equals(qf) && "0".equals(qrf) && "0".equals(ef)) {
-			SimplePageGenerator gen = new SimplePageGenerator();
-			gen.generage(this, data);
+			SimpleFormGenerator fgen = new SimpleFormGenerator();
+			fgen.generage(this, data);
+			SimplePageGenerator pgen = new SimplePageGenerator();
+			pgen.generage(this, data);
 		} else {
 			QuerySetDaoGenerator gen = new QuerySetDaoGenerator();
 			gen.generage(this, data);
+			if ("1".equals(qf)) {
+				QueryFormGenerator qfgen = new QueryFormGenerator();
+				qfgen.generage(this, data);
+			}
 		}
 		// Function.propertiesの更新
 		String functionPath = (String) data.get(ID_FUNCTION_SELECT);

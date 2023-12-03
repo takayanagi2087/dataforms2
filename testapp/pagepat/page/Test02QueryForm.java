@@ -2,11 +2,11 @@ package pagepat.page;
 
 import dataforms.controller.QueryForm;
 import dataforms.field.base.Field.MatchType;
+import pagepat.dao.TestTable;
 import java.util.List;
 import dataforms.field.base.FieldList;
 import pagepat.field.Code1Field;
 import java.util.Map;
-import pagepat.dao.Code1CountQuery;
 import dataforms.report.ExportDataFile;
 
 import pagepat.dao.Test02Dao;
@@ -20,7 +20,7 @@ public class Test02QueryForm extends QueryForm {
 	 * コンストラクタ。
 	 */
 	public Test02QueryForm() {
-		this.addField(new Code1Field(Code1CountQuery.Entity.ID_CODE1)).setMatchType(MatchType.PART).setComment("コード1");
+		this.addField(new Code1Field(TestTable.Entity.ID_CODE1)).setMatchType(MatchType.PART).setComment("コード1");
 
 	}
 

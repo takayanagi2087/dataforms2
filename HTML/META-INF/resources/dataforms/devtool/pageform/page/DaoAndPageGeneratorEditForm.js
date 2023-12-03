@@ -22,7 +22,7 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	 */
 	attach() {
 		super.attach();
-		this.find("pagePattern").change((ev) => {
+		this.get("pagePattern").change((ev) => {
 			this.onChangePageType(ev);
 		});
 		this.get("pageClassName").change((ev) => {
@@ -68,8 +68,8 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		if (pagePattern != null && pagePattern.length > 0) {
 			// ページの説明
 			let v = this.get("pagePattern").val();
+			logger.log("pagePatten=" + v);
 			if (v != null && v.length > 0) {
-				logger.log("v=" + v);
 				this.find("div.pageDesc").hide();
 				let did ="desc" + v.substring(2);
 				logger.log("did=" + did);

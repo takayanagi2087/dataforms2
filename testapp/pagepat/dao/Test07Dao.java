@@ -9,23 +9,10 @@ import dataforms.dao.Query;
 
 
 /**
- * 検索→一覧→複数レコード編集ページ用DAOクラスです。
+ * 検索→複数レコード編集です。
  *
  */
-public class Test02Dao extends QuerySetDao {
-	/**
-	 * Code1件数取得問合せ。
-	 */
-	private Code1CountQuery code1CountQuery = null;
-
-	/**
-	 * Code1件数取得問合せを取得します。
-	 * @return Code1件数取得問合せ。
-	 */
-	public Code1CountQuery getCode1CountQuery() {
-		return this.code1CountQuery;
-	}
-
+public class Test07Dao extends QuerySetDao {
 	/**
 	 * テストテーブル。
 	 */
@@ -57,9 +44,9 @@ public class Test02Dao extends QuerySetDao {
 	 * コンストラクタ。
 	 * @throws Exception 例外。
 	 */
-	public Test02Dao() {
-		this.setComment("検索→一覧→複数レコード編集ページ用DAOクラス");
-		this.setListQuery(this.code1CountQuery = new Code1CountQuery());
+	public Test07Dao() {
+		this.setComment("検索→複数レコード編集");
+		this.setListQuery((Query) null);
 		this.setSingleRecordQuery((Query) null);
 		this.addMultiRecordQueryList(this.testTable = new TestTable());
 		Query query = new SingleTableQuery(new TestTable());
@@ -75,7 +62,7 @@ public class Test02Dao extends QuerySetDao {
 	 * @param cobj JDBC接続可能Object。
 	 * @throws Exception 例外。
 	 */
-	public Test02Dao(final JDBCConnectableObject cobj) throws Exception {
+	public Test07Dao(final JDBCConnectableObject cobj) throws Exception {
 		this();
 		this.init(cobj);
 	}

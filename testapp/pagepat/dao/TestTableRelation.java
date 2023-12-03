@@ -61,4 +61,6 @@ public class TestTableRelation extends TableRelation {
 */
 		return super.getJoinCondition(joinTable, alias);
 	}
+
+
 }

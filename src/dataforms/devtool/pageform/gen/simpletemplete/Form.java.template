@@ -11,7 +11,10 @@ public class ${formClassName} extends Form {
 	 */
 	public ${formClassName}() {
 		super(null);
-		// TODO:フィールを追加します。
+		// TODO:1.フィールドを追加します。
+		// TODO:2.Webリソース作成で、ページのHTMLを作成します。
+		// TODO:3.必要に応じて作成したHTMLにボタンを追加します。
+		// TODO:4.Webリソース作成でFormのjsを作成し、各種イベント処理を追加します。
 	}
 
 	@Override

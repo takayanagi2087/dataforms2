@@ -22,16 +22,11 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	 */
 	attach() {
 		super.attach();
-		this.get("pagePattern").change((ev) => {
-			this.onChangePagePattern();
+		this.find("pagePattern").change((ev) => {
+			this.onChangePageType(ev);
 		});
-
 		this.get("pageClassName").change((ev) => {
 			this.onUpdateClassName($(ev.currentTarget));
-		});
-
-		this.find("select.pageType").change((ev) => {
-			this.onChangePageType(ev);
 		});
 		this.get("listQueryButton").click(() => {
 			this.onListQueryButton();
@@ -46,14 +41,6 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	 * ページ動作の変更時の処理。
 	 */
 	onChangePagePattern() {
-		let v = this.get("pagePattern").val();
-		if (v != null && v.length > 0) {
-			logger.log("v=" + v);
-			this.find("div.pageDesc").hide();
-			let did ="desc" + v.substring(2);
-			logger.log("did=" + did);
-			this.get(did).show();
-		}
 	}
 
 	/**
@@ -79,6 +66,16 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 		logger.log("ev=", ev);
 		let pagePattern = this.get("pagePattern").val();
 		if (pagePattern != null && pagePattern.length > 0) {
+			// ページの説明
+			let v = this.get("pagePattern").val();
+			if (v != null && v.length > 0) {
+				logger.log("v=" + v);
+				this.find("div.pageDesc").hide();
+				let did ="desc" + v.substring(2);
+				logger.log("did=" + did);
+				this.get(did).show();
+			}
+
 			let queryFormSelect = pagePattern.charAt(2);
 			let listFormSelect = pagePattern.charAt(3);
 			let editFormSelect = pagePattern.charAt(4);
@@ -89,12 +86,18 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 				this.find(".queryForm").prop("disabled", true);
 				this.find(".listForm").prop("disabled", true);
 				this.find(".editForm").prop("disabled", true);
+				this.get("daoPackageName").prop("disabled", true);
+				this.get("daoClassName").prop("disabled", true);
+				this.get("daoClassOverwriteMode").prop("disabled", true);
 			} else {
 				this.get("formClassName").prop("disabled", true);
 				this.get("formClassOverwriteMode").prop("disabled", true);
 				this.find(".listQueryCondition").hide();
 				this.find(".editQueryCondition").hide();
 				this.find(".noNextForm").hide();
+				this.get("daoPackageName").prop("disabled", false);
+				this.get("daoClassName").prop("disabled", false);
+				this.get("daoClassOverwriteMode").prop("disabled", false);
 				if ("1" == queryFormSelect) {
 					this.find(".queryForm").prop("disabled", false);
 					if ("1" == listFormSelect) {

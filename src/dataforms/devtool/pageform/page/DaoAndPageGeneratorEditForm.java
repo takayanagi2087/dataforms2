@@ -226,8 +226,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.addField(new PackageNameField()).addValidator(new RequiredValidator()).setComment("ページパッケージ名");
 		this.addField(new PageClassNameField())	.addValidator(new RequiredValidator()).setCalcEventField(true).setAutocomplete(false);
 		this.addField(new OverwriteModeField(ID_PAGE_CLASS_OVERWRITE_MODE));
-		this.addField(new PackageNameField("daoPackageName")).addValidator(new RequiredValidator()).setComment("DAOパッケージ名");
-		this.addField(new DaoClassNameField()).addValidator(new RequiredValidator()).setComment("DAOクラス名");
+		this.addField(new PackageNameField("daoPackageName")).setComment("DAOパッケージ名");
+		this.addField(new DaoClassNameField()).setComment("DAOクラス名");
 		this.addField(new OverwriteModeField(ID_DAO_CLASS_OVERWRITE_MODE));
 
 		this.addField(new FormClassNameField());
@@ -337,22 +337,27 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		// Class<? extends Table> tblcls = pi.getTableClass();
 		Class<? extends Dao> daocls = pi.getDaoClass();
 		String functionPath = pi.getFunctionPath();
-		if (daocls == null || functionPath == null) {
+		if (functionPath == null) {
 			throw new ApplicationException(this.getPage(), "error.notgeneratedpage");
 		}
 		Map<String, Object> ret = new HashMap<String, Object>();
 		ret.putAll(data);
 		ret.put(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
-		if (daocls.getName().equals(dataforms.dao.Dao.class.getName())) {
+		if (daocls != null) {
+			if (daocls.getName().equals(dataforms.dao.Dao.class.getName())) {
+				ret.put(ID_DAO_PACKAGE_NAME, "");
+				ret.put(ID_DAO_CLASS_NAME, "");
+			} else {
+				ret.put(ID_DAO_PACKAGE_NAME, ClassNameUtil.getPackageName(daocls.getName()));
+				ret.put(ID_DAO_CLASS_NAME, daocls.getSimpleName());
+				Dao dao = daocls.getConstructor().newInstance();
+				if (dao instanceof QuerySetDao) {
+					this.getQueryInfo(dao, p, ret);
+				}
+			}
+		} else {
 			ret.put(ID_DAO_PACKAGE_NAME, "");
 			ret.put(ID_DAO_CLASS_NAME, "");
-		} else {
-			ret.put(ID_DAO_PACKAGE_NAME, ClassNameUtil.getPackageName(daocls.getName()));
-			ret.put(ID_DAO_CLASS_NAME, daocls.getSimpleName());
-			Dao dao = daocls.getConstructor().newInstance();
-			if (dao instanceof QuerySetDao) {
-				this.getQueryInfo(dao, p, ret);
-			}
 		}
 		ret.put(ID_PAGE_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 		ret.put(ID_FUNCTION_SELECT, functionPath);
@@ -568,7 +573,11 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		if (m != null) {
 			@SuppressWarnings("unchecked")
 			Class<? extends Dao> cl = (Class<? extends Dao>) m.invoke(page);
-			return cl.getConstructor().newInstance();
+			if (cl != null) {
+				return cl.getConstructor().newInstance();
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
@@ -641,6 +650,27 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 
 	}
 
+
+	/**
+	 * ページ名の更新。
+	 * @param functionPath 機能パス。
+	 * @param packageName パッケージ名。
+	 * @param pageClassName ページクラス名。
+	 * @param pageName ページ名。
+	 * @throws Exception 例外。
+	 */
+	private void updatePageName(final String functionPath, final String packageName, final String pageClassName, final String pageName) throws Exception {
+		String funcprop = this.getFunctionPropertiesPath(functionPath);
+		SequentialProperties prop = this.readFunctionProperties(funcprop);
+		prop.put(packageName + "." + pageClassName, pageName);
+		String str = prop.getSaveText();
+		logger.debug("str=" + str);
+		FileUtil.writeTextFileWithBackup(funcprop, str, DataFormsServlet.getEncoding());
+
+	}
+
+
+
 	@Override
 	protected void insertData(Map<String, Object> data) throws Exception {
 		String pagePattern = (String) data.get(ID_PAGE_PATTERN);
@@ -655,6 +685,12 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			QuerySetDaoGenerator gen = new QuerySetDaoGenerator();
 			gen.generage(this, data);
 		}
+		// Function.propertiesの更新
+		String functionPath = (String) data.get(ID_FUNCTION_SELECT);
+		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PACKAGE_NAME);
+		String pageName = (String) data.get(ID_PAGE_NAME);
+		String pageClassName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_CLASS_NAME);
+		this.updatePageName(functionPath, packageName, pageClassName, pageName);
 	}
 
 	@Override

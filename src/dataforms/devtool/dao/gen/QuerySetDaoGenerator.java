@@ -113,8 +113,21 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 	 * @param data POSTされたデータ。
 	 * @return 一覧取得問合せ設定情報。
 	 */
-	private List<Map<String, Object>> getListQueryConfig(final Map<String, Object> data) {
+/*	private List<Map<String, Object>> getListQueryConfig(final Map<String, Object> data) {
 		String json = (String) data.get(DaoAndPageGeneratorEditForm.ID_LIST_QUERY_CONFIG);
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> list = JSON.decode(json, ArrayList.class);
+		return list;
+	}
+*/
+	/**
+	 * 編集対象取得問合せ設定情報を取得します。
+	 * @param data POSTされたデータ。
+	 * @return 編集対象取得問合せ設定情報。
+	 */
+	private List<Map<String, Object>> getEditQueryConfig(final Map<String, Object> data) {
+		String json = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_CONFIG);
+		logger.debug("*** editQueryConfig=" + json);
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> list = JSON.decode(json, ArrayList.class);
 		return list;
@@ -184,7 +197,7 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 			String pagePattern = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_PATTERN);
 			String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
 			if ("2".equals(ef)) {
-				List<Map<String, Object>> list = this.getListQueryConfig(data);
+				List<Map<String, Object>> list = this.getEditQueryConfig(data);
 				for (Map<String, Object> m: list) {
 					String sel = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
 					if ("1".equals(sel)) {
@@ -297,7 +310,7 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 	private String getKeyListSource(final Map<String, Object> data, final ImportUtil implist, final String packagename, final String classname) throws Exception {
 		int cnt = 0;
 		StringBuilder sb = new StringBuilder();
-		List<Map<String, Object>> list = this.getListQueryConfig(data);
+		List<Map<String, Object>> list = this.getEditQueryConfig(data);
 
 		Class<?> cls = Class.forName(packagename + "." + classname);
 		if (Table.class.isAssignableFrom(cls)) {
@@ -308,14 +321,15 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 		sb.append("\t\tthis.setMultiRecordQueryKeyList(new FieldList(\n");
 		StringBuilder fsb = new StringBuilder();
 		for (Map<String, Object> m: list) {
+			String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
 			String sel = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
+			logger.debug("fieldId={}, sel={}", fieldId, sel);
 			if ("1".equals(sel)) {
 				if (fsb.length() > 0) {
 					fsb.append("\t\t\t, ");
 				} else {
 					fsb.append("\t\t\t");
 				}
-				String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
 				String tbl = (String) m.get(SelectFieldHtmlTable.ID_TABLE_CLASS_NAME);
 				String fieldClassName = (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
 				int idx = fieldClassName.lastIndexOf(".");
@@ -377,11 +391,11 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 	 * @throws Exception 例型。
 	 */
 	public void generage(final Form form, final Map<String, Object> data) throws Exception {
-		List<Map<String, Object>> list = this.getListQueryConfig(data);
+/*		List<Map<String, Object>> list = this.getListQueryConfig(data);
 		logger.debug("fieldList=" + list.getClass().getName());
 		for (int i = 0; i < list.size(); i++) {
 			logger.debug("fieldInfo=" + JSON.encode(list.get(i)));
-		}
+		}*/
 //		String javasrc = this.getStringResourse(this.getClass(), "../page/template/QuerySetDao.java.template");
 		Template tmp = new Template(this.getClass(), "../page/template/QuerySetDao.java.template");
 		//logger.debug("template=" + javasrc);
@@ -414,6 +428,9 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 		String javasrc = null;
 		String pagePattern = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_PATTERN);
 		String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
+
+		logger.debug("*** editFormFlag=" + ef);
+
 		if ("0".equals(ef)) {
 			tmp.replace("singleRecordQuery", "(Query) null");
 			tmp.replace("addMultiRecordQueryList", "");

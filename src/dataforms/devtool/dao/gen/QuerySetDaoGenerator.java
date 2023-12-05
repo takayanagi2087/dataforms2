@@ -194,22 +194,24 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 			}
 		}
 		{
-			String pagePattern = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_PATTERN);
-			String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
-			if ("2".equals(ef)) {
-				List<Map<String, Object>> list = this.getEditQueryConfig(data);
-				for (Map<String, Object> m: list) {
-					String sel = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
-					if ("1".equals(sel)) {
-						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
-						String fullClassName = (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
-						int idx = fullClassName.lastIndexOf(".");
-						if (idx >= 0) {
-							if (!set.contains(fullClassName)) {
-								sb.append(this.getFieldProperty(fieldId, fullClassName));
-								set.add(fullClassName);
-								implist.add(fullClassName);
-								// implist.add(fullClassName);
+			if (!this.isAllRecordEditForm(data)) {
+				String pagePattern = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_PATTERN);
+				String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
+				if ("2".equals(ef)) {
+					List<Map<String, Object>> list = this.getEditQueryConfig(data);
+					for (Map<String, Object> m: list) {
+						String sel = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
+						if ("1".equals(sel)) {
+							String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+							String fullClassName = (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
+							int idx = fullClassName.lastIndexOf(".");
+							if (idx >= 0) {
+								if (!set.contains(fullClassName)) {
+									sb.append(this.getFieldProperty(fieldId, fullClassName));
+									set.add(fullClassName);
+									implist.add(fullClassName);
+									// implist.add(fullClassName);
+								}
 							}
 						}
 					}
@@ -354,6 +356,24 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 		}
 	}
 
+	/**
+	 * 全レコード編集フォームかどうかの判定を行います。
+	 * @param data POSTデータ。
+	 * @return 全レコード編集フォームの場合true;
+	 */
+	private boolean isAllRecordEditForm(final Map<String, Object> data) {
+		String pagePattern = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_PATTERN);
+		String qf = PagePatternSelectField.getQueryFormFlag(pagePattern);
+		String qrf = PagePatternSelectField.getQueryResultFormFlag(pagePattern);
+		String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
+		if ("0".equals(qf) && "0".equals(qrf) && "2".equals(ef)) {
+			return true; //
+		} else {
+			return false;
+		}
+
+	}
+
 
 	/**
 	 * 複数レコード編集フォーム用DAOソース生成を行います。
@@ -369,8 +389,11 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 		String p = (String) data.get(DaoAndPageGeneratorEditForm.ID_PACKAGE_NAME);
 		String packagename = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_PACKAGE_NAME);
 		String classname = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_CLASS_NAME);
-		String src = "\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(classname) + " = new " + classname + "());\n"
-					+ this.getKeyListSource(data, implist, packagename, classname);
+
+		String src = "\t\tthis.addMultiRecordQueryList(this." + StringUtil.firstLetterToLowerCase(classname) + " = new " + classname + "());\n";
+		if (!this.isAllRecordEditForm(data) ) {
+			src += this.getKeyListSource(data, implist, packagename, classname);
+		}
 		tmp.replace("addMultiRecordQueryList", src);
 		implist.add(Query.class.getName());
 		tmp.replace("singleRecordQuery", "(Query) null");

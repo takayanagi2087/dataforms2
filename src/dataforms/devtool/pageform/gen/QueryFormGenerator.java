@@ -7,18 +7,14 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dataforms.controller.Form;
 import dataforms.dao.Query;
 import dataforms.dao.Table;
-import dataforms.devtool.javasrc.JavaSrcGenerator;
 import dataforms.devtool.pageform.page.DaoAndPageGeneratorEditForm;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.field.base.Field;
 import dataforms.field.base.Field.Display;
 import dataforms.field.base.Field.MatchType;
 import dataforms.field.base.FieldList;
-import dataforms.servlet.DataFormsServlet;
-import dataforms.util.FileUtil;
 import dataforms.util.ImportUtil;
 import dataforms.util.StringUtil;
 import net.arnx.jsonic.JSON;
@@ -26,7 +22,7 @@ import net.arnx.jsonic.JSON;
 /**
  * ページジェネレータ。
  */
-public class QueryFormGenerator extends JavaSrcGenerator {
+public class QueryFormGenerator extends FormSrcGenerator {
 	/**
 	 * Logger.
 	 */
@@ -190,42 +186,35 @@ public class QueryFormGenerator extends JavaSrcGenerator {
 		return sb.toString();
 	}
 
-
+	/**
+	 * 問合せフォームのテンプレートを取得します。
+	 */
 	@Override
-	public void generage(Form form, Map<String, Object> data) throws Exception {
-		logger.debug("Generate QueryForm class");
+	protected Template getTemplate() throws Exception {
 		Template tmp = new Template(this.getClass(), "template/QueryForm.java.template");
+		return tmp;
+	}
 
-		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PACKAGE_NAME);
-		String pageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_NAME);
-		String daoPackageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_PACKAGE_NAME);
-		String daoClassName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_CLASS_NAME);
+	/**
+	 * 問合せフォームクラス名を取得します。
+	 */
+	@Override
+	protected String getFormClassName(final Map<String, Object> data) {
 		String formClassName = (String) data.get(DaoAndPageGeneratorEditForm.ID_QUERY_FORM_CLASS_NAME);
-		tmp.replace(DaoAndPageGeneratorEditForm.ID_PACKAGE_NAME, packageName);
-		tmp.replace(DaoAndPageGeneratorEditForm.ID_PAGE_NAME, pageName);
+		return formClassName;
+	}
+
+
+	/**
+	 * 問合せフォーム用のコンポーネントの配置処理を実装します。
+	 */
+	@Override
+	protected void setFormComponent(Template tmp, String formClassName, Map<String, Object> data) throws Exception {
 		tmp.replace(DaoAndPageGeneratorEditForm.ID_QUERY_FORM_CLASS_NAME, formClassName);
-		tmp.replace(DaoAndPageGeneratorEditForm.ID_DAO_CLASS_NAME, daoClassName);
-
-		String daocls = daoPackageName + "." + daoClassName;
-		tmp.replace("daoClassFullName", daocls);
-
 		ImportUtil implist = new ImportUtil();
 		String queryFormFieldList = this.getQueryFormFieldList(data, implist);
 		tmp.replace("queryFormFieldList", queryFormFieldList);
 		tmp.replace("queryFormImportList", implist.getImportText());
-
-		Template vfTmp = new Template(this.getClass(), "template/validateForm.java.template");
-		Template wmTmp = new Template(this.getClass(), "template/webMethod.java.template");
-		tmp.replace("validateForm", vfTmp.getSource());
-		tmp.replace("webMethod", wmTmp.getSource());
-
-		logger.debug("QueryForm:\n" + tmp.getSource());
-
-		String path = (String) data.get(DaoAndPageGeneratorEditForm.ID_JAVA_SOURCE_PATH);
-		String formclass = packageName + "." + formClassName;
-		String srcPath = path + "/" + formclass.replaceAll("\\.", "/") + ".java";
-		logger.debug("srcPath=" + srcPath);
-		FileUtil.writeTextFileWithBackup(srcPath, tmp.getSource(), DataFormsServlet.getEncoding());
-
 	}
+
 }

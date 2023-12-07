@@ -6,7 +6,7 @@ import ${daoClassFullName};
 
 
 /**
- * 問い合わせフォームクラス。
+ * ${pageName}用問合せフォームクラス。
  */
 public class ${queryFormClassName} extends QueryForm {
 	/**

@@ -692,6 +692,10 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 				QueryFormGenerator qfgen = new QueryFormGenerator();
 				qfgen.generage(this, data);
 			}
+/*			if ("1".equals(qrf)) {
+				QueryResultFormGenerator qrfgen = new QueryResultFormGenerator();
+				qrfgen.generage(getParentForm(), data);
+			}*/
 		}
 		// Function.propertiesの更新
 		String functionPath = (String) data.get(ID_FUNCTION_SELECT);

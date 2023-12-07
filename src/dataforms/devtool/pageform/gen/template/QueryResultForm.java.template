@@ -10,7 +10,7 @@ ${queryResultFormImportList}
 
 
 /**
- * 問い合わせ結果フォームクラス。
+ * ${pageName}用問合せ結果フォームクラス。
  */
 public class ${queryResultFormClassName} extends QueryResultForm {
 	/**

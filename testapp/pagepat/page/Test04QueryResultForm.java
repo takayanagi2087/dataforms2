@@ -4,6 +4,7 @@ import java.util.Map;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
+import dataforms.field.base.Field.Display;
 import dataforms.htmltable.PageScrollHtmlTable;
 import pagepat.dao.Test04Dao;
 import pagepat.dao.Code1CountQuery;
@@ -11,7 +12,7 @@ import pagepat.dao.Code1CountQuery;
 
 
 /**
- * 問い合わせ結果フォームクラス。
+ * 一覧→複数レコード編集ページ用問合せ結果フォームクラス。
  */
 public class Test04QueryResultForm extends QueryResultForm {
 	/**
@@ -21,8 +22,8 @@ public class Test04QueryResultForm extends QueryResultForm {
 		Test04Dao dao = new Test04Dao();
 		this.addPkFieldList(dao.getEditFormKeyList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
-		htmltable.getFieldList().get(Code1CountQuery.Entity.ID_CODE1).setSortable(true);
-		htmltable.getFieldList().get(Code1CountQuery.Entity.ID_CNT).setSortable(true);
+		htmltable.getFieldList().get(Code1CountQuery.Entity.ID_CODE1).setQueryResultFormDisplay(Display.INPUT_READONLY).setSortable(true);
+		htmltable.getFieldList().get(Code1CountQuery.Entity.ID_CNT).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
 
 		this.addHtmlTable(htmltable);
 	}

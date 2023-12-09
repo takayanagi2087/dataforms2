@@ -4,6 +4,7 @@ import java.util.Map;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
+import dataforms.field.base.Field.Display;
 import dataforms.htmltable.PageScrollHtmlTable;
 import pagepat.dao.Test03Dao;
 import pagepat.dao.TestTable;
@@ -11,7 +12,7 @@ import pagepat.dao.TestTable;
 
 
 /**
- * 問い合わせ結果フォームクラス。
+ * 一覧→1レコード編集ページ用問合せ結果フォームクラス。
  */
 public class Test03QueryResultForm extends QueryResultForm {
 	/**
@@ -21,9 +22,14 @@ public class Test03QueryResultForm extends QueryResultForm {
 		Test03Dao dao = new Test03Dao();
 		this.addPkFieldList(dao.getEditFormKeyList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
-		htmltable.getFieldList().get(TestTable.Entity.ID_CODE1).setSortable(true);
-		htmltable.getFieldList().get(TestTable.Entity.ID_CODE2).setSortable(true);
-		htmltable.getFieldList().get(TestTable.Entity.ID_NAME).setSortable(true);
+		htmltable.getFieldList().get(TestTable.Entity.ID_TEST_ID).setQueryResultFormDisplay(Display.INPUT_HIDDEN);
+		htmltable.getFieldList().get(TestTable.Entity.ID_CODE1).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(TestTable.Entity.ID_CODE2).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(TestTable.Entity.ID_NAME).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(TestTable.Entity.ID_CREATE_USER_ID).setQueryResultFormDisplay(Display.INPUT_HIDDEN);
+		htmltable.getFieldList().get(TestTable.Entity.ID_CREATE_TIMESTAMP).setQueryResultFormDisplay(Display.INPUT_HIDDEN);
+		htmltable.getFieldList().get(TestTable.Entity.ID_UPDATE_USER_ID).setQueryResultFormDisplay(Display.INPUT_HIDDEN);
+		htmltable.getFieldList().get(TestTable.Entity.ID_UPDATE_TIMESTAMP).setQueryResultFormDisplay(Display.INPUT_HIDDEN);
 
 		this.addHtmlTable(htmltable);
 	}

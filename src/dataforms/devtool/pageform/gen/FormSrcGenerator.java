@@ -134,11 +134,13 @@ public abstract class FormSrcGenerator extends JavaSrcGenerator {
 				String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
 				String matchType = (String) m.get(SelectFieldHtmlTable.ID_MATCH_TYPE);
 				String listFieldDisplay = (String) m.get(SelectFieldHtmlTable.ID_LIST_FIELD_DISPLAY);
+				String editFieldDisplay = (String) m.get(SelectFieldHtmlTable.ID_EDIT_FIELD_DISPLAY);
 				String editKey = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
 				logger.debug("fieldId=" + fieldId);
 				Field<?> field = flist.get(fieldId);
 				field.setMatchType(Field.MatchType.valueOf(matchType));
-				field.setEditFormDisplay(Display.valueOf(listFieldDisplay));
+				field.setQueryResultFormDisplay(Display.valueOf(listFieldDisplay));
+				field.setEditFormDisplay(Display.valueOf(editFieldDisplay));
 				if (!editKeyOnly) {
 					// editKeyOnlyのみでない場合、全てのフィールドを転記
 					ret.add(field);

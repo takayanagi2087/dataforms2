@@ -2,7 +2,6 @@ package dataforms.devtool.pageform.gen;
 
 import java.util.Map;
 
-import dataforms.dao.Table;
 import dataforms.devtool.pageform.page.DaoAndPageGeneratorEditForm;
 import dataforms.field.base.Field;
 import dataforms.field.base.Field.Display;
@@ -47,20 +46,21 @@ public class QueryResultFormGenerator extends FormSrcGenerator {
 	private String getQueryResultFormFieldList(final Map<String, Object> data, final ImportUtil implist) throws Exception {
 		FieldList flist = this.getQueryFormFieldList(data);
 		StringBuilder sb = new StringBuilder();
-
-		String scn = (String) data.get(DaoAndPageGeneratorEditForm.ID_LIST_QUERY_CLASS_NAME);
+		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_LIST_QUERY_PACKAGE_NAME);
+		String queryClass = (String) data.get(DaoAndPageGeneratorEditForm.ID_LIST_QUERY_CLASS_NAME);
+		implist.add(packageName + "." + queryClass);
 		for (Field<?> f : flist) {
-			Table tbl = f.getTable();
-			implist.add(tbl.getClass());
+//			Table tbl = f.getTable();
+//			implist.add(tbl.getClass());
 			if (f instanceof DeleteFlagField) {
 				continue;
 			}
 			if (f.getQueryResultFormDisplay() == Display.INPUT_HIDDEN) {
-				String text = "\t\thtmltable.getFieldList().get(" + scn + ".Entity.ID_" + StringUtil.camelToUpperCaseSnake(f.getId()) + ")."
+				String text = "\t\thtmltable.getFieldList().get(" + queryClass + ".Entity.ID_" + StringUtil.camelToUpperCaseSnake(f.getId()) + ")."
 						+ "setQueryResultFormDisplay(Display." + f.getQueryResultFormDisplay().toString() + ");\n";
 				sb.append(text);
 			} else {
-				String text = "\t\thtmltable.getFieldList().get(" + scn + ".Entity.ID_" + StringUtil.camelToUpperCaseSnake(f.getId()) + ")."
+				String text = "\t\thtmltable.getFieldList().get(" + queryClass + ".Entity.ID_" + StringUtil.camelToUpperCaseSnake(f.getId()) + ")."
 						+ "setQueryResultFormDisplay(Display." + f.getQueryResultFormDisplay().toString() + ")."
 						+ "setSortable(true);\n";
 				sb.append(text);

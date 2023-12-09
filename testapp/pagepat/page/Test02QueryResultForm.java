@@ -1,15 +1,13 @@
 package pagepat.page;
 
 import java.util.Map;
-
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
-import dataforms.field.base.Field.Display;
 import dataforms.field.base.FieldList;
+import dataforms.field.base.Field.Display;
 import dataforms.htmltable.PageScrollHtmlTable;
-import pagepat.dao.Code1CountQuery;
 import pagepat.dao.Test02Dao;
-import pagepat.dao.TestTable;
+import pagepat.dao.Code1CountQuery;
 
 
 
@@ -24,7 +22,7 @@ public class Test02QueryResultForm extends QueryResultForm {
 		Test02Dao dao = new Test02Dao();
 		this.addPkFieldList(dao.getEditFormKeyList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
-		htmltable.getFieldList().get(TestTable.Entity.ID_CODE1).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(Code1CountQuery.Entity.ID_CODE1).setQueryResultFormDisplay(Display.INPUT_READONLY).setSortable(true);
 		htmltable.getFieldList().get(Code1CountQuery.Entity.ID_CNT).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
 
 		this.addHtmlTable(htmltable);

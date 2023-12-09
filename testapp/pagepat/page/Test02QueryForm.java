@@ -13,7 +13,7 @@ import pagepat.dao.Test02Dao;
 
 
 /**
- * 問い合わせフォームクラス。
+ * 検索→一覧→複数レコード編集ページ用問合せフォームクラス。
  */
 public class Test02QueryForm extends QueryForm {
 	/**

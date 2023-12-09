@@ -36,6 +36,7 @@ import dataforms.devtool.field.QueryFormClassNameField;
 import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryResultFormClassNameField;
 import dataforms.devtool.pageform.gen.QueryFormGenerator;
+import dataforms.devtool.pageform.gen.QueryResultFormGenerator;
 import dataforms.devtool.pageform.gen.SimpleFormGenerator;
 import dataforms.devtool.pageform.gen.SimplePageGenerator;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
@@ -692,10 +693,10 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 				QueryFormGenerator qfgen = new QueryFormGenerator();
 				qfgen.generage(this, data);
 			}
-/*			if ("1".equals(qrf)) {
+			if ("1".equals(qrf)) {
 				QueryResultFormGenerator qrfgen = new QueryResultFormGenerator();
 				qrfgen.generage(getParentForm(), data);
-			}*/
+			}
 		}
 		// Function.propertiesの更新
 		String functionPath = (String) data.get(ID_FUNCTION_SELECT);

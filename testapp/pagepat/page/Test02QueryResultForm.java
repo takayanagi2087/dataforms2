@@ -1,17 +1,20 @@
 package pagepat.page;
 
 import java.util.Map;
+
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
+import dataforms.field.base.Field.Display;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
-import pagepat.dao.Test02Dao;
 import pagepat.dao.Code1CountQuery;
+import pagepat.dao.Test02Dao;
+import pagepat.dao.TestTable;
 
 
 
 /**
- * 問い合わせ結果フォームクラス。
+ * 検索→一覧→複数レコード編集ページ用問合せ結果フォームクラス。
  */
 public class Test02QueryResultForm extends QueryResultForm {
 	/**
@@ -21,8 +24,8 @@ public class Test02QueryResultForm extends QueryResultForm {
 		Test02Dao dao = new Test02Dao();
 		this.addPkFieldList(dao.getEditFormKeyList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
-		htmltable.getFieldList().get(Code1CountQuery.Entity.ID_CODE1).setSortable(true);
-		htmltable.getFieldList().get(Code1CountQuery.Entity.ID_CNT).setSortable(true);
+		htmltable.getFieldList().get(TestTable.Entity.ID_CODE1).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(Code1CountQuery.Entity.ID_CNT).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
 
 		this.addHtmlTable(htmltable);
 	}

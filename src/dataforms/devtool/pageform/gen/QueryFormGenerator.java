@@ -1,23 +1,14 @@
 package dataforms.devtool.pageform.gen;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import dataforms.dao.Query;
 import dataforms.dao.Table;
 import dataforms.devtool.pageform.page.DaoAndPageGeneratorEditForm;
-import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import dataforms.field.base.Field;
-import dataforms.field.base.Field.Display;
 import dataforms.field.base.Field.MatchType;
 import dataforms.field.base.FieldList;
 import dataforms.util.ImportUtil;
 import dataforms.util.StringUtil;
-import net.arnx.jsonic.JSON;
 
 /**
  * ページジェネレータ。
@@ -26,7 +17,7 @@ public class QueryFormGenerator extends FormSrcGenerator {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = LogManager.getLogger(QueryFormGenerator.class);
+//	private static Logger logger = LogManager.getLogger(QueryFormGenerator.class);
 
 	/**
 	 * コンストラクタ。
@@ -35,97 +26,6 @@ public class QueryFormGenerator extends FormSrcGenerator {
 
 	}
 
-	/**
-	 * 指定されたクラスのフィールドリストを取得します。
-	 * @param pkg パッケージ。
-	 * @param cls クラス。
-	 * @return フィールドリスト。
-	 * @throws Exception 例外。
-	 */
-	protected FieldList getFieldList(final String pkg, final String cls) throws Exception {
-		FieldList flist = null;
-		if (!StringUtil.isBlank(pkg) && !StringUtil.isBlank(cls)) {
-			Class<?> clazz = Class.forName(pkg + "." + cls);
-			Object obj = clazz.getConstructor().newInstance();
-			if (obj instanceof Table) {
-				Table table = (Table) obj;
-				flist = table.getFieldList();
-			} else if (obj instanceof Query) {
-				Query query = (Query) obj;
-				flist = query.getFieldList();
-			}
-		}
-		return flist;
-	}
-
-	/**
-	 * 問合せのフィールドリストを取得します。
-	 * @param data POSTされたデータ。
-	 * @param pkgid 問合せパッケージ名のフィールドID。
-	 * @param clsid 問合せクラス名のフィールドID。
-	 * @param confid フィールド設定情報のフィールドID。
-	 * @param editKeyOnly 編集キーのみ。
-	 * @return フィールドリスト。
-	 * @throws Exception 例外。
-	 */
-	protected FieldList getQueryFieldList(final Map<String, Object> data, final String pkgid, final String clsid, final String confid, final boolean editKeyOnly) throws Exception {
-		FieldList ret = null;
-		String pkg = (String) data.get(pkgid);
-		String cls = (String) data.get(clsid);
-		FieldList flist = this.getFieldList(pkg, cls);
-		if (flist != null) {
-			ret = new FieldList();
-			String json = (String) data.get(confid);
-			@SuppressWarnings("unchecked")
-			List<Map<String, Object>> list =  JSON.decode(json, ArrayList.class);
-			for (Map<String, Object> m: list) {
-				String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
-				String matchType = (String) m.get(SelectFieldHtmlTable.ID_MATCH_TYPE);
-				String listFieldDisplay = (String) m.get(SelectFieldHtmlTable.ID_LIST_FIELD_DISPLAY);
-				String editKey = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
-				logger.debug("fieldId=" + fieldId);
-				Field<?> field = flist.get(fieldId);
-				field.setMatchType(Field.MatchType.valueOf(matchType));
-				field.setEditFormDisplay(Display.valueOf(listFieldDisplay));
-				if (!editKeyOnly) {
-					// editKeyOnlyのみでない場合、全てのフィールドを転記
-					ret.add(field);
-				} else {
-					if ("1".equals(editKey)) {
-						ret.add(field);
-					}
-				}
-			}
-		}
-		return  ret;
-	}
-
-
-	/**
-	 * 問合せフォームのフィールドリストを取得します。
-	 * @param data POSTされたデータ。
-	 * @return 一覧取得問合せのフィールドリスト。
-	 * @throws Exception 例外。
-	 */
-	protected FieldList getQueryFormFieldList(final Map<String, Object> data) throws Exception {
-		FieldList flist = this.getQueryFieldList(
-			data
-			, DaoAndPageGeneratorEditForm.ID_LIST_QUERY_PACKAGE_NAME
-			, DaoAndPageGeneratorEditForm.ID_LIST_QUERY_CLASS_NAME
-			, DaoAndPageGeneratorEditForm.ID_LIST_QUERY_CONFIG
-			, false
-		);
-		if (flist == null) {
-			flist = this.getQueryFieldList(
-				data
-				, DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_PACKAGE_NAME
-				, DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_CLASS_NAME
-				, DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_CONFIG
-				, true
-			);
-		}
-		return flist;
-	}
 
 	/**
 	 * 編集対象取得問合せのフィールドリストを取得します。

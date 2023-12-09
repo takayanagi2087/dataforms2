@@ -4,6 +4,7 @@ import java.util.Map;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
+import dataforms.field.base.Field.Display;
 import dataforms.htmltable.PageScrollHtmlTable;
 import ${daoClassFullName};
 ${queryResultFormImportList}

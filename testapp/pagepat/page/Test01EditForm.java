@@ -7,7 +7,7 @@ import dataforms.dao.Table;
 import pagepat.dao.Test01Dao;
 
 /**
- * 編集フォームクラス。
+ * 検索→一覧→1レコード編集ページ用編集フォームクラス。
  */
 public class Test01EditForm extends EditForm {
 	/**

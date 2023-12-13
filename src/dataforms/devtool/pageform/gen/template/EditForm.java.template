@@ -4,6 +4,7 @@ import java.util.Map;
 
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
+import dataforms.field.base.Field.Display;
 import ${daoClassFullName};
 
 /**
@@ -15,6 +16,10 @@ public class ${editFormClassName} extends EditForm {
 	 */
 	public ${editFormClassName}() {
 		${daoClassName} dao = new ${daoClassName}();
+		// 各フィールドの設定処理。
+${fieldConfig}
+		// このメソッドでdaoに設定された編集対象取得問合せのフィールドをフォームに展開します。
+		// 複数レコード問合せを指定した場合、そのフィールドを持つHtmlTableフォームに配置します。
 		this.addFields(dao);
 	}
 

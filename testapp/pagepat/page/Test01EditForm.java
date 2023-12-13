@@ -4,6 +4,7 @@ import java.util.Map;
 
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
+import dataforms.field.base.Field.Display;
 import pagepat.dao.Test01Dao;
 
 /**
@@ -15,6 +16,17 @@ public class Test01EditForm extends EditForm {
 	 */
 	public Test01EditForm() {
 		Test01Dao dao = new Test01Dao();
+		// 各フィールドの設定処理。
+		dao.getTestTable().getTestIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getTestTable().getCode1Field().setEditFormDisplay(Display.INPUT);
+		dao.getTestTable().getCode2Field().setEditFormDisplay(Display.INPUT);
+		dao.getTestTable().getNameField().setEditFormDisplay(Display.INPUT);
+		dao.getTestTable().getCreateUserIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getTestTable().getCreateTimestampField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getTestTable().getUpdateUserIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getTestTable().getUpdateTimestampField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		// このメソッドでdaoに設定された編集対象取得問合せのフィールドをフォームに展開します。
+		// 複数レコード問合せを指定した場合、そのフィールドを持つHtmlTableフォームに配置します。
 		this.addFields(dao);
 	}
 

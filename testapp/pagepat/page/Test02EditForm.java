@@ -4,10 +4,11 @@ import java.util.Map;
 
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
+import dataforms.field.base.Field.Display;
 import pagepat.dao.Test02Dao;
 
 /**
- * 編集フォームクラス。
+ * 検索→一覧→複数レコード編集ページ用編集フォームクラス。
  */
 public class Test02EditForm extends EditForm {
 	/**
@@ -15,6 +16,17 @@ public class Test02EditForm extends EditForm {
 	 */
 	public Test02EditForm() {
 		Test02Dao dao = new Test02Dao();
+		// 各フィールドの設定処理。
+		dao.getTestTable().getTestIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getTestTable().getCode1Field().setEditFormDisplay(Display.INPUT);
+		dao.getTestTable().getCode2Field().setEditFormDisplay(Display.INPUT);
+		dao.getTestTable().getNameField().setEditFormDisplay(Display.INPUT);
+		dao.getTestTable().getCreateUserIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getTestTable().getCreateTimestampField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getTestTable().getUpdateUserIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getTestTable().getUpdateTimestampField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		// このメソッドでdaoに設定された編集対象取得問合せのフィールドをフォームに展開します。
+		// 複数レコード問合せを指定した場合、そのフィールドを持つHtmlTableフォームに配置します。
 		this.addFields(dao);
 	}
 

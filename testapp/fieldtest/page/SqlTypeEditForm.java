@@ -32,6 +32,7 @@ public class SqlTypeEditForm extends EditForm {
 		dao.getSqlTypeTable().getCreateTimestampField().setEditFormDisplay(Display.INPUT_HIDDEN);
 		dao.getSqlTypeTable().getUpdateUserIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
 		dao.getSqlTypeTable().getUpdateTimestampField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		//
 		dao.getSqlType2Table().getSqlType2IdField().setEditFormDisplay(Display.INPUT_HIDDEN);
 		dao.getSqlType2Table().getSqlTypeIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
 		dao.getSqlType2Table().getSqlChar2Field().setEditFormDisplay(Display.INPUT);

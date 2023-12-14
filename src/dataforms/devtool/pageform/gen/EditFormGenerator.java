@@ -106,7 +106,7 @@ public class EditFormGenerator extends FormSrcGenerator {
 			String qcls = (String) m.get(DaoAndPageGeneratorEditForm.ID_QUERY_CLASS_NAME);
 			String qconf = (String) m.get(DaoAndPageGeneratorEditForm.ID_QUERY_CONFIG);
 			if (sb.length() > 0) {
-				sb.append("\n");
+				sb.append("\n\t\t//\n");
 			}
 			sb.append(this.getFieldConfig(qcls, qconf));
 		}

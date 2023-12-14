@@ -4,10 +4,11 @@ import java.util.Map;
 
 import dataforms.controller.EditForm;
 import dataforms.dao.Table;
+import dataforms.field.base.Field.Display;
 import fieldtest.dao.SqlTypeDao;
 
 /**
- * 編集フォームクラス。
+ * SqlTypeページ用編集フォームクラス。
  */
 public class SqlTypeEditForm extends EditForm {
 	/**
@@ -15,6 +16,40 @@ public class SqlTypeEditForm extends EditForm {
 	 */
 	public SqlTypeEditForm() {
 		SqlTypeDao dao = new SqlTypeDao();
+		// 各フィールドの設定処理。
+		dao.getSqlTypeTable().getSqlTypeIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getSqlTypeTable().getSqlCharField().setEditFormDisplay(Display.INPUT);
+		dao.getSqlTypeTable().getSqlVarcharField().setEditFormDisplay(Display.INPUT);
+		dao.getSqlTypeTable().getSqlSmallintField().setEditFormDisplay(Display.INPUT);
+		dao.getSqlTypeTable().getSqlIntegerField().setEditFormDisplay(Display.INPUT);
+		dao.getSqlTypeTable().getSqlDoubleField().setEditFormDisplay(Display.INPUT);
+		dao.getSqlTypeTable().getSqlNumericField().setEditFormDisplay(Display.INPUT);
+		dao.getSqlTypeTable().getSqlDateField().setEditFormDisplay(Display.INPUT);
+		dao.getSqlTypeTable().getSqlTimeField().setEditFormDisplay(Display.INPUT);
+		dao.getSqlTypeTable().getSqlTimestampField().setEditFormDisplay(Display.INPUT);
+		dao.getSqlTypeTable().getSqlClobField().setEditFormDisplay(Display.INPUT);
+		dao.getSqlTypeTable().getCreateUserIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getSqlTypeTable().getCreateTimestampField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getSqlTypeTable().getUpdateUserIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getSqlTypeTable().getUpdateTimestampField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getSqlType2Table().getSqlType2IdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getSqlType2Table().getSqlTypeIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getSqlType2Table().getSqlChar2Field().setEditFormDisplay(Display.INPUT);
+		dao.getSqlType2Table().getSqlVarchar2Field().setEditFormDisplay(Display.INPUT);
+		dao.getSqlType2Table().getSqlSmallint2Field().setEditFormDisplay(Display.INPUT);
+		dao.getSqlType2Table().getSqlInteger2Field().setEditFormDisplay(Display.INPUT);
+		dao.getSqlType2Table().getSqlDouble2Field().setEditFormDisplay(Display.INPUT);
+		dao.getSqlType2Table().getSqlNumeric2Field().setEditFormDisplay(Display.INPUT);
+		dao.getSqlType2Table().getSqlDate2Field().setEditFormDisplay(Display.INPUT);
+		dao.getSqlType2Table().getSqlTime2Field().setEditFormDisplay(Display.INPUT);
+		dao.getSqlType2Table().getSqlTimestamp2Field().setEditFormDisplay(Display.INPUT);
+		dao.getSqlType2Table().getSqlClob2Field().setEditFormDisplay(Display.INPUT);
+		dao.getSqlType2Table().getCreateUserIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getSqlType2Table().getCreateTimestampField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getSqlType2Table().getUpdateUserIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		dao.getSqlType2Table().getUpdateTimestampField().setEditFormDisplay(Display.INPUT_HIDDEN);
+		// このメソッドでdaoに設定された編集対象取得問合せのフィールドをフォームに展開します。
+		// 複数レコード問合せを指定した場合、そのフィールドを持つHtmlTableフォームに配置します。
 		this.addFields(dao);
 	}
 

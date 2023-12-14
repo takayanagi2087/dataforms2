@@ -100,6 +100,16 @@ public class EditFormGenerator extends FormSrcGenerator {
 			sb.append("\n");
 		}
 		sb.append(this.getFieldConfig(cls, conf));
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(DaoAndPageGeneratorEditForm.ID_MULTI_RECORD_QUERY_LIST);
+		for (Map<String, Object> m: list) {
+			String qcls = (String) m.get(DaoAndPageGeneratorEditForm.ID_QUERY_CLASS_NAME);
+			String qconf = (String) m.get(DaoAndPageGeneratorEditForm.ID_QUERY_CONFIG);
+			if (sb.length() > 0) {
+				sb.append("\n");
+			}
+			sb.append(this.getFieldConfig(qcls, qconf));
+		}
 		return sb.toString();
 	}
 

@@ -1,21 +1,20 @@
 package fieldtest.dao;
 
 import java.util.Map;
-
 import dataforms.dao.Table;
+import fieldtest.field.SqlSmallintField;
+import fieldtest.field.SqlType2IdField;
+import fieldtest.field.SqlVarcharField;
+import fieldtest.field.SqlTypeIdField;
+import fieldtest.field.SqlDateField;
+import fieldtest.field.SqlClobField;
+import fieldtest.field.SqlIntegerField;
+import fieldtest.field.SqlTimestampField;
+import fieldtest.field.SqlDoubleField;
 import dataforms.util.NumberUtil;
 import fieldtest.field.SqlCharField;
-import fieldtest.field.SqlClobField;
-import fieldtest.field.SqlDateField;
-import fieldtest.field.SqlDoubleField;
-import fieldtest.field.SqlIntegerField;
-import fieldtest.field.SqlNumericField;
-import fieldtest.field.SqlSmallintField;
 import fieldtest.field.SqlTimeField;
-import fieldtest.field.SqlTimestampField;
-import fieldtest.field.SqlType2IdField;
-import fieldtest.field.SqlTypeIdField;
-import fieldtest.field.SqlVarcharField;
+import fieldtest.field.SqlNumericField;
 
 
 /**
@@ -59,25 +58,25 @@ public class SqlType2Table extends Table {
 		/** レコードIDのフィールドID。 */
 		public static final String ID_SQL_TYPE_ID = "sqlTypeId";
 		/** CHARフィールドのフィールドID。 */
-		public static final String ID_SQL_CHAR = "sqlChar";
+		public static final String ID_SQL_CHAR2 = "sqlChar2";
 		/** VarcharFieldのフィールドID。 */
-		public static final String ID_SQL_VARCHAR = "sqlVarchar";
+		public static final String ID_SQL_VARCHAR2 = "sqlVarchar2";
 		/** SMALLINTフィールドのフィールドID。 */
-		public static final String ID_SQL_SMALLINT = "sqlSmallint";
+		public static final String ID_SQL_SMALLINT2 = "sqlSmallint2";
 		/** INTEGERフィールドのフィールドID。 */
-		public static final String ID_SQL_INTEGER = "sqlInteger";
+		public static final String ID_SQL_INTEGER2 = "sqlInteger2";
 		/** DOUBLEフィールドのフィールドID。 */
-		public static final String ID_SQL_DOUBLE = "sqlDouble";
+		public static final String ID_SQL_DOUBLE2 = "sqlDouble2";
 		/** NUMERICフィールドのフィールドID。 */
-		public static final String ID_SQL_NUMERIC = "sqlNumeric";
+		public static final String ID_SQL_NUMERIC2 = "sqlNumeric2";
 		/** DATEフィールドのフィールドID。 */
-		public static final String ID_SQL_DATE = "sqlDate";
+		public static final String ID_SQL_DATE2 = "sqlDate2";
 		/** TIMEフィールドのフィールドID。 */
-		public static final String ID_SQL_TIME = "sqlTime";
+		public static final String ID_SQL_TIME2 = "sqlTime2";
 		/** TIMESTAMPフィールドのフィールドID。 */
-		public static final String ID_SQL_TIMESTAMP = "sqlTimestamp";
+		public static final String ID_SQL_TIMESTAMP2 = "sqlTimestamp2";
 		/** CLOBフィールドのフィールドID。 */
-		public static final String ID_SQL_CLOB = "sqlClob";
+		public static final String ID_SQL_CLOB2 = "sqlClob2";
 
 		/**
 		 * コンストラクタ。
@@ -128,160 +127,160 @@ public class SqlType2Table extends Table {
 		 * CHARフィールドを取得します。
 		 * @return CHARフィールド。
 		 */
-		public java.lang.String getSqlChar() {
-			return (java.lang.String) this.getMap().get(Entity.ID_SQL_CHAR);
+		public java.lang.String getSqlChar2() {
+			return (java.lang.String) this.getMap().get(Entity.ID_SQL_CHAR2);
 		}
 
 		/**
 		 * CHARフィールドを設定します。
-		 * @param sqlChar CHARフィールド。
+		 * @param sqlChar2 CHARフィールド。
 		 */
-		public void setSqlChar(final java.lang.String sqlChar) {
-			this.getMap().put(Entity.ID_SQL_CHAR, sqlChar);
+		public void setSqlChar2(final java.lang.String sqlChar2) {
+			this.getMap().put(Entity.ID_SQL_CHAR2, sqlChar2);
 		}
 
 		/**
 		 * VarcharFieldを取得します。
 		 * @return VarcharField。
 		 */
-		public java.lang.String getSqlVarchar() {
-			return (java.lang.String) this.getMap().get(Entity.ID_SQL_VARCHAR);
+		public java.lang.String getSqlVarchar2() {
+			return (java.lang.String) this.getMap().get(Entity.ID_SQL_VARCHAR2);
 		}
 
 		/**
 		 * VarcharFieldを設定します。
-		 * @param sqlVarchar VarcharField。
+		 * @param sqlVarchar2 VarcharField。
 		 */
-		public void setSqlVarchar(final java.lang.String sqlVarchar) {
-			this.getMap().put(Entity.ID_SQL_VARCHAR, sqlVarchar);
+		public void setSqlVarchar2(final java.lang.String sqlVarchar2) {
+			this.getMap().put(Entity.ID_SQL_VARCHAR2, sqlVarchar2);
 		}
 
 		/**
 		 * SMALLINTフィールドを取得します。
 		 * @return SMALLINTフィールド。
 		 */
-		public java.lang.Short getSqlSmallint() {
-			return NumberUtil.shortValueObject(this.getMap().get(Entity.ID_SQL_SMALLINT));
+		public java.lang.Short getSqlSmallint2() {
+			return NumberUtil.shortValueObject(this.getMap().get(Entity.ID_SQL_SMALLINT2));
 		}
 
 		/**
 		 * SMALLINTフィールドを設定します。
-		 * @param sqlSmallint SMALLINTフィールド。
+		 * @param sqlSmallint2 SMALLINTフィールド。
 		 */
-		public void setSqlSmallint(final java.lang.Short sqlSmallint) {
-			this.getMap().put(Entity.ID_SQL_SMALLINT, sqlSmallint);
+		public void setSqlSmallint2(final java.lang.Short sqlSmallint2) {
+			this.getMap().put(Entity.ID_SQL_SMALLINT2, sqlSmallint2);
 		}
 
 		/**
 		 * INTEGERフィールドを取得します。
 		 * @return INTEGERフィールド。
 		 */
-		public java.lang.Integer getSqlInteger() {
-			return NumberUtil.integerValueObject(this.getMap().get(Entity.ID_SQL_INTEGER));
+		public java.lang.Integer getSqlInteger2() {
+			return NumberUtil.integerValueObject(this.getMap().get(Entity.ID_SQL_INTEGER2));
 		}
 
 		/**
 		 * INTEGERフィールドを設定します。
-		 * @param sqlInteger INTEGERフィールド。
+		 * @param sqlInteger2 INTEGERフィールド。
 		 */
-		public void setSqlInteger(final java.lang.Integer sqlInteger) {
-			this.getMap().put(Entity.ID_SQL_INTEGER, sqlInteger);
+		public void setSqlInteger2(final java.lang.Integer sqlInteger2) {
+			this.getMap().put(Entity.ID_SQL_INTEGER2, sqlInteger2);
 		}
 
 		/**
 		 * DOUBLEフィールドを取得します。
 		 * @return DOUBLEフィールド。
 		 */
-		public java.lang.Double getSqlDouble() {
-			return (java.lang.Double) this.getMap().get(Entity.ID_SQL_DOUBLE);
+		public java.lang.Double getSqlDouble2() {
+			return (java.lang.Double) this.getMap().get(Entity.ID_SQL_DOUBLE2);
 		}
 
 		/**
 		 * DOUBLEフィールドを設定します。
-		 * @param sqlDouble DOUBLEフィールド。
+		 * @param sqlDouble2 DOUBLEフィールド。
 		 */
-		public void setSqlDouble(final java.lang.Double sqlDouble) {
-			this.getMap().put(Entity.ID_SQL_DOUBLE, sqlDouble);
+		public void setSqlDouble2(final java.lang.Double sqlDouble2) {
+			this.getMap().put(Entity.ID_SQL_DOUBLE2, sqlDouble2);
 		}
 
 		/**
 		 * NUMERICフィールドを取得します。
 		 * @return NUMERICフィールド。
 		 */
-		public java.math.BigDecimal getSqlNumeric() {
-			return (java.math.BigDecimal) this.getMap().get(Entity.ID_SQL_NUMERIC);
+		public java.math.BigDecimal getSqlNumeric2() {
+			return (java.math.BigDecimal) this.getMap().get(Entity.ID_SQL_NUMERIC2);
 		}
 
 		/**
 		 * NUMERICフィールドを設定します。
-		 * @param sqlNumeric NUMERICフィールド。
+		 * @param sqlNumeric2 NUMERICフィールド。
 		 */
-		public void setSqlNumeric(final java.math.BigDecimal sqlNumeric) {
-			this.getMap().put(Entity.ID_SQL_NUMERIC, sqlNumeric);
+		public void setSqlNumeric2(final java.math.BigDecimal sqlNumeric2) {
+			this.getMap().put(Entity.ID_SQL_NUMERIC2, sqlNumeric2);
 		}
 
 		/**
 		 * DATEフィールドを取得します。
 		 * @return DATEフィールド。
 		 */
-		public java.sql.Date getSqlDate() {
-			return (java.sql.Date) this.getMap().get(Entity.ID_SQL_DATE);
+		public java.sql.Date getSqlDate2() {
+			return (java.sql.Date) this.getMap().get(Entity.ID_SQL_DATE2);
 		}
 
 		/**
 		 * DATEフィールドを設定します。
-		 * @param sqlDate DATEフィールド。
+		 * @param sqlDate2 DATEフィールド。
 		 */
-		public void setSqlDate(final java.sql.Date sqlDate) {
-			this.getMap().put(Entity.ID_SQL_DATE, sqlDate);
+		public void setSqlDate2(final java.sql.Date sqlDate2) {
+			this.getMap().put(Entity.ID_SQL_DATE2, sqlDate2);
 		}
 
 		/**
 		 * TIMEフィールドを取得します。
 		 * @return TIMEフィールド。
 		 */
-		public java.sql.Time getSqlTime() {
-			return (java.sql.Time) this.getMap().get(Entity.ID_SQL_TIME);
+		public java.sql.Time getSqlTime2() {
+			return (java.sql.Time) this.getMap().get(Entity.ID_SQL_TIME2);
 		}
 
 		/**
 		 * TIMEフィールドを設定します。
-		 * @param sqlTime TIMEフィールド。
+		 * @param sqlTime2 TIMEフィールド。
 		 */
-		public void setSqlTime(final java.sql.Time sqlTime) {
-			this.getMap().put(Entity.ID_SQL_TIME, sqlTime);
+		public void setSqlTime2(final java.sql.Time sqlTime2) {
+			this.getMap().put(Entity.ID_SQL_TIME2, sqlTime2);
 		}
 
 		/**
 		 * TIMESTAMPフィールドを取得します。
 		 * @return TIMESTAMPフィールド。
 		 */
-		public java.sql.Timestamp getSqlTimestamp() {
-			return (java.sql.Timestamp) this.getMap().get(Entity.ID_SQL_TIMESTAMP);
+		public java.sql.Timestamp getSqlTimestamp2() {
+			return (java.sql.Timestamp) this.getMap().get(Entity.ID_SQL_TIMESTAMP2);
 		}
 
 		/**
 		 * TIMESTAMPフィールドを設定します。
-		 * @param sqlTimestamp TIMESTAMPフィールド。
+		 * @param sqlTimestamp2 TIMESTAMPフィールド。
 		 */
-		public void setSqlTimestamp(final java.sql.Timestamp sqlTimestamp) {
-			this.getMap().put(Entity.ID_SQL_TIMESTAMP, sqlTimestamp);
+		public void setSqlTimestamp2(final java.sql.Timestamp sqlTimestamp2) {
+			this.getMap().put(Entity.ID_SQL_TIMESTAMP2, sqlTimestamp2);
 		}
 
 		/**
 		 * CLOBフィールドを取得します。
 		 * @return CLOBフィールド。
 		 */
-		public java.lang.String getSqlClob() {
-			return (java.lang.String) this.getMap().get(Entity.ID_SQL_CLOB);
+		public java.lang.String getSqlClob2() {
+			return (java.lang.String) this.getMap().get(Entity.ID_SQL_CLOB2);
 		}
 
 		/**
 		 * CLOBフィールドを設定します。
-		 * @param sqlClob CLOBフィールド。
+		 * @param sqlClob2 CLOBフィールド。
 		 */
-		public void setSqlClob(final java.lang.String sqlClob) {
-			this.getMap().put(Entity.ID_SQL_CLOB, sqlClob);
+		public void setSqlClob2(final java.lang.String sqlClob2) {
+			this.getMap().put(Entity.ID_SQL_CLOB2, sqlClob2);
 		}
 
 
@@ -307,80 +306,80 @@ public class SqlType2Table extends Table {
 	 * CHARフィールドフィールドを取得します。
 	 * @return CHARフィールドフィールド。
 	 */
-	public SqlCharField getSqlCharField() {
-		return (SqlCharField) this.getField(Entity.ID_SQL_CHAR);
+	public SqlCharField getSqlChar2Field() {
+		return (SqlCharField) this.getField(Entity.ID_SQL_CHAR2);
 	}
 
 	/**
 	 * VarcharFieldフィールドを取得します。
 	 * @return VarcharFieldフィールド。
 	 */
-	public SqlVarcharField getSqlVarcharField() {
-		return (SqlVarcharField) this.getField(Entity.ID_SQL_VARCHAR);
+	public SqlVarcharField getSqlVarchar2Field() {
+		return (SqlVarcharField) this.getField(Entity.ID_SQL_VARCHAR2);
 	}
 
 	/**
 	 * SMALLINTフィールドフィールドを取得します。
 	 * @return SMALLINTフィールドフィールド。
 	 */
-	public SqlSmallintField getSqlSmallintField() {
-		return (SqlSmallintField) this.getField(Entity.ID_SQL_SMALLINT);
+	public SqlSmallintField getSqlSmallint2Field() {
+		return (SqlSmallintField) this.getField(Entity.ID_SQL_SMALLINT2);
 	}
 
 	/**
 	 * INTEGERフィールドフィールドを取得します。
 	 * @return INTEGERフィールドフィールド。
 	 */
-	public SqlIntegerField getSqlIntegerField() {
-		return (SqlIntegerField) this.getField(Entity.ID_SQL_INTEGER);
+	public SqlIntegerField getSqlInteger2Field() {
+		return (SqlIntegerField) this.getField(Entity.ID_SQL_INTEGER2);
 	}
 
 	/**
 	 * DOUBLEフィールドフィールドを取得します。
 	 * @return DOUBLEフィールドフィールド。
 	 */
-	public SqlDoubleField getSqlDoubleField() {
-		return (SqlDoubleField) this.getField(Entity.ID_SQL_DOUBLE);
+	public SqlDoubleField getSqlDouble2Field() {
+		return (SqlDoubleField) this.getField(Entity.ID_SQL_DOUBLE2);
 	}
 
 	/**
 	 * NUMERICフィールドフィールドを取得します。
 	 * @return NUMERICフィールドフィールド。
 	 */
-	public SqlNumericField getSqlNumericField() {
-		return (SqlNumericField) this.getField(Entity.ID_SQL_NUMERIC);
+	public SqlNumericField getSqlNumeric2Field() {
+		return (SqlNumericField) this.getField(Entity.ID_SQL_NUMERIC2);
 	}
 
 	/**
 	 * DATEフィールドフィールドを取得します。
 	 * @return DATEフィールドフィールド。
 	 */
-	public SqlDateField getSqlDateField() {
-		return (SqlDateField) this.getField(Entity.ID_SQL_DATE);
+	public SqlDateField getSqlDate2Field() {
+		return (SqlDateField) this.getField(Entity.ID_SQL_DATE2);
 	}
 
 	/**
 	 * TIMEフィールドフィールドを取得します。
 	 * @return TIMEフィールドフィールド。
 	 */
-	public SqlTimeField getSqlTimeField() {
-		return (SqlTimeField) this.getField(Entity.ID_SQL_TIME);
+	public SqlTimeField getSqlTime2Field() {
+		return (SqlTimeField) this.getField(Entity.ID_SQL_TIME2);
 	}
 
 	/**
 	 * TIMESTAMPフィールドフィールドを取得します。
 	 * @return TIMESTAMPフィールドフィールド。
 	 */
-	public SqlTimestampField getSqlTimestampField() {
-		return (SqlTimestampField) this.getField(Entity.ID_SQL_TIMESTAMP);
+	public SqlTimestampField getSqlTimestamp2Field() {
+		return (SqlTimestampField) this.getField(Entity.ID_SQL_TIMESTAMP2);
 	}
 
 	/**
 	 * CLOBフィールドフィールドを取得します。
 	 * @return CLOBフィールドフィールド。
 	 */
-	public SqlClobField getSqlClobField() {
-		return (SqlClobField) this.getField(Entity.ID_SQL_CLOB);
+	public SqlClobField getSqlClob2Field() {
+		return (SqlClobField) this.getField(Entity.ID_SQL_CLOB2);
 	}
 
 

@@ -22,7 +22,7 @@ import fieldtest.dao.SqlTypeDao;
 
 
 /**
- * 問い合わせフォームクラス。
+ * SqlTypeページ用問合せフォームクラス。
  */
 public class SqlTypeQueryForm extends QueryForm {
 	/**

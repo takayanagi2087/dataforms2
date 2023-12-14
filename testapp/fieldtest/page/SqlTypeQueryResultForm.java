@@ -4,6 +4,7 @@ import java.util.Map;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.field.base.FieldList;
+import dataforms.field.base.Field.Display;
 import dataforms.htmltable.PageScrollHtmlTable;
 import fieldtest.dao.SqlTypeDao;
 import fieldtest.dao.SqlTypeTable;
@@ -11,7 +12,7 @@ import fieldtest.dao.SqlTypeTable;
 
 
 /**
- * 問い合わせ結果フォームクラス。
+ * SqlTypeページ用問合せ結果フォームクラス。
  */
 public class SqlTypeQueryResultForm extends QueryResultForm {
 	/**
@@ -21,16 +22,21 @@ public class SqlTypeQueryResultForm extends QueryResultForm {
 		SqlTypeDao dao = new SqlTypeDao();
 		this.addPkFieldList(dao.getEditFormKeyList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
-		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_CHAR).setSortable(true);
-		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_VARCHAR).setSortable(true);
-		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_SMALLINT).setSortable(true);
-		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_INTEGER).setSortable(true);
-		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_DOUBLE).setSortable(true);
-		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_NUMERIC).setSortable(true);
-		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_DATE).setSortable(true);
-		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_TIME).setSortable(true);
-		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_TIMESTAMP).setSortable(true);
-		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_CLOB).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_TYPE_ID).setQueryResultFormDisplay(Display.INPUT_HIDDEN);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_CHAR).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_VARCHAR).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_SMALLINT).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_INTEGER).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_DOUBLE).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_NUMERIC).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_DATE).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_TIME).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_TIMESTAMP).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_SQL_CLOB).setQueryResultFormDisplay(Display.SPAN).setSortable(true);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_CREATE_USER_ID).setQueryResultFormDisplay(Display.INPUT_HIDDEN);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_CREATE_TIMESTAMP).setQueryResultFormDisplay(Display.INPUT_HIDDEN);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_UPDATE_USER_ID).setQueryResultFormDisplay(Display.INPUT_HIDDEN);
+		htmltable.getFieldList().get(SqlTypeTable.Entity.ID_UPDATE_TIMESTAMP).setQueryResultFormDisplay(Display.INPUT_HIDDEN);
 
 		this.addHtmlTable(htmltable);
 	}

@@ -208,7 +208,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	/**
 	 * 複数レコード編集問合せのフィールド設定。
 	 */
-	private static final String ID_QUERY_CONFIG = "queryConfig";
+	public static final String ID_QUERY_CONFIG = "queryConfig";
 
 	/**
 	 * コンストラクタ。

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import dataforms.devtool.field.PagePatternSelectField;
 import dataforms.devtool.pageform.page.DaoAndPageGeneratorEditForm;
 import dataforms.devtool.query.page.SelectFieldHtmlTable;
 import net.arnx.jsonic.JSON;
@@ -56,6 +57,36 @@ public class EditFormGenerator extends FormSrcGenerator {
 	}
 
 	/**
+	 * 複数レコード編集モードのキーフィールドの設定。
+	 * @param data POSTされたデータ。
+	 * @return フィールド設定コード。
+	 */
+	private String getMultiRecordFieldConfig(final Map<String, Object> data) {
+		StringBuilder sb = new StringBuilder();
+		String pagePattern = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_PATTERN);
+		String ef = PagePatternSelectField.getEditFormFlag(pagePattern);
+		if ("2".equals(ef)) {
+			String conf = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_CONFIG);
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> list = JSON.decode(conf, ArrayList.class);
+			for (Map<String, Object> m: list) {
+				String editKey = (String) m.get(SelectFieldHtmlTable.ID_EDIT_KEY);
+				if ("1".equals(editKey)) {
+					if (sb.length() > 0) {
+						sb.append("\n");
+					}
+					String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+					String fid = fieldId.substring(0, 1).toUpperCase() + fieldId.substring(1);
+					String disp = (String) m.get(SelectFieldHtmlTable.ID_EDIT_FIELD_DISPLAY);
+					String fcfg = "\t\tdao.get" + fid + "Field().setEditFormDisplay(Display." + disp + ");";
+					sb.append(fcfg);
+				}
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
 	 * フィールド設定コードを生成します。
 	 * @param data POSTされたデータ。
 	 * @return フィールド設定コード。
@@ -64,6 +95,10 @@ public class EditFormGenerator extends FormSrcGenerator {
 		StringBuilder sb = new StringBuilder();
 		String cls = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_CLASS_NAME);
 		String conf = (String) data.get(DaoAndPageGeneratorEditForm.ID_EDIT_QUERY_CONFIG);
+		sb.append(this.getMultiRecordFieldConfig(data));
+		if (sb.length() > 0) {
+			sb.append("\n");
+		}
 		sb.append(this.getFieldConfig(cls, conf));
 		return sb.toString();
 	}

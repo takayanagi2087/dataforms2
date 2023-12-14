@@ -17,6 +17,7 @@ public class Test02EditForm extends EditForm {
 	public Test02EditForm() {
 		Test02Dao dao = new Test02Dao();
 		// 各フィールドの設定処理。
+		dao.getCode1Field().setEditFormDisplay(Display.INPUT);
 		dao.getTestTable().getTestIdField().setEditFormDisplay(Display.INPUT_HIDDEN);
 		dao.getTestTable().getCode1Field().setEditFormDisplay(Display.INPUT);
 		dao.getTestTable().getCode2Field().setEditFormDisplay(Display.INPUT);

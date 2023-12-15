@@ -838,6 +838,22 @@ public class Query {
 	}
 
 	/**
+	 *
+	 * 特殊な条件式生成メソッドです。
+	 * <pre>
+	 * 問合せの際の条件式に特殊なものを使用する場合、このメソッドオーバーライドし条件式を作成してください、
+	 * 特殊な条件式を作成しない場合nullを返します。
+	 * </pre>
+	 *
+	 * @param f フィールド。
+	 * @param data 条件データ。
+	 * @return 基本的にnullを返します。
+	 */
+	public String getConditonExpression(final Field<?> f, final Map<String, Object> data) {
+		return null;
+	}
+
+	/**
 	 * order byフィールドのSQLを生成します。
 	 * @param field フィールドID。
 	 * @return order by フィールドのSQL。

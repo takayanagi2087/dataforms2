@@ -1188,6 +1188,10 @@ public abstract class SqlGenerator implements JDBCConnectableObject {
 		if (StringUtil.isBlank(sv)) {
 			return ex;
 		}
+		String spexp = query.getConditonExpression(f, p);
+		if (spexp != null) {
+			return spexp;
+		}
 		//logger.debug("field id=" + id + ",matchType=" + f.getMatchType() + ",v=" + v.toString());
 		if (f.getMatchType() == MatchType.FULL) {
 			String colname = query.getMatchFieldSql(f);

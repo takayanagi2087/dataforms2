@@ -22,6 +22,40 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 	 */
 	attach() {
 		super.attach();
+		this.get("allErrorButton").click(() => {
+			this.find("[id$='OverwriteMode']").each((_, el) => {
+				$(el).val("error");
+			});
+		});
+		this.get("allSkipButton").click(() => {
+			this.find("[id$='OverwriteMode']").each((_, el) => {
+				$(el).val("skip");
+			});
+		});
+		this.get("allForceOverwriteButton").click(() => {
+			this.find("[id$='OverwriteMode']").each((_, el) => {
+				$(el).val("force");
+			});
+		});
+		this.get("errorSkipButton").click(() => {
+			this.find(".errorField").each((_, el) => {
+				let id = $(el).attr(this.getIdAttribute());
+				if (id.indexOf("ClassName") > 0) {
+					let owmId = id.replace("ClassName", "ClassOverwriteMode");
+					this.setFieldValue(owmId, "skip");
+				}
+			});
+		});
+		this.get("errorForceButton").click(() => {
+			this.find(".errorField").each((_, el) => {
+				let id = $(el).attr(this.getIdAttribute());
+				if (id.indexOf("ClassName") > 0) {
+					let owmId = id.replace("ClassName", "ClassOverwriteMode");
+					this.setFieldValue(owmId, "force");
+				}
+			});
+		});
+
 		this.get("pagePattern").change((ev) => {
 			this.onChangePageType(ev);
 		});

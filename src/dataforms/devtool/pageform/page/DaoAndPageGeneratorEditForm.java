@@ -230,8 +230,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.addField(new PackageNameField()).addValidator(new RequiredValidator()).setComment("ページパッケージ名");
 		this.addField(new PageClassNameField())	.addValidator(new RequiredValidator()).setCalcEventField(true).setAutocomplete(false);
 		this.addField(new OverwriteModeField(ID_PAGE_CLASS_OVERWRITE_MODE));
-		this.addField(new PackageNameField("daoPackageName")).setComment("DAOパッケージ名");
-		this.addField(new DaoClassNameField()).setComment("DAOクラス名");
+		this.addField(new PackageNameField(ID_DAO_PACKAGE_NAME)).addValidator(new RequiredValidator()).setComment("DAOパッケージ名");
+		this.addField(new DaoClassNameField()).addValidator(new RequiredValidator()).setComment("DAOクラス名");
 		this.addField(new OverwriteModeField(ID_DAO_CLASS_OVERWRITE_MODE));
 
 		this.addField(new FormClassNameField());
@@ -637,6 +637,70 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		ret.put(ID_PAGE_PATTERN, pp);
 
 	}
+
+	@Override
+	protected List<ValidationError> validateForm(Map<String, Object> data) throws Exception {
+		List<ValidationError> list = super.validateForm(data);
+		if (list.size() == 0) {
+			{
+				String path = (String) data.get(ID_JAVA_SOURCE_PATH);
+				String packageName = (String) data.get(ID_DAO_PACKAGE_NAME);
+				String daoClassName = (String) data.get(ID_DAO_CLASS_NAME);
+				String daoclass = packageName + "." + daoClassName;
+				String srcPath = path + "/" + daoclass.replaceAll("\\.", "/") + ".java";
+				String overwriteMode = (String) data.get(ID_DAO_CLASS_OVERWRITE_MODE);
+				if (OverwriteModeField.ERROR.equals(overwriteMode)) {
+					File tbl = new File(srcPath);
+					if (tbl.exists()) {
+						list.add(new ValidationError(ID_DAO_CLASS_NAME, this.getPage().getMessage("error.sourcefileexist", daoClassName + ".java")));
+					}
+				}
+			}
+			{
+				String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
+				String packageName = (String) data.get(ID_PACKAGE_NAME);
+				String queryFormClassName = (String) data.get(ID_QUERY_FORM_CLASS_NAME);
+				String queryResultFormClassName = (String) data.get(ID_QUERY_RESULT_FORM_CLASS_NAME);
+				String editFormClassName = (String) data.get(ID_EDIT_FORM_CLASS_NAME);
+
+				String pageClassName = (String) data.get(ID_PAGE_CLASS_NAME);
+				String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");
+				String pageClassOverwriteMode = (String) data.get(ID_PAGE_CLASS_OVERWRITE_MODE);
+				File f3 = new File(srcPath + "/" + pageClassName + ".java");
+				if (OverwriteModeField.ERROR.equals(pageClassOverwriteMode)) {
+					if (f3.exists()) {
+						list.add(new ValidationError(ID_PAGE_CLASS_NAME, this.getPage().getMessage("error.sourcefileexist", pageClassName + ".java")));
+					}
+				}
+
+				String queryFormClassOverwriteMode = (String) data.get(ID_QUERY_FORM_CLASS_OVERWRITE_MODE);
+				if (OverwriteModeField.ERROR.equals(queryFormClassOverwriteMode)) {
+					File f0 = new File(srcPath + "/" + queryFormClassName + ".java");
+					if (f0.exists()) {
+						list.add(new ValidationError(ID_QUERY_FORM_CLASS_NAME, this.getPage().getMessage("error.sourcefileexist", queryFormClassName + ".java")));
+					}
+				}
+				String queryResultFormClassOverwriteMode = (String) data.get(ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE);
+				if (OverwriteModeField.ERROR.equals(queryResultFormClassOverwriteMode)) {
+					File f1 = new File(srcPath + "/" + queryResultFormClassName + ".java");
+					if (f1.exists()) {
+						list.add(new ValidationError(ID_QUERY_RESULT_FORM_CLASS_NAME, this.getPage().getMessage("error.sourcefileexist", queryResultFormClassName + ".java")));
+					}
+				}
+				String editFormClassOverwriteMode = (String) data.get(ID_EDIT_FORM_CLASS_OVERWRITE_MODE);
+				if (OverwriteModeField.ERROR.equals(editFormClassOverwriteMode)) {
+					File f2 = new File(srcPath + "/" + editFormClassName + ".java");
+					if (f2.exists()) {
+						list.add(new ValidationError(ID_EDIT_FORM_CLASS_NAME, this.getPage().getMessage("error.sourcefileexist", editFormClassName + ".java")));
+					}
+				}
+			}
+
+		}
+		return list;
+	}
+
+
 
 	@Override
 	protected boolean isUpdate(final Map<String, Object> data) throws Exception {

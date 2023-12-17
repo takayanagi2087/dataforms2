@@ -8,22 +8,30 @@
 		<div id="mainDiv">
 			<form id="queryForm">
 				<div class="formHeader">検索条件</div>
-				<table class="responsive">
-					<tbody>
-						<tr>
-							<th>コード1</th>
-							<td><input type="text" id="code1" /></td>
-						</tr>
-						<tr>
-							<th>コード2</th>
-							<td><input type="text" id="code2" /></td>
-						</tr>
-						<tr>
-							<th>名称</th>
-							<td><input type="text" id="name" /></td>
-						</tr>
-					</tbody>
-				</table>
+た<!--
+				<div class="gridLayout" style="grid-template-columns: 1fr 1fr">
+					<div>
+						<div class="label"><label for="code1">コード1</label></div><div class="field"><input type="text" id="code1" /></div>
+					</div>
+					<div>
+						<div class="label"><label for="code2">コード2</label></div><div class="field"><input type="text" id="code2" /></div>
+					</div>
+					<div style="grid-column: -3 / -1;">
+						<div class="label"><label for="name">名称</label></div><div class="field"><input type="text" id="name" /></div>
+					</div>
+				</div>
+-->
+				<div class="flexLayout">
+					<div class="w50p">
+						<div class="label"><label for="code1">コード1</label></div><div class="field"><input type="text" id="code1" /></div>
+					</div>
+					<div class="w50p">
+						<div class="label"><label for="code2">コード2</label></div><div class="field"><input type="text" id="code2" /></div>
+					</div>
+					<div>
+						<div class="label"><label for="name">名称</label></div><div class="field"><input type="text" id="name" /></div>
+					</div>
+				</div>
 				<input type="submit" id="queryButton" class="largeButton" value="検索">
 				<input type="button" id="exportButton" class="largeButton" value="エクスポート">
 				<input type="button" id="resetButton" class="largeButton" value="リセット">&nbsp;

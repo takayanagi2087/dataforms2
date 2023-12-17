@@ -380,30 +380,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- dataforms2.jarをdf2blankプロジェクトにコピー -->
-			<!--
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<id>install-df2blank-project</id>
-						<phase>package</phase>
-						<configuration>
-							<target>
-								<delete>
-									<fileset dir="${env.INSTALLPATH}" includes="*.jar"/>
-								</delete>
-								<copy file="${project.build.directory}/dataforms2-${project.version}.jar" todir="${env.INSTALLPATH}/" overwrite="true" />
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			-->
 		</plugins>
 	</build>
 </project>

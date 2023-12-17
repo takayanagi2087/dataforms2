@@ -114,3 +114,99 @@ div.hScrollDiv {
 		padding-top: 8px;
 	}
 }
+
+/** 各フィールドのレイアウトをdisplay: gridスタイルで行う場合のスタイル設定。 ver 2.40以上 **/
+div.gridLayout {
+	display: grid;
+}
+div.gridLayout div {
+	display: flex;
+	flex-flow: row;
+	margin-bottom: 1px;
+}
+
+div.gridLayout div div.label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 200px;
+	background-color: var(--header1-background-color);
+}
+div.gridLayout div div.field {
+	padding-left: 1px;
+	width: calc(100% - 200px);
+}
+@media screen and (max-width: var(--sp-screen-max)) {
+	div.gridLayout {
+		grid-template-columns: 1fr !important;
+	}
+	div.gridLayout div {
+		grid-column: 1 / 2 !important;
+		flex-flow: column;
+	}
+	div.gridLayout div div.label {
+		width: calc(100% - 1px) !important;
+	}
+	div.gridLayout div div.field {
+		width: 100% !important;
+	}
+}
+
+
+/** 各フィールドのレイアウトをdisplay: flexスタイルで行う場合のスタイル設定。 ver 2.40以上 **/
+
+div.flexLayout {
+	display: flex;
+	flex-flow: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+div.flexLayout div {
+	display: flex;
+	flex-flow: row;
+	width: 100%;
+	margin-bottom: 1px;
+}
+
+
+div.flexLayout div div.label {
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	width: 200px;
+	background-color: var(--header1-background-color);
+
+}
+div.flexLayout div div.field {
+	padding-left: 1px;
+	width: calc(100% - 200px);
+}
+
+div.flexLayout div.w50p {
+	width: 50%;
+}
+
+div.flexLayout div.w33p {
+	width: 33.33333%;
+}
+
+div.flexLayout div.w25p {
+	width: 25%;
+}
+
+div.flexLayout div.w20p {
+	width: 20%;
+}
+@media screen and (max-width: var(--sp-screen-max)) {
+	div.flexLayout div {
+		width: 100% !important;
+		flex-flow: column;
+	}
+	div.flexLayout div div.label {
+		width: calc(100% - 1px) !important;
+	}
+	div.flexLayout div div.field {
+		width: 100% !important;
+	}
+}
+

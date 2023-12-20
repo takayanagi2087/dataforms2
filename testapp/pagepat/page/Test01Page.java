@@ -6,7 +6,7 @@ import pagepat.dao.Test01Dao;
 
 
 /**
- * ページクラス。
+ * 検索→一覧→1レコード編集ページクラス。
  */
 public class Test01Page extends BasePage {
 	/**

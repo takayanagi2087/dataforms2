@@ -35,6 +35,7 @@ import dataforms.devtool.field.PagePatternSelectField;
 import dataforms.devtool.field.QueryFormClassNameField;
 import dataforms.devtool.field.QueryOrTableClassNameField;
 import dataforms.devtool.field.QueryResultFormClassNameField;
+import dataforms.devtool.pageform.gen.DbPageGenerator;
 import dataforms.devtool.pageform.gen.EditFormGenerator;
 import dataforms.devtool.pageform.gen.QueryFormGenerator;
 import dataforms.devtool.pageform.gen.QueryResultFormGenerator;
@@ -61,7 +62,7 @@ import dataforms.validator.ValidationError;
 import net.arnx.jsonic.JSON;
 
 /**
- * ページ作成フォームクラス。
+ * ページDbPageGenerator作成フォームクラス。
  *
  */
 public class DaoAndPageGeneratorEditForm extends EditForm {
@@ -760,12 +761,14 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 			}
 			if ("1".equals(qrf)) {
 				QueryResultFormGenerator qrfgen = new QueryResultFormGenerator();
-				qrfgen.generage(getParentForm(), data);
+				qrfgen.generage(this, data);
 			}
 			if ("1".equals(ef) || "2".equals(ef)) {
 				EditFormGenerator efgen = new EditFormGenerator();
-				efgen.generage(getParentForm(), data);
+				efgen.generage(this, data);
 			}
+			DbPageGenerator pgen = new DbPageGenerator();
+			pgen.generage(this, data);
 		}
 		// Function.propertiesの更新
 		String functionPath = (String) data.get(ID_FUNCTION_SELECT);

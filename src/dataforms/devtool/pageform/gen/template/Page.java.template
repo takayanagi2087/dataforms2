@@ -6,7 +6,7 @@ import ${daoClassFullName};
 
 
 /**
- * ページクラス。
+ * ${pageName}クラス。
  */
 public class ${pageClassName} extends BasePage {
 	/**

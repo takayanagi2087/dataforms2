@@ -123,6 +123,7 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 				this.get("daoPackageName").prop("disabled", true);
 				this.get("daoClassName").prop("disabled", true);
 				this.get("daoClassOverwriteMode").prop("disabled", true);
+				this.find(".multiRecoedQueryList").hide();
 			} else {
 				this.get("formClassName").prop("disabled", true);
 				this.get("formClassOverwriteMode").prop("disabled", true);

@@ -19,6 +19,11 @@ public abstract class JavaSrcGenerator {
 	 */
 	private static Logger logger = LogManager.getLogger(JavaSrcGenerator.class);
 
+	/**
+	 * テンプレートを取得します。
+	 * @return テンプレート。
+	 */
+	protected abstract Template getTemplate() throws Exception;
 
 	/**
 	 * ソースを生成します。

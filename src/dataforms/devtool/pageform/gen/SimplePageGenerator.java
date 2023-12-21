@@ -21,13 +21,19 @@ public class SimplePageGenerator extends JavaSrcGenerator {
 	 */
 	private static Logger logger = LogManager.getLogger(SimplePageGenerator.class);
 
+	@Override
+	protected Template getTemplate() throws Exception {
+		Template tmp = new Template(this.getClass(), "simpletemplate/Page.java.template");
+		return tmp;
+	}
+
 	/**
 	 * ページのソースを作成します。
 	 * @param data POSTされたデータ。
 	 * @throws Exception 例外。
 	 */
 	private void generatePageClass(final Map<String, Object> data) throws Exception {
-		Template tmp = new Template(this.getClass(), "simpletemplate/Page.java.template");
+		Template tmp = this.getTemplate(); // new Template(this.getClass(), "simpletemplate/Page.java.template");
 		logger.debug("page src=" + tmp.getSource());
 		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PACKAGE_NAME);
 		String pageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_NAME);

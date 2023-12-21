@@ -21,13 +21,19 @@ public class SimpleFormGenerator extends JavaSrcGenerator {
 	 */
 	private static Logger logger = LogManager.getLogger(SimpleFormGenerator.class);
 
+	@Override
+	protected Template getTemplate() throws Exception {
+		Template tmp = new Template(this.getClass(), "simpletemplate/Form.java.template");
+		return tmp;
+	}
+
 	/**
 	 * フォームのソースを作成します。
 	 * @param data POSTされたデータ。
 	 * @throws Exception 例外。
 	 */
 	private void generateFormClass(final Map<String, Object> data) throws Exception {
-		Template tmp = new Template(this.getClass(), "simpletemplate/Form.java.template");
+		Template tmp = this.getTemplate(); //new Template(this.getClass(), "simpletemplate/Form.java.template");
 		logger.debug("page src=" + tmp.getSource());
 		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PACKAGE_NAME);
 		String pageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_PAGE_NAME);

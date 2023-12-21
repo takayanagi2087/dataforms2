@@ -11,7 +11,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
+import dataforms.app.login.page.LoginInfoForm;
+import dataforms.app.menu.page.SideMenuForm;
 import dataforms.controller.EditForm;
+import dataforms.controller.Form;
 import dataforms.controller.Page;
 import dataforms.controller.QueryForm;
 import dataforms.controller.QueryResultForm;
@@ -231,8 +234,8 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		this.addField(new PackageNameField()).addValidator(new RequiredValidator()).setComment("ページパッケージ名");
 		this.addField(new PageClassNameField())	.addValidator(new RequiredValidator()).setCalcEventField(true).setAutocomplete(false);
 		this.addField(new OverwriteModeField(ID_PAGE_CLASS_OVERWRITE_MODE));
-		this.addField(new PackageNameField(ID_DAO_PACKAGE_NAME)).addValidator(new RequiredValidator()).setComment("DAOパッケージ名");
-		this.addField(new DaoClassNameField()).addValidator(new RequiredValidator()).setComment("DAOクラス名");
+		this.addField(new PackageNameField(ID_DAO_PACKAGE_NAME)).setComment("DAOパッケージ名");
+		this.addField(new DaoClassNameField()).setComment("DAOクラス名");
 		this.addField(new OverwriteModeField(ID_DAO_CLASS_OVERWRITE_MODE));
 
 		this.addField(new FormClassNameField());
@@ -371,6 +374,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		SequentialProperties prop = this.readFunctionProperties(funcprop);
 		String name = (String) prop.get(pkg + "." + cls);
 		ret.put(ID_PAGE_NAME, name);
+		ret.put(ID_PACKAGE_NAME, pkg);
 
 		this.getFormInfo(p, ret);
 
@@ -599,6 +603,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 		String qrf = "0";
 		String ef = "0";
 
+		String pkg = (String) ret.get(ID_PACKAGE_NAME);
 		for (String key: fm.keySet()) {
 			logger.debug("*** key=" + key);
 			WebComponent cmp = fm.get(key);
@@ -615,6 +620,13 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 					ret.put(ID_EDIT_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
 					ret.put(ID_EDIT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
 					ef = "1";
+				} else if (cmp instanceof LoginInfoForm || cmp instanceof SideMenuForm) {
+					;
+				} else if (cmp instanceof Form){
+					if (cmp.getClass().getPackageName().equals(pkg)) {
+						ret.put(ID_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
+						ret.put(ID_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
+					}
 				}
 			}
 		}

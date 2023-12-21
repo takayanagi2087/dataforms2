@@ -30,11 +30,6 @@ public abstract class FormSrcGenerator extends JavaSrcGenerator {
 	 */
 	private Logger logger = LogManager.getLogger(FormSrcGenerator.class);
 
-	/**
-	 * テンプレートを取得します。
-	 * @return テンプレート。
-	 */
-	protected abstract Template getTemplate() throws Exception;
 
 	/**
 	 * フォームクラス名を取得します。

@@ -407,6 +407,12 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 	}
 
 
+	@Override
+	protected Template getTemplate() throws Exception {
+		Template tmp = new Template(this.getClass(), "../page/template/QuerySetDao.java.template");
+		return tmp;
+	}
+
 	/**
 	 * ソースを生成します。
 	 * @param form フォーム。
@@ -420,7 +426,7 @@ public class QuerySetDaoGenerator extends JavaSrcGenerator {
 			logger.debug("fieldInfo=" + JSON.encode(list.get(i)));
 		}*/
 //		String javasrc = this.getStringResourse(this.getClass(), "../page/template/QuerySetDao.java.template");
-		Template tmp = new Template(this.getClass(), "../page/template/QuerySetDao.java.template");
+		Template tmp = this.getTemplate(); //new Template(this.getClass(), "../page/template/QuerySetDao.java.template");
 		//logger.debug("template=" + javasrc);
 		String packageName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_PACKAGE_NAME);
 		String daoClassName = (String) data.get(DaoAndPageGeneratorEditForm.ID_DAO_CLASS_NAME);

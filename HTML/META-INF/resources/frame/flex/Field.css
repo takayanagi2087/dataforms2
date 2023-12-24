@@ -184,7 +184,7 @@ tr.oddTr button:hover {
 
 /* 日付範囲フィールドのクラス */
 .dateRangeField {
-	width: calc((100% - 32px) / 2 - 32px) !important;
+	width: calc((100% - 32px) / 2 - 34px) !important;
 }
 
 /*

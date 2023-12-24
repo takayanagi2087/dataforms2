@@ -157,8 +157,6 @@ public class WebResourceForm extends Form {
 			}
 			return label;
 		}
-
-
 	}
 
 	/**
@@ -170,6 +168,30 @@ public class WebResourceForm extends Form {
 		 * 対象フォーム。
 		 */
 		private Form form = null;
+
+		/**
+		 * フィールドのレイアウト指定。
+		 */
+		public enum FieldLayout {
+			/**
+			 * tableタグを使用したレイアウト。
+			 */
+			TABLE_LAYOUT
+			/**
+			 * display: gridを指定したDIV。
+			 */
+			, GRID_LAYOUT
+			/**
+			 * display: flexを指定したDIV。
+			 */
+			, FLEX_LAYOUT
+		}
+
+		/**
+		 * フィールドレイアウト。
+		 */
+		private FieldLayout fieldLayout = FieldLayout.GRID_LAYOUT;
+
 		/**
 		 * コンストラクタ。
 		 * @param form 対象フォーム。
@@ -180,6 +202,38 @@ public class WebResourceForm extends Form {
 			this.form = form;
 
 		}
+
+		/**
+		 * フィールドレイアウトを取得します。
+		 * @return フィールドレイアウト。
+		 */
+		public FieldLayout getFieldLayout() {
+			return fieldLayout;
+		}
+
+		/**
+		 * フィールドレイアウトを設定します。
+		 * @param fieldLayout フィールドレイアウト。
+		 */
+		public void setFieldLayout(final FieldLayout fieldLayout) {
+			this.fieldLayout = fieldLayout;
+		}
+
+		/**
+		 * フィールドセットジェネレータを取得します。
+		 * @return フィールドセットジェネレータ。
+		 */
+		public FieldSetGenerator getFieldSetGenerator() {
+			if (this.fieldLayout == FieldLayout.TABLE_LAYOUT) {
+				return new TableFieldSetGenerator();
+			} else if (this.fieldLayout == FieldLayout.GRID_LAYOUT) {
+				return new GridFieldSetGenerator();
+			} else if (this.fieldLayout == FieldLayout.FLEX_LAYOUT) {
+				return new FlexFieldSetGenerator();
+			}
+			return null;
+		}
+
 
 		/**
 		 * 作成対象フォームを取得します。
@@ -236,162 +290,12 @@ public class WebResourceForm extends Form {
 		}
 
 		/**
-		 * 隠しフィールドのHTMLを作成します。
-		 * @param field フィールド。
-		 * @param tabs 段付けようのtab。
-		 * @return テキストフィールドのHTML。
-		 */
-		private String getHiddenFieldHtml(final Field<?> field, final String tabs) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t<input type=\"hidden\" id=\"" + field.getId() + "\" />\n");
-			return sb.toString();
-		}
-
-		/**
-		 * テキストフィールドのHTMLを作成します。
-		 * @param field フィールド。
-		 * @param tabs 段付けようのtab。
-		 * @return テキストフィールドのHTML。
-		 */
-		private String getTextFieldHtml(final Field<?> field, final String tabs) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t\t\t<tr>\n");
-			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><input type=\"text\" id=\"" + field.getId() + "\" /></td>\n");
-			sb.append(tabs + "\t\t\t</tr>\n");
-			return sb.toString();
-		}
-
-		/**
-		 * 日付フィールドのHTMLを作成します。
-		 * @param field フィールド。
-		 * @param tabs 段付けようのtab。
-		 * @return 日付フィールドのHTML。
-		 */
-		private String getDateFieldHtml(final Field<?> field, final String tabs) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t\t\t<tr>\n");
-			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><div class=\"multiField\"><input type=\"text\" id=\"" + field.getId() + "\" /></div></td>\n");
-			sb.append(tabs + "\t\t\t</tr>\n");
-			return sb.toString();
-		}
-
-		/**
-		 * SelectフィールドのHTMLを作成します。
-		 * @param field フィールド。
-		 * @param tabs 段付けようのtab。
-		 * @return テキストフィールドのHTML。
-		 */
-		private String getSelectFieldHtml(final Field<?> field, final String tabs) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t\t\t<tr>\n");
-			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><select id=\"" + field.getId() + "\"></select></td>\n");
-			sb.append(tabs + "\t\t\t</tr>\n");
-			return sb.toString();
-		}
-
-		/**
-		 * SelectフィールドのHTMLを作成します。
-		 * @param field フィールド。
-		 * @param tabs 段付けようのtab。
-		 * @return テキストフィールドのHTML。
-		 */
-		private String getRadioFieldHtml(final Field<?> field, final String tabs) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t\t\t<tr>\n");
-			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><span><input type=\"radio\" id=\"" + field.getId() + "[0]\" name=\"" + field.getId() + "\"/></span></td>\n");
-			sb.append(tabs + "\t\t\t</tr>\n");
-			return sb.toString();
-		}
-
-		/**
-		 * チェックボックスリストフィールドのHTMLを作成します。
-		 * @param field フィールド。
-		 * @param tabs 段付けようのtab。
-		 * @return テキストフィールドのHTML。
-		 */
-		private String getCheckboxArrayFieldHtml(final Field<?> field, final String tabs) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t\t\t<tr>\n");
-			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><span><input type=\"checkbox\" id=\"" + field.getId() + "[0]\" name=\"" + field.getId() + "\"/></span></td>\n");
-			sb.append(tabs + "\t\t\t</tr>\n");
-			return sb.toString();
-		}
-
-		/**
-		 * マルチ選択リストフィールドのHTMLを作成します。
-		 * @param field フィールド。
-		 * @param tabs 段付けようのtab。
-		 * @return テキストフィールドのHTML。
-		 */
-		private String getMultiSelectFieldHtml(final Field<?> field, final String tabs) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t\t\t<tr>\n");
-			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><select id=\"" + field.getId() + "\" size=\"5\" multiple=\"multiple\"></select></td>\n");
-			sb.append(tabs + "\t\t\t</tr>\n");
-			return sb.toString();
-		}
-
-
-		/**
-		 * チェックボックスフラグフィールドのHTMLを作成します。
-		 * @param field フィールド。
-		 * @param tabs 段付けようのtab。
-		 * @return テキストフィールドのHTML。
-		 */
-		private String getCheckboxFlagFieldHtml(final Field<?> field, final String tabs) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t\t\t<tr>\n");
-			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><input type=\"checkbox\" id=\"" + field.getId() + "\" value=\"1\"/></td>\n");
-			sb.append(tabs + "\t\t\t</tr>\n");
-			return sb.toString();
-		}
-
-		/**
-		 * テキストエリアフィールドのHTMLを作成します。
-		 * @param field フィールド。
-		 * @param tabs 段付けようのtab。
-		 * @return テキストフィールドのHTML。
-		 */
-		private String getTextareaFieldHtml(final Field<?> field, final String tabs) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t\t\t<tr>\n");
-			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><textarea id=\"" + field.getId() + "\" rows=\"20\" cols=\"80\"></textarea></td>\n");
-			sb.append(tabs + "\t\t\t</tr>\n");
-			return sb.toString();
-		}
-
-
-		/**
-		 * ファイルフィールドのHTMLを作成します。
-		 * @param field フィールド。
-		 * @param tabs 段付けようのtab。
-		 * @return テキストフィールドのHTML。
-		 */
-		private String getFileFieldHtml(final Field<?> field, final String tabs) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t\t\t<tr>\n");
-			sb.append(tabs + "\t\t\t\t<th>" + this.getFieldLabel(field) + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><input type=\"file\" id=\"" + field.getId() + "\"/></td>\n");
-			sb.append(tabs + "\t\t\t</tr>\n");
-			return sb.toString();
-		}
-
-
-
-		/**
 		 * 隠しフィールドを生成する。
 		 * @param f フォーム。
 		 * @param sb 出力先文字列バッファ。
 		 */
 		private void generateHiddenField(final Form f, final StringBuilder sb) {
+			FieldSetGenerator gen = this.getFieldSetGenerator();
 			String tabs = getTabs();
 			for (WebComponent c: f.getComponentList()) {
 				if (c instanceof Field) {
@@ -403,86 +307,12 @@ public class WebResourceForm extends Form {
 						continue;
 					}
 					if (c instanceof DeleteFlagField || field.isHidden()) {
-						sb.append(this.getHiddenFieldHtml(field, tabs));
+						sb.append(gen.getHiddenFieldHtml(field, tabs));
 					}
 				}
 			}
 		}
 
-		/**
-		 * 範囲条件のフィールドクラス。
-		 */
-		private class RangeFieldPair extends WebComponent {
-			/**
-			 * 範囲開始フィールド。
-			 */
-			private Field<?> from = null;
-
-			/**
-			 * 範囲終了フィールド。
-			 */
-			private Field<?> to = null;
-
-			/**
-			 * コンストラクタ。
-			 */
-			public RangeFieldPair() {
-			}
-
-			/**
-			 * 開始フィールドを取得します。
-			 * @return 開始フィールド。
-			 */
-			public Field<?> getFrom() {
-				return this.from;
-			}
-
-			/**
-			 * 開始フィールドを取得します。
-			 * @param from 開始フィールドを設定します。
-			 */
-			public void setFrom(final Field<?> from) {
-				this.from = from;
-			}
-
-			/**
-			 * 終了フィールドを取得します。
-			 * @return 終了フィールド。
-			 */
-			public Field<?> getTo() {
-				return to;
-			}
-
-			/**
-			 * 終了フィールドを取得します。
-			 * @param to 終了フィールドを設定します。
-			 */
-			public void setTo(final Field<?> to) {
-				this.to = to;
-			}
-
-			/**
-			 * フィールドコメントを取得します。
-			 * @return フィールドコメント。
-			 */
-			public String getComment() {
-				String ret = this.from.getComment();
-				return ret.replaceAll("\\(from\\)$", "");
-			}
-
-			/**
-			 * 範囲フィールドのcssクラスを取得します。
-			 * @return 範囲フィールドのcssクラス。
-			 *
-			 */
-			public String getRangeFieldClass() {
-				if (this.from instanceof DateField) {
-					return "dateRangeField";
-				} else {
-					return "rangeField";
-				}
-			}
-		}
 
 		/**
 		 * "From","To"を除いたフィールドIDが一致するかを確認。
@@ -550,70 +380,50 @@ public class WebResourceForm extends Form {
 			return list;
 		}
 
-
-		/**
-		 * 範囲フィールドを展開します。
-		 * @param tabs タブの数。
-		 * @param pair 範囲フィールドペア。
-		 * @return 展開したHTML。
-		 */
-		private String getRangeFieldPair(final String tabs, final RangeFieldPair pair) {
-			logger.info("rangeFieldPair");
-			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t\t\t<tr>\n");
-			sb.append(tabs + "\t\t\t\t<th>" + pair.getComment() + "</th>\n");
-			sb.append(tabs + "\t\t\t\t<td><div class=\"multiField\">\n");
-			sb.append(tabs + "\t\t\t\t\t<input type=\"text\" id=\"" + pair.getFrom().getId() + "\" class=\"" + pair.getRangeFieldClass() + "\" />\n");
-			sb.append(tabs + "\t\t\t\t\t～\n");
-			sb.append(tabs + "\t\t\t\t\t<input type=\"text\" id=\"" + pair.getTo().getId() + "\" class=\"" + pair.getRangeFieldClass() + "\"/>\n");
-			sb.append(tabs + "\t\t\t\t</div></td>\n");
-			sb.append(tabs + "\t\t\t</tr>\n");
-			return sb.toString();
-		}
-
 		/**
 		 * 表示フィールドを生成する。
 		 * @param f フォーム。
 		 * @param sb 出力先文字列バッファ。
 		 */
 		private void generateVisibleField(final Form f, final StringBuilder sb) {
+			FieldSetGenerator gen = this.getFieldSetGenerator();
 			String tabs = getTabs();
 			for (WebComponent c: this.getVisibleFieldList(f)) {
 				if (c instanceof RangeFieldPair) {
-					sb.append(this.getRangeFieldPair(tabs, (RangeFieldPair) c));
+					sb.append(gen.getRangeFieldPair(tabs, (RangeFieldPair) c));
 				} else if (c instanceof Field) {
 					Field<?> field = (Field<?>) c;
 					if (c instanceof SingleSelectField) {
 						SingleSelectField<?> msf = (SingleSelectField<?>) c;
 						if (msf.getHtmlFieldType() == SingleSelectField.HtmlFieldType.SELECT) {
 							// selectを展開
-							sb.append(this.getSelectFieldHtml(field, tabs));
+							sb.append(gen.getSelectFieldHtml(field, tabs));
 						} else {
-							sb.append(this.getRadioFieldHtml(field, tabs));
+							sb.append(gen.getRadioFieldHtml(field, tabs));
 						}
 					} else if (c instanceof MultiSelectField) {
 						MultiSelectField<?> msf = (MultiSelectField<?>) c;
 						if (msf.getHtmlFieldType() == MultiSelectField.HtmlFieldType.CHECKBOX) {
 							// checkboxを展開
-							sb.append(this.getCheckboxArrayFieldHtml(field, tabs));
+							sb.append(gen.getCheckboxArrayFieldHtml(field, tabs));
 						} else {
 							// マルチ選択リストを展開
-							sb.append(this.getMultiSelectFieldHtml(field, tabs));
+							sb.append(gen.getMultiSelectFieldHtml(field, tabs));
 						}
 					} else if (c instanceof FlagField) {
 						// checkboxを展開
-						sb.append(this.getCheckboxFlagFieldHtml(field, tabs));
+						sb.append(gen.getCheckboxFlagFieldHtml(field, tabs));
 					} else if (c instanceof ClobField) {
 						// textareaを展開
-						sb.append(this.getTextareaFieldHtml(field, tabs));
+						sb.append(gen.getTextareaFieldHtml(field, tabs));
 					} else if (c instanceof FileField) {
 						// fileを展開
-						sb.append(this.getFileFieldHtml(field, tabs));
+						sb.append(gen.getFileFieldHtml(field, tabs));
 					} else if (c instanceof DateField) {
-						sb.append(this.getDateFieldHtml(field, tabs));
+						sb.append(gen.getDateFieldHtml(field, tabs));
 					} else {
 						// 通常はテキストボックス。
-						sb.append(this.getTextFieldHtml(field, tabs));
+						sb.append(gen.getTextFieldHtml(field, tabs));
 					}
 				}
 			}
@@ -641,18 +451,17 @@ public class WebResourceForm extends Form {
 		 * @return フォームのHTML。
 		 */
 		public String generateFormHtml(final String outputFormHtml) {
-			String tabs = getTabs();
+			FieldSetGenerator gen = this.getFieldSetGenerator();
+			String tabs = this.getTabs();
 			Form f = this.getForm();
 			StringBuilder sb = new StringBuilder();
 			sb.append(tabs + "<form id=\"" + f.getId() + "\">\n");
 			if ("0".equals(outputFormHtml)) {
 				sb.append(tabs + "\t<div class=\"formHeader\">" + this.getFormTitle() + "</div>\n");
 				this.generateHiddenField(f, sb);
-				sb.append(tabs + "\t<table class=\"responsive\">\n");
-				sb.append(tabs + "\t\t<tbody>\n");
+				sb.append(gen.getStartTag(tabs));
 				this.generateVisibleField(f, sb);
-				sb.append(tabs + "\t\t</tbody>\n");
-				sb.append(tabs + "\t</table>\n");
+				sb.append(gen.getEndTag(tabs));
 				this.generateTable(f, sb);
 				sb.append(this.getFormButtionHtml());
 			}
@@ -995,7 +804,7 @@ public class WebResourceForm extends Form {
 			String tabs = getTabs();
 			HtmlTable t = this.getTable();
 			StringBuilder sb = new StringBuilder();
-			sb.append(tabs + "\t<div class=\"hScrollDiv\">\n");
+			sb.append(tabs + "\t<div>\n");
 			sb.append("\t\t" + tabs + this.generateStartTableTag(t));
 			if (t.getCaption() != null) {
 				sb.append(tabs + "\t\t\t<caption>" + t.getCaption() + "</caption>\n");
@@ -1108,9 +917,6 @@ public class WebResourceForm extends Form {
 			sb.append(tabs + "\t\t\t\t\t<th colspan=\"2\" nowrap>\n");
 			sb.append(tabs + "\t\t\t\t\t\t\n");
 			sb.append(tabs + "\t\t\t\t\t</th>\n");
-//			sb.append(tabs + "\t\t\t\t\t<th class=\"buttonColumn\" nowrap>\n");
-//			sb.append(tabs + "\t\t\t\t\t\t\n");
-//			sb.append(tabs + "\t\t\t\t\t</th>\n");
 			sb.append(tabs + "\t\t\t\t\t<th nowrap>\n");
 			sb.append(tabs + "\t\t\t\t\t\tNo.\n");
 			sb.append(tabs + "\t\t\t\t\t</th>\n");

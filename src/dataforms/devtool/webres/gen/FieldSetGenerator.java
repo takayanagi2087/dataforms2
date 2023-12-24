@@ -1,5 +1,6 @@
-package dataforms.devtool.webres.page;
+package dataforms.devtool.webres.gen;
 
+import dataforms.devtool.webres.page.RangeFieldPair;
 import dataforms.field.base.Field;
 
 /**

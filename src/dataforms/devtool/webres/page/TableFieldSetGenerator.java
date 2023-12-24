@@ -1,5 +1,6 @@
 package dataforms.devtool.webres.page;
 
+import dataforms.devtool.webres.gen.FieldSetGenerator;
 import dataforms.field.base.Field;
 
 /**

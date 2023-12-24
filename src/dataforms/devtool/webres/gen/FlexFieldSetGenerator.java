@@ -1,4 +1,4 @@
-package dataforms.devtool.webres.page;
+package dataforms.devtool.webres.gen;
 
 /**
  * フレックスフィールドセット生成処理クラス。

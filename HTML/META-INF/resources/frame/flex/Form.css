@@ -134,7 +134,7 @@ div.gridLayout > div div.label {
 }
 div.gridLayout > div div.field {
 	padding-left: 1px;
-	width: calc(100% - 200px);
+	width: calc(100% - 202px);
 }
 @media screen and (max-width: var(--sp-screen-max)) {
 	div.gridLayout {
@@ -184,7 +184,7 @@ div.flexLayout > div div.label {
 }
 div.flexLayout > div div.field {
 	padding-left: 1px;
-	width: calc(100% - 200px);
+	width: calc(100% - 202px);
 }
 
 div.flexLayout > div.w50p {

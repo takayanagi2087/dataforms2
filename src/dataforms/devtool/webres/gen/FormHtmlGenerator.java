@@ -50,7 +50,7 @@ public class FormHtmlGenerator extends HtmlGenerator {
 	/**
 	 * フィールドレイアウト。
 	 */
-	private FieldLayout fieldLayout = FieldLayout.TABLE_LAYOUT;
+	private FieldLayout fieldLayout = FieldLayout.GRID_LAYOUT;
 
 	/**
 	 * コンストラクタ。

@@ -119,20 +119,20 @@ div.hScrollDiv {
 div.gridLayout {
 	display: grid;
 }
-div.gridLayout div {
+div.gridLayout > div {
 	display: flex;
 	flex-flow: row;
 	margin-bottom: 1px;
 }
 
-div.gridLayout div div.label {
+div.gridLayout > div div.label {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 200px;
 	background-color: var(--header1-background-color);
 }
-div.gridLayout div div.field {
+div.gridLayout > div div.field {
 	padding-left: 1px;
 	width: calc(100% - 200px);
 }
@@ -140,15 +140,20 @@ div.gridLayout div div.field {
 	div.gridLayout {
 		grid-template-columns: 1fr !important;
 	}
-	div.gridLayout div {
+	div.gridLayout > div {
 		grid-column: 1 / 2 !important;
 		flex-flow: column;
 	}
-	div.gridLayout div div.label {
-		width: calc(100% - 1px) !important;
+	div.gridLayout > div div.label {
+		width: calc(100% - 0px) !important;
 	}
-	div.gridLayout div div.field {
+	div.gridLayout > div div.field {
+		padding-left: 0px;
 		width: 100% !important;
+	}
+	div.gridLayout > div div.field div.multiField{
+		display: flex;
+		flex-flow: row;
 	}
 }
 
@@ -161,7 +166,7 @@ div.flexLayout {
 	flex-wrap: wrap;
 	justify-content: space-around;
 }
-div.flexLayout div {
+div.flexLayout > div {
 	display: flex;
 	flex-flow: row;
 	width: 100%;
@@ -169,7 +174,7 @@ div.flexLayout div {
 }
 
 
-div.flexLayout div div.label {
+div.flexLayout > div div.label {
 	display:flex;
 	align-items: center;
 	justify-content: center;
@@ -177,36 +182,41 @@ div.flexLayout div div.label {
 	background-color: var(--header1-background-color);
 
 }
-div.flexLayout div div.field {
+div.flexLayout > div div.field {
 	padding-left: 1px;
 	width: calc(100% - 200px);
 }
 
-div.flexLayout div.w50p {
+div.flexLayout > div.w50p {
 	width: 50%;
 }
 
-div.flexLayout div.w33p {
+div.flexLayout > div.w33p {
 	width: 33.33333%;
 }
 
-div.flexLayout div.w25p {
+div.flexLayout > div.w25p {
 	width: 25%;
 }
 
-div.flexLayout div.w20p {
+div.flexLayout > div.w20p {
 	width: 20%;
 }
 @media screen and (max-width: var(--sp-screen-max)) {
-	div.flexLayout div {
+	div.flexLayout > div {
 		width: 100% !important;
 		flex-flow: column;
 	}
-	div.flexLayout div div.label {
-		width: calc(100% - 1px) !important;
+	div.flexLayout > div div.label {
+		width: calc(100% - 0px) !important;
 	}
-	div.flexLayout div div.field {
+	div.flexLayout > div div.field {
+		padding-left: 0px;
 		width: 100% !important;
+	}
+	div.flexLayout > div div.field div.multiField{
+		display: flex;
+		flex-flow: row;
 	}
 }
 

@@ -208,15 +208,15 @@ tr.oddTr button:hover {
 	/* 入力フィールドの高さ */
 	input[type="text"], input[type="email"], input[type="search"], input[type="password"] {
 		height: 30px;
-		width: calc(100% - 2px);
+		width: calc(100% - 0px);
 	}
 
 	input[type="file"] {
 		height: 30px;
-		width: calc(100% - 2px);
+		width: calc(100% - 0px);
 	}
 	textarea {
-		width: calc(100% - 2px);
+		width: calc(100% - 0px);
 		height: calc(100%);
 	}
 
@@ -243,17 +243,17 @@ tr.oddTr button:hover {
 	/* 入力フィールドの高さ */
 	input[type="text"], input[type="email"], input[type="search"], input[type="password"], input[type="file"] {
 		height: 40px;
-		width: calc(100% - 2px);
+		width: calc(100% - 0px);
 	}
 
 	textarea {
-		width: calc(100% - 2px);
+		width: calc(100% - 0px);
 		height: calc(100%);
 	}
 
 	select {
 		height: 40px;
-		width: calc(100% - 2px);
+		width: calc(100% - 0px);
 	}
 
 

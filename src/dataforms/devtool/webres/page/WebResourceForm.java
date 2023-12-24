@@ -59,7 +59,6 @@ public class WebResourceForm extends Form {
 		this.addField(new FlagField("forceOverwrite"));
 	}
 
-
 	@Override
 	public void init() throws Exception {
 		super.init();
@@ -91,11 +90,6 @@ public class WebResourceForm extends Form {
 			return r;
 		}
 	}
-
-
-
-
-
 
 	/**
 	 * Pageクラスに対応したhtmlを作成する。
@@ -156,6 +150,7 @@ public class WebResourceForm extends Form {
 		}
 		return srcpath;
 	}
+
 	/**
 	 * ページまたはダイアログクラス中のフォームを別HTMLに出力します。
 	 * @param className ページクラス名。

@@ -36,21 +36,21 @@ public class FormHtmlGenerator extends HtmlGenerator {
 		/**
 		 * tableタグを使用したレイアウト。
 		 */
-		TABLE_LAYOUT
+		TABLE
 		/**
 		 * display: gridを指定したDIV。
 		 */
-		, GRID_LAYOUT
+		, GRID
 		/**
 		 * display: flexを指定したDIV。
 		 */
-		, FLEX_LAYOUT
+		, FLEX
 	}
 
 	/**
 	 * フィールドレイアウト。
 	 */
-	private FieldLayout fieldLayout = FieldLayout.GRID_LAYOUT;
+	private FieldLayout fieldLayout = FieldLayout.GRID;
 
 	/**
 	 * コンストラクタ。
@@ -60,7 +60,6 @@ public class FormHtmlGenerator extends HtmlGenerator {
 	public FormHtmlGenerator(final Form form, final int indent) {
 		super(indent);
 		this.form = form;
-
 	}
 
 	/**
@@ -85,11 +84,11 @@ public class FormHtmlGenerator extends HtmlGenerator {
 	 */
 	public FieldSetGenerator getFieldSetGenerator() {
 		FieldLayout fl = this.getFieldLayout();
-		if (fl == FieldLayout.TABLE_LAYOUT) {
+		if (fl == FieldLayout.TABLE) {
 			return new TableFieldSetGenerator();
-		} else if (fl == FieldLayout.GRID_LAYOUT) {
+		} else if (fl == FieldLayout.GRID) {
 			return new GridFieldSetGenerator();
-		} else if (fl == FieldLayout.FLEX_LAYOUT) {
+		} else if (fl == FieldLayout.FLEX) {
 			return new FlexFieldSetGenerator();
 		}
 		return null;
@@ -108,18 +107,24 @@ public class FormHtmlGenerator extends HtmlGenerator {
 	 * 指定されたクラスに対応したフォームHTMLジェネレータを作成します。
 	 * @param form フォーム。
 	 * @param indent 段付けのtab数。
+	 * @param fieldLayout フィールドレイアウト。
 	 * @return フォームHTMLジェネレータ。
 	 */
-	public static FormHtmlGenerator newFormHtmlGenerator(final Form form, final int indent) {
+	public static FormHtmlGenerator newFormHtmlGenerator(final Form form, final int indent, final String fieldLayout) {
+		FieldLayout fl = FieldLayout.valueOf(fieldLayout);
 		FormHtmlGenerator gen = null;
 		if (Page.ID_QUERY_FORM.equals(form.getId())) {
 			gen = new QueryFormHtmlGenerator(form, indent);
+			gen.setFieldLayout(fl);
 		} else if (Page.ID_QUERY_RESULT_FORM.equals(form.getId())) {
 			gen = new QueryResultFormHtmlGenerator(form, indent);
+			gen.setFieldLayout(fl);
 		} else if (Page.ID_EDIT_FORM.equals(form.getId())) {
 			gen = new EditFormHtmlGenerator(form, indent);
+			gen.setFieldLayout(fl);
 		} else {
 			gen = new FormHtmlGenerator(form, indent);
+			gen.setFieldLayout(fl);
 		}
 		return gen;
 	}

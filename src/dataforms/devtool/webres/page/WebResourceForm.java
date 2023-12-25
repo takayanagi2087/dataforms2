@@ -14,9 +14,11 @@ import dataforms.app.login.page.LoginInfoForm;
 import dataforms.app.menu.page.SideMenuForm;
 import dataforms.controller.DataForms;
 import dataforms.controller.Form;
+import dataforms.controller.Page;
 import dataforms.controller.WebComponent;
 import dataforms.devtool.base.page.DeveloperPage;
 import dataforms.devtool.field.ClassNameField;
+import dataforms.devtool.field.FieldLayoutSelectField;
 import dataforms.devtool.field.JavascriptClassField;
 import dataforms.devtool.field.PathNameField;
 import dataforms.devtool.field.WebComponentTypeField;
@@ -42,11 +44,35 @@ public class WebResourceForm extends Form {
 	 * Log.
 	 */
 	private static Logger logger = LogManager.getLogger(WebResourceForm.class.getName());
+
+	/**
+	 * フィールドレイアウト。
+	 */
+	private static String fieldLayout = null;
+
+	/**
+	 * フィールドレイアウトの設定値を取得します。
+	 */
+	static {
+		String layout = Page.getServlet().getServletContext().getInitParameter("field-layout");
+		WebResourceForm.fieldLayout = layout;
+		logger.debug("field-layout:" + layout);
+	}
+
+	/**
+	 * フィールドレイアウトを取得します。
+	 * @return フィールドレイアウト。
+	 */
+	public static String getFieldLayout() {
+		return WebResourceForm.fieldLayout;
+	}
+
 	/**
 	 * コンストラクタ。
 	 */
 	public WebResourceForm() {
 		super(null);
+		this.addField(new FieldLayoutSelectField("fieldLayout"));
 		this.addField(new WebSourcePathField());
 		this.addField(new ClassNameField()).setReadonly(true);
 		this.addField(new WebComponentTypeField()).setReadonly(true);
@@ -62,6 +88,7 @@ public class WebResourceForm extends Form {
 	@Override
 	public void init() throws Exception {
 		super.init();
+		this.setFormData("fieldLayout", WebResourceForm.getFieldLayout());
 		this.setFormData("webSourcePath", DeveloperPage.getWebSourcePath());
 	}
 
@@ -96,10 +123,11 @@ public class WebResourceForm extends Form {
 	 * @param className クラス名。
 	 * @param sourcePath 出力先フォルダ。
 	 * @param outputFormHtml Form別ファイル出力フラグ。
+	 * @param fieldLayout フィールドレイアウト。
 	 * @return HTMLテキスト。
 	 * @throws Exception 例外。
 	 */
-	private String getDataformsHtml(final String className, final String sourcePath, final String outputFormHtml) throws Exception {
+	private String getDataformsHtml(final String className, final String sourcePath, final String outputFormHtml, final String fieldLayout) throws Exception {
 		String src = this.getStringResourse("template/Page.html.template");
 		Class<?> pageClass = Class.forName(className);
 		DataForms page = (DataForms) pageClass.getDeclaredConstructor().newInstance();
@@ -116,7 +144,7 @@ public class WebResourceForm extends Form {
 					File srcfile = new File(srcpath);
 					srcfile.delete();
 				}
-				FormHtmlGenerator gen = FormHtmlGenerator.newFormHtmlGenerator(f, 3);
+				FormHtmlGenerator gen = FormHtmlGenerator.newFormHtmlGenerator(f, 3, fieldLayout);
 				sb.append(gen.generateFormHtml(outputFormHtml));
 			}
 		}
@@ -129,12 +157,13 @@ public class WebResourceForm extends Form {
 	 * @param f フォーム。
 	 * @param sourcePath ファイルの出力先。
 	 * @param forceOverwrite 強制上書きフラグ。
+	 * @param fieldLayout フィールドレイアウト。
 	 * @return 出力ファイル。
 	 * @throws Exception 例外。
 	 */
-	private String outputFormHtml(final Form f, final String sourcePath, final String forceOverwrite) throws Exception {
+	private String outputFormHtml(final Form f, final String sourcePath, final String forceOverwrite, final String fieldLayout) throws Exception {
 		String src = this.getStringResourse("template/Form.html.template");
-		FormHtmlGenerator gen = FormHtmlGenerator.newFormHtmlGenerator(f, 2);
+		FormHtmlGenerator gen = FormHtmlGenerator.newFormHtmlGenerator(f, 2, fieldLayout);
 		StringBuilder sb = new StringBuilder();
 		sb.append(gen.generateFormHtml("0"));
 		String gensrc = src.replaceAll("\\$\\{form\\}", sb.toString());
@@ -156,9 +185,10 @@ public class WebResourceForm extends Form {
 	 * @param className ページクラス名。
 	 * @param sourcePath ファイルの出力パス。
 	 * @param forceOverwrite 強制上書きフラグ。
+	 * @param fieldLayout フィールドレイアウト。
 	 * @throws Exception 例外。
 	 */
-	private void outputForms(final String className, final String sourcePath, final String forceOverwrite) throws Exception {
+	private void outputForms(final String className, final String sourcePath, final String forceOverwrite, final String fieldLayout) throws Exception {
 		Class<?> pageClass = Class.forName(className);
 		DataForms page = (DataForms) pageClass.getDeclaredConstructor().newInstance();
 		List<WebComponent> clist = page.getComponentList();
@@ -168,7 +198,7 @@ public class WebResourceForm extends Form {
 				if (isCommonForm(f)) {
 					continue;
 				}
-				this.outputFormHtml(f, sourcePath, forceOverwrite);
+				this.outputFormHtml(f, sourcePath, forceOverwrite, fieldLayout);
 			}
 		}
 	}
@@ -190,6 +220,7 @@ public class WebResourceForm extends Form {
 	 * @throws Exception 例外。
 	 */
 	private String generateHtmlFile(final Map<String, Object> data) throws Exception {
+		String fieldLayout = (String) data.get("fieldLayout");
 		String webComponentType = (String) data.get("webComponentType");
 		String outputFormHtml = (String) data.get("outputFormHtml");
 		String forceOverwrite = (String) data.get("forceOverwrite");
@@ -197,9 +228,9 @@ public class WebResourceForm extends Form {
 		String fullClassName = (String) data.get("className");
 		String gensrc = "";
 		if ("page".equals(webComponentType) || "dialog".equals(webComponentType)) {
-			gensrc = this.getDataformsHtml(fullClassName, sourcePath, outputFormHtml);
+			gensrc = this.getDataformsHtml(fullClassName, sourcePath, outputFormHtml, fieldLayout);
 			if ("1".equals(outputFormHtml)) {
-				this.outputForms(fullClassName, sourcePath, forceOverwrite);
+				this.outputForms(fullClassName, sourcePath, forceOverwrite, fieldLayout);
 			}
 			String srcpath = sourcePath + "/" + fullClassName.replaceAll("\\.", "/") + ".html";
 			File f = new File(srcpath);
@@ -215,7 +246,7 @@ public class WebResourceForm extends Form {
 		} else if ("form".equals(webComponentType)) {
 			Class<?> fcls = Class.forName(fullClassName);
 			Form f = (Form) fcls.getConstructor().newInstance();
-			return 	this.outputFormHtml(f, sourcePath, forceOverwrite);
+			return 	this.outputFormHtml(f, sourcePath, forceOverwrite, fieldLayout);
 		}
 		return null;
 	}

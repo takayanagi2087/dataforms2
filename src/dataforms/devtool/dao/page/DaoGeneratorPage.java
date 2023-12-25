@@ -14,5 +14,6 @@ public class DaoGeneratorPage extends DeveloperPage {
 		this.addForm(new DaoGeneratorQueryForm());
 		this.addForm(new DaoGeneratorQueryResultForm());
 		this.addForm(new DaoGeneratorEditForm());
+		this.setMenuItem(false);
 	}
 }

@@ -57,6 +57,9 @@ public class WebResourceForm extends Form {
 		String layout = Page.getServlet().getServletContext().getInitParameter("field-layout");
 		WebResourceForm.fieldLayout = layout;
 		logger.debug("field-layout:" + layout);
+		if (WebResourceForm.fieldLayout == null) {
+			WebResourceForm.fieldLayout = "GRID";
+		}
 	}
 
 	/**

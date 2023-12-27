@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -92,9 +93,8 @@ public class WebResourceQueryResultForm extends QueryResultForm {
 		Map<String, WebComponent> wcmap = comp.getComponentMap();
 		for (String key: wcmap.keySet()) {
 			WebComponent c = wcmap.get(key);
-			if (!this.classNameSet.contains(c.getClass().getName())) {
+			if ((!this.classNameSet.contains(c.getClass().getName())) || c instanceof HtmlTable) {
 				Map<String, Object> m = new HashMap<String, Object>();
-//				m.put(ID_CHECKED_CLASS, c.getClass().getName());
 				m.put("className", c.getClass().getName());
 				result.add(m);
 				this.getComponentList(result, c);
@@ -309,7 +309,16 @@ public class WebResourceQueryResultForm extends QueryResultForm {
 				queryResult.add(m);
 			}
 		}
-		ret.put(Page.ID_QUERY_RESULT, queryResult);
+		Set<String> set = new HashSet<String>();
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		for (Map<String, Object> m: queryResult) {
+			String name = (String) m.get("className");
+			if (!set.contains(name)) {
+				set.add(name);
+				list.add(m);
+			}
+		}
+		ret.put(Page.ID_QUERY_RESULT, list);
 		return ret;
 	}
 }

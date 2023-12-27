@@ -78,5 +78,15 @@ class FlagField extends CharField {
 			}
 		}
 	}
+
+	/**
+	 * 値を設定します。
+	 *
+	 * @param {String} flg フラグ。
+	 */
+	setValue(flg) {
+		super.setValue(flg);
+		this.parent.get(this.id + "_ck").prop("checked", flg == "1" ? true :false);
+	}
 }
 

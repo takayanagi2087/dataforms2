@@ -1,5 +1,7 @@
 package dataforms.app.enumtype.dao;
 
+import dataforms.field.base.FieldList;
+
 /**
  * 列挙型選択肢の問合せ。
  *
@@ -23,6 +25,7 @@ public class EnumOptionQuery extends EnumQuery {
 	public EnumOptionQuery(final String enumCode, final String langCode) {
 		super();
 		this.setCondition("e.parent_id in (select enum_id from enum where enum_code='" + enumCode +"') and en.lang_code='" + langCode + "'");
+		this.setOrderByFieldList(new FieldList(this.getField(EnumTable.Entity.ID_SORT_ORDER)));
 	}
 
 

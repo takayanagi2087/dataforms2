@@ -3,6 +3,7 @@ package dataforms.controller;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +23,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dataforms.annotation.WebMethod;
+import dataforms.dao.Dao;
+import dataforms.dao.Query;
+import dataforms.dao.QuerySetDao;
+import dataforms.devtool.field.PagePatternSelectField;
 import dataforms.field.base.Field;
 import dataforms.htmltable.HtmlTable;
 import dataforms.menu.Menu;
@@ -1341,4 +1346,65 @@ public class Page extends DataForms implements WebEntryPoint {
 	public String getMenuTarget() {
 		return null;
 	}
+
+	/**
+	 * Daoのインスタンスを取得します。
+	 * @return Daoのインスタンス。
+	 * @throws Exception 例外。
+	 */
+	private Dao getDaoInstance() throws Exception {
+		Method m = this.getClass().getMethod("getDaoClass");
+		if (m != null) {
+			@SuppressWarnings("unchecked")
+			Class<? extends Dao> cl = (Class<? extends Dao>) m.invoke(this);
+			if (cl != null) {
+				return cl.getConstructor().newInstance();
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * ページパータンを取得します。
+	 * @return ページパータン。
+	 * @throws Exception 例外。
+	 */
+	public String getPagePattern() throws Exception {
+		String qf = "0";
+		String qrf = "0";
+		String ef = "0";
+		Map<String, WebComponent> fm = this.getFormMap();
+		for (String key: fm.keySet()) {
+			WebComponent cmp = fm.get(key);
+			if (cmp != null) {
+				if (cmp instanceof QueryForm) {
+					qf = "1";
+				} else if (cmp instanceof QueryResultForm) {
+					qrf = "1";
+				} else if (cmp instanceof EditForm) {
+					ef = "1";
+				}
+			}
+		}
+		Dao dao = this.getDaoInstance();
+		if (dao != null) {
+			if ("1".equals(ef)) {
+				logger.debug("page dao=" + dao.getClass().getName());
+				if (dao instanceof QuerySetDao) {
+					QuerySetDao querySetDao = (QuerySetDao) dao;
+					Query sq = querySetDao.getSingleRecordQuery();
+					List<Query> mql = querySetDao.getMultiRecordQueryList();
+					if (sq == null && mql != null) {
+						ef = "2";
+					}
+				}
+			}
+		}
+		String pp = PagePatternSelectField.getPagePattern(this.getPage(), qf,  qrf, ef);
+		return pp;
+	}
+
 }

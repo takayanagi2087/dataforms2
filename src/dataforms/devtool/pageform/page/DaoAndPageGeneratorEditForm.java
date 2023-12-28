@@ -1,7 +1,6 @@
 package dataforms.devtool.pageform.page;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -572,54 +571,25 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 	}
 
 	/**
-	 * Daoのインスタンスを取得します。
-	 * @param page ページ。
-	 * @return Daoのインスタンス。
-	 * @throws Exception 例外。
-	 */
-	private Dao getDaoInstance(final Page page) throws Exception {
-		Method m = page.getClass().getMethod("getDaoClass");
-		if (m != null) {
-			@SuppressWarnings("unchecked")
-			Class<? extends Dao> cl = (Class<? extends Dao>) m.invoke(page);
-			if (cl != null) {
-				return cl.getConstructor().newInstance();
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	/**
 	 * フォームの情報を設定する。
 	 * @param p ページクラスのインスタンス。
 	 * @param ret フォームに表示するデータマップ。
 	 */
 	private void getFormInfo(final Page p, final Map<String, Object> ret) throws Exception {
 		Map<String, WebComponent> fm = p.getFormMap();
-		String qf = "0";
-		String qrf = "0";
-		String ef = "0";
-
 		String pkg = (String) ret.get(ID_PACKAGE_NAME);
 		for (String key: fm.keySet()) {
-			logger.debug("*** key=" + key);
 			WebComponent cmp = fm.get(key);
 			if (cmp != null) {
 				if (cmp instanceof QueryForm) {
 					ret.put(ID_QUERY_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
 					ret.put(ID_QUERY_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
-					qf = "1";
 				} else if (cmp instanceof QueryResultForm) {
 					ret.put(ID_QUERY_RESULT_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
 					ret.put(ID_QUERY_RESULT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
-					qrf = "1";
 				} else if (cmp instanceof EditForm) {
 					ret.put(ID_EDIT_FORM_CLASS_NAME, cmp.getClass().getSimpleName());
 					ret.put(ID_EDIT_FORM_CLASS_OVERWRITE_MODE, OverwriteModeField.ERROR);
-					ef = "1";
 				} else if (cmp instanceof LoginInfoForm || cmp instanceof SideMenuForm) {
 					;
 				} else if (cmp instanceof Form){
@@ -630,25 +600,7 @@ public class DaoAndPageGeneratorEditForm extends EditForm {
 				}
 			}
 		}
-
-		Dao dao = this.getDaoInstance(p);
-		if (dao != null) {
-			if ("1".equals(ef)) {
-				logger.debug("page dao=" + dao.getClass().getName());
-				if (dao instanceof QuerySetDao) {
-					QuerySetDao querySetDao = (QuerySetDao) dao;
-					Query sq = querySetDao.getSingleRecordQuery();
-					List<Query> mql = querySetDao.getMultiRecordQueryList();
-					if (sq == null && mql != null) {
-						ef = "2";
-					}
-				}
-			}
-		}
-
-		String pp = PagePatternSelectField.getPagePattern(this.getPage(), qf,  qrf, ef);
-		ret.put(ID_PAGE_PATTERN, pp);
-
+		ret.put(ID_PAGE_PATTERN, p.getPagePattern());
 	}
 
 	@Override

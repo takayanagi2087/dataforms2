@@ -124,7 +124,12 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 				this.get("daoClassName").prop("disabled", true);
 				this.get("daoClassOverwriteMode").prop("disabled", true);
 				this.find(".multiRecoedQueryList").hide();
+				this.get("queryFormClassName").val("");
+				this.get("queryResultFormClassName").val("");
+				this.get("editFormClassName").val("");
 			} else {
+				let pcname = this.get("pageClassName").val();
+				let n = pcname.replace(/Page$/, "");
 				this.get("formClassName").prop("disabled", true);
 				this.get("formClassOverwriteMode").prop("disabled", true);
 				this.find(".listQueryCondition").hide();
@@ -142,27 +147,33 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 					} else {
 						this.find(".noNextForm").show();
 					}
+					this.get("queryFormClassName").val(n + "QueryForm");
 					this.find(".queryForm").prop("disabled", false);
 				} else {
 					this.find(".queryForm").prop("disabled", true);
+					this.get("queryFormClassName").val("");
 				}
 				if (listFormSelect == "0") {
 					this.find(".queryResultFormDesc").hide();
 					this.find(".listForm").prop("disabled", true);
+					this.get("queryResultFormClassName").val("");
 				} else {
 					this.find(".queryResultFormDesc").show();
 					this.find(".listForm").prop("disabled", false);
+					this.get("queryResultFormClassName").val(n + "QeuryResultForm");
 				}
 				if (editFormSelect == "0") {
 					this.find(".editFormDesc").hide();
 					this.find(".editQueryCondition1").hide();
 					this.find(".editForm").prop("disabled", true);
+					this.get("editFormClassName").val("");
 				} else {
 					this.find(".editFormDesc").show();
 					if (listFormSelect == 1) {
 						this.find(".editQueryCondition1").show();
 					}
 					this.find(".editForm").prop("disabled", false);
+					this.get("editFormClassName").val(n + "EditForm");
 				}
 				if (editFormSelect == "1") {
 					this.find(".multiRecoedQueryList").show();
@@ -359,10 +370,23 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 			if (json.length > 0) {
 				let flist = JSON.parse(json);
 				logger.log("editFieldList=", flist);
-	//			if (false) {
-	//				list.push(new ValidationError("fieldId", MessagesUtil.getMessage("error.messagekey")));
-	//			}
-
+			}
+			let qfc = this.get("queryFormClassName").val();
+			let qrfc = this.get("queryResultFormClassName").val();
+			if (qfc.length > 0 || qrfc.length > 0) {
+				let lqc = this.get("listQueryClassName").val();
+				if (lqc.length == 0) {
+					let fn = this.find("label[for='listQueryClassName']").text();
+					list.push(new ValidationError("listQueryClassName", MessagesUtil.getMessage("error.required", fn)));
+				}
+			}
+			let efc = this.get("editFormClassName").val();
+			if (efc.length > 0) {
+				let eqc = this.get("editQueryClassName").val();
+				if (eqc.length == 0) {
+					let fn = this.find("label[for='editQueryClassName']").text();
+					list.push(new ValidationError("editQueryClassName", MessagesUtil.getMessage("error.required", fn)));
+				}
 			}
 		}
 		return list;

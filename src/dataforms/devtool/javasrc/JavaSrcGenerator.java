@@ -22,6 +22,7 @@ public abstract class JavaSrcGenerator {
 	/**
 	 * テンプレートを取得します。
 	 * @return テンプレート。
+	 * @throws Exception 例外。
 	 */
 	protected abstract Template getTemplate() throws Exception;
 

@@ -34,6 +34,7 @@ public class PagePatternSelectField extends PropertiesSingleSelectField {
 	 * @param qrf QueryResultFormフラグ。
 	 * @param ef EditFormフラグ。
 	 * @return ページパターン。
+	 * @throws Exception 例外。
 	 */
 	public static String getPagePattern(final Page page, final String qf, final String qrf, final String ef) throws Exception  {
 		String ret = null;

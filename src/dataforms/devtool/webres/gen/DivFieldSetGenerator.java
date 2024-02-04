@@ -32,7 +32,7 @@ public abstract class DivFieldSetGenerator extends FieldSetGenerator {
 	protected String getFieldDiv(final Field<?> field, final String tabs, final String fieldTag) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(tabs + "\t\t<div class=\"fieldDiv\">\n");
-		sb.append(tabs + "\t\t\t<div class=\"label\"><label for=\"code1\">" + this.getFieldLabel(field) + "</label></div>\n");
+		sb.append(tabs + "\t\t\t<div class=\"label\"><label for=\"" + field.getId() + "\">" + this.getFieldLabel(field) + "</label></div>\n");
 		sb.append(tabs + "\t\t\t<div class=\"field\">" + fieldTag + "</div>\n");
 		sb.append(tabs + "\t\t</div>\n");
 		return sb.toString();

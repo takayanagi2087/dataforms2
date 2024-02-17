@@ -721,23 +721,21 @@ public class Enum01Query extends Query {
 		<div class="wrappre">
 			<pre>
 select
-	m.enum_id as enum_id
-	,m.parent_id as parent_id
-	,m.sort_order as sort_order
-	,m.enum_code as enum_code
-	,m.enum_group_code as enum_group_code
-	,m.memo as memo
-	,m.create_user_id as create_user_id
-	,m.create_timestamp as create_timestamp
-	,m.update_user_id as update_user_id
-	,m.update_timestamp as update_timestamp
-	,nm.lang_code as lang_code
-	,nm.enum_name as enum_name
-from
-	enum as  m
-inner join
-	enum_name as nm on m.enum_id=nm.enum_id
-			</pre>
+m.enum_id as enum_id
+,m.parent_id as parent_id
+,m.sort_order as sort_order
+,m.enum_code as enum_code
+,m.enum_group_code as enum_group_code
+,m.memo as memo
+,m.create_user_id as create_user_id
+,m.create_timestamp as create_timestamp
+,m.update_user_id as update_user_id
+,m.update_timestamp as update_timestamp
+,j0.lang_code as lang_code
+,j0.enum_name as enum_name
+ from enum as  m
+ inner join enum_name as j0 on m.enum_id=j0.enum_id
+ 			</pre>
 		</div>
 		</p>
 		<h2>問合せクラスの実行</h2>

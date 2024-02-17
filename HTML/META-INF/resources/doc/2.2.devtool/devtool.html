@@ -502,7 +502,7 @@
 			システムの設定情報のメンテナンス画面であればEditFormだけを配置したページになります。
 		</p>
 		<p class="topic">
-			この3種類以外の独自のFormクラスを作成しページに配置することも可能です。、
+			この3種類以外の独自のFormクラスを作成しページに配置することも可能です。
 		</p>
 		<p>
 			データベースを操作するページの場合、その動作に対応したDAO(Data access object)クラスが必要になります。
@@ -841,30 +841,28 @@ sample.page.SamplePage=サンプルページ
 		&lt;div id=&quot;mainDiv&quot;&gt;
 			&lt;form id=&quot;queryForm&quot;&gt;
 				&lt;div class=&quot;formHeader&quot;&gt;&#26908;&#32034;&#26465;&#20214;&lt;/div&gt;
-				&lt;table class=&quot;responsive&quot;&gt;
-					&lt;tbody&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#12486;&#12461;&#12473;&#12488;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#25968;&#20516;&lt;/th&gt;
-							&lt;td&gt;&lt;div class=&quot;multiField&quot;&gt;
-								&lt;input type=&quot;text&quot; id=&quot;sampleNumericFrom&quot; class=&quot;rangeField&quot; /&gt;
-								&#65374;
-								&lt;input type=&quot;text&quot; id=&quot;sampleNumericTo&quot; class=&quot;rangeField&quot;/&gt;
-							&lt;/div&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#26085;&#20184;&lt;/th&gt;
-							&lt;td&gt;&lt;div class=&quot;multiField&quot;&gt;
-								&lt;input type=&quot;text&quot; id=&quot;sampleDateFrom&quot; class=&quot;dateRangeField&quot; /&gt;
-								&#65374;
-								&lt;input type=&quot;text&quot; id=&quot;sampleDateTo&quot; class=&quot;dateRangeField&quot;/&gt;
-							&lt;/div&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-					&lt;/tbody&gt;
-				&lt;/table&gt;
+				&lt;div class=&quot;gridLayout&quot;&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleText&quot;&gt;&#25991;&#23383;&#21015;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&#25968;&#23383;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;div class=&quot;multiField&quot;&gt;
+							&lt;input type=&quot;text&quot; id=&quot;sampleNumericFrom&quot; class=&quot;rangeField&quot; /&gt;
+							&#65374;
+							&lt;input type=&quot;text&quot; id=&quot;sampleNumericTo&quot; class=&quot;rangeField&quot;/&gt;
+						&lt;/div&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&#26085;&#20184;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;div class=&quot;multiField&quot;&gt;
+							&lt;input type=&quot;text&quot; id=&quot;sampleDateFrom&quot; class=&quot;dateRangeField&quot; /&gt;
+							&#65374;
+							&lt;input type=&quot;text&quot; id=&quot;sampleDateTo&quot; class=&quot;dateRangeField&quot;/&gt;
+						&lt;/div&gt;&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
 				&lt;input type=&quot;submit&quot; id=&quot;queryButton&quot; class=&quot;largeButton&quot; value=&quot;&#26908;&#32034;&quot;&gt;
 				&lt;input type=&quot;button&quot; id=&quot;exportButton&quot; class=&quot;largeButton&quot; value=&quot;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&quot;&gt;
 				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; class=&quot;largeButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;&gt;
@@ -872,11 +870,9 @@ sample.page.SamplePage=サンプルページ
 			&lt;/form&gt;
 			&lt;form id=&quot;queryResultForm&quot;&gt;
 				&lt;div class=&quot;formHeader&quot;&gt;&#26908;&#32034;&#32080;&#26524;&lt;/div&gt;
-				&lt;table class=&quot;responsive&quot;&gt;
-					&lt;tbody&gt;
-					&lt;/tbody&gt;
-				&lt;/table&gt;
-				&lt;div class=&quot;hScrollDiv&quot;&gt;
+				&lt;div class=&quot;gridLayout&quot;&gt;
+				&lt;/div&gt;
+				&lt;div&gt;
 					&lt;table id=&quot;queryResult&quot;&gt;
 						&lt;thead&gt;
 							&lt;tr&gt;
@@ -884,10 +880,10 @@ sample.page.SamplePage=サンプルページ
 									No.
 								&lt;/th&gt;
 								&lt;th&gt;
-									&#12486;&#12461;&#12473;&#12488;
+									&#25991;&#23383;&#21015;
 								&lt;/th&gt;
 								&lt;th&gt;
-									&#25968;&#20516;
+									&#25968;&#23383;
 								&lt;/th&gt;
 								&lt;th&gt;
 									&#26085;&#20184;
@@ -934,22 +930,20 @@ sample.page.SamplePage=サンプルページ
 				&lt;input type=&quot;hidden&quot; id=&quot;createTimestamp&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;updateUserId&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;updateTimestamp&quot; /&gt;
-				&lt;table class=&quot;responsive&quot;&gt;
-					&lt;tbody&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#12486;&#12461;&#12473;&#12488;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#25968;&#20516;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#26085;&#20184;&lt;/th&gt;
-							&lt;td&gt;&lt;div class=&quot;multiField&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/div&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-					&lt;/tbody&gt;
-				&lt;/table&gt;
+				&lt;div class=&quot;gridLayout&quot;&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleText&quot;&gt;&#25991;&#23383;&#21015;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleNumeric&quot;&gt;&#25968;&#23383;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleDate&quot;&gt;&#26085;&#20184;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;div class=&quot;multiField&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
 				&lt;input type=&quot;button&quot; id=&quot;confirmButton&quot; class=&quot;largeButton&quot; value=&quot;&#30906;&#35469;&quot;/&gt;
 				&lt;input type=&quot;button&quot; id=&quot;saveButton&quot; class=&quot;largeButton&quot; value=&quot;&#30331;&#37682;&quot;/&gt;
 				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; class=&quot;largeButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;/&gt;

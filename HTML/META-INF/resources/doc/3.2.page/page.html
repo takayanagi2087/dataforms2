@@ -21,7 +21,7 @@
 					<th style="width:40px;">No.</th>
 					<th style="width:200px;">基本クラス</th>
 					<th style="width:100px;">ID</th>
-					<th style="width: 300px;">用途</th>
+					<th style="width: 500px;">用途</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -73,41 +73,36 @@
 		<h2>QuerySetDaoの機能</h2>
 		<p>
 			この3種類のフォームのデータベースアクセスを担当するのが、Daoから派生したQuerySetDaoクラスになります。
-			このDaoクラスは開発ツールの「DAO Javaクラス作成」を使用して作成します。
+			このDaoクラスは開発ツールの「DAO & ページJavaクラス作成」を使用してページクラスと同時に作成します。
 		</p>
-		<!--
-		<figure>
-			<figcaption>Dao Javaクラス作成</figcaption>
-			<img src="../3.2.page/dao1.png" style="width:50%; height:50%;"/>
-		</figure>
-		-->
 		<p>
-			この画面では一覧取得用問合せと編集フォーム用問合せを指定します。
+			この画面では「一覧取得用問合せ」と「編集対象取得問合せ」を指定します。
 			このフィールドには問合せだけでなくテーブルクラスも指定できます。
 			テーブルクラスを指定した場合、自動的にSingleTableQueryという問合せクラスを生成して登録します。
 		</p>
 		<p>
-			QueryResultFormは一覧取得用問合せを使用してデータを取得します。
+			QueryResultFormは「一覧取得用問合せ」を使用してデータを取得します。
 			この時、QueryFormに配置されたフィールドのリストと入力されたデータのマップを、
 			指定された問合せのsetConditionFieldList、setConditionDataに設定します。
 		</p>
 		<p>
 			EditFormは編集フォーム用問合せを使用して編集するデータを取得します。
-			編集フォーム用問合せは1レコード編集と複数レコード編集の2パターンがあります。
+			「編集対象取得問合せ」は1レコード編集と複数レコード編集の2パターンがあります。
 		</p>
-		<h3>1レコード編集のページ</h3>
+		<h3>１レコード編集のページでそのレコードに関連する複数のレコードも同時に編集する場合</h3>
 		<p>
-			1レコード編集の場合、QueryResultFormから渡された主キーの情報を編集フォーム用問合せに渡して編集データを取得します。
-			このモードでは関連する問合せやテーブルを複数指定することができます。
-			これらの問合せのフィールドには指定された主キーのフィールドを含んだものである必要があります。
+			１レコード編集ページでは、「複数レコード問合せ」を複数指定することができます。
+			EditFormはQueryResultFormから渡された主キーの情報を「編集対象取得問合せ」に渡して編集データを取得します。
+			この時「複数レコード問合せ」が指定されているとその問合せも実行され、その結果がEditFormに表示され編集することができます。
+			なお「複数レコード問合せ」は「編集対象取得問合せ」の主キーのフィールドを含んだものである必要があります。
 		</p>
 		<p>
 			「6.Table,Query,Dao」で作成したJoinTestTableはSampleIdFielを持っているので、SampleFieldの関連するテーブルといえます。
 			SampleTableとJoinTestTableを同時に編集するページを作る場合、以下のような設定でDaoを作成します。
 		</p>
 		<figure>
-			<figcaption>Dao Javaクラス作成</figcaption>
-			<img src="dao1.png" style="width:50%; height:50%;"/>
+			<figcaption>DAO & ページJavaクラス作成</figcaption>
+			<img src="daoAndPage1.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
 			上記の画面で作成したDaoクラスは以下のようになります。
@@ -176,12 +171,8 @@ public class Sample2Dao extends QuerySetDao {
 			</pre>
 		</div>
 		<p>
-			上記Daoを参照したページを以下のように作成し、「Webリソース作成」を使用してこのページのHTMLを作成します。
+			この画面でSample2Page.javaも同時に作成されるので、「Webリソース作成」を使用してこのページのHTMLを作成します。
 		</p>
-		<figure>
-			<figcaption>Page Javaクラス作成</figcaption>
-			<img src="page1.png" style="width:50%; height:50%;"/>
-		</figure>
 		<p>
 			このページを実行し、EditFormを表示すると以下のようになります。
 			SampleTableの1レコードに対してJoinTestTableは複数レコードが対応するため、
@@ -233,24 +224,22 @@ group by
  			</pre>
 		</div>
 		<p>
-			次の画面でDaoクラスを作成し、一覧取得用問合せに先に作成したMultiTestCode1Queryを指定します。
-		</p>
-		<p>
-			編集フォーム用問合せは、Code1Fieldが同じ複数のレコードを編集するだめ、
-			編集フォームを「複数レコードを編集」に設定し、編集対象にMultiTestTableを指定します。
-			また編集データを限定するためのキーフィールドをチェックします。
-			この場合code1をチェックします。
+			次の画面でDaoとページクラスを作成します。
+			ページの動作に「条件入力 → 一覧表示 → 複数レコード編集」を指定し、
+			一覧取得用問合せに先に作成したMultiTestCode1Queryを指定します。
 		</p>
 		<figure>
-			<figcaption>Daoクラスの作成</figcaption>
-			<img src="mdao.png" style="width:50%; height:50%;"/>
+			<figcaption>複数レコード編集のページクラスの作成</figcaption>
+			<img src="genmpage1.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
-			「ページJavaクラス作成」を使用して、このDaoを使用するするページクラスを作成します。
+			編集対象取得問合せにMultiTestTableを指定します。
+			このテーブルのCode1Fieldが同じレコードを編集するだめ、
+			「フィールド設定」ボタンを押下して、編集対象を特定するキーにcode1を指定します。
 		</p>
 		<figure>
 			<figcaption>Pageクラスの作成</figcaption>
-			<img src="mpage.png" style="width:50%; height:50%;"/>
+			<img src="genmpage2.png" style="width:50%; height:50%;"/>
 		</figure>
 		<p>
 			ページのJavaクラスをデプロイした後、「Webリソース作成」を使用して、このページクラスからHTMLを作成してください。
@@ -343,34 +332,32 @@ group by
 		&lt;div id=&quot;mainDiv&quot;&gt;
 			&lt;form id=&quot;queryForm&quot;&gt;
 				&lt;div class=&quot;formHeader&quot;&gt;&#26908;&#32034;&#26465;&#20214;&lt;/div&gt;
-				&lt;table class=&quot;responsive&quot;&gt;
-					&lt;tbody&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#12486;&#12461;&#12473;&#12488;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#25968;&#20516;(from)&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumericFrom&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#25968;&#20516;(to)&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumericTo&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#26085;&#20184;(from)&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDateFrom&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#26085;&#20184;(to)&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDateTo&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&lt;/th&gt;
-							&lt;td&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-					&lt;/tbody&gt;
-				&lt;/table&gt;
+				&lt;div class=&quot;gridLayout&quot;&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleText&quot;&gt;&#25991;&#23383;&#21015;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&#25968;&#23383;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;div class=&quot;multiField&quot;&gt;
+							&lt;input type=&quot;text&quot; id=&quot;sampleNumericFrom&quot; class=&quot;rangeField&quot; /&gt;
+							&#65374;
+							&lt;input type=&quot;text&quot; id=&quot;sampleNumericTo&quot; class=&quot;rangeField&quot;/&gt;
+						&lt;/div&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&#26085;&#20184;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;div class=&quot;multiField&quot;&gt;
+							&lt;input type=&quot;text&quot; id=&quot;sampleDateFrom&quot; class=&quot;dateRangeField&quot; /&gt;
+							&#65374;
+							&lt;input type=&quot;text&quot; id=&quot;sampleDateTo&quot; class=&quot;dateRangeField&quot;/&gt;
+						&lt;/div&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleSelect&quot;&gt;&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
 				&lt;input type=&quot;submit&quot; id=&quot;queryButton&quot; class=&quot;largeButton&quot; value=&quot;&#26908;&#32034;&quot;&gt;
 				&lt;input type=&quot;button&quot; id=&quot;exportButton&quot; class=&quot;largeButton&quot; value=&quot;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&quot;&gt;
 				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; class=&quot;largeButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;&gt;
@@ -378,11 +365,9 @@ group by
 			&lt;/form&gt;
 			&lt;form id=&quot;queryResultForm&quot;&gt;
 				&lt;div class=&quot;formHeader&quot;&gt;&#26908;&#32034;&#32080;&#26524;&lt;/div&gt;
-				&lt;table class=&quot;responsive&quot;&gt;
-					&lt;tbody&gt;
-					&lt;/tbody&gt;
-				&lt;/table&gt;
-				&lt;div class=&quot;hScrollDiv&quot;&gt;
+				&lt;div class=&quot;gridLayout&quot;&gt;
+				&lt;/div&gt;
+				&lt;div&gt;
 					&lt;table id=&quot;queryResult&quot;&gt;
 						&lt;thead&gt;
 							&lt;tr&gt;
@@ -390,10 +375,10 @@ group by
 									No.
 								&lt;/th&gt;
 								&lt;th&gt;
-									&#12486;&#12461;&#12473;&#12488;
+									&#25991;&#23383;&#21015;
 								&lt;/th&gt;
 								&lt;th&gt;
-									&#25968;&#20516;
+									&#25968;&#23383;
 								&lt;/th&gt;
 								&lt;th&gt;
 									&#26085;&#20184;
@@ -416,19 +401,19 @@ group by
 									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateUserId&quot; /&gt;
 									&lt;input type=&quot;hidden&quot; id=&quot;queryResult[0].updateTimestamp&quot; /&gt;
 								&lt;/td&gt;
-								&lt;td&gt;
+								&lt;td style=&quot;width: 300px;&quot;&gt;
 									&lt;a id=&quot;queryResult[0].updateButton&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;span id=&quot;queryResult[0].sampleText&quot;&gt;&lt;/span&gt;&lt;/a&gt;
 								&lt;/td&gt;
-								&lt;td&gt;
+								&lt;td style=&quot;width: 100px;&quot;&gt;
 									&lt;span id=&quot;queryResult[0].sampleNumeric&quot;&gt;&lt;/span&gt;
 								&lt;/td&gt;
-								&lt;td&gt;
+								&lt;td style=&quot;width: 110px;&quot;&gt;
 									&lt;span id=&quot;queryResult[0].sampleDate&quot;&gt;&lt;/span&gt;
 								&lt;/td&gt;
-								&lt;td&gt;
+								&lt;td style=&quot;width: 126px;&quot;&gt;
 									&lt;span id=&quot;queryResult[0].sampleSelect&quot;&gt;&lt;/span&gt;
 								&lt;/td&gt;
-								&lt;td&gt;
+								&lt;td style=&quot;width: 164px;&quot;&gt;
 									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].viewButton&quot; value=&quot;&#34920;&#31034;&quot;&gt;
 									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].referButton&quot; value=&quot;&#21442;&#29031;&#30331;&#37682;&quot;&gt;
 									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].deleteButton&quot; value=&quot;&#21066;&#38500;&quot;&gt;
@@ -446,27 +431,25 @@ group by
 				&lt;input type=&quot;hidden&quot; id=&quot;createTimestamp&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;updateUserId&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;updateTimestamp&quot; /&gt;
-				&lt;table class=&quot;responsive&quot;&gt;
-					&lt;tbody&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#12486;&#12461;&#12473;&#12488;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#25968;&#20516;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#26085;&#20184;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&lt;/th&gt;
-							&lt;td&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-					&lt;/tbody&gt;
-				&lt;/table&gt;
-				&lt;div class=&quot;hScrollDiv&quot;&gt;
+				&lt;div class=&quot;gridLayout&quot;&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleText&quot;&gt;&#25991;&#23383;&#21015;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleNumeric&quot;&gt;&#25968;&#23383;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleDate&quot;&gt;&#26085;&#20184;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;div class=&quot;multiField&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleSelect&quot;&gt;&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+				&lt;div&gt;
 					&lt;table id=&quot;joinTestList&quot; class=&quot;editableTable&quot;&gt;
 						&lt;thead&gt;
 							&lt;tr&gt;
@@ -584,27 +567,25 @@ group by
 			&lt;input type=&quot;hidden&quot; id=&quot;createTimestamp&quot; /&gt;
 			&lt;input type=&quot;hidden&quot; id=&quot;updateUserId&quot; /&gt;
 			&lt;input type=&quot;hidden&quot; id=&quot;updateTimestamp&quot; /&gt;
-			&lt;table class=&quot;responsive&quot;&gt;
-				&lt;tbody&gt;
-					&lt;tr&gt;
-						&lt;th&gt;&#12486;&#12461;&#12473;&#12488;&lt;/th&gt;
-						&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/td&gt;
-					&lt;/tr&gt;
-					&lt;tr&gt;
-						&lt;th&gt;&#25968;&#20516;&lt;/th&gt;
-						&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/td&gt;
-					&lt;/tr&gt;
-					&lt;tr&gt;
-						&lt;th&gt;&#26085;&#20184;&lt;/th&gt;
-						&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/td&gt;
-					&lt;/tr&gt;
-					&lt;tr&gt;
-						&lt;th&gt;&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&lt;/th&gt;
-						&lt;td&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/td&gt;
-					&lt;/tr&gt;
-				&lt;/tbody&gt;
-			&lt;/table&gt;
-			&lt;div class=&quot;hScrollDiv&quot;&gt;
+			&lt;div class=&quot;gridLayout&quot;&gt;
+				&lt;div class=&quot;fieldDiv&quot;&gt;
+					&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleText&quot;&gt;&#25991;&#23383;&#21015;&lt;/label&gt;&lt;/div&gt;
+					&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/div&gt;
+				&lt;/div&gt;
+				&lt;div class=&quot;fieldDiv&quot;&gt;
+					&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleNumeric&quot;&gt;&#25968;&#23383;&lt;/label&gt;&lt;/div&gt;
+					&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/div&gt;
+				&lt;/div&gt;
+				&lt;div class=&quot;fieldDiv&quot;&gt;
+					&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleDate&quot;&gt;&#26085;&#20184;&lt;/label&gt;&lt;/div&gt;
+					&lt;div class=&quot;field&quot;&gt;&lt;div class=&quot;multiField&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+				&lt;/div&gt;
+				&lt;div class=&quot;fieldDiv&quot;&gt;
+					&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleSelect&quot;&gt;&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&lt;/label&gt;&lt;/div&gt;
+					&lt;div class=&quot;field&quot;&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+			&lt;div&gt;
 				&lt;table id=&quot;joinTestList&quot; class=&quot;editableTable&quot;&gt;
 					&lt;thead&gt;
 						&lt;tr&gt;

@@ -16,7 +16,7 @@
 			dataforms2.jarではWebページを構成する部品クラス(WebComponentクラス)が定義されています。
 			WebComponentのサブクラスには、Page,Form,HtmlTable,Field,FieldValidator等が存在しています。
 			このWebComponentのクラス階層はJavaとJavascriptで全く同じ構造になっており、
-			Javaのクラスにはサーバの動作が、Javascriptのクラスにはブラウザの動作が記述され、
+			Javaのクラスにはサーバの動作が、Javascriptのクラスにはブラウザ側の動作が記述され、
 			JavascriptとJavaの同名のクラスがHTTPで連携して動作する構造になっています。
 			各クラスの機能は<a href="../javadoc/index.html" target="_blank">Javadoc</a>,<a href="../jsdoc/index.html" target="_blank">Jsdoc</a>を参照してください。
 		</p>
@@ -191,16 +191,16 @@ import sample.dao.SampleDao;
 
 
 /**
- * &#21839;&#12356;&#21512;&#12431;&#12379;&#12501;&#12457;&#12540;&#12512;&#12463;&#12521;&#12473;&#12290;
+ * &#12469;&#12531;&#12503;&#12523;&#12506;&#12540;&#12472;&#29992;&#21839;&#21512;&#12379;&#12501;&#12457;&#12540;&#12512;&#12463;&#12521;&#12473;&#12290;
  */
 public class SampleQueryForm extends QueryForm {
 	/**
 	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
 	 */
 	public SampleQueryForm() {
-		this.addField(new SampleTextField(SampleTable.Entity.ID_SAMPLE_TEXT)).setMatchType(MatchType.FULL).setComment(&quot;&#12486;&#12461;&#12473;&#12488;&quot;);
-		this.addField(new SampleNumericField(SampleTable.Entity.ID_SAMPLE_NUMERIC + &quot;From&quot;)).setMatchType(MatchType.RANGE_FROM).setComment(&quot;&#25968;&#20516;(from)&quot;);
-		this.addField(new SampleNumericField(SampleTable.Entity.ID_SAMPLE_NUMERIC + &quot;To&quot;)).setMatchType(MatchType.RANGE_TO).setComment(&quot;&#25968;&#20516;(to)&quot;);
+		this.addField(new SampleTextField(SampleTable.Entity.ID_SAMPLE_TEXT)).setMatchType(<b>MatchType.PART</b>).setComment(&quot;&#25991;&#23383;&#21015;&quot;);
+		this.addField(new SampleNumericField(SampleTable.Entity.ID_SAMPLE_NUMERIC + &quot;From&quot;)).setMatchType(MatchType.RANGE_FROM).setComment(&quot;&#25968;&#23383;(from)&quot;);
+		this.addField(new SampleNumericField(SampleTable.Entity.ID_SAMPLE_NUMERIC + &quot;To&quot;)).setMatchType(MatchType.RANGE_TO).setComment(&quot;&#25968;&#23383;(to)&quot;);
 		this.addField(new SampleDateField(SampleTable.Entity.ID_SAMPLE_DATE + &quot;From&quot;)).setMatchType(MatchType.RANGE_FROM).setComment(&quot;&#26085;&#20184;(from)&quot;);
 		this.addField(new SampleDateField(SampleTable.Entity.ID_SAMPLE_DATE + &quot;To&quot;)).setMatchType(MatchType.RANGE_TO).setComment(&quot;&#26085;&#20184;(to)&quot;);
 
@@ -221,56 +221,10 @@ public class SampleQueryForm extends QueryForm {
 			複数のテーブルをjoinする機能をサポートしています。
 		</p>
 		<p>
-			フィールド"sampleText"は、setMatchType(MatchType.FULL)と設定されています。
-			これは、"sampleText"フィールドを「完全一致で検索する」という設定です。
-			これをsetMatchType(MatchType.PART)に変更すれば、部分一致で検索されるようになります。
+			フィールド"sampleText"は、setMatchType(MatchType.PART)と設定されています。
+			これは、"sampleText"フィールドを「部分一致で検索する」という設定です。
+			これをsetMatchType(MatchType.FULL)に変更すれば、完全一致で検索されるようになります。
 		</p>
-
-
-		<div class="filecaption">"sampleText"の検索方法を変更</div>
-		<div class="wrappre">
-			<pre>
-package sample.page;
-
-import dataforms.controller.QueryForm;
-import dataforms.field.base.Field.MatchType;
-import sample.field.SampleDateField;
-import java.util.List;
-import dataforms.field.base.FieldList;
-import sample.field.SampleTextField;
-import sample.field.SampleNumericField;
-import java.util.Map;
-import sample.dao.SampleTable;
-import dataforms.report.ExportDataFile;
-
-import sample.dao.SampleDao;
-
-
-/**
- * &#21839;&#12356;&#21512;&#12431;&#12379;&#12501;&#12457;&#12540;&#12512;&#12463;&#12521;&#12473;&#12290;
- */
-public class SampleQueryForm extends QueryForm {
-	/**
-	 * &#12467;&#12531;&#12473;&#12488;&#12521;&#12463;&#12479;&#12290;
-	 */
-	public SampleQueryForm() {
-		this.addField(new SampleTextField(SampleTable.Entity.ID_SAMPLE_TEXT)).setMatchType(MatchType.<b>PART</b>).setComment(&quot;&#12486;&#12461;&#12473;&#12488;&quot;);
-		this.addField(new SampleNumericField(SampleTable.Entity.ID_SAMPLE_NUMERIC + &quot;From&quot;)).setMatchType(MatchType.RANGE_FROM).setComment(&quot;&#25968;&#20516;(from)&quot;);
-		this.addField(new SampleNumericField(SampleTable.Entity.ID_SAMPLE_NUMERIC + &quot;To&quot;)).setMatchType(MatchType.RANGE_TO).setComment(&quot;&#25968;&#20516;(to)&quot;);
-		this.addField(new SampleDateField(SampleTable.Entity.ID_SAMPLE_DATE + &quot;From&quot;)).setMatchType(MatchType.RANGE_FROM).setComment(&quot;&#26085;&#20184;(from)&quot;);
-		this.addField(new SampleDateField(SampleTable.Entity.ID_SAMPLE_DATE + &quot;To&quot;)).setMatchType(MatchType.RANGE_TO).setComment(&quot;&#26085;&#20184;(to)&quot;);
-
-	}
-
-
-	・
-	・
-	・
-
-}
-			</pre>
-		</div>
-
 		<h3>検索結果のカラムソートの設定</h3>
 		<p>
 			SampleQueryResultForm.javaは、以下のように生成されています。
@@ -806,37 +760,39 @@ public class SampleEditForm extends EditForm {
 		<div class="wrappre">
 			<pre>
 
-			&lt;form id=&quot;editForm&quot;&gt;
-				&lt;div class=&quot;formHeader&quot;&gt;&lt;span id=&quot;editFormTitle&quot;&gt;&lt;/span&gt;&lt;/div&gt;
-				&lt;input type=&quot;hidden&quot; id=&quot;saveMode&quot; /&gt;
-				&lt;input type=&quot;hidden&quot; id=&quot;sampleId&quot; /&gt;
-				&lt;input type=&quot;hidden&quot; id=&quot;createUserId&quot; /&gt;
-				&lt;input type=&quot;hidden&quot; id=&quot;createTimestamp&quot; /&gt;
-				&lt;input type=&quot;hidden&quot; id=&quot;updateUserId&quot; /&gt;
-				&lt;input type=&quot;hidden&quot; id=&quot;updateTimestamp&quot; /&gt;
-				&lt;table class=&quot;responsive&quot;&gt;
-					&lt;tbody&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#12486;&#12461;&#12473;&#12488;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#25968;&#20516;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#26085;&#20184;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-					&lt;/tbody&gt;
-				&lt;/table&gt;
-				&lt;input type=&quot;button&quot; id=&quot;confirmButton&quot; class=&quot;largeButton&quot; value=&quot;&#30906;&#35469;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;saveButton&quot; class=&quot;largeButton&quot; value=&quot;&#30331;&#37682;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; class=&quot;largeButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;deleteButton&quot; class=&quot;largeButton&quot; value=&quot;&#21066;&#38500;&quot;/&gt;
-				&lt;input type=&quot;button&quot; id=&quot;backButton&quot; class=&quot;largeButton&quot; value=&quot;&#25147;&#12427;&quot;/&gt;
-				<b>&lt;input type=&quot;button&quot; id=&quot;printButton&quot; class=&quot;largeButton&quot; value=&quot;&#21360;&#21047;&quot;/&gt;</b>
-			&lt;/form&gt;
+	&lt;form id=&quot;editForm&quot;&gt;
+		&lt;div class=&quot;formHeader&quot;&gt;&lt;span id=&quot;editFormTitle&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+		&lt;input type=&quot;hidden&quot; id=&quot;saveMode&quot; /&gt;
+		&lt;input type=&quot;hidden&quot; id=&quot;sampleId&quot; /&gt;
+		&lt;input type=&quot;hidden&quot; id=&quot;createUserId&quot; /&gt;
+		&lt;input type=&quot;hidden&quot; id=&quot;createTimestamp&quot; /&gt;
+		&lt;input type=&quot;hidden&quot; id=&quot;updateUserId&quot; /&gt;
+		&lt;input type=&quot;hidden&quot; id=&quot;updateTimestamp&quot; /&gt;
+		&lt;div class=&quot;gridLayout&quot;&gt;
+			&lt;div class=&quot;fieldDiv&quot;&gt;
+				&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleText&quot;&gt;&#25991;&#23383;&#21015;&lt;/label&gt;&lt;/div&gt;
+				&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/div&gt;
+			&lt;/div&gt;
+			&lt;div class=&quot;fieldDiv&quot;&gt;
+				&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleNumeric&quot;&gt;&#25968;&#23383;&lt;/label&gt;&lt;/div&gt;
+				&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/div&gt;
+			&lt;/div&gt;
+			&lt;div class=&quot;fieldDiv&quot;&gt;
+				&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleDate&quot;&gt;&#26085;&#20184;&lt;/label&gt;&lt;/div&gt;
+				&lt;div class=&quot;field&quot;&gt;&lt;div class=&quot;multiField&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+			&lt;/div&gt;
+			&lt;div class=&quot;fieldDiv&quot;&gt;
+				&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleSelect&quot;&gt;&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&lt;/label&gt;&lt;/div&gt;
+				&lt;div class=&quot;field&quot;&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;input type=&quot;button&quot; id=&quot;confirmButton&quot; class=&quot;largeButton&quot; value=&quot;&#30906;&#35469;&quot;/&gt;
+		&lt;input type=&quot;button&quot; id=&quot;saveButton&quot; class=&quot;largeButton&quot; value=&quot;&#30331;&#37682;&quot;/&gt;
+		&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; class=&quot;largeButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;/&gt;
+		&lt;input type=&quot;button&quot; id=&quot;deleteButton&quot; class=&quot;largeButton&quot; value=&quot;&#21066;&#38500;&quot;/&gt;
+		&lt;input type=&quot;button&quot; id=&quot;backButton&quot; class=&quot;largeButton&quot; value=&quot;&#25147;&#12427;&quot;/&gt;
+		<b>&lt;input type=&quot;button&quot; id=&quot;printButton&quot; class=&quot;largeButton&quot; value=&quot;&#21360;&#21047;&quot;/&gt;</b>
+	&lt;/form&gt;
 
 			</pre>
 		</div>
@@ -880,7 +836,7 @@ class SampleEditForm extends EditForm {
 			</pre>
 		</div>
 		<p>
-			「印刷」ボタンを押下すると、以下のようにalertが表示されます。
+			「印刷」ボタンを押下すると、以下のようにalertダイアログが表示されます。
 		</p>
 		<figure>
 			<figcaption>印刷ボタンの動作</figcaption>
@@ -1204,19 +1160,15 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 	&lt;body&gt;
 		&lt;div id=&quot;mainDiv&quot;&gt;
 			&lt;form id=&quot;queryForm&quot;&gt;
-
-	・
-	・
-	・
-
+	&#12539;
+	&#12539;
+	&#12539;
 			&lt;/form&gt;
 			&lt;form id=&quot;queryResultForm&quot;&gt;
 				&lt;div class=&quot;formHeader&quot;&gt;&#26908;&#32034;&#32080;&#26524;&lt;/div&gt;
-				&lt;table class=&quot;responsive&quot;&gt;
-					&lt;tbody&gt;
-					&lt;/tbody&gt;
-				&lt;/table&gt;
-				&lt;div class=&quot;hScrollDiv&quot;&gt;
+				&lt;div class=&quot;gridLayout&quot;&gt;
+				&lt;/div&gt;
+				&lt;div&gt;
 					&lt;table id=&quot;queryResult&quot;&gt;
 						&lt;thead&gt;
 							&lt;tr&gt;
@@ -1224,17 +1176,19 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 									No.
 								&lt;/th&gt;
 								&lt;th&gt;
-									&#12486;&#12461;&#12473;&#12488;
+									&#25991;&#23383;&#21015;
 								&lt;/th&gt;
 								&lt;th&gt;
-									&#25968;&#20516;
+									&#25968;&#23383;
 								&lt;/th&gt;
 								&lt;th&gt;
 									&#26085;&#20184;
 								&lt;/th&gt;
-								<b>&lt;th&gt;</b>
-									<b>&#36984;&#25246;</b>
-								<b>&lt;/th&gt;</b>
+							<b>
+							&lt;th&gt;
+								&#36984;&#25246;
+							&lt;/th&gt;
+							</b>
 								&lt;th&gt;
 									&#25805;&#20316;
 								&lt;/th&gt;
@@ -1259,10 +1213,11 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 								&lt;td&gt;
 									&lt;span id=&quot;queryResult[0].sampleDate&quot;&gt;&lt;/span&gt;
 								&lt;/td&gt;
-
-								<b>&lt;td&gt;</b>
-									<b>&lt;span id=&quot;queryResult[0].sampleSelect&quot;&gt;&lt;/span&gt;</b>
-								<b>&lt;/td&gt;</b>
+							<b>
+							&lt;td&gt;
+								&lt;span id=&quot;queryResult[0].sampleSelect&quot;&gt;&lt;/span&gt;
+							&lt;/td&gt;
+							</b>
 								&lt;td&gt;
 									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].viewButton&quot; value=&quot;&#34920;&#31034;&quot;&gt;
 									&lt;input type=&quot;button&quot; id=&quot;queryResult[0].referButton&quot; value=&quot;&#21442;&#29031;&#30331;&#37682;&quot;&gt;
@@ -1281,26 +1236,26 @@ public class SampleSelectField extends EnumOptionSingleSelectField {
 				&lt;input type=&quot;hidden&quot; id=&quot;createTimestamp&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;updateUserId&quot; /&gt;
 				&lt;input type=&quot;hidden&quot; id=&quot;updateTimestamp&quot; /&gt;
-				&lt;table class=&quot;responsive&quot;&gt;
-					&lt;tbody&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#12486;&#12461;&#12473;&#12488;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#25968;&#20516;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						&lt;tr&gt;
-							&lt;th&gt;&#26085;&#20184;&lt;/th&gt;
-							&lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/td&gt;
-						&lt;/tr&gt;
-						<b>&lt;tr&gt;</b>
-							<b>&lt;th&gt;&#36984;&#25246;&lt;/th&gt;</b>
-							<b>&lt;td&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/td&gt;</b>
-						<b>&lt;/tr&gt;</b>
-					&lt;/tbody&gt;
-				&lt;/table&gt;
+				&lt;div class=&quot;gridLayout&quot;&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleText&quot;&gt;&#25991;&#23383;&#21015;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleText&quot; /&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleNumeric&quot;&gt;&#25968;&#23383;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleNumeric&quot; /&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleDate&quot;&gt;&#26085;&#20184;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;div class=&quot;multiField&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;sampleDate&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					<b>
+					&lt;div class=&quot;fieldDiv&quot;&gt;
+						&lt;div class=&quot;label&quot;&gt;&lt;label for=&quot;sampleSelect&quot;&gt;&#12469;&#12531;&#12503;&#12523;&#36984;&#25246;&#32930;&lt;/label&gt;&lt;/div&gt;
+						&lt;div class=&quot;field&quot;&gt;&lt;select id=&quot;sampleSelect&quot;&gt;&lt;/select&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					</b>
+				&lt;/div&gt;
 				&lt;input type=&quot;button&quot; id=&quot;confirmButton&quot; class=&quot;largeButton&quot; value=&quot;&#30906;&#35469;&quot;/&gt;
 				&lt;input type=&quot;button&quot; id=&quot;saveButton&quot; class=&quot;largeButton&quot; value=&quot;&#30331;&#37682;&quot;/&gt;
 				&lt;input type=&quot;button&quot; id=&quot;resetButton&quot; class=&quot;largeButton&quot; value=&quot;&#12522;&#12475;&#12483;&#12488;&quot;/&gt;

@@ -142,7 +142,7 @@ class DaoAndPageGeneratorEditForm extends EditForm {
 					this.find(".queryForm").prop("disabled", false);
 					if ("1" == listFormSelect) {
 						this.find(".listQueryCondition").show();
-					} else if ("1" == editFormSelect) {
+					} else if ("1" == editFormSelect || "2" == editFormSelect) {
 						this.find(".editQueryCondition").show();
 					} else {
 						this.find(".noNextForm").show();

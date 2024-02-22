@@ -40,15 +40,19 @@ class DocFramePage extends BasePage {
 		$(window).resize(() => {
 			this.onResize();
 		});
+		$(".sideMenuGroup").click(() => {
+			setTimeout(() => {
+				this.onResize();
+			}, 500);
+		});
 		this.onResize();
-
-
 		$('.dropdwn li').hover((ev) =>{
 			$("ul:not(:animated)", ev.currentTarget).slideDown();
 		}, (ev) => {
 			$("ul.dropdwn_menu", ev.currentTarget).slideUp();
 		});
 	}
+
 	/**
 	 * Windowサイズ変更の際のiframeのサイズを調整します。
 	 */
@@ -61,7 +65,25 @@ class DocFramePage extends BasePage {
 	 */
 	adjustDocFrameHeight() {
 		let docFrame = this.get("docFrame");
-		docFrame.height(docFrame.contents().find("body").height() + 72);
+		let footer = $("div.footerDiv");
+		let top = docFrame.position().top;
+		let bodyHeight = $("body").height();
+		let clientHeight = $(window).height();
+		logger.log("top=" + top + ",bodyHeight=" + bodyHeight + ",clientHeight=" + clientHeight);
+		let menuHeight = $("div.menuDiv").height();
+		let menuTop = $("div.menuDiv").position().top;
+		let mainHeight = $("div.mainDiv").height();
+		logger.log("main, menu, client = " + mainHeight + "," + menuHeight + "," + clientHeight);
+//		if (bodyHeight > clientHeight) {
+		if ((menuTop + menuHeight) > clientHeight) {
+			let h = bodyHeight - top - 20;
+			logger.log("b h=" + h);
+			docFrame.height(h);
+		} else {
+			let h = clientHeight - top - footer.outerHeight() - 20;
+			logger.log("a h=" + h);
+			docFrame.height(h);
+		}
 	}
 
 	/**

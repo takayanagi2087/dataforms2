@@ -14,14 +14,15 @@ import dataforms.dao.Table;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.PackageNameField;
-import dataforms.devtool.field.TableClassNameField;
 import dataforms.devtool.field.SqlField;
+import dataforms.devtool.field.TableClassNameField;
 import dataforms.devtool.field.UpdateSqlTypeField;
 import dataforms.devtool.field.UpdateSqlTypeField.UpdateSqlType;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.RecordIdField;
 import dataforms.response.JsonResponse;
 import dataforms.response.Response;
+import dataforms.util.MessagesUtil;
 import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
 import dataforms.validator.ValidationError;
@@ -177,8 +178,8 @@ public class UpdateSqlForm extends Form {
 		if (list.size() == 0) {
 			Dao dao = new Dao(this);
 			String sql = (String) param.get(UpdateSqlForm.ID_SQL);
-			dao.executeUpdate(sql, new HashMap<String, Object>());
-			resp = new JsonResponse(JsonResponse.SUCCESS, "");
+			long cnt = dao.executeUpdate(sql, new HashMap<String, Object>());
+			resp = new JsonResponse(JsonResponse.SUCCESS, MessagesUtil.getMessage(this.getPage(), "message.updatesuccessfull", Long.toString(cnt)));
 		} else {
 			resp = new JsonResponse(JsonResponse.INVALID, list);
 		}

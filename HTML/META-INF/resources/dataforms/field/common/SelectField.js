@@ -38,7 +38,7 @@ class SelectField extends Field {
 			if ("INPUT" == tag && (type.toLowerCase() == "radio" || type.toLowerCase() == "checkbox")) {
 				comp.click(() => {
 					let form = this.getParentForm();
-					form.onCalc($(this));
+					form.onCalc($(ev.currentTarget));
 				});
 			}
 		}

@@ -36,8 +36,28 @@ public class RecordIdField extends BigintField {
 		this.setComment(COMMENT);
 	}
 
+	/**
+	 * 検索条件に使用しない。
+	 */
 	@Override
 	public dataforms.field.base.Field.MatchType getDefaultMatchType() {
 		return MatchType.NONE;
+	}
+
+	/**
+	 * 検索結果フォームはhidden出力。
+	 */
+	@Override
+	public Display getQueryResultFormDefaultDisplay() {
+		return Display.INPUT_HIDDEN;
+	}
+
+
+	/**
+	 * 編集フォームはhidden出力。
+	 */
+	@Override
+	public Display getEditFormDefaultDisplay() {
+		return Display.INPUT_HIDDEN;
 	}
 }

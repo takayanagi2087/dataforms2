@@ -47,6 +47,7 @@ class WebResourceQueryResultForm extends QueryResultForm {
 					data.javascriptClass = javascriptClass;
 					let dlg = thisForm.parent.getComponent("webResourceDialog");
 					let f = dlg.getComponent("webResourceForm");
+					data.fieldLayout = f.getFieldValue("fieldLayout");
 					data.webSourcePath = f.getFieldValue("webSourcePath");
 					f.setFormData(data);
 					dlg.showModal({width: 850});

@@ -6,6 +6,7 @@ import dataforms.controller.EditForm;
 import dataforms.dao.Query;
 import dataforms.dao.Table;
 import dataforms.field.base.Field;
+import dataforms.field.base.Field.Display;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.FileField;
 import dataforms.htmltable.EditableHtmlTable;
@@ -20,6 +21,7 @@ public class MaterialMasterEditForm extends EditForm {
 	 */
 	public MaterialMasterEditForm() {
 		MaterialMasterDao dao = new MaterialMasterDao();
+		dao.getMainTable().getMemoField().setEditFormDisplay(Display.INPUT_READONLY);
 		if (dao.getSingleRecordQuery() != null) {
 			FieldList flist = dao.getSingleRecordQuery().getFieldList();
 			this.addFieldList(flist);

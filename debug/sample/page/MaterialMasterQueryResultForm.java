@@ -5,6 +5,7 @@ import java.util.Map;
 import dataforms.controller.Page;
 import dataforms.controller.QueryResultForm;
 import dataforms.dao.Table;
+import dataforms.field.base.Field.Display;
 import dataforms.field.base.FieldList;
 import dataforms.htmltable.PageScrollHtmlTable;
 import sample.dao.MaterialMasterDao;
@@ -24,7 +25,7 @@ public class MaterialMasterQueryResultForm extends QueryResultForm {
 		Table table = dao.getMainTable();
 		this.addPkFieldList(table.getPkFieldList());
 		PageScrollHtmlTable htmltable = new PageScrollHtmlTable(Page.ID_QUERY_RESULT, dao.getListFieldList());
-		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_CODE).setSortable(true);
+		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_CODE).setSortable(true).setQueryResultFormDisplay(Display.INPUT_READONLY);
 		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_NAME).setSortable(true);
 		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_MATERIAL_UNIT).setSortable(true);
 		htmltable.getFieldList().get(MaterialMasterTable.Entity.ID_UNIT_PRICE).setSortable(true);

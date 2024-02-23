@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="mainDiv">
+			<form id="queryForm">
+				<div class="formHeader">検索条件</div>
+				<div class="gridLayout">
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlChar">CHARフィールド</label></div>
+						<div class="field"><input type="text" id="sqlChar" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlVarchar">VarcharField</label></div>
+						<div class="field"><input type="text" id="sqlVarchar" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label">SMALLINTフィールド</div>
+						<div class="field"><div class="multiField">
+							<input type="text" id="sqlSmallintFrom" class="rangeField" />
+							～
+							<input type="text" id="sqlSmallintTo" class="rangeField"/>
+						</div></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label">INTEGERフィールド</div>
+						<div class="field"><div class="multiField">
+							<input type="text" id="sqlIntegerFrom" class="rangeField" />
+							～
+							<input type="text" id="sqlIntegerTo" class="rangeField"/>
+						</div></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label">DOUBLEフィールド</div>
+						<div class="field"><div class="multiField">
+							<input type="text" id="sqlDoubleFrom" class="rangeField" />
+							～
+							<input type="text" id="sqlDoubleTo" class="rangeField"/>
+						</div></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label">NUMERICフィールド</div>
+						<div class="field"><div class="multiField">
+							<input type="text" id="sqlNumericFrom" class="rangeField" />
+							～
+							<input type="text" id="sqlNumericTo" class="rangeField"/>
+						</div></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label">DATEフィールド</div>
+						<div class="field"><div class="multiField">
+							<input type="text" id="sqlDateFrom" class="dateRangeField" />
+							～
+							<input type="text" id="sqlDateTo" class="dateRangeField"/>
+						</div></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label">TIMEフィールド</div>
+						<div class="field"><div class="multiField">
+							<input type="text" id="sqlTimeFrom" class="rangeField" />
+							～
+							<input type="text" id="sqlTimeTo" class="rangeField"/>
+						</div></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label">TIMESTAMPフィールド</div>
+						<div class="field"><div class="multiField">
+							<input type="text" id="sqlTimestampFrom" class="rangeField" />
+							～
+							<input type="text" id="sqlTimestampTo" class="rangeField"/>
+						</div></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlClob">CLOBフィールド</label></div>
+						<div class="field"><textarea id="sqlClob" rows="20" cols="80"></textarea></div>
+					</div>
+				</div>
+				<input type="submit" id="queryButton" class="largeButton" value="検索">
+				<input type="button" id="exportButton" class="largeButton" value="エクスポート">
+				<input type="button" id="resetButton" class="largeButton" value="リセット">&nbsp;
+				<input type="button" id="newButton" class="largeButton" value="新規登録">
+			</form>
+			<form id="queryResultForm">
+				<div class="formHeader">検索結果</div>
+				<div class="gridLayout">
+				</div>
+				<div>
+					<table id="queryResult">
+						<thead>
+							<tr>
+								<th>
+									No.
+								</th>
+								<th>
+									CHARフィールド
+								</th>
+								<th>
+									VarcharField
+								</th>
+								<th>
+									SMALLINTフィールド
+								</th>
+								<th>
+									INTEGERフィールド
+								</th>
+								<th>
+									DOUBLEフィールド
+								</th>
+								<th>
+									NUMERICフィールド
+								</th>
+								<th>
+									DATEフィールド
+								</th>
+								<th>
+									TIMEフィールド
+								</th>
+								<th>
+									TIMESTAMPフィールド
+								</th>
+								<th>
+									CLOBフィールド
+								</th>
+								<th>
+									操作
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<span id="queryResult[0].rowNo"></span>
+									<input type="hidden" id="queryResult[0].sqlTypeId" />
+									<input type="hidden" id="queryResult[0].createUserId" />
+									<input type="hidden" id="queryResult[0].createTimestamp" />
+									<input type="hidden" id="queryResult[0].updateUserId" />
+									<input type="hidden" id="queryResult[0].updateTimestamp" />
+								</td>
+								<td>
+									<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].sqlChar"></span></a>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlVarchar"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlSmallint"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlInteger"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlDouble"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlNumeric"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlDate"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlTime"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlTimestamp"></span>
+								</td>
+								<td>
+									<span id="queryResult[0].sqlClob"></span>
+								</td>
+								<td>
+									<input type="button" id="queryResult[0].viewButton" value="表示">
+									<input type="button" id="queryResult[0].referButton" value="参照登録">
+									<input type="button" id="queryResult[0].deleteButton" value="削除">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</form>
+			<form id="editForm">
+				<div class="formHeader"><span id="editFormTitle"></span></div>
+				<input type="hidden" id="saveMode" />
+				<input type="hidden" id="sqlTypeId" />
+				<input type="hidden" id="createUserId" />
+				<input type="hidden" id="createTimestamp" />
+				<input type="hidden" id="updateUserId" />
+				<input type="hidden" id="updateTimestamp" />
+				<div class="gridLayout">
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlChar">CHARフィールド</label></div>
+						<div class="field"><input type="text" id="sqlChar" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlVarchar">VarcharField</label></div>
+						<div class="field"><input type="text" id="sqlVarchar" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlSmallint">SMALLINTフィールド</label></div>
+						<div class="field"><input type="text" id="sqlSmallint" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlInteger">INTEGERフィールド</label></div>
+						<div class="field"><input type="text" id="sqlInteger" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlDouble">DOUBLEフィールド</label></div>
+						<div class="field"><input type="text" id="sqlDouble" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlNumeric">NUMERICフィールド</label></div>
+						<div class="field"><input type="text" id="sqlNumeric" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlDate">DATEフィールド</label></div>
+						<div class="field"><div class="multiField"><input type="text" id="sqlDate" /></div></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlTime">TIMEフィールド</label></div>
+						<div class="field"><input type="text" id="sqlTime" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlTimestamp">TIMESTAMPフィールド</label></div>
+						<div class="field"><input type="text" id="sqlTimestamp" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="sqlClob">CLOBフィールド</label></div>
+						<div class="field"><textarea id="sqlClob" rows="20" cols="80"></textarea></div>
+					</div>
+				</div>
+				<div>
+					<table id="sqlType2List" class="editableTable">
+						<thead>
+							<tr>
+								<th colspan="2" nowrap>
+									
+								</th>
+								<th nowrap>
+									No.
+								</th>
+								<th>
+									CHARフィールド
+								</th>
+								<th>
+									VarcharField
+								</th>
+								<th>
+									SMALLINTフィールド
+								</th>
+								<th>
+									INTEGERフィールド
+								</th>
+								<th>
+									DOUBLEフィールド
+								</th>
+								<th>
+									NUMERICフィールド
+								</th>
+								<th>
+									DATEフィールド
+								</th>
+								<th>
+									TIMEフィールド
+								</th>
+								<th>
+									TIMESTAMPフィールド
+								</th>
+								<th>
+									CLOBフィールド
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="buttonColumn">
+									<input type="button" id="sqlType2List[0].addButton" value="+"/>
+								</td>
+								<td class="buttonColumn">
+									<input type="button" id="sqlType2List[0].deleteButton" value="-"/>
+								</td>
+								<td style="text-align: right;" class="rowno">
+									<span id="sqlType2List[0].no"></span>
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlChar2" />
+									<input type="hidden" id="sqlType2List[0].sqlType2Id" />
+									<input type="hidden" id="sqlType2List[0].sqlTypeId" />
+									<input type="hidden" id="sqlType2List[0].createUserId" />
+									<input type="hidden" id="sqlType2List[0].createTimestamp" />
+									<input type="hidden" id="sqlType2List[0].updateUserId" />
+									<input type="hidden" id="sqlType2List[0].updateTimestamp" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlVarchar2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlSmallint2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlInteger2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlDouble2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlNumeric2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlDate2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlTime2" />
+								</td>
+								<td>
+									<input type="text" id="sqlType2List[0].sqlTimestamp2" />
+								</td>
+								<td>
+									<textarea id="sqlType2List[0].sqlClob2" rows="20" cols="80"></textarea>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th class="buttonColumn">
+									<input type="button" id="sqlType2List.addButton" value="+"/>
+								</th>
+								<th colspan="12">
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
+				<input type="button" id="saveButton" class="largeButton" value="登録"/>
+				<input type="button" id="resetButton" class="largeButton" value="リセット"/>
+				<input type="button" id="deleteButton" class="largeButton" value="削除"/>
+				<input type="button" id="backButton" class="largeButton" value="戻る"/>
+			</form>
+
+		</div>
+	</body>
+</html>

@@ -74,7 +74,7 @@ public class SqlParser {
 		logger.debug(() -> "sql=" + sql);
 		this.paramnames = new ArrayList<String>();
 		StringBuilder sb = new StringBuilder();
-		Pattern p = Pattern.compile("\\:\\w+(\\[[0-9]+\\](\\.\\w+){0,1})?");
+		Pattern p = Pattern.compile("\\:[A-Za-z_]\\w*(\\[[0-9]+\\](\\.\\w+){0,1})?");
 		Matcher m = p.matcher(sql);
 		int idx = 0;
 		while (m.find()) {

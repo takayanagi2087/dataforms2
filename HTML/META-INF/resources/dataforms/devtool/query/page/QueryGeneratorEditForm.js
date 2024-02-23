@@ -24,7 +24,31 @@ class QueryGeneratorEditForm extends EditForm {
 			let ck = $(ev.currentTarget).prop("checked");
 			selectFieldList.checkAll(ck);
 		});
+		this.get("notUpdateConstractor").click((ev) => {
+			this.lockStructer(ev);
+		});
 	}
+
+	/**
+	 * テーブル構造を元に戻す。
+	 * @param ev イベント情報。
+	 */
+	async lockStructer(ev) {
+		let ck = $(ev.currentTarget).prop("checked");
+		if (ck) {
+			if (await currentPage.confirm(null, MessagesUtil.getMessage("message.confirmfieldreset"))) {
+				this.formData.notUpdateConstractor = "1";
+				let notGenerateEntity = this.get("notGenerateEntity").prop("checked");
+				if (notGenerateEntity) {
+					this.formData.notGenerateEntity = "1";
+				} else {
+					this.formData.notGenerateEntity = "0";
+				}
+				this.setFormData(this.formData);
+			}
+		}
+	}
+
 
 	/**
 	 * パッケージ名から機能を設定します。
@@ -40,11 +64,30 @@ class QueryGeneratorEditForm extends EditForm {
 	}
 
 	/**
+	 * 結合条件を取得する。
+	 */
+	async getJoinCondition() {
+		let r = await this.submit("getJoinCondition");
+		currentPage.resetErrorStatus();
+		if (r.status == JsonResponse.SUCCESS) {
+			logger.log("field list=" + JSON.stringify(r.result));
+			this.setJoinCondition(r.result);
+		}
+		return r;
+	}
+
+	/**
 	 * フォームに対してデータを設定します。
 	 * @param {Object} data 設定するデータ。
 	 */
 	async setFormData(data) {
 		try {
+			logger.log("this.saveMode=" + this.saveMode);
+			if (this.saveMode == "new") {
+				this.get("notUpdateConstractor").prop("disabled", true);
+			} else {
+				this.get("notUpdateConstractor").prop("disabled", false);
+			}
 			super.setFormData(data);
 			this.setFunctionSelect("functionSelect", data.packageName);
 			let joinTableList = this.getComponent("joinTableList");
@@ -54,16 +97,46 @@ class QueryGeneratorEditForm extends EditForm {
 				this.setFunctionSelect(id, pkg);
 			}
 			this.setFunctionSelect("mainTableFunctionSelect", data.mainTablePackageName);
-			if (data.joinTableList != null || data.leftJoinTableList != null || data.rightJoinTableList != null) {
-				let r = await this.submit("getJoinCondition");
-				currentPage.resetErrorStatus();
-				if (r.status == JsonResponse.SUCCESS) {
-					logger.log("field list=" + JSON.stringify(r.result));
-					this.setJoinCondition(r.result);
-				}
+			if (data.joinTableList != null) {
+				logger.log("data=", data);
+				await this.getJoinCondition();
 			}
 		} catch (e) {
 			currentPage.reportError(e);
+		}
+	}
+
+	/**
+	 * 選択フラグの取得。
+	 */
+	getSelFlag() {
+		let ret = {};
+		let selectFieldList = this.getComponent("selectFieldList");
+		for (let i = 0; i < selectFieldList.getRowCount(); i++) {
+			let sel = selectFieldList.getRowField(i, "sel").getValue();
+			let fieldId = selectFieldList.getRowField(i, "fieldId").getValue();
+			let fieldClassName = selectFieldList.getRowField(i, "fieldClassName").getValue();
+			let tableClassName = selectFieldList.getRowField(i, "tableClassName").getValue();
+			let key = tableClassName + "," + fieldClassName + "," + fieldId;
+			ret[key] = sel;
+		}
+		return ret;
+	}
+
+	/**
+	 * 選択フラグの再設定。
+	 */
+	setSelFlag(selmap) {
+		let selectFieldList = this.getComponent("selectFieldList");
+		for (let i = 0; i < selectFieldList.getRowCount(); i++) {
+			let fieldId = selectFieldList.getRowField(i, "fieldId").getValue();
+			let fieldClassName = selectFieldList.getRowField(i, "fieldClassName").getValue();
+			let tableClassName = selectFieldList.getRowField(i, "tableClassName").getValue();
+			let key = tableClassName + "," + fieldClassName + "," + fieldId;
+			let v = selmap[key];
+			if (v != null) {
+				selectFieldList.getRowField(i, "sel").setValue(v);
+			}
 		}
 	}
 
@@ -72,6 +145,8 @@ class QueryGeneratorEditForm extends EditForm {
 	 */
 	async getFieldList() {
 		try {
+			let selmap = this.getSelFlag();
+			logger.log("selmap=", selmap);
 			let r = await this.submit("getFieldList");
 			currentPage.resetErrorStatus();
 			if (r.status == JsonResponse.SUCCESS) {
@@ -79,6 +154,7 @@ class QueryGeneratorEditForm extends EditForm {
 				logger.log("field list=" + JSON.stringify(r.result));
 				let ftbl = this.getComponent("selectFieldList");
 				ftbl.setTableData(r.result);
+				this.setSelFlag(selmap);
 				let cr = await this.submit("getJoinCondition");
 				currentPage.resetErrorStatus();
 				if (cr.status == JsonResponse.SUCCESS) {

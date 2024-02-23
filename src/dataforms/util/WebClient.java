@@ -57,7 +57,7 @@ public class WebClient {
 
 	/**
 	 * 送信するデータ形式。
-	 * application/x-www-form-urulencoded または application/json
+	 * application/x-www-form-urlencoded または application/json
 	 */
 	private String contentType = null;
 
@@ -156,7 +156,7 @@ public class WebClient {
 		}
 		if (p instanceof String) {
 			// 文字列の場合はqueryStringの形式。
-			this.setContentType("application/x-www-form-urulencoded");
+			this.setContentType("application/x-www-form-urlencoded");
 			return (String) p;
 		} else {
 			// 文字列以外はJSON形式でPOST

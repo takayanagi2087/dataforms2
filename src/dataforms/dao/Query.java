@@ -26,7 +26,7 @@ public class Query {
     /**
      * Logger.
      */
- //   private static Logger logger = LogManager.getLogger(Query.class);
+//    private static Logger logger = LogManager.getLogger(Query.class);
 
 	/**
 	 * フィールドリスト。
@@ -838,6 +838,22 @@ public class Query {
 	}
 
 	/**
+	 *
+	 * 特殊な条件式生成メソッドです。
+	 * <pre>
+	 * 問合せの際の条件式に特殊なものを使用する場合、このメソッドオーバーライドし条件式を作成してください、
+	 * 特殊な条件式を作成しない場合nullを返します。
+	 * </pre>
+	 *
+	 * @param f フィールド。
+	 * @param data 条件データ。
+	 * @return 基本的にnullを返します。
+	 */
+	public String getConditonExpression(final Field<?> f, final Map<String, Object> data) {
+		return null;
+	}
+
+	/**
 	 * order byフィールドのSQLを生成します。
 	 * @param field フィールドID。
 	 * @return order by フィールドのSQL。
@@ -1093,5 +1109,26 @@ public class Query {
 	 */
 	public List<UnionInfo> getUnionQueryList() {
 		return unionQueryList;
+	}
+
+	/**
+	 * 指定されたクラスのテーブルを取得します。
+	 * @param tblclass テーブルクラス。
+	 * @param alias テーブルの別名。
+	 * @return テーブルクラスのインスタンス。
+	 */
+	protected Table getTable(final Class<? extends Table> tblclass, final String alias) {
+		Table table = null;
+		if (tblclass.isAssignableFrom(this.mainTable.getClass()) && alias.equals(this.mainTable.getAlias())) {
+			table = this.mainTable;
+		} else {
+			for (JoinInfo info: this.joinInfoList) {
+				if (tblclass.isAssignableFrom(info.getJoinTable().getClass()) && alias.equals(info.getJoinTable().getAlias())) {
+					table = info.getJoinTable();
+					break;
+				}
+			}
+		}
+		return table;
 	}
 }

@@ -22,12 +22,12 @@ public class FunctionSelectField extends SingleSelectField<Long> {
 	/**
 	 * パッケージオプション。
 	 */
-	private String packageOption = "";
+	private String[] packageOption = {""};
 
 	/**
 	 * パッケージ名を展開するフィールドID。
 	 */
-	private String packageFieldId = "packageName";
+	private String[] packageFieldId = {"packageName"};
 
 	/**
 	 * コンストラクタ。
@@ -72,7 +72,7 @@ public class FunctionSelectField extends SingleSelectField<Long> {
 	 * パッケージオプションを取得します。
 	 * @return パッケージオプション。
 	 */
-	public String getPackageOption() {
+	public String[] getPackageOption() {
 		return packageOption;
 	}
 
@@ -81,7 +81,7 @@ public class FunctionSelectField extends SingleSelectField<Long> {
 	 * @param packageOption パッケージオプション。
 	 * @return 設定したフィールド。
 	 */
-	public Field<?> setPackageOption(final String packageOption) {
+	public Field<?> setPackageOption(final String... packageOption) {
 		this.packageOption = packageOption;
 		return this;
 	}
@@ -91,7 +91,7 @@ public class FunctionSelectField extends SingleSelectField<Long> {
 	 * パッケージ名を展開するフィールドIDを取得します。
 	 * @return パッケージ名を展開するフィールドID。
 	 */
-	public String getPackageFieldId() {
+	public String[] getPackageFieldId() {
 		return packageFieldId;
 	}
 
@@ -100,7 +100,7 @@ public class FunctionSelectField extends SingleSelectField<Long> {
 	 * @param packageFieldId パッケージ名を展開するフィールド。
 	 * @return 設定したフィールド。
 	 */
-	public FunctionSelectField setPackageFieldId(final String packageFieldId) {
+	public FunctionSelectField setPackageFieldId(final String... packageFieldId) {
 		this.packageFieldId = packageFieldId;
 		return this;
 	}

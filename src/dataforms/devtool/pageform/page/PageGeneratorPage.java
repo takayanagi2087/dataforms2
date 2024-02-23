@@ -13,7 +13,8 @@ public class PageGeneratorPage extends DeveloperPage {
 		this.addForm(new PageGeneratorQueryForm());
 		this.addForm(new PageGeneratorQueryResultForm());
 		this.addForm(new PageGeneratorEditForm());
+		this.setMenuItem(false);
 	}
-	
-	
+
+
 }

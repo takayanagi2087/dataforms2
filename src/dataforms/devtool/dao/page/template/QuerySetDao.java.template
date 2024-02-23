@@ -5,7 +5,7 @@ import dataforms.dao.QuerySetDao;
 ${importTables}
 
 /**
- * Daoクラスです。
+ * ${comment}です。
  *
  */
 public class ${daoClassName} extends QuerySetDao {

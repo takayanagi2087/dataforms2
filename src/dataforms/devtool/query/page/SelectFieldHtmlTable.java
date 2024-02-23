@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dataforms.dao.Query;
 import dataforms.dao.Table;
+import dataforms.devtool.field.FieldDisplaySelectField;
 import dataforms.devtool.field.FieldFullClassNameField;
+import dataforms.devtool.field.MatchTypeSelectField;
 import dataforms.devtool.field.QueryFieldIdField;
 import dataforms.devtool.field.SummerySelectField;
 import dataforms.devtool.field.TableFullClassNameField;
@@ -15,8 +18,10 @@ import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
 import dataforms.field.common.FlagField;
+import dataforms.field.common.RecordIdField;
 import dataforms.field.common.SortOrderField;
 import dataforms.htmltable.EditableHtmlTable;
+import dataforms.util.StringUtil;
 import dataforms.validator.RequiredValidator;
 
 /**
@@ -24,6 +29,7 @@ import dataforms.validator.RequiredValidator;
  *
  */
 public class SelectFieldHtmlTable extends EditableHtmlTable {
+
 	/**
 	 * 選択フラグ。
 	 */
@@ -45,9 +51,29 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	public static final String ID_FIELD_CLASS_NAME = "fieldClassName";
 
 	/**
+	 * 一覧フォームのフィールド表示設定。
+	 */
+	public static final String ID_LIST_FIELD_DISPLAY = "listFieldDisplay";
+
+	/**
+	 * 編集キー。
+	 */
+	public static final String ID_EDIT_KEY = "editKey";
+
+	/**
+	 * 編集フォームのフィールド表示設定。
+	 */
+	public static final String ID_EDIT_FIELD_DISPLAY = "editFieldDisplay";
+
+	/**
 	 * テーブルクラス名。
 	 */
 	public static final String ID_TABLE_CLASS_NAME = "tableClassName";
+
+	/**
+	 * マッチタイプ。
+	 */
+	public static final String ID_MATCH_TYPE = "matchType";
 
 	/**
 	 * フィールド別名。
@@ -88,6 +114,10 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			, new FieldFullClassNameField(ID_FIELD_CLASS_NAME).setReadonly(true)
 			, new TableFullClassNameField(ID_TABLE_FULL_CLASS_NAME).setReadonly(true)
 			, new TableOrSubQueryClassNameField(ID_TABLE_CLASS_NAME).setReadonly(true)
+			, new MatchTypeSelectField(ID_MATCH_TYPE)
+			, new FieldDisplaySelectField(ID_LIST_FIELD_DISPLAY)
+			, new FlagField(ID_EDIT_KEY)
+			, new FieldDisplaySelectField(ID_EDIT_FIELD_DISPLAY)
 			, new TextField(ID_TABLE_ALIAS ).setReadonly(true)
 			, new TextField(ID_COMMENT)
 		);
@@ -98,13 +128,75 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 	}
 
 	/**
+	 * 指定されたクラスのフィールドリストを取得します。
+	 * @param className QueryまたはTableのクラス名。
+	 * @return 主テーブルのインスタンス。
+	 * @throws Exception 例外。
+	 */
+	public static FieldList getFieldList(final String className) throws Exception {
+		FieldList fieldList = null;
+		if (!StringUtil.isBlank(className)) {
+			Class<?> qclass = Class.forName(className);
+			Object obj = qclass.getConstructor().newInstance();
+			if (obj instanceof Query) {
+				Query q = (Query) obj;
+				fieldList = q.getFieldList();
+			} else if (obj instanceof Table){
+				Table t = (Table) obj;
+				fieldList = t.getFieldList();
+			}
+		}
+		return fieldList;
+	}
+
+	/**
+	 * 一覧フォームのフィールド表示設定。
+	 * @param f フィールド。
+	 * @param idx フィールドインデックス。
+	 * @return フィールド表示情報。
+	 */
+	private static Field.Display getListFieldDisplay(final Field<?> f, final int idx) {
+		Field.Display ret = Field.Display.NONE;
+		if (idx == 0) {
+			if (f.isHidden()) {
+				ret = Field.Display.INPUT_HIDDEN;
+			} else {
+				ret = Field.Display.INPUT_READONLY;
+			}
+		} else 	if (f.isHidden()) {
+			ret = Field.Display.INPUT_HIDDEN;
+		} else {
+			ret = Field.Display.SPAN;
+		}
+		return ret;
+	}
+
+	/**
+	 * 編集フォームのフィールド表示設定。
+	 * @param f フィールド。
+	 * @return フィールド表示情報。
+	 */
+	private static Field.Display getEditFieldDisplay(final Field<?> f) {
+		Field.Display ret = Field.Display.NONE;
+		if (f.isHidden()) {
+			ret = Field.Display.INPUT_HIDDEN;
+		} else {
+			ret = Field.Display.INPUT;
+		}
+		return ret;
+	}
+
+
+	/**
 	 * fieldListに対応した表示データを作成します。
 	 * @param flist フィールドリスト。
 	 * @param alias 別名。
 	 * @return テーブルデータ。
 	 */
 	public static List<Map<String, Object>> getTableData(final FieldList flist, final String alias) {
+		boolean pk = false;
 		List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
+		int idx = 0;
 		for (Field<?> f: flist) {
 			Map<String, Object> ent = new HashMap<String, Object>();
 			Table table = f.getTable();
@@ -115,12 +207,28 @@ public class SelectFieldHtmlTable extends EditableHtmlTable {
 			ent.put(ID_FIELD_CLASS_NAME, f.getClass().getName());
 			ent.put(ID_TABLE_ALIAS, alias);
 			ent.put(ID_COMMENT, f.getComment());
+			ent.put(ID_MATCH_TYPE, f.getDefaultMatchType());
+			// 先頭のrecord idに編集キーを設定する。
+			if (pk == false && f instanceof RecordIdField) {
+				ent.put(ID_EDIT_KEY, "1");
+				pk = true;
+			} else {
+				ent.put(ID_EDIT_KEY, "0");
+			}
+			ent.put(ID_LIST_FIELD_DISPLAY, SelectFieldHtmlTable.getListFieldDisplay(f, idx++));
+			ent.put(ID_EDIT_FIELD_DISPLAY, SelectFieldHtmlTable.getEditFieldDisplay(f));
+
 			// ent.put(JoinHtmlTable.ID_TABLE_CLASS_NAME, table.getClass().getSimpleName());
 			ret.add(ent);
 		}
+		if (pk == false) {
+			// PKが無かった場合、先頭の項目を条件項目に設定する。
+			Map<String, Object> m = ret.get(0);
+			m.put(ID_LIST_FIELD_DISPLAY, Field.Display.INPUT_HIDDEN);
+			m.put(ID_EDIT_KEY, "1");
+		}
 		return ret;
 	}
-
 
 	/**
 	 *

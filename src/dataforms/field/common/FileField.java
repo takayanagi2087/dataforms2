@@ -337,6 +337,9 @@ public abstract class FileField<TYPE extends FileObject> extends Field<TYPE> {
 		return ret;
 	}
 
+	/**
+	 * 原作条件に使用しない。
+	 */
 	@Override
 	public dataforms.field.base.Field.MatchType getDefaultMatchType() {
 		return MatchType.NONE;

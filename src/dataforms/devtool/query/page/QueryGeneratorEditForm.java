@@ -21,6 +21,7 @@ import dataforms.dao.Table;
 import dataforms.dao.TableList;
 import dataforms.dao.sqlgen.SqlGenerator;
 import dataforms.devtool.base.page.DeveloperPage;
+import dataforms.devtool.entity.EntityGenerator;
 import dataforms.devtool.field.AliasNameField;
 import dataforms.devtool.field.FunctionSelectField;
 import dataforms.devtool.field.JavaSourcePathField;
@@ -29,7 +30,7 @@ import dataforms.devtool.field.OverwriteModeField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.QueryClassNameField;
 import dataforms.devtool.field.TableOrSubQueryClassNameField;
-import dataforms.devtool.util.FieldListUtil;
+import dataforms.devtool.javasrc.JavaSrc;
 import dataforms.field.base.Field;
 import dataforms.field.base.FieldList;
 import dataforms.field.base.TextField;
@@ -54,6 +55,16 @@ import net.arnx.jsonic.JSON;
  *
  */
 public class QueryGeneratorEditForm extends EditForm {
+
+	/**
+	 * コンストラクタを更新しない。
+	 */
+	private static final String ID_NOT_UPDATE_CONSTRACTOR = "notUpdateConstractor";
+
+	/**
+	 * Entityクラスを生成しない。
+	 */
+	private static final String ID_NOT_GENERATE_ENTITY = "notGenerateEntity";
 
 	/**
 	 * JAVAソースパスフィールドID。
@@ -163,6 +174,9 @@ public class QueryGeneratorEditForm extends EditForm {
 		SqlFieldHtmlTable sqlFieldList = new SqlFieldHtmlTable(ID_SQL_FIELD_LIST);
 		sqlFieldList.setCaption("SQLフィールドリスト");
 		this.addHtmlTable(sqlFieldList);
+
+		this.addField(new FlagField(ID_NOT_UPDATE_CONSTRACTOR));
+		this.addField(new FlagField(ID_NOT_GENERATE_ENTITY));
 	}
 
 	@Override
@@ -225,6 +239,22 @@ public class QueryGeneratorEditForm extends EditForm {
 		return q;
 	}
 
+	/**
+	 * Queryクラスの各種フラグを取得する。
+	 * @param q 問い合わせクラス。
+	 * @param ret フラグを設定するマップ。
+	 */
+	private void setFlags(final Query q, final Map<String, Object> ret) {
+		Class<?> cls = q.getClass();
+		String entityClassName = cls.getName() + "$Entity";
+		try {
+			Class.forName(entityClassName);
+			ret.put(ID_NOT_GENERATE_ENTITY, "0");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ret.put(ID_NOT_GENERATE_ENTITY, "1");
+		}
+	}
 
 	@Override
 	protected Map<String, Object> queryData(final Map<String, Object> data) throws Exception {
@@ -232,6 +262,10 @@ public class QueryGeneratorEditForm extends EditForm {
 		String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
 		Query q = this.getQueryInstance(packageName, queryClassName);
 		Map<String, Object> ret = new HashMap<String, Object>();
+		this.setFlags(q, ret);
+
+		logger.debug("flags=" + JSON.encode(ret));
+
 		ret.put(ID_JAVA_SOURCE_PATH, DeveloperPage.getJavaSourcePath());
 		ret.put(ID_PACKAGE_NAME, packageName);
 		ret.put(ID_QUERY_CLASS_NAME, queryClassName);
@@ -317,6 +351,8 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 		ret.put(ID_SELECT_FIELD_LIST, selflist);
 		ret.put(ID_SQL_FIELD_LIST, sflist);
+
+
 		return ret;
 	}
 
@@ -628,13 +664,15 @@ public class QueryGeneratorEditForm extends EditForm {
 	 */
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> queryJoinCondition(final Map<String, Object> data) throws Exception {
-		String packageName = (String) data.get(ID_PACKAGE_NAME);
-		String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
-		Query q = this.getQueryInstance(packageName, queryClassName);
 		Map<String, Object> ret = new HashMap<String, Object>();
-		List<Query.JoinInfo> list = this.getTableList(data);
 		List<Map<String, Object>> join = (List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST);
-		ret.put(ID_JOIN_TABLE_LIST, this.queryJoinCondition(list, this.getJoinTableList(join, "j"), q));
+		if (join != null && join.size() > 0) {
+			String packageName = (String) data.get(ID_PACKAGE_NAME);
+			String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
+			Query q = this.getQueryInstance(packageName, queryClassName);
+			List<Query.JoinInfo> list = this.getTableList(data);
+			ret.put(ID_JOIN_TABLE_LIST, this.queryJoinCondition(list, this.getJoinTableList(join, "j"), q));
+		}
 		return ret;
 	}
 
@@ -649,14 +687,9 @@ public class QueryGeneratorEditForm extends EditForm {
 		JsonResponse ret = null;
 		Map<String, Object> p = new HashMap<String, Object>();
 		p.putAll(param);
-		List<ValidationError> vlist = this.validate(p);
-		if (vlist.size() == 0) {
-			Map<String, Object> data = this.convertToServerData(param);
-			Map<String, Object> cond = this.queryJoinCondition(data);
-			ret = new JsonResponse(JsonResponse.SUCCESS, cond);
-		} else {
-			ret = new JsonResponse(JsonResponse.SUCCESS, new HashMap<String, Object>());
-		}
+		Map<String, Object> data = this.convertToServerData(param);
+		Map<String, Object> cond = this.queryJoinCondition(data);
+		ret = new JsonResponse(JsonResponse.SUCCESS, cond);
 		return ret;
 
 	}
@@ -731,10 +764,10 @@ public class QueryGeneratorEditForm extends EditForm {
 		for (Map<String, Object> m:list) {
 			String tableClassName = (String) m.get(JoinHtmlTable.ID_TABLE_CLASS_NAME);
 			String propName = (String) m.get(ID_TABLE_PROP);
-			sb.append("\t\tthis." + this.getTableVariableName(propName) + " = new " + tableClassName + "();\n");
+			sb.append("\t\t" + tableClassName + " " + this.getTableVariableName(propName) + " = new " + tableClassName + "();\n");
 			String aliasName = (String) m.get(ID_ALIAS_NAME);
 			if (!StringUtil.isBlank(aliasName)) {
-				sb.append("\t\tthis." + this.getTableVariableName(propName) + ".setAlias(\"" + aliasName + "\");\n");
+				sb.append("\t\t" + this.getTableVariableName(propName) + ".setAlias(\"" + aliasName + "\");\n");
 			}
 		}
 		return sb.toString();
@@ -745,20 +778,17 @@ public class QueryGeneratorEditForm extends EditForm {
 	 * @param packageName パッケージ名。
 	 * @param tableClassName テーブルクラス名。
 	 * @param propName プロパティ名。
+	 * @param alias 別名。
 	 * @return テーブルプロパティ設定ソース。
 	 * @throws Exception 例外。
 	 */
-	private String getTableProperty(final String packageName, final String tableClassName, final String propName) throws Exception {
+	private String getTableProperty(final String packageName, final String tableClassName, final String propName, final String alias) throws Exception {
 		String src = "	/**\n" +
-					"	 * ${comment}。\n" +
-					"	 */\n" +
-					"	private ${className} ${propName} = null;\n\n" +
-					"	/**\n" +
 					"	 * ${comment}を取得します。\n" +
 					"	 * @return ${comment}。\n" +
 					"	 */\n" +
 					"	public ${className} get${PropName}() {\n" +
-					"		return this.${propName};\n" +
+					"		return (${className}) this.getTable(${className}.class, \"${alias}\");\n" +
 					"	}\n\n";
 
 		Class<?> c = Class.forName(packageName + "." + tableClassName);
@@ -767,8 +797,8 @@ public class QueryGeneratorEditForm extends EditForm {
 		ret = ret.replaceAll("\\$\\{propName\\}", propName);
 		ret = ret.replaceAll("\\$\\{PropName\\}", StringUtil.firstLetterToUpperCase(propName));
 		ret = ret.replaceAll("\\$\\{comment\\}", (table.getComment() == null ? "" : table.getComment()));
+		ret = ret.replaceAll("\\$\\{alias\\}", alias);
 		return ret;
-
 	}
 
 	/**
@@ -791,7 +821,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			String alias = (String) data.get(ID_ALIAS_NAME);
 			String propName = (String) data.get(ID_TABLE_PROP);
 			this.propertyMap.put(mainTableClassName + alias, propName);
-			sb.append(this.getTableProperty(mainTablePackageName, mainTableClassName, propName));
+			sb.append(this.getTableProperty(mainTablePackageName, mainTableClassName, propName, alias));
 		}
 		List<Map<String, Object>> list = (List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST);
 		for (Map<String, Object> m: list) {
@@ -800,7 +830,7 @@ public class QueryGeneratorEditForm extends EditForm {
 			String alias = (String) m.get(JoinHtmlTable.ID_ALIAS_NAME);
 			String propName = (String) m.get(ID_TABLE_PROP);
 			this.propertyMap.put(tableClassName + alias, propName);
-			sb.append(this.getTableProperty(packageName, tableClassName, propName));
+			sb.append(this.getTableProperty(packageName, tableClassName, propName, alias));
 		}
 		return sb.toString();
 	}
@@ -816,10 +846,10 @@ public class QueryGeneratorEditForm extends EditForm {
 		StringBuilder sb = new StringBuilder();
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
 		String propName = (String) data.get(ID_TABLE_PROP);
-		sb.append("\t\tthis." + this.getTableVariableName(propName) + " = new " + mainTableClassName + "();\n");
+		sb.append("\t\t" + mainTableClassName + " "  + this.getTableVariableName(propName) + " = new " + mainTableClassName + "();\n");
 		String aliasName = (String) data.get(ID_ALIAS_NAME);
 		if (!StringUtil.isBlank(aliasName)) {
-			sb.append("\t\tthis." + this.getTableVariableName(propName) + ".setAlias(\"" + aliasName + "\");\n");
+			sb.append("\t\t" + this.getTableVariableName(propName) + ".setAlias(\"" + aliasName + "\");\n");
 		}
 		sb.append(this.generateNewTableList((List<Map<String, Object>>) data.get(ID_JOIN_TABLE_LIST)));
 		return sb.toString();
@@ -887,13 +917,13 @@ public class QueryGeneratorEditForm extends EditForm {
 					logger.debug("alias=" + alias);
 					if (StringUtil.isBlank(alias)) {
 						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
-						sb.append("this." + this.getTableVariableName(propName) + ".");
+						sb.append(this.getTableVariableName(propName) + ".");
 						sb.append(this.getFieldMethod(fieldId) + this.getCommentCode(m) + "\n");
 					} else {
 						String fieldId = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
 						implist.add(AliasField.class.getName());
 						sb.append("new AliasField(\"" + alias + "\", ");
-						sb.append("this." + this.getTableVariableName(propName) + ".");
+						sb.append(this.getTableVariableName(propName) + ".");
 						sb.append(this.getFieldMethod(fieldId) + this.getCommentCode(m) + ")\n");
 					}
 				} else {
@@ -903,7 +933,7 @@ public class QueryGeneratorEditForm extends EditForm {
 					}
 					Class<?> cls = Class.forName(sel);
 					implist.add(cls.getName());
-					sb.append("new " + cls.getSimpleName() + "(\"" + fieldId + "\", this." + this.getTableVariableName(propName)
+					sb.append("new " + cls.getSimpleName() + "(\"" + fieldId + "\", " + this.getTableVariableName(propName)
 						+ "." + this.getFieldMethod((String) m.get(SelectFieldHtmlTable.ID_FIELD_ID)) + ")"
 						+ this.getCommentCode(m) + "\n");
 				}
@@ -991,19 +1021,9 @@ public class QueryGeneratorEditForm extends EditForm {
 	}
 
 	/**
-	 * フィールドIDを取得します。
-	 * @param m フィールドリスト。
-	 * @return フィールドID。
+	 * テーブルプロパティを生成する。
+	 * @param data POSTされたデータ。
 	 */
-	private String getFieldId(final Map<String, Object> m) {
-		String ret = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
-		String alias = (String) m.get(SelectFieldHtmlTable.ID_ALIAS);
-		if (!StringUtil.isBlank(alias)) {
-			ret = alias;
-		}
-		return ret;
-	}
-
 	private void setTableProperties(final Map<String, Object> data) {
 		HashMap<String, Integer> classCount = new HashMap<String, Integer>();
 		{
@@ -1053,20 +1073,93 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 	}
 
+	/**
+	 * フィールドIDを取得します。
+	 * @param m フィールドリスト。
+	 * @return フィールドID。
+	 */
+	private String getFieldId(final Map<String, Object> m) {
+		String ret = (String) m.get(SelectFieldHtmlTable.ID_FIELD_ID);
+		String alias = (String) m.get(SelectFieldHtmlTable.ID_ALIAS);
+		if (!StringUtil.isBlank(alias)) {
+			ret = alias;
+		}
+		return ret;
+	}
+
+
 	@Override
 	protected void insertData(final Map<String, Object> data) throws Exception {
+
+		String notUpdateConstractor = (String) data.get(ID_NOT_UPDATE_CONSTRACTOR);
+		String notGenerateEntity = (String) data.get(ID_NOT_GENERATE_ENTITY);
+
 		String javasrc = this.getStringResourse("template/Query.java.template");
 		String packageName = (String) data.get(ID_PACKAGE_NAME);
 		String queryClassName = (String) data.get(ID_QUERY_CLASS_NAME);
+
+		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
+		String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");
+		String querySrc = srcPath + "/" + queryClassName + ".java";
+
 		this.setTableProperties(data);
+
+		javasrc = javasrc.replaceAll("\\$\\{queryComment\\}", (String) data.get(ID_QUERY_COMMENT));
 		javasrc = javasrc.replaceAll("\\$\\{packageName\\}", packageName);
 		javasrc = javasrc.replaceAll("\\$\\{queryClassName\\}", queryClassName);
 		javasrc = javasrc.replaceAll("\\$\\{importTables\\}", this.generateImportTables(data));
 		javasrc = javasrc.replaceAll("\\$\\{properties\\}", this.generateProperties(data));
-		javasrc = javasrc.replaceAll("\\$\\{newTables\\}", this.generateNewTables(data));
+
 		ImportUtil implist = new ImportUtil();
 		implist.add(Map.class.getName());
 		List<Map<String, Object>> fieldList = new ArrayList<Map<String, Object>>();
+		logger.debug("notUpdateConstractor=" + notUpdateConstractor);
+		String constructor = this.generateConstructor(data, fieldList, implist);
+		if ("0".equals(notUpdateConstractor)) {
+			javasrc = javasrc.replaceAll("\\$\\{constructor\\}", constructor);
+		} else {
+			JavaSrc src = new JavaSrc(new File(querySrc));
+			javasrc = javasrc.replaceAll("\\$\\{constructor\\}", src.getMethodBody(queryClassName));
+		}
+		if ("0".equals(notGenerateEntity)) {
+			EntityGenerator gen = new EntityGenerator(fieldList);
+			String entityClass = gen.generate(
+				implist, implist
+				, (Map<String, Object> m) -> {
+					return this.getFieldId(m);
+				}
+				, (Map<String, Object> m) -> {
+					String fcls =  (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
+					String sel = (String) m.get(SelectFieldHtmlTable.ID_SEL);
+					if ("dataforms.field.sqlfunc.CountField".equals(sel)) {
+						fcls = "dataforms.field.sqltype.BigintField";
+					}
+					logger.debug("fcls=" + fcls);
+					return fcls;
+				}
+			);
+			javasrc = javasrc.replaceAll("\\$\\{entity\\}", entityClass);
+		} else {
+			javasrc = javasrc.replaceAll("\\$\\{entity\\}", "");
+		}
+
+		javasrc = javasrc.replaceAll("\\$\\{importList\\}", implist.getImportText(javasrc));
+
+		FileUtil.writeTextFileWithBackup(querySrc, javasrc, DataFormsServlet.getEncoding());
+		logger.debug("javasrc=\n" + javasrc);
+	}
+
+	/**
+	 * コンストラクタを生成します。
+	 * @param data データ。
+	 * @param fieldList フィールドリスト。
+	 * @param implist インポートリスト。
+	 * @return コンストラクタ。
+	 * @throws Exception 例外。
+	 */
+	private String generateConstructor(final Map<String, Object> data, final List<Map<String, Object>> fieldList, final ImportUtil implist) throws Exception {
+		String javasrc = this.getStringResourse("template/Constructor.java.template");
+		javasrc = javasrc.replaceAll("\\$\\{newTables\\}", this.generateNewTables(data));
 		javasrc = javasrc.replaceAll("\\$\\{selectFields\\}", this.generateSelectFieldList(data, implist, fieldList));
 		String mainTableClassName = (String) data.get(ID_MAIN_TABLE_CLASS_NAME);
 		javasrc = javasrc.replaceAll("\\$\\{mainTable\\}", this.getTableVariableName(mainTableClassName));
@@ -1078,39 +1171,7 @@ public class QueryGeneratorEditForm extends EditForm {
 		}
 		javasrc = javasrc.replaceAll("\\$\\{queryComment\\}", (String) data.get(ID_QUERY_COMMENT));
 		javasrc = javasrc.replaceAll("\\$\\{joinTables\\}", this.generateJoinTables(data));
-
-		javasrc = javasrc.replaceAll("\\$\\{idConstants\\}", FieldListUtil.generateFieldIdConstant(fieldList, (Map<String, Object> m) -> {
-			return this.getFieldId(m);
-		}));
-		javasrc = javasrc.replaceAll("\\$\\{valueGetterSetter\\}", FieldListUtil.generateFieldValueGetterSetter(fieldList,
-			(Map<String, Object> m) -> {
-				return this.getFieldId(m);
-			}
-			, (Map<String, Object> m) -> {
-
-				String fcls =  (String) m.get(SelectFieldHtmlTable.ID_FIELD_CLASS_NAME);
-				String sel = (String) m.get(SelectFieldHtmlTable.ID_SEL);
-				if ("dataforms.field.sqlfunc.CountField".equals(sel)) {
-					fcls = "dataforms.field.sqltype.BigintField";
-				}
-				logger.debug("fcls=" + fcls);
-				return fcls;
-			}
-			, implist
-		));
-		javasrc = javasrc.replaceAll("\\$\\{fieldGetter\\}", FieldListUtil.generateFieldGetter(fieldList,
-			(Map<String, Object> m) -> {
-				return this.getFieldId(m);
-			},
-			implist
-		));
-		javasrc = javasrc.replaceAll("\\$\\{importList\\}", implist.getImportText());
-
-		String javaSrc = (String) data.get(ID_JAVA_SOURCE_PATH);
-		String srcPath = javaSrc + "/" + packageName.replaceAll("\\.", "/");
-		String query = srcPath + "/" + queryClassName + ".java";
-		FileUtil.writeTextFileWithBackup(query, javasrc, DataFormsServlet.getEncoding());
-		logger.debug("javasrc=\n" + javasrc);
+		return javasrc;
 	}
 
 	@Override

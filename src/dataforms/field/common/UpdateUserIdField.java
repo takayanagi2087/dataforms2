@@ -29,4 +29,29 @@ public class UpdateUserIdField extends BigintField {
 		this.setComment(COMMENT);
 		this.setHidden(true);
 	}
+
+	/**
+	 * 検索条件に使用しない。
+	 */
+	@Override
+	public MatchType getDefaultMatchType() {
+		return MatchType.NONE;
+	}
+
+	/**
+	 * 検索結果フォームはhidden出力。
+	 */
+	@Override
+	public Display getQueryResultFormDefaultDisplay() {
+		return Display.INPUT_HIDDEN;
+	}
+
+
+	/**
+	 * 編集フォームはhidden出力。
+	 */
+	@Override
+	public Display getEditFormDefaultDisplay() {
+		return Display.INPUT_HIDDEN;
+	}
 }

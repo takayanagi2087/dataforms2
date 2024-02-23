@@ -184,7 +184,7 @@ tr.oddTr button:hover {
 
 /* 日付範囲フィールドのクラス */
 .dateRangeField {
-	width: calc((100% - 32px) / 2 - 32px) !important;
+	width: calc((100% - 32px) / 2 - 34px) !important;
 }
 
 /*
@@ -208,15 +208,15 @@ tr.oddTr button:hover {
 	/* 入力フィールドの高さ */
 	input[type="text"], input[type="email"], input[type="search"], input[type="password"] {
 		height: 30px;
-		width: calc(100%);
+		width: calc(100% - 0px);
 	}
 
 	input[type="file"] {
 		height: 30px;
-		width: calc(100% - 2px);
+		width: calc(100% - 0px);
 	}
 	textarea {
-		width: calc(100%);
+		width: calc(100% - 0px);
 		height: calc(100%);
 	}
 
@@ -243,17 +243,17 @@ tr.oddTr button:hover {
 	/* 入力フィールドの高さ */
 	input[type="text"], input[type="email"], input[type="search"], input[type="password"], input[type="file"] {
 		height: 40px;
-		width: calc(100%);
+		width: calc(100% - 0px);
 	}
 
 	textarea {
-		width: calc(100%);
+		width: calc(100% - 0px);
 		height: calc(100%);
 	}
 
 	select {
 		height: 40px;
-		width: 100%;
+		width: calc(100% - 0px);
 	}
 
 

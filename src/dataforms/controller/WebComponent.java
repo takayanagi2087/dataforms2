@@ -137,6 +137,9 @@ public class WebComponent implements JDBCConnectableObject {
 	 */
 	public final void addComponent(final WebComponent comp) {
 		comp.parent = new WeakReference<WebComponent>(this);
+		if (this.componentMap.containsKey(comp.getId())) {
+			logger.error("Dupulicate component id " + comp.getId());
+		}
 		this.componentMap.put(comp.getId(), comp);
 		this.componentList.add(comp);
 		comp.onBind();

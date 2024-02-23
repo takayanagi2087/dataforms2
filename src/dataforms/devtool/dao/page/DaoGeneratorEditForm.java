@@ -667,7 +667,7 @@ public class DaoGeneratorEditForm extends EditForm {
 
 
 	/**
-	 * Mainテーブルを取得します。
+	 * 指定されたクラスのフィールドリストを取得します。
 	 * @param className QueryまたはTableのクラス名。
 	 * @return 主テーブルのインスタンス。
 	 * @throws Exception 例外。

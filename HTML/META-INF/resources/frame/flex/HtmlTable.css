@@ -11,7 +11,7 @@ table caption {
 	text-align: left;
 }
 
-th {
+form th {
 	color: var(--th-color);
 	background-color: var(--th-background-color);
 	text-align:center;
@@ -21,7 +21,7 @@ th {
 	min-height: 30px;
 }
 
-td {
+form td {
 	height: 30px;
 	min-height: 30px;
 }

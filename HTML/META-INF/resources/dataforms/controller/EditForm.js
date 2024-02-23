@@ -71,14 +71,27 @@ class EditForm extends Form {
 	}
 
 	/**
-	 * queryForm, queryResultFormが存在しない場合の初期化処理。
-     * <pre>
-     * 基本的にデータ編集モードに移行します。
-     * </pre>
+	 * queryForm, queryResultFormが存在しない(EditFormのみ)ページ場合の初期化処理。
+	 * <pre>
+	 * 1レコード編集モードの場合
+	 * 		デフォルトは新規登録
+	 * 		QueryStringでPKを指定した場合は対象データを編集
+	 * 複数レコードの場合は全レコードの編集
+	 * </pre>
 	 */
 	initWithoutQuery() {
 		logger.log("initWithoutQuery");
-		this.updateData();
+		if (this.singleRecord) {
+			let id = this.getQueryString()[this.pkFieldId];
+			if (id != null) {
+				this.get(this.pkFieldId).val(id);
+				this.updateData();
+			} else {
+				this.newData();
+			}
+		} else {
+			this.updateData();
+		}
 	}
 
 	/**

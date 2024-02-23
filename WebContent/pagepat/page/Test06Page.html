@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="mainDiv">
+			<form id="editForm">
+				<div class="formHeader"><span id="editFormTitle"></span></div>
+				<input type="hidden" id="saveMode" />
+				<table class="responsive">
+					<tbody>
+					</tbody>
+				</table>
+				<div class="hScrollDiv">
+					<table id="testList" class="editableTable">
+						<thead>
+							<tr>
+								<th colspan="2" nowrap>
+									
+								</th>
+								<th nowrap>
+									No.
+								</th>
+								<th>
+									コード1
+								</th>
+								<th>
+									コード2
+								</th>
+								<th>
+									名称
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="buttonColumn">
+									<input type="button" id="testList[0].addButton" value="+"/>
+								</td>
+								<td class="buttonColumn">
+									<input type="button" id="testList[0].deleteButton" value="-"/>
+								</td>
+								<td style="text-align: right;" class="rowno">
+									<span id="testList[0].no"></span>
+								</td>
+								<td>
+									<input type="text" id="testList[0].code1" />
+									<input type="hidden" id="testList[0].testId" />
+									<input type="hidden" id="testList[0].createUserId" />
+									<input type="hidden" id="testList[0].createTimestamp" />
+									<input type="hidden" id="testList[0].updateUserId" />
+									<input type="hidden" id="testList[0].updateTimestamp" />
+								</td>
+								<td>
+									<input type="text" id="testList[0].code2" />
+								</td>
+								<td>
+									<input type="text" id="testList[0].name" />
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th class="buttonColumn">
+									<input type="button" id="testList.addButton" value="+"/>
+								</th>
+								<th colspan="5">
+								</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
+				<input type="button" id="saveButton" class="largeButton" value="登録"/>
+				<input type="button" id="resetButton" class="largeButton" value="リセット"/>
+				<input type="button" id="deleteButton" class="largeButton" value="削除"/>
+				<input type="button" id="backButton" class="largeButton" value="戻る"/>
+			</form>
+
+		</div>
+	</body>
+</html>

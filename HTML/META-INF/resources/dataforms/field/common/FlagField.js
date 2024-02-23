@@ -46,6 +46,18 @@ class FlagField extends CharField {
 	}
 
 	/**
+	 * フィールドの値を取得します。
+	 * @return {String} 0:チェックされていない場合、1:チェックされた場合。
+	 */
+	getValue() {
+		if (this.get().prop("checked")) {
+			return "1";
+		} else {
+			return "0";
+		}
+	}
+
+	/**
 	 * フィールドのロック/ロック解除を行ないます。
 	 * @param {Boolean} lk ロックする場合true。
 	 */
@@ -65,6 +77,16 @@ class FlagField extends CharField {
 				comp.show();
 			}
 		}
+	}
+
+	/**
+	 * 値を設定します。
+	 *
+	 * @param {String} flg フラグ。
+	 */
+	setValue(flg) {
+		super.setValue(flg);
+		this.parent.get(this.id + "_ck").prop("checked", flg == "1" ? true :false);
 	}
 }
 

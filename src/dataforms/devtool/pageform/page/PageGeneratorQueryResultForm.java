@@ -11,6 +11,7 @@ import dataforms.controller.QueryResultForm;
 import dataforms.devtool.field.ClassNameField;
 import dataforms.devtool.field.PackageNameField;
 import dataforms.devtool.field.PageClassNameField;
+import dataforms.devtool.field.PagePatternSelectField;
 import dataforms.field.base.FieldList;
 import dataforms.field.common.RowNoField;
 import dataforms.htmltable.HtmlTable;
@@ -38,6 +39,7 @@ public class PageGeneratorQueryResultForm extends QueryResultForm {
 			, (new PageClassNameField()).setHidden(true)
 			, (new ClassNameField("fullClassName")).setSpanField(true)
 			, (new ClassNameField("daoClassName")).setSpanField(true)
+			, (new PagePatternSelectField("pagePattern")).setSpanField(true)
 		);
 		this.addHtmlTable(htmltbl);
 		this.addPkField(htmltbl.getFieldList().get("packageName"));
@@ -75,6 +77,9 @@ public class PageGeneratorQueryResultForm extends QueryResultForm {
 			m.put("packageName", pagecls.getPackage().getName());
 			m.put("pageClassName", pagecls.getSimpleName());
 			m.put("fullClassName", pagecls.getName());
+			Page p = (Page) pagecls.getConstructor().newInstance();
+			m.put("pagePattern", p.getPagePattern());
+
 			result.add(m);
 			no++;
 		}

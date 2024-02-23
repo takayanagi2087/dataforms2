@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dataforms2</groupId>
 	<artifactId>dataforms2</artifactId>
-	<version>2.31</version>
+	<version>2.40</version>
 	<packaging>war</packaging>
 	<!--
 		以下の環境変数を設定してください。
@@ -380,30 +380,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- dataforms2.jarをdf2blankプロジェクトにコピー -->
-			<!--
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<id>install-df2blank-project</id>
-						<phase>package</phase>
-						<configuration>
-							<target>
-								<delete>
-									<fileset dir="${env.INSTALLPATH}" includes="*.jar"/>
-								</delete>
-								<copy file="${project.build.directory}/dataforms2-${project.version}.jar" todir="${env.INSTALLPATH}/" overwrite="true" />
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			-->
 		</plugins>
 	</build>
 </project>

@@ -14,7 +14,7 @@ class MasterMultiSelectField extends MultiSelectField {
 	 * HTMLエレメントとの対応付けを行います。
 	 */
 	attach() {
-		this.attach();
+		super.attach();
 	}
 }
 

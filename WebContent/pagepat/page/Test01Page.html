@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="mainDiv">
+			<form id="queryForm">
+				<div class="formHeader">検索条件</div>
+				<div class="gridLayout">
+					<div class="fieldDiv">
+						<div class="label"><label for="code1">コード1</label></div>
+						<div class="field"><input type="text" id="code1" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="code1">コード2</label></div>
+						<div class="field"><input type="text" id="code2" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="code1">名称</label></div>
+						<div class="field"><input type="text" id="name" /></div>
+					</div>
+				</div>
+				<input type="submit" id="queryButton" class="largeButton" value="検索">
+				<input type="button" id="exportButton" class="largeButton" value="エクスポート">
+				<input type="button" id="resetButton" class="largeButton" value="リセット">&nbsp;
+				<input type="button" id="newButton" class="largeButton" value="新規登録">
+			</form>
+			<form id="queryResultForm">
+				<div class="formHeader">検索結果</div>
+				<div class="gridLayout">
+				</div>
+				<table id="queryResult">
+					<thead>
+						<tr>
+							<th>
+								No.
+							</th>
+							<th>
+								コード1
+							</th>
+							<th>
+								コード2
+							</th>
+							<th>
+								名称
+							</th>
+							<th>
+								操作
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<span id="queryResult[0].rowNo"></span>
+								<input type="hidden" id="queryResult[0].testId" />
+								<input type="hidden" id="queryResult[0].createUserId" />
+								<input type="hidden" id="queryResult[0].createTimestamp" />
+								<input type="hidden" id="queryResult[0].updateUserId" />
+								<input type="hidden" id="queryResult[0].updateTimestamp" />
+							</td>
+							<td>
+								<a id="queryResult[0].updateButton" href="javascript:void(0);"><span id="queryResult[0].code1"></span></a>
+							</td>
+							<td>
+								<span id="queryResult[0].code2"></span>
+							</td>
+							<td>
+								<span id="queryResult[0].name"></span>
+							</td>
+							<td>
+								<input type="button" id="queryResult[0].viewButton" value="表示">
+								<input type="button" id="queryResult[0].referButton" value="参照登録">
+								<input type="button" id="queryResult[0].deleteButton" value="削除">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			<form id="editForm">
+				<div class="formHeader"><span id="editFormTitle"></span></div>
+				<input type="hidden" id="saveMode" />
+				<input type="hidden" id="testId" />
+				<input type="hidden" id="createUserId" />
+				<input type="hidden" id="createTimestamp" />
+				<input type="hidden" id="updateUserId" />
+				<input type="hidden" id="updateTimestamp" />
+				<div class="gridLayout">
+					<div class="fieldDiv">
+						<div class="label"><label for="code1">コード1</label></div>
+						<div class="field"><input type="text" id="code1" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="code1">コード2</label></div>
+						<div class="field"><input type="text" id="code2" /></div>
+					</div>
+					<div class="fieldDiv">
+						<div class="label"><label for="code1">名称</label></div>
+						<div class="field"><input type="text" id="name" /></div>
+					</div>
+				</div>
+				<input type="button" id="confirmButton" class="largeButton" value="確認"/>
+				<input type="button" id="saveButton" class="largeButton" value="登録"/>
+				<input type="button" id="resetButton" class="largeButton" value="リセット"/>
+				<input type="button" id="deleteButton" class="largeButton" value="削除"/>
+				<input type="button" id="backButton" class="largeButton" value="戻る"/>
+			</form>
+
+		</div>
+	</body>
+</html>

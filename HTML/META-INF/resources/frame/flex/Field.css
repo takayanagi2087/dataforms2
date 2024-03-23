@@ -198,6 +198,15 @@ tr.oddTr button:hover {
 	color: red;
 }
 
+/* 1フィールドの領域 */
+div.fieldDiv > div {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	height: auto;
+	min-height: 32px;
+}
+
 
 /* PC,タブレット (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
 @media screen and (min-width: var(--tb-screen-min)) {
@@ -226,12 +235,10 @@ tr.oddTr button:hover {
 	}
 
 	/* フィールド値を表示するspanに適したスタイル */
-	.fieldSpan {
+/*	.fieldSpan {
 		display:table-cell;
-		height: 32px;
-		vertical-align: middle;
 	}
-
+*/
 }
 
 /* スマートフォン  (以下の記述は*.cssxでアクセスしCssFilerを通したときのみ有効) */
@@ -270,6 +277,11 @@ tr.oddTr button:hover {
 		font-size:12pt !important;
 		height: 40px;
 	}
+	
+	div.fieldDiv > div.label {
+		height: 32px;
+	}
+
 
 }
 
